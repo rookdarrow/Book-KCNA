@@ -1,0 +1,19 @@
+# Transient pipeline state
+.pipeline-state/.orchestrator.lock
+
+# Editor workspace metadata
+.obsidian/
+.idea/
+.vscode/
+
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# Editor swap files
+*.swp
+*~
+
+# Python (in case anyone runs scripts in here)
+__pycache__/
+*.py[cod]

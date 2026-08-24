@@ -262,6 +262,11 @@ Chapter 5's Voyage Ahead is unusually generous: it states the problem, names the
 
 ### What this chapter owes forward
 
+**⚠ PUBLISHED DEPENDENCIES (added 2026-08-24 — Chapter 7 shipped first and asserts what this chapter said; the redraft MUST honor both):**
+- **The Voyage Ahead must end on the scheduler gap.** Chapter 7 §1 opens with *"The last chapter ended on the one thing the control loop cannot do"* — close this chapter by naming that the control loop can create Pods but cannot decide **which node** they land on, handing off to Ch 7.
+- **§7 must plant the DaemonSet–tolerations tease.** Chapter 7 §4 asserts: *"Chapter 6 told you that DaemonSets keep running on nodes where nothing else will, and said you'd already met the mechanism in disguise"* — §7 must say DaemonSets keep running on nodes where nothing else will and that the mechanism (tolerations) will be unmasked in Ch 7.
+
+
 | Concept | Retrieved at | Contract |
 |---|---|---|
 | **The control loop, instantiated** (the spine's middle beat) | Ch 15 (**the book's primary Zenith** — the same loop pointed at a Git repository), Ch 17 (the pattern named as a principle) | `ch06-zenith` must be visibly the same shape as `ch03-fig02`. The three-beat spine only works if beat two is recognizable as beat one |

@@ -1,0 +1,46 @@
+---
+source_url: "https://kubernetes.io/docs/concepts/overview/"
+fetched_at: "2026-08-23T22:30:00-0400"
+authority: "Kubernetes project (kubernetes.io/docs)"
+objectives_covered: ["D1 Core Concepts", "D4 Ecosystem and Principles"]
+concepts_covered: ["deployment-eras", "what-kubernetes-provides", "what-kubernetes-is-not", "declarative-desired-state"]
+---
+# Kubernetes Overview (kubernetes.io/docs/concepts/overview/)
+
+## Going back in time
+**Traditional deployment era:** Early on, organizations ran applications on physical servers. There was no way to define resource boundaries for applications in a physical server, and this caused resource allocation issues. For example, if multiple applications run on a physical server, there can be instances where one application would take up most of the resources, and as a result, the other applications would underperform. A solution for this would be to run each application on a different physical server. But this did not scale as resources were underutilized, and it was expensive for organizations to maintain many physical servers.
+
+**Virtualized deployment era:** As a solution, virtualization was introduced. It allows you to run multiple Virtual Machines (VMs) on a single physical server's CPU. Virtualization allows applications to be isolated between VMs and provides a level of security as the information of one application cannot be freely accessed by another application. Virtualization allows better utilization of resources in a physical server and allows better scalability because an application can be added or updated easily, reduces hardware costs, and much more. With virtualization you can present a set of physical resources as a cluster of disposable virtual machines. Each VM is a full machine running all the components, including its own operating system, on top of the virtualized hardware.
+
+**Container deployment era:** Containers are similar to VMs, but they have relaxed isolation properties to share the Operating System (OS) among the applications. Therefore, containers are considered lightweight. Similar to a VM, a container has its own filesystem, share of CPU, memory, process space, and more. As they are decoupled from the underlying infrastructure, they are portable across clouds and OS distributions.
+
+Containers have become popular because they provide extra benefits, such as: agile application creation and deployment; continuous development, integration, and deployment (with quick and efficient rollbacks due to image immutability); dev and ops separation of concerns (create application container images at build/release time rather than deployment time); observability; environmental consistency across development, testing, and production; cloud and OS distribution portability; application-centric management; loosely coupled, distributed, elastic, liberated micro-services; resource isolation; resource utilization.
+
+## Why you need Kubernetes and what it can do
+Containers are a good way to bundle and run your applications. In a production environment, you need to manage the containers that run the applications and ensure that there is no downtime. For example, if a container goes down, another container needs to start. Wouldn't it be easier if this behavior was handled by a system?
+
+That's how Kubernetes comes to the rescue! Kubernetes provides you with a framework to run distributed systems resiliently. It takes care of scaling and failover for your application, provides deployment patterns, and more. For example: Kubernetes can easily manage a canary deployment for your system.
+
+Kubernetes provides you with:
+- **Service discovery and load balancing** — Kubernetes can expose a container using a DNS name or its own IP address. If traffic to a container is high, Kubernetes is able to load balance and distribute the network traffic so that the deployment is stable.
+- **Storage orchestration** — Kubernetes allows you to automatically mount a storage system of your choice, such as local storage, public cloud providers, and more.
+- **Automated rollouts and rollbacks** — You can describe the desired state for your deployed containers using Kubernetes, and it can change the actual state to the desired state at a controlled rate.
+- **Automatic bin packing** — You provide Kubernetes with a cluster of nodes that it can use to run containerized tasks. You tell Kubernetes how much CPU and memory (RAM) each container needs. Kubernetes can fit containers onto your nodes to make the best use of your resources.
+- **Self-healing** — Kubernetes restarts containers that fail, replaces containers, kills containers that don't respond to your user-defined health check, and doesn't advertise them to clients until they are ready to serve.
+- **Secret and configuration management** — Kubernetes lets you store and manage sensitive information, such as passwords, OAuth tokens, and SSH keys. You can deploy and update secrets and application configuration without rebuilding your container images, and without exposing secrets in your stack configuration.
+- **Batch execution** — In addition to services, Kubernetes can manage your batch and CI workloads, replacing containers that fail, if desired.
+- **Horizontal scaling** — Scale your application up and down with a simple command, with a UI, or automatically based on CPU usage.
+- **IPv4/IPv6 dual-stack** — Allocation of IPv4 and IPv6 addresses to Pods and Services.
+- **Designed for extensibility** — Add features to your Kubernetes cluster without changing upstream source code.
+
+## What Kubernetes is not
+Kubernetes is not a traditional, all-inclusive PaaS (Platform as a Service) system. Since Kubernetes operates at the container level rather than at the hardware level, it provides some generally applicable features common to PaaS offerings, such as deployment, scaling, load balancing, and lets users integrate their logging, monitoring, and alerting solutions. However, Kubernetes is not monolithic, and these default solutions are optional and pluggable. Kubernetes provides the building blocks for building developer platforms, but preserves user choice and flexibility where it is important.
+
+Kubernetes:
+- Does not limit the types of applications supported. Kubernetes aims to support an extremely diverse variety of workloads, including stateless, stateful, and data-processing workloads. If an application can run in a container, it should run great on Kubernetes.
+- Does not deploy source code and does not build your application. Continuous Integration, Delivery, and Deployment (CI/CD) workflows are determined by organization cultures and preferences as well as technical requirements.
+- Does not provide application-level services, such as middleware (for example, message buses), data-processing frameworks (for example, Spark), databases (for example, MySQL), caches, nor cluster storage systems (for example, Ceph) as built-in services. Such components can run on Kubernetes, and/or can be accessed by applications running on Kubernetes through portable mechanisms, such as the Open Service Broker.
+- Does not dictate logging, monitoring, or alerting solutions. It provides some integrations as proof of concept, and mechanisms to collect and export metrics.
+- Does not provide nor mandate a configuration language/system (for example, Jsonnet). It provides a declarative API that may be targeted by arbitrary forms of declarative specifications.
+- Does not provide nor adopt any comprehensive machine configuration, maintenance, management, or self-healing systems.
+- Additionally, Kubernetes is not a mere orchestration system. In fact, it eliminates the need for orchestration. The technical definition of orchestration is execution of a defined workflow: first do A, then B, then C. In contrast, Kubernetes comprises a set of independent, composable control processes that continuously drive the current state towards the provided desired state. It shouldn't matter how you get from A to C. Centralized control is also not required. This results in a system that is easier to use and more powerful, robust, resilient, and extensible.

@@ -9,6 +9,8 @@
 
 ## ANCHOR FLAGS (author review required)
 
+**RESOLVED 2026-08-24 (author review):** (1) `chNN-zenith-<slug>` is the arc outline's prescribed Zenith anchor form, with shipped precedent (`ch02-zenith-standard-crate`); the anchor is NOT malformed — keep it, do not rename to fig06. (2) Figure numbering follows the outline's prescribed slugs, not document order (precedent: Ch 2); accepted as-is.
+
 Two anchor issues. Neither is renamed here — anchor IDs are the join key, and renaming is an author-review decision (rule 6). Both are recorded so the book-level aggregator and the diagram pipeline see the same IDs the draft carries.
 
 **1. Malformed anchor ID — `ch04-zenith-declaration-not-order`** (draft line 744).

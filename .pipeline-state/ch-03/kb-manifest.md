@@ -555,7 +555,7 @@ Defining chapters assigned from B2 (`chapter-lineup.md`, ratified).
 | **Job** | Ch 6 | Ch 3 §6 | Used as the documentation's own controller example; the *resource* is Ch 6's |
 | **`kubectl top`** | Ch 13 | Ch 3 §4 (cross-bearing) | Absent-component pattern instance |
 | **`kube-system` namespace** | Ch 4 | Ch 3, Bearings #1 Q3 distractor | Distractor only |
-| **Lease** | Ch 5 / Ch 12 | Ch 3, Bearings #1 Q4 rationale | Name-dropped only |
+| **Lease** | Ch 8 (node lifecycle, per lineup — corrected 2026-08-24) | Ch 3, Bearings #1 Q4 rationale | Name-dropped only |
 | **metrics-server** | Ch 13 | Ch 3 §4 (cross-bearing) | Absent-component pattern instance |
 | **NetworkPolicy** | Ch 10 | *(not yet surfaced — see below)* | B3's 4th absent-component instance; Ch 3 omits the bearing |
 | **PaaS** | — *(no owner chapter)* | Ch 3 §1 | ⚑ **Acronym never expanded** — first use in the book. Needs an owner. |

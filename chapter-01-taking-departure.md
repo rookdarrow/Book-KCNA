@@ -420,6 +420,7 @@ You'll meet these throughout. Each one signals a specific kind of content so you
 | — | Dead Reckoning | Facts only. No metaphor, no framing |
 | 🏆 | Safe Harbor | Chapter complete |
 | ☀️ | Zenith | The moment separate concepts connect |
+| 🗺️→🌊→🌅 | Voyage Progress | Chart → Passage → Dawn: how far the voyage stands |
 
 Four smaller glyphs appear inline, mid-prose, as short asides:
 

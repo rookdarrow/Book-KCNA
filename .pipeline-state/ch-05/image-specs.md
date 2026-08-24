@@ -615,3 +615,5 @@ copyright_clearance:
 | `ch05-zenith-smallest-deployable-unit` | `hierarchy_tree` | D2 | ready — anchor ID malformed, author decision pending |
 
 Three of six figures are clear to render now. One is held pending a source tag that is unlikely to change its content. One is hard-blocked on a research fetch that will change its dimensions. One is clear to render but carries an anchor ID that should be corrected in the draft and here in the same edit.
+
+**RESOLVED 2026-08-24 (author review):** `ch05-zenith-smallest-deployable-unit` is the arc outline's prescribed Zenith form (precedent: ch02-zenith-standard-crate). The fig06 rename proposal above is struck; keep the zenith anchor.

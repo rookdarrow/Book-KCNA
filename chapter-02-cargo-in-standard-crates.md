@@ -868,7 +868,7 @@ D) A separate namespace with a restrictive NetworkPolicy, which segments the cus
 **4 — B.** RuntimeClass exists precisely to provide a balance of performance versus security: a workload deserving high information-security assurance can be scheduled onto a runtime using hardware virtualization (Kata Containers) or a user-space kernel (gVisor), benefiting from extra isolation at the expense of additional overhead [source: k8s-docs-runtime-class-2026-08-23].
 - **A is wrong.** Isolation strength is selectable per Pod via `runtimeClassName`, which is the entire point of the feature. A separate cluster may be defensible for other reasons, but not because isolation is cluster-fixed.
 - **C is wrong**, and it misses that the tradeoff runs both ways. The stronger runtime costs overhead; applying it to everything makes every workload pay for a boundary most of them don't need. Selectivity is the feature.
-- **D is wrong**, and it is a real control aimed at the wrong axis. Namespaces and NetworkPolicy segment *network* reachability; the requirement here is a stronger boundary between the workload and the host it runs on. Network segmentation does nothing about that. *[cross-bearing: see Ch 9 §4 — NetworkPolicy]*
+- **D is wrong**, and it is a real control aimed at the wrong axis. Namespaces and NetworkPolicy segment *network* reachability; the requirement here is a stronger boundary between the workload and the host it runs on. Network segmentation does nothing about that. *[cross-bearing: see Ch 10 — NetworkPolicy]*
 
 ---
 

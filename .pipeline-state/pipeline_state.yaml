@@ -868,7 +868,7 @@ chapters:
         duration_seconds: 1272.6940427999943
   7:
     number: 7
-    current_stage: 11
+    current_stage: 15
     pending_gate: null
     adopted_from: null
     stages:
@@ -972,3 +972,43 @@ chapters:
         model_id: opus
         prompt_tokens_est: 10253
         duration_seconds: 327.67593099999795
+      11:
+        status: completed
+        started_at: '2026-08-24T19:24:12+00:00'
+        completed_at: '2026-08-24T19:34:24+00:00'
+        output_path: C:\dev\lodestar\certcomp\..\Book-KCNA\.pipeline-state\ch-07\draft-v2.md
+        gate_cleared: false
+        error: null
+        model_id: opus
+        prompt_tokens_est: 113735
+        duration_seconds: 612.2760088000068
+      12:
+        status: completed
+        started_at: '2026-08-24T19:34:25+00:00'
+        completed_at: '2026-08-24T19:41:56+00:00'
+        output_path: C:\dev\lodestar\certcomp\..\Book-KCNA\.pipeline-state\ch-07\draft-v2.md
+        gate_cleared: false
+        error: null
+        model_id: opus
+        prompt_tokens_est: 67199
+        duration_seconds: 451.146253400002
+      13:
+        status: completed
+        started_at: '2026-08-24T19:41:57+00:00'
+        completed_at: '2026-08-24T19:54:57+00:00'
+        output_path: C:\dev\lodestar\certcomp\..\Book-KCNA\.pipeline-state\ch-07\integration.md
+        gate_cleared: false
+        error: null
+        model_id: opus
+        prompt_tokens_est: 62154
+        duration_seconds: 780.1560112000006
+      14:
+        status: completed
+        started_at: '2026-08-24T19:54:58+00:00'
+        completed_at: '2026-08-24T20:03:15+00:00'
+        output_path: C:\dev\lodestar\certcomp\..\Book-KCNA\.pipeline-state\ch-07\kb-manifest.md
+        gate_cleared: false
+        error: null
+        model_id: opus
+        prompt_tokens_est: 62343
+        duration_seconds: 496.6242351999972

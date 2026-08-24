@@ -1,55 +1,29 @@
-I have everything I need. Verification is complete across all five shipped chapters, the ch-06 outline and its withdrawn draft, the ch-07 outline, and all four diagnostics.
+Verification is complete. I read the shipped `chapter-01` … `chapter-06` directly (the stage prompt passed `[no knowledge-base shards tagged]`, and Chapter 6 has shipped since the last integration run), plus the book outline's `chapter-lineup.md` and `retrieval-architecture.md`, and every inbound cross-bearing that points at Chapter 7.
 
-Per the `--allowed-tools` contract in CLAUDE.md, I'm emitting this to stdout for the orchestrator to capture rather than writing the file myself.
+Per the `--allowed-tools` contract in CLAUDE.md, emitting to stdout for the orchestrator rather than writing the file myself.
 
 ```markdown
 # Integration Check — KCNA Chapter 7
 
-**Draft audited:** `.pipeline-state/ch-07/draft-v2.md` (1,124 lines, 2026-08-24)
-**Verified against:** shipped `chapter-01` … `chapter-05`; `.pipeline-state/ch-06/outline.md`; the withdrawn `chapter-06` draft (git `2a78912`); `.pipeline-state/ch-07/outline.md`; all four `diagnostics/` reports.
+**Draft audited:** `.pipeline-state/ch-07/draft-v2.md` (1,143 lines, 2026-08-24 15:41)
+**Verified against:** shipped `chapter-01` … `chapter-06`; `.pipeline-state/book-outline/chapter-lineup.md`; `.pipeline-state/book-outline/retrieval-architecture.md`; every inbound cross-bearing that names Chapter 7.
 
-**Note on knowledge-base shards.** The stage prompt passed `[no knowledge-base shards tagged]`. Rather than hedge, I read the shipped chapter files directly from `../Book-KCNA/`. Every back-bearing below is verified against real text and cited by line number. The two exceptions are Chapter 6 back-bearings, which cannot be verified against shipped text because **Chapter 6 does not exist in the repository** — see Finding 1.
+**Note on inputs.** The stage prompt passed `[no knowledge-base shards tagged]`, so nothing below is inferred from shards. Every callback is verified against real shipped text and cited by line number. **Chapter 6 shipped at 15:01 today** (`chapter-06-fleets-not-vessels.md`, 1,468 lines), which retires the largest unverifiable block in the previous integration run — both Chapter 6 back-bearings now check out against real headings.
 
 ---
 
 ## Summary
 
-- Terminology consistency: **fail** — one systematic drift (British spellings, 15 instances, zero precedent in the shipped corpus), one intra-chapter inconsistency, one house-convention break on the metadata line
-- Callbacks to earlier chapters: **7 correct / 2 unverifiable** (both point at unshipped Chapter 6)
-- Retrieval-practice accuracy: **pass** — 5 of 7 verified against shipped text; 2 point at Chapter 6 and match its planned numbering
-- Glossary coverage: **44 concepts introduced, 35 defined in-chapter, 9 require glossary entries**
-- Contradictions with earlier canon: **none** — 1 unpaid promise flagged (Chapter 3's six scheduling factors)
-- Ethical guardrails (skill Part 14): **fail** — one unsourced disparagement of competing study guides (guardrail #3)
+- Terminology consistency: **fail** — one systematic drift (British spellings, 23 prose instances, against a corpus that is uniformly American), plus two minor casing items
+- Callbacks to earlier chapters: **19 correct / 0 incorrect** (8 back-bearings + 11 forward; 1 forward pointer soft — see Ch 12 below). One **inbound** pointer from Chapter 6 is wrong and cannot be fixed from inside this chapter.
+- Retrieval-practice accuracy: **pass** — 7 tagged items, 7 verified, 21% of graded items (B3 band is 20–25%)
+- Glossary coverage: **60 concepts/commands introduced, 49 defined in-chapter, 11 require glossary entries**
+- Contradictions with earlier canon: **none** — 2 near-misses recorded, both benign
+- Ethical guardrails (skill Part 14): **fail** — one item, guardrail #3, unchanged since draft-v1
 
-**Gate-level finding that outranks everything below:** the revision stage did not apply the diagnostics. See Finding 0.
+**Two things worth saying before the detail.** First, the fact-accuracy findings that the previous integration run reported as unapplied *have been applied*: the unsourced absolute negative ("the scheduler never consults observed usage") is gone from prose everywhere it appeared, the untagged Capacity/Allocatable relationship in §2 has been replaced with a sourced Allocatable treatment and a deferral to Chapter 8, the `node.kubernetes.io/unschedulable` causal claim now carries `[source: k8s-docs-nodes-2026-08-23]` at both sites, and the metadata line matches the ch-02 / ch-05 house form byte-for-byte. This draft is in materially better shape than the one that failed this gate at 10:49.
 
----
-
-## Finding 0 — The revision stage produced no revisions
-
-`draft-v2.md` differs from `draft-v1.md` at **22 line ranges**. All 22 are em-dash-to-comma/colon punctuation substitutions and two expanded `AUTHOR-REVIEW` comments. Representative:
-
-- L129 `…any suitable nodes — often more than one.` → `…any suitable nodes, often more than one.`
-- L716 `Overrules — not "takes precedence…"` → `Overrules, not "takes precedence…"`
-
-**Not one diagnostic finding was applied.** The fact-accuracy FAIL lines are byte-identical in v2:
-
-| Diagnostic finding | v1 line | Status in v2 |
-|---|---|---|
-| Metadata line untagged + breaks ch-02/ch-05 house form | 4, 6 | unchanged |
-| "which the scheduler never consults at all" — unsourced absolute negative, and Practice Q3 grades distractor **A** wrong on it | 203 (recurs 215, 297, 882, 1038) | unchanged |
-| "Some of that total is spoken for by things that aren't Pods" — asserts the capacity/allocatable relationship that research-manifest gap **G-7C** exists to prevent | 229 | unchanged |
-| `node.kubernetes.io/unschedulable` "deliberate administrative act" — untagged causal claim | 522, 1105 | unchanged |
-| Soundings A5 spends ☆ Bearings #2 Q2, the chapter's designated struggle item | 68 | unchanged |
-| Theming density 0.4/1,000 against a 1–3 floor | whole chapter | unchanged |
-| D1.3-09 scheduling factors — 3 of 6 absent | §1/§2 | unchanged |
-
-Structural lint is genuinely clean (0 fail, 0 warn, 29 pass) and question budget is exact (40/40), so the chapter is not in bad shape. But **this gate is being asked to pass a draft whose audit findings were never worked.** That is an author decision, not mine to make — flagging it as the primary item.
-
-Two contributing causes worth fixing at the pipeline rather than per-chapter, both self-reported by the diagnostics:
-
-- `context_packer.py:216` maps `draft_voice → draft-voice.md`, but `apply_voice_swap()` (`orchestrator.py:250`) has already renamed that file into `draft-v1.md`. Every downstream stage requesting the voiced draft gets an empty substitution and has to recover by hand. Three of four diagnostics open with a paragraph about this.
-- `draft-v2-prevoice.md` is **68 lines** against draft-v1-prevoice's 1,122. That artifact is truncated.
+Second, the single ethical finding from that run **survived unedited**. It is one sentence and the fix is one sentence. See Finding E1.
 
 ---
 
@@ -57,204 +31,304 @@ Two contributing causes worth fixing at the pipeline rather than per-chapter, bo
 
 | Term | Canonical form (evidence) | Occurrences in this chapter | Drift? |
 |---|---|---|---|
-| kubelet | lowercase — ch03 §3, ch05 §8 | ~30 | no — zero `Kubelet` in ch7 or corpus |
-| kube-scheduler | lowercase hyphenated — ch03:415 | ~20 | no |
-| API server / `kube-apiserver` | "API server" in prose, component name in figures — ch03 §2 | 16 prose, 1 figure | no |
-| Pod / pod | `Pod` capitalized in house prose — ch01–05 throughout | ~400 | no — lowercase appears only inside verbatim source quotes |
-| control plane | two words, lowercase — ch03 §2 | 8 | no |
-| ReplicaSet, Deployment, DaemonSet, StatefulSet | CamelCase — ch04 §5, ch06 outline | ~25 | no |
-| label selector | "label selector" — ch04:660 ★ Fixed Point | 6 | no |
-| set-based operators | `in`, `notin`, `exists` **lowercase** — ch04 §5 | Practice Q12 uses lowercase; affinity operators use `In`, `NotIn`, `Exists`, `DoesNotExist`, `Gt`, `Lt` capitalized | **no — correctly distinguished.** Two different enums, and the chapter keeps them apart. Verified deliberate |
-| requests / limits | lowercase — ch05 §8 | ~40 | no |
-| Allocatable / Capacity | capitalized per `k8s-docs-node-allocatable` | 6 | no — new to this chapter |
-| inter-Pod | — | **11 `inter-Pod` vs 3 `Inter-pod`** (L628, L673, L796) | **yes — intra-chapter.** See below |
-| -ise/-our spellings | corpus is **100% American**: 61 American forms across ch01–05, **0 British** | **15 British forms** | **yes — systematic.** See below |
-| Metadata line form | ch05:190 — domain + published weight + both source tags inline | L4/L6 drop the 44% domain weight and both tags, and move the disclosure to a separate italic line | **yes — house-convention break.** Already raised by fact-accuracy; unfixed |
-| Section heading form | ch02/ch03 ship `## §1 — ⚪ Title`; ch05 ships `## ⚪ §1 — Title` | ch7 uses the ch05 form | no — correct per outline OQ#12; the ch02/ch03 reconciliation is a book-level sweep, not this chapter's |
+| American spelling generally | `behavior` ×46, `recognize` ×8, `judgment` ×7, `utilization` ×3, `organiz*` ×7, `neighbor(s)` ×2, `minimized`, `optimization`, `Prioritize`, `license` ×3 — ch01–ch06 | 23 British forms in prose | **YES — see Finding T1** |
+| `kubelet` (lowercase) | ch03 §3, ch05 §8 | 45 | no — zero `Kubelet` anywhere |
+| `kube-scheduler` | ch03 §2 L413 | 46 | no |
+| `Pod` (capitalized resource noun) | ch05, ch06 | 249 `Pod` / 123 `Pods`; the 61 lowercase are inside `[source: k8s-docs-pod-*]` tags and verbatim doc quotes | no — same pattern as ch05/ch06 |
+| `` `Pending` `` (backticked) | ch05 L579/L670/L704, ch06 | backticked throughout | no |
+| `DaemonSet`, `ReplicaSet` | ch06 §1, §7 | 19 / 5 | no |
+| `nodeSelector` (code-formatted) | new here; ch04 L834 names the concept | 47 | no |
+| control plane / control-plane | ch03: 36 noun / 31 adjectival | same split | no |
+| Node controller | ch03 L421 writes **`Node controller`** (capital N) | ch07 writes `node controller` (§4) and `node lifecycle controller` (§4, TYB2 A3) | **minor — see Finding T2** |
+| Pod affinity / pod affinity | book capitalizes `Pod` as a resource noun | `Pod affinity` ×4, `pod affinity` ×5 (some inside verbatim doc quotes, which legitimately lowercase it) | **minor — see Finding T3** |
+| `Allocatable` | zero occurrences in ch01–ch06 | first use in the book | n/a — new term, glossary row exists |
+| Metadata-line house form | ch02 L132 and ch05 L190 use the long form with both CNCF source tags inline | identical form, `~5%`, competency `Scheduling` | no — **and the 44% figure and the competency name `Scheduling` are both confirmed in `sources/cncf-kcna-curriculum-pdf-2026-08-23.md:13`**, which closes the draft's own metadata AUTHOR-REVIEW open item |
 
-### Drift 1 — British spellings (15 instances, systematic)
+### Finding T1 — British spellings, systematic, against a uniformly American corpus (**fix before ship**)
 
-The shipped corpus uses American spellings exclusively: 61 occurrences of `behavior`/`recognize`/`organize`/`analyze`/`prioritize`/`internalize` across all five chapters, **zero** British forms. Chapter 7 introduces:
+The shipped corpus is unambiguous: 46 `behavior`, 8 `recognize`, 7 `judgment`, 3 `utilization`, 1 `minimized`, 1 `optimization`, 2 `neighbor(s)`, 3 `licens*`. The one counter-example in six chapters is a single `labelled` at ch04. Chapter 7 inverts the convention.
 
-| Form | Lines | House form |
-|---|---|---|
-| behaviour | 68, 479, 748, 1040, 1042 | behavior |
-| honour | 181, 591 | honor |
-| recognise / Recognise | 113, 683 | recognize |
-| neighbouring | 1000, 1058 | neighboring |
-| labelled | 370, 647 | labeled (ch05:718; note ch04:753 has one `labelled`, so this pair is already mixed book-wide) |
-| internalised | 326 | internalized |
-| optimise | 1042 | optimize |
+23 instances across 19 lines of shipping prose (plus 4 more inside `AUTHOR-REVIEW` comments, which persist in the shipped file per ch05/ch06 practice):
 
-L113 is in **What You'll Learn** and L1042 is in a graded answer explanation — both high-visibility. Mechanical fix.
+| Line | Token | Line | Token |
+|---|---|---|---|
+| 32 | judgement | 696 | recognise |
+| 68 | behaviour | 755 | behaviour |
+| 114 | Recognise | 1009 | neighbouring |
+| 130 | recognise | 1016 | minimise |
+| 336 | internalised | 1056 | behaviour ×2 |
+| 370 | prioritised | 1058 | optimise |
+| 380 | labelled | 1070 | behaviour |
+| 489 | behaviour | 1074 | neighbourhood |
+| 568 | organisation, licence | 1076 | prioritising, minimise ×2 |
+| 660 | labelled | | |
+| | | *(comments: 212 utilisation; 869 organising, behaviours, behaviour)* | |
 
-### Drift 2 — `inter-Pod` casing (intra-chapter)
+Two of these are worse than cosmetic:
 
-Eleven instances use `inter-Pod`; three use `Inter-pod` (L628, L673, L796). The three lowercase ones track the Kubernetes docs, which write `Inter-pod` (`k8s-docs-assign-pod-node-2026-08-23:19`). That is defensible **inside quotation marks** — and L673 is inside a genuine quoted passage, so it is correct there. But L628 and L796 are the chapter's own prose carrying a source tag, not quotations.
+- **L568** puts `licence` (British noun) in the same sentence as the taint key `license=cad`. A reader scanning for the label sees two spellings of the same word one clause apart.
+- **L703 vs L1016/L1076** spell *the same documented sentence* two different ways. §5's table quotes the source correctly — "prioritizing nodes that minimize the skew" — and Practice Q14's option D and answer key paraphrase it back as "minimise" / "prioritising nodes that minimise the skew". A reader comparing the table to the answer key sees the source sentence change spelling.
 
-**Recommend:** house form `inter-Pod` in unquoted prose (L628, L796); leave L673 alone as verbatim.
+Mechanical fix, low risk. Per CLAUDE.md, do it with a Python script rather than the Edit tool.
+
+### Finding T2 — `Node controller` vs `node lifecycle controller` (minor)
+
+Chapter 3 L421 introduces "the **Node** controller (noticing and responding when…)" with a capital N. Chapter 7 §4 writes "the control plane, using the node controller, automatically creates taints…" and, three paragraphs later, "the **node lifecycle** controller evicts them". Both are upstream doc terms and neither is wrong, but a reader who memorized Chapter 3's list now meets two lowercase variants and has no way to know whether "node lifecycle controller" is the same thing they already met. One clause fixes it — or a glossary row (see G7 below).
+
+### Finding T3 — `Pod affinity` / `pod affinity` (minor)
+
+Four capitalized, five lowercase. Some lowercase instances are inside verbatim quotes from the upstream docs (§5's ⚑ Closer Look quote, and the `podAffinity` field name) and must stay. The prose ones — notably Practice Q13's answer key, "pod affinity is evaluated after taints" — should match §5's own bolded "**Pod affinity attracts**". Same for "Inter-pod" vs "Inter-Pod" outside quotes.
 
 ---
 
 ## Callback correctness
 
-Every back-bearing traced to the shipped file and line.
+### Back-bearings out of this chapter — 8 of 8 correct
 
-| # | Cross-bearing (ch7 line) | Target | Verified? |
+| Line | Callback | Verified against | Verdict |
 |---|---|---|---|
-| 1 | Ch 2 §7 — RuntimeClass (L233) | `chapter-02:787` `## §7 — 🟡 Not All Isolation Is Equal: RuntimeClass` | ✅ correct |
-| 2 | Ch 3 §2 — the control plane components (L121) | `chapter-03:354` `## §2 — ⚪ The Control Plane`; the deferral is at `:417` — *"see Ch 7 — how the scheduler actually chooses, in detail"* | ✅ correct, and the promise is real |
-| 3 | Ch 3 §2 — the control plane (L890, Exam Alert) | `chapter-03:415` — *"the scheduler selects a node and records that choice. It does not start anything."* Ch 7's claim that the trap "was defused explicitly" in Chapter 3 is exactly right | ✅ correct |
-| 4 | Ch 4 §5 — labels and selectors (L324) | `chapter-04:630` `## §5 — 🔵 The Universal Join`. Ch 7 says Chapter 4 "listed node scheduling constraints as one of the **four** things they're used for" — `chapter-04:688` lists exactly four: ReplicaSet, Service, node scheduling constraints, NetworkPolicy | ✅ correct, and the count is exact |
-| 5 | Ch 5 §4 — the Pod's lifecycle (L185) | `chapter-05:525` `## ⚪ §4 — Scheduled Once, Replaced Never` | ✅ correct |
-| 6 | Ch 5 §8 — requests and limits (L197) | `chapter-05:864` `## 🟡 §8 — What a Pod Is Owed`. The inbound pin at `chapter-05:969` reads *"see Ch 7 §2 — resource requests as a scheduling filter"* and §2 **is** exactly that | ✅ correct — pin honored precisely |
-| 7 | Ch 5 §8 — QoS classes (L223) | QoS classes are in §8, in figure `ch05-fig05-requests-limits-qos-classes` at `chapter-05:938` — the figure ID Ch 7 cites by name | ✅ correct, figure ID verified |
-| 8 | Ch 6 §7 — DaemonSets (L526) | `.pipeline-state/ch-06/outline.md:498` `### §7 — ⚪ One Per Node, and Work That Ends` | ⚠ **unverifiable — see Finding 1** |
-| 9 | Ch 6 §1 — Deployments and ReplicaSets (L622) | `.pipeline-state/ch-06/outline.md:353` `### §1 — ⚪ The Resource That Holds the Intent`. Corroborated by `chapter-05:559`, which independently pins *"see Ch 6 §1 — the resource that holds the surviving intent"* | ⚠ **unverifiable — see Finding 1** |
+| 122 | Ch 3 §2 — the control plane components | ch03 L354 `§2 — ⚪ The Control Plane`; L411–415 is the `kube-scheduler` entry, and L417 is Chapter 3's own reciprocal pointer forward. The claim that Chapter 3 "told you, in as many words, that *how* it chooses was being held back" is exact. | ✅ |
+| 192 | Ch 5 §4 — the Pod's lifecycle | ch05 L525 `§4 — Scheduled Once, Replaced Never` | ✅ |
+| 204 | Ch 5 §8 — requests and limits | ch05 L864 `§8 — What a Pod Is Owed`; L969 states verbatim "requests are the input to the scheduler's filtering step" and carries the reciprocal pointer to **Ch 7 §2** | ✅ (and reciprocity discharged at the pinned section) |
+| 232 | Ch 5 §8 — QoS classes | ch05 L930–L958 define the QoS classes and their role in eviction ordering | ✅ |
+| 242 | Ch 2 §7 — RuntimeClass | ch02 L787 `§7 — 🟡 Not All Isolation Is Equal: RuntimeClass`; L807 promises "the reasoning behind them arrives later" for both overhead and scheduling constraints | ✅ |
+| 334 | Ch 4 §5 — labels and selectors | ch04 L776 `§5 — 🔵 The Universal Join` — so "Chapter 4 taught label selectors as the universal join" is the section's literal title. L834 lists exactly **four** uses (ReplicaSet, Service, node scheduling constraints, NetworkPolicy), so "one of the four things they're used for" is exact. | ✅ |
+| 536 | Ch 6 §7 — DaemonSets | ch06 L878 `§7 — One Per Node, and Work That Ends`; L894 is the matching promise — "you have already met the mechanism that makes this possible, in disguise… Chapter 7 unmasks it" — in near-identical wording | ✅ (best reciprocal pair in the chapter) |
+| 635 | Ch 6 §1 — Deployments and ReplicaSets | ch06 L306 `§1 — The Resource That Holds the Intent`; L316–L320 introduce Deployment → ReplicaSet → Pod | ✅ |
+| 899 | Ch 3 §2 — the control plane (Exam Alert) | ch03 L979 defuses "The scheduler places the Pod on the node" explicitly and closes with "(How the scheduler chooses is Chapter 7's.)" — so "you were told it would come back" is literally true | ✅ |
 
-Forward-bearings (Ch 8 ×4, Ch 9, Ch 12, Ch 13 ×2, Ch 17 ×2) cannot be verified against text that doesn't exist yet, which is expected. All ten match the forward contracts in `ch-07/outline.md` § *What this chapter owes forward*, and §6's Ch 17 pointer correctly **names** the pluggable-scheduler fact without pre-collecting the four-socket extension story the outline reserves for Chapter 17's secondary Zenith.
+Untagged prose callbacks were checked too and are all accurate: "Chapters 4 through 6 made you someone who can write down what should exist"; "Chapter 3 told you the scheduler selects a node and records that choice" (ch03 L415); "Chapter 2 mentioned that a RuntimeClass can carry a Pod overhead" (ch02 L807). The figure reference `ch05-fig05-requests-limits-qos-classes` resolves — ch05 L938.
 
-### Finding 1 — Chapter 6 does not exist, and Chapter 7 leans on it six times
+**§1's six scheduling factors reconcile with Chapter 3.** ch03 L413 lists six (resource requirements, hardware/software/policy constraints, affinity and anti-affinity, data locality, inter-workload interference, **deadlines**) and Practice Q10 grades the reader on them. §1 reproduces all six and names deadlines separately with its own architecture-overview tag. The unpaid-promise finding from the previous run is discharged.
 
-`git log`:
-```
-2bb971b Chapter 6: withdraw truncated draft pending re-run
-2a78912 Chapter 6: drafted via pipeline
-```
+### Forward pointers — 10 of 11 verified against the chapter lineup
 
-`chapter-06-fleets-not-vessels.md` was committed and then **withdrawn**. `Book-KCNA/` currently ships chapters 01–05 only. The ch-07 outline's Open Question #11 describes the file as present-but-truncated; that description is now stale — it is gone entirely.
+`Ch 8 — node administration` ✅, `quotas and limit ranges` ✅ (lineup: ResourceQuota and LimitRange), `admission control` ✅ (lineup: authentication → authorization → admission), `taking a node out of service` ✅ (lineup: cordon/drain/uncordon), `cluster administration` ✅ (general, acceptable). `Ch 9 — Services and endpoints` ✅. `Ch 13 — reading Pod failure signatures` ✅ and `diagnosing Pending` ✅ (lineup names `Pending` explicitly). `Ch 17 — the cluster's extension points` ✅ and `reacting to unschedulable Pods` ✅ (lineup: Cluster Autoscaler, Karpenter).
 
-Chapter 7's dependencies on it:
+The chapter's "last chapter of Part II" claim ✅ — lineup puts Ch 2–8 in Part II and Ch 9 opens Part III.
 
-| Ch 7 location | Depends on |
-|---|---|
-| §1 opening (L96) | *"The last chapter ended on the one thing the control loop cannot do"* — Chapter 6's Voyage Ahead |
-| Why This Chapter Matters (L98) | *"Chapters 4 through 6 made you someone who can write down what should exist"* |
-| Soundings preamble (L45) | *"Three of them ask you to retrieve something specific from Chapters 5 and 6"* |
-| §4 DaemonSet callback (L524–526) | *"Chapter 6 told you that DaemonSets keep running on nodes where nothing else will, and said you'd already met the mechanism in disguise"* |
-| §5 (L622) | Ch 6 §1 back-bearing |
-| §7 (L862) | *"the same shape as every controller in Chapter 6"* |
+**⚑ One soft pointer.** `Ch 12 — workload isolation` (§4, on dedicated nodes) has no matching item in Chapter 12's lineup entry, which covers the 4Cs, RBAC, ServiceAccounts, Secrets, Pod Security Standards, `securityContext`, supply chain, policy engines, and sandboxed runtimes. Node dedication as an *isolation* control is a reasonable neighbour of the sandboxed-runtime material but is not currently scoped there. **Author decision:** either add it to Ch 12's scope, or retarget the pointer (Ch 8 is the closer fit, since that's where cordon/taint administration lives).
 
-The two riskiest are §1's opening beat and §4's callback, because both assert **what Chapter 6 said**, not merely what it covered. The ch-07 outline recorded (from the now-withdrawn draft) that Chapter 6's Voyage Ahead did say both things, including naming *"the DaemonSet's tolerations as the mechanism already seen in disguise."* But that text has been withdrawn for re-drafting, and **a re-run is not obliged to reproduce it.**
+### ⚑ Finding C1 — an **inbound** cross-bearing from Chapter 6 points at the wrong section
 
-**Recommend:** record both as explicit debts Chapter 6 now owes Chapter 7 — the Voyage Ahead must end on the scheduler gap, and §7 must plant the DaemonSet-tolerations tease — and add them to `ch-06/outline.md` § *What this chapter owes forward* before the re-run. Otherwise Chapter 7 ships two callbacks to sentences nobody wrote. Re-verify §1 and §7 numbering after the harvest.
+`chapter-06-fleets-not-vessels.md:965` reads:
 
-### Finding 2 — Chapter 2's inbound pointer is still partially wrong (author decision)
+> `*[cross-bearing: see Ch 7 §5 — a DaemonSet's Pods still go through scheduling, and taints are how a node opts out]*`
 
-`chapter-02:807` reads *[cross-bearing: see Ch 7 §3 — node selection, tolerations, and accounting for overhead]*. Those three topics land in **§3, §4 and §2** respectively. Confirmed against shipped text.
+Chapter 7 §5 is *Placing Pods Relative to Each Other* (inter-Pod affinity, topology spread). Taints are **§4**; "DaemonSet Pods still go through scheduling" is **§6**. Chapter 6 gets it right seventy lines earlier — L894 points at "Ch 7 §4 — taints, tolerations, and the fence DaemonSets step over" — so the file contains two pointers to the same topic, one correct and one not.
 
-The draft's own `AUTHOR-REVIEW` at L1121 flags this and correctly declines to edit shipped Chapter 2 from inside Chapter 7. The outline's recommendation stands and I endorse it: **delete the `§3` token**, making it `*[cross-bearing: see Ch 7 — node selection, tolerations, and accounting for overhead]*`. That matches the two other Chapter 7 inbound pointers (`chapter-03:417`, `chapter-04:688`), both already unnumbered. One-token edit in shipped text; needs author sign-off because it touches a committed chapter.
+**Recommended fix:** change `§5` → `§4` at ch06:965, matching its own L894. One token. Not actionable from inside this chapter — flagging for author decision, same class as the ch-02 item below.
 
-### Finding 3 — Chapter 3 published a six-item list that Chapter 7 never closes
+**Also soft:** `chapter-06:430` points at "Ch 7 §1 — the Pod this loop just created still has to be placed on a node, **and sometimes it can't be**." §1 covers the placement; the "can't be" half is §2. `§1–§2` or `§2` would be exact. Low severity; the reader lands one section early and reads forward.
 
-`chapter-03:413` gives the reader, verbatim from the docs:
+### ⚑ Finding C2 — two of the draft's own AUTHOR-REVIEW comments are now stale
 
-> Factors taken into account for scheduling decisions include individual and collective resource requirements, hardware/software/policy constraints, affinity and anti-affinity specifications, **data locality**, **inter-workload interference**, and **deadlines**.
+Both are at the foot of the file and both assert facts that changed today:
 
-Chapter 7 is the chapter that owes the detail. It delivers resource requirements, policy constraints, and affinity/anti-affinity. It never mentions data locality, inter-workload interference, or deadlines — not even to place them out of scope. Curriculum-alignment flagged this as coverage (D1.3-09, PARTIAL); the *integration* cost is that a reader who remembers Chapter 3's list gets no acknowledgement that three items were dropped.
+- **L1141** (outline Open Question #1) says `chapter-02` line 807 carries `*[cross-bearing: see Ch 7 §3 — …]*` and recommends deleting the `§3`. **That fix has already been applied upstream.** ch02:807 now reads `*[cross-bearing: see Ch 7 — node selection, tolerations, and accounting for overhead]*`. The comment should be deleted, and with it the stale quoted `§3` pointer it contains (which is otherwise the only wrong Chapter-7 section number in the file).
+- **L1143** (outline Open Question #11) says "chapter-06's shipped file is incomplete and its final numbering is not verifiable" and "Book-KCNA currently ships chapters 01–05 only." Both are false as of 15:01 today. Chapter 6 ships complete, and **both** back-bearings verify against its real headings (§1 *The Resource That Holds the Intent*; §7 *One Per Node, and Work That Ends*). Replace with a one-line "verified 2026-08-24 against shipped ch-06" or delete.
 
-Not a contradiction, and not an argument for teaching them. But the chapter already models the right fix twice — the preemption clause (*"Register that they exist so that nothing in this chapter reads as a lie later"*) and the `minDomains` mention. **Recommend one sentence in §2 or §7** doing the same for the remaining three factors.
+Leaving these in ships a note telling the author to fix something already fixed, and telling them Chapter 6 doesn't exist.
 
 ---
 
 ## Retrieval-practice accuracy
 
-| Question | Tag | Topic | Target verified |
-|---|---|---|---|
-| ☆ Bearings #1 Q3 | `[retrieval: ch5]` | request vs limit; which component reads which | ✅ `chapter-05:872` — the two-words/two-components table and its ★ Fixed Point |
-| ☆ Bearings #1 Q5 | `[retrieval: ch6]` | ReplicaSet creates a Pod that can't be placed | ⚠ Ch 6 §1 (unshipped). Contract exists: `ch-06/outline.md` owes-forward names *"Workload resources create Pods → Ch 7 (**named anchor** — the controller that produced the unscheduled Pod)"* |
-| ☆ Bearings #2 Q1 | `[retrieval: ch4]` | selector direction inverts for node selection | ✅ `chapter-04:630` §5, and `:688` explicitly names node scheduling constraints as a selector use |
-| Practice Q5 | `[retrieval: ch5]` | scheduled once, never rescheduled | ✅ `chapter-05:531–533` |
-| Practice Q6 | `[retrieval: ch3]` | scheduler records; kubelet starts | ✅ `chapter-03:415`, near-verbatim |
-| Practice Q12 | `[retrieval: ch4]` | set-based operators `in`, `notin`, `exists` | ✅ `chapter-04:656`. Casing matches Chapter 4 exactly, and the contrast with affinity's capitalized enum is handled correctly |
-| Practice Q15 | `[retrieval: ch6]` | DaemonSet one-per-node needs no anti-affinity | ⚠ Ch 6 §7 (unshipped). `ch-06/outline.md:498` plans exactly this, incl. the "not a replica count" trap |
+Seven tagged items. All seven verified against shipped text. **Pass.**
 
-**Verdict: pass.** Five verified against shipped text, two against Chapter 6's planned content with explicit outline contracts on both sides. Spacing is 21.9% against a 20% target (question-quality). No misaligned tags.
+| Item | Tag | Question topic | Verified against | Verdict |
+|---|---|---|---|---|
+| ☆ Bearings #1 Q3 | `ch5` | request vs limit — which the scheduler reads | ch05 §8 (L864–L974); L969 states the scheduler/filtering half explicitly | ✅ |
+| ☆ Bearings #1 Q5 | `ch6` | ReplicaSet creates the third Pod; nowhere to put it | ch06 §2 *A Loop You Can Watch Working* (L376); L430 carries the reciprocal pointer for exactly this scenario | ✅ |
+| ☆ Bearings #2 Q1 | `ch4` | direction inversion of the label selector | ch04 §5 L776, L834 (four uses, node constraints among them) | ✅ |
+| Practice Q5 | `ch5` | a better node appears — Pod does not move | ch05 §4 *Scheduled Once, Replaced Never* | ✅ (correctly re-tests the ch05 rule under a *new* motivation — opportunity rather than failure) |
+| Practice Q6 | `ch3` | scheduler records / kubelet acts | ch03 §2 L415, and ch03's own TYB1 Q4 (L701) grades the same split | ✅ |
+| Practice Q12 | `ch4` | set-based operators | ch04 L804 gives `in`, `notin`, `exists` (+ negation) in lowercase; Q12 correctly contrasts them with node affinity's capitalized `In`/`NotIn`/`Exists`/`DoesNotExist` + `Gt`/`Lt` | ✅ |
+| Practice Q15 | `ch6` | DaemonSet spreads without a spread constraint | ch06 §7 L878 | ✅ (a discrimination item, not just recall — "the Pods end up spread out" ≠ "a spreading constraint was enforced") |
 
-One sub-item, low priority: the Soundings preamble says *"Three of them ask you to retrieve something specific from Chapters 5 and 6"* (Q3, Q4, Q6), but the 0–2 rubric sends the reader only to *"Chapter 5 §8 and Chapter 5 §4."* Q6's ReplicaSet framing is Chapter 6's. As it happens `chapter-05:551–557` does cover "something outside it has to know that three replicas were wanted… and create a third," so the rubric is not wrong — just narrower than the preamble. Add Ch 6 §1 to the rubric, or drop "and 6" from the preamble.
+**Spacing.** 33 graded items (15 Bearings + 18 Practice); 7 tagged = **21%**, inside B3's 20–25% band for Ch 7. Sources reach back to Ch 3, 4, 5 and 6 — four distinct chapters, furthest four back. B3's "≥4 chapters back" floor doesn't bind until Ch 8 but is met anyway. Soundings are correctly excluded from the budget (B3 decision #2) while still doing retrieval work — Q3, Q4 and Q6 draw on Ch 5 and Ch 6, which is exactly the design.
+
+Header claims audited and all accurate: Bearings #1 "two of them reach back" (2) ✅; Bearings #2 "one reaches back to Chapter 4" (1) ✅; Practice "four reach back" (4) ✅; Soundings "three of them ask you to retrieve something specific from Chapters 5 and 6" (3) ✅.
+
+**⚑ Finding R1 — the Soundings remediation pointer omits Chapter 6 (minor).** The 0–2 rubric reads: *"If questions 3, 4 and 6 were among your misses, go back and re-read Chapter 5 §8 and Chapter 5 §4 first."* Q3 → ch05 §8 ✅, Q4 → ch05 §4 ✅, but **Q6 is the ReplicaSet-loop question and its home is Chapter 6 §2**, which the rubric never names. A reader who missed Q6 is sent to two Chapter 5 sections that don't contain the answer. Fix: add "and Chapter 6 §2", or drop Q6 from the enumeration.
+
+**⚑ Note (not a defect, for the author's file).** `.pipeline-state/book-outline/retrieval-architecture.md` is not the B3 document — it is a permission-failure message plus a summary of what B3 concluded. The per-chapter retrieval schedule was never written to disk. I audited against the surviving summary (spacing targets, the three structural decisions, the four never-retrieve items), which was sufficient for this chapter, but Ch 8's "≥4 chapters back" floor has no artifact to check against.
 
 ---
 
 ## Glossary coverage
 
-All 44 `kb_tags.concepts` appear in the draft (confirmed by curriculum-alignment). Tabling only the ones with a definition question — the other 35 are defined in-chapter at recognition depth and need no separate entry.
+60 concepts and commands introduced or first used in this chapter; 49 defined in-chapter; **11 carry an open definitional gap and need glossary entries.**
+
+This answers Stage 13's question, which is narrower than the book glossary's. The Stage 12 manifest contributed 56 rows for this chapter under skill Part 16 ("all technical terms introduced in the book," 100-term floor). The two counts are not in conflict — the manifest catalogues everything; this table lists only what a reader could be graded on without ever having been told what it means.
+
+### §1 — the decision
 
 | Concept/command introduced | Defined in-chapter? | Needs glossary entry? |
 |---|---|---|
-| `node-capacity` (**Capacity**) | no — named alongside Allocatable, then deferred: *"What exactly, and how it's configured, is Chapter 8's material"* | **yes** |
-| `node-allocatable` (**Allocatable**) | yes — defined by quotation | no |
-| `pod-overhead` | partial — existence and purpose only; the `AUTHOR-REVIEW` at §2 states the mechanism is deliberately withheld for lack of a snapshot | **yes** |
-| `scheduler-plugins` (`QueueSort`, `Reserve`, `Permit`) | no — listed as stage names, never defined | **yes** (or accept as list-only) |
-| `custom-scheduler` / `schedulerName` | minimal — *"you can write your own scheduling component"* | **yes** |
-| PriorityClass / preemption | no — one clause, explicitly scoped out | **yes** — named terms should be findable |
-| `OutOfmemory` / `OutOfcpu` | no — cited as failure reasons | **yes** |
-| ResourceQuota, LimitRange | no — named, deferred to Ch 8 | **yes** (Ch 8 owns the definition) |
-| NodeRestriction admission plugin | no — named, deferred to Ch 8 | **yes** (Ch 8 owns the definition) |
-| `minDomains` | yes | no |
-| Predicates / Priorities | yes — defined as older names for filtering/scoring | no |
-| `topologyKey`, `maxSkew`, `whenUnsatisfiable`, `labelSelector` | yes — four-field table | no |
-| taint, toleration, `NoSchedule`, `PreferNoSchedule`, `NoExecute`, `tolerationSeconds`, taint matching, built-in condition taints | yes | no |
-| `nodeSelector`, node affinity, the six operators, `…DuringScheduling…DuringExecution`, `nodeName` | yes | no |
-| filtering, scoring, binding, feasible node, `PodFitsResources`, random tie-break, unschedulable, `Pending` | yes | no |
-| `kubectl get nodes`, `kubectl label`, `kubectl taint` | yes — shown with argument syntax, incl. the trailing-minus removal form | no |
+| feasible node | yes | no |
+| filtering (step 1) | yes | no |
+| scoring (step 2) | yes | no |
+| binding | yes (and made concrete at §6 as writing `.spec.nodeName`) | no |
+| random tie-break | yes | no |
+| data locality | **no — named in the factors list only** | **yes** |
+| inter-workload interference | **no — named only** | **yes** |
+| deadlines (as a scheduling factor) | named only; self-explanatory | no |
 
-**Count: 44 introduced, 35 defined in-chapter, 9 require glossary entries.**
+### §2 — feasibility
 
-Reused-not-reintroduced (correctly assume prior definition, no ch7 glossary obligation): Pod, node, kubelet, kube-scheduler, control plane, API server, label, label selector, ReplicaSet, Deployment, DaemonSet, requests, limits, QoS class, UID, RuntimeClass.
+| Concept/command introduced | Defined in-chapter? | Needs glossary entry? |
+|---|---|---|
+| `PodFitsResources` | yes | no |
+| request-as-booking (reservation semantics) | yes | no |
+| `Allocatable` | yes (quoted definition) | no — already in the KB block |
+| node `Capacity` | **no — named beside Allocatable; relationship deferred to Ch 8** | **yes** |
+| Pod overhead | **partial — existence stated, mechanism deliberately withheld (snapshot-limited)** | **yes** |
+| preemption | yes (minimal but serviceable) | no |
+| `PriorityClass` | **no — named as the configuring object only** | **yes — see G4** |
+| `ResourceQuota` / `LimitRange` | no — explicitly deferred | no (Ch 8 owns them) |
+| `Pending` as a scheduling state | inherited from ch05 §5, reinforced here | no |
 
-One note for stage 14: `kubectl get nodes --show-labels`, `kubectl label nodes`, and both `kubectl taint` forms are the first full command lines in the chapter. Outline OQ#10 recommended *command names freely, command lines not at all* unless a fetch supplied them — `k8s-docs-assign-pods-nodes-task-2026-08-24` and `k8s-docs-taints-tolerations-depth-2026-08-24` did land, and the draft tags both. Compliant; recorded so the ch-08 command-surface work knows these three already shipped.
+### §3 — asking
+
+| Concept/command introduced | Defined in-chapter? | Needs glossary entry? |
+|---|---|---|
+| node labels | yes | no |
+| well-known labels (`kubernetes.io/hostname`, `/os`, `/arch`) | yes | no |
+| `topology.kubernetes.io/zone` and `/region` | yes (incl. the "may be absent without a cloud provider" caveat) | no |
+| `kubectl get nodes --show-labels` | yes | no |
+| `kubectl label nodes` | yes | no |
+| NodeRestriction admission plugin | **partial — behaviour stated, "admission plugin" as a category undefined until Ch 8** | **yes** |
+| `nodeSelector` | yes | no |
+| node affinity | yes | no |
+| `requiredDuringSchedulingIgnoredDuringExecution` | yes | no |
+| `preferredDuringSchedulingIgnoredDuringExecution` | yes | no |
+| affinity operators `In` / `NotIn` / `Exists` / `DoesNotExist` / `Gt` / `Lt` | yes | no |
+| affinity `weight` | partial (function stated; arithmetic explicitly out of scope) | no |
+| `nodeSelectorTerms` OR / `matchExpressions` AND | yes | no |
+
+### §4 — refusing
+
+| Concept/command introduced | Defined in-chapter? | Needs glossary entry? |
+|---|---|---|
+| taint | yes | no |
+| toleration | yes | no |
+| `kubectl taint` (add, and remove via trailing `-`) | yes | no |
+| `NoSchedule` | yes | no |
+| `PreferNoSchedule` | yes | no |
+| `NoExecute` | yes | no |
+| `tolerationSeconds` | yes | no |
+| toleration matching (`Equal` / `Exists`, empty-key and empty-effect wildcards) | yes (Dead Reckoning block + table) | no |
+| built-in node-condition taints (7 keys) | yes (table) | no |
+| `node.cloudprovider.kubernetes.io/uninitialized` | partial — trigger stated, effect not | **yes** |
+| node controller / node lifecycle controller | **no — two names used, neither defined, and ch03 uses a third casing** | **yes — see T2** |
+| DaemonSet automatic tolerations | yes | no |
+
+### §5 — relative placement
+
+| Concept/command introduced | Defined in-chapter? | Needs glossary entry? |
+|---|---|---|
+| inter-Pod affinity | yes | no |
+| inter-Pod anti-affinity | yes | no |
+| topology domain | yes | no |
+| `topologyKey` | yes | no |
+| topology spread constraints | yes | no |
+| `maxSkew` | yes | no |
+| `whenUnsatisfiable` (`DoNotSchedule` / `ScheduleAnyway`) | yes | no |
+| `labelSelector` (spread-constraint field) | yes | no |
+
+### §6 — opting out
+
+| Concept/command introduced | Defined in-chapter? | Needs glossary entry? |
+|---|---|---|
+| `nodeName` | yes | no |
+| `OutOfmemory` / `OutOfcpu` | **no — named as failure reasons only** | **yes — see G10** |
+| `schedulerName` / custom scheduler | partial — function stated, nothing more | **yes** |
+| Scheduling Policies | yes | no |
+| Predicates | yes | no |
+| Priorities | yes | no |
+| Scheduling Profiles | partial | no |
+| profile plugin stages `QueueSort` / `Reserve` / `Permit` | **no — named in a list; only `Filter`, `Score` and `Bind` are explained** | **yes** |
+
+### Two of the eleven are worth escalating
+
+**G4 — `PriorityClass` and preemption have no home anywhere in the book.** §2 names both, states preemption's effect, and correctly declares them out of scope "so that nothing in this chapter reads as a lie later." But `priorityclass` and `preempt` return **zero** hits across ch01–ch06 *and zero across `chapter-lineup.md`*. No chapter owns them. Unless Stage 14 gives `PriorityClass` a glossary entry, the reader meets a named Kubernetes object that the book never defines. Recommend a glossary row; the author may also want to decide whether Ch 8 should pick it up.
+
+**G10 — `OutOfmemory` will be confused with `OOMKilled`, and the book never disambiguates.** §6 says a `nodeName` Pod that doesn't fit "will fail and its reason will indicate why, for example `OutOfmemory` or `OutOfcpu`." Chapter 13's lineup entry covers `OOMKilled` and `Evicted` — but not `OutOfmemory`. These are different things (a scheduling-admission failure vs a runtime kill), they read almost identically, and ch05 already taught the runtime one. A glossary row that states the contrast in one clause pre-empts a confusion the book is otherwise setting up.
+
+---
+
+## Contradictions with earlier canon
+
+**None found.** Two near-misses, both checked in full and both benign:
+
+**1. "A request is a floor, not a ceiling" (ch05 L884) vs "a request is a booking" (§2).** ch05 says exceeding your request on a node with spare capacity is normal expected behavior. §2 says the request is spent the moment it is granted. Both are true and they describe different actors — the kubelet's runtime tolerance versus the scheduler's accounting — and §2 resolves the tension explicitly with "A node can be busy and empty at the same time, and only one of those two states is the scheduler's business." No contradiction.
+
+*Optional improvement:* §2 never back-references ch05's actual sentence, which is the one that defuses this on sight — and ch05 ends that same paragraph with "**One number gets you a berth. The other keeps you inside it,**" which plants this chapter's title metaphor six sections early. A half-clause callback would collect a payoff that's already sitting there.
+
+**2. `Node controller` (ch03 L421) vs `node controller` / `node lifecycle controller` (§4).** Naming, not substance. Covered at T2 and G7.
+
+**A note on §7's closing paragraph.** It calls the scheduler "the same shape as every controller in Chapter 6." Verified: ch06 §2 (*A Loop You Can Watch Working*) and ch06 §8 (*The Control Loop, Extended*) both cover it, so the reference is now correct — the Stage 12 manifest's objection to it was based on Chapter 6 being withdrawn, which is no longer true. What remains is that the sentence carries **no cross-bearing at all**, and the loop is *defined* at ch03 §6 (*Controllers and the Control Loop*). One bracketed insertion pointing at Ch 3 §6 (or at both) would close the book's strongest recurring theme at its cleanest instance.
 
 ---
 
 ## Ethical guardrails check
 
-- [x] **No fabricated statistics or claims** — the chapter contains no statistics at all. The Logbook Entry's "two hundred nodes, eight of which are GPUs" is explicit scenario framing, not asserted data. (Fact-accuracy owns the 6 untagged-claim FAILs; not re-audited here per rule 3.)
-- [x] **Fear-based content uses real examples** — no fear framing. Consequences described are practitioner-experience ("the run is slow"), never third-party harm. **Subject-dignity guardrail (skill v5.7 Part 14): pass** — every wry beat is aimed at practitioners, including "being wrong first is exactly why this will stick" and "the answers a competent engineer would design."
-- [x] **Simplification acknowledged** — §4's matching rules use a `— Dead Reckoning` block. Three explicit uncertainty signals, all well-formed: the preemption clause (*"Register that they exist so that nothing in this chapter reads as a lie later"*), the §5 spread-constraint limitation (*"no guarantee that the constraints remain satisfied when Pods are removed"*), and §6's `PodFitsResources`-is-an-example 🔭 Closer Look. This is the chapter's strongest guardrail performance.
-- [x] **Authority claims cite legitimate sources** — 146 inline `[source:]` tags across 16 snapshots, all resolving to cached files. Zero unresolvable tags.
-- [~] **"Frequently tested" claims verifiable** — no exam-frequency claims. There are four unhedged superlatives about *candidate error* frequency: L285 *"the single most common misconception about the scheduler,"* L439 *"the most common real-world mistake in this material,"* L898 *"The most durable error in this material,"* L1044 *"the most common misconception about this component."* The skill's Voice Alignment section sanctions this register, but its example hedges (*"Common confusion: many candidates mix up…"*). The shipped corpus contains **zero** instances of this phrasing. **Advisory, not a fail** — soften one or two to "a common" and the register matches both the skill and the corpus.
-- [ ] **No strawmanning of alternative study methods — FAIL**
+- [x] **No fabricated statistics or claims** — every factual claim carries a `[source: …]` tag; the fact-accuracy stage's four flagged items are all discharged in this draft (verified: no residue of "never consults observed usage," "spoken for by things that aren't Pods," or the untagged `unschedulable` causal claim). The ~5% exam share is disclosed on the metadata line as an authored allocation, not a published CNCF weight, matching ch02/ch05. The 44% domain weight checks against `cncf-kcna-curriculum-pdf-2026-08-23.md:13`.
+- [x] **Fear-based content uses real examples** — the GPU Logbook Entry is presented as a generic composite ("A platform team buys eight GPU nodes"), attributed to nobody, and contains no invented statistic. It illustrates a mechanism rather than manufacturing dread.
+- [x] **Simplification acknowledged** — §2 names preemption and priority as real and out of scope "so that nothing in this chapter reads as a lie later"; the 🔭 Closer Look flags `PodFitsResources` as *an example* filter rather than the only one; §1 names the three factors the chapter can't teach; the toleration-matching rules get a Dead Reckoning block where the metaphor runs out. This guardrail is handled unusually well.
+- [x] **Authority claims cite legitimate sources** — kubernetes.io and CNCF snapshots throughout; no appeals to unnamed authority.
+- [x] **"Frequently tested" claims verifiable** — the chapter makes no claim about published exam frequency, question count, or pass mark (B3's never-retrieve list). Its emphasis claims are framed as authored judgment ("in my judgement, the densest fifteen minutes"; "exactly the shape a recognition exam tends to ask about"), which is the honest form.
+- [ ] **No strawmanning of alternative study methods** — **FAIL. See E1.**
 
-### Guardrail #3 violation, L1113 (🏆 Safe Harbor)
+### ⚑ Finding E1 — the one ethical failure, unchanged since draft-v1
+
+🏆 Safe Harbor, L1130:
 
 > "Scheduling is the material that **most study guides present as a catalogue of six unrelated features**, and you have it as one pipeline with two slots."
 
-This is an unsourced negative claim about competitors' pedagogy, in service of a favorable comparison to this book. Skill Part 14 guardrail #3 is *"NEVER strawman alternative study methods,"* and the Part 14 table marks the Social Proof analogue ("Everyone uses our guide") as the manipulative column.
+This is an unsourced empirical claim about competing books, deployed to flatter this one. Skill Part 14 guardrail #3 is "NEVER strawman alternative study methods," and guardrail #1 forbids creating false beliefs.
 
-The nearest corpus precedent is `chapter-01:200` — *"Now a disclosure most study guides skip"* — which is materially different: it claims competitors **omit** something and then supplies it, rather than claiming they **teach it badly**. Chapter 7's version is the only instance of its kind in the book.
+It also breaks the standard **this book has already set for itself.** Chapter 1 L286–L290 handles competing material and does it exactly right: "Some of it is excellent," followed by a *verifiable, mechanical test* the reader can run in fifteen seconds ("count the domains"), followed by "That doesn't make its facts wrong." That's the register. The Safe Harbor line abandons it for a comparative claim nobody can check.
 
-**Recommend** rewriting to make the claim about the material rather than about other publishers, which loses nothing and is also just truer:
+**Fix, preserving the whole payoff:**
 
-> "Scheduling is easy to meet as a catalogue of six unrelated features, and you have it as one pipeline with two slots."
+> "Scheduling is easy to meet as a catalogue of six unrelated features. You have it as one pipeline with two slots."
+
+Same rhetorical beat, no claim about anyone else's book. One sentence.
+
+### One borderline item, not scored as a failure
+
+§7's core synthesis — hard rules filter, soft rules score — is stated to the reader flatly, and the chapter's own AUTHOR-REVIEW at L869 records that no cached snapshot assigns any individual mechanism to a named scheduler stage. The author has already made this call knowingly, documented the gap, and named the one fetch that would close it (`kubernetes.io/docs/reference/scheduling/config/`), so I'm not re-litigating it under guardrail #4. Worth noting only that §5's 🔭 Closer Look models the honest form in the same chapter — "The explanation below is mine rather than theirs" — and §7 could carry the same three words at negligible cost.
 
 ---
 
 ## Recommended fixes
 
-Diagnostics that revision did **not** address are listed in Finding 0 and are not repeated here. These are integration-scope items the diagnostics did not raise.
+Ordered by whether the chapter should ship without them.
 
-**Blocking — author decision required**
+**Fix before ship**
 
-1. **Chapter 6 dependencies (Finding 1).** Record the §1-opening and §4-DaemonSet callbacks as explicit debts in `ch-06/outline.md` § *What this chapter owes forward* before the harvest re-run, then re-verify the §1/§7 numbering. Without this, two Chapter 7 callbacks assert sentences that may not survive the re-draft.
-2. **`chapter-02:807` (Finding 2).** Delete the `§3` token. One-token edit to shipped text; endorsed, but it touches a committed chapter.
+1. **E1 — the Safe Harbor strawman.** One-sentence replacement supplied above. This is the only hard ethical failure and it has now survived two integration gates.
+2. **T1 — British spellings.** 23 prose instances against a uniformly American six-chapter corpus. Priority within it: L568's `licence` (sits beside the `license=cad` taint key) and L1016/L1076 (spell a quoted doc sentence differently from §5's own table). Use a Python script, not the Edit tool.
+3. **C2 — the two stale AUTHOR-REVIEW comments (L1141, L1143).** Both assert facts that changed today; L1141 additionally carries the only wrong Chapter-7 section number left in the file, inside its quotation of a pointer that no longer exists. Delete or restamp.
 
-**Should fix before the knowledge-base update**
+**Author decision — not fixable from inside this chapter**
 
-3. **Guardrail #3 violation at L1113.** Rewrite as above. This is the only ethical FAIL and the fix is one clause.
-4. **British spellings, 15 instances.** Mechanical sweep to house American forms. L113 (What You'll Learn) and L1042 (graded answer) are the visible ones.
-5. **Chapter 3's six scheduling factors (Finding 3).** One sentence acknowledging data locality, inter-workload interference, and deadlines as out of scope. The chapter already does this correctly for preemption; copy that move.
+4. **C1 — `chapter-06:965` points at "Ch 7 §5" for taints.** Should be `§4`, matching ch06's own L894. One token, in a shipped file.
+5. **The `Ch 12 — workload isolation` forward pointer** has no matching item in Chapter 12's scope. Add it to Ch 12, or retarget (Ch 8 is closer).
+6. **G4 — `PriorityClass` has no owner** anywhere in the book or the lineup. Glossary row at minimum; possibly a line in Ch 8.
 
-**Low priority**
+**Cheap improvements, take or leave**
 
-6. `inter-Pod` casing at L628 and L796 (leave L673, it's a verbatim quote).
-7. Soundings preamble says "Chapters 5 and 6"; the 0–2 rubric names only Chapter 5. Add Ch 6 §1 to the rubric or drop "and 6."
-8. §1 introduces binding as *"not what most people assume"* — `chapter-03:415` already told the reader exactly what binding is, and the ch-07 outline instructed §1 to *"collect it rather than re-argue it."* The Exam Alert handles the callback correctly; §1's framing slightly wastes the reader's prior knowledge.
-9. §7's *"the same shape as every controller in Chapter 6"* carries no cross-bearing. `chapter-03:750` §6 is where the control loop was first taught; a pointer there would strengthen the Zenith.
+7. **R1** — add "and Chapter 6 §2" to the Soundings 0–2 rubric so Q6's remediation points somewhere that contains the answer.
+8. **G10** — one clause distinguishing `OutOfmemory` (scheduling admission) from ch05's `OOMKilled` (runtime kill), before Chapter 13 inherits the confusion.
+9. **§7's control-loop sentence** — add a cross-bearing. `Ch 3 §6` is where the loop is defined; `Ch 6 §2` is where the reader watched it work. Either or both.
+10. **T2 / G7** — one clause saying the node lifecycle controller is the Chapter 3 Node controller, or a glossary row that does it.
+11. **§2's request-as-booking passage** — a half-clause back to ch05's "a request is a floor, not a ceiling… one number gets you a berth" collects a metaphor ch05 planted for this chapter and pre-empts the only apparent contradiction in the pair.
+12. **T3** — normalize `pod affinity` → `Pod affinity` in prose, leaving verbatim doc quotes alone.
 
-**Pipeline (not chapter content)**
+**Confirmed already addressed — no action**
 
-10. `context_packer.py:216` `draft_voice → draft-voice.md` is stale after `apply_voice_swap()`. Three of four diagnostics opened by recovering from this by hand.
-11. `draft-v2-prevoice.md` is 68 lines against 1,122 expected — truncated artifact.
+The four fact-accuracy items from the previous gate (the unsourced absolute negative; the untagged Capacity/Allocatable relationship; the untagged `unschedulable` causal claim; the metadata-line house form), the Scheduling-Policies currency question (closed by the research stage and marked do-not-reopen), the Chapter 3 six-factors promise (paid in §1), and the entire Chapter 6 verification debt (discharged by ch-06 shipping — both back-bearings verified).
 ```
-
-**The headline for you:** the chapter's integration is genuinely good — all seven verifiable back-bearings are correct, two of them exact to a counted list and a figure ID, and retrieval spacing is clean. But two things need your call before this passes: **the revision stage shipped punctuation changes and nothing else**, so every diagnostic finding is still open; and **Chapter 6 has been withdrawn from the repo**, while Chapter 7 asserts twice what Chapter 6 *said*.

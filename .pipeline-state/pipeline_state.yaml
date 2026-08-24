@@ -146,3 +146,139 @@ chapters:
         model_id: opus
         prompt_tokens_est: 44260
         duration_seconds: 445.14776150000034
+  2:
+    number: 2
+    current_stage: 13
+    pending_gate: null
+    adopted_from: null
+    stages:
+      1:
+        status: completed
+        started_at: '2026-08-24T04:42:43+00:00'
+        completed_at: '2026-08-24T04:52:21+00:00'
+        output_path: C:\dev\lodestar\certcomp\..\Book-KCNA\.pipeline-state\ch-02\outline.md
+        gate_cleared: false
+        error: null
+        model_id: opus
+        prompt_tokens_est: 37286
+        duration_seconds: 577.9502600000014
+      2:
+        status: completed
+        started_at: '2026-08-24T04:52:22+00:00'
+        completed_at: '2026-08-24T05:07:22+00:00'
+        output_path: C:\dev\lodestar\certcomp\..\Book-KCNA\.pipeline-state\ch-02\research-manifest.md
+        gate_cleared: false
+        error: null
+        model_id: opus
+        prompt_tokens_est: 16671
+        duration_seconds: 900.4263852999975
+      3:
+        status: completed
+        started_at: '2026-08-24T05:18:19+00:00'
+        completed_at: '2026-08-24T05:34:45+00:00'
+        output_path: C:\dev\lodestar\certcomp\..\Book-KCNA\.pipeline-state\ch-02\draft-v1.md
+        gate_cleared: false
+        error: null
+        model_id: opus
+        prompt_tokens_est: 109225
+        duration_seconds: 986.5748337000005
+      4:
+        status: completed
+        started_at: '2026-08-24T05:34:46+00:00'
+        completed_at: '2026-08-24T05:41:51+00:00'
+        output_path: C:\dev\lodestar\certcomp\..\Book-KCNA\.pipeline-state\ch-02\draft-v1.md
+        gate_cleared: false
+        error: null
+        model_id: opus
+        prompt_tokens_est: 37275
+        duration_seconds: 424.8866655999991
+      5:
+        status: completed
+        started_at: '2026-08-24T05:41:51+00:00'
+        completed_at: '2026-08-24T05:41:51+00:00'
+        output_path: C:\dev\lodestar\certcomp\..\Book-KCNA\.pipeline-state\ch-02\diagnostics\structural.md
+        gate_cleared: false
+        error: null
+        model_id: null
+        prompt_tokens_est: null
+        duration_seconds: 0.28680660000100033
+      6:
+        status: completed
+        started_at: '2026-08-24T05:41:51+00:00'
+        completed_at: '2026-08-24T05:53:17+00:00'
+        output_path: C:\dev\lodestar\certcomp\..\Book-KCNA\.pipeline-state\ch-02\diagnostics\fact-accuracy.md
+        gate_cleared: false
+        error: null
+        model_id: opus
+        prompt_tokens_est: 55413
+        duration_seconds: 685.5847539000024
+      7:
+        status: completed
+        started_at: '2026-08-24T05:41:51+00:00'
+        completed_at: '2026-08-24T05:47:31+00:00'
+        output_path: C:\dev\lodestar\certcomp\..\Book-KCNA\.pipeline-state\ch-02\diagnostics\curriculum-alignment.md
+        gate_cleared: false
+        error: null
+        model_id: opus
+        prompt_tokens_est: 70925
+        duration_seconds: 340.37828949999675
+      8:
+        status: completed
+        started_at: '2026-08-24T05:41:51+00:00'
+        completed_at: '2026-08-24T05:48:05+00:00'
+        output_path: C:\dev\lodestar\certcomp\..\Book-KCNA\.pipeline-state\ch-02\diagnostics\question-quality.md
+        gate_cleared: false
+        error: null
+        model_id: opus
+        prompt_tokens_est: 40575
+        duration_seconds: 373.95507120000184
+      9:
+        status: completed
+        started_at: '2026-08-24T05:41:51+00:00'
+        completed_at: '2026-08-24T05:53:08+00:00'
+        output_path: C:\dev\lodestar\certcomp\..\Book-KCNA\.pipeline-state\ch-02\diagnostics\theming-density.md
+        gate_cleared: false
+        error: null
+        model_id: opus
+        prompt_tokens_est: 9433
+        duration_seconds: 676.5362085000015
+      10:
+        status: completed
+        started_at: '2026-08-24T05:53:17+00:00'
+        completed_at: '2026-08-24T06:00:45+00:00'
+        output_path: C:\dev\lodestar\certcomp\..\Book-KCNA\.pipeline-state\ch-02\image-specs.md
+        gate_cleared: false
+        error: null
+        model_id: opus
+        prompt_tokens_est: 10253
+        duration_seconds: 448.14582860000155
+      11:
+        status: completed
+        started_at: '2026-08-24T06:00:46+00:00'
+        completed_at: '2026-08-24T06:09:41+00:00'
+        output_path: C:\dev\lodestar\certcomp\..\Book-KCNA\.pipeline-state\ch-02\draft-v2.md
+        gate_cleared: false
+        error: null
+        model_id: opus
+        prompt_tokens_est: 153165
+        duration_seconds: 534.9978072999984
+      12:
+        status: completed
+        started_at: '2026-08-24T06:09:41+00:00'
+        completed_at: '2026-08-24T06:17:44+00:00'
+        output_path: C:\dev\lodestar\certcomp\..\Book-KCNA\.pipeline-state\ch-02\draft-v2.md
+        gate_cleared: false
+        error: null
+        model_id: opus
+        prompt_tokens_est: 99664
+        duration_seconds: 482.75697070000024
+      13:
+        status: failed
+        started_at: '2026-08-24T06:17:45+00:00'
+        completed_at: '2026-08-24T06:27:50+00:00'
+        output_path: C:\dev\lodestar\certcomp\..\Book-KCNA\.pipeline-state\ch-02\integration.md
+        gate_cleared: false
+        error: 'claude CLI exited with code 1 on attempt 3. stderr: '
+        model_id: opus
+        prompt_tokens_est: 63700
+        duration_seconds: 605.193189900001

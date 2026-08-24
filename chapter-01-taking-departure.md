@@ -1,3 +1,87 @@
+---
+chapter: 1
+chapter_type: "orientation"
+title: "Taking Departure"
+subtitle: "Ninety minutes, four domains, and a curriculum that moved"
+exam_domain: "None — orientation chapter, no domain objectives"
+domain_weight_pct: 0
+complexity: "mixed"
+novelty: "moderate"
+prereq_factor: "light"
+
+# --- Section plan (no word budgets) ---
+# Length is content-driven. Arc-outline depth band for this chapter: "focused" —
+# an orientation chapter earns its keep by being short enough to actually read
+# before Chapter 2. That is a relative planning signal, NOT a target.
+sections:
+  - name: "What the KCNA Is, and Who It's For"
+    objectives: []
+    requires_figure: false
+    figure_anchor: null
+    checkpoint_after: false
+  - name: "Ninety Minutes: The Exam as Published"
+    objectives: []
+    requires_figure: false
+    figure_anchor: null
+    checkpoint_after: false
+  - name: "The Curriculum That Moved Under Everyone's Feet"
+    objectives: []
+    requires_figure: true
+    figure_anchor: "ch01-fig01-blueprint-change-2025"
+    checkpoint_after: true
+  - name: "The Phrase We Haven't Defined Yet"
+    objectives: []
+    requires_figure: false
+    figure_anchor: null
+    checkpoint_after: false
+  - name: "How This Book Is Built"
+    objectives: []
+    requires_figure: true
+    figure_anchor: "ch01-fig02-book-map-parts-to-domains"
+    checkpoint_after: false
+  - name: "Three Ways to Read This Book"
+    objectives: []
+    requires_figure: false
+    figure_anchor: null
+    checkpoint_after: true
+
+# --- Skill v5.3 Part 11: Soundings pre-chapter diagnostic ---
+soundings_planned:
+  question_count: 5
+  topics:
+    - "container-vs-virtual-machine intuition"
+    - "what Kubernetes is (orchestrator vs runtime)"
+    - "who governs Kubernetes (CNCF / Linux Foundation / vendor)"
+    - "what 'cloud native' is commonly assumed to mean"
+    - "prior exposure to declarative configuration tooling"
+
+# --- Skill v5.3 Part 8: practice-question budget (from B4 via arc-outline) ---
+question_budget:
+  soundings: 5
+  taking_your_bearings: 5              # across 2 checkpoints (3 + 2)
+  practice_questions: 0                # orientation type — exempt per structural contract
+  total_this_chapter: 10
+
+# --- Concept / objective / command tagging ---
+kb_tags:
+  objectives: []
+  concepts:
+    - "kcna-exam-format"
+    - "domain-weights-44-28-16-12"
+    - "blueprint-change-2025-11-24"
+    - "published-vs-commonly-reported"
+    - "cncf-certification-ladder"
+    - "cloud-native-framing"
+    - "branded-markers"
+    - "spaced-retrieval"
+    - "reading-paths"
+  commands: []
+
+figures_planned:
+  - "ch01-fig01-blueprint-change-2025"
+  - "ch01-fig02-book-map-parts-to-domains"
+---
+
 # Chapter 1: Taking Departure
 ## *"Ninety minutes, four domains, and a curriculum that moved"*
 

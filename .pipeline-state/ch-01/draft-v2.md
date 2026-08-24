@@ -95,7 +95,7 @@ The hands-on Kubernetes certifications, the ones that drop you into a live termi
 
 Let me be direct about what this book is not. It is **not a kubectl drill book.** There are commands in it, because you cannot understand a Service without seeing how one is described, but the commands are here to illuminate concepts, not to build reflexes. When you want the reflexes, and if you stay in this field you will, the Certified Kubernetes Administrator is the next voyage: a genuinely hands-on exam taken in a live terminal [source: lf-cloud-native-certification-catalog-2026-08-23]. Lodestar Ledgers publishes a guide for that one too.
 
-The wider certification family — the other associate-level exams, the specialist tracks, how they relate to one another — belongs in Chapter 17, alongside the ecosystem material it's part of. *[cross-bearing: see Ch 17 §4 — the cloud native certification landscape]*
+The wider certification family — the other associate-level exams, the specialist tracks, how they relate to one another — belongs in Chapter 17, alongside the ecosystem material it's part of. *[cross-bearing: see Ch 17 — the cloud native certification landscape]*
 
 ---
 
@@ -493,13 +493,13 @@ That's the whole job of an orientation chapter, and it's done.
 
 ## The Voyage Ahead
 
-Chapter 2 opens with a shipping container. An actual one: corrugated steel, standardized corner fittings, the sort that stacks by the thousand on a container ship.
+Chapter 2 ends where its title begins: with a shipping container. An actual one: corrugated steel, standardized corner fittings, the sort that stacks by the thousand on a container ship.
 
 That is not decoration, and it is not a metaphor chosen for the scenery. The intermodal shipping container changed global trade not by being a better box, but by being a box that cranes, truck beds, railcars, and ships' holds could all agree to handle identically. The contents stopped mattering to the infrastructure. That one decoupling, between what's inside and what moves it, is precisely what a software container does, and it's why Chapter 2 starts there rather than with a definition.
 
 <!-- AUTHOR-REVIEW: The intermodal-container history above is uncached and load-bearing for all of Chapter 2's opening. Cache an authority during Chapter 2's research pass — Levinson, *The Box*, or ISO 668 — and tag it there. The specific "stacks eight high" figure from the prior draft has been softened out pending that source. -->
 
-You'll get the definition too. But you'll get it after you can already see why it had to be that way.
+The definition comes first; the crate is the payoff. By the time it arrives, you'll already see why it had to be that way.
 
 44% of your exam begins on the next page.
 

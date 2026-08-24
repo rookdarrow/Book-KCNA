@@ -80,8 +80,8 @@ soundings_planned:
 question_budget:
   soundings: 8
   taking_your_bearings: 12             # across 3 checkpoints (4 + 4 + 4)
-  practice_questions: 25
-  total_this_chapter: 45
+  practice_questions: 27
+  total_this_chapter: 47
 
 # --- Concept / objective / command tagging ---
 kb_tags:
@@ -278,11 +278,11 @@ Virtualization lets you run multiple virtual machines on a single physical serve
 
 Containers are similar to VMs, but they have relaxed isolation properties in order to share the operating system among the applications, and *therefore* containers are considered lightweight. Similar to a VM, a container has its own filesystem, share of CPU, memory, process space, and more; because containers are decoupled from the underlying infrastructure, they are portable across clouds and OS distributions [source: k8s-docs-overview-2026-08-23].
 
-Two registers are in use here, and both are correct. The Kubernetes documentation and the CNCF glossary say a container **shares the operating system**. That is the phrasing the exam is likeliest to use, and the one to recognize on an answer sheet. Practitioners and the container-runtime documentation usually sharpen it: a container **shares the host's kernel**, meaning the part of the operating system that talks to hardware, schedules processes, and enforces boundaries. Everything above the kernel that the application needs, its libraries, its files, its view of the process table, comes from the container itself. That is why a container has its own filesystem and its own process space while still running on somebody else's kernel.
+Two registers are in use here, and both are correct. The Kubernetes documentation and the CNCF glossary say a container **shares the operating system** [source: cncf-glossary-container-2026-08-24]. That is, in the author's judgment, the phrasing an exam item is likeliest to echo, and the one to recognize on an answer sheet. Practitioners and the container-runtime documentation usually sharpen it: a container **shares the host's kernel**, meaning the part of the operating system that talks to hardware, schedules processes, and enforces boundaries. Everything above the kernel that the application needs, its libraries, its files, its view of the process table, comes from the container itself. That is why a container has its own filesystem and its own process space while still running on somebody else's kernel. [source: docker-docs-what-is-a-container-2026-08-24]
 
 The sharpening is not a stylistic preference; the mechanism only parses one way. Kubernetes describes a sandboxed alternative runtime as one that supplies "a user-space kernel (such as gVisor)" [source: k8s-docs-runtime-class-2026-08-23]. That phrase is only meaningful if the ordinary, non-sandboxed case is the *host's* kernel. Hold both registers: **operating system** as the published wording, **kernel** as the mechanism underneath it.
 
-<!-- AUTHOR-REVIEW: outline § Open questions #1, now resolved per research-manifest finding on the kernel/OS registers — both are authoritative, differing by speaker (CNCF glossary and k8s docs say "operating system"; Docker docs say "kernel"). This draft carries both in one passage, with the in-cache warrant from k8s-docs-runtime-class supplying the entailment. Two harvest items would make the sharpening directly citable rather than entailed: A13 (docker-docs-what-is-a-container: "they all share the same kernel"; "A VM is an entire operating system with its own kernel") and A14 (cncf-glossary-container: "share the same operating system and its machine resources"). Neither is on disk — see the Stage-2 note below. Once they land, tag this paragraph and DELETE Chapter 1's parallel AUTHOR-REVIEW at its line ~140 so the two chapters agree before the reconcile pass runs. -->
+<!-- RESOLVED 2026-08-24: A13/A14 landed in the ch-02 manifest harvest (docker-docs-what-is-a-container-2026-08-24, cncf-glossary-container-2026-08-24); both registers now carry direct tags above. Ch 1's parallel flag was resolved separately on 2026-08-24 (the A1 answer labels the sharpening as the book's own). No cross-chapter disagreement remains. -->
 
 <!-- AUTHOR-REVIEW — PIPELINE, not content. Stage 2 researched 17 new snapshots (A1–A17) for this chapter, embedded their full bodies with frontmatter in research-manifest.md Appendix A, and could not write them to disk. `../Book-KCNA/sources/` contains only the 87 snapshots dated 2026-08-23; nothing dated 2026-08-24 exists. Three audits independently traced this chapter's remaining sourcing gaps to that single failure. Recovery is mechanical extraction from the manifest — NO re-fetching is required. Affected claims are marked individually below with the specific Appendix A item that closes them. Chapter 1's Stage 2 hit the same condition, so this is a recurring executor fault worth fixing above the per-chapter level. -->
 
@@ -343,7 +343,7 @@ The payoff is concrete. Image immutability is exactly what makes quick and effic
 
 ### Layers
 
-An image is not a single opaque blob. The OCI Image Format encompasses the image manifest, **filesystem layer serialization**, and image configuration needed to launch applications on target platforms [source: oci-overview-2026-08-23]. In other words, the contents arrive as a set of filesystem layers, described by a manifest that names them, plus a configuration that says how to start the thing.
+An image is not a single opaque blob. The OCI Image Format encompasses the image manifest, **filesystem layer serialization**, and image configuration needed to launch applications on target platforms [source: oci-overview-2026-08-23]. In other words, the contents arrive as a set of filesystem layers, described by a manifest that names them, plus a configuration that says how to start the thing. (The image *manifest* here is an OCI artifact — a different thing from the Kubernetes manifests, the YAML files, you'll meet in Chapter 4 *[cross-bearing: see Ch 4 §2 — the anatomy of a record]*.)
 
 Three consequences follow from that structure, and all three matter downstream.
 
@@ -390,9 +390,9 @@ A **buildpack** is software that transforms application source code into runnabl
 >
 > <!-- AUTHOR-REVIEW: the closing sentence on base-image size is the ⚓ beat the outline originally planned for §2 and is currently unsourced. Harvest A11 ("None of the build tools required to build the application are included in the resulting image") and A12 ("A small image with minimal dependencies can considerably lower the attack surface"); A12 also supplies "you can pin the image version to a specific digest," which is the hinge sentence for the new integrative Practice Q26. Tag both, then delete this comment. -->
 
-> 🔭 **Closer Look:** The export phase produces *reproducible* layers [source: buildpacks-concepts-2026-08-23], meaning the same input reliably produces the same layer bytes rather than layers that differ run to run because of timestamps or file ordering. (That gloss on "reproducible" is the author's, not the specification's wording.) The property is deeper than the exam requires, but it's the hinge on which supply-chain verification swings: you cannot meaningfully attest to an artifact whose bytes change when nothing changed. *[cross-bearing: see Ch 12 §2 — signing, attestation, and the software supply chain]*
+> 🔭 **Closer Look:** The export phase produces *reproducible* layers [source: buildpacks-concepts-2026-08-23], meaning the same input reliably produces the same layer bytes rather than layers that differ run to run because of timestamps or file ordering. (That gloss on "reproducible" is the author's, not the specification's wording.) The property is deeper than the exam requires, but it's the hinge on which supply-chain verification swings: you cannot meaningfully attest to an artifact whose bytes change when nothing changed. *[cross-bearing: see Ch 12 — signing, attestation, and the software supply chain]*
 
-Supply-chain security, meaning scanning, signing, and bills of materials, is a real concern that attaches to everything in this section, and it is not this chapter's. It gets a full treatment later *[cross-bearing: see Ch 12 §1 — securing the image supply chain]*.
+Supply-chain security, meaning scanning, signing, and bills of materials, is a real concern that attaches to everything in this section, and it is not this chapter's. It gets a full treatment later *[cross-bearing: see Ch 12 — securing the image supply chain]*.
 
 ---
 
@@ -456,7 +456,7 @@ A registry is where images live between being built and being run. You push ther
 
 Private registries may require credentials to read images from them. Credentials can be supplied by: configuring nodes to authenticate to the private registry; a kubelet credential provider that fetches credentials dynamically; pre-pulled images; specifying `imagePullSecrets` on a Pod, which references a Secret of type `kubernetes.io/dockerconfigjson`; or vendor-specific and local extensions [source: k8s-docs-images-2026-08-23].
 
-Five paths, named and left there deliberately. The one most teams reach for, `imagePullSecrets`, requires understanding Secrets, which you do not have yet and which arrive with their own security caveats. *[cross-bearing: see Ch 4 §4 — Secrets, and the `dockerconfigjson` type]* Registry access is also a genuine security boundary rather than a convenience feature *[cross-bearing: see Ch 12 §3 — restricting who can pull what]*.
+Five paths, named and left there deliberately. The one most teams reach for, `imagePullSecrets`, requires understanding Secrets, which you do not have yet and which arrive with their own security caveats. *[cross-bearing: see Ch 4 §4 — Secrets, and the `dockerconfigjson` type]* Registry access is also a genuine security boundary rather than a convenience feature *[cross-bearing: see Ch 12 — restricting who can pull what]*.
 
 ---
 
@@ -595,9 +595,9 @@ Usually, you can allow your cluster to pick the default container runtime for a 
 
 ### The pattern to name now
 
-> ⚓ **Worth Securing:** Give this move a name in your head, because you are about to see it three more times: **Kubernetes defines an interface and lets the ecosystem implement it.** The published extension points include not just CRI for runtimes but CSI (the Container Storage Interface) for storage types and CNI (the Container Network Interface) for pod networking, alongside device plugins and API extensions [source: k8s-docs-extending-kubernetes-2026-08-23]. Four sockets, one design instinct. You are looking at the first.
+> ⚓ **Worth Securing:** Give this move a name in your head, because you are about to see it three more times: **Kubernetes defines an interface and lets the ecosystem implement it.** The published extension points include not just CRI for runtimes but CSI (the Container Storage Interface) for storage types and CNI (the Container Network Interface) for pod networking, alongside device plugins and API extensions [source: k8s-docs-extending-kubernetes-2026-08-23]. One design instinct behind all of them — and the four this book tracks as its canon (CRI, CNI, CSI, API extensions) are the sockets the exam cares about. You are looking at the first.
 
-That is not a stray observation; it is the spine of the book's closing argument. *[cross-bearing: see Ch 9 §1 — CNI and pod networking]* *[cross-bearing: see Ch 11 §2 — CSI and storage drivers]* *[cross-bearing: see Ch 6 §8 — CRDs and extending the API]* *[cross-bearing: see Ch 17 §4 — the four pluggable interfaces, collected]*
+That is not a stray observation; it is the spine of the book's closing argument. *[cross-bearing: see Ch 9 §1 — CNI and pod networking]* *[cross-bearing: see Ch 11 — CSI and storage drivers]* *[cross-bearing: see Ch 6 §8 — CRDs and extending the API]* *[cross-bearing: see Ch 17 §4 — the four pluggable interfaces, collected]*
 
 Two more pointers, then §5. The kubelet gets its full treatment as one node component among several *[cross-bearing: see Ch 3 §3 — node components in context]*. And knowing there is a layer *below* the Kubernetes API is what makes a particular diagnostic tool make sense: `crictl` is a node-level diagnostic listed under debugging Kubernetes nodes [source: k8s-docs-debug-overview-2026-08-23], and it is occasionally exactly what you need *[cross-bearing: see Ch 13 §5 — debugging nodes with crictl]*.
 
@@ -664,7 +664,7 @@ And the flow that connects them, in three beats: at a high level, an OCI impleme
 >
 > <!-- AUTHOR-REVIEW: the "a single component can participate in both planes" sentence previously named containerd and asserted that it implements the CRI *and* handles OCI images. The first half is sourced [k8s-docs-containers]; the second half is not, anywhere in the cache. Generalized here rather than dropped, because the point is the hinge of this callout and of Practice Q20. Harvest A17 and restore the specific claim on a primary source — CRI-O's own front page states it in one sentence with both acronyms in their correct planes: "CRI-O is an implementation of the Kubernetes CRI (Container Runtime Interface) to enable using OCI (Open Container Initiative) compatible runtimes." Anchor both this callout and Q20 on that quotation. -->
 
-> 🔭 **Closer Look:** Notice the dates. The OCI was founded in June 2015, and the distribution specification did not reach v1.0 until May 2020 [source: oci-overview-2026-08-23], arriving well after the other two. That ordering tells you something about which problems felt urgent. The industry settled *what an image is* and *what it means to run one* before it formalized *how it moves*. This is depth beyond what the exam asks. What the exam is more likely to ask is which specification governs the registry API, and the answer is the one that arrived last.
+> 🔭 **Closer Look:** Notice the dates. The OCI was founded in June 2015, and the distribution specification did not reach v1.0 until May 2020 [source: oci-overview-2026-08-23], arriving well after the other two. That ordering tells you something about which problems felt urgent. The industry settled *what an image is* and *what it means to run one* before it formalized *how it moves*. This is depth beyond what the exam asks. What the exam is more likely to ask — again the author's judgment — is which specification governs the registry API, and the answer is the one that arrived last.
 >
 > <!-- AUTHOR-REVIEW: the earlier version of this callout asserted that "two of the three specifications were part of the effort from its 2015 founding" and did five-year arithmetic on the gap. The snapshot says only that the OCI was "Established in June 2015" and "currently contains three specifications", and gives a v1.0 date for distribution-spec alone. Both the two-from-founding claim and the arithmetic have been cut to what the tag carries. To restore the chronology, source image-spec and runtime-spec v1.0 dates from opencontainers.org. -->
 
@@ -776,7 +776,7 @@ That block is the whole exam surface for this section, stated flat. Now the two 
 
 That is the second half of §3's `:latest` hazard, now complete *[cross-bearing: see Ch 2 §3 — the `:latest` naming caution]*. Writing `:latest` is not merely untidy. It flips the default from IfNotPresent to Always [source: k8s-docs-images-2026-08-23], which means the kubelet consults the registry on every container launch. So the tag that made you unsure which version is running is also the tag that maximizes the number of opportunities for the answer to change. Two problems, one field, and the documentation's caution names only the first.
 
-The `Always` behavior also repays a careful reading, because its name oversells it. `Always` does not mean "always download." It means always *check*: resolve the name to a digest at the registry, and if the local cache already holds that exact digest, use the cached copy [source: k8s-docs-images-2026-08-23]. Always re-resolve; download only on a miss. This is a favorite distractor, and now you know why the distractor is wrong.
+The `Always` behavior also repays a careful reading, because its name oversells it. `Always` does not mean "always download." It means always *check*: resolve the name to a digest at the registry, and if the local cache already holds that exact digest, use the cached copy [source: k8s-docs-images-2026-08-23]. Always re-resolve; download only on a miss. This is a classic distractor shape, and now you know why the distractor is wrong.
 
 > 🪝 **Snag:** Once a Pod is created, `imagePullPolicy` is not updated if the image's tag or digest changes later [source: k8s-docs-images-2026-08-23]. The policy was resolved when the Pod was created, and moving the tag afterwards does not retroactively change how that existing Pod behaves. If you need new behavior, you need a new Pod, which is §2's immutability principle showing up in an unexpected place.
 
@@ -810,7 +810,7 @@ A RuntimeClass can also carry scheduling constraints (`nodeSelector`, `toleratio
 >
 > <!-- AUTHOR-REVIEW: the earlier version of this callout described gVisor's mechanism in detail — syscall interception, a kernel serviced as an ordinary process, the host kernel never being the workload's direct interlocutor — and tagged it to k8s-docs-runtime-class, which carries only the phrase "a user-space kernel (such as gVisor)". Trimmed here to what the snapshot supports plus a minimal unsourced gloss on what "user-space kernel" means. NEW RESEARCH REQUIRED if the fuller mechanism is wanted: fetch gvisor.dev/docs/ for the Sentry/syscall-interception description; Appendix A does NOT cover it. Defensible alternative for an associate-tier chapter: leave as trimmed. The callout's own last line concedes the exam is likelier to ask why RuntimeClass exists than how each sandbox works. -->
 
-The security guidance is consistent with all of it: to protect compute at runtime, use a container runtime that provides security restrictions [source: k8s-docs-cloud-native-security-2026-08-23]. RuntimeClass is the Kubernetes-shaped way to say *which* one, per workload. Sandboxed runtimes come back as one control among several in the security lifecycle *[cross-bearing: see Ch 12 §4 — runtime protection for compute]*.
+The security guidance is consistent with all of it: to protect compute at runtime, use a container runtime that provides security restrictions [source: k8s-docs-cloud-native-security-2026-08-23]. RuntimeClass is the Kubernetes-shaped way to say *which* one, per workload. Sandboxed runtimes come back as one control among several in the security lifecycle *[cross-bearing: see Ch 12 — runtime protection for compute]*.
 
 ---
 

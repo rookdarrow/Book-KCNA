@@ -8,6 +8,152 @@ domain_weight_pct: 6
 complexity: "mixed"
 novelty: "paradigm-shifting"
 prereq_factor: "standard"
+
+#-- Section plan (no word budgets) ---------------------------------------
+#-- Length is content-driven. Arc-outline depth band for this chapter:
+#-- "standard-plus" - 6 points, but two of the book's nine cross-cutting
+#-- themes originate here (namespaced-vs-cluster-scoped; labels/selectors as
+#-- the universal join). Planning signal only, NOT a target.
+#--
+#-- WARNING SECTION NUMBERING IS LOAD-BEARING AND ALREADY PUBLISHED. Two
+#-- shipped chapters name sections of this chapter by number:
+#--   chapter-01 line 150 -> *[cross-bearing: see Ch 4 §1 - declarative versus imperative]*
+#--   chapter-02 line 459 -> *[cross-bearing: see Ch 4 §4 - Secrets, and the `dockerconfigjson` type]*
+#-- §1 and §4 below honor those. §4 is the reason ConfigMaps/Secrets sit
+#-- ahead of labels/selectors rather than after them. Do not renumber
+#-- without editing both published chapters.
+#--
+#-- NOTE Frontmatter comments use "#--" with no following space. This was a
+#-- defensive mitigation for the runner's slugifier (see Ch 3 Open questions
+#-- #4); commit 5f1a1d2 now derives the slug from `title`, so the mitigation
+#-- is belt-and-braces rather than load-bearing. Retained; costs nothing.
+sections:
+  - name: "You File a Declaration"
+    objectives: ["D1.1"]
+    requires_figure: false
+    figure_anchor: null
+    checkpoint_after: false
+  - name: "The Anatomy of a Record"
+    objectives: ["D1.1"]
+    requires_figure: true
+    figure_anchor: "ch04-fig01-object-anatomy-spec-status"
+    checkpoint_after: true
+  - name: "Where a Name Lives"
+    objectives: ["D1.1"]
+    requires_figure: true
+    figure_anchor: "ch04-fig04-namespaced-vs-cluster-scoped"
+    checkpoint_after: false
+  - name: "Configuration Kept Outside the Image"
+    objectives: ["D1.1"]
+    requires_figure: true
+    figure_anchor: "ch04-fig05-configmap-secret-contrast"
+    checkpoint_after: true
+  - name: "The Universal Join"
+    objectives: ["D1.1"]
+    requires_figure: true
+    figure_anchor: "ch04-fig03-labels-selectors-join"
+    checkpoint_after: true
+  - name: "A Declaration, Not an Order"
+    objectives: ["D1.1"]
+    requires_figure: true
+    figure_anchor: "ch04-zenith-declaration-not-order"
+    checkpoint_after: false
+
+#-- ch04-fig02-apply-round-trip also lands in §2, as that section's closing
+#-- beat. §2 is the only section carrying two figures; justification in
+#-- § Required figures. §1 deliberately carries none.
+
+#-- Skill v5.3 Part 11: Soundings pre-chapter diagnostic ------------------
+soundings_planned:
+  question_count: 8
+  topics:
+    - "a file describing what infrastructure should look like, versus a script that builds it"
+    - "why a configuration file format carries a version or schema field at the top"
+    - "the two halves of the control loop, in the reader's own words"
+    - "which component receives a submitted description, and what actually stores it"
+    - "one container image, two environments - where the differing configuration comes from"
+    - "whether base64 is encryption"
+    - "how you select a subset of things by attribute in systems the reader already knows"
+    - "two teams, one shared system, and the same name wanted twice"
+
+#-- Skill v5.3 Part 8: practice-question budget ---------------------------
+#-- B4 allocates 8 / 10 / 19 = 37. Bearings raised 10 -> 13; see
+#-- § "Taking Your Bearings checkpoints" for justification and B4's sanction.
+question_budget:
+  soundings: 8
+  taking_your_bearings: 13             # across 3 checkpoints (5 + 4 + 4)
+  practice_questions: 19
+  total_this_chapter: 40
+
+#-- Concept / objective / command tagging --------------------------------
+kb_tags:
+  objectives: ["D1.1"]
+  concepts:
+    - "kubernetes-object"
+    - "record-of-intent"
+    - "persistent-entity"
+    - "declarative-configuration"
+    - "imperative-command"
+    - "imperative-object-configuration"
+    - "declarative-object-configuration"
+    - "manifest"
+    - "yaml-by-convention"
+    - "apiversion"
+    - "kind"
+    - "metadata"
+    - "object-name"
+    - "object-uid"
+    - "spec"
+    - "status"
+    - "desired-state"
+    - "current-state"
+    - "actual-state-reconciliation"
+    - "namespace"
+    - "scope-for-names"
+    - "initial-namespaces"
+    - "default-namespace"
+    - "kube-system"
+    - "kube-public"
+    - "kube-node-lease"
+    - "namespaced-resource"
+    - "cluster-scoped-resource"
+    - "namespace-not-nested"
+    - "namespace-dns-form"
+    - "configmap"
+    - "configmap-size-limit"
+    - "configmap-consumption-paths"
+    - "immutable-configmap"
+    - "decoupling-configuration"
+    - "secret"
+    - "secret-types"
+    - "opaque-secret"
+    - "dockerconfigjson"
+    - "service-account-token-secret"
+    - "tls-secret"
+    - "secret-storage-default"
+    - "secret-hardening"
+    - "encryption-at-rest"
+    - "label"
+    - "label-selector"
+    - "equality-based-selector"
+    - "set-based-selector"
+    - "matchlabels"
+    - "matchexpressions"
+    - "annotation"
+  commands:
+    - "kubectl-apply"
+    - "kubectl-get"
+    - "kubectl-create"
+    - "kubectl-explain"
+    - "kubectl-api-resources"
+
+figures_planned:
+  - "ch04-fig01-object-anatomy-spec-status"
+  - "ch04-fig02-apply-round-trip"
+  - "ch04-fig03-labels-selectors-join"
+  - "ch04-fig04-namespaced-vs-cluster-scoped"
+  - "ch04-fig05-configmap-secret-contrast"
+  - "ch04-zenith-declaration-not-order"
 ---
 
 # Chapter 4: Records of Intent

@@ -148,7 +148,7 @@ chapters:
         duration_seconds: 445.14776150000034
   2:
     number: 2
-    current_stage: 13
+    current_stage: 15
     pending_gate: null
     adopted_from: null
     stages:
@@ -273,15 +273,25 @@ chapters:
         prompt_tokens_est: 99664
         duration_seconds: 482.75697070000024
       13:
-        status: failed
-        started_at: '2026-08-24T16:38:51+00:00'
-        completed_at: '2026-08-24T16:39:05+00:00'
+        status: completed
+        started_at: '2026-08-24T19:02:00+00:00'
+        completed_at: '2026-08-24T19:10:50+00:00'
         output_path: C:\dev\lodestar\certcomp\..\Book-KCNA\.pipeline-state\ch-02\integration.md
         gate_cleared: false
-        error: 'claude CLI exited with code 1 on attempt 3. stderr: '
+        error: null
         model_id: opus
         prompt_tokens_est: 63699
-        duration_seconds: 13.542995800002245
+        duration_seconds: 530.1610806999961
+      14:
+        status: completed
+        started_at: '2026-08-24T19:10:51+00:00'
+        completed_at: '2026-08-24T19:24:08+00:00'
+        output_path: C:\dev\lodestar\certcomp\..\Book-KCNA\.pipeline-state\ch-02\kb-manifest.md
+        gate_cleared: false
+        error: null
+        model_id: opus
+        prompt_tokens_est: 62631
+        duration_seconds: 797.1564483999973
   3:
     number: 3
     current_stage: 15

@@ -53,9 +53,7 @@ Before reading this chapter, try these five questions. They test what you're arr
 <details>
 <summary>Answers + reading strategy</summary>
 
-<!-- AUTHOR-REVIEW: A1 — the cached snapshot (k8s-docs-overview) phrases this as containers sharing "the Operating System (OS) among the applications," not specifically the kernel. The wording below sharpens to "operating system kernel," which is more precise and standard but is not verbatim from the snapshot. Accept the sharpening or soften to match the source. -->
-
-**1.** The host's **operating system kernel**. A virtual machine boots its own operating system on virtualized hardware; a container is a process on the host that has been given an isolated view of the system [source: k8s-docs-overview-2026-08-23]. *[cross-bearing: see Ch 2 §1 — what a container actually is]*
+**1.** The host's **operating system** — that is the documentation's word [source: k8s-docs-overview-2026-08-23]. Practitioners sharpen it: what is actually shared is the host's **kernel**, and this book uses that sharper register where the precision earns its keep. Hold both — the first is the wording to recognize on an answer sheet. *[cross-bearing: see Ch 2 §1 — what a container actually is, and why both registers are correct]*
 
 **2.** Not accurate. Kubernetes is an **orchestrator** — it decides what should run where. A separate **container runtime** on each machine does the work of actually starting the containers [source: k8s-docs-cluster-architecture-2026-08-23]. *[cross-bearing: see Ch 2 §4 — the Container Runtime Interface]*
 

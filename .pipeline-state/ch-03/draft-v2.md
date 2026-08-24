@@ -27,7 +27,7 @@
 - **Medium:** New concepts requiring focus — study when alert
 - **High:** Abstract or complex material — study at peak attention
 
-*If you only have 15 minutes: read §6 and take Taking Your Bearings #3. Six later chapters retrieve §6 by name. Nothing else in this chapter is retrieved as often.*
+*If you only have 15 minutes: read §6 and take Taking Your Bearings #3. Later chapters retrieve §6 by name, more than any other section here. Nothing else in this chapter is retrieved as often.*
 
 ---
 
@@ -127,7 +127,7 @@ Systems have shapes, and the shapes have reasons. Kubernetes looks the way it lo
 
 That last sentence is the documentation's, and it says *operating system*. The sharper statement, that what a container shares with the host is specifically the **kernel**, is this book's, not the documentation's, and you'll see it written that way where the precision earns its keep. Treat it as our gloss on an accurate but coarse sentence, not as a quotation.
 
-<!-- AUTHOR-REVIEW: book-level divergence — do not resolve in this chapter alone. Cached wording is "share the Operating System (OS) among the applications" (k8s-docs-overview-2026-08-23). Chapter 2 §1 (chapter-02-cargo-in-standard-crates.md:279) matches the snapshot and reinforces it at lines 1148 and 1263. Chapter 1 §Soundings A1 (chapter-01-taking-departure.md:142) sharpens to "operating system kernel" and carries its own unresolved flag at line 140. Chapter 3 now follows Chapter 2: quote the snapshot when citing, and carry the kernel-level precision as a visibly authorial sentence with no source tag. The remaining outlier is Chapter 1 — raise it there or at the reconcile pass. Practice Q2 in this chapter is keyed to the snapshot's wording, not the gloss. -->
+<!-- AUTHOR-REVIEW: book-level status — handled here; no further edits elsewhere. Cached wording is "share the Operating System (OS) among the applications" (k8s-docs-overview-2026-08-23). Ch 2 §1 (chapter-02:281–285) adjudicates BOTH registers as correct — quote "operating system" when citing; hold "kernel" as the practitioner sharpening — and this chapter follows it above. Ch 1 §Soundings A1 uses the kernel register Ch 2 blesses, so the chapters agree in substance; its answer now labels the sharpening as the book's own (resolved 2026-08-24). Practice Q2 in this chapter is keyed to the snapshot's wording, not the gloss. -->
 
 <!-- FIGURE: ch03-fig03-deployment-eras-timeline -->
 ```
@@ -176,7 +176,7 @@ Read that right-hand column again. Notice how many entries describe something th
 
 ### What Kubernetes is not
 
-This list is more useful than the last one, and it is tested more often than people expect. Kubernetes is not a traditional, all-inclusive PaaS. Because it operates at the container level rather than the hardware level, it provides some features common to PaaS offerings (deployment, scaling, load balancing) and lets users integrate their own logging, monitoring, and alerting. But Kubernetes is not monolithic, and those default solutions are optional and pluggable. It provides the building blocks for building developer platforms while preserving user choice [source: k8s-docs-overview-2026-08-23].
+This list is more useful than the last one, and it is easier to get wrong than its length suggests. Kubernetes is not a traditional, all-inclusive PaaS. Because it operates at the container level rather than the hardware level, it provides some features common to PaaS offerings (deployment, scaling, load balancing) and lets users integrate their own logging, monitoring, and alerting. But Kubernetes is not monolithic, and those default solutions are optional and pluggable. It provides the building blocks for building developer platforms while preserving user choice [source: k8s-docs-overview-2026-08-23].
 
 Specifically, Kubernetes [source: k8s-docs-overview-2026-08-23]:
 
@@ -217,8 +217,6 @@ A Kubernetes cluster consists of a control plane plus a set of worker machines, 
 
 So: two kinds of machine, two sets of software. That answers Soundings question 3, and it's the first thing to fix in your head, because every component name you're about to learn hangs off it.
 
-<!-- AUTHOR-REVIEW: BLOCKING — snapshot harvest, affects every -2026-08-24 tag in this chapter. Stage 2 fetched five new snapshots for ch-03 and recorded them in `.pipeline-state/ch-03/research-manifest.md`, but `harvest_research_snapshots()` never wrote them into `sources/` (ls sources/ returns 87 files, all dated -2026-08-23). The five are: k8s-docs-control-plane-node-communication-2026-08-24, k8s-docs-cluster-addons-2026-08-24, k8s-docs-etcd-access-control-2026-08-24, k8s-docs-dns-cluster-addon-2026-08-24, etcd-io-what-is-etcd-2026-08-24. Re-run the harvest, or hand-write the five files from the manifest's fenced blocks, before release. No re-fetch is required — the content is already in the manifest. Until then, every -2026-08-24 tag below dangles. -->
-
 <!-- FIGURE: ch03-fig01-control-plane-and-node-components -->
 ```
 ┌─── CONTROL PLANE ────────────────────────────────────────────┐
@@ -247,7 +245,7 @@ So: two kinds of machine, two sets of software. That answers Soundings question 
 ```
 *The whole census on one page. Two regions, eight components, two of them dashed. The dashes are worth as many exam points as the names.*
 
-Now the five components of the control plane. The control plane's components make global decisions about the cluster — scheduling, for example — as well as detecting and responding to cluster events, such as starting up a new Pod when a controller's declared replica count is unsatisfied [source: k8s-docs-cluster-architecture-2026-08-23].
+Now the five components of the control plane. The control plane's components make global decisions about the cluster — scheduling, for example — as well as detecting and responding to cluster events, such as starting up a new Pod when a controller's declared replica count is unsatisfied [source: k8s-docs-cluster-architecture-2026-08-23]. A Pod, for now, is the unit Kubernetes schedules and runs — Chapter 5 is its whole subject.
 
 ### kube-apiserver
 
@@ -302,7 +300,7 @@ Node components run on every node, maintaining running Pods and providing the Ku
 
 An agent that runs on each node in the cluster. It makes sure that containers are running in a Pod. The kubelet takes a set of PodSpecs that are provided through various mechanisms and ensures that the containers described in those PodSpecs are running and healthy. **The kubelet doesn't manage containers which were not created by Kubernetes** [source: k8s-docs-cluster-architecture-2026-08-23].
 
-A PodSpec, for now, is simply the description of what containers should run. Chapter 4 gives it a proper treatment.
+A PodSpec, for now, is simply the description of what containers should run. Chapter 4 gives you `spec` in general; Chapter 5 gives the PodSpec its proper treatment.
 
 *[cross-bearing: see Ch 5 — Pods, PodSpecs, and what "running and healthy" means precisely]*
 
@@ -338,7 +336,7 @@ That's the census. Eight components, and here it is in one place.
 
 ---
 
-## ☆ Taking Your Bearings: The Ship's Company
+## ☆ Taking Your Bearings #1: The Ship's Company
 
 Five questions. One of them reaches back to Chapter 2.
 
@@ -442,7 +440,7 @@ You have now met eight components and four addons. **Two of those twelve carry t
 | **cloud-controller-manager** | Because there may be no cloud to talk to. On premises or on your laptop, the cluster simply does not have one [source: k8s-docs-cluster-architecture-2026-08-23]. | The documentation's |
 | **Addons** | Because they extend rather than constitute [source: k8s-docs-components-2026-08-23]. The cluster is a cluster without them. | This book's framing |
 
-> ⚠ **Navigational Hazards:** Two very common wrong beliefs live here, and they're both cheap points on exam day.
+> ⚠ **Navigational Hazards:** Two very common wrong beliefs live here, and both are cheap to get right once you've noticed the word *optional*.
 >
 > **"kube-proxy runs on every node, always."** The documentation says node components run on every node, then marks kube-proxy optional in the same breath. Both are true: *when it runs, it runs on every node*, but it may not run at all, if a network plugin does the same work.
 >
@@ -463,7 +461,7 @@ Which brings us to the sentence this section exists for.
 *[cross-bearing: see Ch 9 — CoreDNS as the cluster DNS addon, and the Service DNS records it serves]*
 *[cross-bearing: see Ch 10 — an Ingress with no Ingress controller does nothing at all: the same pattern, first recurrence]*
 *[cross-bearing: see Ch 13 — `kubectl top` with no metrics-server installed]*
-*[cross-bearing: see Ch 17 — VPA is an add-on and is not shipped by default]*
+*[cross-bearing: see Ch 17 — VPA is an addon and is not shipped by default]*
 
 ---
 
@@ -533,7 +531,7 @@ Read the verbs. *Notices.* *Selects.* *Records.* *Notices.* At no point does one
 
 ---
 
-## ☆ Taking Your Bearings: Arrangement and Optionality
+## ☆ Taking Your Bearings #2: Arrangement and Optionality
 
 Four questions.
 
@@ -661,7 +659,7 @@ Controllers also update the objects that configure them. Once the work is done f
 >
 > **A control loop is: a desired state, a current state, and an action that closes the gap between them — repeating, without terminating.**
 >
-> A Kubernetes controller is a control loop that watches cluster state and acts to move current state closer to desired state. It does this continuously, not once. It usually acts by asking the API server to change something, not by doing the thing itself. [source: k8s-docs-controllers-2026-08-23]
+> A Kubernetes controller is a control loop that watches cluster state and acts to move current state closer to desired state. It does this continuously, not once. It usually acts by asking the API server to change something, not by doing the thing itself. [source: k8s-docs-controllers-2026-08-23] When later chapters say **reconciliation**, this closing-the-gap work is exactly what the word names.
 
 > **Extended Analogy:**
 >
@@ -693,7 +691,7 @@ This is also where §1's capability list cashes out. Self-healing was listed as 
 
 ---
 
-## ☆ Taking Your Bearings: Controllers and the Loop
+## ☆ Taking Your Bearings #3: Controllers and the Loop
 
 Four questions. These are the ones that matter most.
 
@@ -789,7 +787,7 @@ Back to §1's Snag, in the documentation's own words:
 
 Everyone in the industry, including this book in Chapter 1, calls Kubernetes an orchestrator. In the loose sense, meaning a thing that manages containers across machines, that's a perfectly good description, and it was the right altitude for an orientation chapter. In the precise sense the documentation is using, it's the one thing Kubernetes says it is not. The exam tests the precise sense. Now you have both, and you know which is which.
 
-*[cross-bearing: see Ch 1 §2 — where this book first called Kubernetes an orchestrator, in the industry's loose sense]*
+*[cross-bearing: see Ch 1 🧭 Soundings A2 — where this book first called Kubernetes an orchestrator, in the industry's loose sense]*
 
 ### What this buys
 
@@ -823,9 +821,9 @@ That's why §6 was worth more than the eight names, and why the eight names were
 
 **High-Priority Topics:**
 
-1. **The census, with optionality marked.** Eight components across two planes. kube-proxy and cloud-controller-manager are the two the documentation marks optional, and for different reasons. Pure recall, cheaply tested, and it is tested.
+1. **The census, with optionality marked.** Eight components across two planes. kube-proxy and cloud-controller-manager are the two the documentation marks optional, and for different reasons. Pure recall, cheap to get right once you've noticed it.
 2. **The control loop.** Desired state, current state, an action that closes the gap, never terminating. The highest-value idea in this chapter by a wide margin.
-3. **kube-controller-manager: many logical controllers, one binary, one process.** One sentence in the documentation, disproportionately tested.
+3. **kube-controller-manager: many logical controllers, one binary, one process.** One sentence in the documentation, and the whole distinction rides on it.
 4. **Kubernetes is not a mere orchestration system.** The technical definition of orchestration is execution of a defined workflow: first A, then B, then C. Kubernetes disclaims it in favor of independent, composable control processes.
 5. **What Kubernetes is not.** Not a traditional all-inclusive PaaS. Does not build your source. Does not ship middleware, databases, or caches. Does not mandate logging or configuration solutions.
 
@@ -1027,7 +1025,7 @@ D) The code, its runtime, application and system libraries, and default settings
 - **B is wrong**, and instructively so. Separate user accounts were a real historical practice, and they do constrain *some* things, but not the ones that mattered. One application could still consume most of the machine's CPU or memory and starve the rest, which is exactly the failure the documentation describes.
 - **D is wrong** — hypervisors are the *next* era. That's the whole point of the progression.
 
-**Q2 — A.** *[retrieval: ch2]* Containers have relaxed isolation properties that let them share the operating system among the applications, which is why they are considered lightweight; a VM, by contrast, is a full machine running all the components, including its own operating system, on top of virtualized hardware [source: k8s-docs-overview-2026-08-23].
+**Q2 — A.** *[retrieval: ch2]* Containers have relaxed isolation properties that let them share the operating system among the applications, which is why they are considered lightweight; a VM, by contrast, is a full machine running all the components, including its own operating system, on top of virtualized hardware [source: k8s-docs-overview-2026-08-23]. Ch 2 §1 holds both registers: "operating system" is the published wording and the one to recognize on an answer sheet; "kernel" is the mechanism underneath it.
 - **B is wrong** — VMs share the physical hardware too. That's what virtualization *is*, and it's the previous era's change, not this one.
 - **C is wrong** — and it's the reversal worth catching. A container has *its own* filesystem, and its own share of CPU, memory, and process space [source: k8s-docs-overview-2026-08-23]. Those are among the things that stay separate.
 - **D is wrong** — networking is configurable in both models and isn't the architectural distinction the era transition turns on.

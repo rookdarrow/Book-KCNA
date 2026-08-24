@@ -17,3 +17,7 @@ Thumbs.db
 # Python (in case anyone runs scripts in here)
 __pycache__/
 *.py[cod]
+
+# Pipeline transient sidecars (locks, heartbeats)
+.pipeline-state/**/*.lock
+.pipeline-state/**/.*.heartbeat

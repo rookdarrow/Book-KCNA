@@ -65,7 +65,7 @@ Most of these are about assigning work to machines in general. Three of them ask
 
 1. **Pick one with at least 8 GB available, ideally with headroom.** To automate it, the job's requirement has to be *declared* somewhere a machine can read it. You can't discover "this job needs 8 GB" by looking at a job that hasn't started yet. Hold onto the word *available*; §2 is mostly about what it means.
 
-2. **Any consistent rule works** — lowest hostname, round-robin, least-recently-used. For correctness it doesn't matter. For behaviour it does: a predictable rule concentrates load in predictable places. Kubernetes' actual answer is in §1, and it isn't any of the three above.
+2. **Any consistent rule works** — lowest hostname, round-robin, least-recently-used. For correctness it doesn't matter. For behavior it does: a predictable rule concentrates load in predictable places. Kubernetes' actual answer is in §1, and it isn't any of the three above.
 
 3. **The request is the scheduler's input; the limit is the kubelet's enforcement ceiling.** If you had them backwards, mark question 3 wrong and read the note at the bottom of this box.
 
@@ -77,7 +77,7 @@ Most of these are about assigning work to machines in general. Three of them ask
 
 7. **You lost the redundancy.** One machine failure now takes down both copies, which is exactly the outcome the second copy existed to prevent. To prevent it you'd have had to say, in advance, that the two copies must not share a machine. Nothing about "two copies" implies "two machines."
 
-8. **Good reason:** the work is tied to something only that machine has — a device, a local disk, a licence dongle. **Bad habit:** the assignment stops adapting. If the machine is full, down, or renamed, the job has nowhere to fall back to, and you've opted out of every check the assigner was performing for free.
+8. **Good reason:** the work is tied to something only that machine has — a device, a local disk, a license dongle. **Bad habit:** the assignment stops adapting. If the machine is full, down, or renamed, the job has nowhere to fall back to, and you've opted out of every check the assigner was performing for free.
 
 ---
 
@@ -111,7 +111,7 @@ By the end of this chapter, you'll be able to:
 - **Distinguish** the mechanisms for influencing placement by which direction each one asserts — from the Pod, or from the node.
 - **Predict** what happens to an already-running Pod when its node gains a taint, changes a label, or fills up.
 - **Choose** between `nodeSelector`, node affinity, taints, and inter-Pod rules for a given placement requirement, and say what each one costs.
-- **Recognise** every constraint in this chapter as either a filter or a score — which is the only thing you actually have to remember.
+- **Recognize** every constraint in this chapter as either a filter or a score — which is the only thing you actually have to remember.
 
 *You'll also stop reading `Pending` as an error message, which is a smaller change than it sounds, and I think it saves more marks than anything else here.*
 
@@ -127,7 +127,7 @@ A scheduler watches for newly created Pods that have no node assigned; for every
 
 Feasibility is not only about free memory. The documented list of factors a scheduling decision takes into account runs: individual and collective resource requirements, hardware / software / policy constraints, affinity and anti-affinity specifications, data locality, inter-workload interference, and so on [source: k8s-docs-kube-scheduler-2026-08-23]. *Deadlines* are named alongside them in the architecture overview [source: k8s-docs-cluster-architecture-2026-08-23].
 
-This chapter teaches the ones you can control from a Pod spec or a node label: resource requirements, hardware and policy constraints, and affinity. The rest are named here so you recognise them on a list, and so that *"the scheduler checks whether the node has enough memory"* doesn't calcify into the whole story.
+This chapter teaches the ones you can control from a Pod spec or a node label: resource requirements, hardware and policy constraints, and affinity. The rest are named here so you recognize them on a list, and so that *"the scheduler checks whether the node has enough memory"* doesn't calcify into the whole story.
 
 ### The spine
 
@@ -185,7 +185,7 @@ If there is more than one node with equal scores, `kube-scheduler` selects one o
 
 Not the lowest hostname. Not the least loaded. Not round-robin. Random. If you proposed one of the clever answers in Soundings question 2, you were in good company and you were wrong, and being wrong first is exactly why this will stick.
 
-The randomness does real conceptual work, too. It tells you that the scheduler is not trying to be optimal in a way you can reason about or predict. Which means influencing placement is not a matter of understanding the algorithm well enough to out-think it. It's a matter of **saying something**: putting a constraint in the Pod spec, or a mark on the node, that the algorithm is obliged to honour. Everything in §3 through §6 is a way of saying something.
+The randomness does real conceptual work, too. It tells you that the scheduler is not trying to be optimal in a way you can reason about or predict. Which means influencing placement is not a matter of understanding the algorithm well enough to out-think it. It's a matter of **saying something**: putting a constraint in the Pod spec, or a mark on the node, that the algorithm is obliged to honor. Everything in §3 through §6 is a way of saying something.
 
 ### The decision is irreversible
 
@@ -333,7 +333,7 @@ Everything so far has been the scheduler's own arithmetic. Now you start putting
 
 Chapter 4 taught label selectors as the universal join, and listed node scheduling constraints as one of the four things they're used for *[cross-bearing: see Ch 4 §5 — labels and selectors]*. Watch what changes here.
 
-Every previous use of labels in this book has been **an object selecting a set of Pods** — a Service selecting its backends, a ReplicaSet selecting the Pods it owns. Here it is **a Pod selecting nodes**. Same mechanism, opposite direction. If you've internalised "selectors find Pods," this will read as backwards for a page or two until you say the inversion out loud.
+Every previous use of labels in this book has been **an object selecting a set of Pods** — a Service selecting its backends, a ReplicaSet selecting the Pods it owns. Here it is **a Pod selecting nodes**. Same mechanism, opposite direction. If you've internalized "selectors find Pods," this will read as backwards for a page or two until you say the inversion out loud.
 
 Nodes have labels [source: k8s-docs-assign-pod-node-2026-08-23]. You can attach them manually, and Kubernetes also populates a standard set of labels on all nodes in a cluster [source: k8s-docs-assign-pod-node-2026-08-23]. The kubelet supplies `kubernetes.io/hostname`, which it populates with the hostname of the node, along with `kubernetes.io/os` and `kubernetes.io/arch` [source: k8s-docs-well-known-labels-2026-08-24]. `topology.kubernetes.io/zone` and `topology.kubernetes.io/region` are populated by the kubelet **or** the cloud-controller-manager [source: k8s-docs-well-known-labels-2026-08-24], which means they show up where the cluster has a cloud provider to ask, and may not be there at all on the single-machine cluster you're learning on. Note that now, because §5's examples lean on the zone label.
 
@@ -367,7 +367,7 @@ Affinity expands the types of constraint you can define: the language is more ex
 - `requiredDuringSchedulingIgnoredDuringExecution` — the scheduler **can't** schedule the Pod unless the rule is met.
 - `preferredDuringSchedulingIgnoredDuringExecution` — the scheduler **tries** to find a node that meets the rule, but if a matching node is not available, it still schedules the Pod.
 
-For preferred rules you can attach a weight to each instance, and those weights feed the node's score alongside the other scoring functions; nodes with the highest total score are prioritised [source: k8s-docs-assign-pod-node-depth-2026-08-24]. You don't need the arithmetic for this exam. You do need to notice where preferred rules land: in the **scoring** step, not the filtering step. Hold that thought until §7.
+For preferred rules you can attach a weight to each instance, and those weights feed the node's score alongside the other scoring functions; nodes with the highest total score are prioritized [source: k8s-docs-assign-pod-node-depth-2026-08-24]. You don't need the arithmetic for this exam. You do need to notice where preferred rules land: in the **scoring** step, not the filtering step. Hold that thought until §7.
 
 > 🪢 **Mnemonic:** Read `requiredDuringSchedulingIgnoredDuringExecution` as two clauses joined at the seam: **required when scheduling, ignored once running.** The word is forty-six characters; the meaning is six. Every one of these field names decomposes the same way: first half is what happens at placement, second half is what happens afterwards.
 
@@ -377,7 +377,7 @@ If you do write affinity by hand, two combination rules are worth knowing becaus
 
 `IgnoredDuringExecution` means that **if the node's labels change after Kubernetes schedules the Pod, the Pod continues to run** [source: k8s-docs-assign-pod-node-2026-08-23].
 
-You already knew this. You retrieved it in Soundings question 4 and Chapter 5 taught it as a general rule about the Pod's lifetime. What's new is that the rule has a name, and the name is sitting in plain sight inside a field you'll type. A Pod placed on a node labelled `disktype=ssd` does not get evicted when someone strips that label off. The rule was a scheduling-time question and scheduling time is over.
+You already knew this. You retrieved it in Soundings question 4 and Chapter 5 taught it as a general rule about the Pod's lifetime. What's new is that the rule has a name, and the name is sitting in plain sight inside a field you'll type. A Pod placed on a node labeled `disktype=ssd` does not get evicted when someone strips that label off. The rule was a scheduling-time question and scheduling time is over.
 
 ### The gradient
 
@@ -486,7 +486,7 @@ Learn these by **when they act**: whether the refusal is posted at the approach,
 
 Pod C is the whole point of the figure. Two of the three rows leave it completely alone. Only one row reaches out and touches something that was already moored.
 
-> 🪝 **Snag:** `PreferNoSchedule` is a *preference*, and preferences lose. Pods that don't tolerate the taint will land on a `PreferNoSchedule` node when nothing better is available, and that is correct behaviour, not a bug. If you need "never," you need `NoSchedule`.
+> 🪝 **Snag:** `PreferNoSchedule` is a *preference*, and preferences lose. Pods that don't tolerate the taint will land on a `PreferNoSchedule` node when nothing better is available, and that is correct behavior, not a bug. If you need "never," you need `NoSchedule`.
 
 ### Matching
 
@@ -565,7 +565,7 @@ Five questions on §3 and §4. One reaches back to Chapter 4.
 
 **2.** ⚠ **This one is intentionally hard, and the intuitive answer is wrong.** Struggle is the point — missing it is expected and is exactly what makes the correct answer stick.
 
-Your organisation has a per-seat licence for a CAD package, and only six machines in the cluster are covered by it. You taint those six `license=cad:NoSchedule` and add a matching toleration to the CAD rendering workload. A colleague reports that the rendering Pods are running on ordinary, unlicensed nodes. Is anything broken?
+Your organisation has a per-seat license for a CAD package, and only six machines in the cluster are covered by it. You taint those six `license=cad:NoSchedule` and add a matching toleration to the CAD rendering workload. A colleague reports that the rendering Pods are running on ordinary, unlicensed nodes. Is anything broken?
 
 **3.** A node gains a new taint while Pods are already running on it. For each of the three effects, say whether the running Pods are affected. Then, for `NoExecute` only, say what happens to a Pod that *does* tolerate the taint — with and without a `tolerationSeconds` value.
 
@@ -600,7 +600,7 @@ The classic wrong answer is that `NoSchedule` evicts. It doesn't, and the word *
 
 **4 — C.**
 `IgnoredDuringExecution` means that if the node labels change after Kubernetes schedules the Pod, the Pod continues to run [source: k8s-docs-assign-pod-node-2026-08-23]. The `required` half applies at scheduling time; the `Ignored` half applies afterwards, and both halves are in the field name.
-- **A is wrong** because it reads only the first half of the name. `required` describes what the scheduler must honour, not what the kubelet must continuously enforce.
+- **A is wrong** because it reads only the first half of the name. `required` describes what the scheduler must honor, not what the kubelet must continuously enforce.
 - **B is wrong** on two counts: nothing evicts, and even if something did, a Pod is not rescheduled to a different node — it would be *replaced* [source: k8s-docs-pod-lifecycle-2026-08-23].
 - **D is wrong** because `Pending` describes a Pod that hasn't been placed. This one has been placed and is running.
 
@@ -657,7 +657,7 @@ So the same rule, over the same cluster, means different things depending on whi
 
 <!-- FIGURE: ch07-fig04-pod-affinity-anti-affinity-topology -->
 ```
-   SAME CLUSTER. SAME RULE: "no two Pods labelled app=web in one domain."
+   SAME CLUSTER. SAME RULE: "no two Pods labeled app=web in one domain."
    THE ONLY DIFFERENCE IS THE topologyKey.
 
    topologyKey: kubernetes.io/hostname       topologyKey: topology.kubernetes.io/zone
@@ -693,7 +693,7 @@ Anti-affinity can say "not in the same domain." What people usually *want* is "d
 
 > This can help to achieve high availability as well as efficient resource utilization. [source: k8s-docs-topology-spread-constraints-2026-08-24]
 
-Like everything else in this section, they rely on node labels to identify the topology domain each node is in [source: k8s-docs-topology-spread-constraints-2026-08-24]. Four fields carry the meaning, and for this exam you want to recognise them rather than compose them:
+Like everything else in this section, they rely on node labels to identify the topology domain each node is in [source: k8s-docs-topology-spread-constraints-2026-08-24]. Four fields carry the meaning, and for this exam you want to recognize them rather than compose them:
 
 | Field | What it says |
 |---|---|
@@ -752,7 +752,7 @@ You do not need to know how to build a scheduler. You need to know that the seat
 
 ### The vocabulary you'll meet in older material
 
-There are two documented ways to configure the filtering and scoring behaviour of the scheduler [source: k8s-docs-kube-scheduler-2026-08-23]:
+There are two documented ways to configure the filtering and scoring behavior of the scheduler [source: k8s-docs-kube-scheduler-2026-08-23]:
 
 - **Scheduling Policies** — **Predicates** for filtering, and **Priorities** for scoring.
 - **Scheduling Profiles** — **plugins** that implement different scheduling stages, including `QueueSort`, `Filter`, `Score`, `Bind`, `Reserve` and `Permit`. `kube-scheduler` can run different profiles.
@@ -866,7 +866,7 @@ They are not.
   neither a filter nor a score — it deletes the choice   └───────────┘
 ```
 
-<!-- AUTHOR-REVIEW: the fact-accuracy stage flagged that no cached snapshot assigns any individual mechanism to a named scheduler stage. §7's synthesis — hard rules filter, soft rules score — is the chapter's organising frame and follows from the documented behaviours (an untolerated NoSchedule taint means the node will not accept the Pod; PreferNoSchedule means the control plane will only try to avoid it). The two-column figure above and the answer keys for Practice Q10 and Q13 state the assignment mechanism-by-mechanism, which the corpus supports by inference rather than by a source sentence. Both answer keys have been re-phrased to derive the assignment from the documented behaviour rather than to assert a stage registration. The fetch that would source it directly is kubernetes.io/docs/reference/scheduling/config/, which enumerates each plugin against its extension points (TaintToleration appears at both Filter and Score; InterPodAffinity at PreFilter, Filter and Score). This is the single highest-value snapshot this chapter is still missing — recommend fetching before the book-level pass. -->
+<!-- AUTHOR-REVIEW: the fact-accuracy stage flagged that no cached snapshot assigns any individual mechanism to a named scheduler stage. §7's synthesis — hard rules filter, soft rules score — is the chapter's organising frame and follows from the documented behaviors (an untolerated NoSchedule taint means the node will not accept the Pod; PreferNoSchedule means the control plane will only try to avoid it). The two-column figure above and the answer keys for Practice Q10 and Q13 state the assignment mechanism-by-mechanism, which the corpus supports by inference rather than by a source sentence. Both answer keys have been re-phrased to derive the assignment from the documented behavior rather than to assert a stage registration. The fetch that would source it directly is kubernetes.io/docs/reference/scheduling/config/, which enumerates each plugin against its extension points (TaintToleration appears at both Filter and Score; InterPodAffinity at PreFilter, Filter and Score). This is the single highest-value snapshot this chapter is still missing — recommend fetching before the book-level pass. -->
 
 Same three stages you saw on the first page of this chapter. Nothing new has been added to the pipeline. Everything you learned in §2 through §5 contributed to step one or step two, and the `required` / `preferred` distinction that kept recurring under four different names — required vs preferred node affinity, `NoSchedule` vs `PreferNoSchedule`, required vs preferred inter-Pod rules, `DoNotSchedule` vs `ScheduleAnyway` — was never four distinctions. It was always the same one: *is this a filter, or is this a score?*
 
@@ -1006,7 +1006,7 @@ D) Node affinity has no operators; its expressiveness comes solely from the soft
 A) The Pod schedules there, because pod affinity is evaluated after taints and therefore overrides them.
 B) The Pod does not schedule there — the untolerated taint removes the node during filtering, and pod affinity cannot restore a node that has been filtered out.
 C) The Pod schedules there, because a required pod-affinity rule is a filter and a `NoSchedule` taint only affects scoring.
-D) The Pod schedules on a neighbouring node in the same topology domain, which satisfies the co-location rule.
+D) The Pod schedules on a neighboring node in the same topology domain, which satisfies the co-location rule.
 
 **14.** A team's inter-Pod anti-affinity rule uses `topologyKey: kubernetes.io/hostname`. They change it to `topology.kubernetes.io/zone` in a cluster with two zones and twelve nodes. What is the effect on a Deployment with six replicas carrying the matching label?
 
@@ -1053,9 +1053,9 @@ D) None — a toleration that omits `effect` is incomplete and is rejected when 
 
 **3 — C.** The kubelet reserves at least the request amount of a resource for the container [source: k8s-docs-resource-management-2026-08-23], and the scheduler does not over-subscribe Allocatable [source: k8s-docs-node-allocatable-2026-08-24] — where Allocatable, not total RAM, is what the scheduler treats as available capacity for Pods [source: k8s-docs-node-allocatable-2026-08-24]. Three Pods × 8 GiB = 24 GiB booked; 30 − 24 = 6 GiB left; 12 > 6. **A** is the trap: it does the arithmetic against *usage*, and it also uses the wrong baseline. The reservation stands whether or not the container touches the memory [source: k8s-docs-resource-management-2026-08-23], so used-versus-booked is not the subtraction the filter performs. **B** contradicts the source directly — the scheduler does not over-subscribe Allocatable. **D** puts the limit in the scheduler's hands; limits are enforced by the kubelet on the running container, after placement [source: k8s-docs-resource-management-2026-08-23], and never enter the filter.
 
-**4 — C.** If none of the nodes are suitable, the Pod remains unscheduled until the scheduler is able to place it [source: k8s-docs-kube-scheduler-2026-08-23], and `Pending` explicitly covers time spent waiting to be scheduled [source: k8s-docs-pod-lifecycle-2026-08-23]. **A** invents a timeout; nothing in the documented behaviour converts waiting into failure. **B** invents constraint relaxation — nothing rewrites your spec on your behalf. **D** describes a controller behaviour that isn't triggered by a Pod being unplaceable; the Pod exists, so the controller's count is already satisfied.
+**4 — C.** If none of the nodes are suitable, the Pod remains unscheduled until the scheduler is able to place it [source: k8s-docs-kube-scheduler-2026-08-23], and `Pending` explicitly covers time spent waiting to be scheduled [source: k8s-docs-pod-lifecycle-2026-08-23]. **A** invents a timeout; nothing in the documented behavior converts waiting into failure. **B** invents constraint relaxation — nothing rewrites your spec on your behalf. **D** describes a controller behavior that isn't triggered by a Pod being unplaceable; the Pod exists, so the controller's count is already satisfied.
 
-**5 — B.** Pods are scheduled once in their lifetime to a specific node, and a Pod is never "rescheduled" to a different node [source: k8s-docs-pod-lifecycle-2026-08-23]. This is the same rule you learned in Chapter 5 with a node-*failure* motivation; here it applies to a strictly better opportunity, and the answer is identical. Kubernetes does not optimise placement continuously. **A** and **D** both describe a rebalancing loop the platform does not have — nothing revisits a placement after binding. **C** has the wrong actor and the wrong direction: a kubelet never claims Pods. It acts on Pods the API server has already recorded as bound to its own node.
+**5 — B.** Pods are scheduled once in their lifetime to a specific node, and a Pod is never "rescheduled" to a different node [source: k8s-docs-pod-lifecycle-2026-08-23]. This is the same rule you learned in Chapter 5 with a node-*failure* motivation; here it applies to a strictly better opportunity, and the answer is identical. Kubernetes does not optimize placement continuously. **A** and **D** both describe a rebalancing loop the platform does not have — nothing revisits a placement after binding. **C** has the wrong actor and the wrong direction: a kubelet never claims Pods. It acts on Pods the API server has already recorded as bound to its own node.
 
 **6 — A.** The scheduler selects a node and notifies the API server [source: k8s-docs-kube-scheduler-2026-08-23]; the kubelet is an agent on each node that makes sure containers described in the PodSpecs are running [source: k8s-docs-cluster-architecture-2026-08-23]. **B** puts container-starting in the scheduler's hands, which is the most common misconception about this component and the reason `ch07-fig01` draws two separate arrows. **C** compounds that error with a second one: the controller manager runs controllers, not placement bookkeeping. **D** concedes that the kubelet starts containers and still gets the topology wrong — the scheduler does not talk to nodes at all. Its arrow lands on the API server, and the kubelet reads from there.
 
@@ -1067,13 +1067,13 @@ D) None — a toleration that omits `effect` is incomplete and is rejected when 
 
 **10 — B.** An untolerated `NoSchedule` taint means no new Pods will be scheduled on the node [source: k8s-docs-taints-tolerations-2026-08-23] — the node is taken out of consideration entirely, which is what filtering does. `PreferNoSchedule` means the control plane will *try* to avoid the node but it is not guaranteed [source: k8s-docs-taints-tolerations-2026-08-23] — the node stays in the running with a worse standing, which is what scoring does. **A** makes the soft effect hard, which would mean a `PreferNoSchedule` node could never take a non-tolerating Pod; the source says otherwise. **C** inverts both, and would make `NoSchedule` merely a discouragement. **D** is the answer of someone who thinks a toleration raises a node's score: taints are weighed before binding, not after, because binding is the recording of a decision already made.
 
-**11 — C.** `NoSchedule` does not evict Pods currently running on the node; `PreferNoSchedule` is its soft form; `NoExecute` evicts non-tolerating Pods immediately [source: k8s-docs-taints-tolerations-2026-08-23]. **A** lets `NoSchedule` evict, which is the classic error, and the word *Schedule* in its name is the clue against it. **B** flattens all three into a single behaviour differing only in timing, which erases the one distinction the effects exist to draw. **D** overcorrects: `NoExecute` genuinely does reach Pods already running, and that's precisely what separates it from the other two.
+**11 — C.** `NoSchedule` does not evict Pods currently running on the node; `PreferNoSchedule` is its soft form; `NoExecute` evicts non-tolerating Pods immediately [source: k8s-docs-taints-tolerations-2026-08-23]. **A** lets `NoSchedule` evict, which is the classic error, and the word *Schedule* in its name is the clue against it. **B** flattens all three into a single behavior differing only in timing, which erases the one distinction the effects exist to draw. **D** overcorrects: `NoExecute` genuinely does reach Pods already running, and that's precisely what separates it from the other two.
 
 **12 — B.** Node affinity supports `In`, `NotIn`, `Exists`, `DoesNotExist`, `Gt` and `Lt` [source: k8s-docs-assign-pod-node-2026-08-23], a richer vocabulary than `nodeSelector`'s implicit equality. **A** describes `nodeSelector`, not affinity, and misses both of affinity's additions. **C** is the half-remembered version: `Gt` and `Lt` are indeed the unusual pair (they're the ones unavailable to `podAffinity` [source: k8s-docs-assign-pod-node-depth-2026-08-24]), but affinity adds four more besides — the set-membership and existence operators are the ones you'll reach for daily. **D** drops the operator set entirely; expressiveness and hardness are two *independent* additions, and this option keeps only one of them.
 
 **13 — B.** An untolerated `NoSchedule` taint marks the node as not accepting Pods that do not tolerate it [source: k8s-docs-taints-tolerations-2026-08-23], so the node is out of consideration before any ranking begins. Pod affinity is also a feasibility question — it can only ever *narrow* the surviving set, never restore a node that has already been excluded. **A** invents an evaluation ordering in which a later rule can readmit a node an earlier one rejected; nothing works that way, and filters compose by intersection, not by precedence. **C** gets the direction of both mechanisms wrong at once: it correctly files pod affinity as a filter but misfiles `NoSchedule` as a mere ranking penalty, when an untolerated `NoSchedule` node will not accept the Pod at all. **D** sounds plausible and isn't: a *required* co-location rule constrains the Pod to the topology domain containing the target Pod, and with a hostname-scoped domain that means the target's node specifically, not its neighbourhood.
 
-**14 — C.** Nodes with identical values for the `topologyKey` label are in the same topology domain [source: k8s-docs-topology-spread-constraints-2026-08-24], and required-mode pod anti-affinity means only a single Pod can be scheduled into a single topology domain [source: k8s-docs-topology-spread-constraints-2026-08-24]. Twelve nodes gave twelve domains; two zones give two. Four of the six replicas have nowhere legal to go. **A** misses that the domain itself changed — the rule text is identical, which is exactly the trap. **B** has the direction backwards: fewer, larger domains is stricter, not looser. **D** borrows the behaviour of a *topology spread constraint* set to `ScheduleAnyway`, which does tell the scheduler to place the Pod anyway while prioritising nodes that minimise the skew [source: k8s-docs-topology-spread-constraints-2026-08-24]. A required anti-affinity rule has no such soft mode — the `preferred` form exists, but choosing it means you lose the ability to enforce the constraint [source: k8s-docs-topology-spread-constraints-2026-08-24], which is a different thing from placing to minimise skew.
+**14 — C.** Nodes with identical values for the `topologyKey` label are in the same topology domain [source: k8s-docs-topology-spread-constraints-2026-08-24], and required-mode pod anti-affinity means only a single Pod can be scheduled into a single topology domain [source: k8s-docs-topology-spread-constraints-2026-08-24]. Twelve nodes gave twelve domains; two zones give two. Four of the six replicas have nowhere legal to go. **A** misses that the domain itself changed — the rule text is identical, which is exactly the trap. **B** has the direction backwards: fewer, larger domains is stricter, not looser. **D** borrows the behavior of a *topology spread constraint* set to `ScheduleAnyway`, which does tell the scheduler to place the Pod anyway while prioritising nodes that minimise the skew [source: k8s-docs-topology-spread-constraints-2026-08-24]. A required anti-affinity rule has no such soft mode — the `preferred` form exists, but choosing it means you lose the ability to enforce the constraint [source: k8s-docs-topology-spread-constraints-2026-08-24], which is a different thing from placing to minimise skew.
 
 **15 — B.** The DaemonSet controller creates a Pod for each eligible node and sets that Pod's node affinity to match the target host [source: k8s-docs-daemonset-2026-08-24]. Each Pod is constructed for one specific node, so there is no set-level relationship left for a scheduling constraint to enforce. **A** describes a mechanism the controller doesn't use — it uses node *affinity* per Pod, not anti-affinity across the set. **C** is wrong: the default scheduler typically takes over and binds the Pod [source: k8s-docs-daemonset-2026-08-24], so the ordinary pipeline runs. **D** invents a built-in default that isn't documented, and would have to apply to every DaemonSet in every cluster.
 *This is a discrimination question as much as a retrieval one: "the Pods end up spread out" and "a spreading constraint was enforced" are not the same claim.*

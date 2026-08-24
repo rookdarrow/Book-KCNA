@@ -1,0 +1,29 @@
+book_key: kcna
+current_stage: 6
+pending_gate: null
+stages:
+  1:
+    status: completed
+    completed_at: '2026-08-24T03:03:45+00:00'
+    output_path: C:\dev\lodestar\certcomp\..\Book-KCNA\.pipeline-state\book-outline\domain-analysis.md
+    error: null
+  2:
+    status: completed
+    completed_at: '2026-08-24T03:11:56+00:00'
+    output_path: C:\dev\lodestar\certcomp\..\Book-KCNA\.pipeline-state\book-outline\chapter-lineup.md
+    error: null
+  3:
+    status: completed
+    completed_at: '2026-08-24T03:19:35+00:00'
+    output_path: C:\dev\lodestar\certcomp\..\Book-KCNA\.pipeline-state\book-outline\retrieval-architecture.md
+    error: null
+  4:
+    status: completed
+    completed_at: '2026-08-24T03:21:48+00:00'
+    output_path: C:\dev\lodestar\certcomp\..\Book-KCNA\.pipeline-state\book-outline\length-budget.md
+    error: null
+  5:
+    status: completed
+    completed_at: '2026-08-24T03:29:18+00:00'
+    output_path: C:\dev\lodestar\certcomp\..\Book-KCNA\.pipeline-state\book-outline\arc-outline.md
+    error: null

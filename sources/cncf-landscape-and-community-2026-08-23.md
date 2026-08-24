@@ -1,0 +1,14 @@
+---
+source_url: "https://github.com/cncf/landscape"
+fetched_at: "2026-08-23T23:40:00-0400"
+authority: "Cloud Native Computing Foundation (landscape repo, ambassador program page)"
+objectives_covered: ["D4 Cloud Native Ecosystem and Principles", "D4 Community and Collaboration"]
+concepts_covered: ["cncf-landscape", "trail-map", "landscape-categories", "ambassadors", "community-groups", "kubecon", "code-of-conduct"]
+---
+# CNCF Cloud Native Landscape and community programs
+
+## The Landscape (github.com/cncf/landscape, landscape.cncf.io)
+The CNCF Cloud Native Landscape is a map through the previously uncharted terrain of cloud native technologies. It attempts to categorize most of the projects and product offerings in the cloud native space, of which CNCF-hosted projects are a particularly well-traveled path. The interactive landscape at landscape.cncf.io is generated from the repository's data files. Entries must represent cloud native technologies with meaningful community adoption, fit an existing category, and appear in the single category where they best fit. Categories are grouped by layer — Provisioning (automation and configuration, container registries, security and compliance, key management), Runtime (cloud native storage, container runtime, cloud native network), Orchestration and Management (scheduling and orchestration, coordination and service discovery, service proxy, API gateway, service mesh), App Definition and Development (databases, streaming and messaging, application definition and image build, continuous integration and delivery), Observability and Analysis (monitoring, logging, tracing, chaos engineering), plus Platforms and Special (Kubernetes distributions, hosted and installable platforms, PaaS/container services, serverless) — and further tagged by the Technical Advisory Groups that own them.
+
+## Community programs (cncf.io)
+CNCF Ambassadors are an extension of CNCF, furthering the mission of "making cloud native ubiquitous" through community leadership and mentorship; they exemplify CNCF's values and its culture of inclusion, kindness, and respect, and many organize local Cloud Native Community Groups (free, volunteer-run meetups on the CNCF community platform, including Kubernetes Community Days). KubeCon + CloudNativeCon is the flagship conference series where the community convenes (2026: Shanghai, September 7–9, among others). The CNCF Community Code of Conduct (github.com/cncf/foundation/blob/main/code-of-conduct.md) applies to all CNCF projects and events; it is administered by the CNCF Code of Conduct Committee with a published charter, incident-resolution procedures, and a transparency report. Contributors participate through project GitHub organizations, Slack and mailing lists, TAGs and working groups, and the LFX mentorship program.

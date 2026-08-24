@@ -708,6 +708,8 @@ Two of those come back later. Cluster networking plugins ship as DaemonSets *[cr
 
 The Pod count is a consequence, not a setting. If you specify a node selector or node affinity in the template, the DaemonSet controller creates Pods on nodes matching it; if you specify neither, it creates Pods on all nodes [source: k8s-docs-daemonset-2026-08-24]. The controller creates a Pod for each eligible node [source: k8s-docs-daemonset-2026-08-24]. Supporting this from another direction: horizontal pod autoscaling does not apply to objects that can't be scaled, and the documentation's own example of such an object is a DaemonSet [source: k8s-docs-hpa-2026-08-24].
 
+One more thing to bank, because Chapter 7 collects it. DaemonSets keep running on nodes where nothing else will — nodes the cluster has fenced off from ordinary workloads entirely. And you have already met the mechanism that makes this possible, in disguise: it has been holding those networking and logging agents in place on every node since you first saw them running everywhere in Chapter 3's census. Chapter 7 unmasks it *[cross-bearing: see Ch 7 §4 — taints, tolerations, and the fence DaemonSets step over]*.
+
 <!-- AUTHOR-REVIEW: no cached sentence states in so many words that a DaemonSet has no `replicas` field. The claim is supported by (a) "creates a Pod for each eligible node" [k8s-docs-daemonset-2026-08-24] and (b) the HPA page naming DaemonSet as an object that can't be scaled [k8s-docs-hpa-2026-08-24]. Prose here, in the §7 Fixed Point, and in the Chapter Summary all use the hedged form — the count is a consequence of node eligibility — rather than asserting field absence. The stronger form needs the DaemonSet API reference fetched (research gap G-6A). -->
 
 ### Job — work that ends

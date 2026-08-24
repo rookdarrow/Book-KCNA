@@ -1300,7 +1300,7 @@ Chapter 8 is where the rules you've been learning turn into consequences.
 
 🏆 **Safe Harbor**
 
-You have finished the hardest five points in Part II. Scheduling is the material that most study guides present as a catalogue of six unrelated features, and you have it as one pipeline with two slots.
+You have finished the hardest five points in Part II. Scheduling is easy to meet as a catalogue of six unrelated features. You have it as one pipeline with two slots.
 
 The next time you see a Pod stuck in `Pending`, you will not wonder whether something is broken. You will ask which filter emptied the list, and that is the question a practitioner asks.
 
@@ -1308,6 +1308,6 @@ The next time you see a Pod stuck in `Pending`, you will not wonder whether some
 
 > *"You cannot move a berth once it is assigned. You can only be careful about what you said before it was."*
 
-<!-- AUTHOR-REVIEW: outline Open Question #1 — chapter-02 line 807 carries *[cross-bearing: see Ch 7 §3 — node selection, tolerations, and accounting for overhead]*. Those three topics land in §3, §4 and §2 respectively, so the "§3" is partially wrong. This draft honors the chapter-05 §2 pin exactly and does not attempt to edit shipped Chapter 2 text. Recommended fix remains the one-token deletion of "§3" from that pointer, matching the two other unnumbered Chapter 7 pointers. Not actionable from inside this chapter. -->
+<!-- RESOLVED 2026-08-24: chapter-02's pointer was demoted to chapter level (`see Ch 7 — node selection, tolerations, and accounting for overhead`), which is satisfied by §3/§4/§2 collectively. No edit needed here. -->
 
-<!-- AUTHOR-REVIEW: outline Open Question #11 — this draft back-bears to Ch 6 §1 (Deployments/ReplicaSets) and Ch 6 §7 (DaemonSets) using the ch-06 outline's planned section numbering, since chapter-06's shipped file is incomplete and its final numbering is not verifiable. Re-verify both pointers after the ch-06 harvest is re-run. Note also that Book-KCNA currently ships chapters 01–05 only, so §4's DaemonSet callback and §5's Deployment back-bearing both point at unshipped text — a sequencing decision for the author, not a defect in this chapter. -->
+<!-- RESOLVED 2026-08-24: chapter-06 shipped; §1 (Deployments/ReplicaSets) and §7 (DaemonSets) both verified against final numbering, and ch-06 §7 now plants the DaemonSet-tolerations tease this chapter collects. -->

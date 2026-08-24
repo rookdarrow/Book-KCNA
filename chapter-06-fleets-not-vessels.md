@@ -186,7 +186,7 @@ figures_planned:
 # Chapter 6: Fleets, Not Vessels
 ## *"Nobody sails one Pod"*
 
-**Domain: Kubernetes Fundamentals — Kubernetes Core Concepts [source: cncf-kcna-curriculum-pdf-2026-08-23] | Authored weight: ~6% of this book**
+**Domain: Kubernetes Fundamentals — Kubernetes Core Concepts [source: cncf-kcna-curriculum-pdf-2026-08-23] | Estimated share of the exam: ~6% (authored allocation — CNCF publishes domain weights, not competency weights [source: cncf-kcna-curriculum-pdf-2026-08-23]; see front matter) 
 **Complexity: Mixed | Novelty: Moderate | Prerequisites: Chapters 3, 4, 5**
 
 <!-- AUTHOR-REVIEW: two disclosure items on the metadata line above. (1) The competency ID `D1.1` has been REMOVED. CNCF publishes four domain weights and twelve named competencies with no numbering and no sub-weights [source: cncf-kcna-curriculum-pdf-2026-08-23]; `D1.1` is a Lodestar-internal decomposition (declared as such at book-outline/domain-analysis.md:33) and must not read as a CNCF taxonomy ID in shipped text. (2) The ~6% figure is this book's authored allocation, not a published CNCF weight. Match the exact disclosure phrasing used in the metadata lines of Chapters 2–5 before this ships. -->
@@ -284,7 +284,7 @@ Chapter 5 ended on a question it refused to answer: if Pods are designed to be r
 
 What actually changes here is what kind of person you are at a terminal. Chapter 5 made you someone who can read what infrastructure is telling you. This chapter makes you someone who states what should be true and hands the system responsibility for it. That is the real difference between someone new to Kubernetes and someone who isn't. Newcomers reach for the Pod, then for a script that recreates the Pod, then for a cron entry that checks whether the script ran. Practitioners write down the count and the template and go home. That is a standing order: set down once, carried out by whoever has the watch, long after the person who wrote it has gone below. If you have ever written one of those scripts instead, you already know what it costs to maintain.
 
-The stakes, flat: this competency is roughly six percent of the book's authored allocation, and that number understates the chapter twice. First, this is where the book's spine passes through. Chapter 3 introduced the control loop, this chapter instantiates it, and Chapter 15 generalizes it to a loop whose desired state lives in a Git repository. A reader who does not feel the shape here will meet Chapter 15's synthesis as a fifth list to memorize instead of as a recognition. Second, the workload-resource decision (Deployment or StatefulSet or DaemonSet or Job) reduces to a handful of questions asked in the right order, and the three misconceptions that surround it can all be defused by one figure and one rule.
+The stakes, flat: this competency is roughly six percent of the exam, by this book's authored allocation, and that number understates the chapter twice. First, this is where the book's spine passes through. Chapter 3 introduced the control loop, this chapter instantiates it, and Chapter 15 generalizes it to a loop whose desired state lives in a Git repository. A reader who does not feel the shape here will meet Chapter 15's synthesis as a fifth list to memorize instead of as a recognition. Second, the workload-resource decision (Deployment or StatefulSet or DaemonSet or Job) reduces to a handful of questions asked in the right order, and the three misconceptions that surround it can all be defused by one figure and one rule.
 
 ---
 
@@ -369,7 +369,7 @@ Here is the sentence this section exists to deliver. The Pod you spent all of Ch
 
 One piece of vocabulary you may meet in older material: **ReplicationController**. It is the legacy API for managing workloads that can scale horizontally, superseded by the Deployment and ReplicaSet APIs; a Deployment that configures a ReplicaSet is now the recommended way to set up replication [source: k8s-docs-replicationcontroller-2026-08-24]. ReplicaSets are its successors, serving the same purpose and behaving similarly, except that a ReplicationController does not support set-based selector requirements [source: k8s-docs-replicaset-2026-08-24]. Recognize the word, know it is superseded, move on.
 
-*[cross-bearing: see Ch 14 §2 — a Helm chart's job is to template this object]*
+*[cross-bearing: see Ch 14 — a Helm chart's job is to template this object]*
 
 ---
 
@@ -381,7 +381,7 @@ A ReplicaSet's purpose is to maintain a stable set of replica Pods running at an
 
 Fill in the blanks and you have a ReplicaSet. Desired state is `.spec.replicas`. Current state is how many matching Pods actually exist. When they differ, the ReplicaSet creates or deletes Pods until they don't [source: k8s-docs-replicaset-2026-08-24]. That is Chapter 3's thermostat with the numbers filled in.
 
-*[cross-bearing: see Ch 3 §6 — the control loop, and why nobody is in charge]*
+*[cross-bearing: see Ch 3 §6–§7 — the control loop, and why nobody is in charge]*
 
 ### The demonstration
 
@@ -423,12 +423,12 @@ Now look at what the loop just did. It saw a gap of two between desired and curr
 
 Horizontal scaling means that the response to increased load is to deploy more Pods [source: k8s-docs-hpa-2026-08-24]. When it isn't you writing that number, it is usually a **HorizontalPodAutoscaler**: an API resource plus a controller, running in the control plane, that periodically adjusts the desired scale of its target to match observed metrics such as average CPU utilization [source: k8s-docs-hpa-2026-08-24]. Kubernetes implements it as a control loop that runs intermittently rather than continuously [source: k8s-docs-hpa-2026-08-24]. A ReplicaSet can be an HPA target directly, though in practice you point one at a Deployment [source: k8s-docs-replicaset-2026-08-24].
 
-One sentence is all the HPA gets here. Where its metrics come from and what else can autoscale are later problems. *[cross-bearing: see Ch 13 §4 — metrics-server is what an HPA reads]* *[cross-bearing: see Ch 17 §3 — the autoscaling landscape]*
+One sentence is all the HPA gets here. Where its metrics come from and what else can autoscale are later problems. *[cross-bearing: see Ch 13 — metrics-server is what an HPA reads]* *[cross-bearing: see Ch 17 — the autoscaling landscape]*
 
 One last observation from Chapter 3, now with teeth. Your cluster could be changing at any point as work happens and control loops automatically fix failures, which means that potentially your cluster never reaches a stable state; and as long as the controllers are running and able to make useful changes, it doesn't matter whether the overall state is stable [source: k8s-docs-controllers-2026-08-23]. Kubernetes is not trying to arrive anywhere. It is trying to keep closing gaps.
 
 *[cross-bearing: see Ch 7 §1 — the Pod this loop just created still has to be placed on a node, and sometimes it can't be]*
-*[cross-bearing: see Ch 9 §1 — this churn is exactly why something needs a stable name]*
+*[cross-bearing: see Ch 9 — this churn is exactly why something needs a stable name]*
 
 ---
 
@@ -438,7 +438,7 @@ Chapter 4 taught you label selectors as the universal join and listed the places
 
 ### Membership is a query
 
-A ReplicaSet does not track its Pods by name and does not hold a list. It has a `.spec.selector`, a label selector, using the labels that identify potential Pods to acquire [source: k8s-docs-replicaset-2026-08-24]. The machinery is exactly what Chapter 4 gave you: set-based requirements are expressed through `matchExpressions`, and `matchLabels` is the equality-shaped shorthand, equivalent to `matchExpressions` with the operator `In`; newer resources such as Job, Deployment, ReplicaSet and DaemonSet support both [source: k8s-docs-labels-selectors-2026-08-23]. Nothing new to learn, one new place to apply it. *[cross-bearing: see Ch 4 §5 — labels and selectors, the universal join]*
+A ReplicaSet does not track its Pods by name and does not hold a list. Chapter 4 drew this join once already — figure `ch04-fig03-labels-selectors-join` — and the picture here is the same one, now with an owner on one side. It has a `.spec.selector`, a label selector, using the labels that identify potential Pods to acquire [source: k8s-docs-replicaset-2026-08-24]. The machinery is exactly what Chapter 4 gave you: set-based requirements are expressed through `matchExpressions`, and `matchLabels` is the equality-shaped shorthand, equivalent to `matchExpressions` with the operator `In`; newer resources such as Job, Deployment, ReplicaSet and DaemonSet support both [source: k8s-docs-labels-selectors-2026-08-23]. Nothing new to learn, one new place to apply it. *[cross-bearing: see Ch 4 §5 — labels and selectors, the universal join]*
 
 Its Pods are whichever Pods match. Not "the Pods it made." The ones that match, right now, whoever made them.
 
@@ -482,12 +482,12 @@ The documentation's own advice for the template is blunt: be careful not to over
 >
 > The prevention is a single habit, and it costs nothing: give every workload one label that is genuinely unique to it, and never hand-write a selector by copying somebody else's.
 
-*[cross-bearing: see Ch 9 §2 — a Service selects its backends with the same mechanism, which is a different controller reading the same labels]*
-*[cross-bearing: see Ch 12 §5 — deleting a workload does not delete everything it referenced]*
+*[cross-bearing: see Ch 9 — a Service selects its backends with the same mechanism, which is a different controller reading the same labels]*
+*[cross-bearing: see Ch 12 — deleting a workload does not delete everything it referenced]*
 
 ---
 
-## ☆ Taking Your Bearings #1
+## ☆ Taking Your Bearings #1: Intent, Loops, and Ownership
 
 Five questions on what holds the intent and how it finds its Pods. Two of them reach back to earlier chapters.
 
@@ -534,7 +534,7 @@ If your answer was "the Pod restarts" or "Kubernetes brings it back," soften tha
 
 **4.** Desired state: `.spec.replicas`. Current state: the number of Pods currently matching the ReplicaSet's selector. Action: create or delete Pods until the two agree [source: k8s-docs-replicaset-2026-08-24]. If your answer for current state was "the number of Pods it created," look again at §3. Membership is a query, and a Pod it never created can count toward the total.
 
-**5.** Nothing unusual. They are independent queries over the same labels, and the Pod is simply a member of two sets. The ReplicaSet is asking "is this one of the Pods I am responsible for keeping alive"; the Service is asking "is this one of the Pods I should send traffic to." Neither query knows about the other and neither one owns the Pod on the other's behalf. The documentation draws this distinction explicitly for a related case: a Service uses labels to determine which EndpointSlice objects are used for it, and *in addition* each EndpointSlice carries an owner reference, because ownership and selection are different mechanisms doing different jobs [source: k8s-docs-garbage-collection-2026-08-24].
+**5.** Nothing unusual. They are independent queries over the same labels, and the Pod is simply a member of two sets. The ReplicaSet is asking "is this one of the Pods I am responsible for keeping alive"; the Service is asking "is this one of the Pods I should send traffic to." Neither query knows about the other and neither one owns the Pod on the other's behalf. The documentation draws this distinction explicitly for a related case: a Service uses labels to determine which EndpointSlice objects are used for it, and *in addition* each EndpointSlice carries an owner reference, because ownership and selection are different mechanisms doing different jobs [source: k8s-docs-garbage-collection-2026-08-24]. *[cross-bearing: see Ch 9 — EndpointSlice, the object behind a Service's endpoints]*
 
 If you answered that this is a conflict, or that one of them must win, or that the Pod needs to be released by one before the other can have it, go back to §3's closing distinction. **Ownership is exclusive; selection is not.** A Pod can satisfy any number of independent queries, and none of them own it by doing so. Holding the wrong version of this makes Chapter 9's Services look like they are fighting the workload controller, which they never are.
 
@@ -660,9 +660,9 @@ This is the moment probes stop being a health-checking feature and become a rele
 
 > 🪝 **Snag:** A stalled rollout is not a failed one. The Deployment sits there with both ReplicaSets alive, the old Pods still serving traffic, waiting for a new Pod that will never become ready. Your users see nothing. Your dashboard sees nothing. `kubectl get deployments` shows a ready count that has stopped moving. Nothing will page you unless you asked something to.
 
-The clock on that is `.spec.progressDeadlineSeconds`, the number of seconds to wait for the Deployment to progress before the system reports back that it has failed to progress, surfaced as a condition with `type: Progressing`, `status: "False"` and `reason: ProgressDeadlineExceeded`. It defaults to 600, and the controller keeps retrying regardless [source: k8s-docs-deployment-spec-fields-2026-08-24]. Note what it does and does not do: it produces a *signal*. It does not roll anything back. Reading that signal, and finding out which of the six causes you hit, is a diagnosis skill. *[cross-bearing: see Ch 13 §3 — diagnosing a stuck rollout]*
+The clock on that is `.spec.progressDeadlineSeconds`, the number of seconds to wait for the Deployment to progress before the system reports back that it has failed to progress, surfaced as a condition with `type: Progressing`, `status: "False"` and `reason: ProgressDeadlineExceeded`. It defaults to 600, and the controller keeps retrying regardless [source: k8s-docs-deployment-spec-fields-2026-08-24]. Note what it does and does not do: it produces a *signal*. It does not roll anything back. Reading that signal, and finding out which of the six causes you hit, is a diagnosis skill. *[cross-bearing: see Ch 13 — diagnosing a stuck rollout]*
 
-Rolling updates are the mechanism. There is a whole vocabulary of *release strategies* built on top of them: patterns with names, implemented with tooling that sits above the Deployment object. That vocabulary needs machinery this chapter has not introduced yet. *[cross-bearing: see Ch 15 §4 — blue/green, canary, and A/B, and the tooling that implements them]*
+Rolling updates are the mechanism. There is a whole vocabulary of *release strategies* built on top of them: patterns with names, implemented with tooling that sits above the Deployment object. That vocabulary needs machinery this chapter has not introduced yet. *[cross-bearing: see Ch 15 — blue/green, canary, and A/B, and the tooling that implements them]*
 
 ---
 
@@ -717,8 +717,8 @@ Rolling back a Deployment is not undoing an edit, and it is not restoring a back
 
 Same loop. Same mechanics. Opposite direction.
 
-*[cross-bearing: see Ch 14 §5 — Helm rollback and Deployment rollback are different mechanisms wearing the same word]*
-*[cross-bearing: see Ch 15 §5 — and a third thing, again wearing it]*
+*[cross-bearing: see Ch 14 — Helm rollback and Deployment rollback are different mechanisms wearing the same word]*
+*[cross-bearing: see Ch 15 — and a third thing, again wearing it]*
 
 > ⚠ **Navigational Hazards**
 >
@@ -732,7 +732,7 @@ Same loop. Same mechanics. Opposite direction.
 
 ---
 
-## ☆ Taking Your Bearings #2
+## ☆ Taking Your Bearings #2: Changing the Fleet Under Way
 
 Five questions on changing the fleet and what a change gets recorded as. One reaches back.
 
@@ -743,7 +743,7 @@ B) 13 and 8
 C) 13 and 7
 D) 11 and 9 — the 25% is a single budget split between surge and unavailability
 
-**2.** 🟡 **This one is meant to be hard. If you miss it, you are in the majority, and the miss is worth more to you than a correct guess would have been.** You scale a Deployment from three replicas to six, then run `kubectl rollout history`. How many new revisions do you see, and why?
+**2.** 🟡 **This one is meant to be hard. If you miss it, you are far from alone, and the miss is worth more to you than a correct guess would have been.** You scale a Deployment from three replicas to six, then run `kubectl rollout history`. How many new revisions do you see, and why?
 
 **3.** 🔵 Your application cannot run two versions at once, because the new version applies a schema migration the old version cannot read. Which strategy do you choose, and what exactly are you accepting when you choose it?
 
@@ -765,7 +765,7 @@ Both fields default to 25% [source: k8s-docs-deployment-spec-fields-2026-08-24].
 
 **2. None.** Scaling changes `.spec.replicas`. It does not change `.spec.template`. A new revision is created if and only if the Pod template is changed; other updates, such as scaling, do not create a revision [source: k8s-docs-deployment-2026-08-23].
 
-If you answered "one," you are in good company and you now have the rule in a form you will not lose, because you paid for it. The underlying reason is worth carrying: a revision *is* a ReplicaSet, and a new ReplicaSet is only needed when the kind of Pod changes. Six copies of the same Pod need the same ReplicaSet that three copies needed.
+If you answered "one," you are far from alone, and you now have the rule in a form you will not lose, because you paid for it. The underlying reason is worth carrying: a revision *is* a ReplicaSet, and a new ReplicaSet is only needed when the kind of Pod changes. Six copies of the same Pod need the same ReplicaSet that three copies needed.
 
 **3. `Recreate`, and you are accepting a window of complete unavailability.** All existing Pods are killed before new ones are created [source: k8s-docs-deployment-2026-08-23]. The important half of this answer is the second half. You are not making a mistake; you are trading availability for correctness, because a rolling update would put old code and migrated data in the same room. Schedule it, announce it, and choose it on purpose.
 
@@ -865,11 +865,11 @@ The storage half of this — PersistentVolume, PersistentVolumeClaim, StorageCla
 
 <!-- AUTHOR-REVIEW: two Chapter 11 facts were cut from this paragraph in revision, per the curriculum-alignment stage and research-manifest note 8 — that a StatefulSet's storage must be provisioned by a PV provisioner from the requested storage class or pre-provisioned by an admin, and that deleting or scaling down a StatefulSet does NOT delete the associated volumes [source: k8s-docs-statefulset-2026-08-24]. The second one should move into ch06-fig05's DESIGN BRIEF (not the reader's prose), where it is the cleanest evidence for the figure's requirement that storage belongs to the identity rather than to the Pod. -->
 
-*[cross-bearing: see Ch 11 §4 — PersistentVolumes, claims, and how a Pod's storage follows its identity]*
+*[cross-bearing: see Ch 11 — PersistentVolumes, claims, and how a Pod's storage follows its identity]*
 
-One more open thread, smaller: StatefulSets currently require a Headless Service to be responsible for the network identity of the Pods, and you are responsible for creating it [source: k8s-docs-statefulset-2026-08-24]. What a headless Service is belongs with the rest of Services. *[cross-bearing: see Ch 9 §5 — headless Services and stable DNS names]*
+One more open thread, smaller: StatefulSets currently require a headless Service to be responsible for the network identity of the Pods, and you are responsible for creating it [source: k8s-docs-statefulset-2026-08-24]. What a headless Service is belongs with the rest of Services. *[cross-bearing: see Ch 9 — headless Services and stable DNS names]*
 
-*[cross-bearing: see Ch 16 §3 — debugging StatefulSets and their claims]*
+*[cross-bearing: see Ch 16 — debugging StatefulSets and their claims]*
 
 <!-- AUTHOR-REVIEW: chapter-01 line 435 carries a published cross-bearing reading "*[see Ch 6 §3 — StatefulSets and stable identity]*". StatefulSet is §6 in this chapter, and §3 is pinned by chapter-04 line 688 (selectors and ownership), which cannot move. Per the outline's Open Question #1, the recommended fix is a one-token edit in chapter-01: §3 → §6. Not fixable from inside this draft. -->
 
@@ -887,9 +887,9 @@ Read the first clause again, because the whole resource is in it: *as nodes are 
 
 The workloads overview puts the purpose well: a DaemonSet defines Pods that provide facilities local to nodes, and each Pod performs a job similar to a system daemon on a classic Unix or POSIX server [source: k8s-docs-workloads-2026-08-23]. The typical uses are all recognizably that shape: running a cluster storage daemon on every node, a log-collection daemon on every node, a node-monitoring daemon on every node [source: k8s-docs-daemonset-2026-08-24]. A DaemonSet might be fundamental to the operation of the cluster, such as a plugin to run cluster networking; it might help you manage the node; or it might provide optional behavior that enhances the platform [source: k8s-docs-workloads-2026-08-23].
 
-Two of those come back later. Cluster networking plugins ship as DaemonSets *[cross-bearing: see Ch 9 §7 — CNI plugins and how Pod networking gets implemented]*, and node-level log agents are the canonical observability example *[cross-bearing: see Ch 18 §3 — node-level log collection]*.
+Two of those come back later. Cluster networking plugins ship as DaemonSets *[cross-bearing: see Ch 9 — CNI plugins and how Pod networking gets implemented]*, and node-level log agents are the canonical observability example *[cross-bearing: see Ch 18 — node-level log collection]*.
 
-The Pod count is a consequence, not a setting. If you specify a node selector or node affinity in the template, the DaemonSet controller creates Pods on nodes matching it; if you specify neither, it creates Pods on all nodes [source: k8s-docs-daemonset-2026-08-24]. The controller creates a Pod for each eligible node [source: k8s-docs-daemonset-2026-08-24]. Supporting this from another direction: horizontal pod autoscaling does not apply to objects that can't be scaled, and the documentation's own example of such an object is a DaemonSet [source: k8s-docs-hpa-2026-08-24].
+The Pod count is a consequence, not a setting. If you specify a node selector or node affinity in the template, the DaemonSet controller creates Pods on nodes matching it; if you specify neither, it creates Pods on all nodes [source: k8s-docs-daemonset-2026-08-24]. The controller creates a Pod for each eligible node [source: k8s-docs-daemonset-2026-08-24]. Supporting this from another direction: horizontal pod autoscaling does not apply to objects that can't be scaled, and the documentation's own example of such an object is a DaemonSet [source: k8s-docs-hpa-2026-08-24]. *[cross-bearing: see Ch 7 §3 — nodeSelector and node affinity]*
 
 One more thing to bank, because Chapter 7 collects it. DaemonSets keep running on nodes where nothing else will — nodes the cluster has fenced off from ordinary workloads entirely. And you have already met the mechanism that makes this possible, in disguise: it has been holding those networking and logging agents in place on every node since you first saw them running everywhere in Chapter 3's census. Chapter 7 unmasks it *[cross-bearing: see Ch 7 §4 — taints, tolerations, and the fence DaemonSets step over]*.
 
@@ -962,7 +962,7 @@ The documentation offers the same guidance from the ReplicaSet's side, phrased a
 >
 > Run the tree in Figure 6.5 in order and none of these three can happen, because the tree asks about the work before it asks about the software.
 
-*[cross-bearing: see Ch 7 §5 — a DaemonSet's Pods still go through scheduling, and taints are how a node opts out]*
+*[cross-bearing: see Ch 7 §4 — a DaemonSet's Pods still go through scheduling, and taints are how a node opts out]*
 
 ---
 
@@ -978,7 +978,7 @@ A resource is an endpoint in the Kubernetes API that stores a collection of API 
 
 A **custom resource** is an extension of the Kubernetes API that is not necessarily available in a default Kubernetes installation; it represents a customization of a particular installation. Custom resources can appear and disappear in a running cluster through **dynamic registration**, and cluster admins can update them independently of the cluster itself [source: k8s-docs-custom-resources-2026-08-23].
 
-Here is the clause that makes it click: once a custom resource is installed, users create and access its objects using `kubectl`, **just as they do for built-in resources like Pods** [source: k8s-docs-custom-resources-2026-08-23]. Nothing about the tooling changes. `kubectl get`, `kubectl describe`, `kubectl apply`, labels, selectors, namespaces, RBAC, all of it works on the new kind, because the new kind lives in the same API.
+Here is the clause that makes it click: once a custom resource is installed, users create and access its objects using `kubectl`, **just as they do for built-in resources like Pods** [source: k8s-docs-custom-resources-2026-08-23]. Nothing about the tooling changes. `kubectl get`, `kubectl describe`, `kubectl apply`, labels, selectors, namespaces, RBAC, all of it works on the new kind, because the new kind lives in the same API. *[cross-bearing: see Ch 12 — RBAC, where this permission model is taught]*
 
 ### The object that does the installing
 
@@ -1002,7 +1002,7 @@ That is Chapter 3's control loop, written by someone who is not the Kubernetes p
 
 > 🪝 **Snag:** "We installed the CRD, created an object of the new kind, and nothing happened." That is the correct behavior. There is no controller. You gave the cluster a new noun and no verb.
 >
-> **Name this shape, because you are going to meet it again.** *The object exists but nothing happens without the component.* An Ingress with no ingress controller is the same shape. `kubectl top` with no metrics-server is the same shape. A vertical autoscaler that isn't shipped by default is the same shape. It is not four gotchas. It is one rule with four instances, and the rule is that Kubernetes will happily accept a record of intent that nothing in the cluster is currently able to act on. *[cross-bearing: see Ch 10 §4 — Ingress without an ingress controller]* *[cross-bearing: see Ch 13 §2 — `kubectl top` without metrics-server]*
+> **Name this shape, because you are going to meet it again.** *The object exists but nothing happens without the component.* An Ingress with no ingress controller is the same shape. `kubectl top` with no metrics-server is the same shape. A vertical autoscaler that isn't shipped by default is the same shape. It is not four gotchas. It is one rule with four instances, and the rule is that Kubernetes will happily accept a record of intent that nothing in the cluster is currently able to act on. *[cross-bearing: see Ch 10 — Ingress without an ingress controller]* *[cross-bearing: see Ch 13 — `kubectl top` without metrics-server]*
 
 ### The pattern, named
 
@@ -1029,16 +1029,16 @@ The thing that extends Kubernetes is itself deployed *by* Kubernetes, using the 
 
 Chapter 2 showed you the move: Kubernetes defines an interface and lets the ecosystem implement it. You met it with the container runtime, with networking, and with storage, and you were told you would meet it once more at the API layer. This is that. The published extension points list **API extensions, Custom Resource Definitions (CRDs) and the API aggregation layer,** as one of six categories, alongside controllers, scheduling extensions, API access extensions, kubectl plugins, and infrastructure extensions [source: k8s-docs-extending-kubernetes-2026-08-23].
 
-Four sockets, one pattern. Collecting them into a single statement about what kind of system Kubernetes is belongs later, when you have met all four in their own contexts. *[cross-bearing: see Ch 17 §6 — CRI, CNI, CSI and CRDs, resolved into one story]*
+Four sockets, one pattern. Collecting them into a single statement about what kind of system Kubernetes is belongs later, when you have met all four in their own contexts. *[cross-bearing: see Ch 17 — CRI, CNI, CSI and CRDs, resolved into one story]*
 
 > 🔭 **Closer Look:** CRDs are not the only route to a custom API. The other is API-server aggregation, which offers more flexibility at the cost of writing and operating more of the API machinery yourself [source: k8s-docs-custom-resources-2026-08-23]. For this book's purposes: CRD is the common path, aggregation is the rarer one, and knowing that both exist is enough.
 
-*[cross-bearing: see Ch 14 §6 — why Helm charts have a `crds/` directory]*
-*[cross-bearing: see Ch 15 §3 — a delivery tool that is, structurally, a controller acting on custom resources]*
+*[cross-bearing: see Ch 14 — why Helm charts have a `crds/` directory]*
+*[cross-bearing: see Ch 15 — a delivery tool that is, structurally, a controller acting on custom resources]*
 
 ---
 
-## ☆ Taking Your Bearings #3
+## ☆ Taking Your Bearings #3: The Rest of the Fleet, and Extending It
 
 Five questions on the rest of the family and the pattern extended.
 
@@ -1063,7 +1063,7 @@ D) No — CRD objects take up to ten minutes to register.
 
 **1.** No. The deciding property is whether the Pods are **interchangeable**. A Deployment's Pods can mount volumes and write to them; what a Deployment assumes is that any Pod in it can be replaced by any other [source: k8s-docs-workloads-2026-08-23]. A StatefulSet exists for Pods that are created from the same spec but are *not* interchangeable, each carrying a persistent identifier across rescheduling [source: k8s-docs-statefulset-2026-08-24].
 
-The wrong version of this answer, "yes, disk means StatefulSet," is worth naming because it is the one most people arrive with, and it fails in both directions. It puts unnecessary machinery around stateless services that happen to cache to disk, and it leaves genuinely identity-dependent workloads in Deployments, where a routine Pod replacement quietly returns the wrong data.
+The wrong version of this answer, "yes, disk means StatefulSet," is worth naming because it is an easy one to arrive with, and it fails in both directions. It puts unnecessary machinery around stateless services that happen to cache to disk, and it leaves genuinely identity-dependent workloads in Deployments, where a routine Pod replacement quietly returns the wrong data.
 
 **2.** A DaemonSet does not express a count. The controller creates a Pod for each eligible node [source: k8s-docs-daemonset-2026-08-24], so the Pod count is a consequence of how many nodes match, which is a property of the cluster and changes as nodes join and leave [source: k8s-docs-daemonset-2026-08-24]. On a nine-node cluster you would get nine, not six, and on a cluster that grew to twenty you would get twenty. Supporting evidence from another angle: horizontal pod autoscaling explicitly does not apply to a DaemonSet, because it is not an object that can be scaled [source: k8s-docs-hpa-2026-08-24].
 
@@ -1142,7 +1142,7 @@ Take Chapter 3's control loop, the one you retrieved in Soundings question 7 and
 
 And now the part that carries forward. That shape is not a Kubernetes implementation detail, a way the maintainers happened to build some controllers. It is what Kubernetes *is*. §8 already showed you that anyone can write a controller: read an object's `.spec`, do things, write its `.status` [source: k8s-docs-extending-kubernetes-2026-08-23]. There is no line in the architecture separating the loops Kubernetes ships from the loops you write.
 
-Which means the last question left is where the desired state lives. So far it has always lived in the cluster: an object you created with `kubectl apply`, stored by the API server, watched by a controller. There is no rule that says it has to. *[cross-bearing: see Ch 15 §6 — a controller whose desired state lives in a Git repository, and why that is the same technology rather than a new one]*
+Which means the last question left is where the desired state lives. So far it has always lived in the cluster: an object you created with `kubectl apply`, stored by the API server, watched by a controller. There is no rule that says it has to. *[cross-bearing: see Ch 15 — a controller whose desired state lives in a Git repository, and why that is the same technology rather than a new one]*
 
 When you meet that, it will look like a new idea for about ten seconds.
 
@@ -1150,7 +1150,7 @@ Which returns you to the title. Nobody sails one Pod, not because a single Pod i
 
 ---
 
-## Exam Alert
+## Exam Alert! 🚨
 
 **High-priority topics, in descending order of how much of this chapter depends on them.**
 

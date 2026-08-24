@@ -440,7 +440,7 @@ chapters:
         duration_seconds: 791.2644923999978
   4:
     number: 4
-    current_stage: 15
+    current_stage: 6
     pending_gate: null
     adopted_from: null
     stages:

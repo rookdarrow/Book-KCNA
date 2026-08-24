@@ -433,7 +433,7 @@ Four smaller glyphs appear inline, mid-prose, as short asides:
 
 Two sidebar types run longer: **Logbook Entry** (a story from practice) and **Extended Analogy** (a metaphor developed at length). Both are opt-in depth; you can skip either without losing the thread.
 
-And throughout, you'll see italic bracketed pointers like *[cross-bearing: see Ch 6 §3 — StatefulSets and stable identity]*. These are cross-bearings: forward and back references to where a concept gets its full treatment. Follow them or don't; they're there so you're never stuck wondering "did the book cover this?"
+And throughout, you'll see italic bracketed pointers like *[cross-bearing: see Ch 6 §6 — StatefulSets and stable identity]*. These are cross-bearings: forward and back references to where a concept gets its full treatment. Follow them or don't; they're there so you're never stuck wondering "did the book cover this?"
 
 Difficulty is marked on section headings: ⚪ Foundation, 🔵 Standard, 🟡 Advanced, 🔴 Expert.
 

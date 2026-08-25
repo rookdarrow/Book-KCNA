@@ -1,5 +1,5 @@
 book_key: kcna
-current_stage: 6
+current_stage: 8
 pending_gate: null
 stages:
   1:
@@ -26,4 +26,14 @@ stages:
     status: completed
     completed_at: '2026-08-24T03:29:18+00:00'
     output_path: C:\dev\lodestar\certcomp\..\Book-KCNA\.pipeline-state\book-outline\arc-outline.md
+    error: null
+  6:
+    status: completed
+    completed_at: '2026-08-25T01:55:57+00:00'
+    output_path: C:\dev\lodestar\certcomp\..\Book-KCNA\.pipeline-state\book-outline\section-skeleton.md
+    error: null
+  7:
+    status: completed
+    completed_at: '2026-08-25T02:09:20+00:00'
+    output_path: C:\dev\lodestar\certcomp\..\Book-KCNA\.pipeline-state\book-outline\term-ownership.md
     error: null

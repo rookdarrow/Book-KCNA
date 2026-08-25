@@ -1168,3 +1168,39 @@ chapters:
         model_id: opus
         prompt_tokens_est: 67548
         duration_seconds: 706.7149693999963
+  9:
+    number: 9
+    current_stage: 4
+    pending_gate: null
+    adopted_from: null
+    stages:
+      1:
+        status: completed
+        started_at: '2026-08-25T00:35:53+00:00'
+        completed_at: '2026-08-25T00:52:24+00:00'
+        output_path: C:\dev\lodestar\certcomp\..\Book-KCNA\.pipeline-state\ch-09\outline.md
+        gate_cleared: false
+        error: null
+        model_id: opus
+        prompt_tokens_est: 37286
+        duration_seconds: 990.9927815999981
+      2:
+        status: completed
+        started_at: '2026-08-25T00:52:25+00:00'
+        completed_at: '2026-08-25T01:03:49+00:00'
+        output_path: C:\dev\lodestar\certcomp\..\Book-KCNA\.pipeline-state\ch-09\research-manifest.md
+        gate_cleared: false
+        error: null
+        model_id: opus
+        prompt_tokens_est: 33354
+        duration_seconds: 683.8477896999975
+      3:
+        status: completed
+        started_at: '2026-08-25T01:03:49+00:00'
+        completed_at: '2026-08-25T01:12:38+00:00'
+        output_path: C:\dev\lodestar\certcomp\..\Book-KCNA\.pipeline-state\ch-09\draft-v1.md
+        gate_cleared: false
+        error: null
+        model_id: opus
+        prompt_tokens_est: 93180
+        duration_seconds: 528.2992230999953

@@ -1170,8 +1170,8 @@ chapters:
         duration_seconds: 706.7149693999963
   9:
     number: 9
-    current_stage: 11
-    pending_gate: null
+    current_stage: 12
+    pending_gate: revision
     adopted_from: null
     stages:
       1:
@@ -1275,12 +1275,12 @@ chapters:
         prompt_tokens_est: 41527
         duration_seconds: 380.3032577999984
       11:
-        status: failed
-        started_at: '2026-08-25T01:50:39+00:00'
-        completed_at: '2026-08-25T02:04:27+00:00'
-        output_path: C:\dev\lodestar\certcomp\..\Book-KCNA\.pipeline-state\ch-09\draft-v2.md
+        status: completed
+        started_at: '2026-08-25T03:27:45+00:00'
+        completed_at: '2026-08-25T03:27:45+00:00'
+        output_path: C:\dev\lodestar\Book-KCNA\.pipeline-state\ch-09\draft-v2.md
         gate_cleared: false
         error: null
-        model_id: opus
-        prompt_tokens_est: 131757
-        duration_seconds: 827.8938149999885
+        model_id: null
+        prompt_tokens_est: null
+        duration_seconds: null

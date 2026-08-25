@@ -1,3 +1,191 @@
+---
+chapter: 9
+chapter_type: "content"
+title: "Every Pod Has an Address"
+subtitle: "Flat networks, stable names, and the abstraction that survives churn"
+exam_domain: "Container Orchestration (competency: Networking)"
+domain_weight_pct: 7
+complexity: "mixed"
+novelty: "moderate"
+prereq_factor: "standard"
+
+#-- SUBTITLE NOTE. The arc outline's working subtitle is "Flat networks,
+#-- stable names, and the abstraction that makes churn survivable" —
+#-- eleven words against this stage's ≤10-word constraint. Tightened
+#-- above to ten by collapsing "makes churn survivable" to "survives
+#-- churn". All three ideas intact, and the shorter verb lands harder.
+#-- See § Open questions #1.
+
+#-- NOVELTY NOTE. Chapter-level label is `moderate`, but §1 alone is
+#-- genuinely paradigm-shifting for the reader this book is written for.
+#-- An ops professional arrives knowing that machines sit behind NAT,
+#-- that ports get mapped, that reaching a process means reaching a host
+#-- and then a port on it. §1 tells them none of that is true here: every
+#-- Pod is directly routable from every other Pod, no NAT, no proxies.
+#-- That is a model replacement, not a model extension. Drafting should
+#-- treat §1 with the arousal budget of a paradigm shift even though the
+#-- chapter as a whole does not warrant the label.
+
+#-- PREREQ NOTE. `standard`, not `heavy`. B2 calls D2.1 "the most
+#-- prerequisite-hungry of D2's four competencies", but every one of
+#-- those prerequisites is internal and recent — Ch 4 (selectors),
+#-- Ch 5 (Pod network namespace), Ch 6 (churn under controllers). No
+#-- external knowledge is assumed beyond ordinary networking literacy.
+
+#-- Section plan (no word budgets) ---------------------------------------
+#-- Length is content-driven. Arc-outline depth band: "substantial" — 7
+#-- points, largest of D2's competencies. Planning signal only, NOT a
+#-- target.
+#--
+#-- ⚠ SECTION NUMBERING IS LOAD-BEARING. Thirteen published cross-bearings
+#-- point into this chapter — more than at any chapter so far — and TWO
+#-- of them name a section by number:
+#--   chapter-02 line 600 → *[cross-bearing: see Ch 9 §1 — CNI and pod networking]*
+#--   chapter-05 line 858 → *[cross-bearing: see Ch 9 §4 — readiness and Service endpoint membership]*
+#-- §1 and §4 below honour those exactly. Do not renumber without editing
+#-- chapter-02 and chapter-05. Verified 2026-08-24 against chapters 02-08.
+sections:
+  - name: "Four Rules and a Plugin"
+    objectives: ["D2.1"]
+    requires_figure: true
+    figure_anchor: "ch09-fig01-network-model-four-rules"
+    checkpoint_after: false
+  - name: "The Address That Doesn't Last"
+    objectives: ["D2.1"]
+    requires_figure: false
+    figure_anchor: null
+    checkpoint_after: false
+  - name: "Four Ways to Be Reachable"
+    objectives: ["D2.1"]
+    requires_figure: true
+    figure_anchor: "ch09-fig02-service-types-ladder"
+    checkpoint_after: true
+  - name: "The List Behind the Name"
+    objectives: ["D2.1"]
+    requires_figure: true
+    figure_anchor: "ch09-fig03-service-endpointslice-selector-path"
+    checkpoint_after: false
+  - name: "When You Don't Want a Single Address"
+    objectives: ["D2.1"]
+    requires_figure: false
+    figure_anchor: null
+    checkpoint_after: true
+  - name: "The Component That Makes It Real"
+    objectives: ["D2.1"]
+    requires_figure: true
+    figure_anchor: "ch09-fig04-kube-proxy-modes"
+    checkpoint_after: false
+  - name: "Names, and Where They Resolve"
+    objectives: ["D2.1"]
+    requires_figure: true
+    figure_anchor: "ch09-fig05-dns-record-shapes"
+    checkpoint_after: true
+  - name: "A Query With a Name"
+    objectives: ["D2.1"]
+    requires_figure: true
+    figure_anchor: "ch09-zenith-stable-name-over-churn"
+    checkpoint_after: false
+
+#-- Eight sections, matching Chapter 8's count for two more points. The
+#-- shape is different, though: Chapter 8 had four unrelated arcs held
+#-- together by a spine. This chapter has ONE arc — a packet's question,
+#-- "how do I reach that" — asked at eight increasing levels of
+#-- resolution. Fold options considered and rejected in § Open questions #10.
+
+#-- Skill v5.3 Part 11: Soundings pre-chapter diagnostic ------------------
+soundings_planned:
+  question_count: 8
+  topics:
+    - "three interchangeable copies of a service, one replaced with a new address — what a client needs so it doesn't have to be told"
+    - "retrieval from Ch 5 — two containers in one Pod, both wanting port 8080, and how either reaches the other"
+    - "retrieval from Ch 6 — a rolling update replaces every Pod; what happens to a client holding one of the old addresses"
+    - "retrieval from Ch 4 and Ch 6 — a selector as a query over labels, and what a second controller reading the same labels would be doing"
+    - "retrieval from Ch 4 — the Service DNS name form Ch 4 gave in one sentence, and what a bare name does across a namespace boundary"
+    - "NAT and address translation in ordinary networks — what the receiving process sees as the source, and why that is inconvenient"
+    - "a platform that manages containers but ships no networking of its own — why a system would be built that way"
+    - "exposing something inside a private network to the outside — the mechanisms, and who supplies the box that terminates the connection"
+
+#-- Skill v5.3 Part 8: practice-question budget ---------------------------
+#-- B4 allocates 8 / 10 / 21 = 39 and states the Bearings figure is a
+#-- minimum to exceed. Set at 15 across three checkpoints of 5, matching
+#-- the shape shipped by Chapters 3-8. Chapter total 39 -> 44.
+question_budget:
+  soundings: 8
+  taking_your_bearings: 15             # across 3 checkpoints (5 + 5 + 5)
+  practice_questions: 21
+  total_this_chapter: 44
+
+#-- Concept / objective / command tagging --------------------------------
+kb_tags:
+  objectives: ["D2.1"]
+  concepts:
+    - "network-model"
+    - "pod-ip"
+    - "cluster-wide-ip"
+    - "pod-network-namespace"
+    - "localhost-communication"
+    - "pod-network"
+    - "cluster-network"
+    - "no-nat-rule"
+    - "node-agent-reachability"
+    - "cni"
+    - "container-network-interface"
+    - "network-plugin"
+    - "network-unavailable-condition"
+    - "service"
+    - "stable-endpoint"
+    - "service-selector"
+    - "clusterip"
+    - "virtual-ip"
+    - "nodeport"
+    - "loadbalancer"
+    - "externalname"
+    - "cname-record"
+    - "service-type-ladder"
+    - "endpointslice"
+    - "endpointslice-controller"
+    - "endpoints-controller"
+    - "readiness-gated-membership"
+    - "terminating-endpoint"
+    - "headless-service"
+    - "cluster-ip-none"
+    - "service-without-selector"
+    - "manually-managed-endpointslice"
+    - "service-proxy"
+    - "kube-proxy"
+    - "kube-proxy-modes"
+    - "iptables-mode"
+    - "ipvs-mode"
+    - "nftables-mode"
+    - "kernelspace-mode"
+    - "kube-proxy-optional"
+    - "cluster-dns"
+    - "coredns"
+    - "dns-addon"
+    - "service-dns-record"
+    - "a-record"
+    - "aaaa-record"
+    - "srv-record"
+    - "pod-dns-record"
+    - "dns-search-list"
+    - "fqdn"
+    - "cluster-domain"
+    - "dns-policy"
+    - "cluster-first"
+  commands:
+    - "kubectl-get-services"
+    - "kubectl-describe-service"
+    - "kubectl-get-endpointslices"
+
+figures_planned:
+  - "ch09-fig01-network-model-four-rules"
+  - "ch09-fig02-service-types-ladder"
+  - "ch09-fig03-service-endpointslice-selector-path"
+  - "ch09-fig04-kube-proxy-modes"
+  - "ch09-fig05-dns-record-shapes"
+  - "ch09-zenith-stable-name-over-churn"
+---
+
 # Chapter 9: Every Pod Has an Address
 ## *"Flat networks, stable names, and the abstraction that survives churn"*
 

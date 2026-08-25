@@ -1286,8 +1286,8 @@ chapters:
         duration_seconds: null
   10:
     number: 10
-    current_stage: 12
-    pending_gate: revision
+    current_stage: 13
+    pending_gate: null
     adopted_from: null
     stages:
       1:

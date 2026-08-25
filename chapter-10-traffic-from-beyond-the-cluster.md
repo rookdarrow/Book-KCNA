@@ -233,7 +233,7 @@ figures_planned:
 - **Medium:** New concepts requiring focus — study when alert
 - **High:** Abstract or complex material — study at peak attention
 
-**The session split goes between §5 and §6.** This chapter is two chapters wearing one number: an API-generations arc (§1–§5) and a policy arc (§6–§7), joined at §8. §6 asks you to unlearn a firewall instinct you have probably held for a decade, and it will land better on a fresh head than on a tired one. The split puts roughly 66 minutes before the break and 58 after it, the last 25 of which are the Exam Alert and the practice set — which you can take as a third sitting if the second runs long.
+**The session split goes between §5 and §6.** This chapter is two chapters wearing one number: an API-generations arc (§1–§5) and a policy arc (§6–§7), joined at §8. §6 asks you to unlearn a firewall instinct you have probably held for a decade, and it will land better on a fresh head than on a tired one. The split puts roughly 66 minutes before the break and 58 after it, the last 25 of which are the Exam Alert and the practice set. Take those as a third sitting if the second runs long.
 
 *If you only have 15 minutes: read §6. It is the section most likely to overturn something you currently believe, and believing it costs you points. If you have 35, add §3 and §4 and take Bearings #3 — the controller rule, the freeze, and the policy defaults, plus the checkpoint that tests the hardest of the three.*
 
@@ -360,7 +360,7 @@ Keep this boundary marked. It is not decoration and it is not only about §2. §
 
 Two words from ordinary industry vocabulary that this book has not used yet. They make the shape of this chapter sayable in one sentence.
 
-**North-south** traffic enters the cluster from outside. **East-west** traffic moves between Pods inside it. Those two definitions are the industry's, not the project's — what the Kubernetes project supplies is the pairing, in a blog post on Gateway API rather than in the reference documentation, describing the API's initial focus as ingress, "north-south," traffic, and service mesh as the "east-west" case [source: k8s-blog-gateway-api-north-south-east-west-2026-08-24].
+**North-south** traffic enters the cluster from outside. **East-west** traffic moves between Pods inside it. Those two definitions are the industry's, not the project's. What the Kubernetes project supplies is the pairing, in a blog post on Gateway API rather than in the reference documentation, describing the API's initial focus as ingress, "north-south," traffic, and service mesh as the "east-west" case [source: k8s-blog-gateway-api-north-south-east-west-2026-08-24].
 
 This chapter does one of each. §1 through §5 are about north-south. §6 and §7 are about east-west.
 
@@ -533,7 +533,7 @@ Compare the two manifests side by side. They put the same number of Services beh
    ▲▲▲ marks the part of the request the rule matched on.
 ```
 
-**TLS.** You can secure an Ingress by specifying a **Secret that contains a TLS private key and certificate** [source: k8s-docs-ingress-depth-2026-08-24]. The Ingress resource supports a single TLS port, 443, and **assumes TLS termination at the ingress point — traffic to the Service and its Pods is in cleartext** [source: k8s-docs-ingress-depth-2026-08-24]. The TLS Secret must contain keys named `tls.crt` and `tls.key` [source: k8s-docs-ingress-depth-2026-08-24], and the documentation's example Secret is of type `kubernetes.io/tls` — the Secret type Chapter 4 catalogued *[cross-bearing: see Ch 4 §4 — Secret types, including `kubernetes.io/tls`]*.
+**TLS.** You can secure an Ingress by specifying a **Secret that contains a TLS private key and certificate** [source: k8s-docs-ingress-depth-2026-08-24]. The Ingress resource supports a single TLS port, 443, and **assumes TLS termination at the ingress point — traffic to the Service and its Pods is in cleartext** [source: k8s-docs-ingress-depth-2026-08-24]. The TLS Secret must contain keys named `tls.crt` and `tls.key` [source: k8s-docs-ingress-depth-2026-08-24], and the documentation's example Secret is of type `kubernetes.io/tls`, the Secret type Chapter 4 catalogued *[cross-bearing: see Ch 4 §4 — Secret types, including `kubernetes.io/tls`]*.
 
 ```yaml
 apiVersion: networking.k8s.io/v1
@@ -622,7 +622,7 @@ Chapter 3 gave you a sentence and asked you to keep it:
 
 It also told you that you would meet it four more times. This is the first of those four, and Chapter 3 published the pointer to this exact paragraph *[cross-bearing: see Ch 3 §4 — addons, and what else is optional]*.
 
-Two counts run through this chapter, and they are not the same count. Chapter 3's four are the instances it lined up ahead of you: this one, one more in §7, and two in chapters still to come. The other count is your own — the instances you have personally watched fail. That one started last chapter, and it currently stands at two.
+Two counts run through this chapter, and they are not the same count. Chapter 3's four are the instances it lined up ahead of you: this one, one more in §7, and two in chapters still to come. The other count is your own, the instances you have personally watched fail. That one started last chapter, and it currently stands at two.
 
 You do not have to take the rule on faith, because you have already collected that evidence. Last chapter, twice:
 
@@ -652,7 +652,7 @@ spec:
     name: external-lb
 ```
 
-If you do not specify an IngressClass on an Ingress and your cluster has **exactly one** IngressClass marked as default, Kubernetes applies that default [source: k8s-docs-ingress-controllers-2026-08-24]. You mark one as default by setting the `ingressclass.kubernetes.io/is-default-class` annotation to the string `"true"` [source: k8s-docs-ingress-controllers-2026-08-24]. Some ingress controllers work even without a default IngressClass defined; even so, the Kubernetes project still recommends that you define one [source: k8s-docs-ingress-depth-2026-08-24].
+If you do not specify an IngressClass on an Ingress and your cluster has **exactly one** IngressClass marked as default, Kubernetes applies that default [source: k8s-docs-ingress-controllers-2026-08-24]. You mark one as default by setting the `ingressclass.kubernetes.io/is-default-class` annotation to the string `"true"` [source: k8s-docs-ingress-controllers-2026-08-24]. If more than one IngressClass carries that marking, an Ingress that omits `ingressClassName` cannot be created at all; the resolution is to ensure at most one is marked default [source: k8s-docs-ingress-depth-2026-08-24]. Some ingress controllers work even without a default IngressClass defined; even so, the Kubernetes project still recommends that you define one [source: k8s-docs-ingress-depth-2026-08-24].
 
 ### The honest note
 
@@ -714,9 +714,9 @@ Nothing here is a mistake on your colleague's part. The manifest is correct, the
 
 Setting the `ingressclass.kubernetes.io/is-default-class` annotation to the string `"true"` on an IngressClass makes it the cluster default, and new Ingresses that do not specify an `ingressClassName` are assigned that class [source: k8s-docs-ingress-depth-2026-08-24]. The condition is **exactly one**. If more than one IngressClass is marked default, an Ingress that omits `ingressClassName` cannot be created; the resolution is to ensure at most one carries the marking [source: k8s-docs-ingress-depth-2026-08-24].
 
-The instinct to correct: more defaults feels like more coverage. It is the opposite. Two defaults do not give an unclassed Ingress two chances to be adopted — they take away the one chance it had, because the cluster now has no way to choose.
+The instinct to correct: more defaults feels like more coverage. It is the opposite. Two defaults do not give an unclassed Ingress two chances to be adopted. They take away the one chance it had, because the cluster now has no way to choose.
 
-Worth holding next to question 3. Both are the same failure in the end — an object that never reaches a controller. But this one fails at the moment you apply it, and that one applies cleanly and then quietly does nothing. Only one of them tells you.
+Worth holding next to question 3. Both are the same failure in the end, an object that never reaches a controller. But this one fails at the moment you apply it, and that one applies cleanly and then quietly does nothing. Only one of them tells you.
 
 <!-- AUTHOR-REVIEW: B1.4 was repointed off reference-specification drift (P9 tests that better, and §3 teaches it in prose) onto IngressClass and the default-class mechanism, per the question-quality audit — IngressClass otherwise reaches only one question in the chapter. The item assumes §3 states the consequence of a second default: an Ingress omitting `ingressClassName` can no longer be created. That fact is in k8s-docs-ingress-depth-2026-08-24 and verified by the fact-accuracy audit, but if §3's prose stops at the annotation and the single-default assignment, add the one clause there rather than softening the question. -->
 
@@ -788,13 +788,13 @@ Kubernetes has said one of these about Ingress and not the other, and the choice
 
 *Recommends* is not *requires*.
 
-Here is the recommendation exactly as the documentation states it, with nothing attached to it: **the Kubernetes project recommends using Gateway instead of Ingress** [source: k8s-docs-ingress-depth-2026-08-24]. Not *for new work*. Not *by some deadline*. Not *unless you have a reason*. One unqualified sentence — and what sits beside it is equally unqualified: the project has not deprecated Ingress, has announced no removal, and continues to extend it the stability guarantees that GA APIs carry. A light has been hung on the new channel; the old one has not been closed.
+Here is the recommendation as the documentation states it, with nothing attached: **the Kubernetes project recommends using Gateway instead of Ingress** [source: k8s-docs-ingress-depth-2026-08-24]. Not *for new work*. Not *by some deadline*. Not *unless you have a reason*. One unqualified sentence. What sits beside it is equally unqualified: the project has not deprecated Ingress, has announced no removal, and continues to extend it the stability guarantees that GA APIs carry. A light has been hung on the new channel; the old one has not been closed.
 
 Where that leaves you in practice is a second question, and the answer to it is this book's reading rather than the project's wording: **do not panic about what you are running, and think hard before building something new on an API that will never gain a feature again.** If you have heard the recommendation summarised as *"use Gateway for new work"* — including elsewhere in this chapter — that framing is a practitioner's gloss on the second bullet, not a scope the documentation supplies. The documentation says *instead of*, and stops there.
 
 Keep the two apart. On an exam, you are being asked what the project said, not what a sensible engineer does about it.
 
-That is the whole of it. The project said what it said, precisely, and the reasoning behind the decision is not this book's to supply.
+The project said what it said, precisely. The reasoning behind the decision is not this book's to supply.
 
 *[cross-bearing: see Ch 8 §6 — semantic versioning and API stability, which is the vocabulary this section spends]*
 
@@ -979,7 +979,7 @@ An answer carrying only one half is wrong, because one half is precisely the err
 
 And it is worth saying *why* both halves matter rather than just repeating them. The stability half means there is **no migration emergency**: what you are running keeps working, keeps being supported, and is not scheduled for removal. The no-development half means there is **no future capability**: whatever gap you find in Ingress today is permanent. Those two facts drive different decisions, one about existing systems, one about new ones, and that is exactly why the project stated both.
 
-**2. False, on both counts.** Ingress has not been deprecated, and there are no plans to remove it [source: k8s-docs-ingress-depth-2026-08-24]. What has been said is that it will not be developed further, and that the Kubernetes project recommends using Gateway instead of Ingress [source: k8s-docs-ingress-depth-2026-08-24]. Take that recommendation in the project's own words rather than a softened paraphrase of them — §4 gave the operational reading of what a recommendation does and does not oblige you to do, and the reading is the book's, not the documentation's.
+**2. False, on both counts.** Ingress has not been deprecated, and there are no plans to remove it [source: k8s-docs-ingress-depth-2026-08-24]. What has been said is that it will not be developed further, and that the Kubernetes project recommends using Gateway instead of Ingress [source: k8s-docs-ingress-depth-2026-08-24]. Take that recommendation in the project's own words rather than a softened paraphrase of them. §4 gave the operational reading of what a recommendation does and does not oblige you to do, and the reading is the book's, not the documentation's.
 
 The wrong answer to watch for is the one that reasons from feel: "no longer developed" *feels* like deprecation, so a reader who has absorbed the second half of question 1 answers this one wrong. In Kubernetes, deprecation is a formally defined process with published rules about removal timelines [source: k8s-docs-deprecation-policy-2026-08-24], and the project did not invoke it here.
 
@@ -1306,7 +1306,7 @@ Hold on to the phrasing about subtraction. Chapter 12 retrieves this exact seman
 
 **4. No.** For a connection from a source Pod to a destination Pod to be allowed, both the egress policy on the source and the ingress policy on the destination must allow it; if either side does not, the connection will not happen [source: k8s-docs-network-policies-depth-2026-08-24].
 
-`frontend`'s egress policy is correct and permits exactly what it should. It is also irrelevant on its own, because `api` never granted `frontend` anything. A clearance to depart is not a clearance to enter — the far harbour issues its own, and this one did not. Two objects, both individually sensible, and the connection still fails, which is why this rule costs practitioners so much time.
+`frontend`'s egress policy is correct and permits exactly what it should. It is also irrelevant on its own, because `api` never granted `frontend` anything. A clearance to depart is not a clearance to enter: the far harbour issues its own, and this one did not. Two objects, both individually sensible, and the connection still fails, which is why this rule costs practitioners so much time.
 
 **5. Either: the network plugin does not implement NetworkPolicy, so the resource has no effect at all; or the traffic falls under one of the unconditional exceptions — a Pod cannot block access to itself, and traffic to and from its own node is always allowed** [source: k8s-docs-network-policies-depth-2026-08-24].
 
@@ -1872,4 +1872,3 @@ One last thing to carry across the chapter boundary. You will meet several objec
 You know what question to ask about that now.
 
 > *"An object is a record of intent. Intent does not act. Something has to be watching."*
-

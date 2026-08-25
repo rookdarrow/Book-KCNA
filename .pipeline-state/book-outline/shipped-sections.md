@@ -1,7 +1,8 @@
-# Shipped chapter section headings (mechanically extracted 2026-08-25)
+# Shipped chapter section headings (mechanically extracted)
 
 ## Ch 1 — Taking Departure  [SHIPPED]
 
+| (none) | this chapter carries no numbered sections |
 
 ## Ch 2 — Cargo in Standard Crates  [SHIPPED]
 
@@ -77,4 +78,26 @@
 | §6 | Versions That Are Allowed to Disagree |
 | §7 | The One Backup That Matters |
 | §8 | Rules, or Consequences |
+
+## Ch 9 — Every Pod Has an Address  [SHIPPED]
+
+| §1 | Four Rules and a Plugin |
+| §2 | The Address That Doesn't Last |
+| §3 | Four Ways to Be Reachable |
+| §4 | The List Behind the Name |
+| §5 | When You Don't Want a Single Address |
+| §6 | The Component That Makes It Real |
+| §7 | Names, and Where They Resolve |
+| §8 | A Query With a Name |
+
+## Ch 10 — Traffic from Beyond the Cluster  [SHIPPED]
+
+| §1 | Where LoadBalancer Runs Out |
+| §2 | Routing by Host and Path |
+| §3 | The Object Is Not the Implementation |
+| §4 | Frozen, Not Deprecated |
+| §5 | Roles, Not Just Routes |
+| §6 | Allowing, Never Denying |
+| §7 | What NetworkPolicy Cannot Do |
+| §8 | Nothing Happens Without a Controller |
 

@@ -116,37 +116,36 @@
 
 ---
 
-## Ch 9 — Every Pod Has an Address  [PLANNED]
+## Ch 9 — Every Pod Has an Address  [SHIPPED]
 
 | § | Title | Owns |
 |---|---|---|
-| §1 | Four Rules and Who Wires Them | the Kubernetes network model's four requirements; Pod IP as cluster-routable; NAT-free pod-to-pod; **CNI** as the pluggable implementation and what a CNI plugin does. **Second of the four pluggable interfaces**; shared network namespace refers to Ch 5 §1 |
-| §2 | A Name That Outlives the Pod | the Service object; ClusterIP; the virtual IP; why controller-driven churn (Ch 6 §1) forces an indirection |
-| §3 | Four Types, Stacked | ClusterIP → NodePort → LoadBalancer as strictly additive layers; ExternalName as the outlier that resolves rather than routes |
-| §4 | Selecting the Backends | Service selector → EndpointSlice; Endpoints as the legacy form; **readiness gates endpoint membership** (probe definitions at Ch 5 §7); headless Services; Services without selectors and hand-written endpoints |
-| §5 | How the Traffic Actually Gets There | the service proxy concept; kube-proxy modes (iptables, IPVS, nftables; userspace as historical); why the VIP has no process behind it |
-| §6 | Finding It by Name | CoreDNS as the cluster DNS addon; Service A/AAAA/SRV records; Pod DNS records; FQDN shape; search domains and namespace-relative resolution |
-| §7 | A Stable Name Over Churn | chapter synthesis (Zenith) |
+| §1 | Four Rules and a Plugin | (as shipped) |
+| §2 | The Address That Doesn't Last | (as shipped) |
+| §3 | Four Ways to Be Reachable | (as shipped) |
+| §4 | The List Behind the Name | (as shipped) |
+| §5 | When You Don't Want a Single Address | (as shipped) |
+| §6 | The Component That Makes It Real | (as shipped) |
+| §7 | Names, and Where They Resolve | (as shipped) |
+| §8 | A Query With a Name | (as shipped) |
+
+> ⚑ SYNCED 2026-08-25: transcribed from the shipped chapter. B6 ran before this chapter materialized and planned a different section count; shipped text wins because later chapters already cross-reference these numbers.
 
 *Published pointers honored: `Ch 9 §1 — CNI and pod networking`; `Ch 9 §4 — readiness and Service endpoint membership`. Both were emitted in shipped text before this skeleton existed and are immovable.*
-
----
-
-## Ch 10 — Traffic from Beyond the Cluster  [PLANNED]
+## Ch 10 — Traffic from Beyond the Cluster  [SHIPPED]
 
 | § | Title | Owns |
 |---|---|---|
-| §1 | Where LoadBalancer Runs Out | the cost and scaling limits of one LoadBalancer per Service; the edge-router concept; the L4/L7 boundary. Service types refer to Ch 9 §3 |
-| §2 | Routing by Host and Path | the Ingress object; simple fanout; name-based virtual hosting; TLS termination; default backend; path types |
-| §3 | The Object Is Not the Implementation | Ingress controllers; IngressClass; **names the pattern "the object exists but nothing happens without the component."** Definition home for cross-cutting theme 3 — Ch 13 §7 and Ch 17 §7 retrieve it *by name* rather than re-deriving it |
-| §4 | Frozen, Not Deprecated | the Ingress feature freeze; **frozen ≠ deprecated**; what still gets fixed; the Gateway recommendation and what it does and does not oblige |
-| §5 | Roles, Not Just Routes | Gateway API; GatewayClass / Gateway / HTTPRoute; the three-role split (infrastructure provider, cluster operator, application developer); request flow through the resources |
-| §6 | Allowing, Never Denying | NetworkPolicy; ingress and egress isolation; `podSelector`, `namespaceSelector`, `ipBlock`; **additive allow-only semantics, no deny rule**; default-deny by selection. **Sole definition home for NetworkPolicy** — Ch 12 §9 refers, never redefines |
-| §7 | What NetworkPolicy Cannot Do | the CNI-plugin dependency (a policy on an unsupporting plugin is silently inert); the published out-of-scope list (TLS, node-local traffic, policy targeting non-Pod endpoints) |
-| §8 | Nothing Happens Without a Controller | chapter synthesis (Zenith) |
+| §1 | Where LoadBalancer Runs Out | (as shipped) |
+| §2 | Routing by Host and Path | (as shipped) |
+| §3 | The Object Is Not the Implementation | (as shipped) |
+| §4 | Frozen, Not Deprecated | (as shipped) |
+| §5 | Roles, Not Just Routes | (as shipped) |
+| §6 | Allowing, Never Denying | (as shipped) |
+| §7 | What NetworkPolicy Cannot Do | (as shipped) |
+| §8 | Nothing Happens Without a Controller | (as shipped) |
 
----
-
+> ⚑ SYNCED 2026-08-25: transcribed from the shipped chapter. B6 ran before this chapter materialized and planned a different section count; shipped text wins because later chapters already cross-reference these numbers.
 ## Ch 11 — Below the Waterline  [PLANNED]
 
 | § | Title | Owns |

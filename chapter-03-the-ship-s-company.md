@@ -761,23 +761,45 @@ Sit with how ordinary that is. A thermostat doesn't execute a heating plan. It d
 
 <!-- FIGURE: ch03-fig02-control-loop-desired-vs-current -->
 ```
-              ┌──────────────────┐
-       ┌─────▶│  DESIRED STATE   │──────┐
-       │      └──────────────────┘      │
-       │                                ▼
-  ┌─────────┐                     ┌──────────┐
-  │ CURRENT │◀────────────────────│ COMPARE  │
-  │  STATE  │                     └──────────┘
-  └─────────┘                           │
-       ▲                                ▼
-       │      ┌──────────────────┐      │
-       └──────│  ACT TO CLOSE    │◀─────┘
-              │     THE GAP      │
-              └──────────────────┘
+                        ┌─────────────────┐
+                        │  DESIRED STATE  │
+                        │                 │
+                        │  ╔═══════════╗  │
+                        │  ║   etcd    ║  │
+                        │  ║ the store ║  │
+                        │  ╚═══════════╝  │
+                        └────────┬────────┘
+                                 │
+                                 │  observe
+                                 ▼
+                        ┌─────────────────┐
+                        │                 │
+             ┌─────────►│   CONTROLLER    │──────────┐
+             │          │                 │          │
+             │          └─────────────────┘          │  act to
+             │                                       │  close the gap
+             │  observe                              │
+             │                                       ▼
+    ┌────────┴────────┐                     ┌─────────────────┐
+    │ CURRENT STATE   │◄────────────────────│   API SERVER    │
+    │                 │                     │  (the only      │
+    │  what is        │                     │   door in)      │
+    │  actually true  │                     └─────────────────┘
+    └─────────────────┘
 
         no start.  no end.  no exit condition.
 ```
 *Notice there is no entry arrow and no terminus. A loop drawn with a beginning teaches the wrong thing: this one was already running before your request arrived and will still be running after it's satisfied.*
+
+<!-- FIGURE PAIR (do not redraw in isolation): this figure and `ch15-zenith-control-loop-pointed-at-a-repo` are a matched pair on one chassis.
+     Chapter 15 §7 is the book's designated primary Zenith and its caption asks the
+     reader to lay the two side by side and see that ONE BOX CHANGED CONTENTS — Git
+     replaces etcd in the DESIRED STATE box — with the controller in the same place
+     and the API server still the only door in. Three shipped chapters stake the
+     payoff on that (ch06:1465, ch09:1249, ch14's Voyage Ahead). Geometry, node
+     positions and arrow directions must stay identical across the two. Redrawn here
+     2026-08-31 at the Ch 15 gate; ch03-fig02's image-spec needs regeneration to
+     match, alongside ch15's. -->
 
 ### The controller pattern, precisely
 

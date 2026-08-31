@@ -279,7 +279,7 @@ figures_planned:
 
 **Domain Weight: 16% (Cloud Native Application Delivery) [source: cncf-kcna-curriculum-pdf-2026-08-23] | Complexity: Mixed | Novelty: Paradigm-shifting**
 
-*CNCF publishes two competencies under this domain — Application Delivery and Debugging — and no topic list beneath either [source: cncf-kcna-curriculum-pdf-2026-08-23]. The allocation of that 16% across Chapters 14, 15, and 16 is this book's authored judgment, not a published split.*
+*This domain **doubled** in the 2025-11-24 revision, from 8% to 16% [source: lf-kcna-program-changes-2026-08-23] — the largest proportional change on the blueprint, and the reason a great deal of third-party prep under-serves it. CNCF publishes two competencies under this domain — Application Delivery and Debugging — and no topic list beneath either [source: cncf-kcna-curriculum-pdf-2026-08-23]. The allocation of that 16% across Chapters 14, 15, and 16 is this book's authored judgment, not a published split.*
 
 ---
 
@@ -312,10 +312,17 @@ figures_planned:
 
 ---
 
-> *"The chart is what you meant. The cluster is what happened. The interesting question is who keeps them the same."*
+> *"Every deploy is a claim about what should be true. Most of them are never checked again."*
 > — Lodestar Ledgers
 
-<!-- AUTHOR-REVIEW: Outline Open Question 11 flagged this epigraph as an option, not a recommendation — it reuses Ch 14's closing quote verbatim as a deliberate callback binding the two Part IV delivery chapters. The structural contract prefers outside voices for epigraphs, and a reader met this line eight pages ago, which costs arousal. Author's call: keep the callback, or substitute a practitioner quote about intent versus outcome. -->
+<!-- RESOLVED 2026-08-31 (integration gate): the callback was verbatim, and it was not the
+     only one -- this chapter's opening paragraph also restates Ch 14's closing paragraph
+     nearly word for word, so together roughly 60 words of Ch 14's last page were reproduced
+     on Ch 15's first. Same information, same channel, immediately adjacent: the negative
+     kind of redundancy under skill Part 7, landing exactly where arousal has to be
+     established. The prose recap does real structural work (it sets up the two-halves
+     split), so the epigraph was the cheaper cut and is now a new line on intent vs.
+     outcome. -->
 
 ---
 
@@ -394,9 +401,12 @@ In my experience, practitioners who make this shift describe the same two feelin
 
 The stakes here were banked in Chapter 1, and one clause will do: this domain doubled in the 2025-11-24 blueprint revision. Chapter 14 cashed the first half. This is the second.
 
-<!-- AUTHOR-REVIEW: the previous draft stated the domain's prior weight as "8% to 16%". No cached snapshot carries any earlier revision of the KCNA curriculum — cncf-kcna-curriculum-pdf-2026-08-23 gives only the current 44/28/16/12 split — so the 8% figure has been removed rather than left untagged. If Chapter 1 carries a source tag for the pre-revision weight, mirror that tag here and restore the figure. Otherwise this needs an archived pre-revision curriculum PDF from github.com/cncf/curriculum history, which is worth caching for Ch 1 regardless. -->
+<!-- RESOLVED 2026-08-31 (integration gate): Chapter 1 does carry the pre-revision blueprint,
+     sourced to lf-kcna-program-changes-2026-08-23 (ch01:246, ch01:259 — "Cloud Native App
+     Delivery 8% -> 16% (x2)"). Figure restored here on that tag, as this note directed. No
+     archived curriculum PDF needed. -->
 
-**About what CNCF actually publishes.** Chapter 14 made this statement at length and it covers this chapter too, so one back-bearing rather than a repetition: the published curriculum gives two competency names under this domain and no list of topics beneath either *[cross-bearing: see Ch 14 §1 — why a folder of YAML stops working]*. What supports the inference that GitOps belongs here is positive rather than speculative. Argo and Flux are both CNCF **graduated** projects [source: cncf-project-maturity-levels-2026-08-23], and OpenGitOps is a CNCF project [source: opengitops-principles-v1-2026-08-31]. A CNCF exam asking about application delivery is asking about the delivery model CNCF's own graduated projects implement. That is the basis. It is a good one, and it is honest about being an inference.
+**About what CNCF actually publishes.** Chapter 14 made this statement at length and it covers this chapter too, so one back-bearing rather than a repetition: the published curriculum gives two competency names under this domain and no list of topics beneath either *[cross-bearing: see Ch 14 — Why This Chapter Matters]*. What supports the inference that GitOps belongs here is positive rather than speculative. Argo and Flux are both CNCF **graduated** projects [source: cncf-project-maturity-levels-2026-08-23], and OpenGitOps is a CNCF project [source: opengitops-principles-v1-2026-08-31]. A CNCF exam asking about application delivery is asking about the delivery model CNCF's own graduated projects implement. That is the basis. It is a good one, and it is honest about being an inference.
 
 One consequence runs through the rest of the chapter without further comment: nothing here is described as "frequently tested" or "commonly appears." Those claims would require a published sub-topic list, and there isn't one. What you will see instead is "easy to confuse" and "this is the distinction the material rewards," which are claims this book can actually stand behind.
 
@@ -814,7 +824,7 @@ Which raises the question §4 opens with: what is this agent, exactly?
 
 ## 🔵 §4 — An Agent That Watches a Repository
 
-**Argo CD** is a *"declarative, GitOps continuous delivery tool for Kubernetes"* [source: argocd-overview-2026-08-23]. You have met the name once already, in Chapter 3, where it appeared as a promise about a sentence this chapter would retrieve *[cross-bearing: see Ch 3 §6 — controllers and the control loop]*.
+**Argo CD** is a *"declarative, GitOps continuous delivery tool for Kubernetes"* [source: argocd-overview-2026-08-23]. You have met the name once already, in Chapter 3, where it appeared as a promise about a sentence this chapter would retrieve *[cross-bearing: see Ch 3 §5 — the only door in]*.
 
 Here is that sentence, and it is the most important one in the section.
 
@@ -1131,9 +1141,16 @@ The ordering algorithm, in order of precedence, begins: *"1. The phase 2. The wa
 
 Chapter 12 pointed here for a specific reason, and it is a good illustration of why ordering is not a theoretical concern.
 
-<!-- AUTHOR-REVIEW: the previous draft stated here that "RBAC bindings are immutable in their subject reference: you cannot retarget a binding, you must delete it and create a new one," citing Ch 12 §3. No cached snapshot covers RoleBinding/ClusterRoleBinding mutability, and as worded the claim names the wrong field — the immutable field is `roleRef` (the role the binding points at), while `subjects` can be edited in place. The sentence has been removed rather than shipped unverified. To restore the example, cache kubernetes.io/docs/reference/access-authn-authz/rbac/ (the "you cannot change the Role or ClusterRole that it refers to" passage) and restate it as: a binding's `roleRef` is immutable, so changing which role a binding grants requires delete-and-recreate, which is a real ordering constraint for a system reconciling a whole repository against a whole cluster. The ordering argument survives the correction intact — it just has to be about `roleRef`. Verify against shipped Ch 12 §3 before restoring, since that section owns the claim. -->
+<!-- RESOLVED 2026-08-31 (integration gate): the note was right that the earlier wording named
+     the wrong field, and wrong that no snapshot covers it. Shipped Ch 12 (ch12:866) quotes
+     k8s-docs-rbac-2026-08-23 verbatim: "After you create a binding, you cannot change the
+     Role or ClusterRole that it refers to." Restored on that tag, worded against the role
+     reference rather than the subjects. This is the receiving end of Ch 12's inbound pointer
+     to this section. -->
 
-Take the general shape instead, which the corpus does support. Some objects cannot simply be updated in place: they must be deleted and recreated. Under a system that reconciles a whole repository against a whole cluster in one operation, that is a real ordering constraint. The delete must precede the create, and anything depending on the result must come after both. Waves are how you say so.
+Chapter 12 taught that **"After you create a binding, you cannot change the Role or ClusterRole that it refers to"** [source: k8s-docs-rbac-2026-08-23] — the binding's *role reference* is fixed, though its list of subjects is not *[cross-bearing: see Ch 12 §3 — a binding cannot be retargeted]*. So retargeting a RoleBinding is not an update at all. It is a delete and a create, with a window in between during which the subject holds nothing.
+
+That is the general shape, and it is why ordering stops being theoretical. Some objects cannot simply be updated in place: they must be deleted and recreated. Under a system that reconciles a whole repository against a whole cluster in one operation, that is a real ordering constraint. The delete must precede the create, and anything depending on the result must come after both. Waves are how you say so.
 
 **What to take from this section.** Phases run in a fixed order and are gated on success. Waves order resources within a phase, lower numbers first, defaulting to zero and permitting negatives. Ordering is a problem GitOps has and a single `kubectl apply` merely ignores.
 
@@ -1303,7 +1320,10 @@ Now move it. Take the desired state out of etcd and put it in a Git repository.
 
 **Figure 15.7 — The control loop, pointed at a repository.** Lay this beside Chapter 3's control-loop figure and the point is that it is the same loop. The controller sits in the same place, the API server is still the only door in, and the arrows run in the same directions. One box changed contents.
 
-<!-- AUTHOR-REVIEW: this caption previously read "Lay this beside Figure 3.2," but Chapter 3 as shipped carries no numbered figure captions — the figure meant is anchor ch03-fig02-control-loop-desired-vs-current. More seriously, the two drawings are not currently the same drawing: Ch 3's loop is DESIRED STATE → COMPARE → ACT TO CLOSE THE GAP → CURRENT STATE (four boxes, no controller node, no API server), while this one is DESIRED STATE → CONTROLLER → API SERVER → CURRENT STATE. The caption's claim that only one box changed is not checkable by a reader who flips back, and the Zenith depends on it being literally checkable. Three resolutions, best first: (1) redraw ch03-fig02 onto this chassis and reflow the Ch 3 prose — preserves the payoff, costs a Ch 3 edit; (2) redraw this figure onto Ch 3's chassis — cheaper, but loses the API-server node that §3's Navigational Hazards block depends on; (3) soften this caption to a family resemblance. Whichever is chosen, the two figures must be commissioned and rendered as a pair, on one chassis, so they superimpose. -->
+<!-- RESOLVED 2026-08-31 (integration gate): ch03-fig02 has been redrawn onto this
+     figure's chassis, so the caption's "lay this beside Chapter 3's" instruction is now
+     checkable by a reader who actually flips back. The two are a matched pair and must
+     be regenerated together at the diagram pass. -->
 
 Look at what did *not* move.
 
@@ -1343,7 +1363,7 @@ The chart is the truth, but not because a file is inherently authoritative. File
 
 The chart is the truth because **something is continuously making it true.** The authority is not in the file. It is in the loop that never stops comparing the file to the world and acting on the difference.
 
-That is what you have been building toward since Chapter 3, whether or not it looked like it. And it is why Chapter 6 said what it said when it finished teaching the control loop: that when you met this, it would look like a new idea for about ten seconds *[cross-bearing: see Ch 6 §8 — the control loop, extended]*.
+That is what you have been building toward since Chapter 3, whether or not it looked like it. And it is why Chapter 6 said what it said when it finished teaching the control loop: that when you met this, it would look like a new idea for about ten seconds *[cross-bearing: see Ch 6 §9 — nobody sails one pod]*.
 
 Ten seconds is about right.
 

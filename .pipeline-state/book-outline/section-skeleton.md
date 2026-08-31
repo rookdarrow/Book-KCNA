@@ -146,7 +146,7 @@
 | §8 | Nothing Happens Without a Controller | (as shipped) |
 
 > ⚑ SYNCED 2026-08-25: transcribed from the shipped chapter. B6 ran before this chapter materialized and planned a different section count; shipped text wins because later chapters already cross-reference these numbers.
-## Ch 11 — Below the Waterline  [PLANNED]
+## Ch 11 — Below the Waterline  [SHIPPED]
 
 | § | Title | Owns |
 |---|---|---|

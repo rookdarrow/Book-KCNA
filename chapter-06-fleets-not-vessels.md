@@ -1002,7 +1002,7 @@ That is Chapter 3's control loop, written by someone who is not the Kubernetes p
 
 > 🪝 **Snag:** "We installed the CRD, created an object of the new kind, and nothing happened." That is the correct behavior. There is no controller. You gave the cluster a new noun and no verb.
 >
-> **Name this shape, because you are going to meet it again.** *The object exists but nothing happens without the component.* An Ingress with no ingress controller is the same shape. `kubectl top` with no metrics-server is the same shape. A vertical autoscaler that isn't shipped by default is the same shape. It is not four gotchas. It is one rule with four instances, and the rule is that Kubernetes will happily accept a record of intent that nothing in the cluster is currently able to act on. *[cross-bearing: see Ch 10 — Ingress without an ingress controller]* *[cross-bearing: see Ch 13 — `kubectl top` without metrics-server]*
+> **Name this shape, because you are going to meet it again.** *An object without its component does nothing.* An Ingress with no ingress controller is the same shape. `kubectl top` with no metrics-server is the same shape. A vertical autoscaler that isn't shipped by default is the same shape. It is not four gotchas. It is one rule with four instances, and the rule is that Kubernetes will happily accept a record of intent that nothing in the cluster is currently able to act on. *[cross-bearing: see Ch 10 — Ingress without an ingress controller]* *[cross-bearing: see Ch 13 — `kubectl top` without metrics-server]*
 
 ### The pattern, named
 
@@ -1079,7 +1079,7 @@ If your answer was "a Job with a schedule on it," re-read §7's hazards block. T
 - **B is wrong** because namespace has nothing to do with it. Custom resource objects live wherever their scope allows, and `kube-system` confers no special activation.
 - **D is wrong** because registration is not delayed; custom resources appear and disappear in a running cluster through dynamic registration [source: k8s-docs-custom-resources-2026-08-23]. Waiting longer will not help.
 
-**Name the pattern, because you will retrieve it by name:** *the object exists but nothing happens without the component.* You will meet this exact shape at least three more times in this book. Each time, the first instinct will be "something is misconfigured," and each time the answer will be "something is not installed."
+**Name the pattern, because you will retrieve it by name:** *an object without its component does nothing.* You will meet this exact shape at least three more times in this book. Each time, the first instinct will be "something is misconfigured," and each time the answer will be "something is not installed."
 
 **5.** Outside the control plane, as an ordinary containerized workload, **normally a Deployment** [source: k8s-docs-operator-pattern-2026-08-23]. The operator is a client of the Kubernetes API acting as a controller for a custom resource [source: k8s-docs-operator-pattern-2026-08-23]; it has no privileged position in the architecture and no special deployment mechanism. It is a container image, held at a replica count by a ReplicaSet, held at a template by a Deployment, exactly like everything else you have run this chapter.
 

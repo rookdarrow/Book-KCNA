@@ -410,7 +410,7 @@ Chapter 2 §8 promised you this would feel like recognition rather than a fourth
 
 > **Dead Reckoning:** This chapter covers Domain 4 of the KCNA curriculum, Cloud Native Architecture, which is 12% of the exam [source: cncf-kcna-certification-page-2026-08-23]. Domain 4 has three competencies. Observability belongs to Chapter 18. This chapter carries the other two: Cloud Native Ecosystem and Principles, and Cloud Native Community and Collaboration. It is the only chapter in this book that carries two whole competencies, which is why it is also the longest. CNCF publishes weights for the four domains and does not publish weights for the competencies inside them. The split of Domain 4's points between this chapter and the next is this book's judgment, not a published figure.
 
-There is an identity shift buried in that dry paragraph, and it deserves naming. Up to here you have been a competent operator of somebody else's software. This chapter puts you inside the community that produces it: a community with a published definition of its own terms, a graduation ladder its projects climb, a technical committee that decides what belongs, a contributor ladder that anyone reading this could start climbing on a Tuesday afternoon, and a release train that explains why the version numbers behave the way Chapter 8 said they do.
+There is an identity shift buried in that dry paragraph, and it deserves naming. Up to here you have been a competent user of somebody else's software. This chapter puts you inside the community that produces it: a community with a published definition of its own terms, a graduation ladder its projects climb, a technical committee that decides what belongs, a contributor ladder that anyone reading this could start climbing on a Tuesday afternoon, and a release train that explains why the version numbers behave the way Chapter 8 said they do.
 
 That last connection is the chapter's quietest payoff. Three minor releases a year, and three supported minor versions, are not two facts you have to remember separately. They are one fact stated twice. A reader who sees that will never lose either half again.
 
@@ -853,7 +853,7 @@ Two members of the documentation's list deserve a sentence each, because you hav
 
 **The API aggregation layer** is the *other* way to add APIs. "The aggregation layer allows Kubernetes to be extended with additional APIs, beyond what is offered by the core Kubernetes APIs" [source: k8s-docs-api-aggregation-and-device-plugins-2026-08-31]. It runs in-process with the kube-apiserver and does nothing until you register an `APIService` object, which "claims" a URL path in the Kubernetes API. From then on, the aggregation layer proxies anything sent to that path to the registered service.
 
-And the documentation adds a sentence that settles a question this section would otherwise have to argue: "The aggregation layer is different from Custom Resource Definitions, which are a way to make the kube-apiserver recognise new kinds of object" [source: k8s-docs-api-aggregation-and-device-plugins-2026-08-31].
+And the documentation adds a sentence that settles a question this section would otherwise have to argue: "The aggregation layer is different from Custom Resource Definitions, which are a way to make the kube-apiserver recognize new kinds of object" [source: k8s-docs-api-aggregation-and-device-plugins-2026-08-31].
 
 With a CRD, the API server stores and serves your objects for you. With aggregation, you run your own API server and Kubernetes routes to it. More work, more flexibility. You have already met one in the wild: metrics-server registers itself through the aggregation layer, and its own installation notes say the "kube-apiserver must enable an aggregation layer" [source: metrics-server-install-2026-08-31]. *[cross-bearing: see Ch 13 §7 — numbers nobody collects by default]*.
 
@@ -871,7 +871,7 @@ Both are defensible, and the documentation is the reason: "API extensions" is th
 
 *[cross-bearing: see Ch 8 §2 — three gates and a logbook]* for admission webhooks, *[cross-bearing: see Ch 7 §6 — overruling the scheduler, and replacing it]* for scheduler plugins, and *[cross-bearing: see Ch 12 §8 — rules that watch]* for the policy engines that live on the admission hook. Each of those is a place Kubernetes lets somebody else in.
 
-One more, which is a genuinely useful detail rather than a completeness note: Helm charts have a `crds/` directory precisely because a chart that ships custom resources has to install the definitions before the objects that use them. The packaging format had to grow a special case for the extension mechanism. *[cross-bearing: see Ch 14 §6 — which one, when]*.
+One more, which is a genuinely useful detail rather than a completeness note: Helm charts have a `crds/` directory precisely because a chart that ships custom resources has to install the definitions before the objects that use them [source: helm-crd-best-practices-2026-08-31]. The packaging format had to grow a special case for the extension mechanism. *[cross-bearing: see Ch 14 §6 — which one, when]*.
 
 <!-- AUTHOR-REVIEW: the Helm `crds/` claim in the paragraph above, and the Practice question built on it, are carried by cross-bearing to Ch 14 §6 rather than by a source tag — no Helm snapshot exists in this chapter's cached corpus. Ch 14 §6 owns the fact per the section skeleton, so the pointer is correct in kind, but a graded question is thinner support than a cross-reference usually has to bear. Either tag it to whatever helm.sh snapshot Ch 14 uses (cheapest, if that snapshot is in the full sources/ tree), or open a research gap for the Helm chart-structure documentation. -->
 
@@ -1011,7 +1011,7 @@ The glossary's framing of *why* is the part to internalize:
 
 And in its account of the problem this addresses, the same entry puts the reasoning in a single sentence:
 
-> Zero trust architecture however, recognises that **trust is a vulnerability**.
+> Zero trust architecture however, recognizes that **trust is a vulnerability**.
 
 [source: cncf-glossary-zero-trust-architecture-2026-08-31]
 
@@ -1185,7 +1185,7 @@ It has three components, and they answer genuinely different questions.
 
 **Knative Serving** is "an HTTP-triggered autoscaling container runtime that manages the complete lifecycle of stateless HTTP services, including deployment, routing, and automatic scaling (including scale to zero)" [source: knative-overview-2026-08-23]. Synchronous. A request arrives, something serves it.
 
-**Knative Eventing** is "a CloudEvents-over-HTTP asynchronous routing layer that provides infrastructure for consuming and producing events, enabling loose coupling between event producers and consumers" [source: knative-overview-2026-08-23]. Asynchronous. Something happened; interested parties get told.
+**Knative Eventing** is "a CloudEvents-over-HTTP asynchronous routing layer that provides infrastructure for consuming and producing events, enabling loose coupling between event producers and consumers" [source: knative-overview-2026-08-23]. **CloudEvents** is itself a CNCF project: a specification for describing event data in a common way, so that an event emitted by one system can be understood by another without a bespoke adapter between them. Asynchronous. Something happened; interested parties get told.
 
 **Knative Functions** "leverages Serving and Eventing to provide a simplified experience for building and deploying stateless functions" [source: knative-overview-2026-08-23]. It is built on the other two rather than being a third independent thing.
 
@@ -1289,7 +1289,7 @@ Two details worth carrying. The HPA runs as a control loop "that runs intermitte
 >
 > The documentation says it twice, on two different pages. The autoscaling concepts page: unlike the HPA, the VPA "doesn't come with Kubernetes by default," and is an add-on you or a cluster administrator may need to deploy before you can use it. The VPA's own page: "Unlike HorizontalPodAutoscaler, which is part of the core Kubernetes API, VPA must be installed separately in your cluster" [source: k8s-docs-autoscaling-and-vpa-2026-08-31].
 >
-> You have met this shape before, and you have met it under a name. Chapter 10 §3 christened it: **the object exists; nothing happens without the component.** An Ingress with no Ingress controller is a document nobody reads. A `kubectl top` with no metrics-server is a command with nothing to query. A VPA object on a cluster with no VPA installed is the same failure one layer over.
+> You have met this shape before, and you have met it under a name. Chapter 3 gave you the sentence and Chapter 10 §3 named it as a pattern: **an object without its component does nothing.** An Ingress with no Ingress controller is a document nobody reads. A `kubectl top` with no metrics-server is a command with nothing to query. A VPA object on a cluster with no VPA installed is the same failure one layer over.
 >
 > *[cross-bearing: see Ch 10 §3 — the object is not the implementation]*.
 
@@ -1317,7 +1317,7 @@ Cluster Autoscaler and Karpenter "are the two Node autoscalers currently sponsor
 
 > ⚓ **Worth Securing:** Karpenter is sponsored by Kubernetes SIG Autoscaling [source: k8s-docs-node-autoscaling-2026-08-31]. It is **not** a CNCF project with a maturity level, and no official source assigns it one. Contrast Knative, whose own documentation states it is a CNCF Graduated project [source: knative-overview-2026-08-23], and KEDA, which kubernetes.io describes the same way [source: k8s-docs-autoscaling-and-vpa-2026-08-31]. Karpenter's documentation makes no such claim. If an answer option gives Karpenter a CNCF maturity level, be suspicious of it, and notice that §2 just taught you why that distinction is meaningful.
 
-**KEDA.** The Kubernetes Event Driven Autoscaler, "a CNCF-graduated project enabling you to scale your workloads based on the number of events to be processed, for example the amount of messages in a queue. There exists a wide range of adapters for different event sources to choose from" [source: k8s-docs-autoscaling-and-vpa-2026-08-31].
+**KEDA.** Kubernetes Event-Driven Autoscaling, "a CNCF-graduated project enabling you to scale your workloads based on the number of events to be processed, for example the amount of messages in a queue. There exists a wide range of adapters for different event sources to choose from" [source: k8s-docs-autoscaling-and-vpa-2026-08-31].
 
 KEDA also handles **schedule-based** scaling, through its `Cron` scaler, which "allows you to define schedules (and time zones) for scaling your workloads in or out" [source: k8s-docs-autoscaling-and-vpa-2026-08-31], for reducing consumption during off-peak hours.
 
@@ -1496,7 +1496,7 @@ Roughly a year. And the source confirms it independently, on the same page: "Kub
 
 Chapter 8 §6 warned you that the version-skew numbers were the most forgettable material in the book, and it was right: they are three unrelated-looking integers. They are much harder to forget once they are one relationship. *[cross-bearing: see Ch 8 §6 — versions that are allowed to disagree]*, and *[cross-bearing: see Ch 13 §6 — versions that don't agree]* for what happens when the window is violated.
 
-**SIG Release** is the group that makes this happen. Its charter lists "Production of Kubernetes releases on a reliable schedule" as its first responsibility, along with defining and staffing release roles, driving the development and release processes, and "managing the creation of release specific artifacts, including: Code branches, Binary artifacts, Container Images, Release notes" [source: k8s-release-cycle-and-cadence-2026-08-31].
+**SIG Release** is the group that makes this happen — and this is where Chapter 8's fifteen weeks go *[cross-bearing: see Ch 8 §6 — release cadence and supported versions]*. Three minor releases a year, roughly one every fifteen weeks, is not an arbitrary rhythm: it is the length of a cycle that has to accommodate enhancement freeze, code freeze, testing and the staffing of the release roles below. Its charter lists "Production of Kubernetes releases on a reliable schedule" as its first responsibility, along with defining and staffing release roles, driving the development and release processes, and "managing the creation of release specific artifacts, including: Code branches, Binary artifacts, Container Images, Release notes" [source: k8s-release-cycle-and-cadence-2026-08-31].
 
 The cycle itself has three phases — **Enhancement Definition, Implementation, Stabilization** — with an **Enhancements Freeze** around week 4, **Code Freeze** starting around week 12 and running about two weeks, during which "only critical bug fixes are accepted into the release codebase," and a post-release phase from week 14 [source: k8s-release-cycle-and-cadence-2026-08-31].
 
@@ -1561,7 +1561,7 @@ It is administered by the **CNCF Code of Conduct Committee**, reachable at a pub
 
 Chapter 1 deferred this here by name, and it is a short answer.
 
-The KCNA "is a pre-professional certification designed for candidates interested in advancing to the professional level," and it "is intended to prepare candidates to work with cloud native technologies and pursue further CNCF credentials, including CKA, CKAD, and CKS" [source: cncf-kcna-certification-page-2026-08-23]. The certification overview page puts it more directly: KCNA "lays the groundwork for further CNCF certifications like CKA, CKAD, and CKS" [source: cncf-kcna-certification-page-2026-08-23].
+The KCNA "is a pre-professional certification designed for candidates interested in advancing to the professional level," and it "is intended to prepare candidates to work with cloud native technologies and pursue further CNCF credentials, including CKA, CKAD, and CKS" — the Certified Kubernetes Administrator, the Certified Kubernetes Application Developer, and the Certified Kubernetes Security Specialist [source: cncf-kcna-certification-page-2026-08-23]. The certification overview page puts it more directly: KCNA "lays the groundwork for further CNCF certifications like CKA, CKAD, and CKS" [source: cncf-kcna-certification-page-2026-08-23].
 
 The shape of that ladder matters because the *format* changes, not just the difficulty. KCNA is "online and multiple-choice." **CKA** is "a performance-based exam where candidates interact with the command line to solve real-world challenges." **CKAD** is "a hands-on, command-line environment." **CKS** is "performance-based" [source: cncf-kcna-certification-page-2026-08-23].
 

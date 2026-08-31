@@ -336,7 +336,7 @@ Ch 1's sections are unnumbered (B6 Collision #1), so every pointer into this cha
 | Default backend | Ch 10 §2 | Ch 10 §2 † | — |
 | **Ingress controller** | Ch 10 §3 | Ch 10 §2 † | — |
 | IngressClass | Ch 10 §3 | Ch 10 §3 † | — |
-| **"The object exists; nothing happens without the component"** (the named pattern) | Ch 10 §3 | Ch 10 §3 † | — · retrieved *by name* at Ch 13 §7 and Ch 17 §7 |
+| **"An object without its component does nothing"** (the named pattern) | **Ch 3** coins the sentence; **Ch 10 §3** names it as a pattern | Ch 3 §4 † | quote it VERBATIM — this exact wording now appears 24× across Ch 3/6/10/11/13/17, including a graded Practice option |
 | Feature freeze · **frozen ≠ deprecated** | Ch 10 §4 | Ch 10 §4 † | — |
 | **Gateway API** | Ch 10 §5 | Ch 10 §4 † | — |
 | GatewayClass · Gateway · HTTPRoute | Ch 10 §5 | Ch 10 §5 † | — |
@@ -757,6 +757,21 @@ An index of surface forms, not a second ownership claim. Every acronym the book 
 > Rows this ledger gets wrong, recorded so no later stage "corrects" a chapter toward them: **node registration** is not taught in Ch 3 — Ch 8 §4 is the de facto owner and should keep it; **`kubectl describe`** first appears in Ch 5, not Ch 8 §4; **mutating vs validating admission webhook** does not appear in Ch 6 at all (zero occurrences of "webhook"); **CIDR**'s first reader-facing use is Ch 8 §4, not Ch 10 §6.
 
 > **Glossary debt recorded 2026-08-31 (Ch 13 gate).** **static Pod** and **mirror Pod** are absent from Ch 1-12 and first appear in Ch 13 Practice Q13's distractor D, where the answer key refutes it with a sourced quotation. **Ruling: the distractor stays.** This is not the Ch 9 eBPF case -- there the ledger had explicitly ruled the term out of graded text and the book defined it nowhere, so the distractor was rebuilt. Here the key teaches both terms inline with a source and targets a real belief about hidden containers. What they lack is a lookup path: add glossary entries for both at the glossary build, plus a register row. Also queued from this chapter: `crictl`, `ProgressDeadlineExceeded`.
+
+> **Ledger errata found at the Ch 17 gate (2026-08-31).**
+> - The absent-component pattern row carried the WRONG SENTENCE and the WRONG COINER. Ch 17
+>   followed it faithfully, handing back the book's most-reinforced retrieval phrase in words
+>   the reader had never seen. Chasing it found Ch 6 teaching the wrong wording too — inside
+>   the very instruction "Name the pattern, because you will retrieve it by name." Row fixed;
+>   Ch 6, Ch 13 and Ch 17 aligned; the phrase is now identical in all 24 uses. This is the
+>   clearest case in the commission of a ledger defect propagating into shipped text.
+> - `VPA | First appears Ch 17 §7` is wrong: VPA first appears in shipped Ch 3 (line 606) and
+>   again in Ch 10 (lines 678, 1811).
+> - Headword **"Ambient mesh (sidecar-less)" → "ambient mode"** — Istio's own documented term
+>   and what the sources say. Ch 17 uses "ambient mode" 11× and is correct; the ledger was not.
+> - The **FaaS** register row is orphaned.
+> - **CKAD** and **CKS** are now expanded at Ch 17 §8. **SIG** is first used unexpanded at Ch 8
+>   line 861 — a pre-existing Ch 8 debt. **CloudEvents** needs a glossary entry and register row.
 
 # Part 2 — Orphans
 

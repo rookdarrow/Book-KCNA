@@ -297,7 +297,7 @@ Two of them deliberately probe material you met a while ago and may have let sli
 
 **7.** `kubectl logs <pod> -c cache`. For a multi-container Pod, `-c <container>` is how you name the one you mean. [source: k8s-docs-logging-architecture-2026-08-23] *[cross-bearing: see Ch 5 §2 — multi-container Pods]*
 
-**8.** The object is created and nothing routes traffic. This is exactly the pattern Chapter 10 named: the API server accepts and stores the object, and no controller is watching for it, so it is a record of intent with nobody to honor it. *[cross-bearing: see Ch 10 §3 — the object exists; nothing happens without the component]*
+**8.** The object is created and nothing routes traffic. This is exactly the pattern Chapter 10 named: the API server accepts and stores the object, and no controller is watching for it, so it is a record of intent with nobody to honor it. *[cross-bearing: see Ch 10 §3 — an object without its component does nothing]*
 
 ---
 
@@ -1276,9 +1276,9 @@ Nothing is broken. **A stock Kubernetes cluster publishes no usage metrics at al
 
 ### The pattern you already own
 
-You have met this exact shape before. The book told you to remember it by name, and Chapter 10 built a section on it: **the object exists; nothing happens without the component.** An Ingress object on a cluster with no Ingress controller is accepted by the API server, stored in etcd, retrievable with `kubectl get`, and completely inert. The API is the contract. The controller is the implementation. Kubernetes ships the contract; somebody has to install the implementation.
+You have met this exact shape before. Chapter 3 gave you the sentence and Chapter 10 §3 named it as a pattern: **an object without its component does nothing.** An Ingress object on a cluster with no Ingress controller is accepted by the API server, stored in etcd, retrievable with `kubectl get`, and completely inert. The API is the contract. The controller is the implementation. Kubernetes ships the contract; somebody has to install the implementation.
 
-*[cross-bearing: see Ch 10 §3 — the object exists; nothing happens without the component]*
+*[cross-bearing: see Ch 10 §3 — an object without its component does nothing]*
 
 `kubectl top` is the same pattern with one twist: here it is not even the object that is missing, it is the **API itself**. The Metrics API is not part of the core API server. It is served by an extension, and if nobody deployed that extension, the API server has no such endpoint to route your request to. Hence the shape of the error: not "no data," but "no such resource."
 

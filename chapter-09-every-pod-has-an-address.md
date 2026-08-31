@@ -202,7 +202,7 @@ figures_planned:
 |---|---|---|---|
 | §1 — Four Rules and a Plugin | 12 min | **High** | Peak attention |
 | §2 — The Address That Doesn't Last | 6 min | Low | Anytime |
-| §3 — Four Ways to Be Reachable | 16 min | **High** | Peak attention |
+| §3 — Four Ways to Be Reachable | 18 min | **High** | Peak attention |
 | ☆ Taking Your Bearings #1 | 6 min | Medium | After brief break |
 | §4 — The List Behind the Name | 12 min | Medium | Mid-session |
 | §5 — When You Don't Want a Single Address | 9 min | Medium | Mid-session |
@@ -212,7 +212,9 @@ figures_planned:
 | ☆ Taking Your Bearings #3 | 6 min | Medium | After brief break |
 | §8 — A Query With a Name | 5 min | Low | Anytime |
 
-<!-- AUTHOR-REVIEW: Header total corrected from ~95 to ~100 to agree with the rows, which sum to 99. The §3 row (16 min) assumes §3 as currently drafted. If the port-mechanics block (`port` / `targetPort` / `nodePort` and the node-port range) is added to §3 during revision, raise that row by ~2 min and re-round the header. Practice-question rebalancing does not affect this table — the Practice block is not a row here. -->
+<!-- RESOLVED 2026-08-30 (integration gate): the port-mechanics block was added to §3, so
+     that row is now 18 min and the rows sum to 101. The header's ~100 still rounds true and
+     is left alone. -->
 
 **Attention Cost Key:**
 - **Low:** Concrete, familiar concepts—study anytime
@@ -221,7 +223,7 @@ figures_planned:
 
 **Recommended session split:** stop after ☆ Taking Your Bearings #2. That gives you the model, the abstraction, and the backends in one sitting; the implementation, the names, and the synthesis in the next. It also puts §3 and §7, the chapter's two densest recall blocks, in different sessions. Two hard passages, taken on separate watches. That matters more than it sounds like it should.
 
-*If you only have 15 minutes: read §3's type ladder and §7's record shapes, then take ☆ Taking Your Bearings #3. That is where this chapter's exam points concentrate. §1 is the most important section for understanding what Kubernetes networking actually is, and it is the least likely to be tested directly. Those two facts do not coincide, and there is no point pretending they do.*
+*If you only have 15 minutes: read §3's type ladder and §7's record shapes, then take ☆ Taking Your Bearings #3. On this book's judgment, that is where this chapter's exam points concentrate. §1 is the most important section for understanding what Kubernetes networking actually is, and it is the least likely to be tested directly. Those two facts do not coincide, and there is no point pretending they do.*
 
 ---
 
@@ -388,7 +390,7 @@ Pod networking is implemented by a **network plugin**, and the interface it plug
 
 That published list runs longer than four [source: k8s-docs-extending-kubernetes-2026-08-23], and this book does not follow it item for item. What it follows is **the four pluggable interfaces**: CRI for runtimes, CNI for networking, CSI for storage, and CRDs for object types Kubernetes does not ship. *[cross-bearing: see Ch 2 §4 — CRI, CNI, CSI and CRDs as the four pluggable interfaces]*. That section named CNI and pointed you here. This is the second of the four; Chapter 17 collects all of them *[cross-bearing: see Ch 17 §4 — the four pluggable interfaces, collected]*.
 
-Which network plugin? That is a genuine choice with genuine consequences. **Calico** is a networking and network policy provider supporting overlay and non-overlay networks, with or without BGP. **Cilium** provides a flat Layer 3 network with an eBPF-based data plane, in either native routing or overlay mode, and is a CNCF project at the Graduated level. **Flannel** is an overlay network provider [source: k8s-docs-cluster-addons-2026-08-24]. There are many more.
+Which network plugin? That is a genuine choice with genuine consequences. **Calico** is a networking and network policy provider supporting overlay and non-overlay networks, with or without BGP. **Cilium** provides a flat Layer 3 network with an eBPF-based data plane (see the glossary), in either native routing or overlay mode, and is a CNCF project at the Graduated level. **Flannel** is an overlay network provider [source: k8s-docs-cluster-addons-2026-08-24]. There are many more.
 
 <!-- RESOLVED 2026-08-30 (integration gate): the network-plugins snapshot was harvested to
      sources/k8s-docs-network-plugins-2026-08-24.md, so the Fixed Point, Exam Alert #12 and the
@@ -404,7 +406,7 @@ Which network plugin? That is a genuine choice with genuine consequences. **Cali
 
 ★ **Fixed Point:** Kubernetes **defines** the network model. A **CNI network plugin is required to implement** it. The four rules above are requirements the plugin satisfies, not machinery Kubernetes provides [source: k8s-docs-network-plugins-2026-08-24] [source: k8s-docs-extending-kubernetes-2026-08-23].
 
-<!-- AUTHOR-REVIEW: fact-accuracy F4 — "cluster networking plugins commonly ship as DaemonSets" is untagged in the paragraph below. No cached snapshot describes any plugin's deployment shape; k8s-docs-cluster-addons-2026-08-24 lists Calico, Cilium and Flannel with installation links and says nothing about packaging. Two fixes, neither available in this pass: (a) propagate whatever source tag Chapter 6 §7 carries for the same claim, if it carries one — attribution to Ch 6 does not discharge the sourcing obligation on its own; (b) fetch kubernetes.io/docs/concepts/workloads/controllers/daemonset/, whose "Use cases" section covers cluster networking daemons directly, and which Chapter 6 likely wants cached regardless. Retained rather than cut because it is a retrieval of shipped Ch 6 material and the per-node reasoning is the paragraph's payoff. Build nothing further on it until it is tagged. -->
+<!-- AUTHOR-REVIEW: fact-accuracy F4 — "cluster networking plugins commonly ship as DaemonSets" is untagged in the paragraph below. No cached snapshot describes any plugin's deployment shape; k8s-docs-cluster-addons-2026-08-24 lists Calico, Cilium and Flannel with installation links and says nothing about packaging. Two fixes: (a) is CLOSED and unavailable — checked 2026-08-30, shipped Ch 6 line 890 asserts "Cluster networking plugins ship as DaemonSets" with no [source:] tag at all, so there is nothing to propagate and attribution to Ch 6 would not discharge the sourcing obligation anyway; (b) fetch kubernetes.io/docs/concepts/workloads/controllers/daemonset/, whose "Use cases" section covers cluster networking daemons directly, and which Chapter 6 likely wants cached regardless. Retained rather than cut because it is a retrieval of shipped Ch 6 material and the per-node reasoning is the paragraph's payoff. Build nothing further on it until it is tagged. -->
 
 Chapter 6 noted in passing that cluster networking plugins commonly ship as DaemonSets, one Pod on every node. At the time that was an isolated fact about DaemonSets; now it is a satisfying one. A thing that must configure networking on every node is exactly a thing that wants one copy per node. *[cross-bearing: see Ch 6 §7 — DaemonSets and per-node infrastructure]*
 
@@ -488,7 +490,7 @@ There are four Service types. Three of them are layers of the same mechanism. On
 
    Each ring ADDS to the ones inside it. Asking for an outer ring
    does not remove the inner ones — a NodePort Service still has
-   its cluster IP.
+   its cluster IP, and a LoadBalancer Service has both.
 
 
    ════════════════════════════════════════════════════════════
@@ -500,9 +502,13 @@ There are four Service types. Three of them are layers of the same mechanism. On
         no cluster IP · no endpoints · no proxying of any kind
 ```
 
-★ **Fixed Point:** The ladder types are **additive**, and the documented case is the one to memorize: **a NodePort Service also has a cluster IP — Kubernetes sets one up, exactly as if you had requested `type: ClusterIP`** [source: k8s-docs-service-2026-08-23]. Asking for a higher rung never removes the rungs below it.
+★ **Fixed Point:** The ladder types are **additive**. NodePort and LoadBalancer are both supersets of ClusterIP [source: k8s-docs-service-ports-2026-08-24], and the case the documentation spells out is the one to memorize: **a NodePort Service also has a cluster IP — Kubernetes sets one up, exactly as if you had requested `type: ClusterIP`** [source: k8s-docs-service-2026-08-23]. Asking for a higher rung never removes the rungs below it.
 
-<!-- AUTHOR-REVIEW: fact-accuracy F2 flagged the stronger form of this claim — that a LoadBalancer Service also carries a node port and a cluster IP — as untagged. The cached `k8s-docs-service-2026-08-23` snapshot documents the allocation for NodePort only; its LoadBalancer entry is one sentence and says nothing about what sits beneath. Curriculum-alignment R5 records that Stage 2 did fetch a page carrying "NodePort and LoadBalancer are supersets of ClusterIP", but that snapshot (`k8s-docs-service-ports-2026-08-24`) was never written to `sources/` and so cannot be cited here. The Fixed Point above has therefore been narrowed to the documented rung. When the snapshot lands, restore the explicit LoadBalancer clause here, in the figure annotation, and in the Bearings #1 item 3 answer key. -->
+<!-- RESOLVED 2026-08-30 (integration gate): the port-mechanics snapshot was harvested to
+     sources/k8s-docs-service-ports-2026-08-24.md, so the full three-rung claim is restored here,
+     in the figure annotation, and in the Bearings #1 answer-3 key. The snapshot flags
+     transcription variance on the exact wording of its "supersets" sentence, so the fact is
+     stated in the book's own words rather than quoted. -->
 
 ### The one that is not on the ladder
 
@@ -530,16 +536,57 @@ And nothing is broken. The object is correct; the declaration is valid; the piec
 
 ### Choosing
 
-Four lines, not a flowchart. The exam tests the definitions and the additivity far more often than it tests the decision.
+Four lines, not a flowchart. Definitions and additivity are more testable than the decision, and this book weights them accordingly.
 
 - Traffic stays inside the cluster → **ClusterIP**.
 - You need a fixed port on every node, usually because something in front of the cluster will target it → **NodePort**.
 - You have a cloud provider that will hand you an external address → **LoadBalancer**.
 - You want an in-cluster name for something that isn't in the cluster at all → **ExternalName**.
 
-<!-- AUTHOR-REVIEW: outline § Open questions #3 flags that `port` vs `targetPort` vs `nodePort`, and the default NodePort range (commonly cited as 30000-32767), are entirely uncached. The outline resolved this in favour of option (a) — fetch and add a short block — and curriculum-alignment R5 records that Stage 2 DID complete that fetch on 2026-08-24. The snapshot was never written to `sources/` (the Stage 2 run could not write to disk); its body survives verbatim inside `research-manifest.md` §3, but `k8s-docs-service-ports-2026-08-24.md` does not exist on disk and cannot be cited. Per the outline's own guidance ("a half-mention is worse than silence"), this section therefore still says nothing about port fields. This is now a plumbing blocker, not a research gap: extract the snapshot to `sources/`, re-run corpus assembly, and the block's natural home is right here, after the decision list. -->
+<!-- RESOLVED 2026-08-30 (integration gate): the snapshot was harvested to
+     sources/k8s-docs-service-ports-2026-08-24.md and the port-mechanics block is written above, at
+     the location this note specified. Scope held to the outline's guard: port/targetPort/
+     nodePort and the default range only. The snapshot's flagged transcription variance on
+     its three-field list means none of it is quoted verbatim. -->
 
-*[cross-bearing: see Ch 8 §1 — a Service is created by the same `apply`, through the same API server door, as every other object]*
+### The three port numbers
+
+A Service's port entry can carry three different numbers, and they answer three different
+questions. `port` is the port the Service itself exposes. `targetPort` is the port on the
+container that traffic is delivered to. `nodePort` — present only on the types that have one —
+is the port opened on every node.
+
+A Service can map **any** incoming `port` to a `targetPort`, and by default, for convenience,
+`targetPort` is set to the same value as `port` [source: k8s-docs-service-ports-2026-08-24]. That default is exactly why
+the distinction is easy to miss: in most manifests you will ever read, the two numbers are
+identical, and it is natural to conclude they are one field wearing two names. They are not. The
+moment a container listens on 8080 and you want the Service reachable on 80, they separate — and
+the manifest that separates them is the one a question will put in front of you.
+
+`targetPort` does not have to be a number at all. Port definitions in Pods can have names, and a
+Service can reference those names in `targetPort`, which works even when the Service selects a
+mixture of Pods that expose the same named port on different port numbers [source: k8s-docs-service-ports-2026-08-24]. The
+Service says which port it wants by name; each Pod says where that name lives. It is the same
+move as a selector, one layer down: name the thing you want, let the other side say where it is.
+
+For `type: NodePort`, the control plane allocates the node port from a range set by the
+`--service-node-port-range` flag — **default 30000–32767** — and every node proxies that same port
+number into the Service [source: k8s-docs-service-ports-2026-08-24]. You may name a `nodePort` yourself, in which case
+Kubernetes either allocates it or fails the API request because the port is already taken, which
+makes collision-avoidance your problem rather than the cluster's. Leave it out and one is
+allocated for you [source: k8s-docs-service-ports-2026-08-24].
+
+★ **Fixed Point:** `port` is on the **Service**. `targetPort` is on the **container**. `nodePort`
+is on the **node**. Default node-port range: **30000–32767**.
+
+> ⚠ **Navigational Hazards:** Two traps live in this one field set. The first is reading
+> `targetPort` as "the port the Service listens on" — it is the opposite end of the hop. The
+> second is assuming a node port is the same number as `port`; it is drawn from the 30000–32767
+> range and, unless you asked for a specific one, it will not resemble either of the other two
+> numbers. A question that shows you `port: 80`, `targetPort: 8080` and `nodePort: 31234` is
+> testing whether you can say which end of the connection each one describes.
+
+*[cross-bearing: see Ch 8 §1 — a Service is created by the same `apply` as every other object]* *[cross-bearing: see Ch 3 §5 — the API server as the only door in]*
 
 ### The ceiling
 
@@ -591,9 +638,9 @@ Every container in a Pod shares the network namespace, including the IP address 
 
 To make the node port available, Kubernetes sets up a cluster IP address, the same as if you had requested a Service of `type: ClusterIP` [source: k8s-docs-service-2026-08-23].
 
-Say the rule at the level of the ladder rather than as a fact about NodePort, because the shape is what makes the types easy to hold: **a type that adds reachability keeps what the type beneath it already provided.** The documentation states that shape explicitly for NodePort over ClusterIP [source: k8s-docs-service-2026-08-23]. Hold it in that form and you carry one rule instead of three separate facts — and Chapter 10's argument for Ingress, "one external address per Service, and that does not scale," becomes available to you without further work.
+Say the rule at the level of the ladder rather than as a fact about NodePort, because the shape is what makes the types easy to hold: **a type that adds reachability keeps what the type beneath it already provided.** The documentation states that shape explicitly for NodePort over ClusterIP [source: k8s-docs-service-2026-08-23], and records NodePort and LoadBalancer alike as supersets of ClusterIP [source: k8s-docs-service-ports-2026-08-24] — so the full ladder reads LoadBalancer over NodePort over ClusterIP. Hold it in that form and you carry one rule instead of three separate facts — and Chapter 10's argument for Ingress, "one external address per Service, and that does not scale," becomes available to you without further work.
 
-<!-- AUTHOR-REVIEW: This answer previously read "LoadBalancer implies NodePort implies ClusterIP." The cached Service snapshot documents additivity for NodePort over ClusterIP only; its LoadBalancer entry is a single sentence describing external exposure and saying nothing about cluster IPs or node ports. The claim is narrowed here to the documented rung, pending the targeted re-fetch of kubernetes.io/docs/concepts/services-networking/service/ capturing the `type: LoadBalancer` subsection in full (routed to Stage 2 by the fact-accuracy audit as its highest-priority gap). When it lands, restore the full three-rung statement here and in §3's Fixed Point in one pass, so the checkpoint bullet below and the figure caption stay in agreement.
+<!-- AUTHOR-REVIEW: This answer previously read "LoadBalancer implies NodePort implies ClusterIP." The cached Service snapshot documents additivity for NodePort over ClusterIP only; its LoadBalancer entry is a single sentence describing external exposure and saying nothing about cluster IPs or node ports. RESOLVED 2026-08-30 (integration gate): the snapshot landed as sources/k8s-docs-service-ports-2026-08-24.md and the full three-rung statement is restored here, in §3's Fixed Point, and in the figure annotation, in one pass.
 
 The same fetch covers answer 5's "Indefinitely." That a provider-less LoadBalancer Service waits forever follows from the cached "Kubernetes does not directly offer a load balancing component," but no cached snapshot describes the observable pending state, so the wording is left as the book's own entailment rather than presented as documented. -->
 
@@ -946,7 +993,7 @@ One closing beat, and it is a nice one because it reaches back to §1.
 
 So the plugin that implements the network model can also implement the Service data plane. Which is a good inoculation against reading kube-proxy as load-bearing architecture. It is one implementation of one job, and that job can be done elsewhere.
 
-> 🔭 **Closer Look:** kube-proxy is optional. A plugin like Cilium can do the same work in its own eBPF data plane [source: k8s-docs-cluster-addons-2026-08-24]. If you meet a cluster running no kube-proxy at all, nothing is missing. Deeper than the exam requires, but useful the first time you see it and assume something is wrong.
+> 🔭 **Closer Look:** kube-proxy is optional. A plugin like Cilium can do the same work in its own eBPF data plane (see the glossary) [source: k8s-docs-cluster-addons-2026-08-24]. If you meet a cluster running no kube-proxy at all, nothing is missing. Deeper than the exam requires, but useful the first time you see it and assume something is wrong.
 
 *[cross-bearing: see Ch 17 §5 — a service mesh moves this interception into a sidecar or an ambient layer]*
 
@@ -1272,7 +1319,7 @@ Chapter 10 crosses that boundary properly: one address serving many services, ro
 
 ## Practice Questions
 
-Twenty-two questions. Four of them draw on earlier chapters and are tagged; one is deliberately not multiple choice. Answers and explanations follow the full set — attempt them all before looking.
+Twenty-three questions. Four of them draw on earlier chapters and are tagged; one is deliberately not multiple choice. Answers and explanations follow the full set — attempt them all before looking.
 
 ---
 
@@ -1417,7 +1464,7 @@ D) A `type: ExternalName` Service now, swapped for a selector-based Service on m
 
 A) userspace (default), iptables, IPVS
 B) iptables (default), IPVS, nftables
-C) iptables, IPVS (default), eBPF
+C) iptables, IPVS (default), CNI
 D) nftables (default), iptables, kernelspace
 
 ---
@@ -1468,6 +1515,15 @@ A) Which node is the traffic on, and which iptables rule matches it
 B) Which object holds the declaration of intent, and which controller is reconciling that declaration into a published answer
 C) Which CNI plugin is installed, and which of its features is enabled
 D) Which DNS record exists for it, and what address that record returns
+
+---
+
+**23.** A Service manifest reads `port: 80`, `targetPort: 8080`, `type: NodePort`, and no `nodePort` value. A client inside the cluster connects to the Service's cluster IP on port 80. Which statement is correct?
+
+A) The connection fails, because `port` and `targetPort` must match for in-cluster traffic
+B) Traffic arrives at the container on port 8080, and a node port from the 30000–32767 range has also been allocated automatically
+C) Traffic arrives at the container on port 80, and `targetPort` applies only to traffic entering through the node port
+D) No node port exists, because none was specified in the manifest
 
 ---
 
@@ -1589,7 +1645,7 @@ The migration itself follows from the two facts above rather than from any docum
 
 On Linux, the available modes are iptables (the default), IPVS, and nftables (GA since Kubernetes 1.33); on Windows there is only kernelspace [source: k8s-docs-virtual-ips-kube-proxy-2026-08-23].
 
-**A** names a mode that is not among the documented Linux modes. **C** mislabels the default and lists eBPF, which is a plugin data plane rather than a kube-proxy mode. **D** mislabels the default and places the Windows-only mode in the Linux list.
+**A** names a mode that is not among the documented Linux modes. **C** mislabels the default and lists CNI, which is the interface a network plugin implements pod networking through — not a kube-proxy mode, and not even the same layer of the stack. **D** mislabels the default and places the Windows-only mode in the Linux list.
 
 **17. C.**
 
@@ -1646,6 +1702,12 @@ This is the only question in the set that tests the method rather than a fact, a
 **C** assumes the plugin is where every networking answer lives. It is where the *model* is implemented, but Services, endpoints and names are API-level and are the same whichever plugin you installed.
 
 **D** stops one step short, and stops in the same place question 10's option D did: DNS publishes answers, it does not compute them. Naming the publisher without naming the loop behind it leaves you able to read the current state and unable to explain why it is what it is.
+
+**23. B.**
+
+A Service maps any incoming `port` to a `targetPort`, so a client connecting on 80 reaches the container on 8080 [source: k8s-docs-service-ports-2026-08-24]. And because no `nodePort` was specified, one is allocated from the `--service-node-port-range`, default 30000–32767 [source: k8s-docs-service-ports-2026-08-24].
+
+**A** invents a constraint; the whole point of the two fields is that they may differ. **C** reverses the hop — `targetPort` describes the container end of every connection to the Service, not just the ones arriving through a node port. **D** is the trap worth naming: omitting `nodePort` does not mean no node port. It means you did not choose which one, so the control plane chose for you — the same shape as omitting `type` and getting ClusterIP, and as omitting `targetPort` and getting `port`'s value. Kubernetes fills in defaults; it does not skip the field.
 
 ---
 

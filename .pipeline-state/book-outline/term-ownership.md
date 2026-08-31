@@ -308,7 +308,7 @@ Ch 1's sections are unnumbered (B6 Collision #1), so every pointer into this cha
 | ExternalName | Ch 9 §3 | Ch 9 §3 † | — |
 | Service selector | Ch 9 §4 | Ch 4 §5 | name only, always with a pointer |
 | **EndpointSlice** | Ch 9 §4 | Ch 3 §3 | name only, always with a pointer |
-| Endpoints (the legacy object) | Ch 9 §4 | Ch 9 §4 † | — |
+| Endpoints (the legacy object) | **orphan — see Part 2** | — | do not use; the *controller*'s two names are reconciled at Ch 9 §4 |
 | Headless Service (`clusterIP: None`) | Ch 9 §5 | Ch 6 §6 | name only, always with a pointer |
 | Service without selectors | Ch 9 §5 | Ch 9 §5 † | — |
 | Readiness gating endpoint membership | Ch 9 §4 | Ch 5 §7 | gloss in one clause + pointer |
@@ -726,9 +726,34 @@ An index of surface forms, not a second ownership claim. Every acronym the book 
 
 ---
 
+> **Acronym-register debt recorded 2026-08-30 (Ch 9 integration gate).** Four acronyms first
+> appear in Ch 9 and are absent from the register below: **CNAME**, **BGP**, **eBPF**, and
+> **IPVS** (registered, but unexpanded at its first appearance in the book, which is Ch 9 §6).
+> Expand IPVS in place at Ch 9 §6 and add all four to the register at the glossary build.
+> eBPF additionally needs its glossary entry written — Ch 9 now names it twice with a
+> "see the glossary" pointer, and its Practice Q16 distractor was rebuilt from taught
+> material so that no graded item depends on it, per this ledger's own ruling.
+
 # Part 2 — Orphans
 
-Nine terms have no owner, or an owner that the shipped text does not honor. Each carries a recommendation. Where a term reaches graded material, it is called out — **a term used in question text or an answer key may not be glossary-only**, because a reader who meets it there has no place to look it up mid-question.
+Ten terms have no owner, or an owner that the shipped text does not honor. Each carries a recommendation. Where a term reaches graded material, it is called out — **a term used in question text or an answer key may not be glossary-only**, because a reader who meets it there has no place to look it up mid-question.
+
+### Endpoints (the legacy object) — **unowned, and correctly so**
+
+Moved here from Ch 9 §4 at the 2026-08-30 integration gate. The ledger assigned the legacy
+`Endpoints` object to Ch 9 §4 and the Canonical forms table reserved the capitalized form for
+that section's contrast, but the shipped chapter never mentions it — and **no snapshot in the
+168-file corpus describes it**. Writing the sentence would have meant asserting an unsourced
+claim in a book whose every factual sentence carries a tag.
+
+What the reader actually needs at associate tier is already there: Ch 9 §4 reconciles the
+**controller**'s two documented names (*EndpointSlice controller* and the older *endpoints
+controller*) explicitly, three times. That is the confusion the exam can reach. The legacy
+*object* is a `kubectl api-resources` artifact, not blueprint material.
+
+**Recommendation: leave unowned.** If a later pass wants it, it needs a fetch first — the
+EndpointSlice concept page's own comparison to the Endpoints API — and one clause in Ch 9 §4,
+not a section. Until then no chapter should use the capitalized bare form.
 
 ### ⚑3 — PodDisruptionBudget / PDB — **unowned**
 
@@ -835,7 +860,7 @@ These are the pairs most likely to produce a reader who thinks they have met a t
 | **Fluentd · Fluent Bit** | `Fluentd` · `Fluent Bit` | Fluentd is one word; Fluent Bit is two. This asymmetry is correct and is itself a plausible exam-adjacent detail. |
 | **Gateway API** | `Gateway API` · `Gateway` | *Gateway API* names the whole project and specification. Bare *Gateway* names only the resource kind, always in a sentence where GatewayClass or HTTPRoute is also present. Never use bare "Gateway" to mean the API. |
 | **Ingress** | `Ingress` · `ingress` | Capitalized for the object and the controller ("Ingress controller"). Lowercase for the direction of traffic in a NetworkPolicy ("ingress rules", "ingress isolation"). Ch 10 carries both senses in adjacent sections — §2 and §6 — and each must mark which it means. |
-| **Endpoints** | `EndpointSlice` · `Endpoints` · `endpoints` | *EndpointSlice* is the current object and the default headword. *Endpoints* (capitalized, code style) names the legacy object only, and only in Ch 9 §4's contrast. Lowercase *endpoints* means the backend addresses generally. |
+| **Endpoints** | `EndpointSlice` · `Endpoints` · `endpoints` | *EndpointSlice* is the current object and the default headword. *Endpoints* (capitalized, code style) names the legacy object, which no chapter now teaches — see the Part 2 orphan entry before using it anywhere. Lowercase *endpoints* means the backend addresses generally. |
 | **twelve-factor app** | `twelve-factor app` | Hyphenated, spelled out. Not `12-factor`, not `12 Factor`. |
 | **scale to zero** | `scale to zero` · `scale-to-zero` | Unhyphenated as a verb phrase ("Knative can scale to zero"), hyphenated only as a compound modifier ("scale-to-zero behavior"). |
 | **worker node** | `node` · `worker node` | *Node* is the headword and covers both the object and the machine. *Worker node* is used only where the contrast with control-plane nodes is the point. **"Minion" is retired and must not appear.** |

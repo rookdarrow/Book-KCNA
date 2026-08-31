@@ -287,7 +287,7 @@ Before reading this chapter, try these eight questions. Your score determines ho
 
 4. What makes a StatefulSet's Pods non-interchangeable in a way a Deployment's Pods are not? And what did Chapter 6 say, in as many words, that it was deliberately *not* explaining yet?
 
-5. In a traditional storage array, who creates a LUN and who requests one? Does the person requesting need to know the array's vendor?
+5. In a traditional storage array, who creates a **LUN (Logical Unit Number)** and who requests one? Does the person requesting need to know the array's vendor?
 
 6. Chapter 10 asked you to hold a count. Name the pluggable interfaces you have met so far in this book, and say what each one hands to somebody outside the Kubernetes project.
 
@@ -314,7 +314,7 @@ Before reading this chapter, try these eight questions. Your score determines ho
 
 8. **No, not safely.** This is general storage background rather than a Kubernetes rule: two independent filesystem drivers each believing they own the block device will corrupt it, because each caches metadata the other does not know it changed. A clustered filesystem exists to coordinate exactly that.
 
-**Scoring.** Six of the eight questions above ask for two things. Count a question right only if both halves are right — a half-answer is a gap, and the rubric below is calibrated on that basis.
+**Scoring.** Seven of the eight questions above ask for two things. Count a question right only if both halves are right — a half-answer is a gap, and the rubric below is calibrated on that basis.
 
 **If you got 6+ right:** Skim this chapter. Focus on the ★ Fixed Points and the ⚠ Navigational Hazards callouts, and go straight to ☆ Taking Your Bearings #2. That checkpoint is where this chapter's domain analysis puts the heaviest exam yield, and where a confident reader is still most likely to lose points.
 
@@ -334,7 +334,7 @@ That assumption is what makes Kubernetes work. It is also exactly what a databas
 
 So here is the question this chapter opens and does not close until §4: **when the Pod is gone, who decides whether the data is gone too, and when did they decide it?** Not *whether* you can attach storage; you can, and it is not difficult. The question is who holds the authority over the data's survival, and at what moment they exercised it. The answer is more interesting than "you do," and it arrives later than you would expect.
 
-The move this chapter teaches is the one that separates people who *use* a cluster from people who *run* one: separating the request for storage from the supply of it. A developer who understands that they write a claim and never a volume can be handed a cluster whose backing store they have never heard of — Ceph, EBS, a NetApp filer, a single NFS export in a rack somewhere — and be productive on it that same afternoon. That is not an exam trick. It is the actual division of labor on every platform team you will ever join.
+The move this chapter teaches is the one that separates people who *use* a cluster from people who *run* one: separating the request for storage from the supply of it. A developer who understands that they write a claim and never a volume can be handed a cluster whose backing store they have never heard of — Ceph, **EBS (Elastic Block Store)**, a NetApp filer, a single **NFS (Network File System)** export in a rack somewhere — and be productive on it that same afternoon. That is not an exam trick. It is the actual division of labor on every platform team you will ever join.
 
 State this plainly, once: the failure modes in this chapter destroy data rather than merely stop traffic. A Service misconfigured badly is an outage, and outages end. A reclaim policy misunderstood is a deleted volume, and that does not end. This is the chapter where reading carefully has a different payoff than it does elsewhere.
 
@@ -463,7 +463,7 @@ Naming is deterministic: *the name is a combination of the Pod name and volume n
 
 The general mechanism first: *sometimes, it is useful to share one volume for multiple uses in a single Pod. The `volumeMounts[*].subPath` property specifies a sub-path inside the referenced volume instead of its root* [source: k8s-docs-volumes-csi-and-subpath-2026-08-25]. One PVC, mounted into a MySQL container at its `mysql` subdirectory and into a PHP container at its `html` subdirectory: two containers, two mount points, one underlying volume.
 
-Now the exception. Chapter 4 hedged that a mounted ConfigMap picks up changes when the ConfigMap is updated, and told you the exception had a name and would arrive here *[cross-bearing: see Ch 4 §4 — configuration kept outside the image]*. Here it is, a flat rule with no conditions attached: *a container using a ConfigMap as a `subPath` volume mount will not receive updates when the ConfigMap changes* [source: k8s-docs-volume-types-depth-2026-08-25].
+Now the exception. Chapter 4 told you flatly that a mounted ConfigMap picks up changes when the ConfigMap is updated, and told you the exception had a name and would arrive here *[cross-bearing: see Ch 4 §4 — configuration kept outside the image]*. Here it is, a flat rule with no conditions attached: *a container using a ConfigMap as a `subPath` volume mount will not receive updates when the ConfigMap changes* [source: k8s-docs-volume-types-depth-2026-08-25].
 
 The same applies to the two neighbors: *a container using a Secret as a `subPath` volume mount will not receive Secret updates* [source: k8s-docs-volume-types-depth-2026-08-25], and *a container using the downward API as a `subPath` volume mount does not receive updates when field values change* [source: k8s-docs-volume-types-depth-2026-08-25].
 
@@ -501,7 +501,7 @@ Read that as an analogy with four terms. A Pod does not create CPU; it requests 
 
 **A PersistentVolumeClaim (PVC) is a request for storage by a user** [source: k8s-docs-persistent-volumes-2026-08-23]. The glossary is even blunter about what it does and does not contain: a claim *specifies the amount of storage, how the storage will be accessed (read-only, read-write and/or exclusive) and how it is reclaimed (retained, recycled or deleted)*, while *details of the storage itself are described in the PersistentVolume object* [source: k8s-glossary-storage-terms-2026-08-25]. A claim says *how much* and *how*. It does not say *which array*.
 
-That split explains something you learned seven chapters ago and probably filed as a fact to memorize. Chapter 4 taught you that a PersistentVolume is cluster-scoped while a PersistentVolumeClaim is namespaced *[cross-bearing: see Ch 4 §3 — where a name lives]*. You now have the reason rather than the rule. Supply is a cluster-wide resource, like a node: it belongs to no team, and the administrator who provisioned it did so for the cluster. Demand comes from a specific application in a specific namespace, and belongs to whoever owns that namespace. The scoping is not an arbitrary API decision; it is the supply/demand split expressed in the API's own vocabulary. The hold belongs to the ship. The claim belongs to whoever is shipping.
+That split explains something you learned seven chapters ago and probably filed as a fact to memorize. Chapter 4 taught you that a PersistentVolume is cluster-scoped, naming it alongside Nodes and StorageClasses *[cross-bearing: see Ch 4 §3 — where a name lives]*. What it did not tell you — because it had no reason to yet — is that the **claim** is namespaced. You now have the reason for both halves rather than a rule for one. Supply is a cluster-wide resource, like a node: it belongs to no team, and the administrator who provisioned it did so for the cluster. Demand comes from a specific application in a specific namespace, and belongs to whoever owns that namespace. The scoping is not an arbitrary API decision; it is the supply/demand split expressed in the API's own vocabulary. The hold belongs to the ship. The claim belongs to whoever is shipping.
 
 And the claim's namespace is load-bearing at consumption time too: *claims must exist in the same namespace as the Pod using the claim. The cluster finds the claim in the Pod's namespace and uses it to get the PersistentVolume backing the claim* [source: k8s-docs-persistent-volumes-depth-2026-08-25].
 
@@ -1037,10 +1037,10 @@ D) The PVC binds to the first `Available` PV of any class, since an empty class 
 - **C is wrong**, and it is the most reasonable of the three, because it assumes the provisioner has some sensible policy of its own — free capacity, spare headroom, whichever zone looks emptiest. It does not. The mode provisions to the topology the *Pod's* scheduling constraints specify, and there are no such constraints to conform to until the scheduler has chosen a node [source: k8s-docs-storage-classes-2026-08-25]. Zone capacity is not an input here. The Pod's node is the input, and there is not going to be one.
 - **D is wrong**. `Failed` is a PersistentVolume phase, describing a volume whose automatic reclamation did not succeed [source: k8s-docs-persistent-volumes-depth-2026-08-25]: a storage-lifecycle outcome, not a scheduling one. Nothing here has been reclaimed, or attempted. A Pod that no node can hold waits in `Pending`; it is not marked failed for waiting, and neither is its claim.
 
-**4 — B.** The documented manual reclamation sequence is exactly: delete the PV, clean up the data on the storage asset, delete the asset. And *if you want to reuse the same storage asset, create a new PersistentVolume with the same storage asset definition* [source: k8s-docs-persistent-volumes-depth-2026-08-25].
-- **A is wrong**, and it is the `Retain` trap. `Released` is not `Available`: *it is not yet available for another claim because the previous claimant's data remains on the volume* [source: k8s-docs-persistent-volumes-depth-2026-08-25]. Nothing binds to it, and no new claim inherits the data.
-- **C is wrong**: automatic scrubbing is `Recycle`, which is deprecated [source: k8s-docs-persistent-volumes-depth-2026-08-25]. `Retain` scrubs nothing.
-- **D is wrong**: `Retain` never attempts automatic reclamation at all, so it cannot fail at it. The volume is waiting for a person, not for a controller.
+**4 — B.** Chapter 4's Fixed Point named Nodes, PersistentVolumes, and StorageClasses as cluster-scoped, alongside namespace objects themselves *[cross-bearing: see Ch 4 §3 — where a name lives]*. This chapter supplied the reason for two of them: a PV is supply the cluster owns, and a StorageClass is a template the cluster offers. Neither belongs to a tenant, so neither belongs to a namespace.
+- **A** and **C** both include the PersistentVolumeClaim, and that is the half Chapter 4 never taught. The claim is namespaced — it is the tenant's request, and *claims must exist in the same namespace as the Pod using the claim* [source: k8s-docs-persistent-volumes-depth-2026-08-25]. **C** is the more reasonable of the two: having correctly placed the PV at cluster scope, it assumes the claim follows its supply. It does not.
+- **D** swaps the Node for the Namespace object. Namespace objects genuinely are cluster-scoped — they are the example Chapter 4 said people most often miss, since a namespace is not itself in a namespace — so the trap is a true statement sitting beside a false one. The set still fails on the claim.
+
 
 **5 — C.** *A PVC with its `storageClassName` set to `""` is explicitly stating that it is bound with a PV with no class, hence the PV's `storageClassName` must also be empty* [source: k8s-docs-persistent-volumes-depth-2026-08-25], and *claims that request the class `""` effectively disable dynamic provisioning for themselves* [source: k8s-docs-persistent-volumes-2026-08-23]. No classless PVs exist, so nothing matches, and nothing will be provisioned.
 - **A is wrong** and is the whole point of the question. Omitting the field and setting it to `""` are different acts with different meanings. Only the omission gets the default.
@@ -1136,7 +1136,7 @@ That is the same light, the fourth time. And once you have seen it four times, y
 
 > 🪝 **Snag:** CSI is an interface, not a product. There is no "CSI storage" you can buy or deploy, any more than there is "CNI networking." What you deploy is a *driver*, written by whoever owns the storage it speaks to — one for a cloud provider's block store, one for a software-defined storage project, one for an on-premises array — each implementing the same contract against different hardware. A question that treats CSI as a storage system rather than as the interface storage systems implement is testing exactly this confusion.
 
-<!-- AUTHOR-REVIEW: The three named CSI drivers previously listed here (AWS EBS, Ceph, vSphere) were genericized — no cached snapshot enumerates driver implementations. Research gap to open: the kubernetes-csi drivers list, which would also support the `ebs.csi.aws.com` provisioner string used in this chapter's Taking Your Bearings #3. If that source lands, restore the named examples with a tag. -->
+<!-- AUTHOR-REVIEW: The three named CSI drivers previously listed here (AWS EBS, Ceph, vSphere) were genericized — no cached snapshot enumerates driver implementations. Research gap to open: the kubernetes-csi drivers list, (the `ebs.csi.aws.com` clause that stood here was struck 2026-08-30: that string appears nowhere in the chapter any more — Bearings #3 Q2 now uses `blockstore.example.com` — so no source is owed for it). If that source lands, restore the named examples with a tag. -->
 
 ---
 
@@ -1440,12 +1440,12 @@ B) Both are deleted, because the class defaults to `Delete` and the volume inher
 C) The PV is deleted but the backing asset is retained
 D) The PV becomes `Available` and the asset is scrubbed
 
-**4.** *[retrieval: ch4]* Which pair correctly describes the scoping of these two objects?
+**4.** *[retrieval: ch4]* Chapter 4 named three cluster-scoped resources, two of which this chapter has now given you a reason for. Which set is correct?
 
-A) PersistentVolume namespaced; PersistentVolumeClaim namespaced
-B) PersistentVolume cluster-scoped; PersistentVolumeClaim namespaced
-C) PersistentVolume cluster-scoped; PersistentVolumeClaim cluster-scoped
-D) PersistentVolume namespaced; PersistentVolumeClaim cluster-scoped
+A) Node, PersistentVolume, PersistentVolumeClaim
+B) Node, PersistentVolume, StorageClass
+C) PersistentVolume, PersistentVolumeClaim, StorageClass
+D) Namespace, PersistentVolume, PersistentVolumeClaim
 
 **5.** A ConfigMap named `app-config` is mounted into a container using `subPath: settings.yaml`. An operator updates the ConfigMap with `kubectl apply`. What does the running container see?
 

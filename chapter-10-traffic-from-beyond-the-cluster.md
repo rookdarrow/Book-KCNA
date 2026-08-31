@@ -235,7 +235,7 @@ figures_planned:
 
 **The session split goes between §5 and §6.** This chapter is two chapters wearing one number: an API-generations arc (§1–§5) and a policy arc (§6–§7), joined at §8. §6 asks you to unlearn a firewall instinct you have probably held for a decade, and it will land better on a fresh head than on a tired one. The split puts roughly 66 minutes before the break and 58 after it, the last 25 of which are the Exam Alert and the practice set. Take those as a third sitting if the second runs long.
 
-*If you only have 15 minutes: read §6. It is the section most likely to overturn something you currently believe, and believing it costs you points. If you have 35, add §3 and §4 and take Bearings #3 — the controller rule, the freeze, and the policy defaults, plus the checkpoint that tests the hardest of the three.*
+*If you only have 15 minutes: read §6. It is the section most likely to overturn something you currently believe, and believing it costs you points. If you have 35, add §3 and §4 and take Taking Your Bearings #3 — the controller rule, the freeze, and the policy defaults, plus the checkpoint that tests the hardest of the three.*
 
 ---
 
@@ -267,11 +267,15 @@ Before reading this chapter, try these eight questions. Your score determines ho
 <details>
 <summary>Click for answers + reading strategy</summary>
 
-1. **The `Host` header, available only after the TCP connection is established and the request has been sent** `[source: k8s-docs-gateway-api-depth-2026-08-24]`. The client's DNS lookup resolved the name to an address before any traffic moved; the name itself travels inside the request. (HTTPS carries an earlier tell in the SNI field of the TLS handshake — traffic for several hostnames can be multiplexed on a single port that way, where the proxy terminating TLS supports SNI `[source: k8s-docs-ingress-depth-2026-08-24]` — but the routing decision is conventionally made on the `Host` header.)
+1. **The `Host` header, available only after the TCP connection is established and the request has been sent** `[source: k8s-docs-gateway-api-depth-2026-08-24]`. The client's DNS lookup resolved the name to an address before any traffic moved; the name itself travels inside the request. (HTTPS carries an earlier tell in the **SNI (Server Name Indication)** field of the TLS handshake — traffic for several hostnames can be multiplexed on a single port that way, where the proxy terminating TLS supports SNI `[source: k8s-docs-ingress-depth-2026-08-24]` — but the routing decision is conventionally made on the `Host` header.)
 
 2. **`Service.Type=LoadBalancer`** *[cross-bearing: see Ch 9 §3 — the Service type ladder]*. Fifty of them costs fifty external addresses, fifty provisioned load balancers, fifty line items on a cloud bill, and fifty things to configure, monitor, and eventually decommission.
 
-<!-- AUTHOR-REVIEW: the one-address-per-Service ratio here is inherited from Ch 9 and carries no [source:] tag; no cached snapshot in this chapter's corpus states the ratio or its cost consequences. Confirm it was sourced at Ch 9 §3 — if it was not, this is a chapter-crossing research gap rather than a Ch 10 defect. The cost enumeration itself is the book's operational reasoning and reads correctly as such. -->
+<!-- RESOLVED 2026-08-30 (integration gate): not a research gap. Shipped Ch 9 §3 states
+     "A LoadBalancer Service gives you one external address per Service" and frames the
+     fifty-Service arithmetic as this book's own argument, not as documented fact. The ratio is
+     Ch 9-owned book reasoning, correctly inherited here, and the cross-bearing is the right
+     treatment. No source tag is needed, and none is possible. -->
 
 3. **None of them.** None of them reads HTTP. Three of the four operate on addresses and ports; the fourth, ExternalName, is a DNS alias with no proxying set up at all `[source: k8s-docs-service-2026-08-23]`. `/checkout` and `/catalog` are bytes inside an HTTP request, and nothing in Chapter 9 opens the request to look.
 
@@ -350,7 +354,7 @@ That is the ceiling. This section does not re-derive it. It names the vocabulary
 
 Everything in Chapter 9 operates at what practitioners call **layer 4**. A Service moves packets to an address and a port and has no opinion about what those packets contain. Everything in §2 through §5 operates at **layer 7**: it reads the request — the host it was addressed to, the path it asked for, sometimes the headers it carries — and decides where to send it on that basis.
 
-The documentation sorts the same two groups without putting layer numbers on them. It describes Ingress as protocol-aware HTTP/HTTPS routing using URIs, hostnames, and paths; Gateway API as dynamic infrastructure provisioning and advanced traffic routing; and `type: LoadBalancer` as the simpler but less configurable mechanism for getting traffic into a cluster [source: k8s-docs-network-model-2026-08-23]. The one place it does reach for OSI numbers is NetworkPolicy, which it places at the IP address or port level — layer 3 or 4 [source: k8s-docs-network-model-2026-08-23]. That is not a coincidence, and §6 is where it pays.
+The documentation sorts the same two groups without putting layer numbers on them. It describes Ingress as protocol-aware HTTP/HTTPS routing using URIs, hostnames, and paths; Gateway API as dynamic infrastructure provisioning and advanced traffic routing; and `type: LoadBalancer` as the simpler but less configurable mechanism for getting traffic into a cluster [source: k8s-docs-network-model-2026-08-23]. The one place it does reach for **OSI (Open Systems Interconnection)** layer numbers is NetworkPolicy, which it places at the IP address or port level — layer 3 or 4 [source: k8s-docs-network-model-2026-08-23]. That is not a coincidence, and §6 is where it pays.
 
 Keep this boundary marked. It is not decoration and it is not only about §2. §6 goes back *down* to layers 3 and 4, and a reader who has lost the ladder will experience NetworkPolicy as an unrelated topic that happened to land in the same chapter.
 
@@ -364,7 +368,10 @@ Two words from ordinary industry vocabulary that this book has not used yet. The
 
 This chapter does one of each. §1 through §5 are about north-south. §6 and §7 are about east-west.
 
-<!-- AUTHOR-REVIEW: the question-quality audit flags north-south/east-west as taught, mnemonic'd, and summarised but never assessed, and offers two remedies: test the pair once, or drop the mnemonic. Kept here on the assumption the question pass takes the first option — the mnemonic also sets up §1's closing harbour-wall figure. If no question is added, revisit. -->
+<!-- RESOLVED 2026-08-30 (integration gate): the revisit trigger fired — the question pass
+     added nothing, so the pair was taught, mnemonic'd and summarised across 41 questions
+     without once being assessed. Practice question 19 now tests it directly, against the
+     chapter's own §1-§5 / §6-§7 split. The mnemonic stays. -->
 
 > 🪢 **Mnemonic:** *North-south goes through the wall; east-west stays inside it.* §1–§5 is the wall. §6–§7 is inside.
 
@@ -1441,7 +1448,7 @@ Look at the fourth panel one more time. Three of these announce themselves. One 
 
 ## Practice Questions
 
-Eighteen questions, four options each. Four draw on earlier chapters, and they are tagged. Answers follow the full set — attempt them all before scrolling.
+Nineteen questions, four options each. Four draw on earlier chapters, and they are tagged. Answers follow the full set — attempt them all before scrolling.
 
 **1.** ⚪ Three mechanisms, three altitudes. At which OSI layer does each operate: the Service types from Chapter 9, an Ingress, and a NetworkPolicy?
 
@@ -1568,6 +1575,15 @@ A) *An object without its component does nothing.* Instances: a `type: LoadBalan
 B) *An object without its component does nothing.* Instances: an Ingress with no Ingress controller, and a NetworkPolicy on a plugin that does not implement NetworkPolicy.
 C) *An object takes effect once the API server has admitted it.* Instances: the four above.
 D) *An object without its component does nothing.* Instances: a `type: LoadBalancer` Service with no provider; an Ingress with no controller; a NetworkPolicy on an unsupporting plugin; an Ingress whose `pathType` does not match the request path.
+
+---
+
+**19.** ⚪ A cluster runs a frontend Pod that receives requests from users on the internet and, to serve them, calls a backend Pod in the same cluster. Which describes the two flows, and which of this chapter's mechanisms governs each?
+
+A) Both are north-south; Ingress governs the first, NetworkPolicy the second
+B) The user-to-frontend flow is north-south and is governed by Ingress; the frontend-to-backend flow is east-west and is governed by NetworkPolicy
+C) The user-to-frontend flow is east-west and is governed by Ingress; the frontend-to-backend flow is north-south and is governed by NetworkPolicy
+D) Both are east-west, because both flows terminate inside the cluster
 
 ---
 
@@ -1798,6 +1814,14 @@ If you produced all four, §8's argument is one you assembled rather than one yo
 
 *Why D is wrong:* it states the rule correctly and then supplies an instance that is not one. An Ingress with a mismatched `pathType` is a broken object with its component present — a manifest bug, findable by reading the manifest. Every genuine instance of this pattern is an object with nothing wrong with it. If re-reading the YAML can fix it, it is not this.
 
+**19. B.**
+
+North-south traffic enters the cluster from outside; east-west traffic moves between Pods inside it. The user's request crosses the boundary, so it is north-south, and §1–§5 — Ingress and Gateway API — are what govern that crossing. The frontend's call to the backend never leaves the cluster, so it is east-west, and §6–§7 — NetworkPolicy — are what govern that.
+
+**A** collapses the distinction by calling both flows north-south, which would leave NetworkPolicy governing traffic that crossed the cluster boundary — not what it does. **C** inverts the two terms; this is the miss worth checking yourself against, because the words carry no intrinsic direction and are easy to swap. **D** mistakes *where the traffic ends* for *where it came from*: a request that terminates on a Pod inside the cluster is still north-south if it originated outside.
+
+The pairing is also the chapter's own map: §1–§5 is one direction, §6–§7 the other. If you can place the two halves of this chapter, you can place the two terms.
+
 ---
 
 ## Chapter Summary
@@ -1831,7 +1855,11 @@ If you produced all four, §8's argument is one you assembled rather than one yo
 | **Out of scope** | No TLS, no Service-name targeting, no logging, no explicit deny, no loopback blocking, and five more. |
 | **The rule** | An object without its component does nothing. Four instances of the pattern so far. Ask: *what is watching this, and is it installed?* |
 
-<!-- AUTHOR-REVIEW: "One external address per Service" is untagged here and in §1 (fact-accuracy WARN 4). No cached Ch 10 snapshot states the ratio — it is inherited Ch 9 material, so the row now carries a cross-bearing to Ch 9 §3 instead of a source tag. If Ch 9 did not source it either, this is a chapter-crossing research gap rather than a Ch 10 defect. -->
+<!-- RESOLVED 2026-08-30 (integration gate): not a research gap. Shipped Ch 9 §3 states
+     "A LoadBalancer Service gives you one external address per Service" and frames the
+     fifty-Service arithmetic as this book's own argument, not as documented fact. The ratio is
+     Ch 9-owned book reasoning, correctly inherited here, and the cross-bearing is the right
+     treatment. No source tag is needed, and none is possible. -->
 
 <!-- AUTHOR-REVIEW: The `pathType` row drops "Longest match wins; `Exact` breaks ties" per curriculum-alignment R3, which authorises the three values, required-ness, and the element-wise example only. If the §2 pass declines the matching cut at the precedence rule, restore the clause here so the two do not disagree. -->
 
@@ -1863,7 +1891,7 @@ It also closes a loop this book left open on purpose. Chapter 6 introduced State
      that this is the chapter's third distinct "four" (§3 and §8 carry the absent-component-
      pattern count) — hence the full phrase rather than a bare number here. -->
 
-And you will meet the last of the four pluggable interfaces. You have three of them already, collected one chapter at a time: CRI at the container runtime in Chapter 2, CRDs at the API itself in Chapter 6, CNI at the network last chapter. Chapter 11 brings CSI, at storage, and that closes the set. By the time Chapter 17 gathers all four in one place, the shape should be familiar enough that the gathering feels like recognition rather than instruction.
+And you will meet the last of the four pluggable interfaces. You have three of them already, collected one chapter at a time: CRI at the container runtime in Chapter 2, CRDs at the API itself in Chapter 6, CNI at the network last chapter. If you counted along with Chapter 9 and arrived at two, you were counting something narrower and counting it correctly — that chapter was tallying the times Kubernetes *hands the work to somebody else*, which CRI and CNI both do and CRDs do not. This is the wider set: the four places the project publishes an interface and lets you supply what sits behind it. Chapter 11 brings CSI, at storage, and that closes the set. By the time Chapter 17 gathers all four in one place, the shape should be familiar enough that the gathering feels like recognition rather than instruction.
 
 One caution about that number, since this chapter has made a point of separating what a source says from what we have concluded from it. *The four pluggable interfaces* is this book's phrase and this book's grouping. The documentation's own map of where Kubernetes can be extended is larger than ours and cut differently: six extension points, five plugin types under infrastructure alone, and custom resources filed under a different heading entirely [source: k8s-docs-extending-kubernetes-2026-08-23]. Chapter 17 sets both maps side by side *[cross-bearing: see Ch 17 §4 — the four pluggable interfaces, collected]*. What makes our four a set is a judgement rather than a heading: at each of them, Kubernetes defines an interface and hands the implementation to somebody else. The judgement is ours. The four interfaces are real, and each one is sourced where you met it.
 

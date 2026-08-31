@@ -262,6 +262,15 @@
 | §8 | How the Project Actually Runs, and How You'd Join | Kubernetes governance — SIGs, Working Groups, Committees, Steering Committee; the contributor ladder; KEPs; **SIG Release, the release cadence, and why ~3 releases a year and three supported minors explain each other — Ch 8 §6 decay-fix anchor**; KubeCon; the Code of Conduct; the CNCF certification ladder and adjacent credentials |
 | §9 | One Pluggability Story | **SECONDARY ZENITH.** Chapter synthesis at a second altitude above §4; back-bears explicitly to all four interface chapters |
 
+> ⛑ **DRAFTING NOTE for §4, recorded 2026-08-30 (Ch 10/Ch 11 integration gates).** The fourth interface is named **two different ways in shipped text**, and §4 is the section that has to reconcile them — no earlier chapter can, because each is internally consistent.
+>
+> - Shipped **Ch 2 §4** (line 598) and **§8** (lines 914, 930) call the set "CRI, CNI, CSI, and **API extensions**."
+> - The B7 ledger, shipped **Ch 6 §8**, **Ch 10**'s closing and **Ch 11 §5** all call it "**CRDs**."
+>
+> Three sources to one, so **CRDs is canonical** and Ch 2 is the outlier. Ch 2's own inbound pointer at line 600 already links its "API extensions" slot to `Ch 6 §8 — CRDs`, so the two forms are reconciled in shipped text and neither is wrong. §4 should name CRDs, and may note in one clause that the wider extension surface is sometimes called "API extensions" — which is also true, and is why §4 lists API aggregation, admission webhooks, device plugins and scheduler plugins beside the four.
+>
+> **Second collision, same section.** Shipped **Ch 9 §8** tells the reader CNI is "the *second* instance of an arrangement you first met in Chapter 2" — counting only the times Kubernetes hands the work to somebody else (CRI, CNI), which excludes CRDs. Shipped **Ch 10** and **Ch 11** tell the same reader they hold *three* of four. Both counts are right about different things, and Ch 10's Voyage Ahead now says so explicitly. §4 inherits a reader who has been reconciled; do not re-open it, and do not assert a running ordinal of your own.
+
 *Published pointers honored: `Ch 17 §1 — the CNCF cloud native definition and its characteristics`; `Ch 17 §2 — CNCF governance and project maturity` / `…and the project lifecycle`; `Ch 17 §4 — the four pluggable interfaces, collected`. One published pointer disagrees with these — see Collisions below.*
 
 *Section count note: 9 sections is the book's joint-largest, and correct — this chapter carries two competencies (D4.2 and D4.3), six distinct arcs, and three Bearings checkpoints. §2 and §8 are D4.3's own numbered sections, satisfying B2's requirement that Community and Collaboration get explicit treatment rather than a footnote.*

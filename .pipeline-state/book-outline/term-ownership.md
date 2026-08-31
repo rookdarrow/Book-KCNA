@@ -734,6 +734,17 @@ An index of surface forms, not a second ownership claim. Every acronym the book 
 > "see the glossary" pointer, and its Practice Q16 distractor was rebuilt from taught
 > material so that no graded item depends on it, per this ledger's own ruling.
 
+> **Register and ambient-tier debt recorded 2026-08-30 (Ch 10 integration gate).**
+> **SNI** (Server Name Indication) and **OSI** (Open Systems Interconnection) are now expanded
+> at their first use in Ch 10 — both had been reaching graded text unexpanded (SNI in a
+> Soundings answer, OSI in a Practice stem) and neither has a register row. Add both, plus a
+> glossary entry for SNI, at the glossary build.
+> **reverse proxy** has 7 uses in Ch 10 including a Soundings answer, no owner, and no ambient
+> tier. Defensible as ambient for this reader, but it currently sits in graded text with no
+> lookup path: assign it to the ambient tier or give it a glossary entry. Lowest priority.
+
+> **Glossary debt recorded 2026-08-30 (Ch 11 integration gate).** Six terms need entries at the glossary build: **NFS** (Network File System), **LUN** (Logical Unit Number), **iSCSI**, **EBS** (Elastic Block Store), **finalizer**, and **`CSIDriver`**. NFS, LUN and EBS are now expanded at first use in Ch 11; NFS in particular carries two graded Practice items (Q7, Q11) and had never been spelled out anywhere in the book. iSCSI appears only inside quoted documentation, so it needs a register row rather than an in-text expansion.
+
 # Part 2 — Orphans
 
 Ten terms have no owner, or an owner that the shipped text does not honor. Each carries a recommendation. Where a term reaches graded material, it is called out — **a term used in question text or an answer key may not be glossary-only**, because a reader who meets it there has no place to look it up mid-question.

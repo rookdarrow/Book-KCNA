@@ -284,9 +284,9 @@ Before reading this chapter, try these eight questions. Your score determines ho
 
 `kubectl cordon node-7`.
 
-Three words, and a machine goes out of service without disturbing a single running process. Chapter 7 ended by naming that command, telling you it was this chapter's opening move, and declining to explain it. Here it is.
+Three words, and a machine goes out of service without disturbing a single running process. Chapter 7 ended by naming the *act*, telling you the command was this chapter's opening move, and declining to give it. Here it is.
 
-The shape is the more interesting thing, though. You have been typing commands in exactly this form since Chapter 4 (`kubectl apply -f`, `kubectl get pods`, `kubectl scale`) and nobody has told you what the form *is*. It worked anyway. That is precisely the condition under which a candidate walks into the exam room confident and then loses five points to a question about which component is permitted to be one minor version newer than which.
+The shape is the more interesting thing, though. You have been typing commands in exactly this form since Chapter 3 (`kubectl apply -f`, `kubectl get pods`, `kubectl scale`) and nobody has told you what the form *is*. It worked anyway. That is precisely the condition under which a candidate walks into the exam room confident and then loses five points to a question about which component is permitted to be one minor version newer than which.
 
 Chapters 2 through 7 made you someone who can describe what should run and where. This chapter makes you someone responsible for the thing it runs on. That is a different posture, and the vocabulary shifts with it: on watch, you think in three questions — what can I take out of service safely, what can I stop other people doing, and what can I not get back. You are about to acquire all three.
 
@@ -355,8 +355,8 @@ Here is the operations table. Read it as an inventory rather than a list of new 
 
 | Verb | What it does | Where it lives in this book |
 |---|---|---|
-| `get` | List one or more resources | Ch 4 |
-| `describe` | Display the detailed state of one or more resources | Ch 4 |
+| `get` | List one or more resources | Ch 3, then throughout |
+| `describe` | Display the detailed state of one or more resources | Ch 5, then throughout |
 | `apply` | Apply a configuration change to a resource from a file or stdin | Ch 4 |
 | `create` | Create one or more resources from a file or stdin | Ch 4 |
 | `delete` | Delete resources from a file, stdin, or by label selector, name, or resource | Ch 4 |
@@ -371,7 +371,7 @@ Here is the operations table. Read it as an inventory rather than a list of new 
 
 One entry deserves a sentence of its own. `explain` gets documentation of various resources [source: k8s-docs-kubectl-overview-2026-08-23], which makes it the only verb in the table that answers a question about *the resource type* rather than a question about *your cluster*.
 
-> ⚓ **Worth Securing:** `kubectl explain` is the entry in this table that pays off longest. Because it returns documentation for a resource type rather than the contents of your cluster, it works on types you have never seen, including the Custom Resource Definitions of Chapter 6 §8, installed by tools that did not exist when this book was written. Two years from now it will still be the fastest way to find out what a field does.
+> ⚓ **Worth Securing:** `kubectl explain` is the entry in this table that pays off longest. Because it returns documentation for a resource type rather than the contents of your cluster, it works on types you have never seen, including the CustomResourceDefinitions of Chapter 6 §8, installed by tools that did not exist when this book was written. Two years from now it will still be the fastest way to find out what a field does.
 
 *[cross-bearing: see Ch 4 §1 — apply, and the declarative model]*. Chapter 4 gave `apply` a single sentence and sent you here for the rest. This table is that payoff, and Chapter 4's larger point stands unchanged: the objects are declarations, and the imperative verbs work by changing declarations. *[cross-bearing: see Ch 6 §2 — kubectl scale as a write to .spec.replicas]*.
 
@@ -381,7 +381,7 @@ The second real idea in this section is a question you have never had to ask, be
 
 For configuration, `kubectl` looks for a file named `config` in the `$HOME/.kube` directory. You can specify other kubeconfig files by setting the `KUBECONFIG` environment variable or by setting the `--kubeconfig` flag [source: k8s-docs-kubectl-overview-2026-08-23]. That is the precedence, stated flat: a default location, an environment variable, and a flag. Per the general rule above — flags specified on the command line override default values and any corresponding environment variables — the flag wins over the environment variable [source: k8s-docs-kubectl-overview-2026-08-23].
 
-If you answered Soundings question 1 with "an address and a credential," this is where that instinct lands. The file holds both, plus the answer to the two-server problem: which one you are currently talking to.
+If you answered Soundings question 1 with "an address and a credential," this is where that instinct lands. The file holds both, plus the answer to the two-server problem: which one you are currently talking to. That last part has a name — a **context** is one named bundle of cluster, user and namespace, and the **current context** is the one `kubectl` uses when you do not say otherwise. A kubeconfig can hold many; you are always working inside exactly one.
 
 ### The surprising case: `kubectl` inside a Pod
 
@@ -454,7 +454,7 @@ And here is the property that makes them a genuinely different kind of thing rat
 
 > ⚠ **Navigational Hazards:** Authorization and admission are not two names for the same check, and the sharpest proof is that they disagree about what counts as a decision. **Authorization is any-module-approves:** if any module authorizes the request, it proceeds; only if all modules deny is it refused [source: k8s-docs-controlling-access-2026-08-24]. **Admission is any-module-rejects:** unlike authentication and authorization modules, if any admission controller module rejects, the request is immediately rejected [source: k8s-docs-controlling-access-2026-08-24]. One gate is a vote you can win with a single supporter; the next is a veto any participant can exercise. A request can be fully authenticated, entirely authorized, and still be refused — or quietly rewritten — at the third gate.
 
-> 🔭 **Closer Look:** Admission controllers act on requests that create, modify, delete, or connect to (proxy) an object. They do not act on requests that merely read objects [source: k8s-docs-controlling-access-2026-08-24] — reads bypass the admission control layer entirely [source: k8s-docs-admission-controllers-2026-08-24]. So the whole of this gate is invisible to `kubectl get`, which is deeper than the exam requires and explains a great deal of otherwise-baffling behaviour the first time you install a policy engine.
+> 🔭 **Closer Look:** Admission controllers act on requests that create, modify, delete, or connect to (proxy) an object. They do not act on requests that merely read objects [source: k8s-docs-controlling-access-2026-08-24] — reads bypass the admission control layer entirely [source: k8s-docs-admission-controllers-2026-08-24]. So the whole of this gate is invisible to `kubectl get`, which is deeper than the exam requires and explains a great deal of otherwise-baffling behavior the first time you install a policy engine.
 
 > **Extended Analogy:** Think of a working commercial harbour rather than a locked building. A vessel arriving is met first by a pilot boat, whose only question is *which vessel is this*: papers, registration, identity. That is authentication. It has no view on your business here.
 >
@@ -576,7 +576,7 @@ So the two halves of "stop people using too much" sit on opposite sides of a bou
 
 Say that out loud once, because Chapter 12 is going to *derive* the RBAC four-way matrix from exactly this boundary rather than asking you to memorize four combinations *[cross-bearing: see Ch 12 §3 — namespaced and cluster-scoped permissions]*.
 
-And one closing observation, offered rather than promised: both of these mechanisms are admission controllers [source: k8s-docs-admission-controllers-2026-08-24]. Neither is a separate subsystem with its own enforcement path. That is the first instalment of a claim §8 will finish.
+And one closing observation, offered rather than promised: both of these mechanisms are admission controllers [source: k8s-docs-admission-controllers-2026-08-24]. Neither is a separate subsystem with its own enforcement path. That is the first installment of a claim §8 will finish.
 
 ---
 
@@ -677,7 +677,7 @@ Read the middle clause of that first sentence again. It is doing more work than 
 
 > 🔭 **Closer Look:** `drain` is not a special maintenance channel either. You can request eviction by calling the Eviction API directly, or programmatically using a client of the API server, like the `kubectl drain` command; this creates an `Eviction` object, which causes the API server to terminate the Pod [source: k8s-docs-api-eviction-2026-08-24]. Using the API to create an Eviction object for a Pod is like performing a policy-controlled `DELETE` operation on the Pod [source: k8s-docs-api-eviction-2026-08-24]. So `drain` is a client that writes objects through the one door — which is §8's whole claim, arriving early.
 
-**One exception, and you already have both halves of it.** Pods that are part of a DaemonSet tolerate being run on an unschedulable Node [source: k8s-docs-nodes-2026-08-23], because the DaemonSet controller automatically adds a `node.kubernetes.io/unschedulable` toleration with a `NoSchedule` effect to DaemonSet Pods [source: k8s-docs-daemonset-2026-08-24]. Chapter 6 taught DaemonSet as one-Pod-per-eligible-node; Chapter 7 taught the built-in condition tolerations. This is the point at which the two facts turn out to have been the same fact *[cross-bearing: see Ch 6 §7 — DaemonSet and node-local facilities]*.
+**One exception, and Chapter 7 §4 already joined these two for you.** Pods that are part of a DaemonSet tolerate being run on an unschedulable Node [source: k8s-docs-nodes-2026-08-23], because the DaemonSet controller automatically adds a `node.kubernetes.io/unschedulable` toleration with a `NoSchedule` effect to DaemonSet Pods [source: k8s-docs-daemonset-2026-08-24]. Chapter 6 taught DaemonSet as one-Pod-per-eligible-node; Chapter 7 taught the built-in condition tolerations and joined them *[cross-bearing: see Ch 7 §4 — the DaemonSet controller's automatic tolerations]* *[cross-bearing: see Ch 6 §7 — DaemonSet and node-local facilities]*. Here is what that join buys you during maintenance.
 
 ### Node conditions
 
@@ -711,7 +711,7 @@ Chapter 4 pointed at exactly those Leases and said they were how the control pla
 
 The node controller is a Kubernetes control plane component that manages several aspects of nodes: assigning a CIDR block to the node when it is registered; keeping its internal list of nodes up to date with the cloud provider's list of available machines; and monitoring the nodes' health — updating the `Ready` condition to `Unknown` when a node becomes unreachable, and triggering API-initiated eviction of all the Pods from the node if it stays unreachable [source: k8s-docs-nodes-2026-08-23].
 
-Read that third job as a shape rather than as a list. It observes (heartbeats), it compares against what it expects, and it acts (condition update, then eviction). **The node controller is a control loop.** You met the pattern in Chapter 3, and you have seen five instances of it since *[cross-bearing: see Ch 3 §6 — the control loop]*. This is the sixth, and noticing that costs one sentence and buys §8 half its argument.
+Read that third job as a shape rather than as a list. It observes (heartbeats), it compares against what it expects, and it acts (condition update, then eviction). **The node controller is a control loop.** You met the pattern in Chapter 3 and you have met it in every chapter since *[cross-bearing: see Ch 3 §6 — the control loop]*. Noticing that costs one sentence and buys §8 half its argument.
 
 ### Capacity and Allocatable
 
@@ -800,7 +800,7 @@ Five questions on §4 and §5. Two of them reach back into earlier chapters.
 
 Note what the question asks and does not ask. It asks you to name a taint whose *effect matches*, which you can do from Chapter 7 alone. What `cordon` writes is a spec field — cordoned nodes are marked Unschedulable in their spec [source: k8s-docs-node-status-2026-08-24] — and the relationship between that field and the built-in taint is left where the documentation leaves it.
 
-*Common wrong turn:* answering that the Pods are evicted, which is `NoExecute`'s behaviour, not `NoSchedule`'s.
+*Common wrong turn:* answering that the Pods are evicted, which is `NoExecute`'s behavior, not `NoSchedule`'s.
 
 **2.** They skipped **`kubectl drain`**. `cordon` stops new Pods arriving and deliberately leaves running Pods alone; the three services were still on that node when the machine went down.
 
@@ -848,7 +848,7 @@ So take the rule first, before any numbers.
 
 **Nothing in the cluster may be newer than the API server it talks to.**
 
-Every component in a Kubernetes cluster is a client of one door. Chapter 3 established that; §2 built three gates on it. A client that is *newer* than its server is a client that may ask for things the server has never heard of: new fields, new resources, new behaviour that does not exist on the other end of the connection. That single sentence generates three of the five rows below. The numbers are then not five unrelated facts; they are the *sizes of the windows*.
+Every component in a Kubernetes cluster is a client of one door. Chapter 3 established that; §2 built three gates on it. A client that is *newer* than its server is a client that may ask for things the server has never heard of: new fields, new resources, new behavior that does not exist on the other end of the connection. That single sentence generates three of the five rows below. The numbers are then not five unrelated facts; they are the *sizes of the windows*.
 
 ### The vocabulary
 
@@ -978,7 +978,7 @@ Five questions on §6 and §7. These carry the highest concentration of directly
 
 **3.** 🔵 How many minor releases does the project maintain release branches for? Roughly how long is patch support for 1.19 and newer? Roughly how many minor releases ship per year? Then say why those three numbers are consistent with each other.
 
-**4.** 🟡 You lose every control-plane node. Your worker nodes are untouched and your applications are still serving traffic. What have you actually lost — and what single artefact would let you get it back?
+**4.** 🟡 You lose every control-plane node. Your worker nodes are untouched and your applications are still serving traffic. What have you actually lost — and what single artifact would let you get it back?
 
 **5.** 🔵 An etcd snapshot is sitting, unencrypted, on one of your control-plane nodes. Give two *separate* reasons this is wrong.
 
@@ -1010,7 +1010,7 @@ You will meet the cadence again in Chapter 17, inside the project's release-gove
 
 **4.** You have lost **the cluster's entire record of intent**, every object, since all Kubernetes objects are stored in etcd. Not the running workloads: kubelets keep running what they were last told to run, and traffic keeps flowing. What is gone is every declaration of what *should* be running, which means nothing can be reconciled, changed, scheduled, healed or scaled.
 
-The artefact that brings it back is **an etcd snapshot**.
+The artifact that brings it back is **an etcd snapshot**.
 
 The scenario is constructed so you have to notice that "running workloads" and "cluster state" are different things. Plenty of people's first answer to "we lost the control plane" is "the applications are down," and for a little while, they are not.
 
@@ -1055,7 +1055,7 @@ Every administrative act in it is a write through the one door you met in Chapte
 
 The scheduler then does what the scheduler always does: it checks taints, not node conditions, when it makes scheduling decisions [source: k8s-docs-taints-tolerations-depth-2026-08-24], and Chapter 7 already showed you a built-in `node.kubernetes.io/unschedulable` taint with a `NoSchedule` effect sitting in that table [source: k8s-docs-daemonset-2026-08-24]. Nothing here is a new mechanism. It is the object model and the scheduler you already have, with an operator's hand on the spec field.
 
-**§4 again.** The node controller observes heartbeats, compares them against what it expects, and acts: updating a condition, then evicting. It is a control loop. It is the sixth one in this book, and you could have predicted its structure without being told.
+**§4 again.** The node controller observes heartbeats, compares them against what it expects, and acts: updating a condition, then evicting. It is a control loop — the same loop, at the same altitude as Chapter 6's — and you could have predicted its structure without being told.
 
 **§6.** The skew rules are the compatibility contract of that same one door. Read the table again with that in mind and three of the five rows are answering one question: *which clients will this door accept?*
 
@@ -1095,7 +1095,7 @@ One honest correction, because the claim as stated is slightly too neat and you 
 
 §5 and §6 are not consequences of the architecture. Which bootstrap tool is officially supported, how many release branches the project maintains, and how far a kubelet may lag: these are facts about a *project*, made by people in meetings, and no amount of understanding the single-door model will let you derive them. They have to be learned. That is exactly why §6 flagged them as memorization and gave you a derivation for three of the five rows anyway. The parts that can be reasoned about should be reasoned about, and the residue should be admitted as residue.
 
-Chapter 4 §3 established this book's habit of narrowing a claim until it is true rather than leaving it broad and impressive *[cross-bearing: see Ch 4 §3 — the habit of narrowing a claim until it is true]*. So: **every administrative *act* in this chapter is a write through one door, reconciled by a controller you already know. The project's *policies* are not, and those are the parts you memorize.** That version survives contact with the exam.
+Chapter 4 §6 established this book's habit of narrowing a claim until it is true rather than leaving it broad and impressive *[cross-bearing: see Ch 4 §6 — the habit of narrowing a claim until it is true]*. So: **every administrative *act* in this chapter is a write through one door, reconciled by a controller you already know. The project's *policies* are not, and those are the parts you memorize.** That version survives contact with the exam.
 
 ---
 
@@ -1300,7 +1300,7 @@ Chapter 5 established that when you specify the resource request for containers 
 Cordoned nodes are marked Unschedulable in their `spec`, which is exactly what Chapter 4's rule predicts: `spec` is what you declare, `status` is what the system reports back, and unschedulability is a decision you made about the machine rather than an observation of it. **A is wrong** for that reason. **C is wrong**: the mechanism is a spec field, not a label. **D is wrong** and is worth rejecting emphatically, because it is precisely the belief §8 exists to dismantle — and note that `SchedulingDisabled`, the string your terminal prints, is not in the API either, so even the output is not what it appears to be. There are no side channels.
 
 **11. B. [retrieval: ch3]**
-Observe, compare, act: it is a control loop, the same pattern as the workload controllers in Chapter 6 and the scheduler's watch in Chapter 7. **A is wrong**: admission plugins act synchronously on inbound requests rather than reconciling observed state against declared state. **C is wrong**: the kubelet and kube-proxy are node agents, and "daemon" describes where they run rather than how they work. **D is wrong** on both the pattern and the examples; nothing here is batched, and etcd compaction is storage maintenance, not reconciliation.
+Observe, compare, act: it is a control loop, the same pattern as the ReplicaSet controller holding a replica count and the Job controller driving Pods to completion, both in Chapter 6. **A is wrong**: admission plugins act synchronously on inbound requests rather than reconciling observed state against declared state. **C is wrong**: the kubelet and kube-proxy are node agents, and "daemon" describes where they run rather than how they work. **D is wrong** on both the pattern and the examples; nothing here is batched, and etcd compaction is storage maintenance, not reconciliation.
 
 **12. B.**
 kubeadm is the officially supported tool for creating clusters, installing the control plane and joining nodes; kind and minikube are the documented local learning tools. **A swaps the two categories.** **C swaps kubeadm and k3s**: k3s is a lightweight distribution, not the official bootstrapper. **D** names the right bootstrapper and then attributes a duty to it that the CRI boundary explicitly excludes: a container runtime (containerd or CRI-O) must be installed on every node, and kubeadm does not supply it. That is the Chapter 2 interface boundary showing up as an operational requirement — the most attractive wrong answer here precisely because it *sounds* like something a complete bootstrapper would do.
@@ -1318,10 +1318,10 @@ kube-proxy must not be newer than kube-apiserver, so 1.37 against a 1.36 API ser
 kube-apiserver first, because nothing may be newer than it, and every other component's window is expressed relative to it. **A inverts the dependency**: a kubelet upgraded ahead of the API server would be newer than its server, which is the one thing the policy forbids outright. **C confuses a runtime dependency with an upgrade constraint** — the API server does store its data in etcd, but the skew policy governs Kubernetes components, and etcd's own upgrade is a separate procedure. **D is wrong** because skew is not merely permitted but *required* by the upgrade process: the one-minor allowance for the controller manager and scheduler exists specifically to allow live upgrades.
 
 **17. C. [retrieval: ch6]**
-A **DaemonSet**. Its Pods carry a `node.kubernetes.io/unschedulable` toleration with a `NoSchedule` effect, added automatically by the DaemonSet controller, which is why Kubernetes can run DaemonSet Pods on nodes marked unschedulable. **A confuses identity with immunity**: a StatefulSet's ordinal identity governs naming and ordering, not eviction. **B is the most plausible wrong answer** — it is true that placement constraints affect where a Pod *goes*, and false that they affect whether it can be *evicted*; those are different mechanisms, and Chapter 7's affinity material does nothing here. **D is wrong**: a Job's Pods are evicted like any others, and the Job controller's response is to create replacements elsewhere.
+A **DaemonSet**. Its Pods carry a `node.kubernetes.io/unschedulable` toleration with a `NoSchedule` effect, added automatically by the DaemonSet controller — the toleration half of this is Chapter 7 §4's *[cross-bearing: see Ch 7 §4 — the DaemonSet controller's automatic tolerations]* — which is why Kubernetes can run DaemonSet Pods on nodes marked unschedulable. **A confuses identity with immunity**: a StatefulSet's ordinal identity governs naming and ordering, not eviction. **B is the most plausible wrong answer** — it is true that placement constraints affect where a Pod *goes*, and false that they affect whether it can be *evicted*; those are different mechanisms, and Chapter 7's affinity material does nothing here. **D is wrong**: a Job's Pods are evicted like any others, and the Job controller's response is to create replacements elsewhere.
 
 **18. C.**
-Two independent failures. A backup stored only on the machines it insures against losing does not survive the event; and access to etcd data is equivalent to root permission in the cluster, so an unencrypted snapshot is a complete compromise in one readable file. **A is wrong** because filesystem permissions do not address either failure; they do not make the file survive the node's loss, and they are a thin defence for something this valuable. **B accepts the location** on a reasoning error: etcd running there is the reason the snapshot must *not* live there. **D inverts the two utilities**: `etcdctl snapshot save` takes the backup and `etcdutl snapshot restore` restores it, and the two names differ by two letters, which is exactly why the confusion is worth having a distractor for.
+Two independent failures. A backup stored only on the machines it insures against losing does not survive the event; and access to etcd data is equivalent to root permission in the cluster, so an unencrypted snapshot is a complete compromise in one readable file. **A is wrong** because filesystem permissions do not address either failure; they do not make the file survive the node's loss, and they are a thin defense for something this valuable. **B accepts the location** on a reasoning error: etcd running there is the reason the snapshot must *not* live there. **D inverts the two utilities**: `etcdctl snapshot save` takes the backup and `etcdutl snapshot restore` restores it, and the two names differ by two letters, which is exactly why the confusion is worth having a distractor for.
 
 ---
 
@@ -1349,7 +1349,7 @@ Two independent failures. A backup stored only on the machines it insures agains
 | `Ready: Unknown` | The control plane has not heard from the node. Not "the node is broken" — "we cannot tell" |
 | `SchedulingDisabled` | A display string, not a Condition in the API |
 | Heartbeats | Two forms: `.status` updates, and Lease objects in `kube-node-lease` |
-| Node controller | Assigns a CIDR at registration, syncs with the cloud provider's machine list, monitors health. **A control loop** |
+| node controller | Assigns a CIDR at registration, syncs with the cloud provider's machine list, monitors health. **A control loop** |
 | Capacity vs Allocatable | Capacity is the machine's total; Allocatable is what is available for Pods, after `kubeReserved` and `systemReserved` account for the daemons. The scheduler does arithmetic against Allocatable |
 | Bootstrap tooling | kubeadm officially supported for creating clusters; minikube and kind for learning; k3s lightweight |
 | Everywhere | A container runtime — containerd or CRI-O — must be on every node |

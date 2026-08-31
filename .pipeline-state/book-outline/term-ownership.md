@@ -745,6 +745,17 @@ An index of surface forms, not a second ownership claim. Every acronym the book 
 
 > **Glossary debt recorded 2026-08-30 (Ch 11 integration gate).** Six terms need entries at the glossary build: **NFS** (Network File System), **LUN** (Logical Unit Number), **iSCSI**, **EBS** (Elastic Block Store), **finalizer**, and **`CSIDriver`**. NFS, LUN and EBS are now expanded at first use in Ch 11; NFS in particular carries two graded Practice items (Q7, Q11) and had never been spelled out anywhere in the book. iSCSI appears only inside quoted documentation, so it needs a register row rather than an in-text expansion.
 
+> ⛑ **BOOK-LEVEL CONVENTION, ratified 2026-08-30 at the Ch 8 gate: state the pattern, never the count.**
+> Running ordinals across chapters have now caused two collisions in this book, both of which reached shipped text and had to be repaired at a later chapter's gate:
+>
+> - **Control loops.** Ch 8 said the node controller was "the sixth"; Ch 9 said kube-proxy was "the sixth" too. Worse, shipped Ch 6 closes by telling the reader they have seen the loop *twice* and that "the third time is the one that matters" — which is **Ch 15 §7, the book's designated primary Zenith**. A reader who had been counting to six would arrive at that Zenith with the recognition already spent. Both ordinals are now removed.
+> - **Pluggable interfaces.** Ch 9 §8 called CNI "the second instance"; Ch 10 and Ch 11 count to three. Reconciled by a half-clause in Ch 10.
+>
+> **The rule for every chapter from 12 on:** name the pattern and say it is the same one, but do **not** assert a running ordinal ("the fourth time", "the sixth control loop", "you now have three of four") unless the count is fixed by a closed set the reader can see in front of them — the four pluggable interfaces, the four domains. Ch 6's two-altitudes framing and Ch 15 §7's payoff are the only sanctioned control-loop count in the book, and no chapter may add to it.
+
+> **Glossary queue and stale rows recorded 2026-08-30 (Ch 8 gate).** Needed at the glossary build: mutating/validating admission webhook, CIDR (also expand in place at Ch 8 §4), kubelet TLS bootstrapping, hugepages, Eviction API. `context` is now defined in Ch 8 §1 and no longer owes one.
+> Rows this ledger gets wrong, recorded so no later stage "corrects" a chapter toward them: **node registration** is not taught in Ch 3 — Ch 8 §4 is the de facto owner and should keep it; **`kubectl describe`** first appears in Ch 5, not Ch 8 §4; **mutating vs validating admission webhook** does not appear in Ch 6 at all (zero occurrences of "webhook"); **CIDR**'s first reader-facing use is Ch 8 §4, not Ch 10 §6.
+
 # Part 2 — Orphans
 
 Ten terms have no owner, or an owner that the shipped text does not honor. Each carries a recommendation. Where a term reaches graded material, it is called out — **a term used in question text or an answer key may not be glossary-only**, because a reader who meets it there has no place to look it up mid-question.

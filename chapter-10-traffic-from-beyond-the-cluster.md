@@ -803,7 +803,7 @@ Keep the two apart. On an exam, you are being asked what the project said, not w
 
 The project said what it said, precisely. The reasoning behind the decision is not this book's to supply.
 
-*[cross-bearing: see Ch 8 §6 — semantic versioning and API stability, which is the vocabulary this section spends]*
+*[cross-bearing: see Ch 8 §6 — semantic versioning, which is half the vocabulary this section spends]*
 
 The obvious next question is what "use Gateway instead" actually means. §5.
 

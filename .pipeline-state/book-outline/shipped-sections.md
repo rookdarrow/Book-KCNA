@@ -111,3 +111,80 @@
 | §6 | Pods That Are Not Interchangeable, Revisited |
 | §7 | Outliving the Pod That Asked |
 
+## Ch 12 — Locks, Keys, and Watchstanders  [SHIPPED]
+
+| §1 | Four Layers and Four Phases |
+| §2 | Who You Are |
+| §3 | What You May Do |
+| §4 | Secrets Are Not Encrypted |
+| §5 | What a Pod May Do to Its Node |
+| §6 | Three Levels, Three Modes |
+| §7 | Trusting What You Ship |
+| §8 | Rules That Watch |
+| §9 | Additive, Never Deny |
+
+## Ch 13 — When the Cluster Won't Answer  [SHIPPED]
+
+| §1 | Whose Problem Is This, and What to Read First |
+| §2 | Pods That Never Start |
+| §3 | Looking Inside |
+| §4 | Pods That Start and Then Don't Stay |
+| §5 | When the Node Is the Problem |
+| §6 | Versions That Don't Agree |
+| §7 | Numbers Nobody Collects by Default |
+| §8 | Read the Phase First |
+
+## Ch 14 — Packing for the Voyage  [SHIPPED]
+
+| §1 | Why a Folder of YAML Stops Working |
+| §2 | What a Chart Contains |
+| §3 | Chart, Release, Revision |
+| §4 | Where Charts Come From |
+| §5 | Patching Instead of Templating |
+| §6 | Which One, When |
+| §7 | A Package, Not a Template |
+
+## Ch 15 — The Chart Is the Truth  [SHIPPED]
+
+| §1 | Twelve Factors, and the Ones Kubernetes Already Solved |
+| §2 | Ways to Replace What's Running |
+| §3 | Push, or Pull |
+| §4 | An Agent That Watches a Repository |
+| §5 | Ordering the Sync |
+| §6 | The Other Agent, and More Than One Cluster |
+| §7 | The Control Loop, Pointed at a Repository |
+
+## Ch 16 — Your Application, Their Cluster  [SHIPPED]
+
+| §1 | Handed Back |
+| §2 | When It Never Got Started |
+| §3 | Getting Inside, and Adding What Isn't There |
+| §4 | Is Anything Even Selected |
+| §5 | Bypassing the Service on Purpose |
+| §6 | When Each Replica Is Its Own |
+| §7 | Before You Ship It |
+| §8 | Mine, or the Platform's |
+
+## Ch 17 — The Fleet and Its Charts  [SHIPPED]
+
+| §1 | What "Cloud Native" Actually Names |
+| §2 | Sandbox, Incubating, Graduated, and Who Decides |
+| §3 | Small Pieces, Replaced Whole |
+| §4 | Every Place Kubernetes Lets You In |
+| §5 | A Network That Knows What It's Carrying |
+| §6 | Code Without a Server to Put It On |
+| §7 | Four Things That Scale |
+| §8 | How the Project Actually Runs, and How You'd Join |
+| §9 | One Pluggability Story |
+
+## Ch 18 — Reading the Instruments  [SHIPPED]
+
+| §1 | What You Can Ask, and What You Already Know |
+| §2 | Four Signals |
+| §3 | Numbers Over Time |
+| §4 | Pulling, Not Being Pushed |
+| §5 | Following One Request |
+| §6 | Lines From Everywhere |
+| §7 | Is the Service Doing What Users Expect |
+| §8 | One Question, Four Instruments |
+

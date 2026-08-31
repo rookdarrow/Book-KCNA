@@ -162,7 +162,7 @@
 
 ---
 
-## Ch 12 — Locks, Keys, and Watchstanders  [PLANNED]
+## Ch 12 — Locks, Keys, and Watchstanders  [SHIPPED]
 
 | § | Title | Owns |
 |---|---|---|
@@ -180,7 +180,7 @@
 
 ---
 
-## Ch 13 — When the Cluster Won't Answer  [PLANNED]
+## Ch 13 — When the Cluster Won't Answer  [SHIPPED]
 
 | § | Title | Owns |
 |---|---|---|
@@ -199,7 +199,7 @@
 
 ---
 
-## Ch 14 — Packing for the Voyage  [PLANNED]
+## Ch 14 — Packing for the Voyage  [SHIPPED]
 
 | § | Title | Owns |
 |---|---|---|
@@ -215,7 +215,7 @@
 
 ---
 
-## Ch 15 — The Chart Is the Truth  [PLANNED]
+## Ch 15 — The Chart Is the Truth  [SHIPPED]
 
 | § | Title | Owns |
 |---|---|---|
@@ -231,7 +231,7 @@
 
 ---
 
-## Ch 16 — Your Application, Their Cluster  [PLANNED]
+## Ch 16 — Your Application, Their Cluster  [SHIPPED]
 
 | § | Title | Owns |
 |---|---|---|
@@ -248,7 +248,7 @@
 
 ---
 
-## Ch 17 — The Fleet and Its Charts  [PLANNED]
+## Ch 17 — The Fleet and Its Charts  [SHIPPED]
 
 | § | Title | Owns |
 |---|---|---|
@@ -277,7 +277,7 @@
 
 ---
 
-## Ch 18 — Reading the Instruments  [PLANNED]
+## Ch 18 — Reading the Instruments  [SHIPPED]
 
 | § | Title | Owns |
 |---|---|---|

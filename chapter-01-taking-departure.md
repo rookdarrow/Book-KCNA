@@ -199,9 +199,9 @@ Two of those facts deserve a moment.
 
 Now a disclosure most study guides skip.
 
-**The two numbers everyone quotes have different provenance.** The passing score *is* published: the Linux Foundation's candidate FAQ for its multiple-choice exams states that a score of 75% or above must be earned to pass [source: lf-mc-exam-faq-2026-08-23] — it just isn't on the exam page most candidates read, which states the format, the duration, the eligibility terms, the price, and the domain weights and stops there [source: lf-kcna-exam-page-2026-08-23]. The question count is published nowhere: not on the exam page, not in the FAQ, not in the CNCF curriculum.
+**The two numbers everyone quotes are both published — just not where you would look for them.** The passing score is in the Linux Foundation's candidate FAQ for its multiple-choice exams, which states that a score of 75% or above must be earned to pass [source: lf-mc-exam-faq-2026-08-23]. The question count is in the same handbook, on the "Multiple Choice Exams: Important Instructions" page, which states that the exam "consists of 60* multiple-choice questions" [source: provenance-kcna-60-questions-2026-08-31]. Both are published for multiple-choice exams **as a class**, and KCNA is placed in that class by its own exam page. Neither figure is on the exam page most candidates read, which states the format, the duration, the eligibility terms, the price, and the domain weights and stops there [source: lf-kcna-exam-page-2026-08-23]. What it does not do is repeat what the handbook already says.
 
-You will nonetheless see "60 questions, 75% to pass" repeated across study sites, videos, and forum threads, stated flatly, as one fact. It is two facts with two pedigrees: a passing standard the certifying body publishes, and a question count that travels on repetition alone.
+You will nonetheless see "60 questions, 75% to pass" repeated across study sites, videos, and forum threads, stated flatly, as one fact. It is two facts with one pedigree and a shared problem: the certifying body publishes both, in a handbook, for a class of exams — and almost nobody who repeats them has read that handbook or cites it. What travels on repetition is not the numbers. It is the *claim to know where they come from*.
 
 
 > ⚠ **Navigational Hazards**
@@ -212,7 +212,7 @@ You will nonetheless see "60 questions, 75% to pass" repeated across study sites
 >
 > The correction costs nothing: pace by *proportion of elapsed time*, not by question number. "A quarter of the way through the questions when a quarter of my time is gone" survives any question count. "Question 15 at the 22-minute mark" does not.
 
-This book flags that distinction every time either figure appears, including in Chapter 20, whose full-length mock exam is sized to the commonly-reported format. That mock is a calibrated practice exam, built deliberately at the size the community reports, and it is framed as such. It is not a claim about what the real exam contains. *[cross-bearing: see Ch 20 §1 — how the mock exam is sized, and why]* Exam-day pacing gets its own treatment once you have content to pace through. *[cross-bearing: see Ch 19 §3 — pacing and time discipline]*
+This book flags where each figure comes from every time either appears, including in Chapter 20, whose full-length mock is sized to the published count. That mock is a calibrated practice exam built at the documented size, and it is framed as such. It is not a claim about what your particular exam will contain. *[cross-bearing: see Chapter 20 — the full mock exam, and how it is sized]* Exam-day pacing gets its own treatment once you have content to pace through. *[cross-bearing: see Ch 19 §3 — pacing and time discipline]*
 
 There's a broader habit here, and it's worth naming: **know which of your facts are published and which are inherited.** That distinction outlasts this exam. It's the same instinct that stops you quoting a Stack Overflow answer as documentation.
 
@@ -338,8 +338,8 @@ D) Prioritize Cloud Native Application Delivery, since it doubled in the 2025 re
 
 **2 — C.** The **four domain weights** (44 / 28 / 16 / 12) are stated on the exam page, and they're the most useful published fact you have [source: lf-kcna-exam-page-2026-08-23].
 
-- **A is wrong.** The question count is not on the exam page — or anywhere else the certifying body writes. "60 questions" is a third-party report, repeated so consistently that it reads as official. It isn't.
-- **B is wrong**, for a subtler reason than A. The 75% passing score *is* published by the Linux Foundation — in its candidate FAQ for multiple-choice exams, not on the exam page the question asks about [source: lf-mc-exam-faq-2026-08-23]. Keep the two straight: the passing standard is official; the question count is not.
+- **A is wrong**, though less wrong than it looks. The question count is not on the exam page — but it *is* published, on the candidate handbook's "Multiple Choice Exams: Important Instructions" page, for multiple-choice exams as a class [source: provenance-kcna-60-questions-2026-08-31]. The trap is the page you would think to check, not the fact.
+- **B is wrong**, for a subtler reason than A. The 75% passing score *is* published by the Linux Foundation — in its candidate FAQ for multiple-choice exams, not on the exam page the question asks about [source: lf-mc-exam-faq-2026-08-23]. Keep the two straight by *where they live*: both are official, and both are in the candidate handbook rather than on the exam page the question asks about.
 - **D is wrong.** No study-hour recommendation appears anywhere on the page. Certifying bodies rarely prescribe preparation time, for the obvious reason that it depends entirely on what the candidate walks in carrying.
 
 Believing the inherited numbers isn't dangerous; *building a strategy on them* is. Answer every question, pace by elapsed time rather than by question number, and neither figure is one you need.
@@ -551,7 +551,7 @@ The positive half of this — what the characteristics actually are — is Chapt
 |---|---|
 | What the KCNA is | Beginner-level, no prerequisites, multiple-choice, online and proctored — a test of discrimination, not of typing speed |
 | Published exam facts | 90 minutes · no prerequisites · 12-month eligibility window · 2 attempts included · valid 2 years · $250 exam-only as of 2026-08-23 |
-| Not on the exam page | The question count (published nowhere) and the passing score (75% — published in the Linux Foundation's candidate FAQ, not on the exam page) |
+| Not on the exam page | The question count (60 — published in the candidate handbook's Important Instructions for MC exams) and the passing score (75% — published in the Linux Foundation's candidate FAQ). Both official; neither on the exam page |
 | The four domains | **44 / 28 / 16 / 12** — Kubernetes Fundamentals · Container Orchestration · Cloud Native Application Delivery · Cloud Native Architecture |
 | The 2025 restructure | Effective no earlier than 2025-11-24. Five domains → four. Observability folded into Architecture. App Delivery doubled (8% → 16%). Orchestration +6 points |
 | Spotting stale material | Five domains, or a standalone "Cloud Native Observability" section, means the retired blueprint. Facts may be fine; weighting isn't |

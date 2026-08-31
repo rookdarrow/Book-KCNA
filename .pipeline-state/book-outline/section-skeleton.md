@@ -317,10 +317,13 @@
 
 | Block | Owns |
 |---|---|
-| Instructions | time budget; pacing guidance; what the reader may and may not use; the calibration disclosure — 90 minutes is published, the question count is commonly reported, and this instrument is sized to that report rather than matched to a published figure |
+| Instructions | time budget; pacing guidance; what the reader may and may not use; the calibration disclosure — **all three figures are published** in the LF candidate handbook for multiple-choice exams as a class (90 minutes, 60 questions, 75% to pass); none appears on the KCNA product page, which is the provenance lesson. This instrument is sized to the published count |
 | Exam | 60 questions, one continuous section, no mid-exam commentary. Domain split D1 26 · D2 17 · D3 10 · D4 7 |
 | Mock Exam Answers & Walkthroughs | per-question correct answer, why it is correct, why each distractor is wrong; separated so the reader can attempt first |
-| Scoring Rubric | band interpretation and what to do after each outcome. **Does not state a pass mark as fact** — the 75% figure is unpublished |
+| Scoring Rubric | band interpretation and what to do after each outcome. States the 75% pass mark as the published figure it is — LF MC FAQ, for multiple-choice exams as a class, with KCNA named in its CARE section |
+
+
+> ⛑ **CORRECTION, 2026-08-31 (Ch 19 gate).** The two instructions above were rewritten. `provenance-kcna-60-questions-2026-08-31.md` supersedes the 08-23 file and records that the earlier "NOT FOUND in any authoritative source" finding **is false** — it generalised from a bounded page list that omitted the LF T&C DOCS page "Multiple Choice Exams: Important Instructions", which publishes the 60. Shipped Ch 1 was written against the false finding and has been retrofitted. **Forbidden phrasings:** "the question count travels on repetition alone"; "the question count is not anywhere the certifying body writes". **Correct form:** "The Linux Foundation publishes both figures in its candidate handbook, for multiple-choice exams as a class; neither appears on the KCNA exam page itself."
 
 **Nothing anywhere in the book may emit `*[cross-bearing: see Ch 20 §N — …]*`.** Address this chapter by name only.
 

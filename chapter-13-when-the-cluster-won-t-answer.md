@@ -13,7 +13,7 @@ prereq_factor: "heavy"
 #-- lineup, carried forward unmodified. It states the chapter's thesis
 #-- and is also the §8 Zenith heading, so subtitle and synthesis agree by
 #-- construction — the Ch 12 pattern. It states a Fixed Point, which is
-#-- the subtitle's job and NOT a licence for the Soundings. See the
+#-- the subtitle's job and NOT a license for the Soundings. See the
 #-- FIXED-POINT SPOILER CHECK below.
 
 #-- EXAM_DOMAIN NOTE. D2.3 Troubleshooting, in the house form shipped by
@@ -484,9 +484,23 @@ This is the point Chapter 7 made and this chapter now cashes in. A Pod in `Pendi
 
 Two other `Pending` causes surprise people often enough to name. Exhausting CPU or memory across the cluster is the obvious one: "you may have exhausted the supply of CPU or Memory in your cluster, in this case you need to delete Pods, adjust resource requests, or add new nodes to your cluster." [source: k8s-docs-debug-pods-2026-08-23] The less obvious one is `hostPort`: "when you bind a Pod to a hostPort there are a limited number of places that pod can be scheduled; in most cases hostPort is unnecessary, try using a Service object to expose your Pod." [source: k8s-docs-debug-pods-2026-08-23] A `hostPort` silently reduces your feasible-node count to "nodes where that port is free," which on a small cluster can be one node, or zero.
 
-An unbound PersistentVolumeClaim belongs in this family too: a storage problem can arrive disguised as a scheduling problem, with a Pod sitting in `Pending` for reasons that have nothing to do with CPU, memory, or taints. *[cross-bearing: see Ch 11 §2 — PV and PVC binding]*
+An unbound PersistentVolumeClaim belongs in this family too: a storage problem can arrive disguised as a scheduling problem, with a Pod sitting in `Pending` for reasons that have nothing to do with CPU, memory, or taints *[cross-bearing: see Ch 11 §2 — PV and PVC binding]*. Chapter 11 promised you would be able to tell the two apart from the symptoms, so here is how — and the answer is that you have to look at the claim, because the Pod cannot tell you.
 
-<!-- AUTHOR-REVIEW: RESEARCH GAP. No storage snapshot is in this chapter's corpus, so the PVC sentence above is stated only as a family membership, not as a mechanism. Note that the direction needs verifying before it can be asserted more strongly: a `WaitForFirstConsumer` PVC binds *because of* scheduling rather than before it, which complicates any flat claim that a Pod "cannot be scheduled until the claim binds." Route a fetch for the PersistentVolumes concept page and the `volumeBindingMode` docs, or leave the sentence at its current strength. -->
+Run `kubectl get pvc` beside `kubectl get pods`. A claim reading `Pending` means it has not found a volume, and **claims remain unbound indefinitely if a matching volume does not exist** [source: k8s-docs-persistent-volumes-depth-2026-08-25] — there is no timeout and no eventual failure, which is why this looks so much like a Pod that simply will not schedule.
+
+Then read the claim's StorageClass, because **the binding mode inverts the direction of cause**:
+
+- Under **`Immediate`**, binding happens as soon as the claim is created, without knowledge of any Pod's scheduling requirements — which the documentation notes "may result in unschedulable Pods" [source: k8s-docs-storage-classes-2026-08-25]. A `Pending` claim here is a genuine storage problem, and it is upstream of the Pod. Fix the storage and the Pod schedules.
+- Under **`WaitForFirstConsumer`**, binding is *deliberately* delayed until a Pod using the claim is created, so that the volume can be provisioned to match that Pod's scheduling constraints [source: k8s-docs-storage-classes-2026-08-25]. A `Pending` claim here may be entirely normal — it is waiting on the scheduler. The Pod is not blocked by the claim; the claim is waiting for the Pod. Diagnose the Pod's scheduling constraints, not the storage.
+
+★ **Fixed Point:** A `Pending` Pod with a `Pending` claim is a **storage** problem under `Immediate` binding and a **scheduling** problem under `WaitForFirstConsumer`. Same two symptoms, opposite direction of cause, and the StorageClass is the only thing that tells you which.
+
+<!-- RESOLVED 2026-08-31 (integration gate): written from the book's corpus --
+     sources/k8s-docs-persistent-volumes-depth-2026-08-25.md for the indefinite-unbound rule and
+     sources/k8s-docs-storage-classes-2026-08-25.md for both binding modes. The direction this note
+     flagged as needing verification is correct and is now the point of the passage:
+     WaitForFirstConsumer inverts which object is waiting on which. This discharges the
+     promise shipped Ch 11 line 588 makes by name. -->
 
 ### `Waiting`: scheduled, and unable to start
 
@@ -602,9 +616,14 @@ kubectl get events --sort-by=.metadata.creationTimestamp
 
 The second form is the one to reach for when you do not yet know which object is at fault. Events are not sorted usefully by default, and a namespace's event stream read in creation order is a chronology of everything the cluster tried to do recently.
 
-Chapter 6 left you a specific promise here. A Deployment that stalls reports `ProgressDeadlineExceeded`, a condition which says the rollout did not finish in time and says nothing at all about *why*. Several quite different underlying causes produce that identical condition. The events on the ReplicaSet and on its Pods are where the actual reason lives.
+Chapter 6 left you a specific promise here. A Deployment that stalls reports `ProgressDeadlineExceeded`, a condition which says the rollout did not finish in time and says nothing at all about *why*. Several quite different underlying causes produce that identical condition, and Chapter 6 told you there were six of them. Here they are, from the same page Chapter 6 drew on: **insufficient quota, readiness probe failures, image pull errors, insufficient permissions, limit ranges, and application runtime misconfiguration** [source: k8s-docs-deployment-spec-fields-2026-08-24]. Notice how little they have in common. Two are about permission, one is about the registry, one is about the application's own health reporting, and one is about a quota you may not have known existed. A single condition string covers all six, which is exactly why the condition is a starting point and not a diagnosis. The events on the ReplicaSet and on its Pods are where the actual reason lives.
 
-<!-- AUTHOR-REVIEW: RESEARCH GAP. No Deployment or rollout snapshot is in this chapter's corpus, so `ProgressDeadlineExceeded`, the `progressDeadlineSeconds` mechanism referenced in Practice Q8's answer key, and the cardinality of its causes are all untagged. The draft previously said "six different underlying causes"; that number has been removed rather than shipped from memory. Route a fetch for kubernetes.io/docs/concepts/workloads/controllers/deployment/#failed-deployment, which enumerates the documented causes, then either restore a sourced count or leave the vaguer form. -->
+<!-- RESOLVED 2026-08-31 (integration gate): the six causes are sourced after all, from
+     sources/k8s-docs-deployment-spec-fields-2026-08-24.md -- Chapter 6's own snapshot, which
+     was outside this chapter's corpus slice but inside the book's. Listing them here
+     discharges the promise shipped Ch 6 makes twice (§4 line 663, and TYB #2 line 778 in a
+     graded answer key). `progressDeadlineSeconds` itself remains uncached; Practice Q8's key
+     should not assert a default value for it. -->
 
 Worked through: a Deployment shows `ProgressDeadlineExceeded`. You describe the Deployment and learn only that it gave up waiting. You then find the new ReplicaSet it created (`kubectl describe deployment` names it), describe that, and find it created three Pods. You describe one of those Pods and find its container `Waiting` with `Reason: ImagePullBackOff`, and its events carry the registry's actual refusal: an authentication failure. The rollout stalled because the new image tag was pushed to a registry the cluster has no pull secret for.
 
@@ -879,7 +898,12 @@ Both mean "something ended your workload over memory." Everything else about the
 
 This is scoped tightly: "Any Container exceeding a resource limit will be killed and restarted by the kubelet without affecting other Containers in that Pod." [source: k8s-docs-pod-qos-2026-08-24]
 
-<!-- AUTHOR-REVIEW: the cited reason table places `OOMKilled` among the `Waiting` state reasons. This section, and TYB 2 Q1's stem, frame it as a `Terminated`-state reason with an exit code — which is what practitioners see in `kubectl describe` output under Last State. That framing is practically correct but is not what the cited table says, and no snapshot in the corpus places OOMKilled on the Terminated state. Either soften the framing or source the Terminated placement separately. -->
+Chapter 5 put the same event a layer lower, saying that when a container exceeds its memory limit **the kernel** may terminate it [source: k8s-docs-resource-management-2026-08-23]. Both are true and they are not in competition: the kernel does the killing, and the kubelet observes the dead container and applies the Pod's `restartPolicy`. When a question asks who *restarts* the container, the answer is the kubelet. When it asks what *killed* it, the answer is the kernel enforcing a limit the kubelet set for it.
+
+<!-- RESOLVED 2026-08-31 (integration gate): shipped Ch 5 §8 line 1025 already places this
+     on the Terminated state, sourced to k8s-docs-pod-lifecycle-2026-08-23: "The container
+     reaches the `Terminated` state, with a reason and an exit code recorded." The framing
+     here and in TYB 2 Q1's stem is established canon. No softening needed. -->
 
 If a container is OOM-killed repeatedly, the visible signature in `kubectl get pods` becomes `CrashLoopBackOff` — that follows from two sourced facts (a container exceeding its limit is killed and restarted; repeated restarts enter backoff) rather than from a source that states it outright. The layering trips people up: `CrashLoopBackOff` and `OOMKilled` are not alternatives, they are two altitudes of the same event, and `describe` shows you the lower one under the container's last state.
 
@@ -972,16 +996,16 @@ kubectl describe node <node-name>
 
 ### Node conditions, as a diagnostic
 
-You met the node conditions in Chapter 8 — `Ready`, `MemoryPressure`, `DiskPressure`, `PIDPressure`, `NetworkUnavailable` — as part of what a node reports about itself. This section does not restate that table. It asks a different question: **given a condition, what do you do next?**
+You met the node conditions in Chapter 8 — `Ready`, `MemoryPressure`, `DiskPressure`, `PIDPressure`, `NetworkUnavailable` — as part of what a node reports about itself. This section does not restate that table *[cross-bearing: see Ch 8 §4 — node conditions, and what each one means]*. It asks a different question: **given a condition, what do you do next?** The middle column below is a reminder, not a definition; Chapter 8 owns those.
 
 | Condition seen | What it is telling you | Your next move |
 |---|---|---|
-| `Ready=True` | Node is healthy and accepting Pods [source: k8s-docs-node-status-2026-08-24] | The node is not your problem. Return to the workload. |
-| `Ready=False` | Node is not healthy and is not accepting Pods [source: k8s-docs-node-status-2026-08-24] | The kubelet is reporting `.status` and reporting a problem [source: k8s-docs-node-controller-heartbeats-2026-08-31]. Go to the node and read the kubelet's own logs. |
-| `Ready=Unknown` | "the node controller has not heard from the node in the last `node-monitor-grace-period`" [source: k8s-docs-node-status-2026-08-24] | Nobody is reporting at all. Suspect the kubelet process, the machine, or the network to the control plane. |
-| `MemoryPressure=True` | Node memory is low [source: k8s-docs-node-status-2026-08-24] | Expect evictions. Your Pod's failure is probably §4's `Evicted`, not its own fault. |
-| `DiskPressure=True` | Disk capacity is low [source: k8s-docs-node-status-2026-08-24] | Expect image-garbage-collection and evictions. Also a plausible cause of pull failures. |
-| `PIDPressure=True` | Too many processes on the node [source: k8s-docs-node-status-2026-08-24] | Container starts will fail in confusing ways. Look for a process-leaking workload. |
+| `Ready=True` | Healthy, accepting Pods | The node is not your problem. Return to the workload. |
+| `Ready=False` | Unhealthy, and saying so | The kubelet is reporting `.status` and reporting a problem [source: k8s-docs-node-controller-heartbeats-2026-08-31]. Go to the node and read the kubelet's own logs. |
+| `Ready=Unknown` | Not saying anything at all | Nobody is reporting at all. Suspect the kubelet process, the machine, or the network to the control plane. |
+| `MemoryPressure=True` | Memory low | Expect evictions. Your Pod's failure is probably §4's `Evicted`, not its own fault. |
+| `DiskPressure=True` | Disk low | Expect image-garbage-collection and evictions. Also a plausible cause of pull failures. |
+| `PIDPressure=True` | Too many processes | Container starts will fail in confusing ways. Look for a process-leaking workload. |
 
 The distinction between `False` and `Unknown` is the one to take to the exam. `False` means somebody is talking to you and telling you they are unwell. `Unknown` means nobody is talking to you at all. Those lead to completely different investigations.
 
@@ -1252,7 +1276,7 @@ Nothing is broken. **A stock Kubernetes cluster publishes no usage metrics at al
 
 ### The pattern you already own
 
-You have met this exact shape before, and Chapter 10 named it so you could reuse it: **the object exists; nothing happens without the component.** An Ingress object on a cluster with no Ingress controller is accepted by the API server, stored in etcd, retrievable with `kubectl get`, and completely inert. The API is the contract. The controller is the implementation. Kubernetes ships the contract; somebody has to install the implementation.
+You have met this exact shape before. The book told you to remember it by name, and Chapter 10 built a section on it: **the object exists; nothing happens without the component.** An Ingress object on a cluster with no Ingress controller is accepted by the API server, stored in etcd, retrievable with `kubectl get`, and completely inert. The API is the contract. The controller is the implementation. Kubernetes ships the contract; somebody has to install the implementation.
 
 *[cross-bearing: see Ch 10 §3 — the object exists; nothing happens without the component]*
 

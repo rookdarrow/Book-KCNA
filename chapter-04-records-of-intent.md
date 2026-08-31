@@ -897,7 +897,7 @@ Write the equivalent using `matchExpressions`.
 
 **3.** 🔵 Your deployment tooling needs to attach the originating Git commit hash to every object it creates. In one case, a controller will later need to find all objects from a given commit. In the other, the hash exists purely so a human can read it during an incident. Label or annotation, in each case, and why?
 
-**4.** 🟡 A selector matches several objects in one namespace, but matches nothing in another namespace where identically labelled objects demonstrably exist. What is happening?
+**4.** 🟡 A selector matches several objects in one namespace, but matches nothing in another namespace where identically labeled objects demonstrably exist. What is happening?
 
 A) Labels are cluster-scoped, so the same label key cannot carry different values in two namespaces
 B) A namespaced query operates within its namespace scope; it does not cross the boundary [source: k8s-docs-namespaces-2026-08-23]

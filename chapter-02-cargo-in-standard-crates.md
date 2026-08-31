@@ -163,7 +163,7 @@ figures_planned:
 > *"The crate outlives the ship. Standardize the crate."*
 > — Lodestar Ledgers
 
-<!-- AUTHOR-REVIEW: outline § Open questions #9 preferred a real attributed quote (Malcolm McLean on containerization was the suggested well). No cached snapshot contains a verifiable McLean quotation, and Part 15 plus Ethical Guardrail #2 forbid shipping an attribution we cannot source. An original Lodestar epigraph is used instead. The research manifest offers a stronger alternative route than a quotation: ISO 668 (Series 1 freight containers — classification, dimensions and ratings) and ISO 1161 (corner fittings), which would let §8's standardization argument rest on a citable standard rather than on an epigraph. iso.org returns 403 to WebFetch; a browser session or an alternate authoritative catalogue entry is needed. See also the §8 AUTHOR-REVIEW on the same gap. -->
+<!-- AUTHOR-REVIEW: outline § Open questions #9 preferred a real attributed quote (Malcolm McLean on containerization was the suggested well). No cached snapshot contains a verifiable McLean quotation, and Part 15 plus Ethical Guardrail #2 forbid shipping an attribution we cannot source. An original Lodestar epigraph is used instead. The research manifest offers a stronger alternative route than a quotation: ISO 668 (Series 1 freight containers — classification, dimensions and ratings) and ISO 1161 (corner fittings), which would let §8's standardization argument rest on a citable standard rather than on an epigraph. iso.org returns 403 to WebFetch; a browser session or an alternate authoritative catalog entry is needed. See also the §8 AUTHOR-REVIEW on the same gap. -->
 
 ---
 
@@ -888,7 +888,7 @@ The subtitle comes due.
 
 The intermodal shipping container did not win because it was a better box. It won because the industry standardized the **interface**, the dimensions and the corner fittings, rather than the contents. Once that interface was published, a crane could be designed once, a truck chassis could be designed once, a rail flatcar and a ship's hold could each be designed once, and every one of them could then handle anything. The cargo stopped mattering. Nobody at the crane has an opinion about what is inside.
 
-<!-- AUTHOR-REVIEW — §8's historical specifics. The claim that standardizing specific fittings is what produced the gain is a checkable engineering-and-history assertion, not analogy furniture, and no cached snapshot covers containerization history. The chapter already applies this standard to itself once, in the epigraph comment. Research manifest Open Question #9 names the route and prefers it to a quotation: ISO 668 (Series 1 freight containers — classification, dimensions and ratings) and ISO 1161 (corner fittings). iso.org returns 403 to WebFetch, so this needs a browser session or an alternate authoritative catalogue entry. DO NOT draft the "McLean released the patent royalty-free to ISO" claim — the manifest found it only in third-party commercial sources and could not verify it. This passage has been trimmed toward the minimum the analogy needs; if the gap stays open, mark it as declared analogy ("the usual telling of it is…") so it stops reading as sourced history. Same gap as the epigraph comment at the top of the chapter. -->
+<!-- AUTHOR-REVIEW — §8's historical specifics. The claim that standardizing specific fittings is what produced the gain is a checkable engineering-and-history assertion, not analogy furniture, and no cached snapshot covers containerization history. The chapter already applies this standard to itself once, in the epigraph comment. Research manifest Open Question #9 names the route and prefers it to a quotation: ISO 668 (Series 1 freight containers — classification, dimensions and ratings) and ISO 1161 (corner fittings). iso.org returns 403 to WebFetch, so this needs a browser session or an alternate authoritative catalog entry. DO NOT draft the "McLean released the patent royalty-free to ISO" claim — the manifest found it only in third-party commercial sources and could not verify it. This passage has been trimmed toward the minimum the analogy needs; if the gap stays open, mark it as declared analogy ("the usual telling of it is…") so it stops reading as sourced history. Same gap as the epigraph comment at the top of the chapter. -->
 
 ☀️ **Zenith**
 
@@ -1138,7 +1138,7 @@ D) The rebuild produced a new digest, and the running Pods are pinned to the dig
 
 A) A compatibility guarantee — Kubernetes commits to supporting any runtime that has ever worked, and applies the same commitment to deprecated APIs
 B) An extension point — Kubernetes publishes an interface and lets the ecosystem supply implementations, and it does the same for pod networking and for storage
-C) A conformance programme — runtimes are certified by the CNCF, as are storage drivers and network plugins
+C) A conformance program — runtimes are certified by the CNCF, as are storage drivers and network plugins
 D) A vendor-neutrality policy — Kubernetes refuses to name a default runtime, and likewise ships no default networking or storage
 
 ---
@@ -1277,7 +1277,7 @@ D) A vendor-neutrality policy — Kubernetes refuses to name a default runtime, 
 
 **27 — B.** The published extension points include CRI "to support alternative container runtimes," CNI (the Container Network Interface) "to implement pod networking," and CSI (the Container Storage Interface) "to add new storage types" [source: k8s-docs-extending-kubernetes-2026-08-23]. One design instinct, applied in several places.
 - **A is wrong.** Nothing in that phrasing is a support commitment; the qualifying condition is conformance to a published interface, not historical compatibility.
-- **C is wrong**, and it is the strongest distractor. CNCF conformance and maturity programmes genuinely exist, and containerd and CRI-O genuinely *are* CNCF graduated projects [source: cncf-project-maturity-levels-2026-08-23], but graduation is a project-maturity status, not a certification that makes a runtime usable by Kubernetes. What qualifies a runtime is implementing the CRI [source: k8s-docs-containers-2026-08-23].
+- **C is wrong**, and it is the strongest distractor. CNCF conformance and maturity programs genuinely exist, and containerd and CRI-O genuinely *are* CNCF graduated projects [source: cncf-project-maturity-levels-2026-08-23], but graduation is a project-maturity status, not a certification that makes a runtime usable by Kubernetes. What qualifies a runtime is implementing the CRI [source: k8s-docs-containers-2026-08-23].
 - **D is wrong.** It over-reads pluggability into "Kubernetes ships nothing," which §7's default-handler behavior contradicts [source: k8s-docs-runtime-class-2026-08-23]: clusters do have a default runtime, they just aren't locked to it.
 
 ---

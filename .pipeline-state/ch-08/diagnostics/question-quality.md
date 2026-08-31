@@ -3,383 +3,318 @@
 ## Summary
 
 - Chapter type: **content**
-- Total questions inspected: **40**
+- Total questions inspected: **41**
   - 🧭 Soundings questions: **8**
-  - ☆ Taking Your Bearings questions: **15** (across **3** checkpoints of 5)
-  - Practice questions: **17**
-- Question budget compliance: **met** (all four categories exactly on target)
-- Weak distractors (WARN): **6 questions** carry at least one weak or non-isolating option (P1, P2, P6, P8, P13, P16)
-- Trap answers that don't target real misconceptions (WARN): **3 options** (P1/C's plural clause, P4/C, P13/D)
-- Missing or incomplete why-wrong explanations (FAIL): **0** — all 17 Practice items address every wrong option specifically
-- Retrieval-practice spacing: **compliant** — 7 of 32 (21.9%), ≥4-back floor satisfied twice
-- Soundings spoiler check: **clean** — no stem reveals a ★ Fixed Point; one answer-key rationale (S7) carries a partial forward reveal, logged as WARN
+  - ☆ Taking Your Bearings questions: **15** (across 3 checkpoints of 5)
+  - Practice questions: **18**
+- Question budget compliance: **met** (Practice over-by-1; permitted headroom per skill Part 8)
+- Weak distractors (WARN): **7**
+- Trap answers that don't target real misconceptions (WARN): **3** (subset of the 7 above)
+- Missing or incomplete why-wrong explanations (FAIL): **0** (2 present-but-thin, 3 open-response items missing the chapter's own wrong-turn convention — WARN)
+- Retrieval-practice spacing: **non-compliant** — 18.2% against a 20% floor, short by one item
+- Soundings spoiler check: **clean** — 0 of 8 reveal a ★ Fixed Point
 
-**The headline finding is not a defect in any single question — it is a distribution problem.** §6 (version skew, supported releases, cadence, upgrade order) received **2 Practice questions against an outline allocation of 4**, while §3 and §4 each ran one over. §6 supplies four of this chapter's ten Exam Alert high-priority topics and is flagged **[B3]** as the book's worst decay risk. Three of its concepts — the three-supported-minors rule, the patch-support window, and the release cadence — are tested **only** in Taking Your Bearings #3 item 3 and appear nowhere in the Practice set. Upgrade order is tested nowhere at all. See § Question-budget compliance → *Within-budget distribution*.
+Two structural findings dominate this audit, and both are cheap to fix:
 
-Two things this chapter does markedly better than its budget requires and that should not be lost in revision: every Practice answer key explains all three wrong options with a named misconception rather than a restatement of the correct answer, and all three checkpoints carry the 5/5 ÷ 3–4 ÷ 0–2 revision-prompt branch with a specific section and a time estimate attached to the low branch. Both are skill Part 11 requirements that are routinely skipped.
+1. **P13 is effectively a two-option question**, and it is §5's only assessment item.
+2. **Retrieval sits below the [B3] floor**, and the draft's own accounting note miscounts the pool (says 34; the shipped pool is 33), so the shortfall is slightly different from what the note records.
+
+A third finding is a coverage gap rather than a defect: **four of §4's five node conditions, the whole node-registration subsection, `kubectl explain`, auditing, and the DaemonSet-tolerates-unschedulable fact are taught and never tested.** The DaemonSet item is the single best fix available, because it closes a coverage gap and the retrieval shortfall with one question.
 
 ---
 
 ## Question-budget compliance
 
-Compared against `question_budget` in the outline frontmatter:
-
 | Category | Target | Actual | Status |
 |---|---|---|---|
-| Soundings | 8 | 8 | **met** |
-| Taking Your Bearings (total) | 15 | 15 | **met** |
-| Taking Your Bearings (checkpoints) | ≥2 (outline: 3) | 3 | **met** |
-| Practice Questions | 17 | 17 | **met** |
-| **Chapter total** | **40** | **40** | **met** |
+| Soundings | 8 | 8 | met |
+| Taking Your Bearings (total) | 15 | 15 | met |
+| Taking Your Bearings (checkpoints) | ≥2 (outline: 3) | 3 | met |
+| Practice Questions | 17 | 18 | over-by-1 — **acceptable** |
+| **Chapter total** | **40** | **41** | over-by-1 |
 
-Each checkpoint carries exactly 5 questions, satisfying the skill's "2+ checkpoints of ≥5 questions each."
+Over-budget is explicitly sanctioned ("Above-target is fine — headroom for cutting weak questions during audit"). Given the weak-distractor findings below, that headroom is the right place to spend the revision: no question needs cutting outright, but P13 needs rebuilding.
 
-### Within-budget distribution — deviation from the outline's Practice allocation
+### Practice-block distribution vs. the outline's plan
 
-Total is met; the allocation across sections is not. Attributing each Practice item to its primary section (interleaved items attributed to the section supplying the correct answer):
+The outline allocated by exam-point density rather than section count. The draft has drifted from that allocation, and the drift runs against the reasoning:
 
-| Block | Outline target | Actual | Items | Status |
-|---|---|---|---|---|
-| §1–§2 — grammar, kubeconfig, gates | 5 | 4 | P1, P2, P3, P4 | short by 1 |
-| §3 — quota / limit range | 2 | 3 | P5, P6, P7 | over by 1 |
-| §4 — node lifecycle | 3 | 4 | P8, P9, P10, P11 | over by 1 |
-| §5 — ownership / tooling | 2 | 1 | P12 | short by 1 |
-| **§6 — versions and skew** | **4** | **2** | **P14, P15** | **short by 2** |
-| §7 — etcd | 1 | 1 | P16 | met |
-| §8 — synthesis | (folded into 17) | 1 | P17 | met |
+| Block | Planned | Actual | Notes |
+|---|---|---|---|
+| §1–§2 | 5 (incl. 1 retrieval) | 4 (P1–P4), **0 retrieval** | Lost the planned spec-vs-status retrieval when P10 was rewritten |
+| §3 | 2 (incl. 1 retrieval) | 2 (P5, P6) + P7 floating | met |
+| §4 | 3 (incl. 1 retrieval) | 4 (P8–P11) | over by 1 |
+| §5 | 2 | 2 (P12, P13) | met |
+| §6 | 4 (incl. 1 retrieval) | 3 (P14–P16), **0 retrieval** | short by 1 |
+| §7 | 1 | 1 (P17) | met |
+| Synthesis | — | 1 (P18) | the "Everything + §8" interleaving item |
 
-**Why the §6 shortfall matters more than the arithmetic suggests.** The outline's §6 allocation was not padding. It carried three constraints the draft cannot now satisfy with two items:
+§6 carries 4 of the 11 Exam Alert priority topics; §4 carries 2. §6 losing a question to §4 inverts the density argument. **Recommendation:** the retrieval item added to close the spacing shortfall should go in the §6 block, which fixes the density drift and the retrieval floor together.
 
-- *"At least 2 must require applying a rule to a scenario rather than reciting the rule."* P14 applies; P15 recites. One of two, not two of four.
-- *"#28 must appear at least twice in two different question shapes."* Satisfied — P14 (B vs D contrast) and P15 (option A) — but with zero slack.
-- *"Includes 1 retrieval item."* P7 was designated "§6 block or §3 block, drafter's choice" and was drafted §3-flavoured. **§6 now carries no retrieval item.**
+### Constraints verified as met
 
-The two missing items also account for four of the thirteen untested concepts below. **Recommended fix:** convert P7 to its §6 framing (the outline permits it) and add one item on the three-branch / one-year / three-per-year trio, which is currently a Bearings-only fact and an Exam Alert priority topic (#5). If a third slot can be found, upgrade order is the best-value derivable item in the chapter and is untested.
-
-### Interleaving requirement
-
-The outline required at least four Practice items spanning two sections. All four named items are delivered: **P4** (§2+§3), **P8** (§1+§4), **P13** (§5+§6+§7), **P17** (everything+§8). ✓
-
-### Lookup-vs-application calibration
-
-The outline capped pure-lookup items at 6 of 17. Actual: **6** (P1, P2, P5, P9, P12, P15); 11 require application or diagnosis. **At the ceiling, compliant.** Note that if the §6 shortfall is fixed by adding recall items, this ceiling will be breached — the added items should be scenario-shaped.
+- **Interleaving ("at least four questions require two sections at once")** — met. P4 (§2+§3), P7 (§3+§4+Ch 5), P8 (§1+§4), P10 (§4+§8), P13 (§5+§3/§7), P18 (all+§8). Six.
+- **Lookup ceiling ("no more than six of seventeen pure lookup")** — met, exactly at the ceiling. Pure-lookup items: P1, P2, P5, P9, P12, P15 = 6. P14 and P16 are application/derivation, not lookup, which is what keeps the count down.
+- **"No question may turn on a specific minor version number"** — met. P14 uses 1.36/1.33/1.37/1.35, but only as *relative* offsets; its answer key states this explicitly and the four verdicts hold at any API-server version. Nothing in the set turns on which minors are currently supported.
+- **≥4-back spacing floor** — met, twice. B2.4 (Ch 2, six back) and P11 (Ch 3, five back).
 
 ---
 
 ## Soundings spoiler check
 
-The chapter marks six ★ Fixed Points: FP1 §1 grammar/case asymmetry · FP2 §2 three gates in order, only admission mutates · FP3 §3 quota-namespace vs LimitRange-object · FP4 §4 cordon/drain/uncordon · FP5 §6 nothing newer than the API server, kubelet three back, kubectl the exception · FP6 §7 all objects in etcd, etcd access = root.
-
-All eight Soundings are free-response, so there are no distractors to inspect; the check runs on stems and, secondarily, on the `<details>` rationales.
+The chapter ships **six** ★ Fixed Points (§1 grammar/case, §2 three gates + mutation, §3 quota/LimitRange scope, §4 cordon/drain/uncordon, §6 skew rule + kubectl exception, §7 etcd/root/snapshot). Each Soundings stem and answer was checked against all six.
 
 | Soundings Q # | Tests topic | Spoils Fixed Point? | Evidence |
 |---|---|---|---|
-| 1 | Client tool config; the two-server problem | **no** | Stem names nothing Kubernetes-specific. FP1 is the grammar and case asymmetry; nothing here touches it. Priors only. |
-| 2 | **[retrieval: ch3]** Single-door architecture | **no** | Asks for one component and one inference. FP2 requires three named gates in order with differentiated powers; "put the check at the door" supplies none of that. |
-| 3 | The distinct questions a server must answer; whether one can *change* a request | **no — but note** | Stem names none of the three gates and asserts nothing. It does raise mutation as an open question, which is deliberate pre-test design. The key's "who are you, and are you allowed to do this" glosses two of three gates, but withholds the third and the order — i.e. withholds the Fixed Point. Inside `<details>`, which is the correct containment. |
-| 4 | **[retrieval: ch4]** Namespaces and the division mechanism | **no** | Requires the reader to *produce* "resource quota" from Chapter 4. LimitRange is not named anywhere in the stem or key, so FP3's contrast — the whole content of FP3 — is untouched. |
-| 5 | **[retrieval: ch7]** `unschedulable` taint, `NoSchedule` timing | **no — but note** | Stem and key establish that running Pods are unaffected, which is one clause of FP4's cordon behaviour. It arrives as Chapter 7 retrieval, not Chapter 8 teaching, and FP4's content — that a *second command* exists to evict what cordon spared — is fully withheld. The key even flags the gap ("raises an obvious follow-up question that §4 answers"). Working as designed. |
-| 6 | **[retrieval: ch4]** Leases stop renewing; what to conclude | **no** | `Ready: Unknown` is taught in §4 prose but is not marked as a ★ Fixed Point. The key answers "it should conclude that it cannot tell" without supplying the status value or the two heartbeat forms. |
-| 7 | Client/server version-mismatch direction | **no (stem) — WARN (key)** | Stem is clean and reveals no numbers. **The key overreaches:** *"That intuition is correct in general and, for exactly one component in Kubernetes, wrong. §6 names it."* That pre-delivers FP5's structural shape — one generating rule plus exactly one exception — before §6 teaches it, and it is the exact structure Bearings #3 item 2 later tests as a derivation. |
-| 8 | Managed vs self-hosted duty split | **no** | §5 carries no ★ Fixed Point. Priors only. |
+| S1 | client config priors (address, credential, two-server state) | **no** | FP#1 is the four-slot grammar and the case asymmetry. S1 names no path, no precedence, no in-cluster detection. Answer stops at "an address and a credential, at minimum" |
+| S2 | Ch 3 retrieval — the single door; where a check belongs | **no** | Asks *where*, never *how many* / *in what order* / *with what powers*. Key ends "One door means one set of locks" — FP#2's three names, order and mutation property all withheld |
+| S3 | the distinct questions a server must answer; can any *change* the request | **no** (borderline — see finding S3 below) | Stem raises mutation as a possibility without asserting it. Key declines to name authentication/authorization/admission, and declines to confirm the "changed" clause: "if you said no, you are in the majority." FP#2 intact |
+| S4 | Ch 4 retrieval — the namespace-division mechanism | **no** | Reader retrieves a name Ch 4 already gave them. FP#3 is the *contrast* with LimitRange; LimitRange is never named, and the key deliberately leaves the guess unsharpened ("Hold on to what you guessed; §3 will sharpen it") |
+| S5 | Ch 7 retrieval — `NoSchedule` and already-running Pods | **no** — adjacency noted | Hands the reader the first clause of FP#4's content ("touches nothing already aboard"), but from Ch 7, where it was already taught. Withholds all three command names and the existence of a second step. Key closes forward, not back: "raises an obvious follow-up question that §4 answers" |
+| S6 | Ch 4 retrieval — Leases stop renewing; what to conclude | **no** | No Fixed Point covers node conditions. Key answers "it should conclude that it cannot tell" and never says `Unknown`, which is §4's payoff |
+| S7 | client/server skew intuition | **no** — adjacency noted | Key confirms the general intuition and signals an exception exists ("§6 is where it stops being reliable") without naming `kubectl`, the direction, or any number. FP#5 is entirely the numbers and the exception; both intact |
+| S8 | managed vs self-hosted duty split | **no** | §5 carries no Fixed Point. Key's duty list ("patching and upgrades; backups; …") does not touch FP#6's etcd/root/snapshot content |
 
-**Verdict: clean.** No stem reveals a Fixed Point; no question is answerable only from this chapter (skill Part 11 rule 2 satisfied on all eight).
+**Verdict: clean.** The set does what a pre-test should — S3 is engineered to produce an incomplete answer the reader can feel, and S5/S7 lean toward their sections without handing over the payoff. No FAIL.
 
-**One WARN, S7's key.** Trim the final two sentences to *"That intuition is correct in general. §6 is where it stops being reliable."* That preserves the pre-test's honest feedback and the forward pointer while withholding "exactly one component," which is the payload of both FP5 and Bearings #3 item 2.
+**Rubric check (rule 8): PASS.** All three branches present (6+ / 3–5 / 0–2), with a specific 0–2 remediation naming Ch 3 §2 and Ch 4 §6.
 
-**Rubric check (skill Part 11 rule 6):** present and complete — 6+ / 3–5 / 0–2, each with a distinct reading strategy, and the 0–2 branch carries the outline's specific prerequisite instruction naming Ch 3 §2 and Ch 4 §6. **PASS.**
-
-**Answer-disclosure check (rule 5):** all eight answers are inside a single `<details>` collapsible with a summary line. **PASS.** All three Bearings checkpoints use the same containment, which exceeds requirement.
-
-**Pre/post symmetry (rule 1).** Seven of eight Soundings have a matching post-test:
-
-| Soundings | Post-tested at |
-|---|---|
-| S1 kubeconfig / two servers | B1.2 |
-| S2 single door | B1.3, B1.4 |
-| S3 the three gates | B1.3, P2, P3 |
-| S4 namespaces / quota | B1.5, P6 |
-| S5 unschedulable taint | B2.1, P8 |
-| **S6 leases / heartbeats** | **partial — see below** |
-| S7 version direction | B3.1, B3.2, P14, P15 |
-| S8 managed vs self-hosted | B2.5, P13 |
-
-**S6 is the break.** It pre-tests the Lease mechanism and what an absent heartbeat licenses you to conclude. B2.3 post-tests the *conclusion* (`Unknown` vs `False`), but **nothing in Bearings or Practice tests the two heartbeat forms or the Lease objects themselves** — which is also a discharged cross-bearing (`chapter-04` line 584, "node conditions and heartbeats") left unassessed. See the coverage table.
+**Answer-disclosure check (rule 9): PASS.** Answers are inside `<details><summary>Answers + reading strategy</summary>`.
 
 ---
 
 ## Per-question findings
 
-### QPractice 2: "In what order does a request pass the API server's access-control gates, and which of them can result in the request being modified…?"
+### S3: "A server receives a request to do something expensive. List the distinct questions it must answer before it does the work…"
 
-**Issue:** Two variables (order, mutating gate) are confounded across the option set, so the "authorization can mutate" misconception is never isolable. The outline required a distractor "attributing mutation to authorization"; B nominally does, but it scrambles the order as well, so any reader who knows the order eliminates it without ever confronting the mutation error.
+**Issue:** The answer key is **not scorable**, and the block asks the reader to compute a score out of 8.
 
-**Distractor analysis:**
-- A) Authorization → authentication → admission; only authentication can modify — *double-wrong (order + mutator); eliminable on order alone*
-- B) Authentication → admission → authorization; only authorization can modify — *double-wrong; the intended "authorization mutates" probe is neutralised by the scrambled order*
-- C) Authentication → authorization → admission; only admission can modify — **correct**
-- D) Authentication → authorization → admission; any of the three can modify — *strong; isolates the collapse-the-gates error cleanly and is the only option that tests one variable*
+**Distractor analysis:** n/a — open response.
 
-Net effect: a reader who knows only the order faces a 50/50 between C and D; a reader who knows only the mutation fact lands on C directly. The item is doing roughly one question's work with four options.
+**Why-wrong explanation status:** present but deliberately verdict-free.
 
-**Why-wrong explanation status:** present and specific. The key explicitly names D's error as "the error that collapses three distinct gates into one undifferentiated 'security check'," which is exactly right.
+The key reads: *"Most people produce two questions… If you produced two, that is the expected answer and you have just found the gap this chapter's §2 exists to fill. On the 'changed' clause: if you said no, you are in the majority."*
 
-**Recommended fix:** change B to *"Authentication → authorization → admission; only authorization can modify."* A then remains the sole order probe, B becomes a clean single-variable mutation probe, and D stays as the collapse probe. No other edits needed.
+This is excellent curiosity-gap design and poor rubric design. The reader is told their answer was *common* and never told whether it was *right*. Every other Soundings item resolves to a scorable verdict (S1 "an address and a credential"; S5 "Nothing"; S6 "it should conclude that it cannot tell"; S8 "any two of these is a pass"). S3 is the only one that does not, and the 6+/3–5/0–2 rubric immediately below it requires a count. A reader who produced two gates cannot determine whether to count this item.
+
+**Recommended fix:** add one scoring sentence, without closing the gap. Something on the shape of: *"Score this one correct if you produced three or more distinct questions, or if you answered 'yes' to the 'changed' clause. If you produced two and said no — the majority answer — score it incorrect and read §2 slowly; the third question is the one this chapter exists to give you."* That preserves the pretesting effect (the third question is still unnamed) and makes the item countable.
 
 ---
 
-### QPractice 6: "Why can they not [cap a team's Node consumption] with a ResourceQuota?" **[retrieval: ch4]**
+### P13: "Two teams run the same application. Team A uses a cloud provider's managed Kubernetes service; Team B self-hosts…"
 
-**Issue:** Option A asserts a claim about ResourceQuota's capabilities that **the chapter never gives the reader any basis to evaluate**, and the answer key refutes it with knowledge the chapter does not contain. §3 carries an explicit blocking source gap: what a quota can count (compute totals, object counts, storage) is not cached and is not taught. A reader who has read §3 attentively cannot rule out A from the text.
+**Issue:** Two of four options are eliminable on question *form* rather than on knowledge, reducing this to a coin flip between C and D — and this is **§5's only assessment item**, since the outline's planned managed-vs-self-hosted Bearings item was displaced by the heartbeat item (B2.5). The stem's two-team setup is also now vestigial.
 
 **Distractor analysis:**
-- A) ResourceQuota cannot count objects, only compute resources — *unanswerable from the chapter; the key's rebuttal ("wrong as a claim about quota's capabilities") depends on the un-fetched `resource-quotas/` source*
-- B) Nodes are not namespaced objects, and a ResourceQuota constrains a namespace — **correct**
-- C) Evaluated at the authorization gate, which has no visibility into Nodes — *plausible; targets the authorization/admission collapse*
-- D) A ResourceQuota in `kube-system` applies cluster-wide — *strong; targets a genuine and common misconception about privileged namespaces*
+- **A)** "Both duties sit with the control-plane operator: taking etcd backups, and writing the application's Deployment manifests" — **implausible on form.** The stem asks for a pairing that *separates* a control-plane duty from a non-control-plane duty. A asserts both are on the same side, so it fails the stem's own requirement before any Kubernetes knowledge is applied.
+- **B)** "Neither duty sits with the control-plane operator: choosing container images, and setting resource requests" — **implausible on form**, same failure. The answer key concedes this outright: *"names no control-plane duty at all, so it does not answer the question asked."* An explanation that rejects a distractor on form is a report that the distractor was never doing work.
+- **C)** "Taking etcd backups sits with the control-plane operator; setting the namespace's ResourceQuotas does not" — correct.
+- **D)** "Installing a container runtime on each node sits with the control-plane operator; taking etcd backups does not" — **strong.** A genuine inversion, both halves sound like platform work, and it forces the reader to separate "runs on cluster infrastructure" from "is the control-plane operator's duty." The key correctly identifies it as the sharpest.
 
-**Why-wrong explanation status:** present and specific for C and D. For A it is present but **unsupported by the chapter** — the key partially recovers with "more importantly, misses the point: the obstacle is scope, not counting," which is the right instinct but leaves the factual claim hanging.
+**Stem problem, separate from the distractors:** Team A and Team B do no work. C's correct answer references neither, and the managed/self-hosted axis is not the axis being tested — the rewrite moved to "whoever operates the control plane," which is provider-independent by design. The setup primes the reader to look for a distinction the answer does not use, and a reader who takes the stem seriously will hunt for a managed-vs-self-hosted split among four options that don't offer one.
 
-**Recommended fix:** two options, in order of preference. **(a)** If the §3 fetch lands (`kubernetes.io/docs/concepts/policy/resource-quotas/`), teach what a quota counts and A becomes a legitimate distractor with no edit needed. **(b)** If the fetch does not land, replace A with a scope-flavoured distractor the chapter *does* support — e.g. *"A ResourceQuota can only constrain objects the team creates, and the team does not create Nodes"* — which targets a real near-miss (right conclusion, wrong reason) and is fully answerable from §3's hinge and §4's registration material.
+**Why-wrong explanation status:** present and specific for all three, but A's and B's explanations argue from question form rather than from domain knowledge, which is a symptom rather than a defect of the explanations.
+
+**Recommended fix:** rebuild A and B as genuine separations with the wrong split, and cut the two-team framing to a one-line stem. Suggested:
+
+> **13.** Which pairing correctly separates a duty that sits with whoever operates the control plane from one that does not?
+>
+> A) Taking etcd backups does not sit with the control-plane operator; installing a container runtime on each node does *(inverts the correct answer's first half against D's — targets the reader who thinks backups are a workload concern because they protect workload data)*
+> B) Setting a namespace's ResourceQuotas sits with the control-plane operator; taking etcd backups does not *(targets the reader who treats "administrative-sounding" as "control-plane" — quota is administrative but namespace-scoped, and §3's hinge is the disproof)*
+> C) Taking etcd backups sits with the control-plane operator; setting the namespace's ResourceQuotas does not **[correct]**
+> D) *(unchanged — it is the best option in the set)*
+
+If the managed-vs-self-hosted framing is wanted back, it depends on the §5 shared-responsibility sourcing gap the draft flags as BLOCKING; do not restore it before that resolves.
 
 ---
 
-### QPractice 13: "Which set of duties belongs to Team B and not to Team A?"
+### P4: "A developer submits a Pod whose resource requests would push their namespace past its ResourceQuota…"
 
-**Issue:** The weakest distractor set in the paper. Option D is a throwaway nobody holds, and A and C are the same distractor twice — both are "workload-side concerns misfiled as platform concerns," eliminable on one insight. The item reduces to a two-option question for any reader who has read §5's closing paragraph.
-
-**Distractor analysis:**
-- A) Writing Deployment manifests, and choosing container images — *plausible only to a reader who thinks "managed" means the provider runs the applications; a real but shallow misconception*
-- B) Deciding when the control plane is upgraded, and taking etcd backups — **correct**
-- C) Setting resource requests and limits, and defining namespaces — *duplicate meaning with A; same misconception, same elimination*
-- D) Nothing differs; the two teams have identical operational responsibilities — *implausible; fabricated for symmetry. The stem has already stipulated a difference exists by asking which set belongs to B and not A*
-
-**Why-wrong explanation status:** present. A and C are explained mechanically; **D's rebuttal is rhetorical rather than diagnostic** — "is the answer of someone who has not yet asked whose calendar the upgrade goes on" is good prose and does not name a misconception, because there isn't one to name.
-
-**Recommended fix:** replace C and D with mixed options that require discriminating *which* duties move, rather than *whether* any do. Suggested: **C)** *"Deciding when the control plane is upgraded, and setting the namespace's ResourceQuotas"* (one duty that moves, one that doesn't — the sharpest available distractor); **D)** *"Taking etcd backups, and choosing which container runtime is installed on each node"* (both plausible-sounding platform duties, but the second is true for *both* self-hosted teams and for neither managed one in the way the option implies — and it retrieves §5's CRI requirement). Either rewrite converts the item from a two-option question into a genuine four-way discrimination.
-
----
-
-### QPractice 16: "An operations team stores its nightly etcd snapshots, unencrypted, on the primary control-plane node…"
-
-**Issue:** Not a weak distractor — an **option-length cue**. The correct answer runs ~45 words with two clauses of justification; A, B and D run 12–20 words each. Test-wise readers select the longest, most-hedged option without engaging the content, which is precisely the population this item is meant to catch.
+**Issue:** One implausible distractor.
 
 **Distractor analysis:**
-- A) No problem, provided filesystem permissions are correct — *plausible; targets the "access control substitutes for encryption and off-host storage" error*
-- B) Should be encrypted, but the location is fine because that is where etcd runs — *strong; isolates one of the two failures and inverts the reasoning ("that is where etcd runs" is the reason it must NOT live there)*
-- C) Stored outside the control-plane nodes and kept encrypted — otherwise they will not survive the disaster they exist for, and access to etcd data is equivalent to root permission in the cluster — **correct, and visibly the longest**
-- D) Taken with `etcdutl` rather than `etcdctl`, which encrypts them automatically — *acceptable; the tool-swap half targets a real confusion, the auto-encryption half is fabricated but plausible-to-hopeful*
-
-**Why-wrong explanation status:** present and specific for all three. B's rebuttal in particular ("etcd running there is the reason the snapshot must *not* live there") is the best single line in the answer key.
-
-**Recommended fix:** compress C to match — *"They should be encrypted and stored off the control-plane nodes"* — and move the two-failure justification into the answer key, where it already appears almost verbatim. The stem asks "which statement best describes the problem," so the option does not need to carry the reasoning.
-
----
-
-### QPractice 1: "Which statement about `kubectl` command syntax is correct?"
-
-**Issue:** Option C is a compound distractor whose second clause is fabricated, which lets a test-wise reader eliminate it without holding the underlying misconception. The key acknowledges this in passing ("additionally invents a plural requirement that does not exist"). The inverted-asymmetry misconception — the single most useful one to catch here — is therefore not cleanly probed.
-
-**Distractor analysis:**
-- A) Both case-insensitive — *strong; the permissive over-generalisation, and the key correctly identifies it as the most common form of the error*
-- B) Types case-insensitive and abbreviable; names case-sensitive — **correct**
-- C) Names case-insensitive; types must be given in the plural — *half-plausible. The inversion is real; the plural requirement is invented and gives the option away*
-- D) Both case-sensitive — *strong; the strict-direction over-generalisation*
+- **A)** Authorization; yes — admin has broader permissions — **plausible.** Targets the real "permissions override policy" misconception.
+- **B)** Admission control; no — correct.
+- **C)** "Authentication; no — the API server rejects the request before identity is established" — **implausible, internally incoherent.** Rejecting *at* the authentication gate *is* the identity determination; "before identity is established" describes nothing the API server does, and the stem has already identified the submitter as a developer. No reader holds this belief, because it isn't a belief — it's a malformed sentence about a gate.
+- **D)** Admission control; yes — quota skipped for cluster-admin — **plausible and valuable.** Right gate, invented exemption; targets the same permissions-override instinct as A but from inside a correct gate model, which is the sharper version.
 
 **Why-wrong explanation status:** present and specific for all three.
 
-**Recommended fix:** cut the fabricated clause. **C)** *"Resource types are case-sensitive; resource names are case-insensitive."* That is the clean inversion, it targets a real mistake, and it removes the elimination shortcut. The key's existing sentence for C then shortens to one line.
+**Recommended fix:** replace C with a distractor that targets a real gate confusion. Suggested: *"Admission control; yes — the quota applies to the namespace's owner, and an administrator's requests are attributed to the cluster rather than the namespace."* That is wrong in a way somebody could believe (it misapplies §3's scope hinge), and it preserves the question's two-axis structure.
 
 ---
 
-### QPractice 8: "…which commands accomplish this, and in what order?"
+### P2: "In what order does a request pass the API server's access-control gates…"
 
-**Issue:** Two separate problems, one in the options and one in the stem.
-
-*Options:* A is wrong on two independent grounds — reversed order **and** a spurious `node` TYPE slot — so a reader tracking syntax eliminates it without engaging the order error, which is what the item exists to test.
-
-*Stem:* "Using only the four-slot grammar, which commands accomplish this" primes the reader to expect a TYPE slot, and the correct answer omits it. A careful reader can talk themselves out of B on exactly the grounds the stem invited. The key resolves this well ("`cordon` and `drain` take the node's name directly, without a preceding TYPE, because the verb already implies the resource type") — but resolving an ambiguity in the key is a Part 10B *undesirable* difficulty: the reader who gets it wrong got it wrong for reading carefully.
+**Issue:** One distractor bundles two errors, making it eliminable on either half.
 
 **Distractor analysis:**
-- A) `kubectl drain node worker-3`, then `kubectl cordon node worker-3` — *double-wrong (order + syntax); eliminable without the order insight*
-- B) `kubectl cordon worker-3`, then `kubectl drain worker-3` — **correct**
-- C) `kubectl cordon worker-3` alone — draining is implied — *the chapter's headline trap, and the strongest option in the set*
-- D) `kubectl uncordon worker-3`, then `kubectl drain worker-3` — *plausible; targets cordon/uncordon confusion*
+- **A)** "Authorization → authentication → admission; only authentication can modify" — **weak.** Two independent errors in one option. A reader who knows either the order or the mutator eliminates it without engaging the other. Worse, the second clause is not a misconception anyone holds: authentication modifying a request is not a plausible model of anything, so the option is really only testing order.
+- **B)** correct order, mutation attributed to authorization — **strong.** The real second-place misconception.
+- **C)** correct.
+- **D)** correct order, "any of the three can modify" — **strong.** Targets the collapse-into-one-security-check model precisely.
 
-**Why-wrong explanation status:** present and specific. A's rebuttal is genuinely good ("the scheduler may place work onto it while you are clearing it").
+**Why-wrong explanation status:** present and specific for all three.
 
-**Recommended fix:** (1) change A to `kubectl drain worker-3`, then `kubectl cordon worker-3` so order is the only variable; (2) reword the stem to drop the grammar framing — *"Which commands accomplish this, and in what order?"* The grammar callback is already carried by the key.
+**Recommended fix:** unbundle A. Make it order-only: *"Authorization → authentication → admission; only admission can modify."* That isolates the order error and makes the option survive a reader who already knows the mutator, which is the whole point of a distractor.
 
----
-
-### QBearings 2.1: "Chapter 7 listed `node.kubernetes.io/unschedulable` with a `NoSchedule` effect… What command applies it — and, using Chapter 7's rule about what `NoSchedule` governs, what happens to the Pods already running on that node?"
-
-**Issue:** This is one of the chapter's three **[B3]**-designated retrieval anchors, and the stem pre-loads most of its own answer. It supplies the taint name, the effect, and the fact that it is operator-applied; the phrase "using Chapter 7's rule about what `NoSchedule` governs" then directs the reader to the rule rather than asking them to retrieve it. What remains to be recalled is the command name, taught two pages earlier in the same chapter.
-
-The outline anticipated exactly this and instructed the opposite: *"this item must be the hard version — the identity, not the definition."* Retrieval practice earns its 20% allocation from the *effort* of reaching; a stem that hands over the premises converts a retrieval item into a comprehension item.
-
-**Why-wrong explanation status:** present in substance — the key's "the point of the question is the identity rather than the definition" is exactly the right framing — but **no wrong turns are named.** The plausible errors here are answering "drain" (the command that does empty a node) and answering "they are evicted."
-
-**Recommended fix:** strip the scaffolding and make the reader supply the bridge. Suggested: *"You cordon a node. Chapter 7 taught you a built-in taint with a `NoSchedule` effect that is applied deliberately rather than by a failing component. Name that taint, and say what `cordon` therefore does — and does not do — to the Pods already running."* Add to the key: *"Common wrong turns: answering `drain` (the command that does empty the node), and answering that the running Pods are evicted."*
-
-The chapter's other two retrieval anchors are clean by contrast and need no change: **B2.4** (Ch 2, CRI) supplies no premises and requires three separate recalls, and **P11** (Ch 3, control loop) requires the reader to both name a pattern and produce two unnamed instances.
+**Note on the two-gate model:** the chapter's headline misconception (only two gates) cannot appear in P2, because every option must present an ordering. It is tested at **P3 option D** ("None; a request that passes authentication and authorization is always persisted"), which is the right home for it. No gap — recording the cross-reference so a later pass doesn't "fix" P2 by adding a two-gate option that breaks the stem.
 
 ---
 
-### Group finding — five Bearings items name no wrong turns
+### P12: "Which statement about cluster bootstrap tooling is correct?"
 
-All 15 Taking Your Bearings questions are free-response, so the skill's "explain why wrong answers are wrong" has no options to attach to. The draft's substitute — a *"Common wrong turns:"* line in the answer key — is a sound adaptation and is used well where it appears. It appears in **10 of 15** items.
+**Issue:** One distractor bundles two errors.
 
-| Item | Wrong-turn line | Note |
+**Distractor analysis:**
+- **A)** kubeadm/kind categories swapped — **strong.**
+- **B)** correct.
+- **C)** kubeadm/k3s swapped — **strong.**
+- **D)** "minikube is the officially supported tool for creating clusters; kubeadm removes the need for a container runtime on each node" — **weak.** The second clause is implausible standalone; no reader believes a bootstrapper eliminates the runtime requirement, so the option collapses to its first clause, which duplicates A's error.
+
+**Why-wrong explanation status:** present, and D's explanation does useful pedagogical work (reinforces the CRI boundary). That work is worth keeping even if the option is rebuilt.
+
+**Recommended fix:** make D a single, real error. Suggested: *"kubeadm is the officially supported tool for creating clusters; it installs a container runtime on each node as part of joining them."* Same reinforcement in the explanation, and the misconception is one a reader could actually hold after §5 — that the officially supported bootstrapper handles everything.
+
+---
+
+### P17: "An operations team stores its nightly etcd snapshots, unencrypted, on the primary control-plane node…"
+
+**Issue:** One distractor with no misconception behind it; one hedged explanation.
+
+**Distractor analysis:**
+- **A)** no problem with correct filesystem permissions — **strong.** Real; the "ACLs are sufficient" instinct is common.
+- **B)** encrypt, but the location is fine — **strong.** Targets the reader who catches one of two failures, which is the modal partial answer.
+- **C)** correct.
+- **D)** "The snapshots should be taken with `etcdutl` rather than `etcdctl`, which encrypts them automatically" — **weak.** Nobody believes either utility encrypts. The tool-name half might attract a reader confusing `etcdctl`/`etcdutl`, but the encryption clause is invented, so the option is a bundled double-wrong of the P2/P12 kind.
+
+**Why-wrong explanation status:** present, but D's is **hedged where the others are declarative**: *"no cached documentation attributes automatic encryption to either utility."* An answer key that reports what documentation was consulted rather than what is true reads as uncertainty about the distractor, and it leaks pipeline vocabulary into reader-facing text.
+
+**Recommended fix:** replace D with the real tool confusion, stripped of the invented behaviour: *"The snapshots should be taken with `etcdutl snapshot save`; `etcdctl` is the restore utility."* That inverts the actual `etcdctl save` / `etcdutl restore` split — a genuine and likely confusion, since the two names differ by two letters — and lets the explanation be declarative.
+
+---
+
+### Lower-priority findings
+
+| Item | Issue | Recommended fix |
 |---|---|---|
-| B1.1 | ✓ | Both symmetrical errors named |
-| B1.2 | **✗** | No misconception named |
-| B1.3 | ✓ | Names the two-gate model, the reversed order, and the authorization-mutates error — this is where the outline's trap requirement is actually discharged |
-| B1.4 | **✗** | The obvious wrong answer is "authorization"; unnamed |
-| B1.5 | **✗** | The obvious wrong answer is swapping quota and LimitRange; unnamed |
-| B2.1 | **✗** | See block above |
-| B2.2 | ✓ | Exemplary — explains the reasonable-but-wrong intuition at length and, per the outline's subject-dignity requirement, does not moralise about the outage |
-| B2.3 | ✓ | `False` and `NotReady` both named |
-| B2.4 | **✗** | **"Docker" is the single most likely wrong answer here and is unnamed** |
-| B2.5 | ~ | Partial — "the version is not what differs" names the error implicitly |
-| B3.1–B3.5 | ✓ | All five explain the reasoning per sub-answer; B3.4 names the common first answer ("the applications are down") |
+| **P8 option D** ("`kubectl uncordon`, then `kubectl drain`") | Borderline weak. Eliminable on vocabulary alone — a reader who knows what `uncordon` means discards it without reasoning about the sequence. It does catch a genuine cordon/uncordon prefix reversal, so it is not empty | Optional. If rebuilt: *"`kubectl drain worker-3` alone — draining marks the node unschedulable as part of evicting"*, which targets the real belief that `drain` subsumes `cordon` |
+| **P10 correct answer (B)** | B is the only option that does not assert a specific mechanism ("observes the node's marked state"), a consequence of the §8 sourcing narrowing. Test-wise readers can pattern-match the hedge | Resolves itself if the node snapshot lands and the spec-vs-status framing is restored, as the draft's AUTHOR-REVIEW already contemplates. No action needed now |
+| **P16 option B** | Longest option in the set by a clear margin (two clauses of reasoning where A/C/D carry one). Classic length tell | Move half of B's reasoning into the answer key, where it already appears anyway. B should read: *"kube-apiserver first, because nothing may be newer than it, and every other component's window is expressed relative to it"* |
+| **P18 stem** ("Based on §8's synthesis…") | Cites its own section, which no exam question does, and tells the reader where to look | Cut the clause. The question stands alone: *"You encounter a Kubernetes administrative feature this book has not covered. What are the two most productive questions to ask about it first?"* |
+| **P6 option C** | Why-wrong present but thin: *"C is wrong on the gate."* Adequate only because the gate model is explained at length in P2–P4 | Optional. One clause: *"authorization has no view of object scope; quota is evaluated at admission"* |
+| **P8 option C** | Why-wrong is one clause for the chapter's headline trap: *"`cordon` does not empty anything"* | Worth expanding to name the operational consequence, matching the weight §4's Navigational Hazard gives it |
 
-**Severity: WARN, not FAIL.** Every one of these keys explains the correct answer's reasoning fully; what is missing is the misconception-detection half of the self-correction design.
+---
 
-**Recommended fix:** add one *"Common wrong turns"* line to B1.2, B1.4, B1.5 and B2.4. B2.4's is the highest-value single edit in this audit: *"Common wrong turn: 'Docker.' Chapter 2's whole point was that Kubernetes talks to a runtime through the CRI, and containerd and CRI-O are what the documentation names."* That retrieval item exists to satisfy the ≥4-back spacing floor on its first live chapter, and a reader who answers "Docker" currently receives no correction at all.
+### B3.1, B3.2, B3.3: missing the chapter's own wrong-turn convention
 
-### Lower-severity notes (no block required)
+**Issue:** Checkpoints #1 and #2 establish a convention — every item's key closes with an explicit *"Common wrong turns"* paragraph naming the specific misconceptions that produce the wrong answer. Nine of the ten items in #1 and #2 carry it. **Checkpoint #3 drops it for items 1, 2 and 3**, and #3 covers the chapter's densest examinable material (four of the 11 Exam Alert priority topics).
 
-- **P4 option C** ("Authentication; no — the API server rejects the request before identity is established") is not a real misconception; a quota violation is not detectable at gate one under any model a reader could hold. It is fabricated for symmetry. The key explains it correctly. Low impact because the item's real work is done by the A/B/D spread, which is a well-designed two-variable set — B and D differ only on the admin-exemption question, which is exactly the discrimination being tested.
-- **P14 and Bearings 3.1 substantially overlap** — both present a 1.36 API server and ask for supported/not-supported calls, and both use kubelet 1.33 and kubectl 1.37 as specific cases. This reads as deliberate spaced reinforcement of the chapter's densest recall block rather than as duplicated allocation, and both keys correctly instruct the reader to treat the version numbers as illustration. No change recommended — but note that it is *not* a substitute for the two missing §6 Practice items, since both cover the same rule surface.
-- **P9 option D** ("Unreachable") invents a status name. Acceptable — readers do invent plausible status strings, and B (`NotReady`) already carries the genuinely common half-memory.
-- **P17** tests the chapter's method rather than a fact. This is the outline's intent for the Zenith item and is correctly executed; flagging only so it is not mistaken for a content-free item during revision.
+**Why-wrong explanation status:** not a rule-3 FAIL — these are open-response items with no enumerated wrong answers, and the correct-answer derivation is present and thorough in each. But the chapter set the standard itself and then dropped it exactly where the exam points are.
+
+Items 4 and 5 do carry the treatment in substance: B3.4's key names the misconception outright (*"Plenty of people's first answer… is 'everything is down,' which conflates the two"*), and B3.5 labels its two answers as distinct failure modes. So the gap is specifically 1, 2 and 3.
+
+**Recommended fix:** one clause each, drawing on misconceptions the chapter has already catalogued.
+
+- **B3.1** — add: *"If you marked (c) unsupported, you applied the kubelet's never-newer rule to `kubectl`. That is the chapter's most durable error and it costs you twice: wrong number, wrong direction."* This is the chapter's designated B1 trap #28 and it is currently defused only in §6's prose and in P15, never in the checkpoint that immediately follows the section.
+- **B3.2** — add: *"The common partial answer names `kubectl` and stops. The HA kube-apiserver row is the one most readers miss, because it is not a bound relative to the API server at all."*
+- **B3.3** — add: *"'The last two releases' is the standard half-memory here. It is three."* (B1 trap #29, currently carried only by §6's 🪝 Snag.)
 
 ---
 
 ## Retrieval-practice spacing
 
-- Chapter 8 target: **20%** of the combined Bearings + Practice pool (**[B3]**; the outline resolves the B3/B4 discrepancy in favour of 20% and allocates 3 in Bearings + 4 in Practice = 7 of 32)
-- Actual: **21.9%** — 7 of 32 items tagged `[retrieval: chN]`
-- Status: **compliant**
+- **Chapter 8 target:** 20% of the combined Bearings + Practice pool ([B3]; the arc outline and the chapter outline both set 20%, resolving B4's ~15% in favour of the later stage)
+- **Actual: 18.2%** — 6 of 33 questions tagged `[retrieval: chN]`
+- **Status: short-by-1**
 
-| Item | Tag | Chapters back | Notes |
+| Tagged item | Source chapter | Distance back | Anchor |
 |---|---|---|---|
-| Bearings 1.5 | `ch4` | 4 | **[B3]** named anchor — namespaces under ResourceQuota. Discharges the `chapter-04` line 590 cross-bearing as an assessment item, as designed |
-| Bearings 2.1 | `ch7` | 1 | **[B3]** named anchor — node conditions against scheduling. **Stem over-scaffolded; see per-question findings** |
-| Bearings 2.4 | `ch2` | **6** | **[B3]** ≥4-back floor item — the CRI boundary. Clean, three-part retrieval, no scaffolding. Best retrieval item in the chapter |
-| Practice 6 | `ch4` | 4 | Namespaced vs cluster-scoped, framed differently from B1.5 as the outline required. Clean stem |
-| Practice 7 | `ch5` | 3 | Requests and limits; the LimitRange-default placement consequence |
-| Practice 10 | `ch4` | 4 | spec vs status. Doubles as §8's argument tested before §8 makes it, exactly as the outline specified |
-| Practice 11 | `ch3` | **5** | Control loop. Second ≥4-back item, carried as redundancy for the floor's first live chapter |
+| B1.5 | Ch 4 | 4 | [B3] named anchor — namespaces under ResourceQuota |
+| B2.1 | Ch 7 | 1 | [B3] named anchor — node conditions against scheduling |
+| B2.4 | Ch 2 | **6** | **[B3] ≥4-back floor item** |
+| P6 | Ch 4 | 4 | namespaced vs cluster-scoped |
+| P7 | Ch 5 | 3 | requests and limits |
+| P11 | Ch 3 | **5** | **≥4-back redundancy** |
 
-**Per-band rates:** Bearings 3 of 15 (20.0%); Practice 4 of 17 (23.5%). Both inside the skill's 20–25% band for Chapter 6+.
+**≥4-back floor: compliant, with redundancy.** Two items clear it (six back and five back), which is the right posture for the floor's first live chapter.
 
-**≥4-back spacing floor: satisfied twice.** Bearings 2.4 at six chapters back and Practice 11 at five. The outline's stated reason for carrying a second item — that a single item is a single point of failure on the floor's first live chapter — is honoured.
+**Per-checkpoint distribution:** #1 has 1, #2 has 2, #3 has 0. The outline sanctioned the zero in #3 on the grounds that a fourth Bearings retrieval would push that checkpoint off its own topic. That reasoning still holds — but it was written on the assumption the chapter would clear 20% overall, which it does not. The fix belongs in Practice, not in #3.
 
-**Chapter 1 exclusion:** no item draws from Chapter 1, and no item tests exam mechanics. ✓
+**Correction to the draft's own accounting.** The AUTHOR-REVIEW note below the Practice answer key states *"6 of 34 = 17.6%"* and projects *"7 of 34 = 20.6%"* after restoring P10's tag. **The shipped pool is 33, not 34** (15 Bearings + 18 Practice). The likely cause is visible in the note itself: it describes B2.5 (heartbeats) as an *addition*, but comparing against the outline shows it *replaced* the planned managed-vs-self-hosted item, so checkpoint #2 stayed at five. Corrected figures: **6/33 = 18.2% now; 7/33 = 21.2% after one addition.** The conclusion the note reaches is right; the arithmetic under it is not, and the note is the audit trail a later stage will trust.
 
-**Checkpoint distribution:** Bearings #1 carries 1, #2 carries 2, #3 carries 0. The outline pre-authorised this concentration on the grounds that both §4/§5 anchors belong nowhere else and that a fourth Bearings retrieval would push checkpoint #3 off the topic **[B3]** identifies as most at risk of decay. The draft follows that reasoning. ✓
+### Recommended addition (one item closes the floor)
 
-**Recommended additions:** none required for compliance. If the §6 Practice shortfall is fixed, the outline's designated §6 retrieval item should be restored — reframing P7 to its §6 variant is the cheapest route and was explicitly permitted ("§6 block or §3 block, drafter's choice").
+**Preferred: a `[retrieval: ch6]` item on DaemonSet Pods tolerating an unschedulable node, placed in the §6 block.**
+
+This is the best available option for three converging reasons:
+
+1. It closes the retrieval floor (7/33 = 21.2%).
+2. It closes a genuine **coverage gap** — the DaemonSet exception is taught in §4 with a fully sourced two-part sentence, carries an explicit Ch 6 cross-bearing, appears in the Chapter Summary, and is tested by **nothing**.
+3. Placing it in the §6 block corrects the distribution drift noted above (§6 is short one against its density-based allocation).
+
+Draft shape:
+
+> **[retrieval: ch6]** You `drain` a node for maintenance. Every Pod is evicted except one, which is still running afterwards. Chapter 6 introduced the controller responsible. Name it, and say what its Pods carry that lets them stay.
+>
+> *Correct answer: a DaemonSet; its Pods carry a `node.kubernetes.io/unschedulable` toleration with a `NoSchedule` effect, added automatically by the DaemonSet controller.*
+>
+> *Distractors: a StatefulSet (ordinal identity confused with node affinity); a Deployment with a node selector (targets the reader who thinks placement constraints confer eviction immunity); a static Pod (a real mechanism, wrong one here — and not chapter material, so cut this if it reads as out of scope).*
+
+**Alternative, if the node snapshot lands:** restore P10's spec-vs-status framing and its `[retrieval: ch4]` tag, which the draft's AUTHOR-REVIEW already plans. That also reaches 7/33, and additionally restores the §1–§2 block's lost retrieval item. It does *not* close the DaemonSet coverage gap, so if both are affordable, do both — 8/33 = 24.2% is still inside the 20–25% band.
 
 ---
 
 ## Coverage vs concepts
 
-Every concept and command in the outline's `kb_tags`, checked against the 40 questions. Bold **NO** = introduced in the chapter and tested nowhere.
+Concepts and commands from the outline's `kb_tags`, checked against the 41 shipped questions. Grouped; every untested item is enumerated explicitly.
 
-### §1 — command grammar and configuration
-
-| Concept | Tested in a question? |
+| Concept introduced in chapter | Tested in a question? |
 |---|---|
-| `kubectl`, `kubectl-syntax` | yes (P1, P8, B1.1) |
-| `verb-resource-grammar` | yes (P1, P8, B1.1) |
-| `resource-type-abbreviation` | yes (P1, B1.1) |
-| `kubeconfig` | yes (B1.2, S1) |
-| **`kubeconfig-precedence`** | **NO** — flag > env > `$HOME/.kube/config` is stated in §1 and carried in the Chapter Summary ("the flag wins"), but no question requires it. B1.2 mentions the override sources parenthetically without testing the order |
-| `in-cluster-authentication` | yes (B1.2) |
-| `serviceaccount-token-file` | yes (B1.2) |
-| `namespace-override` | yes (B1.2) |
-| `kubectl-get`, `kubectl-describe` | yes (B1.2, P1) |
-| **`kubectl-explain`** | **NO** — taught in the verb table and given a ⚓ Worth Securing callout arguing it is the table's longest-lived entry. Never tested |
-| **`kubectl-config`** | **NO** — named in the verb table only. Low severity |
+| `kubectl` syntax / verb-resource grammar / type abbreviation / case asymmetry | yes (P1, P8, B1.1) |
+| `kubeconfig`, kubeconfig precedence | yes (B1.2 — precedence explicitly asked) |
+| in-cluster authentication, ServiceAccount token file | yes (B1.2) |
+| namespace override (`--namespace`) | partial — the SA-namespace *default* is tested (B1.2); the explicit override flag is not |
+| `kubectl explain` | **NO** — given a dedicated sentence and a ⚓ Worth Securing callout, tested nowhere |
+| `kubectl config` | **NO** — one table row; low severity |
+| API access gates / authentication / authorization / admission control | yes (P2, P3, P4, B1.3, B1.4) |
+| mutating admission (the mutation property) | yes (P2, B1.3) |
+| dynamic admission control (webhooks) | **NO** — 🔭 Closer Look material, explicitly "deeper than the exam requires"; low severity, but it is the extension point Ch 17 collects |
+| auditing | **NO** — §2 teaches that it exists and is part of securing a cluster, and the chapter frames that existence as the exam-relevant fact. Zero questions |
+| TLS bootstrapping | **NO** — one clause of content; low severity |
+| hub-and-spoke API pattern | yes, indirectly (P10, P18; S2 pre-tests it) |
+| ResourceQuota / LimitRange / namespaced vs cluster-scoped | yes (P4, P5, P6, P7, B1.5) |
+| node registration, self-registration, `metadata.name` validity, DNS-subdomain naming | **NO** — an entire §4 subsection, and one of the four administrative acts drawn in the Zenith figure, with no assessment item |
+| `cordon` | yes (P8, P10, B2.1, B2.2) |
+| `drain` | yes (P8, B2.2) |
+| `uncordon` | **thin** — appears only as P8's distractor D. The reader is never asked to produce it, though it is a third of FP#4 |
+| unschedulable node | yes (P10, B2.1) |
+| `Ready` condition, three-valued; `node-monitor-grace-period` | yes (P9, B2.3) |
+| `DiskPressure`, `MemoryPressure`, `PIDPressure`, `NetworkUnavailable` | **NO** — four of the five conditions are taught as a table and never tested. Only `Ready` is assessed |
+| node heartbeats, node Lease, `kube-node-lease` | yes (B2.5) |
+| node controller | yes (P11, B2.5) |
+| API-initiated eviction | **thin** — appears only as stem context in P11, never as what is being tested |
+| DaemonSet tolerates an unschedulable node | **NO** — fully sourced, cross-bearinged to Ch 6, in the Chapter Summary, tested nowhere. **Best single fix in this audit** |
+| Capacity / Allocatable | partial — P7 requires knowing Allocatable is what the scheduler counts, but no item tests the pair directly |
+| cluster planning axes | **NO** — five planning questions, no assessment. Low severity (framing, not examinable fact) |
+| managed vs self-hosted | yes, but **only P13**, the weakest question in the set (see finding above) |
+| kubeadm / minikube / kind | yes (P12; kubeadm also B2.4) |
+| k3s | thin — P12 distractor C only; one-clause content, acceptable |
+| container runtime / CRI boundary | yes (B2.4, P12) |
+| semantic versioning (`x.y.z`) | **NO** — vocabulary only; low severity |
+| supported releases (three branches), patch-support window, release cadence | yes (B3.3) |
+| version skew (all five rows) | yes (P14, P15, B3.1, B3.2) |
+| upgrade order | yes (P16) |
+| etcd backup / snapshot / access-equals-root / disaster recovery | yes (P17, B3.4, B3.5) |
+| `etcdctl snapshot save` / `etcdutl snapshot restore` | **not tested by design** — the outline directed §7's single question to the security fact rather than the commands. Defensible; recording it so a later pass does not read it as an oversight |
 
-### §2 — the three gates
+### Coverage recommendations, in priority order
 
-| Concept | Tested in a question? |
-|---|---|
-| `api-access-gates`, `authentication`, `authorization`, `admission-control` | yes (P2, P3, P4, B1.3, B1.4, S2, S3) |
-| `admission-controller` | yes (P4) |
-| `mutating-admission` | yes (P2, B1.3) |
-| `validating-admission` | **NO** — and not taught either; the mutating/validating distinction is blocked by the §2 source gap. Not a question defect. Revisit after the `controlling-access/` fetch |
-| `dynamic-admission-control` | **NO** — taught only inside a 🔭 Closer Look, which is explicitly "deeper than the exam requires." Acceptable omission |
-| **`auditing`** | **NO** — named in §2, carried in the Chapter Summary, listed in the outline's concept set. Introduced and never tested. Severity depends on Open Question #4: under option (b) the concept is one sentence and a single recognition item would be proportionate; under option (a) it needs one |
-| **`tls-bootstrapping`** | **NO** — one clause in §2. Low severity |
-| `hub-and-spoke-api-pattern` | yes, indirectly (P10/D "bypasses the object model", P17, S2) |
+1. **DaemonSet exception** — add the `[retrieval: ch6]` item drafted above. Closes a coverage gap and the retrieval floor together.
+2. **Node conditions beyond `Ready`** — the four pressure/network conditions are exactly the recognition material a comprehension-tier exam asks about, and the chapter prints them as a table without ever asking. One four-option item in the §4 block would cover them: *"A node reports `MemoryPressure: True`. Which of the following is a condition the Node status does not carry?"* — or fold them into B2.3 as a second clause: *"Name the other four conditions a Node's status carries."* The second option is free (no question-count change).
+3. **Node registration** — one item, either in P's §4 block or as a sixth clause on B2.5, which already sits in the right place: *"A Node object exists but no Pod is ever scheduled to it. What does the control plane check after a Node object is created, and what would fail that check?"*
+4. **Auditing** — one recognition item, or one clause added to an existing Exam Alert-adjacent question. The chapter tells the reader that auditing's *existence* is the examinable fact and then never asks. Cheapest possible fix: add it as a distractor-free clause in B1.3 (*"…and name the fourth item the cluster-administration guidance lists alongside these three"*). Note this interacts with the draft's open sourcing item — if the `controlling-access` snapshot lands and auditing is upgraded from two sentences to four, the question becomes better-founded at the same time.
+5. **`uncordon` and `kubectl explain`** — both are currently distractor-only or callout-only. Neither needs its own question; both could be absorbed into existing items (P8's key already names `uncordon`; B1.1 could add *"…and name the verb that answers a question about the API rather than about your cluster"*).
 
-### §3 — dividing a shared cluster
-
-| Concept | Tested in a question? |
-|---|---|
-| `resource-quota` | yes (P4, P5, P6, B1.5) |
-| `limit-range` | yes (P5, P7, B1.5) |
-| `namespaced-vs-cluster-scoped` | yes (P6, B1.5) |
-
-Fully covered — the only fully covered section in the chapter, and it received one more Practice item than allocated.
-
-### §4 — node lifecycle
-
-| Concept | Tested in a question? |
-|---|---|
-| **`node-registration`, `node-self-registration`** | **NO** — §4 teaches self-registration as the default, manual Node creation, the `metadata.name` validity check, and DNS-subdomain naming. None is tested. This is load-bearing for §8's argument ("a kubelet joins by writing an object, the same as you do") and P10 tests spec-vs-status for `cordon` without ever touching registration |
-| `cordon`, `drain`, `uncordon`, `unschedulable-node` | yes (P8, B2.1, B2.2) |
-| `node-conditions` | partial (P9, B2.3 — `Ready` only) |
-| `ready-condition` | yes (P9, B2.3) |
-| **`memorypressure`, `diskpressure`, `pidpressure`, `networkunavailable`** | **NO** — four of the five node conditions are presented as a table in §4 and appear in no question. `Ready` carries all the assessment weight |
-| **`node-heartbeats`, `node-lease`** | **NO** — the two heartbeat forms and the `kube-node-lease` Leases. **Pre-tested at Soundings 6 and never post-tested**, breaking the pre/post symmetry, and this is the payoff for the `chapter-04` line 584 cross-bearing ("node conditions and heartbeats") |
-| `node-controller` | yes (P11) |
-| `api-initiated-eviction` | weak (P11 key mentions eviction; no stem requires it) |
-| `node-monitor-grace-period` | weak (B2.3 answer, P9 key; correctly never asks for a value) |
-
-### §5 — ownership and tooling
-
-| Concept | Tested in a question? |
-|---|---|
-| **`cluster-planning-axes`** | **NO** — §5's five planning questions. Both of §5's allocated Practice slots went elsewhere (and only one was used). Low-moderate severity: this is recognition material, but it is also §5's opening frame |
-| `managed-kubernetes`, `self-hosted-cluster` | yes (P13, B2.5) |
-| `kubeadm`, `minikube`, `kind`, `k3s` | yes (P12, B2.4) |
-
-### §6 — versions
-
-| Concept | Tested in a question? |
-|---|---|
-| **`semantic-versioning`** | **NO** — the `x.y.z` major/minor/patch vocabulary. Low severity; it is scaffolding for the rules rather than an examinable fact |
-| `supported-releases`, `three-supported-minors`, `patch-support-window`, `release-cadence` | yes — **but only at Bearings 3.3.** All four facts have zero Practice coverage. "Three supported minor releases, ~1 year patch support, ~3 releases per year" is Exam Alert priority topic #5 and defuses B1 trap #29 |
-| `version-skew` | yes (P14, P15, B3.1, B3.2) |
-| **`upgrade-order`** | **NO** — §6 derives "API server first, because nothing may be newer than it" from the generating rule. It is the most cleanly derivable fact in the chapter and would make an excellent application item. Untested |
-
-### §7 — etcd
-
-| Concept | Tested in a question? |
-|---|---|
-| `etcd-backup`, `etcd-snapshot` | yes (P16, B3.4, B3.5) |
-| `etcd-access-equals-root` | yes (P16, B3.5) |
-| `disaster-recovery` | yes (B3.4) |
-| `etcdctl-snapshot-save`, `etcdutl-snapshot-restore` | weak — both appear only inside P16 option D. **By design**: the outline specified §7's single Practice question "should be the security one rather than the command one." ✓ |
-
-### Coverage summary
-
-**13 concepts introduced and never tested.** Two are defensible (`dynamic-admission-control` is Closer Look material; `validating-admission` is not taught at all pending the §2 fetch). The remaining eleven cluster in three places:
-
-1. **§4's node-side material** — registration, the four non-`Ready` conditions, heartbeats and Leases. The largest single gap, and `node-heartbeats` is the most consequential because it is both a Soundings-pre-tested concept with no post-test and a discharged cross-bearing left unassessed.
-2. **§6's release-policy facts** — carried by a single Bearings item, with `upgrade-order` untested entirely. This is the same shortfall the budget-distribution finding identifies, seen from the other side.
-3. **Scattered singles** — `kubeconfig-precedence`, `auditing`, `kubectl-explain`, `cluster-planning-axes`, `semantic-versioning`, `tls-bootstrapping`.
-
-**Highest-value additions, in order.** Each is one item and each closes a gap that currently has no assessment anywhere:
-
-- **§4 / heartbeats** — *"§4 describes two forms of node heartbeat. Name both, and say which namespace holds the objects the second uses."* Closes the S6 pre/post break and the `chapter-04` line 584 debt in one item. Best candidate for the §4 block, which is already one over allocation and could absorb it by converting rather than adding.
-- **§6 / release policy** — an item on the three-branch / one-year / three-per-year trio and why they agree. Closes trap #29's Practice gap and takes one of the two §6 slots the draft owes.
-- **§6 / upgrade order** — *"Given only the rule that nothing may be newer than the API server, which component is upgraded first, and why does the rest of the order follow without being separately specified?"* Application-shaped, so it does not breach the six-item lookup ceiling. Takes the second owed §6 slot.
-- **§4 / node conditions** — fold the four non-`Ready` conditions into an existing item rather than adding one; P9 could carry a second part asking which condition a full disk would surface.
-- **§1 / kubeconfig precedence** — extend B1.2 with a third clause rather than adding an item: *"…and say which wins if both `KUBECONFIG` and `--kubeconfig` are set."*
+Items 1–3 are worth acting on. Items 4–5 are cheap enough to fold into existing questions without changing the budget.

@@ -42,7 +42,7 @@ prereq_factor: "standard"
 #-- of them name a section by number:
 #--   chapter-02 line 600 → *[cross-bearing: see Ch 9 §1 — CNI and pod networking]*
 #--   chapter-05 line 858 → *[cross-bearing: see Ch 9 §4 — readiness and Service endpoint membership]*
-#-- §1 and §4 below honour those exactly. Do not renumber without editing
+#-- §1 and §4 below honor those exactly. Do not renumber without editing
 #-- chapter-02 and chapter-05. Verified 2026-08-24 against chapters 02-08.
 sections:
   - name: "Four Rules and a Plugin"
@@ -319,13 +319,13 @@ By the end of this chapter, you'll be able to:
 - **Choose** between ClusterIP, NodePort, LoadBalancer and ExternalName for a given exposure requirement — and say which three are layers of the same mechanism and which one is not a layer at all.
 - **Trace** the path from a Service's selector to the set of addresses traffic actually reaches, and name the condition a Pod must satisfy to be on that list.
 - **Write** the DNS name of a Service in another namespace, and say what a bare name would have resolved to instead.
-- **Recognise** the whole apparatus — the virtual IP, the endpoint list, the DNS record — as one control loop reconciling the answer to a label query, which is the only thing you actually have to remember.
+- **Recognize** the whole apparatus — the virtual IP, the endpoint list, the DNS record — as one control loop reconciling the answer to a label query, which is the only thing you actually have to remember.
 
 *You'll also stop thinking of a Service as a load balancer, which is the single most useful correction in this chapter and the one that makes Chapter 10 straightforward instead of confusing.*
 
 ---
 
-Throughout this chapter, one example: a **frontend** Pod that needs to reach a **database**, where the database runs as three replicas managed by a Deployment. Nothing exotic. It is the most ordinary shape in the catalogue, and each section will hand it to the next.
+Throughout this chapter, one example: a **frontend** Pod that needs to reach a **database**, where the database runs as three replicas managed by a Deployment. Nothing exotic. It is the most ordinary shape in the catalog, and each section will hand it to the next.
 
 ---
 
@@ -516,9 +516,9 @@ There are four Service types. Three of them are layers of the same mechanism. On
 
 Read that last sentence as the definition rather than as a footnote. An ExternalName Service has no cluster IP. It has no endpoint list. Nothing intercepts a packet on its behalf, because there is no address to intercept traffic *to*. When a client resolves its name, DNS hands back a different name, and the client connects to whatever that resolves to — directly, with Kubernetes entirely out of the path.
 
-It is a DNS alias flying a Service's colours.
+It is a DNS alias flying a Service's colors.
 
-> ⚠ **Navigational Hazards:** ExternalName is not the fourth rung of the ladder. It allocates no address, selects no Pods, and proxies nothing — it is a CNAME record and nothing more. Every exam question that presents it as "the type you use for external things" is testing exactly this. The word "External" in two type names (ExternalName, and LoadBalancer's external load balancer) is doing you no favours; they have nothing mechanically in common.
+> ⚠ **Navigational Hazards:** ExternalName is not the fourth rung of the ladder. It allocates no address, selects no Pods, and proxies nothing — it is a CNAME record and nothing more. Every exam question that presents it as "the type you use for external things" is testing exactly this. The word "External" in two type names (ExternalName, and LoadBalancer's external load balancer) is doing you no favors; they have nothing mechanically in common.
 
 ### The other fact that catches people
 
@@ -731,7 +731,7 @@ Here is the part you were promised.
 
 A Pod that matches the selector is **not automatically a destination**. It has to be **Ready**.
 
-Chapter 5 taught you readiness probes and told you plainly that this is the mechanism doing the removing. The probe's documented behaviour says it outright: `readinessProbe` indicates whether the container is ready to respond to requests, and **if the readiness probe fails, the endpoints controller removes the Pod's IP address from the endpoints of all Services that match the Pod** [source: k8s-docs-pod-lifecycle-2026-08-23]. And the Pod's `Ready` condition is documented as meaning the Pod is able to serve requests and **should be added to the load balancing pools of all matching Services** [source: k8s-docs-pod-termination-2026-08-24].
+Chapter 5 taught you readiness probes and told you plainly that this is the mechanism doing the removing. The probe's documented behavior says it outright: `readinessProbe` indicates whether the container is ready to respond to requests, and **if the readiness probe fails, the endpoints controller removes the Pod's IP address from the endpoints of all Services that match the Pod** [source: k8s-docs-pod-lifecycle-2026-08-23]. And the Pod's `Ready` condition is documented as meaning the Pod is able to serve requests and **should be added to the load balancing pools of all matching Services** [source: k8s-docs-pod-termination-2026-08-24].
 
 That quotation is where the older name surfaces. The *endpoints controller* removing an address and the *EndpointSlice controller* writing the slice are the same job [source: k8s-docs-cluster-architecture-2026-08-23]; if you read them as two components, the path in this section grows a step it does not have.
 
@@ -820,7 +820,7 @@ Services most commonly abstract access to Kubernetes Pods thanks to the selector
 
 The selector is how a Service *usually* finds its endpoints. It is not what a Service *is*. Remove it, supply the endpoint addresses yourself, and everything downstream — the cluster IP, the DNS record, kube-proxy's interception, the client's connection — proceeds exactly as before.
 
-> ⚓ **Worth Securing:** The selectorless Service is the fixed light a migration steers by. Your application inside the cluster talks to `database.production.svc.cluster.local` from day one, whether that name currently resolves to a managed database in a data centre three hundred kilometres away, or to Pods you moved in last night. The client never learns the difference, and never has to be redeployed to find out. The migration stops being the client's problem, which is usually the hardest part of making it happen at all.
+> ⚓ **Worth Securing:** The selectorless Service is the fixed light a migration steers by. Your application inside the cluster talks to `database.production.svc.cluster.local` from day one, whether that name currently resolves to a managed database in a data center three hundred kilometers away, or to Pods you moved in last night. The client never learns the difference, and never has to be redeployed to find out. The migration stops being the client's problem, which is usually the hardest part of making it happen at all.
 
 ### Two binaries, four cases
 
@@ -869,7 +869,7 @@ A Pod's `Ready` condition means the Pod is able to serve requests and should be 
 
 One naming note before you carry that sentence forward. The documentation calls this component *the endpoints controller* on the Pod-lifecycle page and *the EndpointSlice controller* in the control-plane component list. That is one controller doing one job under two names: nothing additional is running, and question 1's answer and this one are describing the same thing.
 
-Now connect it to Chapter 6, because this is the cheapest place to close that loop *[cross-bearing: see Ch 6 §4 — rolling-update mechanics]*. During a rolling update, a new Pod that never reports Ready **never receives traffic**. That is *why* a bad release cannot take your Service down: the broken replicas are excluded from the endpoint list by the same mechanism that admits the healthy ones. Chapter 6 depended on that behaviour to explain safe rollouts without ever naming the object it happens in. This is the object.
+Now connect it to Chapter 6, because this is the cheapest place to close that loop *[cross-bearing: see Ch 6 §4 — rolling-update mechanics]*. During a rolling update, a new Pod that never reports Ready **never receives traffic**. That is *why* a bad release cannot take your Service down: the broken replicas are excluded from the endpoint list by the same mechanism that admits the healthy ones. Chapter 6 depended on that behavior to explain safe rollouts without ever naming the object it happens in. This is the object.
 
 *Why a wrong answer is wrong:* **"Four"** counts the Pods the selector matches and stops there. As §4 put it, the selector proposes and readiness disposes: matching the labels makes a Pod *eligible* for the endpoint list; it does not put the Pod on it. The gate is a second, independent condition, and it is evaluated continuously rather than once at creation.
 
@@ -968,7 +968,7 @@ Here is the consequence that reframes everything before it.
 
 This is also why §3's ExternalName exclusion makes sense from the other side. An ExternalName Service has **no address to intercept** — it produces a CNAME and nothing else — so there is nothing for kube-proxy to program. The exclusion isn't a special case; it falls straight out of what kube-proxy does.
 
-> ⚓ **Worth Securing:** Nothing is listening on a cluster IP. It is not a host, not a process, not a port on a machine. It is a rule on every node that **captures** traffic to that address and **redirects** it elsewhere [source: k8s-docs-virtual-ips-kube-proxy-2026-08-23]. Once that lands properly, roughly half of the confusing behaviour in Kubernetes networking stops being confusing — including why the node-level tools you would ordinarily reach for show you nothing bound at that address, and why "a Service is a load balancer" was never quite right.
+> ⚓ **Worth Securing:** Nothing is listening on a cluster IP. It is not a host, not a process, not a port on a machine. It is a rule on every node that **captures** traffic to that address and **redirects** it elsewhere [source: k8s-docs-virtual-ips-kube-proxy-2026-08-23]. Once that lands properly, roughly half of the confusing behavior in Kubernetes networking stops being confusing — including why the node-level tools you would ordinarily reach for show you nothing bound at that address, and why "a Service is a load balancer" was never quite right.
 
 ★ **Fixed Point:** kube-proxy implements the virtual IP mechanism for **every Service type except ExternalName**, by watching **Service and EndpointSlice** objects and programming each node. Modes: **iptables (the default)**, IPVS, nftables on Linux; **kernelspace** on Windows.
 
@@ -983,7 +983,7 @@ On Linux nodes, the available modes for kube-proxy are: **iptables** — configu
 | `nftables` | Linux | GA since v1.33 |
 | `kernelspace` | Windows | The only mode on Windows |
 
-That is the entire requirement at this level: recognise the four names, and know which one is the default. You do not need to understand how iptables chains differ from IPVS virtual servers, and this book is not going to pretend otherwise to fill a page. A candidate who can name the four and identify iptables as the default has everything this material is likely to ask for.
+That is the entire requirement at this level: recognize the four names, and know which one is the default. You do not need to understand how iptables chains differ from IPVS virtual servers, and this book is not going to pretend otherwise to fill a page. A candidate who can name the four and identify iptables as the default has everything this material is likely to ask for.
 
 ### kube-proxy is optional
 
@@ -1050,7 +1050,7 @@ Here is why, and it is more satisfying than a rule.
 
 **By default, a client Pod's DNS search list includes the Pod's own namespace and the cluster's default domain** [source: k8s-docs-dns-pod-service-2026-08-23].
 
-That is it. That is the entire mechanism. It is not special-case Kubernetes behaviour; it is ordinary DNS search-domain resolution, the same thing that has let you type a short hostname on a corporate network for thirty years. A Pod in `payments` searching for `ledger` tries `ledger.payments.svc.cluster.local`, because `payments.svc.cluster.local` is in its search list. It finds something. It stops.
+That is it. That is the entire mechanism. It is not special-case Kubernetes behavior; it is ordinary DNS search-domain resolution, the same thing that has let you type a short hostname on a corporate network for thirty years. A Pod in `payments` searching for `ledger` tries `ledger.payments.svc.cluster.local`, because `payments.svc.cluster.local` is in its search list. It finds something. It stops.
 
 ★ **Fixed Point:** A bare name resolves in the client Pod's **own namespace only** — **because that namespace is in the Pod's DNS search list**. This is not a Kubernetes special case; it is ordinary DNS search-domain resolution, which is also why crossing a namespace boundary requires the full `<service>.<namespace>.svc.<cluster-domain>`.
 
@@ -1110,7 +1110,7 @@ Note the shape, because it is the same shape by which an individual StatefulSet 
 
 One boundary worth marking before Chapter 10. What you have just learned is **DNS-based service discovery**: mapping a name to an address, in the ordinary DNS sense. Chapter 10 introduces **name-based virtual hosting**: routing HTTP traffic to multiple host names at the same IP address [source: k8s-docs-ingress-2026-08-23]. Both involve hostnames, and they sit on opposite sides of the connection. One turns a name into an address before any traffic moves; the other sorts traffic that has already arrived at a single address. Conflating them makes Chapter 10 considerably harder than it needs to be. *[cross-bearing: see Ch 10 §2 — name-based virtual hosting]*
 
-<!-- AUTHOR-REVIEW: outline explicitly scopes out CoreDNS Corefile configuration, custom nameservers, stub domains, and CoreDNS plugins. The dns-cluster-addon snapshot's own note records the rest of that page as out of scope. Nothing on cluster DNS customisation appears above; that omission is deliberate, not a gap. -->
+<!-- AUTHOR-REVIEW: outline explicitly scopes out CoreDNS Corefile configuration, custom nameservers, stub domains, and CoreDNS plugins. The dns-cluster-addon snapshot's own note records the rest of that page as out of scope. Nothing on cluster DNS customization appears above; that omission is deliberate, not a gap. -->
 
 <!-- AUTHOR-REVIEW: cross-bearing targets in this section were retargeted to conform to the BINDING B6 section skeleton, which no diagnostic flagged. Changes: `Ch 3 §6` -> `Ch 3 §4` (skeleton: Ch 3 §4 is "Addons, and What Else Is Optional"; §6 is the control loop); `Ch 4 §6` -> `Ch 4 §3` (skeleton: Ch 4 §3 "Where a Name Lives" owns namespaces; §6 is the chapter synthesis); `Ch 6 §5` -> `Ch 6 §6` (skeleton: Ch 6 §6 "When Pods Are Not Interchangeable" owns StatefulSet identity; §5 is "Every Rollout Is a Revision"); `Ch 10 §3` -> `Ch 10 §2` (skeleton: Ch 10 §2 "Routing by Host and Path" owns name-based virtual hosting; §3 owns Ingress controllers). The draft's back-pointers appear to be consistently off against the skeleton chapter-wide, not only in this section -- recommend a chapter-wide pointer sweep at the integration-check stage, and revert here if the skeleton's extraction is what is wrong rather than the draft. -->
 
@@ -1246,7 +1246,7 @@ Everything else in this chapter, you can rebuild from §1's model plus the obser
 
 > ⚓ **Worth Securing:** The practical form of the Zenith, for when Kubernetes networking does something you didn't expect. Ask two questions: **what does the selector currently match?** and **which loop hasn't caught up yet?** Between them they cover most of it — and both are answerable with `kubectl` in under a minute, which is more than can be said for most debugging heuristics.
 
-*[cross-bearing: see Ch 15 §7 — the control loop, generalised, pointed at a Git repository]*. This chapter observes that Kubernetes networking is *made of* control loops. Chapter 15 makes the larger argument, and it is the structural claim this whole book is building toward. Don't get ahead of it.
+*[cross-bearing: see Ch 15 §7 — the control loop, generalized, pointed at a Git repository]*. This chapter observes that Kubernetes networking is *made of* control loops. Chapter 15 makes the larger argument, and it is the structural claim this whole book is building toward. Don't get ahead of it.
 
 ### The boundary
 
@@ -1277,7 +1277,7 @@ Chapter 10 crosses that boundary properly: one address serving many services, ro
 
 <!-- AUTHOR-REVIEW: two items narrowed relative to draft-v1, both awaiting fetches that §1 and §3 are also waiting on.
 
-     (a) Item 4 previously read "the types are additive", which generalises the rule to LoadBalancer. The cached Service
+     (a) Item 4 previously read "the types are additive", which generalizes the rule to LoadBalancer. The cached Service
      snapshot documents the cluster-IP allocation for NodePort only ("To make the node port available, Kubernetes sets up
      a cluster IP address, the same as if you had requested a Service of type: ClusterIP"); its LoadBalancer entry is a
      single sentence about external exposure and says nothing about the rungs beneath it. The general form is very likely
@@ -1509,7 +1509,7 @@ D) kube-proxy scopes DNS traffic per namespace using iptables rules
 
 ---
 
-**22.** You meet a Kubernetes networking behaviour this chapter never covered. Applying the chapter's method rather than recalling a fact, which pair of questions will locate it?
+**22.** You meet a Kubernetes networking behavior this chapter never covered. Applying the chapter's method rather than recalling a fact, which pair of questions will locate it?
 
 A) Which node is the traffic on, and which iptables rule matches it
 B) Which object holds the declaration of intent, and which controller is reconciling that declaration into a published answer
@@ -1567,7 +1567,7 @@ To make the node port available, Kubernetes sets up a cluster IP address, the sa
 
 Kubernetes does not directly offer a load balancing component; you must provide one, or you can integrate your Kubernetes cluster with a cloud provider [source: k8s-docs-service-2026-08-23]. With neither present, nothing acts on the request.
 
-**A** is the trap. **B** is wrong because the object is entirely valid — validity and effect are different questions. **D** invents a fallback that would be surprising and undocumented behaviour.
+**A** is the trap. **B** is wrong because the object is entirely valid — validity and effect are different questions. **D** invents a fallback that would be surprising and undocumented behavior.
 
 Nothing here is broken and nothing needs fixing. The Service exists and is reconciled; only its external address is absent.
 
@@ -1617,7 +1617,7 @@ If the endpoints don't match the Pods you expect, the Service's selector probabl
 
 The Service has an address and a DNS record because those are allocated on creation, independent of whether any Pod matches. The EndpointSlice is empty because the selector's current answer is the empty set, which the controller has computed correctly.
 
-**A** is the instinct to fix by recreation, and it will produce an identical Service with an identical empty slice. **C** invents an API server behaviour. **D** is the reasoning error worth naming: the presence of a name and an address proves that *reconciliation is happening*, not that it found anything.
+**A** is the instinct to fix by recreation, and it will produce an identical Service with an identical empty slice. **C** invents an API server behavior. **D** is the reasoning error worth naming: the presence of a name and an address proves that *reconciliation is happening*, not that it found anything.
 
 This is the second instance in the chapter of the same shape — a valid object whose effect depends on something that isn't there. Chapter 10 gives it a name.
 
@@ -1627,7 +1627,7 @@ You create headless Services by explicitly specifying `"None"` for `.spec.cluste
 
 **B** is the option to dwell on, because half of it is correct. Its workload clause is right — StatefulSets do require a headless Service — and two options here name StatefulSets precisely so that knowing the workload does not hand you the answer. Its definition clause is the confusion this question exists to catch: "reachable only from inside the cluster" is what *ClusterIP* means, a rung on the type ladder. Headless sits on a different axis entirely. It is about whether a virtual IP is allocated at all, not about who may reach one.
 
-**A** invents a behaviour and attaches it to a workload with no Service requirement of any kind. A headless Service with selectors most certainly has endpoints — returning them directly is the entire point.
+**A** invents a behavior and attaches it to a workload with no Service requirement of any kind. A headless Service with selectors most certainly has endpoints — returning them directly is the entire point.
 
 **D** crosses the two axes of §5's four-cell table. Headless (`clusterIP: None`) and selectorless are independent choices; a Service can be either, both, or neither. Setting `.spec.clusterIP` to `None` does not touch the selector, and Deployments require neither.
 
@@ -1657,7 +1657,7 @@ kube-proxy configures the node to capture traffic to the Service's `clusterIP` a
 
 If you use a network plugin that implements packet forwarding for Services by itself, providing equivalent behavior to kube-proxy, you do not need to run kube-proxy [source: k8s-docs-cluster-architecture-2026-08-23]; Cilium can act as a replacement [source: k8s-docs-cluster-addons-2026-08-24]. And the plugin implementing Service forwarding is the same plugin implementing Pod networking via CNI [source: k8s-docs-extending-kubernetes-2026-08-23], so it is also satisfying the model's requirement that all Pods reach all Pods directly [source: k8s-docs-network-model-2026-08-23].
 
-**A** assumes kube-proxy's absence is a defect. **C** invents API-server proxying. **D** describes headless-Service behaviour and generalises it to every Service, which is wrong for anything with a cluster IP.
+**A** assumes kube-proxy's absence is a defect. **C** invents API-server proxying. **D** describes headless-Service behavior and generalizes it to every Service, which is wrong for anything with a cluster IP.
 
 **19.**
 
@@ -1689,13 +1689,13 @@ Note that both halves of the answer come from the same place. The set and the me
 
 By default, a client Pod's DNS search list includes the Pod's own namespace and the cluster's default domain [source: k8s-docs-dns-pod-service-2026-08-23], and the kubelet configures Pods' DNS so that running containers can look up Services by name [source: k8s-docs-dns-pod-service-2026-08-23].
 
-**A** would be a plausible design and is not the one used; the behaviour is ordinary DNS search-domain resolution on the *client* side, not rewriting on the server side. **C** invents an API server role in DNS. **D** invents a kube-proxy role in DNS.
+**A** would be a plausible design and is not the one used; the behavior is ordinary DNS search-domain resolution on the *client* side, not rewriting on the server side. **C** invents an API server role in DNS. **D** invents a kube-proxy role in DNS.
 
 Converting the rule into a mechanism is the point of this item. Once you know it's a search list, the cross-namespace failure mode stops being arbitrary: the caller's own namespace is tried *first*, so a same-named local Service wins, silently.
 
 **22. B.**
 
-This is the only question in the set that tests the method rather than a fact, and it is the one worth carrying out of the chapter. Every mechanism in §1 through §7 had the same two-part shape. A Service declares a selector; the EndpointSlice controller publishes the current answer [source: k8s-docs-cluster-architecture-2026-08-23]. An EndpointSlice declares a set of endpoints; kube-proxy watches the Service and EndpointSlice objects and maintains the node's rules accordingly [source: k8s-docs-virtual-ips-kube-proxy-2026-08-23]. A Service's name declares an identity; cluster DNS publishes what it currently resolves to. Find the object and find the loop, and you have located a behaviour you have never read about.
+This is the only question in the set that tests the method rather than a fact, and it is the one worth carrying out of the chapter. Every mechanism in §1 through §7 had the same two-part shape. A Service declares a selector; the EndpointSlice controller publishes the current answer [source: k8s-docs-cluster-architecture-2026-08-23]. An EndpointSlice declares a set of endpoints; kube-proxy watches the Service and EndpointSlice objects and maintains the node's rules accordingly [source: k8s-docs-virtual-ips-kube-proxy-2026-08-23]. A Service's name declares an identity; cluster DNS publishes what it currently resolves to. Find the object and find the loop, and you have located a behavior you have never read about.
 
 **A** is a node-level answer to a cluster-level question. It describes one implementation kube-proxy happens to use on Linux today, and the mode is configurable and the component itself optional [source: k8s-docs-cluster-architecture-2026-08-23], so the method fails on the first cluster that does it differently.
 

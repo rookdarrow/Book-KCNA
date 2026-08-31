@@ -1024,7 +1024,7 @@ chapters:
         duration_seconds: 496.6242351999972
   8:
     number: 8
-    current_stage: 8
+    current_stage: 9
     pending_gate: null
     adopted_from: null
     stages:
@@ -1090,14 +1090,14 @@ chapters:
         duration_seconds: 517.8314297999896
       8:
         status: completed
-        started_at: '2026-08-24T23:25:21+00:00'
-        completed_at: '2026-08-24T23:32:43+00:00'
+        started_at: '2026-08-31T03:03:55+00:00'
+        completed_at: '2026-08-31T03:10:56+00:00'
         output_path: C:\dev\lodestar\certcomp\..\Book-KCNA\.pipeline-state\ch-08\diagnostics\question-quality.md
         gate_cleared: false
         error: null
         model_id: opus
-        prompt_tokens_est: 84940
-        duration_seconds: 442.2178367000015
+        prompt_tokens_est: 92111
+        duration_seconds: 421.49366929999087
       9:
         status: completed
         started_at: '2026-08-24T23:25:21+00:00'

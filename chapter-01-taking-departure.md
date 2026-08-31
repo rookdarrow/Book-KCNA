@@ -333,7 +333,7 @@ D) Prioritize Cloud Native Application Delivery, since it doubled in the 2025 re
 **1 — B.** Observability is a competency under **Cloud Native Architecture** in the current four-domain blueprint [source: lf-kcna-program-changes-2026-08-23].
 
 - **A is wrong**, and it's the trap that matters. Cloud Native Observability *was* a standalone 8% domain, in the blueprint retired in the 2025 restructure. If you picked A, you may be studying from the retired blueprint, or thinking in its terms. That's the whole point of §3.
-- **C is wrong.** Container Orchestration's four competencies are Networking, Security, Troubleshooting, and Storage. Troubleshooting and observability are related in practice, but the blueprint catalogues them separately.
+- **C is wrong.** Container Orchestration's four competencies are Networking, Security, Troubleshooting, and Storage. Troubleshooting and observability are related in practice, but the blueprint catalogs them separately.
 - **D is wrong.** Nothing was removed. It was reorganized. Observability content is still examinable; it simply shares a smaller domain now.
 
 **2 — C.** The **four domain weights** (44 / 28 / 16 / 12) are stated on the exam page, and they're the most useful published fact you have [source: lf-kcna-exam-page-2026-08-23].

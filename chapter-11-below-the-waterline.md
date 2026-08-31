@@ -1142,7 +1142,7 @@ That is the same light, the fourth time. And once you have seen it four times, y
 
 ## 🔵 §6 — Pods That Are Not Interchangeable, Revisited
 
-In Chapter 6, you were told that this explanation was incomplete. Not implied. Told, in as many words, with the deferred material enumerated and the deferral labelled deliberate.
+In Chapter 6, you were told that this explanation was incomplete. Not implied. Told, in as many words, with the deferred material enumerated and the deferral labeled deliberate.
 
 This is the missing half, arriving on schedule.
 
@@ -1386,7 +1386,7 @@ Go back to the epigraph. *The cargo does not belong to the crew. It was aboard b
 
 **High-Priority Topics:**
 
-1. **PersistentVolume vs PersistentVolumeClaim vs StorageClass.** CNCF publishes the Storage competency as a single word under Container Orchestration. This book's reading of it puts the three-way PV/PVC/StorageClass distinction at the centre, which is why it leads this list. Know: PV is supply and cluster-scoped; PVC is demand and namespaced; StorageClass describes *classes* of storage and enables dynamic provisioning. And know that a Pod references the claim [source: k8s-docs-persistent-volumes-2026-08-23].
+1. **PersistentVolume vs PersistentVolumeClaim vs StorageClass.** CNCF publishes the Storage competency as a single word under Container Orchestration. This book's reading of it puts the three-way PV/PVC/StorageClass distinction at the center, which is why it leads this list. Know: PV is supply and cluster-scoped; PVC is demand and namespaced; StorageClass describes *classes* of storage and enables dynamic provisioning. And know that a Pod references the claim [source: k8s-docs-persistent-volumes-2026-08-23].
 
 2. **Access modes, and what unit each counts.** RWO, ROX, RWX count **nodes**. RWOP counts **Pods** [source: k8s-docs-persistent-volumes-depth-2026-08-25]. If you memorize one sentence from this chapter, make it that one.
 

@@ -328,7 +328,7 @@ There is also a shift in who you are while you use them. Chapter 13's reader sto
 
 > **Dead Reckoning:** When a Pod is `Running` and `Ready` and the application is still wrong, the platform's own signals keep reporting "fine," because from the platform's point of view everything is. The diagnostic surface you need is inside the container, in the Service that routes to it, and in the configuration the process actually read. The platform inspects none of those on your behalf. The tools for reaching them are `kubectl exec`, `kubectl debug`, `kubectl port-forward`, and `kubectl get endpointslices`. Each answers a different question. Knowing which question you are asking is most of the work.
 
-The stakes are specific. Cloud Native Application Delivery is 16% of the KCNA exam [source: cncf-kcna-curriculum-pdf-2026-08-23], and Debugging is one of its two competencies. What gets tested here is not flag syntax. It is which verb answers which question, and no glossary can teach you that: the verbs are only distinguishable by the question each one is for.
+The stakes are specific. Cloud Native Application Delivery is 16% of the KCNA exam [source: cncf-kcna-curriculum-pdf-2026-08-23], and Debugging is one of its two competencies. The competency is not flag syntax. It is which verb answers which question, and no glossary can teach you that: the verbs are only distinguishable by the question each one is for.
 
 <!-- AUTHOR-REVIEW (revision stage — research gap, HIGHEST PRIORITY of the untagged claims): draft-v1 asserted here that "that domain doubled from the previous blueprint" and that prep material was "written against the old five-domain shape." Both claims are CUT. `cncf-kcna-curriculum-pdf-2026-08-23` documents only the current four-domain shape (44/28/16/12) and says nothing about any prior blueprint; the five-domain history traces to B1, a book artifact rather than a dated snapshot, and this chapter's own convention tags weight claims to snapshots. Restore only if an archived/retired KCNA curriculum PDF or a dated CNCF changelog is cached, or tag explicitly to B1. This is exam-structure advice a reader will act on when choosing study material. -->
 
@@ -544,7 +544,7 @@ Your first instinct is probably right and also unavailable: add a second contain
 
 > **★ Fixed Point**
 >
-> **You cannot add a container to a Pod once the Pod has been created.** The Pod's container list is fixed at creation. That single fact is the entire reason ephemeral containers exist as a separate mechanism, and it is the fact the exam reaches for.
+> **You cannot add a container to a Pod once the Pod has been created.** The Pod's container list is fixed at creation. That single fact is the entire reason ephemeral containers exist as a separate mechanism, and it is the fact worth carrying into a question about them.
 
 The documentation states the constraint and the consequence together: *"Since Pods are intended to be disposable and replaceable, you cannot add a container to a Pod once it has been created. Instead, you usually delete and replace Pods in a controlled fashion using deployments."* [source: k8s-docs-ephemeral-containers-concept-2026-08-31] And then the exception: *"Sometimes it's necessary to inspect the state of an existing Pod, however, for example to troubleshoot a hard-to-reproduce bug. In these cases you can run an ephemeral container in an existing Pod to inspect its state and run arbitrary commands."* [source: k8s-docs-ephemeral-containers-concept-2026-08-31]
 
@@ -1129,7 +1129,7 @@ Five questions on §6 and §7. One tests material from an earlier chapter.
 - C) The StatefulSet's image is broken and needs to be repulled
 - D) An admission webhook is rejecting `db-1` specifically
 
-**2.** `[retrieval: ch11]` What is the default `persistentVolumeClaimRetentionPolicy` for a StatefulSet, for both the `whenDeleted` and `whenScaled` cases?
+**2.** `[retrieval: ch11]` Chapter 11 taught what happens to a StatefulSet's PersistentVolumeClaim when a replica is rescheduled or deleted. What is the default — is the claim retained or removed — and why does that default make a failing replica's storage worth investigating before you delete the Pod again?
 
 - A) `Delete` for both
 - B) `Retain` for both
@@ -1251,7 +1251,7 @@ The chapter title is "Your Application, Their Cluster." Both halves are true at 
 
 **High-Priority Topics:**
 
-1. **Which verb answers which question.** This is the shape the exam favors for this competency. `logs` for what it said. `exec` for what it can see. `debug` for when there is nothing to exec into. `port-forward` for where the break is. `describe service` and `get endpointslices` for whether anything is even selected. You are being tested on the mapping, not on flag syntax.
+1. **Which verb answers which question.** This is the shape this book organizes the competency around. `logs` for what it said. `exec` for what it can see. `debug` for when there is nothing to exec into. `port-forward` for where the break is. `describe service` and `get endpointslices` for whether anything is even selected. You are being tested on the mapping, not on flag syntax.
 
 2. **Ephemeral containers exist because a Pod's container list is immutable.** That single fact explains the entire mechanism — why it needs a dedicated API handler, why `kubectl edit` cannot do it, why the container cannot be removed once added [source: k8s-docs-ephemeral-containers-concept-2026-08-31].
 

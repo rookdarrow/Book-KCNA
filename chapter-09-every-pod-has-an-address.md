@@ -737,7 +737,7 @@ That quotation is where the older name surfaces. The *endpoints controller* remo
 
 *[cross-bearing: see Ch 5 §7 — readiness probes]*. That section told you what a readiness probe does. This one tells you where it does it: in the EndpointSlice.
 
-★ **Fixed Point:** **selector → EndpointSlice → traffic.** The selector proposes; readiness disposes. A Pod must both **match the selector** and be **Ready** to appear in the Service's EndpointSlice and receive traffic.
+★ **Fixed Point:** **selector → EndpointSlice → traffic.** The selector proposes; readiness disposes. Matching the selector is what puts a Pod **in** the EndpointSlice — the slice references *all* the Pods the selector matches [source: k8s-docs-endpointslices-2026-08-24]. Being **Ready** is what makes its endpoint eligible to **receive traffic**. Readiness does not remove the endpoint; it disqualifies it *[cross-bearing: see Ch 16 §4 — is anything even selected]*.
 
 Three chapters converge on that sentence, and it is worth naming the convergence. Chapter 5 gave you the probe. Chapter 6 relied on the mechanism without explaining it: the reason a bad release cannot take a Service down mid-rollout is that a new Pod which never reports Ready never joins the endpoint list, so traffic never reaches it, so the rollout stalls instead of the service failing. Chapter 9 is where the wiring becomes visible. *[cross-bearing: see Ch 6 §4 — why a failed rollout does not take the Service down]*
 
@@ -763,9 +763,9 @@ kubectl get endpointslices -l kubernetes.io/service-name=<service-name>
 
 Make sure the endpoints in the EndpointSlices match up with the number of Pods you expect to be members of your Service. **If they don't, the Service's selector probably does not match the Pods' labels, or the Pods are not Ready** [source: k8s-docs-debug-pods-2026-08-23].
 
-Two causes. That is the whole diagnostic content of this section, and it is stated as a fact rather than a procedure on purpose: Chapters 13 and 16 own the troubleshooting workflow, and they will retrieve this by name. *[cross-bearing: see Ch 16 §4 — a Service whose endpoint list is empty]*
+Two causes. That is the whole diagnostic content of this section, and it is stated as a fact rather than a procedure on purpose: Chapters 13 and 16 own the troubleshooting workflow, and they will retrieve this by name. *[cross-bearing: see Ch 16 §4 — telling an empty endpoint list from a list that serves nothing]*
 
-> 🪝 **Snag:** A Service with no endpoints is not a broken Service. It is a correct Service whose selector currently matches nothing, or whose matching Pods are not Ready. Those are **two different bugs, and they live in two different files** — one is a mismatch between the Service's selector and the Pod template's labels; the other is an application that isn't passing its own health check. Confusing them costs you an afternoon, because you spend it editing the wrong YAML.
+> 🪝 **Snag:** A Service with no endpoints is not a broken Service. It is a correct Service whose selector currently matches nothing — or, in the case the diagnostic pages describe, one whose matching Pods are not Ready and so are serving nothing. Those are **two different bugs, and they live in two different files** — one is a mismatch between the Service's selector and the Pod template's labels; the other is an application that isn't passing its own health check. Confusing them costs you an afternoon, because you spend it editing the wrong YAML.
 
 One more clause, closing a Chapter 7 loop. That chapter argued that a Service's backends landing on distinct nodes is what makes it resilient rather than merely load-balanced. Now you can see why the argument was necessary: the endpoint list is *just a list*. It has no opinion about where its endpoints are. Topology is the scheduler's problem, which is where you solved it. *[cross-bearing: see Ch 7 §5 — spreading replicas across failure domains]*
 
@@ -841,7 +841,7 @@ Five questions on what's actually behind the name, and the two times you deliber
 
 1. 🔵 **[retrieval: ch6]** Chapter 6 said a ReplicaSet finds its Pods by selector, and that a Service asking the same question about the same Pods is a *different controller reading the same labels*. Name the object where the Service's answer gets written down, and name the controller that writes it.
 
-2. 🔵 A Service's selector matches four Pods. Three are Ready; one is failing its readiness probe. How many endpoints does the Service have, and what happens to the fourth Pod when its probe starts passing?
+2. 🔵 A Service's selector matches four Pods. Three are Ready; one is failing its readiness probe. How many endpoints are listed, how many are receiving traffic, and what happens to the fourth Pod when its probe starts passing?
 
 3. 🟡 `kubectl get endpointslices` for your Service returns no endpoints. The Pods are running. Name the two usual causes, and say how you would tell them apart.
 
@@ -863,15 +863,17 @@ Worth noticing what Chapter 6's framing bought you here *[cross-bearing: see Ch 
 
 *Why a wrong answer is wrong:* **"The Service itself stores them"** is the natural guess and it's wrong in an instructive way. The Service stores the *query*. A separate object stores the *answer*, and a separate controller keeps that answer current.
 
-**2. Three endpoints. When the fourth Pod's probe starts passing, it is added to the EndpointSlice and begins receiving traffic.**
+**2. Four endpoints, but only three of them serving. When the fourth Pod's probe starts passing, its endpoint's condition flips to ready and it begins receiving traffic.**
 
 A Pod's `Ready` condition means the Pod is able to serve requests and should be added to the load balancing pools of all matching Services [source: k8s-docs-pod-termination-2026-08-24]; if a readiness probe fails, the endpoints controller removes the Pod's IP address from the endpoints of all Services that match the Pod [source: k8s-docs-pod-lifecycle-2026-08-23].
+
+Two documentation pages describe that removal differently and they are not in conflict. The Pod-lifecycle page speaks of removing the address *from the endpoints* — the set that gets served. The EndpointSlice API models the same event as a **condition on an endpoint that stays listed** [source: k8s-docs-endpointslices-2026-08-24], which is why §5's terminating Pods keep their entries with `ready: false`. Removed from the serving set, still present in the slice. At this exam's level the operative half is the first: a Pod that fails its readiness probe stops receiving traffic through the Service.
 
 One naming note before you carry that sentence forward. The documentation calls this component *the endpoints controller* on the Pod-lifecycle page and *the EndpointSlice controller* in the control-plane component list. That is one controller doing one job under two names: nothing additional is running, and question 1's answer and this one are describing the same thing.
 
 Now connect it to Chapter 6, because this is the cheapest place to close that loop *[cross-bearing: see Ch 6 §4 — rolling-update mechanics]*. During a rolling update, a new Pod that never reports Ready **never receives traffic**. That is *why* a bad release cannot take your Service down: the broken replicas are excluded from the endpoint list by the same mechanism that admits the healthy ones. Chapter 6 depended on that behavior to explain safe rollouts without ever naming the object it happens in. This is the object.
 
-*Why a wrong answer is wrong:* **"Four"** counts the Pods the selector matches and stops there. As §4 put it, the selector proposes and readiness disposes: matching the labels makes a Pod *eligible* for the endpoint list; it does not put the Pod on it. The gate is a second, independent condition, and it is evaluated continuously rather than once at creation.
+*Why a wrong answer is wrong:* **"Three, and there is no fourth endpoint"** is the intuitive answer and it is half right. The slice references every Pod the selector matches [source: k8s-docs-endpointslices-2026-08-24], so the fourth endpoint is listed — carrying a condition that says it must not be used as a target for Service traffic. That distinction is worth holding, because it is what makes the empty-slice diagnostic in Chapter 16 work: an endpoint list that is *not* empty but serves nothing is a readiness problem, and an actually empty list is a selector problem *[cross-bearing: see Ch 16 §4 — is anything even selected]*. The readiness gate is a second, independent condition, and it is evaluated continuously rather than once at creation.
 
 **3. Either the Service's selector doesn't match the Pods' labels, or the Pods are not Ready. Tell them apart by comparing the Service's selector against the Pods' labels, and by checking the Pods' Ready condition.**
 

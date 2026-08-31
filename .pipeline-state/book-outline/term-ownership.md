@@ -773,6 +773,15 @@ An index of surface forms, not a second ownership claim. Every acronym the book 
 > - **CKAD** and **CKS** are now expanded at Ch 17 §8. **SIG** is first used unexpanded at Ch 8
 >   line 861 — a pre-existing Ch 8 debt. **CloudEvents** needs a glossary entry and register row.
 
+> ⛑ **BOOK-LEVEL RULING, ratified 2026-08-31 at the Ch 18 gate: a cross-bearing to the owning chapter discharges the `[source:]` obligation for a retrieved claim.**
+> Ch 18 §4's AUTHOR-REVIEW asked for this and correctly noted there is no later content chapter to defer it to. The rule, in three parts:
+>
+> 1. A claim **first taught and source-tagged in its owning chapter** may be retrieved elsewhere behind a `*[cross-bearing: see Ch N §M — …]*` pointer **without repeating the tag**. The pointer is the citation: it is traceable, and the owning section carries the snapshot. Re-tagging every retrieval would duplicate ~15 snapshots across the book and invite exactly the drift the ledger exists to prevent.
+> 2. The pointer must name the **owning section**, not the chapter at large, and the retrieved claim **must not be strengthened** beyond what the owner sourced. A retrieval that sharpens, generalizes or adds a number is a new claim and needs its own tag.
+> 3. This does **not** apply to a claim the owning chapter itself left untagged. Those stay gaps wherever they appear.
+>
+> Applies to the seven Kubernetes claims Ch 18 §4 raised (probe semantics, metrics-server scope, DaemonSet placement, scheduler placement, the CRI boundary, StatefulSet identity), all of which are owned and tagged in Ch 2/5/6/7 and correctly pointered here. **Fact-accuracy stages should stop re-raising this class.**
+
 # Part 2 — Orphans
 
 Ten terms have no owner, or an owner that the shipped text does not honor. Each carries a recommendation. Where a term reaches graded material, it is called out — **a term used in question text or an answer key may not be glossary-only**, because a reader who meets it there has no place to look it up mid-question.

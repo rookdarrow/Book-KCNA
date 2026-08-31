@@ -253,7 +253,7 @@ figures_planned:
 # Chapter 18: Reading the Instruments
 ## *"Four signals, and the question they exist to answer"*
 
-**Domain Weight: 12% (Cloud Native Architecture) | Competency: Observability**
+**Domain Weight: 12% (Cloud Native Architecture) [source: cncf-kcna-curriculum-pdf-2026-08-23] | Competency: Observability | Authored allocation for this chapter: ~5%**
 **Complexity: Mixed | Novelty: Moderate**
 
 ---
@@ -388,7 +388,7 @@ Most people use *monitoring* and *observability* as synonyms, with a vague sense
 
 The difference is not tooling. It is not dashboards. It is **what you are able to ask**.
 
-Monitoring, in its canonical definition, is "collecting, processing, aggregating, and displaying real-time quantitative data about a system" [source: sre-book-monitoring-definitions-2026-08-31]. Notice what that sentence assumes: somebody already decided *which* quantitative data. Google's own SRE text lists four reasons to monitor, and every one of them is a question chosen in advance [source: sre-book-monitoring-definitions-2026-08-31]:
+Monitoring, in its canonical definition, is "collecting, processing, aggregating, and displaying real-time quantitative data about a system" [source: sre-book-monitoring-definitions-2026-08-31]. Notice what that sentence assumes: somebody already decided *which* quantitative data. Google's own Site Reliability Engineering (SRE) text lists four reasons to monitor, and every one of them is a question chosen in advance [source: sre-book-monitoring-definitions-2026-08-31]:
 
 - **Long-term trends** — "How big is my database and how fast is it growing?"
 - **Alerting** — "Something is broken, and somebody needs to fix it right now!"
@@ -619,7 +619,7 @@ Chapter 13 established what metrics-server is for and, just as importantly, what
 | What was it using an hour ago? | ❌ no history kept | ✅ yes — time series |
 | How many 500s did the checkout endpoint return? | ❌ CPU and memory only | ✅ yes — arbitrary metrics |
 | Page someone when error rate crosses 2% | ❌ not its job | ✅ yes — alerting |
-| Compute p99 latency over a rolling 7 days | ❌ no query language | ✅ yes — query over time |
+| Compute p99 (99th-percentile) latency over a rolling 7 days | ❌ no query language | ✅ yes — query over time |
 
 These two coexist. That is worth stating plainly, because candidates who learn the boundary sometimes overcorrect into "so you should replace metrics-server with Prometheus," which is wrong. metrics-server exists to feed autoscaling decisions with current readings, fast and cheaply. A monitoring system exists to keep history and answer arbitrary questions about it. Different jobs; both installed on plenty of real clusters.
 
@@ -938,7 +938,7 @@ Spans have to go somewhere.
 
 **Jaeger** is a distributed tracing backend: it "receives tracing telemetry data and provides processing, aggregation, data mining, and visualizations" [source: jaeger-overview-2026-08-23]. It "was originally designed to support the OpenTracing standard," and it is "OpenTelemetry compatible; terminology and concepts map directly between the two data models" [source: jaeger-overview-2026-08-23].
 
-Keep the division of labor explicit, because it is going to matter in three paragraphs' time. OpenTelemetry is the *instrumentation* side: the APIs and SDKs that produce spans and export them. Jaeger is the *backend*, the thing that receives them, stores them, and draws the picture above. The OTel Collector supports Jaeger as one of its output formats [source: opentelemetry-collector-2026-08-31], which is exactly the arrangement: producer, wire format, consumer, all separable.
+Keep the division of labor explicit, because it is going to matter in three paragraphs' time. OpenTelemetry — **OTel** in the shorthand the figure above uses, and the project's own — is the *instrumentation* side: the APIs and SDKs that produce spans and export them. Jaeger is the *backend*, the thing that receives them, stores them, and draws the picture above. The OTel Collector supports Jaeger as one of its output formats [source: opentelemetry-collector-2026-08-31], which is exactly the arrangement: producer, wire format, consumer, all separable.
 
 If that shape feels familiar, it should. Prometheus stores and Grafana reads. OTel exports and Jaeger receives. Two different corners of this chapter, same architecture.
 
@@ -1033,7 +1033,7 @@ This is the boundary between zero-code and code-based instrumentation. Zero-code
 
 **5 correct:** you have the densest section in the chapter. Keep going.
 **3–4 correct:** review the misses now rather than later. §8 pays off both the arrow and the span/trace containment, and it will land harder if they're solid.
-**0–2 correct:** re-read §4's opening (the arrow) and §5's Fixed Point (span inside trace) before continuing. Those two are worth more exam points than anything else in this chapter.
+**0–2 correct:** re-read §4's opening (the arrow) and §5's Fixed Point (span inside trace) before continuing. Those two are the most reliably tested ideas in this chapter.
 
 ---
 
@@ -1404,7 +1404,7 @@ The question was never "do we have monitoring." The question is: *is the service
 5. **Observability vs monitoring.** New questions versus pre-chosen indicators. Not "dashboards versus no dashboards."
 6. **metrics-server is not a monitoring system.** The exam tests the boundary, not either side.
 
-**Common Traps** — each of these has cost real candidates real points:
+**Common Traps** — these are distinctions that are easy to confuse, and they are the ones this material rewards getting right:
 
 | The trap | The correct understanding |
 |---|---|
@@ -1595,7 +1595,7 @@ Seventeen questions. Three are interleaved with earlier chapters and tagged. Exp
 - **D** is tempting because it names the right four things, but emitting all four signals thinly still fails the test. The bar is *sufficiency for troubleshooting*, not signal-type coverage.
 
 **Q3 — B.** OpenTelemetry's Signals page lists traces, metrics, logs, and baggage [source: opentelemetry-signals-2026-08-23].
-- **A** is the three-signal answer the majority of candidates give. It is the OTel primer's *passing* list, not the Signals page's list.
+- **A** is the three-signal answer commonly given. It is the OTel primer's *passing* list, not the Signals page's list.
 - **C** is the CNCF TAG Observability whitepaper's five-signal enumeration — metrics, logs, traces, profiles and dumps [source: cncf-tag-observability-whitepaper-2026-08-31]. A genuinely different taxonomy from a different document, and the reason §2's Snag warned you to check *which* authority a question names. This one names OpenTelemetry.
 - **D** is wrong: alerts are an output of a monitoring system acting on metrics, not a signal type.
 

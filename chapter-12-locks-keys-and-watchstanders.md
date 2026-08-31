@@ -17,7 +17,7 @@ prereq_factor: "heavy"
 #--
 #-- One caution for drafting: the subtitle states a Fixed Point on the
 #-- chapter's second line. That is fine — it is the SUBTITLE's job, and
-#-- shipped Ch 11 did the same thing. It is NOT a licence for the
+#-- shipped Ch 11 did the same thing. It is NOT a license for the
 #-- Soundings to state it. See the FIXED-POINT SPOILER CHECK below.
 
 #-- EXAM_DOMAIN NOTE. D2.2 Security, recorded in Ch 9/-10/-11's house
@@ -1096,7 +1096,7 @@ Two of those connect to material you already have. `kubernetes.io/dockerconfigjs
 
 A closing note for the next chapter: a Pod that references a Secret which does not exist does not get a running container. The kubelet cannot assemble the container's configuration, so the container sits waiting rather than starting and crashing — a recognizably different shape from a Pod that runs and then dies, and one of the first things to check when a Pod never comes up. *[cross-bearing: see Ch 13 §2 — pods that never start]*
 
-<!-- AUTHOR-REVIEW: the missing-Secret startup behaviour above is not stated on any page in this chapter's corpus — the Secret concept page, the Secret risks page and the Secrets good-practices page were all checked and none of them describes what happens when a referenced Secret is absent. The wording has been kept deliberately non-specific (no reason string, no phase name) for that reason. Ch 13 §2 is planned to grade on this and The Voyage Ahead hands it forward, so it should be sourced before Ch 13 drafts: recommend the Secrets page's "Using a Secret" section or the Pod lifecycle documentation. -->
+<!-- AUTHOR-REVIEW: the missing-Secret startup behavior above is not stated on any page in this chapter's corpus — the Secret concept page, the Secret risks page and the Secrets good-practices page were all checked and none of them describes what happens when a referenced Secret is absent. The wording has been kept deliberately non-specific (no reason string, no phase name) for that reason. Ch 13 §2 is planned to grade on this and The Voyage Ahead hands it forward, so it should be sourced before Ch 13 drafts: recommend the Secrets page's "Using a Secret" section or the Pod lifecycle documentation. -->
 
 ---
 
@@ -2063,7 +2063,7 @@ D) The kubelet, immediately before starting the container
 A) Both are implemented by the API server and evaluated at the same gate
 B) Both use label selectors to identify the subjects they govern
 C) Both are purely additive: rules only grant, and removing access means removing a grant
-D) Both were retrofitted with explicit deny rules in later API versions, which is why the additive behaviour is now the default rather than the only option
+D) Both were retrofitted with explicit deny rules in later API versions, which is why the additive behavior is now the default rather than the only option
 
 ---
 
@@ -2129,15 +2129,15 @@ Two consequences worth carrying: this is invisible to any audit that reads RBAC 
 **12. A.** When a Secret is mounted as a volume, updates propagate automatically; *"A container using a Secret as a subPath volume mount does not receive automated Secret updates"* [source: k8s-docs-secret-risks-2026-08-31].
 
 **B** inverts the asymmetry: an environment variable is read at container start and is then a fixed string in the process's environment, so a rotated Secret does not reach a running container.
-**C** is wrong about where the difference lies. The two mechanisms differ in *update behaviour*; file permissions are a volume-only concern that has no environment-variable counterpart to differ from.
-**D** generalizes the environment-variable behaviour to both, which erases the whole rotation half of the file-over-env-var argument.
+**C** is wrong about where the difference lies. The two mechanisms differ in *update behavior*; file permissions are a volume-only concern that has no environment-variable counterpart to differ from.
+**D** generalizes the environment-variable behavior to both, which erases the whole rotation half of the file-over-env-var argument.
 
 **13. B.** `runAsNonRoot` requires that containers do not run as root — the Restricted level mandates `runAsNonRoot: true` for exactly this reason [source: k8s-docs-pod-security-standards-profiles-2026-08-31], and the documentation recommends it generally [source: k8s-docs-linux-kernel-security-constraints-2026-08-31]. **A** describes `capabilities.drop`. **C** describes `readOnlyRootFilesystem`. **D** describes `seccompProfile`. All four are `securityContext` fields, which is why this question is worth taking slowly.
 
 **14. C.** *"Privileged containers override or undo many other hardening settings such as the applied seccomp profile, AppArmor profile, or SELinux constraints. Privileged containers are given all Linux capabilities, including capabilities that they don't require"* [source: k8s-docs-linux-kernel-security-constraints-2026-08-31].
 
 **A** dramatically understates it; the point is *all* capabilities, and the recommended alternative is to grant specific ones via the `capabilities` field [source: k8s-docs-linux-kernel-security-constraints-2026-08-31].
-**B** is the version of this misconception most worth killing: it assumes hardening layers stack independently, so that a seccomp profile you wrote would survive a privileged flag somebody else set. The documented behaviour is the opposite — privileged containers run as the `Unconfined` seccomp profile, overriding any profile specified in the manifest, and ignore any applied AppArmor profiles [source: k8s-docs-linux-kernel-security-constraints-2026-08-31].
+**B** is the version of this misconception most worth killing: it assumes hardening layers stack independently, so that a seccomp profile you wrote would survive a privileged flag somebody else set. The documented behavior is the opposite — privileged containers run as the `Unconfined` seccomp profile, overriding any profile specified in the manifest, and ignore any applied AppArmor profiles [source: k8s-docs-linux-kernel-security-constraints-2026-08-31].
 **D** invents a dependency. Running as UID 0 inside a container needs no privileged flag at all; `privileged: true` is about capabilities and kernel-constraint bypass, not about which UID the process runs as.
 
 **15. C.** Chapter 10 drew the two axes; this chapter filled in the second. `securityContext` constrains what a workload may do to its node; NetworkPolicy constrains which workloads may reach which. Different objects, different implementers, independent failure. **A** inverts them. **B** is false: one is a Pod spec field enforced by the runtime and kubelet, the other is an object enforced by a CNI plugin. **D** invents a supersession that would make no sense, since a NetworkPolicy has nothing to say about `privileged: true`.
@@ -2162,12 +2162,12 @@ Two consequences worth carrying: this is invisible to any audit that reads RBAC 
 
 **A** is the near miss this question exists to produce — four of five requirements met, and the missing one is the least visible because it is the only one that is not obviously about root.
 **C** invents a conflict. A non-zero `runAsUser` is precisely what Restricted's "Running as Non-root user" control asks for [source: k8s-docs-pod-security-standards-profiles-2026-08-31]; the two fields agree rather than collide.
-**D** crosses the axes. `enforce` rejects, full stop — it is a mode, not a severity, and it does not apply differently to different controls. If you wanted the warning behaviour, that is a different label.
+**D** crosses the axes. `enforce` rejects, full stop — it is a mode, not a severity, and it does not apply differently to different controls. If you wanted the warning behavior, that is a different label.
 
 **23. B.** TUF names exactly this attack: *"An attacker gives you an older, insecure version of a file that you already have and tricks you into thinking it's newer"* [source: tuf-overview-2026-08-31]. Every attack in TUF's list involves a *correctly signed* artifact, which is what distinguishes freshness and ordering from authenticity — and why TUF *"maintains the security of software update systems, providing protection even against attackers that compromise the repository or signing keys"* [source: tuf-overview-2026-08-31].
 
 **A** misunderstands what verification checks. A signature over the older digest is entirely valid for that older digest. Verification asks "did these bytes come from who I think?" and answers nothing about which version they are.
-**C** invents an enforcement behaviour. An SBOM is a record of what an artifact contains, not a gate, and the older image's SBOM correctly describes the older image.
+**C** invents an enforcement behavior. An SBOM is a record of what an artifact contains, not a gate, and the older image's SBOM correctly describes the older image.
 **D** inverts the transparency log's function. Rekor is append-only and records signing events for public audit [source: sigstore-overview-2026-08-23]; entries are never superseded or expired, and nothing about it is a freshness check performed at pull time.
 
 ---

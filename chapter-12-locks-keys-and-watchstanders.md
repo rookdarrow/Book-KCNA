@@ -3,7 +3,7 @@ chapter: 12
 chapter_type: "content"
 title: "Locks, Keys, and Watchstanders"
 subtitle: "RBAC has no deny rule, and Secrets aren't encrypted"
-exam_domain: "Container Orchestration (competency: Security)"
+exam_domain: "Container Orchestration (competency: Security); secondary: Cloud Native Architecture (competency: Cloud Native Ecosystem and Principles) via the 4Cs, the supply-chain projects, and Policy as Code"
 domain_weight_pct: 7
 complexity: "mixed"
 novelty: "moderate"
@@ -598,6 +598,8 @@ API discovery means the endpoints that tell a client what API groups and version
 >
 > **An identity and a permission are two different things, kept in two different objects.** The `default` ServiceAccount is the proof: every Pod in the cluster has an identity, and almost none of them can do anything with it.
 
+RBAC has a word for the thing a grant is made *to* — a **subject**. A ServiceAccount is one; so is a user and so is a group. Holding the word now is what lets §3 talk about grants without having to keep saying "whatever the permission is being given to."
+
 The sidebar's first panel was about exactly this. A key is stamped, issued, and unmistakably yours; what it opens is written down somewhere else entirely, and until somebody writes it there, the key turns nothing.
 
 This is the single most useful sentence in the chapter for reasoning about the rest of it, and it is why §2 comes before §3 rather than merging with it. Creating a ServiceAccount grants nothing. Assigning it to a Pod grants nothing. The Pod authenticates successfully, arrives at the second gate, and is turned away: a completely different failure from not being recognized at all, and one that produces a different message. *[cross-bearing: see Ch 8 §2 — three gates and a logbook]*
@@ -689,7 +691,7 @@ With that cleared: authorization.
 
 The Kubernetes API server does not have one authorization mechanism. It has a chain of them, and the documentation is precise about how the chain behaves: **"All parts of an API request must be allowed by some authorization mechanism in order to proceed"** and *"[each authorizer] is checked in sequence. If any authorizer approves or denies a request, that decision is immediately returned and no other authorizer is consulted. If all modules have no opinion on the request, then the request is denied"* [source: k8s-docs-authorization-2026-08-31].
 
-The modules include **Node**, a special-purpose mode granting permissions to kubelets based on the pods they are scheduled to run; **ABAC**, an access control paradigm whereby access rights are granted to users through policies which combine attributes together; **RBAC**, which regulates access based on the roles of individual users within an enterprise; and **Webhook**, which makes a synchronous HTTP callout, blocking the request until the remote service responds [source: k8s-docs-authorization-2026-08-31]. Chapter 8 quoted that list at you and pointed here. *[cross-bearing: see Ch 8 §2 — three gates and a logbook]*
+The modules include **Node**, a special-purpose mode granting permissions to kubelets based on the pods they are scheduled to run; **ABAC**, an access control paradigm whereby access rights are granted to users through policies which combine attributes together; **RBAC** — role-based access control — which regulates access based on the roles of individual users within an enterprise; and **Webhook**, which makes a synchronous HTTP callout, blocking the request until the remote service responds [source: k8s-docs-authorization-2026-08-31]. Chapter 8 quoted that list at you and pointed here. *[cross-bearing: see Ch 8 §2 — three gates and a logbook]*
 
 So: RBAC is what essentially every cluster uses and what the curriculum teaches, but it is one mode among several rather than the mechanism. That one clause is all ABAC gets in this book, and it is enough. The fact worth holding is that other modes exist, not how they work.
 
@@ -1057,7 +1059,7 @@ Chapter 4 enumerated four things and deferred all of them. Here they are, in the
 
 **Restrict access to specific containers.** *"If you are defining multiple containers in a Pod, and only one of those containers needs access to a Secret, define the volume mount or environment variable configuration so that the other containers do not have access to that Secret"* [source: k8s-docs-secrets-good-practices-2026-08-24]. A Pod is not a trust boundary between its own containers unless you make it one. A sidecar you did not write and do not fully control sits inside the Pod's boundary; whether it can read the database password is a choice you make in the manifest.
 
-**External secret store providers.** *"You can use third-party Secrets store providers to keep your confidential data outside your cluster and then configure Pods to access that information. The Kubernetes Secrets Store CSI Driver is a DaemonSet that lets the kubelet retrieve Secrets from external stores, and mount the Secrets as a volume into specific Pods that you authorize to access the data"* [source: k8s-docs-secrets-good-practices-2026-08-24]. Note the shape of that: a CSI driver *[cross-bearing: see Ch 11 §5 — who actually provides the storage]* delivered as a DaemonSet *[cross-bearing: see Ch 6 §7 — one per node, and work that ends]*, doing a job through two interfaces you already know.
+**External secret store providers.** *"You can use third-party Secrets store providers to keep your confidential data outside your cluster and then configure Pods to access that information. The Kubernetes Secrets Store CSI Driver is a DaemonSet that lets the kubelet retrieve Secrets from external stores, and mount the Secrets as a volume into specific Pods that you authorize to access the data"* [source: k8s-docs-secrets-good-practices-2026-08-24]. Note the shape of that: a CSI driver *[cross-bearing: see Ch 11 §5 — who actually provides the storage]* delivered as a DaemonSet *[cross-bearing: see Ch 6 §7 — one per node, and work that ends]*, doing a job through two mechanisms you already know.
 
 And one more, aimed at you rather than the cluster: *"If you configure a Secret through a manifest, with the secret data encoded as base64, sharing this file or checking it in to a source repository means the secret is available to everyone who can read the manifest"* [source: k8s-docs-secrets-good-practices-2026-08-24]. Base64 in a Git repository is a plaintext password in a Git repository with a costume on.
 
@@ -1215,13 +1217,13 @@ So discharge that before anything else, because the derivation is the whole of w
 
 You already know that every request to the API server passes three gates in order: authentication, then authorization, then **admission**. Admission is the gate that inspects the object itself: after we know who you are and that you are allowed to do this in general, does this specific object pass the rules? Admission controllers are what run there, some compiled in and some reached by webhook.
 
-**Pod Security Admission is a built-in admission controller.** That is the entire architectural statement. *"Kubernetes offers a built-in Pod Security admission controller to enforce the Pod Security Standards"* [source: k8s-docs-pod-security-admission-2026-08-31], stable since v1.25 [source: k8s-docs-pod-security-admission-2026-08-31]. Nothing new is happening. A Pod object arrives at the third gate, a controller examines it against a policy, and the gate does something about it.
+**Pod Security Admission (PSA) is a built-in admission controller.** That is the entire architectural statement. *"Kubernetes offers a built-in Pod Security admission controller to enforce the Pod Security Standards"* [source: k8s-docs-pod-security-admission-2026-08-31], stable since v1.25 [source: k8s-docs-pod-security-admission-2026-08-31]. Nothing new is happening. A Pod object arrives at the third gate, a controller examines it against a policy, and the gate does something about it.
 
 What you need beyond that is the policy — three of them — and what "does something" means — three options. Hence the section title.
 
 ### The three levels
 
-**The Pod Security Standards** define three policies covering the security spectrum. They are **cumulative** and range from highly permissive to highly restrictive [source: k8s-docs-pod-security-standards-2026-08-23].
+**The Pod Security Standards (PSS)** define three policies covering the security spectrum. They are **cumulative** and range from highly permissive to highly restrictive [source: k8s-docs-pod-security-standards-2026-08-23].
 
 | Profile | Description |
 |---|---|
@@ -1540,7 +1542,7 @@ A digest is a cryptographic hash of content. Signing it says: *these exact bytes
 
 <!-- AUTHOR-REVIEW: the in-toto landing page does not itself use the word "provenance" (its own snapshot records this). The SPDX tag above carries the term; the in-toto tag carries the what-steps-by-whom-in-what-order sentence. Verify that split is acceptable, or add an [inferred] marker to the equation between them. -->
 
-An **SBOM** — Software Bill of Materials — is the components half. A bill of materials is a standardized record of what a software artifact is made of. The two dominant standards are **SPDX**, from the Linux Foundation, *"an open standard designed to facilitate the communication of Bill of Materials (BOM) information across diverse domains, including software, artificial intelligence (AI), datasets, and system components"*, covering metadata for packages, files and snippets, licensing information, and provenance and integrity [source: sbom-standards-spdx-cyclonedx-2026-08-31]; and **CycloneDX**, from OWASP, *"a full-stack Bill of Materials (BOM) standard that provides advanced supply chain capabilities for cyber risk reduction"* [source: sbom-standards-spdx-cyclonedx-2026-08-31].
+An **SBOM** — Software Bill of Materials — is the components half. A bill of materials is a standardized record of what a software artifact is made of. The two dominant standards are **SPDX (Software Package Data Exchange)**, from the Linux Foundation, *"an open standard designed to facilitate the communication of Bill of Materials (BOM) information across diverse domains, including software, artificial intelligence (AI), datasets, and system components"*, covering metadata for packages, files and snippets, licensing information, and provenance and integrity [source: sbom-standards-spdx-cyclonedx-2026-08-31]; and **CycloneDX**, from OWASP (the Open Worldwide Application Security Project), *"a full-stack Bill of Materials (BOM) standard that provides advanced supply chain capabilities for cyber risk reduction"* [source: sbom-standards-spdx-cyclonedx-2026-08-31].
 
 And an SBOM is itself an artifact that can be signed; Sigstore names SBOMs explicitly among the artifact types it handles [source: sigstore-overview-2026-08-23]. Which closes a loop: a signed SBOM is a verifiable claim about what is inside a verifiable image, and the two together are what lets you answer "are we affected by this newly disclosed vulnerability?" without rebuilding anything.
 
@@ -1561,7 +1563,7 @@ The distribute-phase list ends with a step that is not cryptographic at all: *"r
 
 **Harbor** is the CNCF graduated registry built for this. Its stated mission is *"to be the trusted cloud native repository for Kubernetes"*, and it *"is an open source registry that secures artifacts with policies and role-based access control, ensures images are scanned and free from vulnerabilities, and signs images as trusted"* [source: harbor-overview-2026-08-31]. Its feature list names security and vulnerability analysis, content signing and validation, and identity integration with role-based access control [source: harbor-overview-2026-08-31]. Which is to say it does scan, sign and restrict in one place — a useful thing to know when a question offers it as an answer.
 
-And the cluster's side of the restriction is a Secret. An `imagePullSecret` holds registry credentials in a Secret of type `kubernetes.io/dockerconfigjson`, which is a serialized `~/.docker/config.json` [source: k8s-docs-secret-2026-08-23], and one of the documented ServiceAccount use cases is *"authenticating to a private image registry using an imagePullSecret"* [source: k8s-docs-service-accounts-2026-08-23]. Chapter 2 told you this was a security boundary rather than a convenience. Now you can see the whole boundary: the registry refuses unauthorized pulls, the credential to pull is a Secret, and the rules about who can read Secrets from §4 apply to it in full.
+And the cluster's side of the restriction is a Secret. An `imagePullSecrets` entry holds registry credentials in a Secret of type `kubernetes.io/dockerconfigjson`, which is a serialized `~/.docker/config.json` [source: k8s-docs-secret-2026-08-23], and one of the documented ServiceAccount use cases is *"authenticating to a private image registry using an imagePullSecret"* [source: k8s-docs-service-accounts-2026-08-23]. Chapter 2 told you this was a security boundary rather than a convenience. Now you can see the whole boundary: the registry refuses unauthorized pulls, the credential to pull is a Secret, and the rules about who can read Secrets from §4 apply to it in full.
 
 ### Verify
 
@@ -1569,7 +1571,7 @@ The last checkpoint, and the first one the cluster performs itself. The deploy p
 
 Signing without verification is theater. A signature that nothing checks is a file in a registry. The check happens at admission: Sigstore's Policy Controller *"enforces signature verification policies within Kubernetes as an admission controller"* [source: sigstore-overview-2026-08-23], and Kyverno can *"verify container images and metadata for software supply chain security"* [source: kyverno-overview-2026-08-23].
 
-Which is the third gate again, doing a third job. Same position, different question. And it hands us straight into §8.
+Which is the third gate again, doing another job. Same position, different question. And it hands us straight into §8.
 
 > ⚓ **Worth Securing:** The one-sentence version of this whole section: **a signature tells you where something came from, a scan tells you what is wrong with it, an SBOM tells you what is in it, provenance tells you how it was made, and none of the four does any of the others' work.** Every real supply-chain question is asking which of those you need.
 
@@ -1589,7 +1591,7 @@ The organizing question for this section is not *which engine* but **when does t
 
 **Kyverno** — Greek for "govern" — is *"a cloud native policy engine"* originally built for Kubernetes and now usable outside clusters as a unified policy language. It *"allows platform engineers to automate security, compliance, and best practices validation and deliver secure self-service to application teams"* [source: kyverno-overview-2026-08-23].
 
-Its policies can *"validate, mutate, generate, or clean up Kubernetes resources; verify container images and metadata for software supply chain security; and be applied as a Kubernetes admission controller (webhook) or as a CLI-based scanner"* [source: kyverno-overview-2026-08-23]. Policies are written in YAML using declarative rules and CEL, managed as Kubernetes resources, and version-controlled with Git [source: kyverno-overview-2026-08-23].
+Its policies can *"validate, mutate, generate, or clean up Kubernetes resources; verify container images and metadata for software supply chain security; and be applied as a Kubernetes admission controller (webhook) or as a CLI-based scanner"* [source: kyverno-overview-2026-08-23]. Policies are written in YAML using declarative rules and **CEL (Common Expression Language)**, managed as Kubernetes resources, and version-controlled with Git [source: kyverno-overview-2026-08-23].
 
 Those four verbs are worth separating, because they are not variations on one thing:
 
@@ -1600,7 +1602,7 @@ Those four verbs are worth separating, because they are not variations on one th
 
 <!-- AUTHOR-REVIEW: kyverno-overview-2026-08-23 lists the four verbs and defines none of them. The four glosses above, and the examples attached to them, are the author's reading of standard policy-engine semantics rather than product documentation. Either open a small research gap for kyverno.io/docs/policy-types/ or mark the four glosses [inferred] in prose. -->
 
-Validate and mutate map exactly onto a distinction Chapter 8 drew: validating and mutating admission webhooks. *[cross-bearing: see Ch 8 §2 — three gates and a logbook]* Chapter 8 gave you the two webhook types as an abstraction. **A policy engine is one.** It is what people actually install into that extension point, and it is the cleanest possible payoff for having learned the distinction. *[cross-bearing: see Ch 17 §4 — every place Kubernetes lets you in]*
+Validate and mutate are the two answers Chapter 8 told you the third gate has *[cross-bearing: see Ch 8 §2 — three gates and a logbook]*: two gates ask about you and answer yes or no, while the third asks about the request itself and can also answer *yes, in modified form*. Those two answers have names — a **validating** admission webhook and a **mutating** one. **A policy engine is one.** It is what people actually install into that extension point, and it is the cleanest possible payoff for having learned the distinction. *[cross-bearing: see Ch 17 §4 — every place Kubernetes lets you in]*
 
 **OPA** — Open Policy Agent — is the other widely used engine, a CNCF graduated project, with its **Gatekeeper** admission controller for Kubernetes, expressing policy in the **Rego** language [source: kyverno-overview-2026-08-23]. The Pod Security Standards page itself names the third-party enforcement options: Kubewarden, Kyverno, and OPA Gatekeeper [source: k8s-docs-pod-security-standards-profiles-2026-08-31], alongside a framing worth keeping — *"Decoupling policy definition from policy instantiation allows for a common understanding and consistent language of policies across clusters, independent of the underlying enforcement mechanism"* [source: k8s-docs-pod-security-standards-profiles-2026-08-31]. The Standards are a *definition*; PSA and the policy engines are *instantiations* of it. That is why a third-party engine can enforce the same three levels PSA does.
 
@@ -1862,7 +1864,7 @@ These are the specific wrong answers this material produces. Every one of them i
 | Secrets are encrypted | Unencrypted in etcd by default; encryption at rest is opt-in and is a control-plane configuration. [source: k8s-docs-secret-2026-08-23] |
 | An RBAC audit showing no `get secrets` means Secrets are safe | Pod creation in the namespace reads any Secret in it, including via a Deployment. [source: k8s-docs-secret-2026-08-23] |
 | Token Secrets are current best practice | TokenRequest, short-lived and rotating, since v1.22. [source: k8s-docs-service-accounts-2026-08-23] |
-| PSS levels and PSA modes are the same axis| PSS levels and PSA modes are the same axis | Levels say what is checked; modes say what happens. Independent. `[inferred]` |
+| Pod Security levels and admission modes are the same axis | Levels say what is checked; modes say what happens. Independent. `[inferred]` |
 | PodSecurityPolicy is a current control | Superseded by Pod Security Admission; not the mechanism a current cluster uses. |
 | A signature covers the tag you signed | It resolves to the digest. Tags are mutable; signatures are not. [source: notary-project-signing-digest-2026-08-31] |
 | A valid signature means the artifact is current | It means the bytes came from the signer. Freshness, ordering and key compromise are what TUF addresses. [source: tuf-overview-2026-08-31] |

@@ -309,17 +309,17 @@ Ch 1's sections are unnumbered (B6 Collision #1), so every pointer into this cha
 | Service selector | Ch 9 §4 | Ch 4 §5 | name only, always with a pointer |
 | **EndpointSlice** | Ch 9 §4 | Ch 3 §3 | name only, always with a pointer |
 | Endpoints (the legacy object) | Ch 9 §4 | Ch 9 §4 † | — |
-| Headless Service (`clusterIP: None`) | Ch 9 §4 | Ch 6 §6 | name only, always with a pointer |
-| Service without selectors | Ch 9 §4 | Ch 9 §4 † | — |
+| Headless Service (`clusterIP: None`) | Ch 9 §5 | Ch 6 §6 | name only, always with a pointer |
+| Service without selectors | Ch 9 §5 | Ch 9 §5 † | — |
 | Readiness gating endpoint membership | Ch 9 §4 | Ch 5 §7 | gloss in one clause + pointer |
-| Service proxy | Ch 9 §5 | Ch 3 §3 | gloss in one clause + pointer |
-| kube-proxy modes (iptables · IPVS · nftables · userspace) | Ch 9 §5 | Ch 9 §5 † | — |
-| **CoreDNS** | Ch 9 §6 | Ch 3 §4 | name only, always with a pointer |
-| Cluster DNS | Ch 9 §6 | Ch 3 §4 | name only, always with a pointer |
-| A / AAAA record · SRV record | Ch 9 §6 | Ch 9 §6 † | — |
-| FQDN (fully qualified domain name) | Ch 9 §6 | Ch 4 §3 | name only, always with a pointer |
-| `svc.cluster.local` · search domain | Ch 9 §6 | Ch 9 §6 † | — |
-| Pod DNS record | Ch 9 §6 | Ch 9 §6 † | — |
+| Service proxy | Ch 9 §6 | Ch 3 §3 | gloss in one clause + pointer |
+| kube-proxy modes (iptables · IPVS · nftables · userspace) | Ch 9 §6 | Ch 9 §6 † | — |
+| **CoreDNS** | Ch 9 §7 | Ch 3 §4 | name only, always with a pointer |
+| Cluster DNS | Ch 9 §7 | Ch 3 §4 | name only, always with a pointer |
+| A / AAAA record · SRV record | Ch 9 §7 | Ch 9 §7 † | — |
+| FQDN (fully qualified domain name) | Ch 9 §7 | Ch 4 §3 | name only, always with a pointer |
+| `svc.cluster.local` · search domain | Ch 9 §7 | Ch 9 §7 † | — |
+| Pod DNS record | Ch 9 §7 | Ch 9 §7 † | — |
 
 ## Ch 10 — Traffic from Beyond the Cluster  [PLANNED]
 
@@ -632,7 +632,7 @@ These are assumed of an adult professional reader. No chapter defines them; the 
 |---|---|---|---|
 | API (in the general sense) | glossary-only | Ch 1 | — |
 | HTTP · HTTPS · TCP · UDP · IP | glossary-only | Ch 2 | — |
-| DNS (**the protocol**; cluster DNS is Ch 9 §6) | glossary-only | Ch 3 §3 | — |
+| DNS (**the protocol**; cluster DNS is Ch 9 §7) | glossary-only | Ch 3 §3 | — |
 | TLS (**the protocol**; termination is Ch 10 §2, mTLS is Ch 17 §5) | glossary-only | Ch 4 | — |
 | JSON · YAML | glossary-only | Ch 4 §2 | — |
 | REST · gRPC | glossary-only | Ch 2 | — |
@@ -667,13 +667,13 @@ An index of surface forms, not a second ownership claim. Every acronym the book 
 | CRI-O | (a proper name, not an expansion) | Ch 2 §4 |
 | CSI | Container Storage Interface | Ch 11 §5 |
 | CVE | Common Vulnerabilities and Exposures | Ch 12 §7 |
-| DNS | Domain Name System | ambient / Ch 9 §6 |
+| DNS | Domain Name System | ambient / Ch 9 §7 |
 | FaaS | Functions as a Service | Ch 17 §6 |
-| FQDN | Fully Qualified Domain Name | Ch 9 §6 |
+| FQDN | Fully Qualified Domain Name | Ch 9 §7 |
 | GPU | Graphics Processing Unit | ambient |
 | HPA | HorizontalPodAutoscaler | Ch 6 §2 |
 | IaaS | Infrastructure as a Service | Ch 3 §1 |
-| IPVS | IP Virtual Server | Ch 9 §5 |
+| IPVS | IP Virtual Server | Ch 9 §6 |
 | JWT | JSON Web Token | Ch 12 §2 |
 | K8s | Kubernetes (numeronym) | Ch 3 §1 |
 | KCNA | Kubernetes and Cloud Native Associate | Ch 1 |
@@ -770,7 +770,7 @@ Not in the curriculum. Ch 7 §6 covers overruling and replacing the scheduler wi
 
 ### eBPF — **glossary-only**
 
-Reachable from three directions (CNI dataplanes at Ch 9 §1, kube-proxy alternatives at Ch 9 §5, Falco at Ch 12 §8) and owned by none of them. The curriculum does not require it.
+Reachable from three directions (CNI dataplanes at Ch 9 §1, kube-proxy alternatives at Ch 9 §6, Falco at Ch 12 §8) and owned by none of them. The curriculum does not require it.
 
 **Recommendation: glossary-only.** Any of the three sections may name it as an implementation detail with a pointer to the glossary. Not eligible for graded text.
 

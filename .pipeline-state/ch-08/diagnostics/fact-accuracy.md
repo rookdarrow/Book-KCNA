@@ -1,287 +1,280 @@
 # Fact-Accuracy Audit — Chapter 8
 
-**Mode detected: STANDARD.** The `Cached sources` section carries 18 populated snapshots, and the draft carries ~68 inline `[source:` tags. Untagged factual claims are therefore FAIL, not advisory.
+**Mode detected: STANDARD.** The draft carries `[source: ...]` tags throughout (84 tag instances), and the cached-source section is populated with 32 snapshots. Untagged factual claims are therefore FAIL, not advisory.
 
-**Input note.** `draft-v2.md` was unavailable; this audit was run against `draft-v1.md` and all line numbers below are that file's.
-
-**Tag-integrity note.** Every one of the 17 distinct snapshot names cited by the draft resolves to a snapshot present in the corpus. There are zero dangling tags. `k8s-keps-and-feature-stages-2026-08-23` is the only cached snapshot the chapter never cites (see WARN-19).
+**Locator convention.** This audit ran against the assembled `draft-v2.md` text supplied to the stage, which does not carry stable line numbering through the harness. Every finding is anchored by section + subsection + a verbatim excerpt, which is greppable. Where the draft's own `AUTHOR-REVIEW` comments already sit on a claim, that is noted.
 
 ---
 
 ## Summary
 
-- Total factual claims inspected: **129**
-- Tagged claims verified: **68**
-- Tagged claims unverifiable (source tag points to missing/empty snapshot): **0**
-- **Untagged factual claims (FAIL): 59** — across 7 clusters and 7 singletons
+- Total factual claims inspected: **188**
+- Tagged claim instances verified: **84**
+- Tagged claims unverifiable (tag points to a missing/empty snapshot): **0**
+- **Untagged factual claims (FAIL): 43 instances across 14 entries**
 - **Contradicted claims (FAIL): 2**
-- Minor discrepancies (WARN): **19** (overlapping the above pools)
+- Minor discrepancies (WARN): **11**
 
-Seven `AUTHOR-REVIEW` comments are already in the draft (lines 8, 281, 291, 313, 499, 712, and the §2 block at 224). This audit confirms all of them and finds **five further FAIL clusters the author did not flag**: the managed/self-hosted duty split (C), the cordon→spec→taint mechanism chain (D), the control-plane-loss survivability claim (E), the `NoSchedule` semantics gap (F), and an answer-key leak past the author's own §3 scope guard (B-4).
+---
+
+## ⚠ Corpus change since the last audit — read this first
+
+**The snapshots the draft's `AUTHOR-REVIEW` comments describe as "landed but unwritten" are present in this chapter's referenced source set now.** Thirteen of the fourteen blocking or near-blocking gaps recorded in draft-v2's inline comments are closable by tagging, with **no new fetch required**. The comments themselves are now stale and several make claims that are false against the current corpus — e.g. the metadata-line comment asserting that "the string 'Kubernetes Fundamentals' appears in NO cached snapshot in this chapter's referenced set," and the §2 comment asserting that "`sources/` contains none of them." Both are wrong as of this pass. The revision stage should treat the inline comments as a to-do list, not as a description of the evidence.
+
+Newly available in this chapter's set:
+
+| Snapshot | Closes |
+|---|---|
+| `cncf-kcna-curriculum-pdf-2026-08-23`, `cncf-kcna-certification-page-2026-08-23` | metadata line: domain name, domain count, 44% |
+| `k8s-docs-controlling-access-2026-08-24` | §2 gate ordering, mutation, persistence order, 401/403, reads bypass admission, RBAC as an authorization module |
+| `k8s-docs-admission-controllers-2026-08-24` | ResourceQuota / LimitRanger / NodeRestriction as admission plugins |
+| `k8s-docs-resource-quotas-2026-08-24`, `k8s-docs-limit-range-2026-08-24` | all of §3's scope, defaulting and rejection claims |
+| `k8s-docs-node-status-2026-08-24` | Capacity vs Allocatable definitions; **`cordon` writes `.spec`**; `node-monitor-grace-period` default |
+| `k8s-docs-reserve-compute-resources-2026-08-24` | why Capacity and Allocatable differ (the unpaid Chapter 7 promise) |
+| `k8s-docs-taints-tolerations-2026-08-23` | `NoSchedule` effect semantics (Soundings A5, Bearings #2 item 1) |
+| `k8s-docs-audit-2026-08-24` | what auditing records, and that it lives inside kube-apiserver |
+| `k8s-docs-safely-drain-node-2026-08-24`, `k8s-docs-api-eviction-2026-08-24`, `k8s-docs-kubectl-cordon-2026-08-24` | drain/evict/uncordon corroboration |
+| `k8s-docs-resource-management-2026-08-23` | "requests are what the scheduler filters on" (Practice Q7) |
+
+**Only one gap in this chapter is genuinely unclosable from the cached corpus:** the managed-vs-self-hosted duty split (entry 3 below). Everything else is a tagging job.
 
 ---
 
 ## FAIL — Untagged factual claims
 
-### Cluster A — Sequential-gate semantics: order, position, and mutation (19 instances)
+### 1. Metadata line — "Domain: Kubernetes Fundamentals — 44% of the exam" and "its four domains"
 
-Author-flagged at line 224. **Confirmed and unchanged.**
+**Excerpt:** `**Domain: Kubernetes Fundamentals — 44% of the exam · Competency: Cluster Administration — ~5% (authored allocation)...**` and `CNCF publishes weights for its four domains and not for the competencies within them.`
 
-No cached snapshot states (i) that a request traverses authentication → authorization → admission *in that order*, (ii) that admission runs *after* authorization and *before* persistence, or (iii) that admission can *modify* a request. The two tagged sentences at lines 222–224 establish only the three *names* and their order *in a documentation table of contents* — which is a claim about a web page's link list, not about a request pipeline.
+**Why it's a factual claim:** three separate assertions of published vendor exam structure — a domain name, a domain count, and a weighting percentage. This is the most consequential category of claim a certification study guide makes.
 
-Primary instances:
+**Instances:** 3.
 
-#### Line 242: "Admission controllers see a request that has already been authenticated and authorized, and act on it before it is written down."
-#### Line 244: "Admission may answer yes, no, or *yes — but not as you wrote it*."
-#### Line 246 (Fixed Point): "Authentication, then authorization, then admission... it is the only one of the three that can change your request instead of refusing it."
-#### Line 232 (gate-two definition): "Authorization decides whether the identity established at gate one is permitted to perform *this action* on *this object*."
-#### Line 263 (Navigational Hazards): "Authorization has no opinion about the contents of your request; admission has no opinion about your identity."
+**Fix:** All three are now verifiable and should be tagged to `[source: cncf-kcna-curriculum-pdf-2026-08-23]` (which carries "44% – Kubernetes Fundamentals" and enumerates exactly four domains: 44/28/16/12) and/or `[source: cncf-kcna-certification-page-2026-08-23]` (which carries the same four-domain weight line). Tag the **name, the count and the percentage**, not just the percentage. The "no per-competency weights" observation is supportable as a structural reading of the curriculum PDF — the domains carry percentages and the competencies inside them do not — but frame it as an observation about the published document rather than as a quoted claim, since no source sentence says it. Delete the stale `AUTHOR-REVIEW` comment above the line.
 
-**Why they're factual claims:** each asserts a specific mechanism and ordering in the Kubernetes API server's request path — vendor behaviour, not analogy.
+### 2. Soundings answer 5 — "`NoSchedule` governs new placements only"
 
-Downstream instances inheriting the same gap: **Figure 8.2 (lines 248–260)**, the "who, may, and how" mnemonic, **line 279** ("it takes effect at this gate"), **line 362**, Bearings #1 Q3/A3 (**line 389**), Bearings #1 Q4/A4, Exam Alert items 1 and 2 (**line 862ff**), Common Traps row (**line 884**), **PQ2 options C/D (lines 908–909)** and its explanation (**line 1024**), PQ3, PQ4, and Chapter Summary rows (**lines 1080–1081**).
+**Excerpt:** `**Nothing.** \`NoSchedule\` governs new placements only, which raises an obvious follow-up question that §4 answers.`
 
-**Fix:** fetch `kubernetes.io/docs/concepts/security/controlling-access/` — it closes (i), (ii) and (iii) outright. Secondary: `.../reference/access-authn-authz/admission-controllers/` for the mutating/validating split. Until then, do not ship the ordering or mutation claims untagged; §2's Fixed Point, Figure 8.2, and PQ2's key are all unsupportable without it.
+**Why it's a factual claim:** states the runtime semantics of a documented taint effect.
 
----
+**Instances:** 2 (this answer and Bearings #2 item 1's answer, which asserts the same semantics).
 
-### Cluster B — ResourceQuota / LimitRange mechanics (14 instances)
+**Fix:** Tag both to `[source: k8s-docs-taints-tolerations-2026-08-23]`, which is now in this chapter's set and states verbatim: *"NoSchedule — no new Pods will be scheduled on the tainted node unless they have a matching toleration. Pods currently running on the node are not evicted."* The existing inline comment's diagnosis was correct (the reference list was the problem, not the prose); the reference list is now fixed.
 
-Author-flagged at line 313 as a **BLOCKING GAP**. **Confirmed, and one instance escaped the author's own scope guard.**
+### 3. Soundings answer 8 — the five-duty managed/self-hosted list
 
-The corpus supports exactly two sentences: quota is the mechanism by which namespaces divide cluster resources between users [`k8s-docs-namespaces-2026-08-23`], and the one functional-contrast sentence [`k8s-docs-cloud-native-security-2026-08-23`]. Everything about *scope*, *defaulting*, and *what a quota counts* is unsourced.
+**Excerpt:** `**Common correct answers: patching and upgrades; backups; hardware replacement; capacity planning; certificate rotation.** Any two of these is a pass.`
 
-#### Line 309: "A quota is a ceiling on a **namespace, in aggregate**: the team's total, not any one Pod's numbers."
-#### Line 311: "A LimitRange... is a constraint on **individual objects**, and a mechanism that has to be able to act on a manifest that says nothing at all."
-#### Line 321: "The quota may refuse it. The LimitRange may fill it in."
-#### Line 325 (Fixed Point): "**ResourceQuota counts the namespace. LimitRange constrains the object.**"
-#### Figure 8.3 (lines 327–346): renders `min ≤ … ≤ max` per Pod, and "defaults FILLED IN."
+**Why it's a factual claim:** enumerates which operational duties transfer to a commercial provider — an assertion about third-party vendor responsibility models.
 
-The author's note at line 313 states LimitRange's min/max/default structure is **NOT cached and therefore NOT asserted below**. Figure 8.3 asserts it anyway. The figure is draft content and must be held to the same guard as the prose.
+**Instances:** 1 (plus the narrowed §5 paragraph and Practice Q13, both of which now depend on the same unsourced axis — see CONTRADICTED entry 2).
 
-#### **B-4 — Line 1036 (PQ6 explanation): "**A is wrong** as a claim about quota's capabilities..."
+**Fix:** **This is the chapter's one genuine research gap.** `k8s-docs-setup-tooling-2026-08-23` licenses only the existence of a split ("consider which aspects of operating a Kubernetes cluster (or abstractions) you want to manage yourself and which you prefer to hand off to a provider"); it does not enumerate sides, and kubernetes.io does not document commercial providers' responsibility models, so no fetch from that tree closes it. Either **open a research gap in the research-manifest for a vendor-neutral shared-responsibility source**, or narrow the answer key to "any operational duty that moves when a provider runs the control plane; which ones move is a per-provider question." Do not ship the five-item list as an answer key.
 
-**Why it's a factual claim:** distractor A reads "ResourceQuota cannot count objects, only compute resources." Calling A wrong is an affirmative assertion that a ResourceQuota *can* count objects — which is precisely the item line 313 lists as not cached. The body was guarded; the answer key was not. **This is the leak worth fixing first**, because an answer key that asserts an unsourced capability is harder to catch on a later pass than body prose is.
+### 4. §2 — the sequential-gate semantics (largest cluster)
 
-#### Line 354: "ResourceQuota and LimitRange are namespaced objects." (repeated in PQ5's explanation D)
-#### Line 362: "both of these mechanisms take effect at the admission gate."
+**Excerpts:**
+- `Admission controllers see a request that has already been authenticated and authorized, and act on it before it is written down.`
+- `> ★ **Fixed Point:** Authentication, then authorization, then admission. ... it is the only one of the three that can change your request instead of refusing it.`
+- Figure 8.2 caption: `Gates one and two have one way out other than forward: refusal. Gate three has two.`
+- Bearings #1 A3 and A4; Practice Q2, Q3, Q4 keys; Exam Alert items 1 and 2; Chapter Summary rows "The three gates" and "Admission's distinction".
 
-Further instances: line 348 (see WARN-1 — this one is also internally inconsistent), the §3 Snag box, Bearings #1 Q5/A5, Exam Alert item 8, two Common Traps rows, PQ5, PQ7, and Chapter Summary rows at **lines 1083–1084**.
+**Why it's a factual claim:** asserts (i) that a request passes three checks in a fixed order, (ii) that admission runs after authorization and before persistence, and (iii) that admission modules may mutate rather than only accept/reject. All three are checkable statements about API server behaviour.
 
-**Fix:** fetch `kubernetes.io/docs/concepts/policy/resource-quotas/` and `.../limit-ranges/`, per the author's own scope guard at line 313. Then re-check Figure 8.3 and PQ6's explanation against what actually comes back.
+**Instances:** 19.
 
----
+**Fix:** Tag against `[source: k8s-docs-controlling-access-2026-08-24]`, which closes all three outright:
+- ordering — *"When a request reaches the API, it goes through several stages"*, plus the snapshot's `[STRUCTURAL]` observation that the page presents Transport security → Authentication → Authorization → Admission control → Auditing as sequential sections. **Cite the structural observation; do not quote the stage order as a source sentence** — the snapshot marks it as not-quotable prose.
+- persistence order — *"Once a request passes all admission controllers, it is validated using the validation routines for the corresponding API object, and then written to the object store."*
+- mutation — *"Admission Control modules are software modules that can modify or reject requests"* and *"admission controllers can also set complex defaults for fields."*
 
-### Cluster C — The managed vs. self-hosted duty split (6 instances) — NOT author-flagged
+Two free upgrades available from the same snapshot: the quorum contrast (*"if any module authorizes the request, then the request can proceed. If all of the modules deny the request, then the request is denied (HTTP status code 403)"* vs *"Unlike Authentication and Authorization modules, if any admission controller module rejects, the request is immediately rejected"*), and *"Admission controllers do not act on requests that merely read objects."*
 
-#### Line 543: "A managed control plane means the provider decides when you upgrade, and the provider holds the etcd backup. A self-hosted control plane means both are yours."
+### 5. §2 Navigational Hazards — "admission has no opinion about your identity"
 
-**Why it's a factual claim:** it asserts what third-party managed Kubernetes services do and do not do on a customer's behalf. That is vendor-behaviour, not architecture.
+**Excerpt:** `**Authorization has no opinion about the contents of your request; admission has no opinion about your identity.**`
 
-**What the corpus actually supports:** `k8s-docs-setup-tooling-2026-08-23` says only "consider which aspects of operating a Kubernetes cluster (or abstractions) you want to manage yourself and which you prefer to hand off to a provider." That licenses the *existence* of a split. It does not license naming upgrade timing and etcd custody as the two items on the managed side of it.
+**Why it's a factual claim:** asserts a limit on what admission controllers can see.
 
-Other instances: **line 84** (Soundings A8's five-duty list: "patching and upgrades; backups; hardware replacement; capacity planning; certificate rotation"), **line 732** ("on a managed control plane you may not be able to reach etcd at all"), Bearings #2 Q5/A5, **PQ13** and its answer key.
+**Instances:** 1.
 
-This cluster is load-bearing: PQ13's correct answer B is entirely dependent on it, and §5's closing move ("§6 is which versions are allowed to disagree. §7 is what you cannot get back. Those are the two duties that move") is the chapter's own structural hinge into its two densest sections.
+**Fix:** The first half is supportable (`controlling-access`: authorization needs *"the username of the requester, the requested action, and the object affected"*; admission *"can access the contents of the object that is being created or modified"*). **The second half is supported by no snapshot and is stronger than the sources warrant** — nothing in the corpus says admission ignores identity. Replace the symmetry with the sourced quorum contrast from entry 4, which is a sharper hazard and is fully attested: authorization is any-module-approves, admission is any-module-rejects. Note that Practice Q4's explanation ("quota is not an identity-scoped check") is fine as written and is supported by `resource-quotas` — that claim is about ResourceQuota specifically, not about admission generally.
 
-**Fix:** no cached snapshot will close this — kubernetes.io does not document commercial providers' responsibility models. Open a research gap for a vendor-neutral shared-responsibility source, or narrow the claim to what `setup-tooling` licenses ("some operational aspects move to the provider; which ones is a per-provider question") and rewrite PQ13 so its key does not turn on the specific two.
+### 6. §2 — "RBAC ... is a mechanism that lives at this gate"
 
----
+**Excerpt:** `it is a mechanism that lives at this gate, and it has opinions about identities and verbs, not about the contents of your YAML.`
 
-### Cluster D — The cordon → `spec` field → built-in taint mechanism (4 instances) — NOT author-flagged
+**Instances:** 1.
 
-#### Line 814: "It writes a field on a Node object through the API server, and Chapter 7's built-in taint machinery — the `node.kubernetes.io/unschedulable` taint... — was already watching for exactly that."
-#### Line 1048 (PQ10 key): "`cordon` marks the node unschedulable, a statement of desired state, which lives in `spec`." / "the mechanism is a taint and an unschedulable marker, not a label."
+**Fix:** Tag to `[source: k8s-docs-controlling-access-2026-08-24]`: *"Kubernetes supports multiple authorization modules, such as ABAC mode, RBAC Mode, and Webhook mode."* This also restores the clause draft-v1 carried and draft-v2 cut ("RBAC is one authorizer among several") — it is now sourced and can go back if wanted.
 
-**Why they're factual claims:** they assert an implementation path — which field cordon writes, and that the built-in `unschedulable` taint is the downstream consequence of that write.
+### 7. §2 / §3 — ResourceQuota and LimitRange "take effect at this gate"
 
-**What the corpus supports, and where it stops.** Three separate facts are cached: cordon prevents scheduling new Pods [`k8s-docs-nodes-2026-08-23`]; `node.kubernetes.io/unschedulable:NoSchedule` exists as a built-in taint [`k8s-docs-daemonset-2026-08-24`, `k8s-docs-taints-tolerations-depth-2026-08-24`]; the scheduler checks taints [`taints-tolerations-depth`]. **No cached sentence connects the first to the second.** The word `spec` appears in no cached snapshot in connection with node unschedulability, and `taints-tolerations-depth` attributes automatic taint creation to *node conditions*, which unschedulability is not.
+**Excerpts:** `ResourceQuota is one of the API resources used to configure a cluster [source: ...], and it takes effect at this gate rather than through a separate subsystem.` and §3's closing `both of these mechanisms take effect at the admission gate. Neither is a separate subsystem with its own enforcement path.` and Practice Q4's `Quota enforcement happens at the admission gate`.
 
-This is the chapter's Zenith claim (line 820) and PQ10's entire answer. It is the one place where a genuinely elegant synthesis is resting on an unsourced causal link.
+**Instances:** 3.
 
-**Fix:** fetch `kubernetes.io/docs/reference/generated/kubernetes-api/v1.36/#nodespec-v1-core` (for `.spec.unschedulable`) or `.../docs/concepts/architecture/nodes/#manual-node-administration` at greater depth. If neither closes the taint link, narrow line 814 to what is cached: cordon is a write through the API server that the scheduler subsequently observes — and drop the assertion that the built-in taint is the specific mechanism.
+**Fix:** Tag to `[source: k8s-docs-admission-controllers-2026-08-24]` — *"ResourceQuota -- This admission controller will observe the incoming request and ensure that it does not violate any of the constraints enumerated in the ResourceQuota object"* and *"LimitRanger -- This admission controller will observe the incoming request and ensure that it does not violate any of the constraints enumerated in the LimitRange object."* Corroborated by `resource-quotas` (*"It is enabled when the API server `--enable-admission-plugins=` flag has `ResourceQuota` as one of its arguments"*) and `limit-range` (*"the LimitRange admission controller applies default request and limit values"*). This is load-bearing for §8's spine claim, so it should not stay untagged.
 
-Related: **line 428** ("Note what a kubelet does when it joins a cluster: it writes an object through the API server") — the snapshot says the kubelet "self-registers to the control plane"; "writes an object" is an inference. Lower stakes, same fix family.
+### 8. §2 — what auditing does
 
----
+**Excerpt:** `auditing exists, it is part of securing a cluster, and it is what tells you afterwards what happened.`
 
-### Cluster E — Workloads survive control-plane loss (3 instances) — NOT author-flagged
+**Instances:** 2 (this and the Chapter Summary row).
 
-#### Line 704: "Losing every control-plane node does not stop your worker nodes. The kubelets keep running the containers they were last told to run; traffic keeps being served."
-#### Line 771 (Bearings #3 A4): "Not the running workloads: kubelets keep running what they were last told to run, and traffic keeps flowing."
+**Fix:** Tag to `[source: k8s-docs-audit-2026-08-24]`: *"Kubernetes auditing provides a security-relevant, chronological set of records documenting the sequence of actions in a cluster."* The same snapshot supplies one clause that costs nothing and restates this chapter's spine a fourth time: *"Audit records begin their lifecycle inside the kube-apiserver component."* Keep stages, levels and backends out — above budget, and the snapshot confirms the level definitions were not verbatim-captured.
 
-**Why it's a factual claim:** it asserts specific failure-mode behaviour of the kubelet under total control-plane loss.
+### 9. §3 — all scope, counting and defaulting claims
 
-**What the corpus says:** `k8s-docs-etcd-backup-2026-08-23` names the disaster scenario ("such as losing all control plane nodes") and nothing about what survives it. No cached snapshot describes kubelet behaviour when the API server is unreachable.
+**Excerpts:**
+- `A quota is a ceiling on a **namespace, in aggregate**: the team's total, not any one Pod's numbers.`
+- `which is a constraint on **individual objects**, and a mechanism that has to be able to act on a manifest that says nothing at all.`
+- `The quota counts the namespace's total. The LimitRange counts one object's numbers.`
+- `The quota may refuse it. The LimitRange may fill it in.`
+- `> ★ **Fixed Point:** **ResourceQuota counts the namespace. LimitRange constrains the object.**`
+- Figure 8.3's `min ≤ … ≤ max` bound and `REJECTED` panel; Bearings #1 A5; Practice Q5 and Q6 keys; Exam Alert item 8; two Chapter Summary rows.
 
-This is not a throwaway — Bearings #3 Q4 is *constructed* around it ("The scenario is constructed so you have to notice that 'running workloads' and 'cluster state' are different things"), so the pedagogy fails if the claim is wrong.
+**Instances:** 12.
 
-**Fix:** open a research gap. `kubernetes.io/docs/concepts/architecture/#kubelet` or the node-shutdown/static-pod material are the likely closers. Do not ship the Bearings #3 Q4 construction untagged.
+**Fix:** All closable, and this section can now be *strengthened* rather than merely tagged:
+- aggregate scope — `[source: k8s-docs-resource-quotas-2026-08-24]`: *"A resource quota, defined by a ResourceQuota object, provides constraints that limit aggregate resource consumption per namespace."*
+- per-object scope — `[source: k8s-docs-limit-range-2026-08-24]`: *"A LimitRange is a policy to constrain the resource allocations (limits and requests) that you can specify for each applicable object kind (such as Pod or PersistentVolumeClaim) in a namespace."*
+- the `min ≤ … ≤ max` bound in Figure 8.3 — *"Enforce minimum and maximum compute resources usage per Pod or Container in a namespace."* **The figure was right and the prose was thin; bring the prose up, do not cut the figure down.**
+- rejection — *"If creating or updating a resource violates a quota constraint, the control plane rejects that request with HTTP status code `403 Forbidden`."*
+- **the section's single most examinable sourced fact, currently absent** — *"If you enforce a resource quota in a namespace for either `cpu` or `memory`, you and other clients, **must** specify either `requests` or `limits` for that resource, for every new Pod you submit."* This also settles the internal inconsistency the previous audit flagged in the §3 Worth Securing callout, in favour of "the quota refuses it."
+- defaulting — *"Set default request/limit for compute resources in a namespace and automatically inject them to Containers at runtime"* and *"LimitRange validations occur only at Pod admission stage, not on running Pods."*
 
----
+Scope guard unchanged: do **not** take quota scopes, scope selectors, priority-class quota, or the full countable-resource roster. Per the snapshot's own extraction note, the compute/storage/object-count resource names are **[NAMES ONLY]** — do not quote the table row descriptions.
 
-### Cluster F — `NoSchedule` semantics (4 instances) — snapshot exists but is not in this chapter's set
+### 10. §4 — "Capacity and Allocatable are two different numbers ... the second is the one the scheduler uses"
 
-#### Line 78 (Soundings A5): "`NoSchedule` governs new placements only. Pods already running on the node keep running."
-#### Line 572 (Bearings #2 A1): "`NoSchedule` governs new placements only, so Pods already on the node keep running."
+**Excerpt:** `Capacity and Allocatable are two different numbers on the same Node object, and the second is the one the scheduler uses.`
 
-**Why it's unverifiable here:** `k8s-docs-taints-tolerations-depth-2026-08-24`'s own header states that the core snapshot — `k8s-docs-taints-tolerations-2026-08-23` — "holds the core concept, **the three effects** and the four matching rules." That snapshot is **not among this chapter's 18**. The depth cut deliberately does not restate effect semantics. So the corpus available to this chapter contains the *string* `NoSchedule` in two taint tables and nowhere defines what it does.
+**Instances:** 2 (this and the Chapter Summary "Allocatable" row).
 
-Also affected: Bearings #2 Q1 (which instructs the reader to apply "Chapter 7's rule about what `NoSchedule` governs"), and line 814's "you met in a table with a `NoSchedule` effect."
+**Fix:** `[source: k8s-docs-node-status-2026-08-24]` now **defines Capacity**, which no earlier snapshot did: *"The fields in the capacity block indicate the total amount of resources that a Node has. The allocatable block indicates the amount of resources on a Node that is available to be consumed by normal Pods."* Combined with `k8s-docs-reserve-compute-resources-2026-08-24` (*"Pods can consume all the available capacity on a node by default. This is an issue because nodes typically run quite a few system daemons that power the OS and Kubernetes itself"*, plus `kubeReserved` and `systemReserved`), the **unpaid Chapter 7 promise can now be discharged in two sentences.**
 
-**Fix:** this one needs no fetch. Add `k8s-docs-taints-tolerations-2026-08-23` to this chapter's referenced-snapshot set and tag lines 78 and 572 against it. The corpus note is explicit that a claim needing an unlisted snapshot must be named as a gap rather than cited blind — so the reference list, not the prose, is what is wrong.
+**Hard constraint, re-confirmed by both snapshots:** there is still no textual statement or equation relating Capacity, the reservations and Allocatable — the relationship is published only as `node-capacity.svg` with no text equivalent. **Do not state an arithmetic relationship, in numbers or in words.** The draft-v1 phrasing "what is left after the node's own overheads are set aside" was correctly cut and must not return.
 
----
+### 11. §8 and Bearings #2 item 1 — the cordon → taint → scheduler causal link
 
-### Cluster G — CNCF domain weight (2 instances)
+**Excerpts:**
+- §8: `It is a write through the API server, and the scheduler then does what the scheduler always does: it checks taints when it makes scheduling decisions [source: k8s-docs-taints-tolerations-depth-2026-08-24], finds the node marked unschedulable, and places nothing there.`
+- Bearings #2 item 1 stem: `You cordon a node. Chapter 7 taught you a built-in taint ... Name that taint`
 
-Author-flagged at line 8. **Confirmed.**
+**Why it's a factual claim:** the juxtaposition asserts a mechanism — that what `cordon` writes is the thing the scheduler's taint check reads.
 
-#### Line 4: "**Domain: Kubernetes Fundamentals — 44% of the exam**"
-#### Line 6: "The 44% is CNCF's published domain weight... CNCF publishes weights for its **four** domains and not for the competencies within them."
+**Instances:** 3 (§8 paragraph, Bearings #2 item 1 stem + key, Practice Q10 key).
 
-**Why they're factual claims:** both assert what a certifying body publishes about its own exam blueprint — the single most consequential category of claim in a study guide.
+**Fix, partial — and this is the chapter's highest-leverage single sentence:** `[source: k8s-docs-node-status-2026-08-24]` states verbatim *"`SchedulingDisabled` is not a Condition in the Kubernetes API; instead, cordoned nodes are marked Unschedulable in their spec."* That converts "cordon writes a field on a Node object" and the spec-vs-status framing from inference to sourced claim, and restores Practice Q10's original (better) spec-vs-status item along with its `[retrieval: ch4]` tag — which also fixes the retrieval-percentage shortfall the draft's own accounting comment records (6/34 = 17.6%, below the 20% floor; restoring Q10 returns it to 20.6%).
 
-**What the corpus says:** nothing. No KCNA curriculum snapshot is cached. Worse, the corpus's own frontmatter is not corroborating: `objectives_covered` fields across the 18 snapshots reference `D1`, `D2` and `D4` — consistent with *at least* four domains, but establishing no total — and **the string "Kubernetes Fundamentals" appears in no cached snapshot at all**. The domain the chapter names as its own is unattested in this corpus.
+**Still not sourced:** no cached sentence connects `.spec.unschedulable` to the `node.kubernetes.io/unschedulable` *taint*. Three separate facts are cached — cordon marks the node Unschedulable in spec [node-status]; a built-in `node.kubernetes.io/unschedulable:NoSchedule` taint exists and DaemonSet Pods tolerate it [daemonset]; the scheduler checks taints [taints-depth] — and `taints-depth` attributes automatic taint creation to node *conditions*, which unschedulability is not. **Recommended framing:** state the sourced spec write, then the sourced taint's existence and effect, and let the reader see the shape without the chapter asserting the link. Bearings #2 item 1 should ask the reader to name the built-in taint whose effect matches, not imply that `cordon` applies it.
 
-**Fix:** restore the two inline CNCF tags from the book-level curriculum snapshot, as line 8 instructs. Verify the domain *name* and the domain *count* at the same time, not just the percentage — all three are unattested here.
+### 12. Practice Q7 — "requests are the number the scheduler filters on"
 
----
+**Excerpt:** `Chapter 5 established that requests are the number the scheduler filters on`
 
-### Singleton untagged claims (7)
+**Instances:** 1.
 
-#### Line 133: "Four slots, and only the first is mandatory"
-**Why it's a factual claim:** asserts which `kubectl` argument slots are optional. The snapshot establishes NAME optional ("if the name is omitted, details for all resources are displayed") and flags optional ("optional flags"). **It says nothing about TYPE being optional.**
-**Fix:** either tag it, or narrow to "NAME and flags are optional" — which is fully sourced and costs nothing.
+**Fix:** The draft's inline comment marks this unverifiable. **It is verifiable** — `k8s-docs-resource-management-2026-08-23` is in this chapter's set and states: *"When you specify the resource request for containers in a Pod, the kube-scheduler uses this information to decide which node to place the Pod on."* Tag it and delete the comment. The Allocatable half of the explanation was already sourced. Q7's key (B) is sound.
 
-#### Line 186: "`kubectl explain`... works on resource types you have never seen, including Custom Resource Definitions"
-**Why it's a factual claim:** vendor feature availability. The snapshot says only "explain — Get documentation of various resources (pods, nodes, services, etc.)." CRDs are named in `k8s-docs-extending-kubernetes-2026-08-23`, but nothing connects `explain` to them.
-**Fix:** tag against a kubectl-explain reference, or drop the CRD clause.
+### 13. Practice Q13 — "Taking etcd backups is a control-plane duty"
 
-#### Line 529: "kind... makes it the usual choice inside CI pipelines. minikube runs a local cluster with a broader set of conveniences... the usual choice when a human is sitting in front of it."
-**Why it's a factual claim:** asserts ecosystem-tool suitability and prevailing practice. Only "kind runs its nodes as containers" is sourced (`setup-tooling`: "using Docker containers as nodes"). Everything after it is unattested.
-**Fix:** open a research gap, or reframe as the author's operational judgement rather than as documented fact.
+**Excerpt:** `Taking etcd backups is a control-plane duty`
 
-#### Line 535: "`kubeadm`... will not put a container runtime on those nodes"
-**Why it's a factual claim:** a negative assertion about a tool's scope. `setup-tooling` says a runtime "must be installed on every node" — which implies the requirement, not that kubeadm declines to satisfy it. Repeated at Bearings #2 A4 and PQ12's explanation D.
-**Fix:** narrow to the sourced form ("a runtime must already be present on every node"), which carries the same pedagogical weight without the unsourced negative.
+**Instances:** 1. (The companion half of the same key is separately **contradicted** — see CONTRADICTED entry 2.)
 
-#### Line 541: "scheduler profile configuration lives in the control plane's own component configuration, which is a thing you can reach only if you own the control plane"
-**Why it's a factual claim:** asserts both where scheduler config lives and what a managed platform withholds. `extending-kubernetes` names "scheduler plugins/profiles" and stops there.
-**Fix:** cut, or fetch `.../docs/reference/scheduling/config/`.
+**Fix:** Derivable but untagged. `k8s-docs-etcd-access-control-2026-08-24` establishes etcd as the control plane's backing store reachable ideally only by the API server, and `k8s-docs-etcd-backup-2026-08-23` names the disaster scenario as "losing all control plane nodes." Tag against both, or reframe as the book's architectural reasoning.
 
-#### Line 1045 (PQ9 explanation B): "`NotReady` is a display convention in summary output, not one of the condition's three values"
-**Why it's a factual claim:** asserts specific `kubectl` output formatting. The three condition values are sourced; the claim about what summary output *displays* is not. Also at Bearings #2 A3.
-**Fix:** the second half is sourced and sufficient. Drop "is a display convention in summary output" or tag it.
+### 14. The Voyage Ahead — Pod disposability
 
-#### Line 236: "RBAC is one authorizer among several"
-**Why it's a factual claim:** asserts the existence of multiple authorization modes. `extending-kubernetes` lists RBAC only as an example API resource ("such as ResourceQuota, NetworkPolicy and RBAC").
-**Fix:** closed by the same `controlling-access/` fetch as Cluster A.
+**Excerpt:** `Pods are, by design, disposable: a controller may replace one at any moment, and the replacement is a different Pod.`
+
+**Why it's a factual claim:** asserts controller replacement semantics.
+
+**Instances:** 1.
+
+**Fix:** No snapshot in this chapter's set covers workload-controller replacement semantics. This is Chapter 6 material recapped forward. Either tag against Chapter 6's referenced snapshot set (which the integration stage can verify), or attribute it explicitly to Chapter 6 in-prose ("Chapter 6 established that…"), which is the cheaper fix and matches how the chapter handles other backward references.
 
 ---
 
 ## FAIL — Contradicted claims
 
-### Line 497: "Capacity is the machine's total; Allocatable is what is left for your workloads after the node's own overheads are set aside."
+### 1. Figure 8.3 and its caption — "(no namespace boundary)" for LimitRange
 
-**Tag:** untagged, but sits mid-paragraph between two `[source: k8s-docs-node-allocatable-2026-08-24]` sentences, which will read to a reviewer as covered by them.
+**Location:** §3, `<!-- FIGURE: ch08-fig05-quota-vs-limitrange -->` right-hand panel label and the caption below it.
 
-**Snapshot says** (`k8s-docs-node-allocatable-2026-08-24`, NOT IN THIS SNAPSHOT block):
-> "the formula or diagram relating node Capacity to `kube-reserved`, `system-reserved`, `eviction-threshold` and Allocatable. The source presents this as an image (`node-capacity.svg`) with no text equivalent, so no equation is extractable. **§2 must not state an arithmetic relationship between capacity and allocatable.**"
+**Tag:** untagged (the figure carries no source tag; the surrounding prose is tagged to `k8s-docs-cloud-native-security-2026-08-23`, which does not address scope).
 
-**Draft says:** "Capacity is the machine's total; Allocatable is what is left... after the node's own overheads are set aside."
+**Snapshot says** (`k8s-docs-limit-range-2026-08-24`): *"A LimitRange is a policy to constrain the resource allocations (limits and requests) that you can specify for each applicable object kind (such as Pod or PersistentVolumeClaim) **in a namespace**."* And: *"Kubernetes constrains resource allocations to Pods **in a particular namespace** whenever there is at least one LimitRange object in that namespace."*
 
-**Why this is a contradiction and not merely an untagged claim:** "what is left after X is set aside" *is* an arithmetic relationship — subtraction, stated in words. The snapshot does not merely fail to support the sentence; it carries an explicit instruction not to write it. The snapshot also never defines Capacity at all, so "Capacity is the machine's total" is an independent unsourced definition.
+**Draft says:** figure label `LimitRange / (no namespace boundary)`; caption: *"On the right, there is no namespace boundary at all — the constraints sit on individual Pods."*
 
-The author's note at line 499 identifies the following sentence ("The two differ because...") but reads the quoted sentence as compliant with option (b). It is not — option (b) was to name what the reservation is *for* without the arithmetic, and "what is left after overheads are set aside" supplies the arithmetic.
+**Why this matters beyond pedantry:** a LimitRange **is a namespaced object with a namespace boundary**; it applies only to objects in its own namespace. The chapter contradicts itself four paragraphs later: *"ResourceQuota and LimitRange are namespaced objects."* A reader who takes the figure at face value will answer a KCNA-style "is a LimitRange namespaced or cluster-scoped?" item wrongly — and the figure is the artefact the chapter tells them to trust ("the two failure modes are the proof").
 
-**Recommended fix:** cut both sentences back to the two verbatim-sourced ones at line 497, plus at most a bare statement that the two numbers differ. Keep line 501's Fixed Point ("Allocatable is the number the scheduler does arithmetic against") — it is fully supported by "The scheduler treats 'Allocatable' as the available `capacity` for pods" and "does not over-subscribe." If the Chapter 7 promise is to be paid properly, fetch `kubernetes.io/docs/tasks/administer-cluster/reserve-compute-resources/` at depth; otherwise adjust Chapter 7's pointer, per line 499.
+**Recommended fix:** Draw the namespace boundary on **both** panels and move the discrimination to what is actually being counted: left panel, one aggregate total for the namespace, fifth Pod rejected at the cap; right panel, same namespace boundary, per-object `min ≤ … ≤ max` bounds on each Pod, fifth Pod accepted with defaults injected. Rewrite the caption to say the panels fail differently *within the same scope*, which is the true and sharper discrimination. Note that this is a figure-content change, not an anchor change — `ch08-fig05-quota-vs-limitrange` must be preserved verbatim as the join key to `image-specs.md`, and the corresponding spec entry needs the same correction in the same sweep.
 
----
+### 2. Practice Q13, correct answer C's rationale — who sets ResourceQuotas
 
-### Line 147 (Figure 8.1): `kubectl   cordon           node          node-7`
+**Location:** Practice Questions, answer key for Q13.
 
-**Tag:** figure is untagged; the cordon command form is sourced twice in prose (lines 210, 432) from `k8s-docs-nodes-2026-08-23`.
+**Tag:** untagged.
 
-**Snapshot says** (`k8s-docs-nodes-2026-08-23`):
-> "marking a node as unschedulable (`kubectl cordon $NODENAME`)"
+**Snapshot says** (`k8s-docs-resource-quotas-2026-08-24`): *"**A cluster administrator** creates at least one ResourceQuota for each namespace."* And (`k8s-docs-limit-range-2026-08-24`): *"**The administrator** creates a LimitRange in a namespace."*
 
-— one positional argument.
+**Draft says:** *"Taking etcd backups is a control-plane duty; setting a namespace's ResourceQuotas is a workload-side concern that belongs to whoever runs the workloads, on either team."* And in distractor B's rebuttal: *"which is right about images and requests but names no control-plane duty at all."*
 
-**Draft says:** Figure 8.1 aligns `cordon` across the TYPE column (`node`) *and* the NAME column (`node-7`), which renders as `kubectl cordon node node-7` — two positional arguments.
+**Why this matters:** the question's keyed answer turns on ResourceQuota administration sitting with the *workload team*. Both newly-present snapshots attribute it to the *cluster administrator* — i.e. to exactly the side the key excludes. The item is now keyed against its own sources, and a well-prepared candidate reading the documentation would pick differently. This is a live correctness defect in an exam-simulation item, not a phrasing quibble.
 
-**And the draft contradicts itself.** Line 1042 (PQ8's explanation) states the opposite outright:
-> "Note the grammar: `cordon` and `drain` take the node's name directly, **without a preceding TYPE**, because the verb already implies the resource type."
-
-PQ8's correct answer B is `kubectl cordon worker-3`; its distractor A opens `kubectl drain node worker-3` and is marked wrong *for ordering only*, leaving the extra TYPE token silently endorsed. A reader who works Figure 8.1 and then works PQ8 gets two incompatible grammars for the same command, and the figure's version is the one the cached source does not use.
-
-**Recommended fix:** move `cordon` in Figure 8.1 to the NAME column with TYPE empty — which also strengthens the figure's stated point ("What to notice is the empty columns"). Then fix **line 210**, which glosses the two-token `kubectl cordon node-7` as "Verb, resource type, name" — three slot names for two tokens. It should read "Verb, name." Optionally add a half-sentence to PQ8's distractor A explanation noting the TYPE token as a second defect.
+**Recommended fix:** Replace the "does not" half of option C with a duty the sources unambiguously place outside control-plane operation. The cleanest available pair, both fully sourced: **taking etcd backups** (control-plane duty) versus **choosing container images / declaring a Pod's resource requests** (`k8s-docs-resource-quotas-2026-08-24`: *"Users create resources (pods, services, etc.) in the namespace"*; `k8s-docs-resource-management-2026-08-23` on requests as a Pod-spec author's declaration). Rewrite distractor B accordingly so it remains a genuine four-way discrimination rather than collapsing into the new key. Note that the previous rewrite of Q13 correctly removed the unsourceable managed-vs-self-hosted axis; this finding is about the axis that replaced it.
 
 ---
 
 ## WARN — Minor discrepancies
 
-1. **Line 348 — internal inconsistency, not just untagged.** "A quota with no LimitRange means a single team member who omits resource requests can, with one Pod, consume the namespace's entire allocation." This sits in direct tension with **line 321** ("The quota may refuse it," of a manifest that says nothing about resources). If the quota refuses request-less manifests, the scenario at line 348 cannot occur. Whichever way the Cluster-B fetch resolves, one of these two sentences will need rewriting — flag them as a pair.
+1. **Citation staleness on the node conditions table (§4).** The conditions table, the three-valued `Ready` description, and the status-field list are tagged to `[source: k8s-docs-nodes-2026-08-23]`. That snapshot carries a `supersedes_note`: *"As of 2026-08-24 the concept page no longer carries that table -- it links out to this reference page. Chapter 8 sec.4 should cite THIS file"* — i.e. `k8s-docs-node-status-2026-08-24`. The **content is unchanged and correct**; only the citation points at a page that no longer carries it. Retag conditions, Capacity/Allocatable and Info to the node-status reference; keep the 08-23 nodes snapshot for registration, cordon/drain/uncordon, heartbeats and the node controller.
 
-2. **Line 618 — "That single sentence generates four of the five rows below."** The generating rule is "nothing may be newer than the API server." It generates the kubelet row, the kube-proxy row, and the controller-manager/scheduler/CCM row — three. It does **not** generate the kube-apiserver HA row, which is a *mutual* bound ("newest and oldest... must be within one minor version"), symmetric in both directions and describing apiservers relative to each other rather than to an apiserver. Repeated at **line 744** (Bearings #3 Q2) and in that item's answer, which explicitly lists "the constraint on HA API servers relative to one another" among the generated rows. **Fix:** "three of the five," with the HA row and `kubectl` both treated as outside the derivation — or reword the rule to cover it. The table itself is verified correct; only the derivation claim overreaches.
+2. **The status-field list reads as exhaustive and is now one short.** §4: *"A Node's status contains Addresses (…); Conditions; Capacity and Allocatable; and Info…"* The current reference page lists five: *"Addresses * Conditions * Capacity and Allocatable * Info * Declared Features."* Declared Features is correctly out of scope (above associate tier, in no CNCF competency list), but the sentence should read "contains, among other fields" rather than implying a closed set.
 
-3. **Line 630 — "roughly a year of coverage, which is *exactly* the patch-support figure."** Three releases a year at ~15-week intervals across three branches is ~45 weeks ≈ 10.4 months. The source says "approximately 1 year." "Exactly" overstates a derivation the numbers support only loosely. Same at **line 767** ("about twelve months of coverage"). Soften to "close to."
+3. **`node-monitor-grace-period` now has a documented default.** §4 states *"This book will not give you a number for it."* `k8s-docs-node-status-2026-08-24` documents *"default is 50 seconds."* The outline's standing instruction permits this **as a dated illustration, never as a rule.** Optional; the examinable fact is unchanged either way. If added, `SchedulingDisabled is not a Condition in the Kubernetes API` from the same snapshot is a ready-made Snag for the same subsection.
 
-4. **Line 674 — "`kubectl` is a user tool that lives outside the cluster."** In tension with §1's own "surprising case" (**lines 198–204**), which establishes that `kubectl` frequently runs *inside* a Pod. The skew rationale is sound; the phrasing collides with material 480 lines earlier that the chapter treated as notable.
+4. **Practice Q8's rebuttal of option A rests on an unasserted mechanism.** The key says drain-then-cordon *"would drain a node that is still accepting new Pods."* `k8s-docs-safely-drain-node-2026-08-24` carries an explicit warning: *"No sentence on this page states that `kubectl drain` cordons the node as part of its operation… **Chapter 8 must not claim it from this source.**"* The same page then instructs *"you need to run `kubectl uncordon <node name>` afterwards"*, which cuts against the draft's assumption. Neither direction is assertable. **Recommended fix:** rebut A on sequence logic that is sourced — cordon is documented as *"a preparatory step before a node reboot or other maintenance"* — rather than on a claim about what drain does or does not do to schedulability.
 
-5. **Line 222 — the securing-a-cluster list is presented as a contiguous five.** The snapshot's list is "Generate Certificates; Kubernetes Container Environment; Controlling Access to the Kubernetes API; Authenticating; Authorization; Using Admission Controllers; Admission Webhook Good Practices; Using Sysctls...; Auditing." Relative order is preserved ✓, but "lists them in this order" implies adjacency, and two items sit between "Using Admission Controllers" and "Auditing." Low risk; a "among other entries" would fix it.
+5. **The three-gate model omits a stage the source enumerates.** `k8s-docs-controlling-access-2026-08-24` presents five stages, opening with **Transport security** before Authentication. The chapter's compression to "three gates and a logbook" is defensible pedagogy and the TLS material is covered inside gate one, but a candidate could meet an item on the fuller stage list. One clause acknowledging that the project's own page begins with transport security would close the gap at negligible cost.
 
-6. **Lines 155, 160 — "`pod`, `pods` and `po` are the same thing."** The rule (singular/plural/abbreviated, case-insensitive) is verbatim-sourced. The specific abbreviation `po` is not in any cached snapshot. Illustrative instantiation of a sourced rule; near-certain, but unattested.
+6. **`po` remains unattested.** Figure 8.1's callout `pod = pods = po`. The singular/plural/abbreviated *rule* is sourced; the specific abbreviation string is in no snapshot. Low risk. Either accept it as an instantiation or substitute a form the corpus attests.
 
-7. **Line 184 — "the only verb in the table that answers a question about *the API* rather than a question about *your cluster*."** `config` ("Modifies kubeconfig files") also answers a question about neither the API nor your cluster. "Only" is one counterexample too strong.
+7. **`kubectl scale deployment/web --replicas=5` uses a syntax the cached grammar does not document.** The prose example uses the `TYPE/NAME` slash form; Figure 8.1 silently normalises the same command into separate TYPE and NAME columns. `k8s-docs-kubectl-overview-2026-08-23` documents only `kubectl [command] [TYPE] [NAME] [flags]`. In a section whose entire point is the four-slot grammar, the mismatch between the prose example and the figure is worth resolving — use `kubectl scale deployment web --replicas=5` in both, or note the slash form as an equivalent the snapshot does not cover.
 
-8. **Lines 194, 1078 — kubeconfig precedence is derived, not stated.** The snapshot gives a *general* rule ("flags... override default values and any corresponding environment variables"), not a kubeconfig-specific precedence. Line 194 is honest about this ("Per the general rule above"). **Line 1078's summary row drops the hedge** and states "the flag wins" flat. Keep the signposting in the summary or restore it.
+8. **"`kubectl explain` … queries the API's own documentation"** (§1 Worth Securing) asserts a mechanism. The snapshot supports only *"Get documentation of various resources (pods, nodes, services, etc.)"*. The pedagogical point survives as "returns documentation for a resource type rather than your cluster's contents"; drop "queries the API's own documentation" unless a `kubectl explain` reference page is fetched.
 
-9. **Line 204 — "`kubectl` inside a Pod does not use your kubeconfig."** The snapshot says in-cluster authentication *is assumed* when the three conditions are found; it does not say kubeconfig is ignored. Also "does not default to the `default` namespace" — sourced as "acts against the namespace of the ServiceAccount," which may itself be `default`. Both overreach slightly past a verbatim-verified sentence.
+9. **"a container runtime must already be present on those nodes"** (§5). The snapshot establishes the requirement (*"A container runtime (containerd or CRI-O) must be installed on every node"*) but not the ordering relative to `kubeadm`. Delete "already"; the sourced form carries the same weight, and the previous narrowing pass left the word behind.
 
-10. **§2, gate one — "That injected token is the same file `kubectl` looks for in §1."** Two snapshots are being fused: `kubectl-overview` names the path `/var/run/secrets/kubernetes.io/serviceaccount/token`; `control-plane-node-communication` says a bearer token is injected. Neither states they are the same artefact. Near-certain, unattested.
+10. **§6's rationale for `kubectl`'s symmetric window is authored, not documented.** *"`kubectl` is a **user tool that addresses the cluster from outside** … so its compatibility window is about human convenience."* No snapshot gives a reason for any skew rule. The reasoning is sound and pedagogically valuable; mark it as the book's explanation rather than as documented rationale. Same applies to Bearings #3 A2 and Practice Q15's explanation. The upgrade-order derivation in the same section is handled correctly — it is explicitly framed as falling out of the tagged rule, and no cached source states an upgrade order.
 
-11. **Line 477 — "Four of those are two-valued."** The snapshot describes each condition with "True if..."; it does not assert that DiskPressure, MemoryPressure, PIDPressure and NetworkUnavailable are restricted to two values. The framing device is doing real work here (it sets up `Ready`'s three-valuedness), so it is worth either sourcing or softening to "Four of those you will meet as True or False."
+11. **Two different API server ports now sit in the corpus.** §2 says *"a secure HTTPS port, typically 443"* [control-plane-node-communication] — faithful to its tag. `k8s-docs-controlling-access-2026-08-24` says *"the Kubernetes API server listens on port 6443 on the first non-localhost network interface."* No contradiction as written, but if §2 is expanded during the controlling-access retag, do not mix the two figures in one sentence.
 
-12. **Line 491 — "The node controller is a control loop."** Untagged, but `k8s-docs-extending-kubernetes-2026-08-23` defines the pattern outright ("Controllers — client programs that read and/or write to the Kubernetes API, following a control loop: read an object's .spec, possibly do things, and then update the object's .status"). Free tag; take it. Same applies to **PQ11's key (line 1051)** and to PQ10's "Chapter 4's rule" about `spec` vs `status`, which that same sentence supports.
-
-13. **CRI is never tagged anywhere in the chapter.** Lines 535, Bearings #2 A4 and PQ12's explanation all invoke "the CRI, the Container Runtime Interface." `k8s-docs-extending-kubernetes-2026-08-23` defines it verbatim ("Container runtime (CRI, the Container Runtime Interface, to support alternative container runtimes)"). Another free tag.
-
-14. **Line 549 — "Three modest machines will run one [control plane]."** Unattested operational sizing claim. Low stakes inside a Logbook Entry, but it is a number a reader may carry.
-
-15. **Line 1039 (PQ7 key) — "requests are the number the scheduler filters on."** Attributed to Chapter 5. `k8s-docs-node-allocatable-2026-08-24`'s frontmatter lists `requests-as-scheduling-input` and `podfitsresources` under `concepts_covered`, but **no transcribed sentence in the snapshot states it**. Unverifiable in this chapter's corpus even though the topic is nominally covered. Same for the explanation's closing clause ("**D is wrong** on which of requests and limits the scheduler reads").
-
-16. **Line 1051 (PQ11 distractor D) — "etcd compaction is storage maintenance, not reconciliation."** etcd compaction appears in no cached snapshot. It is only a distractor rebuttal, but it asserts a fact.
-
-17. **Line 1066 (PQ16 distractor D) — "neither utility encrypts snapshots for you."** An unsourced negative. The snapshot's "keep it encrypted" implies the responsibility is the operator's, which is adjacent but not the same claim.
-
-18. **Line 862 — "High-priority topics, in descending order of confidence."** No cached snapshot establishes exam topic weighting. The hedge ("confidence," not "weight") makes this defensible as authored judgement, but it is worth a deliberate decision rather than an accident — and it shares a root cause with Cluster G.
-
-19. **Line 1126 — "Every Pod gets an address."** Forward reference to Chapter 9; unsourced in this chapter's corpus. Also "a controller may replace one at any moment, and the replacement is a different Pod." Both are teaser prose, low risk, but they are factual assertions in a chapter with no networking snapshots cached.
-
-**Noticed, outside this stage's scope (flagged for whoever owns them, not counted above):**
-- The verb table's "Where you met it" column attributes `logs` and `exec` to **Ch 13** — a forward reference in a column whose header promises a backward one. Structural/cross-bearing integrity, not fact accuracy.
-- **Line 480** — "because the cached documentation names the parameter without stating a value" is reader-facing prose that leaks the pipeline's internal vocabulary. Voice stage.
-- `k8s-keps-and-feature-stages-2026-08-23` is cached but uncited. §6's two Chapter 17 pointers (SIG Release, the KEP process) could be tagged against it at no cost.
+Also noted, non-blocking: §3's absolute negative *"There is no ResourceQuota that limits how many Nodes a group may consume"* is a sound derivation from two tagged facts (quota is per-namespace; Nodes are cluster-scoped) rather than a quoted claim. It is correct — every countable resource the quota snapshot lists is namespaced — but it is a derivation and reads as a citation. Keep the derivation visible in the prose, which it currently is.
 
 ---
 
-## PASS — Verified claims
+## PASS — Verified claims (sampled)
 
-All 68 tagged claim instances were checked against their named snapshot. Sampled evidence of coverage, by section:
+**§1 — kubectl grammar.** Four-slot form; `create`/`get`/`describe`/`delete` as command examples; TYPE as resource type; name-omitted-means-all; flags override defaults and environment variables; types case-insensitive and singular/plural/abbreviated; names case-sensitive. All verbatim in `k8s-docs-kubectl-overview-2026-08-23`. Full verb table (11 entries) matches the snapshot's Operations list, including `scale`'s "replication controller / deployment" phrasing and `rollout`'s three valid resource types. Kubeconfig precedence (`$HOME/.kube/config`, `KUBECONFIG`, `--kubeconfig`) verbatim; the flag-beats-environment conclusion is a transparent application of the snapshot's own general rule and the draft says so. In-cluster detection (two env vars + token file at `/var/run/secrets/kubernetes.io/serviceaccount/token`, "all three found", ServiceAccount namespace unless `--namespace`) verbatim. `kubectl cordon $NODENAME` and its effect verbatim from `k8s-docs-nodes-2026-08-23`, now additionally corroborated by `k8s-docs-kubectl-cordon-2026-08-24` (*"Mark node as unschedulable"*, `kubectl cordon NODE`) — worth adding as a second tag, since that snapshot exists precisely to instantiate this section's grammar.
 
-**§1 (14 tagged, all verified).** The four-slot grammar and all four slot definitions match `k8s-docs-kubectl-overview-2026-08-23` near-verbatim, including "if the name is omitted, details for all resources are displayed" and the flags-override-environment-variables rule. **The full 12-row verb table was checked row by row against the snapshot's Operations list — all 12 descriptions match**, with one trivial compression (the `delete` row drops "resource selectors"). The kubeconfig location, the three in-cluster detection conditions, and the ServiceAccount-namespace default are all verbatim. Line 210's cordon description matches `k8s-docs-nodes-2026-08-23`.
+**§2 — attested portions.** The documentation's securing-a-cluster list and its relative ordering, including Auditing sitting further down among other entries — accurate to `k8s-docs-cluster-administration-2026-08-23`. Extension-point taxonomy naming authentication, authorization and dynamic admission control — accurate to `k8s-docs-extending-kubernetes-2026-08-23`. HTTPS port typically 443 with client authentication; node provisioning with the cluster root certificate and client certificates; kubelet TLS bootstrapping; ServiceAccount root-certificate-and-bearer-token injection; "one or more forms of authorization should be enabled, especially if anonymous requests or service account tokens are allowed" — all accurate to `k8s-docs-control-plane-node-communication-2026-08-24`. Authentication-and-authorization-as-a-pair — accurate to `k8s-docs-cloud-native-security-2026-08-23`. NodeRestriction's `node-restriction.kubernetes.io/` prefix rule — accurate to `k8s-docs-assign-pod-node-2026-08-23`, corroborated by the admission-controllers reference. Pod Security Admission as the built-in enforcer — accurate to `k8s-docs-pod-security-standards-2026-08-23`. Webhook synchronous-HTTP-plus-point-of-failure — accurate to extending-kubernetes. Hub-and-spoke closing paragraph — verbatim.
 
-**§2 (14 tagged, all verified).** The HTTPS/443 client-authentication sentence, the node client-certificate provisioning guidance, kubelet TLS bootstrapping, the Pod ServiceAccount injection, and the hub-and-spoke paragraph at line 296 all match `k8s-docs-control-plane-node-communication-2026-08-24` word for word. NodeRestriction matches `k8s-docs-assign-pod-node-2026-08-23`; Pod Security Admission matches `k8s-docs-pod-security-standards-2026-08-23`; the webhook "potential point of failure" candour matches `k8s-docs-extending-kubernetes-2026-08-23`.
+**§4.** Both node registration paths, `metadata.name` validation, healthy-node eligibility, DNS-subdomain-and-unique naming; cordon/drain/uncordon; all five conditions and the three `Ready` values; `kubectl describe node <name>`; both heartbeat forms and the `kube-node-lease` Lease objects; the node controller's three jobs including API-initiated eviction — all accurate to `k8s-docs-nodes-2026-08-23` (subject to WARN 1's retag). DaemonSet tolerating an unschedulable node — nodes snapshot — plus the `node.kubernetes.io/unschedulable` / `NoSchedule` toleration row — verbatim from `k8s-docs-daemonset-2026-08-24`. Control-loop definition (read `.spec`, do things, update `.status`) — verbatim from extending-kubernetes. Both Allocatable sentences — verbatim from `k8s-docs-node-allocatable-2026-08-24`. Chapter 4's Lease pointer — accurate to `k8s-docs-namespaces-2026-08-23`.
 
-**§4 (15 tagged, all verified).** Both node-registration paths, the Node-object validity check, the DNS-subdomain naming rule, the cordon/drain/uncordon triad, the DaemonSet unschedulable toleration (cross-verified against *both* `k8s-docs-nodes-2026-08-23` and the seven-row table in `k8s-docs-daemonset-2026-08-24`), the Node status contents, **all five node conditions and all three `Ready` values**, both heartbeat forms, and all three node-controller jobs. The Allocatable definition and the scheduler's non-oversubscription are verbatim `[VERBATIM]` passages from `k8s-docs-node-allocatable-2026-08-24`.
+**§3 hinge.** Namespaced-vs-cluster-scoped, including the StorageClass/Nodes/PersistentVolumes examples — verbatim from `k8s-docs-namespaces-2026-08-23`. This is the one part of §3 that was fully sourced before this pass and remains so.
 
-**§5 (6 tagged, all verified).** All five planning questions, minikube and kind, kubeadm's "officially supported" status and its two jobs, k3s as a lightweight distribution, and the containerd/CRI-O node requirement — all match `k8s-docs-setup-tooling-2026-08-23` and `k8s-docs-cluster-administration-2026-08-23`.
+**§5.** All five planning questions match `k8s-docs-cluster-administration-2026-08-23`. minikube, kind ("Kubernetes IN Docker", Docker containers as nodes), managed/turnkey services, kubeadm as officially supported for creating clusters and joining nodes, k3s as lightweight, container runtime (containerd or CRI-O) required on every node, kubectl as the CLI for any cluster — all verbatim from `k8s-docs-setup-tooling-2026-08-23`. CRI as the interface for alternative runtimes, and scheduler plugins/profiles as a scheduling extension point — extending-kubernetes.
 
-**§6 (7 tagged, all verified — checked with extra care as the chapter's highest-stakes block).** Semantic-versioning terminology ✓. Three release branches ✓. ~1 year patch support for 1.19+, ~9 months for 1.18 and older ✓. Backport policy ✓. Three releases per year, ~15 weeks, SIG Release, monthly patches ✓. Current roster 1.36/1.35/1.34 ✓.
+**§6 — the whole skew table, row by row.** HA kube-apiserver within one minor; kubelet not-newer / three-older / `<1.25` two-older, with the 1.36 → 1.36/1.35/1.34/1.33 example; kube-proxy not-newer-than-apiserver, three-older, and three older-or-newer than its co-located kubelet; controller-manager/scheduler/cloud-controller-manager not-newer, expected-to-match, one-older for live upgrades; kubectl one minor either direction with the 1.37/1.36/1.35 example — **all five rows and both worked examples verbatim** from `k8s-version-skew-policy-2026-08-23`. Semantic-versioning `x.y.z`; three maintained release branches; backporting by severity and feasibility — same snapshot. One year of patch support for 1.19+, nine months for 1.18 and older; three minor releases per year since 2021 at roughly fifteen weeks, SIG Release, monthly patch cuts; and the dated 1.36/1.35/1.34 roster, correctly presented as a snapshot-time illustration — all `k8s-releases-cadence-2026-08-23`. Figure 8.5 is consistent with the table, and its note that the HA rule is a mutual bound rather than a bar relative to the API server is correct.
 
-**All five skew-table rows verified against `k8s-version-skew-policy-2026-08-23`, including both worked examples.** The kubelet row's parenthetical ("A kubelet older than 1.25 may only be up to two minor versions older") correctly renders the snapshot's "kubelet < 1.25." **Figure 8.5's bar positions were checked against the table independently**: kubelet −3→0 ✓, kube-proxy −3→0 ✓, controller-manager/scheduler/cloud-controller-manager −1→0 ✓, kubectl −1→+1 ✓. **All four answers in Bearings #3 Q1 and all four options in PQ14 were re-derived from the snapshot and are correct** — including PQ14's key (kube-proxy at 1.37 against a 1.36 API server is unsupported) and PQ15's B rebuttal (kube-proxy is older-only relative to the API server).
+**§7.** etcd as *"a consistent and highly-available key value store used as Kubernetes' backing store for all cluster data"* and *"Access to etcd is equivalent to root permission in the cluster so ideally only the API server should have access to it"* — verbatim from `k8s-docs-etcd-access-control-2026-08-24`. All objects stored in etcd; periodic backup for disaster scenarios including losing all control plane nodes; `etcdctl snapshot save backup.db`; volume snapshot as the second method; the four TLS flags; snapshot contains all state, keep encrypted, store outside the control plane nodes; `etcdutl snapshot restore` operating on data files with control-plane restart afterwards — all verbatim from `k8s-docs-etcd-backup-2026-08-23`. The section's restraint on etcd TLS configuration is correct and should be preserved: that guidance was explicitly not verbatim-verified in the cached fetch.
 
-**§7 (8 tagged, all verified).** The etcd definition and the root-permission-equivalence sentence match `k8s-docs-etcd-access-control-2026-08-24` verbatim. "All Kubernetes objects are stored in etcd," the losing-all-control-plane-nodes scenario, both backup methods, the four TLS flags, the `etcdutl snapshot restore` mechanics, and the encrypt/store-outside instruction all match `k8s-docs-etcd-backup-2026-08-23` verbatim. §7's handling is the strongest in the chapter — line 712's decision not to expand into etcd TLS configuration correctly respects the access-control snapshot's own verification caveat.
+**§8.** *"The scheduler checks taints, not node conditions, when it makes scheduling decisions"* — verbatim from `k8s-docs-taints-tolerations-depth-2026-08-24` (the surrounding causal link is the subject of FAIL entry 11).
 
-**§8 (1 tagged, verified).** "It checks taints when it makes scheduling decisions" matches `k8s-docs-taints-tolerations-depth-2026-08-24`'s `[VERBATIM]` "The scheduler checks taints, not node conditions, when it makes scheduling decisions."
+**Practice Q17 explanation** deserves specific credit: *"no cached documentation attributes automatic encryption to either utility"* states the evidentiary position rather than asserting a negative fact. That is the correct pattern for a distractor rebuttal in this pipeline, and it is the model the other keys flagged above should follow.

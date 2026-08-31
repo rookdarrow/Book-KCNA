@@ -948,7 +948,7 @@ Having just been told to prefer Gateway API, the obvious next question is whethe
 
 > 🔭 **Closer Look:** The API the project names as Ingress's successor [source: k8s-docs-network-model-2026-08-23] is not built into the API server the way Ingress is. It arrives as custom resources *[cross-bearing: see Ch 6 §8 — custom resources and CustomResourceDefinitions]*. That is deeper than the exam requires, and it is a rather good demonstration of Chapter 6's claim that the extension mechanism is powerful enough to build first-class-looking APIs on top of. The successor to a built-in API is, structurally, an extension.
 
-*[cross-bearing: see Ch 9 §6 — the client's resolver, which appears here as one step in a flow rather than as a topic]*
+*[cross-bearing: see Ch 9 §7 — the client's resolver, which appears here as one step in a flow rather than as a topic]*
 *[cross-bearing: see Ch 17 §4 — CRDs as one of the four pluggable interfaces, of which this is a conspicuous instance]*
 
 <!-- AUTHOR-REVIEW: the fact-accuracy audit flagged "the four pluggable interfaces" as an untagged claim that no cached snapshot enumerates (the extending-Kubernetes page lists six extension points and five infrastructure plugins, with CRDs filed separately under API extensions). The phrase is a book coinage owned by Ch 17 §4, and the BINDING term ledger fixes the set as CRI + CNI + CSI + CRDs — so the cross-bearing above is correct as written and takes no source tag. The internal contradiction the audit found is in The Voyage Ahead ("you have collected two now"), which counts CRDs out; that section, not this one, is where the count needs repairing. -->
@@ -1225,7 +1225,7 @@ Nothing about this is careless. You wrote a correct policy, the API accepted it,
 
 You can reason your way to this dependency rather than memorising it.
 
-Chapter 9 taught that Kubernetes **defines** the network model and implements none of it: a CNI plugin does the actual work of wiring Pods onto a network *[cross-bearing: see Ch 9 §1 — CNI and the Kubernetes network model]*. CNI is one of the interfaces where Kubernetes hands off to an implementation: network plugins are binary plugins the kubelet executes, and CNI is the interface used to implement pod networking [source: k8s-docs-extending-kubernetes-2026-08-23].
+Chapter 9 taught that Kubernetes **defines** the network model but provides none of the machinery that satisfies it: a CNI network plugin is required to implement the model, and it does the actual work of wiring Pods onto a network *[cross-bearing: see Ch 9 §1 — CNI and the Kubernetes network model]*. CNI is one of the interfaces where Kubernetes hands off to an implementation — and it is the container runtime, not the kubelet, that loads the plugin: CNI management was removed from the kubelet in Kubernetes 1.24 [source: k8s-docs-network-plugins-2026-08-24].
 
 So if the plugin is what moves the packets, **where else could enforcement possibly live?** Nowhere. The dependency is not an oversight or an inconvenience. It is the only place in the stack where the machinery to enforce a layer-3/4 rule exists.
 

@@ -238,7 +238,7 @@
 | §1 | Handed Back | receives the Ch 13 §8 handoff; **when the Pod is fine and the application isn't**; the scope boundary restated from the application side; **the four triage questions** that structure the chapter (is it running, is it healthy, is it reachable, is it configured) |
 | §2 | When It Never Got Started | **debugging init containers** from the application side; reading the init sequence (defined at Ch 5 §3); `kubectl logs -c <init-container>`; ordering and non-idempotency mistakes; config errors visible at init |
 | §3 | Getting Inside, and Adding What Isn't There | `kubectl exec` and `-c`; the distroless-image problem; ephemeral containers; `kubectl debug`, debug profiles, and `--copy-to`; `kubectl debug node/` |
-| §4 | Is Anything Even Selected | application-side Service debugging: selector/label mismatch, empty EndpointSlice, `port` vs `targetPort`, readiness holding endpoints back, DNS name shape. Refers to Ch 9 §4 and §6; does not restate the Service model |
+| §4 | Is Anything Even Selected | application-side Service debugging: selector/label mismatch, empty EndpointSlice, `port` vs `targetPort`, readiness holding endpoints back, DNS name shape. Refers to Ch 9 §4 and §7; does not restate the Service model |
 | §5 | Bypassing the Service on Purpose | `port-forward` as a diagnostic that deliberately skips the Service path; what a working port-forward plus a broken Service together prove |
 | §6 | When Each Replica Is Its Own | StatefulSet debugging from the application side: ordinal identity, the per-replica PVC, headless-Service DNS names. Refers to Ch 6 §6 and Ch 11 §6 |
 | §7 | Before You Ship It | local development and debugging loops; when to reproduce locally and when the reproduction is only valid in-cluster |

@@ -1146,7 +1146,7 @@ In Chapter 6, you were told that this explanation was incomplete. Not implied. T
 
 This is the missing half, arriving on schedule.
 
-Chapter 6 §6 gave you StatefulSet identity: Pods with stable ordinals, `web-0` and `web-1` and `web-2`, names that stick across rescheduling rather than being regenerated with each replacement *[cross-bearing: see Ch 6 §6 — when Pods are not interchangeable]*. Chapter 9 §6 gave you the network half of that identity: the headless Service and the per-Pod DNS names it produces *[cross-bearing: see Ch 9 §6 — names, and where they resolve]*. What was missing both times was storage, and storage needed the whole of §2 through §4 before it could be explained without hand-waving.
+Chapter 6 §6 gave you StatefulSet identity: Pods with stable ordinals, `web-0` and `web-1` and `web-2`, names that stick across rescheduling rather than being regenerated with each replacement *[cross-bearing: see Ch 6 §6 — when Pods are not interchangeable]*. Chapter 9 gave you the network half of that identity: the headless Service *[cross-bearing: see Ch 9 §5 — when you don't want a single address]* and the per-Pod DNS names it produces *[cross-bearing: see Ch 9 §7 — names, and where they resolve]*. What was missing both times was storage, and storage needed the whole of §2 through §4 before it could be explained without hand-waving.
 
 ### One claim per Pod, from a template
 

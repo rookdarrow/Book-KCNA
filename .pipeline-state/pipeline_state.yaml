@@ -1024,7 +1024,7 @@ chapters:
         duration_seconds: 496.6242351999972
   8:
     number: 8
-    current_stage: 6
+    current_stage: 7
     pending_gate: null
     adopted_from: null
     stages:
@@ -1118,6 +1118,16 @@ chapters:
         model_id: opus
         prompt_tokens_est: 38680
         duration_seconds: 281.43862020000233
+      6:
+        status: completed
+        started_at: '2026-08-31T02:47:45+00:00'
+        completed_at: '2026-08-31T02:55:16+00:00'
+        output_path: C:\dev\lodestar\certcomp\..\Book-KCNA\.pipeline-state\ch-08\diagnostics\fact-accuracy.md
+        gate_cleared: false
+        error: null
+        model_id: opus
+        prompt_tokens_est: 96831
+        duration_seconds: 450.9903915999894
   9:
     number: 9
     current_stage: 15

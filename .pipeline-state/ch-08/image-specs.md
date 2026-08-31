@@ -1,81 +1,87 @@
 # Image Specifications — KCNA Chapter 8
 
-*Generated from draft-v1.md (draft-voice.md does not exist at this stage). Every ASCII diagram in the draft must have an entry here; every entry must correspond to an anchor in the draft.*
+*Generated from `draft-v2.md` (draft-voice.md does not exist at this stage; all line citations are against `.pipeline-state/ch-08/draft-v2.md`). Every ASCII diagram in the draft must have an entry here; every entry must correspond to an anchor in the draft.*
 
-**Figure count:** 6 anchors, 6 ASCII blocks, 0 unanchored.
-**Entry order:** draft order of appearance, not anchor-number order — see the anchor-ID flags below for why those two orders disagree.
+**Figure count:** 6 anchors, 6 fenced ASCII blocks, 6 entries. Every fenced block in the file is anchored.
 
 ---
 
 ## UNANCHORED DIAGRAMS
 
-None. Every fenced ASCII block in this draft carries a `<!-- FIGURE: ... -->` comment on the line immediately preceding it. No action required.
+**None.** The draft contains exactly six fenced code blocks (L148–161, L266–274, L349–363, L470–482, L706–719, L891–904), and each is immediately preceded by a `<!-- FIGURE: ... -->` anchor comment. No ASCII diagram is orphaned.
 
 ---
 
-## ANCHOR ID FLAGS (author-review required)
+## ANCHOR ANOMALIES — author to resolve before commissioning
 
-Rule 4 requires anchor IDs to match `ch{NN}-fig{MM}-{kebab-slug}` exactly, and Rule 6 forbids renaming them in this document. Three issues, flagged and left in place:
+Flagged per Rule 4. **No anchor is renamed in this document** (Rule 6); all six are preserved verbatim as the join key.
 
-**1. Malformed anchor — missing the `figMM` segment.**
+### 1. Non-conforming anchor form: `ch08-zenith-consequences-not-rules` (L890)
 
-| Anchor as written | Location | Caption in draft |
-|---|---|---|
-| `ch08-zenith-consequences-not-rules` | §8, after the ☀️ Zenith callout | "Figure 8.6" |
+The anchor carries no `figMM` segment, so it does not match Rule 4's `ch{NN}-fig{MM}-{kebab-slug}` form. It *is* valid against `structural-contract.yaml`'s `anchor_id_pattern`, which accepts `ch\d{2}-(fig\d{2}|zenith)-[a-z0-9-]+`, so the structural linter passes it and no lint failure will surface. Flagged here because the two rule sets disagree, and because the caption reads "Figure 8.6" — a figure number the anchor does not carry.
 
-There is no `fig{MM}` segment. This will not sort into the book-level image index alongside its siblings, and the diagram pipeline's D1 router keys on the segment. Suggested correction: `ch08-fig06-zenith-consequences-not-rules`. **Author to confirm before the draft is edited** — the anchor is the join key and changing it here without changing the draft would break the join.
+**Recommendation:** either reconcile Rule 4 in `10_image_spec_extraction.md` to match the contract's zenith exemption, or renumber the anchor to `ch08-fig06-consequences-not-rules`. This document assumes the anchor stands.
 
-**2. Anchor numbering and caption numbering disagree.** Anchor `fig{MM}` values were not assigned in draft order, so three of the six figures have an anchor number that does not match the "Figure 8.N" caption a reader sees:
+### 2. Anchor fig numbers are not in draft order
 
-| Draft position | Anchor | Caption | Agrees? |
+| Draft order | Anchor | Caption | Line |
 |---|---|---|---|
-| 1 (§1) | `ch08-fig01-kubectl-verb-resource-grammar` | Figure 8.1 | yes |
-| 2 (§2) | `ch08-fig02-three-api-gates` | Figure 8.2 | yes |
-| 3 (§3) | `ch08-fig05-quota-vs-limitrange` | **Figure 8.3** | **no** |
-| 4 (§4) | `ch08-fig04-node-lifecycle-cordon-drain` | Figure 8.4 | yes |
-| 5 (§6) | `ch08-fig03-version-skew-window` | **Figure 8.5** | **no** |
-| 6 (§8) | `ch08-zenith-consequences-not-rules` | **Figure 8.6** | **no** (and malformed) |
+| 1st | `ch08-fig01-kubectl-verb-resource-grammar` | Figure 8.1 | 147 |
+| 2nd | `ch08-fig02-three-api-gates` | Figure 8.2 | 265 |
+| 3rd | **`ch08-fig05`**`-quota-vs-limitrange` | **Figure 8.3** | 348 |
+| 4th | `ch08-fig04-node-lifecycle-cordon-drain` | Figure 8.4 | 469 |
+| 5th | **`ch08-fig03`**`-version-skew-window` | **Figure 8.5** | 705 |
+| 6th | `ch08-zenith-consequences-not-rules` | Figure 8.6 | 890 |
 
-This is cosmetic for the render pipeline (the anchor string is the join key and is internally consistent) but it is a live hazard for any human cross-referencing prose against filenames — `ch08-fig05-*.png` renders as "Figure 8.3". Recommend renumbering anchors to draft order in one sweep, draft and specs together, before any figure is commissioned.
+`fig05` and `fig03` are transposed relative to their captions. Nothing breaks — the anchor is the join key and the caption is the reader-facing label — but a designer reading filenames will build `ch08-fig03-version-skew-window.png` and find it captioned "Figure 8.5", which is a live source of misfiling during figure review.
 
-**3. No figure exists for the Capacity → Allocatable relationship (§4).** Noted here rather than as an omission: the draft's AUTHOR-REVIEW comment at §4 records that the upstream source expresses this relationship *only* as an image (`node-capacity.svg`) with no text equivalent, and that the arithmetic was deliberately not extracted. A figure here would have to assert the arithmetic the prose declines to assert. **Do not commission one** until that source gap is closed. Flagged so the absence reads as a decision rather than an oversight.
+**Recommendation:** renumber to draft order in **one sweep across draft and image-specs together**, before any figure is commissioned. Do not renumber one file alone; the anchors are the only join and a half-sweep silently orphans figures. The draft's own author-review note at L907 records the same recommendation.
 
 ---
 
 ## Figure: ch08-fig01-kubectl-verb-resource-grammar
 
 **Anchor ID:** `ch08-fig01-kubectl-verb-resource-grammar`
-**Purpose:** Shows that five commands the reader has already typed across four chapters all decompose into the same four slots, and carries the case-sensitivity asymmetry that is this section's examinable content.
+**Draft location:** L147–161 (anchor L147, block L148–161, caption L163)
+**Purpose:** Show that five commands the reader has already run share one four-slot grammar, and make the case-sensitivity asymmetry between TYPE and NAME visually unmissable — the examinable half of §1.
 **Replaces ASCII:** yes
 **Mandatory:** yes
-**Type:** annotated syntax-decomposition table (four aligned columns with two callout pointers beneath)
+**Type:** annotated syntax table (column-aligned grid with two callout pointers)
 
 **Content specification:**
 
-Render a four-column grid. The column headers, left to right, are `[command]`, `[TYPE]`, `[NAME]`, `[flags]`, each set in monospace with a rule beneath it; the literal word `kubectl` sits to the left of the header row and to the left of every data row, outside the four columns, as a fixed prefix. Five data rows follow, each one a real command from earlier chapters, and their cells must be aligned to the columns so the empty cells are visually obvious: `cordon` / `node` / `node-7` / —; `get` / `pods` / — / —; `apply` / — / — / `-f deploy.yaml`; `scale` / `deployment` / `web` / `--replicas=5`; `describe` / `node` / `worker-3` / —. **The empty cells are load-bearing and must read as deliberately empty, not as a layout accident** — do not collapse, centre, or close up the gaps; the caption points at them.
+A five-column grid with a header row reading, left to right: `kubectl`, `[command]`, `[TYPE]`, `[NAME]`, `[flags]`. Each of the four bracketed slot labels sits above a short horizontal rule; the leading `kubectl` label does not (it is fixed, not a slot). Below the header sit five data rows, each a real command decomposed into those columns, with **empty cells left visibly empty** — the emptiness is the teaching point and must not be filled with dashes, ditto marks, or "n/a":
 
-Beneath the grid, two callout pointers rise from the TYPE column and the NAME column respectively. The TYPE pointer reads `case-INsensitive` with `pod = pods = po` beneath it. The NAME pointer reads `case-SENSITIVE` with `node-7 ≠ Node-7` beneath it. **The asymmetry between these two callouts is the point of the figure** — they must be visually parallel in placement and weight so that the *only* difference a reader registers is the word itself. Set the `IN` of `case-INsensitive` and the whole of `case-SENSITIVE` in the accent treatment so the contrast survives a glance. The `≠` must be a true not-equal glyph, not a struck-through equals.
+| row | command | TYPE | NAME | flags |
+|---|---|---|---|---|
+| 1 | `cordon` | *(empty)* | `node-7` | *(empty)* |
+| 2 | `get` | `pods` | *(empty)* | *(empty)* |
+| 3 | `apply` | *(empty)* | *(empty)* | `-f deploy.yaml` |
+| 4 | `scale` | `deployment` | `web` | `--replicas=5` |
+| 5 | `describe` | `node` | `worker-3` | *(empty)* |
+
+Beneath the grid, two upward-pointing arrows rise from the TYPE column and the NAME column respectively. The TYPE arrow is annotated over two lines: `case-INsensitive` / `pod = pods = po`. The NAME arrow is annotated over two lines: `case-SENSITIVE` / `node-7 ≠ Node-7`. Render the `IN` of "case-INsensitive" and the `SENSITIVE` of "case-SENSITIVE" in the emphasis treatment used for the accent (small caps or bold in the accent colour) so the opposition reads at a glance. The two annotation blocks must be visually paired and adjacent — they are one contrast, not two facts. All command tokens, resource types, resource names and flags are set in the monospace face; the annotation text is set in the body face.
 
 **Visual style:**
-- Palette: inherit book default (Lodestar navy/slate line-art, monospace for all command text — Fira Mono per the locked typography pairing)
-- Size (pixels): 1000x420 landscape
-- Font: inherit book default; all grid content monospace, callout labels in body face
-- Accent color for highlighted elements: Brass #B58B3E on the two case-sensitivity callouts and their pointers only
+- Palette: inherit book default (Lodestar navy on cream; brass accent)
+- Size (pixels): 1200x800 landscape
+- Font: inherit book default — Fira Mono for all command tokens, Fira Sans for annotations, Roboto Slab for the slot labels
+- Accent color for highlighted elements: Brass `#B58B3E` on the two case-sensitivity annotations and their arrows only
 
 **Critical details (non-negotiable accuracy):**
-- Slot order is `command`, `TYPE`, `NAME`, `flags`, left to right. Reversing or reordering breaks the section's entire premise.
-- `kubectl get pods` must show **two** empty cells (NAME and flags). `kubectl apply -f deploy.yaml` must show TYPE and NAME empty with content only in flags.
-- The TYPE callout says case-**IN**sensitive; the NAME callout says case-**SENSITIVE**. Swapping these inverts the one fact the figure exists to teach.
-- `node-7 ≠ Node-7` — the hyphenated lowercase form is the valid one; do not "tidy" the capitalisation.
-- `pod = pods = po` — three forms, singular/plural/abbreviated, in that order.
-- `kubectl` is a prefix outside the four slots, not the contents of the first slot.
+- Slot order is `kubectl` → command → TYPE → NAME → flags. Never reorder; the whole figure is about position.
+- Row 1 (`cordon node-7`) has **no TYPE**. Row 3 (`apply -f deploy.yaml`) has **no TYPE and no NAME**. These gaps are load-bearing and the caption points at them explicitly.
+- The asymmetry must not be flattened: TYPE is case-**in**sensitive, NAME is case-**sensitive**. Reversing this teaches the exam's most common distractor (Practice Q1 option C).
+- `node-7 ≠ Node-7` must use a real not-equals glyph, not `!=`, and must not be "corrected" to an equals sign by a well-meaning designer.
+- `pod = pods = po` shows singular / plural / abbreviated. Keep all three forms.
+- Do not add slots. There are four, and NAME and flags are the optional two.
 
 **Source ASCII (for designer reference):**
 ```
   kubectl   [command]        [TYPE]        [NAME]      [flags]
             ─────────        ──────        ──────      ───────
 
-  kubectl   cordon           node          node-7
+  kubectl   cordon                         node-7
   kubectl   get              pods
   kubectl   apply                                      -f deploy.yaml
   kubectl   scale            deployment    web         --replicas=5
@@ -91,11 +97,11 @@ Beneath the grid, two callout pointers rise from the TYPE column and the NAME co
 ```yaml-figure-spec
 anchor_id: ch08-fig01-kubectl-verb-resource-grammar
 diagram_type: other
-source_ascii: |2
+source_ascii: |
     kubectl   [command]        [TYPE]        [NAME]      [flags]
               ─────────        ──────        ──────      ───────
 
-    kubectl   cordon           node          node-7
+    kubectl   cordon                         node-7
     kubectl   get              pods
     kubectl   apply                                      -f deploy.yaml
     kubectl   scale            deployment    web         --replicas=5
@@ -106,16 +112,16 @@ source_ascii: |2
                       pod = pods = po      node-7 ≠ Node-7
 vendor_terms: [kubectl]
 complexity_hint:
-  node_count: 9
+  node_count: 25
   edge_count: 2
-  label_count: 23
+  label_count: 27
 pedagogy:
   part_18_criteria_met: [spatial_structure, distinguishing_alternatives, fixed_point]
-  learning_outcome: "Decompose any kubectl invocation into its four slots, and apply the case-sensitivity rule that differs between TYPE and NAME"
+  learning_outcome: "Decompose any kubectl command into its four slots, and state which slots are case-sensitive"
   fixed_point_emphasis: true
-  fixed_point_emphasis_target: "the paired case-INsensitive / case-SENSITIVE callouts beneath the TYPE and NAME columns"
+  fixed_point_emphasis_target: "The paired annotations under the TYPE and NAME columns: case-INsensitive versus case-SENSITIVE"
 accessibility:
-  alt_text_seed: "A four-column table headed command, TYPE, NAME and flags, with five example kubectl commands aligned to the columns and several cells deliberately empty; two callouts beneath mark the TYPE column as case-insensitive and the NAME column as case-sensitive"
+  alt_text_seed: "A five-column table aligning five kubectl commands on the slots kubectl, command, TYPE, NAME and flags; some cells are empty because those commands omit those slots; two arrows below point up at the TYPE column labelled case-insensitive and the NAME column labelled case-sensitive"
 rendering_hints:
   preferred_orientation: landscape
   grayscale_critical: true
@@ -123,7 +129,7 @@ rendering_hints:
 copyright_clearance:
   rights_holders: [cncf]
   clearance: own_interpretation
-  notes: "Kubernetes CLI syntax redrawn in Lodestar style; no upstream figure reproduced, command names are project terminology"
+  notes: "Kubernetes command syntax redrawn as an original alignment grid; no vendor artwork or icons reproduced."
 ```
 
 ---
@@ -131,32 +137,34 @@ copyright_clearance:
 ## Figure: ch08-fig02-three-api-gates
 
 **Anchor ID:** `ch08-fig02-three-api-gates`
-**Purpose:** Establishes that a request passes three gates in a fixed order, and — the whole reason the figure exists — that only the third gate has an exit other than forward-or-refuse.
+**Draft location:** L265–274 (anchor L265, block L266–274, caption L276)
+**Purpose:** Show the three access-control gates as an ordered pipeline and make gate three's unique second exit — rewriting the request rather than refusing it — the visually dominant feature.
 **Replaces ASCII:** yes
 **Mandatory:** yes
-**Type:** horizontal flow diagram with per-stage rejection branches and one rewrite loop-back
+**Type:** horizontal flow diagram with branch exits
 
 **Content specification:**
 
-A left-to-right flow. An inbound arrow labelled `request` enters the first of three boxes, arranged in a horizontal row and labelled above as `gate 1`, `gate 2`, `gate 3`. The boxes themselves are labelled `Authentication`, `Authorization`, `Admission`, in that order. A forward arrow connects each box to the next, and a final forward arrow leaves gate 3 to a terminal labelled `persisted to etcd`.
+A left-to-right pipeline of three boxes of equal size, labelled in order **Authentication**, **Authorization**, **Admission**, each with a small superscript-style header above it reading `gate 1`, `gate 2`, `gate 3`. An arrow enters gate 1 from the left, labelled `request`. Arrows connect gate 1 → gate 2 → gate 3. An arrow exits gate 3 to the right, terminating at a label reading `persisted to etcd`.
 
-Beneath each of the three boxes, a downward arrow leads to a terminal reading `REJECT`. Three of them, one per gate, identical in treatment.
+Each of the three gates drops a **downward** arrow to a terminal label reading `REJECT`. Three REJECT terminals, one per gate, all on the same baseline, all identical in treatment — they are the same outcome three times.
 
-Gate 3 has a **fourth** connection the other two lack: a second downward path labelled `REWRITTEN` that turns and rejoins the forward path into `persisted to etcd`. This is the single most important element in the figure. It must be immediately visible that gates 1 and 2 have exactly two exits each (forward, or down to REJECT) while gate 3 has three (forward, down to REJECT, and the rewrite path that goes down, across, and back into the forward flow). Render the REWRITTEN path in the accent colour and, because colour alone must not carry it, at a distinctly heavier weight or with a distinct dash pattern from the REJECT arrows. Do not let the rewrite path terminate anywhere except back into `persisted to etcd` — the semantic point is that a rewritten request *proceeds*, altered, rather than being refused.
+Gate 3 alone drops a **second** exit. This one does not terminate: it is a return path, routed below the pipeline and curving back up to rejoin the flow between gate 3 and the `persisted to etcd` terminal, labelled `REWRITTEN`. This is the single element the whole figure exists for. It must be the visually heaviest line in the diagram — thicker stroke, accent colour, and clearly a *loop back into the forward path* rather than a fourth exit off the side. A reader who glances at this figure for two seconds should come away with "the third box has an extra arrow that goes back in."
+
+Do not add a mutating/validating phase split inside gate 3, do not add webhook boxes, and do not add a read path. Gate three is one box.
 
 **Visual style:**
-- Palette: inherit book default (navy/slate line-art)
-- Size (pixels): 1200x420 landscape
-- Font: inherit book default; gate labels in body face, `persisted to etcd` in body face
-- Accent color for highlighted elements: Brass #B58B3E on the REWRITTEN path and its rejoin arrow only; REJECT arrows stay in the base line colour
+- Palette: inherit book default (Lodestar navy on cream; brass accent)
+- Size (pixels): 1200x700 landscape
+- Font: inherit book default — Roboto Slab for gate names, Fira Sans for arrow labels
+- Accent color for highlighted elements: Brass `#B58B3E` for the REWRITTEN return path and its label; the three REJECT arrows stay in a muted neutral so they recede
 
 **Critical details (non-negotiable accuracy):**
-- Order is Authentication → Authorization → Admission. Any other order is factually wrong and the chapter's Fixed Point, Practice Question 2 and the Exam Alert all depend on it.
-- Admission is **third**, after authorization, and before persistence. Not first, not parallel, not after the write.
-- Only gate 3 has the REWRITTEN exit. Giving a rewrite path to gates 1 or 2 destroys the distinction the whole section is built on.
-- The REWRITTEN path rejoins the forward flow and reaches `persisted to etcd`. It must not terminate at a REJECT or dead-end.
-- All three REJECT terminals are equivalent — do not differentiate them or imply a hierarchy of refusal.
-- Everything flows through one door. No element may bypass the gate chain and reach etcd directly.
+- Order is **Authentication → Authorization → Admission**. Never reordered; the order is Exam Alert priority topic #1 and Practice Q2's entire content.
+- All three gates can REJECT. Only gate three can REWRITE. Giving the rewrite power to any other gate reproduces Practice Q2's distractor B.
+- The REWRITTEN path rejoins the *forward* flow. It must not read as an exit, a retry, or a return to the client.
+- The terminal is `persisted to etcd` — the write happens *after* gate three, not before or between.
+- Three gates, not two and not four. Auditing is discussed adjacently in the prose but is **not** a gate and must not appear as a fourth box.
 
 **Source ASCII (for designer reference):**
 ```
@@ -174,7 +182,7 @@ Gate 3 has a **fourth** connection the other two lack: a second downward path la
 ```yaml-figure-spec
 anchor_id: ch08-fig02-three-api-gates
 diagram_type: flowchart
-source_ascii: |2
+source_ascii: |
                   gate 1              gate 2              gate 3
              ┌──────────────┐   ┌──────────────┐   ┌──────────────┐
    request ─►│Authentication├──►│Authorization ├──►│  Admission   ├──► persisted
@@ -182,18 +190,18 @@ source_ascii: |2
                     │                  │             │       │              ▲
                     ▼                  ▼             ▼       │              │
                  REJECT             REJECT        REJECT     └── REWRITTEN ─┘
-vendor_terms: [kube-apiserver, etcd]
+vendor_terms: [etcd, kube-apiserver]
 complexity_hint:
-  node_count: 9
-  edge_count: 9
-  label_count: 10
+  node_count: 8
+  edge_count: 8
+  label_count: 11
 pedagogy:
-  part_18_criteria_met: [temporal_structure, spatial_structure, distinguishing_alternatives, fixed_point]
-  learning_outcome: "Trace a request through authentication, authorization and admission in order, and identify admission as the only gate that can modify rather than merely accept or refuse"
+  part_18_criteria_met: [temporal_structure, distinguishing_alternatives, fixed_point]
+  learning_outcome: "Trace a request through authentication, authorization and admission in order, and identify admission as the only gate that can modify the request"
   fixed_point_emphasis: true
-  fixed_point_emphasis_target: "the REWRITTEN path leaving gate 3 and rejoining the forward flow into etcd"
+  fixed_point_emphasis_target: "The REWRITTEN return path from gate three that rejoins the forward flow"
 accessibility:
-  alt_text_seed: "A request flows left to right through three gates labelled Authentication, Authorization and Admission before being persisted to etcd; each gate has a downward arrow to REJECT, and the third gate alone has an additional REWRITTEN path that loops back into the forward flow"
+  alt_text_seed: "Three boxes in a row labelled Authentication, Authorization and Admission, with a request arrow entering on the left and persistence to etcd on the right; each box has a downward arrow to a REJECT outcome, and the Admission box has an additional arrow labelled REWRITTEN that loops back into the forward path"
 rendering_hints:
   preferred_orientation: landscape
   grayscale_critical: true
@@ -201,43 +209,43 @@ rendering_hints:
 copyright_clearance:
   rights_holders: [cncf]
   clearance: own_interpretation
-  notes: "Access-control sequence redrawn from documentation prose; no upstream figure reproduced"
+  notes: "Original depiction of the documented API access-control sequence; no vendor artwork reproduced."
 ```
 
 ---
 
 ## Figure: ch08-fig05-quota-vs-limitrange
 
-**Anchor ID:** `ch08-fig05-quota-vs-limitrange`
-*(Caption in draft reads "Figure 8.3" — see ANCHOR ID FLAGS above. Do not rename here.)*
-**Purpose:** Separates ResourceQuota from LimitRange by scope, and proves the separation by showing that the two mechanisms fail in visibly different ways against the identical arriving Pod.
+**Anchor ID:** `ch08-fig05-quota-vs-limitrange` *(captioned "Figure 8.3" in the draft — see ANCHOR ANOMALIES above)*
+**Draft location:** L348–363 (anchor L348, block L349–363, caption L365)
+**Purpose:** Make the ResourceQuota/LimitRange discrimination structural rather than verbal — one draws a boundary around a namespace, the other does not — and prove the difference by showing the two mechanisms failing differently on the same arriving Pod.
 **Replaces ASCII:** yes
 **Mandatory:** yes
-**Type:** two-panel side-by-side comparison (containment box vs. unbounded per-object constraints)
+**Type:** side-by-side comparison, containment versus per-object constraint
 
 **Content specification:**
 
-Two panels, side by side, headed `ResourceQuota` (left) and `LimitRange` (right).
+Two panels of equal width, side by side, under headers **ResourceQuota** (left) and **LimitRange** (right).
 
-The left panel draws a closed boundary box labelled `namespace: team-atlas`. Inside it sit four small boxes each labelled `Pod`, and beneath them two horizontal bars: the upper reads `namespace total`, the lower reads `AT CAP`. The boundary is the point — the quota is a statement about everything inside that box, in aggregate.
+*Left panel.* A single large bordered container labelled `namespace: team-atlas`. Inside it sit four small boxes each labelled `Pod`, in a row. Below the four Pods, still inside the container, two stacked horizontal bars: the upper reads `namespace total`, the lower reads `AT CAP`. The container border is the point — the constraint has a boundary and the Pods are inside it. Beneath the panel, an upward arrow with a three-line annotation: `5th Pod arrives:` / `REJECTED` / `the namespace total is reached`.
 
-The right panel has **no enclosing boundary at all**, and this absence must be as visible as the left panel's boundary is present. Add the parenthetical `(no namespace boundary)` beneath the heading. Four `Pod` boxes float unenclosed; each one carries the constraint `min ≤ ... ≤ max` written on the Pod itself, because the LimitRange constrains each object individually rather than the group.
+*Right panel.* **No container, and this absence must be conspicuous.** Directly under the LimitRange header, set the parenthetical `(no namespace boundary)` in the position where the left panel's container border would be — the reader must register a deliberate absence, not an omission. Four independent Pod boxes sit in a row with nothing enclosing them. Each Pod box carries its own two-line internal constraint reading `min ≤` / `≤ max` — the constraint is *inside each object*, which is the entire structural contrast. Beneath the panel, an upward arrow with a three-line annotation: `5th Pod arrives declaring nothing:` / `ACCEPTED — with` / `defaults FILLED IN`.
 
-Beneath each panel, an upward pointer to a fifth arriving Pod and its outcome. Left: `5th Pod arrives: REJECTED — the namespace total is reached`. Right: `5th Pod arrives declaring nothing: ACCEPTED — with defaults FILLED IN`. **The two outcomes are the payload of the figure.** Set `REJECTED` and `ACCEPTED — with defaults FILLED IN` in the accent treatment, and differentiate them by more than colour (weight, or a refusal glyph versus a fill glyph), because the identical arriving Pod meeting two different fates is what makes the scope distinction stick.
+The two outcome words — `REJECTED` and `ACCEPTED` — must be typographically parallel and equally weighted so the reader compares them directly. Keep the two panels on a shared baseline so the four Pods on the left align horizontally with the four Pods on the right; the only difference the eye should find between the two Pod rows is the presence or absence of the surrounding boundary.
 
 **Visual style:**
-- Palette: inherit book default (navy/slate line-art)
-- Size (pixels): 1100x600 landscape
-- Font: inherit book default; `namespace: team-atlas` and `min ≤ ≤ max` in monospace
-- Accent color for highlighted elements: Brass #B58B3E on the two fifth-Pod outcome labels and their pointers
+- Palette: inherit book default (Lodestar navy on cream; brass accent)
+- Size (pixels): 1200x900 landscape
+- Font: inherit book default — Roboto Slab for panel headers, Fira Mono for `namespace: team-atlas` and `min ≤ ≤ max`, Fira Sans for outcome annotations
+- Accent color for highlighted elements: Brass `#B58B3E` on the left panel's namespace container border and on both outcome labels (`REJECTED`, `ACCEPTED — with defaults FILLED IN`)
 
 **Critical details (non-negotiable accuracy):**
-- The left panel has a namespace boundary. The right panel has none. Adding a boundary to the right panel destroys the figure.
-- ResourceQuota = aggregate ceiling on the namespace. LimitRange = per-object constraint. Swapping the two panels' headings inverts the one discrimination this section teaches, and is the exact error the Practice Questions defuse.
-- The left outcome is **rejection**; the right outcome is **acceptance with modification**. The right Pod is not refused.
-- The right panel's fifth Pod declares **nothing** — it arrives with no resource fields at all, and is accepted anyway because the defaults are supplied for it.
-- Four existing Pods per panel, fifth arriving. Do not change the counts; the "AT CAP" bar depends on four already being present.
-- Both objects are namespaced; the right panel's lack of a drawn boundary indicates the *constraint's* scope, not that LimitRange is cluster-scoped. Do not add a caption implying otherwise.
+- **The namespace boundary appears on the LEFT panel only.** Drawing a boundary on the right destroys the figure; the absence *is* the content.
+- The quota is an **aggregate ceiling on the namespace**. It must never be depicted as a per-Pod bound.
+- The LimitRange constraint sits **inside each individual Pod**. It must never be depicted as a namespace-wide bar.
+- Left outcome is refusal; right outcome is acceptance-with-modification. Swapping these reproduces Practice Q5's distractor A, the section's only real error.
+- Four Pods per panel, with a fifth arriving in each. Keep the counts equal — the panels differ by mechanism, not by scale.
+- Do not add quota scopes, scope selectors, priority-class quota, or a countable-resource roster. All are above associate tier and explicitly out of scope per the draft's §3 scope guard.
 
 **Source ASCII (for designer reference):**
 ```
@@ -260,8 +268,8 @@ Beneath each panel, an upward pointer to a fifth arriving Pod and its outcome. L
 
 ```yaml-figure-spec
 anchor_id: ch08-fig05-quota-vs-limitrange
-diagram_type: k8s_architecture
-source_ascii: |2
+diagram_type: component_diagram
+source_ascii: |
           ResourceQuota                          LimitRange
      ┌──────────────────────────┐          (no namespace boundary)
      │ namespace: team-atlas    │
@@ -277,16 +285,16 @@ source_ascii: |2
      the namespace total is reached           defaults FILLED IN
 vendor_terms: [ResourceQuota, LimitRange, Pod, namespace]
 complexity_hint:
-  node_count: 13
+  node_count: 12
   edge_count: 2
-  label_count: 12
+  label_count: 14
 pedagogy:
   part_18_criteria_met: [distinguishing_alternatives, spatial_structure, fixed_point]
-  learning_outcome: "Distinguish ResourceQuota from LimitRange by what each constrains and at what scope, using their differing failure modes as the proof"
+  learning_outcome: "Distinguish ResourceQuota from LimitRange by scope — namespace aggregate versus individual object — and by failure mode"
   fixed_point_emphasis: true
-  fixed_point_emphasis_target: "the two fifth-Pod outcomes — REJECTED on the left, ACCEPTED with defaults filled in on the right"
+  fixed_point_emphasis_target: "The namespace boundary present on the left panel and conspicuously absent on the right"
 accessibility:
-  alt_text_seed: "Two panels compared: on the left a ResourceQuota draws a boundary around a namespace holding four Pods with an at-cap total bar, and a fifth arriving Pod is rejected; on the right a LimitRange has no namespace boundary, four Pods each carry a min-to-max constraint, and a fifth Pod declaring nothing is accepted with defaults filled in"
+  alt_text_seed: "Two panels compared side by side: on the left, four Pods enclosed in a bordered namespace box with a namespace total bar marked at cap, and a fifth arriving Pod rejected; on the right, four unenclosed Pods each carrying its own minimum and maximum bounds, and a fifth arriving Pod that declares nothing being accepted with defaults filled in"
 rendering_hints:
   preferred_orientation: landscape
   grayscale_critical: true
@@ -294,7 +302,7 @@ rendering_hints:
 copyright_clearance:
   rights_holders: [cncf]
   clearance: own_interpretation
-  notes: "Conceptual scope comparison drawn from documentation prose; no upstream figure reproduced"
+  notes: "Original scope comparison of two Kubernetes API objects; no vendor artwork reproduced."
 ```
 
 ---
@@ -302,34 +310,35 @@ copyright_clearance:
 ## Figure: ch08-fig04-node-lifecycle-cordon-drain
 
 **Anchor ID:** `ch08-fig04-node-lifecycle-cordon-drain`
-**Purpose:** Makes visible that a cordoned node is not an empty node — the chapter's single most consequential confusion, and the one with a real operational cost attached.
+**Draft location:** L469–482 (anchor L469, block L470–482, caption L484)
+**Purpose:** Defuse the chapter's most consequential confusion by showing that a cordoned node is not an empty node — the running Pods are pixel-identical between panels one and two, and the node does not empty until `drain`.
 **Replaces ASCII:** yes
 **Mandatory:** yes
 **Type:** four-panel state progression with labelled transitions
 
 **Content specification:**
 
-Four panels left to right, each a node box, headed `SCHEDULABLE`, `CORDONED`, `DRAINED`, `SCHEDULABLE`. Transitions between them are labelled `cordon`, `drain`, `uncordon` respectively.
+Four equal-sized node panels in a single left-to-right row, with state headers above them reading, in order: `SCHEDULABLE`, `CORDONED`, `DRAINED`, `SCHEDULABLE`. Transition arrows run between consecutive panels, labelled beneath the arrow: `cordon` (panel 1→2), `drain` (panel 2→3), `uncordon` (panel 3→4).
 
-Panel 1 contains three Pods labelled `[A]`, `[B]`, `[C]`. **Panel 2 contains the identical three Pods, drawn identically.** This is the entire figure. Nothing about A, B or C may change between panel 1 and panel 2 — not their position, not their fill, not their weight, not their opacity. Any visual softening of the Pods in the cordoned panel would teach the wrong thing. Panel 3 is empty, marked `(empty)`. Panel 4 is empty and ready to accept work.
+Panel 1 contains three small Pod tokens labelled `A`, `B`, `C`. **Panel 2 contains the same three Pod tokens, rendered identically** — same position, same size, same treatment, no fading, no dimming, no strikethrough, no greying. Any visual softening of A, B and C in panel 2 inverts the figure's entire meaning and must be treated as a correctness error, not a style choice. Panel 3 is empty and labelled `(empty)`. Panel 4 is empty.
 
-Beneath panels 1, 2 and 4, an arriving-Pod annotation. Panel 1: `new Pod — admitted`. Panel 2: `new Pod — turned away`, marked with a refusal glyph (✗). Panel 4: `new Pod — admitted`. Only the arriving Pod's fate differs between panels 1 and 2, and the accent should sit on that refusal glyph, not on the resident Pods.
+Below the row, arriving-Pod annotations. Under panel 1: an upward arrow with the label `new Pod admitted`. Under panel 2: a cross/rejection mark (✗) with the label `new Pod turned away`. Under panel 4: an upward arrow with the label `new Pod admitted`. Panel 3 gets no arriving-Pod annotation. The contrast between the panel-1 arrow and the panel-2 cross is the only thing that changes across the cordon transition, and it should read that way.
 
-Beneath the whole strip, set the reinforcing note as running text within the figure: *A, B and C are UNCHANGED between panel 1 and panel 2. They are still running. That is what cordon does and does not do.*
+Beneath the whole figure, set the two-line assertion as an integral part of the artwork, not as caption text: `A, B and C are UNCHANGED between panel 1 and panel 2.` / `They are still running. That is what cordon does and does not do.`
 
 **Visual style:**
-- Palette: inherit book default (navy/slate line-art)
-- Size (pixels): 1200x480 landscape
-- Font: inherit book default; state headings in display face small-caps or equivalent, transition verbs in monospace
-- Accent color for highlighted elements: Brass #B58B3E on the ✗ refusal glyph and the "turned away" label under panel 2
+- Palette: inherit book default (Lodestar navy on cream; brass accent)
+- Size (pixels): 1200x700 landscape
+- Font: inherit book default — Roboto Slab for state headers, Fira Mono for `cordon` / `drain` / `uncordon`, Fira Sans for annotations
+- Accent color for highlighted elements: Brass `#B58B3E` on the three Pod tokens A/B/C in **both** panel 1 and panel 2 (identical treatment in each), and on the panel-2 rejection cross
 
 **Critical details (non-negotiable accuracy):**
-- Pods A, B and C are pixel-identical between panels 1 and 2. Fading, greying, or shrinking them in the CORDONED panel would state the opposite of the fact being taught.
-- The node does not empty until `drain`. Panel 2 is full; panel 3 is empty.
-- Transition verbs in order: `cordon`, then `drain`, then `uncordon`. The maintenance sequence needs the first two.
-- Panel 2's *arriving* Pod is refused. Panel 2's *resident* Pods are untouched. Both facts must be simultaneously legible.
-- Panel 4 shows the node schedulable and empty — `uncordon` restores scheduling, it does not restore the evicted Pods to that node.
-- Three resident Pods, not two or four; the §5 Bearings item and Practice Question 8 both reference "three services".
+- **Pods A, B and C must be visually identical in panels 1 and 2.** This is the single most important instruction in this document. `cordon` does not affect existing Pods; a designer's instinct to fade them is exactly the misconception the figure exists to kill.
+- The node does not empty until `drain` (panel 3). Emptying at panel 2 reproduces Practice Q8's distractor C, the chapter's headline trap.
+- Transition order is cordon → drain → uncordon. Reversing cordon and drain reproduces distractor A.
+- The arriving Pod is turned away in panel 2 only. Panels 1 and 4 admit; panel 3 has no arrival shown.
+- Panel 4 is empty — `uncordon` restores *schedulability*, it does not restore the evicted Pods.
+- Do not depict the DaemonSet toleration exception here; it is prose in §4 and adding it muddies the four-panel line.
 
 **Source ASCII (for designer reference):**
 ```
@@ -351,7 +360,7 @@ Beneath the whole strip, set the reinforcing note as running text within the fig
 ```yaml-figure-spec
 anchor_id: ch08-fig04-node-lifecycle-cordon-drain
 diagram_type: state_machine
-source_ascii: |2
+source_ascii: |
      SCHEDULABLE            CORDONED             DRAINED           SCHEDULABLE
     ┌────────────┐        ┌────────────┐      ┌────────────┐      ┌────────────┐
     │ [A][B][C]  │        │ [A][B][C]  │      │            │      │            │
@@ -365,16 +374,16 @@ source_ascii: |2
           They are still running. That is what cordon does and does not do.
 vendor_terms: [kubectl, Pod, Node]
 complexity_hint:
-  node_count: 7
+  node_count: 10
   edge_count: 6
-  label_count: 14
+  label_count: 13
 pedagogy:
   part_18_criteria_met: [temporal_structure, distinguishing_alternatives, fixed_point]
-  learning_outcome: "Predict what happens to Pods already on a node at each step of cordon, drain and uncordon — specifically that cordon leaves running Pods untouched"
+  learning_outcome: "Predict what happens to the Pods on a node at each step of cordon, drain and uncordon"
   fixed_point_emphasis: true
-  fixed_point_emphasis_target: "the refusal glyph and 'turned away' label under the CORDONED panel, set against three resident Pods that are unchanged"
+  fixed_point_emphasis_target: "Pods A, B and C rendered identically in the SCHEDULABLE and CORDONED panels"
 accessibility:
-  alt_text_seed: "Four node panels in sequence: schedulable with three Pods A B and C, cordoned with the same three Pods still present but an arriving Pod turned away, drained and empty, then schedulable again; transitions are labelled cordon, drain and uncordon"
+  alt_text_seed: "Four node panels in a row labelled schedulable, cordoned, drained and schedulable, connected by transitions labelled cordon, drain and uncordon; the same three Pods A, B and C appear unchanged in the first two panels and are gone from the third, while an arriving Pod is admitted in panels one and four and turned away in panel two"
 rendering_hints:
   preferred_orientation: landscape
   grayscale_critical: true
@@ -382,51 +391,52 @@ rendering_hints:
 copyright_clearance:
   rights_holders: [cncf]
   clearance: own_interpretation
-  notes: "Node maintenance lifecycle drawn from documentation prose; no upstream figure reproduced"
+  notes: "Original four-panel depiction of the documented node maintenance sequence; no vendor artwork reproduced."
 ```
 
 ---
 
 ## Figure: ch08-fig03-version-skew-window
 
-**Anchor ID:** `ch08-fig03-version-skew-window`
-*(Caption in draft reads "Figure 8.5" — see ANCHOR ID FLAGS above. Do not rename here.)*
-**Purpose:** Converts the five-row version-skew table into one picture with one rule visible in it — every bar stops at the API server's version except `kubectl`, which is the only bar that crosses.
+**Anchor ID:** `ch08-fig03-version-skew-window` *(captioned "Figure 8.5" in the draft — see ANCHOR ANOMALIES above)*
+**Draft location:** L705–719 (anchor L705, block L706–719, caption L721)
+**Purpose:** Convert a five-row memorisation table into one picture whose shape carries the rule — every bar stops at the API server's version except one, and `kubectl` is the one that crosses.
 **Replaces ASCII:** yes
 **Mandatory:** yes
-**Type:** horizontal span chart on a relative offset axis, with a hard wall at zero
+**Type:** horizontal range chart on a relative minor-version axis
 
 **Content specification:**
 
-A horizontal axis of minor-version offsets **relative to kube-apiserver**, with tick marks at `-3`, `-2`, `-1`, `0`, `+1`. Label the axis ends `older` (left, with a left-pointing arrow) and `newer` (right, with a right-pointing arrow), and label the zero position `kube-apiserver`.
+A horizontal axis running left to right with tick positions labelled `-3`, `-2`, `-1`, `0`, `+1`. Above the axis, a header spanning it reads `older ◄── kube-apiserver ──► newer`, with the words `older` and `newer` at the left and right extremes and `kube-apiserver` centred over the `0` tick. **The axis is deliberately relative — it carries no concrete version numbers, and none must be added.**
 
-At the `0` position, draw a **vertical wall** — heavier and visually distinct from the ordinary tick marks, rendered as a double rule in the source ASCII. It runs the full height of the chart.
+At the `0` tick, a **double vertical line** running the full height of the plot. This is the API server's own minor version and it functions as a wall. Render it heavier than the other four tick guides.
 
-Six labelled horizontal bars, one per row, stacked in this order top to bottom: `kubelet`, `kube-proxy`, `controller-manager`, `scheduler`, `cloud-ctrl-manager`, `kubectl`. Each bar has a round cap at its oldest permitted offset and terminates at the wall:
+Six labelled horizontal bars, one per row, stacked in this order top to bottom with their labels flush left: `kubelet`, `kube-proxy`, `controller-manager`, `scheduler`, `cloud-ctrl-manager`, `kubectl`. Each bar has a filled round cap at its older end and a flat perpendicular terminator where it meets the wall.
 
-- `kubelet` — spans `-3` to `0`, stops dead at the wall
-- `kube-proxy` — spans `-3` to `0`, stops dead at the wall
-- `controller-manager` — spans `-1` to `0`, stops dead at the wall
-- `scheduler` — spans `-1` to `0`, stops dead at the wall
-- `cloud-ctrl-manager` — spans `-1` to `0`, stops dead at the wall
-- `kubectl` — spans `-1` **through the wall** to `+1`, with round caps at both ends
+- `kubelet` — spans `-3` to `0`.
+- `kube-proxy` — spans `-3` to `0`.
+- `controller-manager` — spans `-1` to `0`.
+- `scheduler` — spans `-1` to `0`.
+- `cloud-ctrl-manager` — spans `-1` to `0`.
+- `kubectl` — spans `-1` through the wall to `+1`, with round caps at *both* ends. It is the only bar that penetrates the double line, and it must be drawn as passing *through* the wall rather than stopping at it and restarting.
 
-An annotation beneath the `kubectl` bar, pointing up at the crossing point, reads *the only bar that crosses*. **That crossing is the whole figure.** Set the `kubectl` bar and its crossing annotation in the accent treatment, and give the bar a distinct weight or pattern so the crossing is legible in greyscale.
+Below the `kubectl` bar, an upward pointer annotated `the only bar that crosses`, aimed at the segment to the right of the wall.
+
+The five API-server-bounded bars stack above `kubectl` and share a uniform muted treatment so that the wall reads as a hard edge across all five simultaneously. `kubectl` alone breaks the edge. If a reader takes one thing from this figure it should be the ragged left edge and the single flat right edge with one bar poking through it.
 
 **Visual style:**
-- Palette: inherit book default (navy/slate line-art)
-- Size (pixels): 1100x520 landscape
-- Font: inherit book default; component names in monospace
-- Accent color for highlighted elements: Brass #B58B3E on the `kubectl` bar, its `+1` cap, and the crossing annotation. The wall at zero stays in the base colour but at heavier weight than the ticks.
+- Palette: inherit book default (Lodestar navy on cream; brass accent)
+- Size (pixels): 1200x900 landscape
+- Font: inherit book default — Fira Mono for the six component names, Fira Sans for axis labels and the annotation
+- Accent color for highlighted elements: Brass `#B58B3E` for the `kubectl` bar and the "only bar that crosses" pointer; the `0` wall in a heavy neutral
 
 **Critical details (non-negotiable accuracy):**
-- The axis is **relative offsets**, not absolute version numbers. Do not substitute 1.33/1.34/1.35/1.36/1.37 — the draft explicitly says the axis is relative so the figure does not expire, and the accompanying prose warns that the current roster changes.
-- `kubectl` is the **only** bar extending past `0`, and it reaches exactly `+1`. Not `+2`, not `+3`.
-- `kubelet` and `kube-proxy` reach exactly `-3`. `controller-manager`, `scheduler` and `cloud-ctrl-manager` reach exactly `-1`. `kubectl`'s left cap is `-1`.
-- No bar other than `kubectl` may cross or even touch the right side of the wall.
-- `kube-proxy`'s ±3 allowance relative to the *kubelet* is deliberately **not** shown here; this axis is relative to the API server only, where kube-proxy is older-only. Do not add a rightward extension to kube-proxy.
-- The HA kube-apiserver-to-kube-apiserver one-minor rule is **not** a row in this figure. Do not add a seventh bar for it.
-- Bar order top to bottom must match the source; `kubectl` sits last, immediately above its annotation.
+- kubelet and kube-proxy extend to **-3**. controller-manager, scheduler and cloud-controller-manager extend to **-1**. These are different numbers and must not be normalised to each other.
+- **`kubectl` is the only bar crossing to the right of 0**, and it reaches only `+1`. Extending it further, or letting any other bar cross, destroys the section's central exception.
+- `kubectl`'s left extent is `-1`, not `-3`. Its window is one minor in *both* directions — symmetric — which is what makes it the only symmetric bar in the chart.
+- The axis carries **no concrete version numbers**. The prose is explicit that the current roster will have changed by the reader's exam date; putting 1.36 on the axis dates the figure and contradicts the caption.
+- **The HA kube-apiserver rule is not a bar and must not be added as one.** It is a mutual bound between two API servers, not a bound relative to one, and the caption calls this out. A seventh bar here would be a factual error.
+- Six bars exactly. Do not add etcd, the container runtime, or CNI plugins.
 
 **Source ASCII (for designer reference):**
 ```
@@ -448,8 +458,8 @@ An annotation beneath the `kubectl` bar, pointing up at the crossing point, read
 
 ```yaml-figure-spec
 anchor_id: ch08-fig03-version-skew-window
-diagram_type: gantt
-source_ascii: |2
+diagram_type: other
+source_ascii: |
                     older ◄───────── kube-apiserver ─────────► newer
                       -3      -2      -1       0       +1
                        │       │       │       ║       │
@@ -465,15 +475,15 @@ source_ascii: |2
 vendor_terms: [kube-apiserver, kubelet, kube-proxy, kube-controller-manager, kube-scheduler, cloud-controller-manager, kubectl]
 complexity_hint:
   node_count: 6
-  edge_count: 0
-  label_count: 15
+  edge_count: 6
+  label_count: 13
 pedagogy:
   part_18_criteria_met: [quantitative_relationships, distinguishing_alternatives, fixed_point]
-  learning_outcome: "State which Kubernetes components may disagree about their version, by how much, and in which direction — and identify kubectl as the sole component permitted to be newer than the API server"
+  learning_outcome: "State which Kubernetes components may disagree about their version, by how much, and in which direction"
   fixed_point_emphasis: true
-  fixed_point_emphasis_target: "the kubectl bar crossing the wall at offset zero to reach plus one"
+  fixed_point_emphasis_target: "The kubectl bar, the only one crossing the double line to the right of the API server's version"
 accessibility:
-  alt_text_seed: "A horizontal chart of minor-version offsets relative to kube-apiserver, from minus three to plus one, with a wall at zero; bars for kubelet and kube-proxy extend from minus three to the wall, bars for controller-manager, scheduler and cloud-controller-manager from minus one to the wall, and the kubectl bar alone crosses the wall to reach plus one"
+  alt_text_seed: "A horizontal range chart on a relative axis from minus three to plus one minor versions, with the API server's version marked by a double line at zero; bars for kubelet and kube-proxy reach back three versions, bars for the controller manager, scheduler and cloud controller manager reach back one, and all five stop at the double line, while the kubectl bar alone extends one version past it"
 rendering_hints:
   preferred_orientation: landscape
   grayscale_critical: true
@@ -481,45 +491,57 @@ rendering_hints:
 copyright_clearance:
   rights_holders: [cncf]
   clearance: own_interpretation
-  notes: "Version-skew policy re-expressed as a relative-offset span chart in Lodestar style; factual policy data, not a reproduced upstream figure"
+  notes: "Original chart rendering of the published version skew policy; no vendor artwork reproduced and no concrete release numbers shown."
 ```
 
 ---
 
 ## Figure: ch08-zenith-consequences-not-rules
 
-**Anchor ID:** `ch08-zenith-consequences-not-rules`
-⚠ **Anchor does not conform to `ch{NN}-fig{MM}-{slug}` — flagged above. Caption in draft reads "Figure 8.6". Left unrenamed per Rule 6; author to resolve.**
-**Purpose:** Carries the chapter's Zenith claim visually — every administrative act is a write through one door, reconciled by a controller the reader already met, with no side channels anywhere on the diagram.
+**Anchor ID:** `ch08-zenith-consequences-not-rules` *(captioned "Figure 8.6" in the draft; non-conforming anchor form — see ANCHOR ANOMALIES above)*
+**Draft location:** L890–904 (anchor L890, block L891–904, caption L906)
+**Purpose:** Carry the chapter's ☀️ Zenith claim in one image — every administrative act is a write through one door, reconciled by a controller the reader already met — and show visually that no arrow reaches a controller directly.
 **Replaces ASCII:** yes
 **Mandatory:** yes
-**Type:** hub-and-spoke architecture diagram (converging inputs, single hub, diverging outputs, one terminal store)
+**Type:** hub-and-spoke convergence/divergence diagram
 
 **Content specification:**
 
-Three vertical zones. On the left, headed `administrative acts (§1, §3, §4)`, four labelled inputs stacked vertically: `kubectl cordon`, `kubectl apply -f quota.yaml`, `kubectl apply -f deploy.yaml`, `kubelet self-registration`. Each has an arrow pointing right.
+A three-zone composition. Left zone header: `administrative acts` with a subhead `(§1, §3, §4)`. Right zone header: `controllers you already met`. Between them, a single tall central box labelled across four stacked lines: `the` / `API` / `server`, with `ONE DOOR` set at its foot in a distinct heavier treatment.
 
-In the centre, a single large box labelled `the API server` with `ONE DOOR` set beneath the name inside the same box. **All four left-hand arrows terminate at this box.** Not one of them may pass around, behind, or through it to reach the right-hand zone directly — the absence of side channels is the argument the figure is making.
+Four arrows converge from the left into the central box, each labelled with an administrative act, top to bottom:
+- `kubectl cordon`
+- `kubectl apply -f quota.yaml`
+- `kubectl apply -f deploy.yaml`
+- `kubelet self-registration`
 
-On the right, headed `controllers you already met`, four labelled outputs, each reached by an arrow leaving the API server box: `scheduler (Ch 7)`, `node controller (Ch 4/8)`, `workload controllers (Ch 6)`, `the control loop (Ch 3)`. The chapter references in parentheses are part of the labels and must be rendered — they are what make the "you already met these" claim checkable at a glance.
+Four arrows diverge from the right of the central box, each terminating at a controller with its chapter attribution set in a lighter weight immediately after the name, top to bottom:
+- `scheduler` `(Ch 7)`
+- `node controller` `(Ch 4/8)`
+- `workload controllers` `(Ch 6)`
+- `the control loop` `(Ch 3)`
 
-Below the API server box, a single downward arrow to a terminal labelled `etcd`.
+*(Note: the ASCII abbreviates this third label as `workload contrls` for column fit. **Set it in full as `workload controllers` in the rendered figure** — the abbreviation is an artefact of monospace width, not authorial intent.)*
 
-The centre box is the emphasis. Set `ONE DOOR` in the accent treatment. Keep the left and right zones in the base line colour so that the eye lands on the hub and the reader registers the convergence before the detail.
+From the bottom of the central box, a single downward arrow to a terminal labelled `etcd`.
+
+The composition's argument is geometric: **every left-hand arrow terminates at the central box and nothing else.** No arrow may bypass the box, and no arrow may run diagonally from a left-hand act to a right-hand controller. A reader tracing any path with a finger must be forced through the door. Leave generous whitespace in the corridors above and below the box so the absence of side channels is legible as absence rather than as clutter.
+
+The four chapter attributions on the right are the caption's stated payoff — the reader is meant to see that nothing on the right is new. Keep them aligned in their own column so they scan vertically as a list of chapters already read.
 
 **Visual style:**
-- Palette: inherit book default (navy/slate line-art)
-- Size (pixels): 1200x560 landscape
-- Font: inherit book default; commands on the left in monospace, controller names and chapter references on the right in body face
-- Accent color for highlighted elements: Brass #B58B3E on the `ONE DOOR` label and the API server box border
+- Palette: inherit book default (Lodestar navy on cream; brass accent)
+- Size (pixels): 1200x900 landscape
+- Font: inherit book default — Roboto Slab for the central box and zone headers, Fira Mono for the four command labels, Fira Sans for controller names and chapter attributions
+- Accent color for highlighted elements: Brass `#B58B3E` for the central box's border and the `ONE DOOR` label; arrows in navy; chapter attributions in a muted neutral
 
 **Critical details (non-negotiable accuracy):**
-- **No arrow may connect a left-hand act to a right-hand controller directly.** Every path routes through the API server box. This is the one thing the figure exists to assert, and Practice Question 10's distractor D is precisely the belief it dismantles.
-- Four inputs and four outputs, matched to the labels given. Do not add or drop entries.
-- `kubelet self-registration` belongs on the **left**, with the administrative acts — the point is that a kubelet joining a cluster does the same thing a human does: it writes an object through the API server.
-- Chapter references stay attached to their controllers: scheduler (Ch 7), node controller (Ch 4/8), workload controllers (Ch 6), the control loop (Ch 3).
-- `etcd` sits **below** the API server, reached only from it. Nothing else touches etcd.
-- The source ASCII abbreviates `workload contrls` for column width; render the full `workload controllers` in the figure.
+- **No arrow bypasses the central box.** This is the figure's entire claim and Practice Q10's correct answer; a single diagonal shortcut refutes the chapter.
+- Direction is left-to-right through the hub, then down to etcd. etcd sits *behind* the door, not beside it and not on the input side.
+- `kubelet self-registration` belongs on the **left** with the administrative acts, not on the right with the controllers. §4's point is that a kubelet joining a cluster arrives at the same door an operator does.
+- Chapter attributions are exact: scheduler = Ch 7, node controller = Ch 4/8, workload controllers = Ch 6, the control loop = Ch 3. These are the caption's payoff and a wrong number breaks the reader's back-reference.
+- Four in, four out, one down. Do not add components; this is deliberately Chapter 3's architecture unchanged.
+- Render `workload controllers` in full, not the ASCII's `workload contrls`.
 
 **Source ASCII (for designer reference):**
 ```
@@ -538,12 +560,11 @@ The centre box is the emphasis. Set `ONE DOOR` in the accent treatment. Keep the
 ```
 
 **Proposed filename:** `ch08-zenith-consequences-not-rules.png`
-*(Rename to `ch08-fig06-zenith-consequences-not-rules.png` if the anchor flag is resolved in favour of conforming.)*
 
 ```yaml-figure-spec
 anchor_id: ch08-zenith-consequences-not-rules
 diagram_type: k8s_architecture
-source_ascii: |2
+source_ascii: |
     administrative acts                                 controllers you
     (§1, §3, §4)                    ┌───────────┐       already met
                                     │           │
@@ -556,18 +577,18 @@ source_ascii: |2
                                           │
                                           ▼
                                         etcd
-vendor_terms: [kube-apiserver, kubectl, kubelet, etcd, kube-scheduler, kube-controller-manager]
+vendor_terms: [kubectl, kube-apiserver, kubelet, kube-scheduler, etcd]
 complexity_hint:
   node_count: 10
   edge_count: 9
-  label_count: 14
+  label_count: 15
 pedagogy:
-  part_18_criteria_met: [zenith, spatial_structure, fixed_point]
-  learning_outcome: "Recognise every administrative act in the chapter as a write through the API server, reconciled by a controller already introduced — and that no side channels exist"
+  part_18_criteria_met: [zenith, spatial_structure]
+  learning_outcome: "Recognise every administrative act in the chapter as a write through one door, reconciled by a controller already met"
   fixed_point_emphasis: true
-  fixed_point_emphasis_target: "the central API server box carrying the ONE DOOR label, through which every left-hand act must pass"
+  fixed_point_emphasis_target: "The central ONE DOOR box that every arrow must pass through"
 accessibility:
-  alt_text_seed: "Four administrative acts on the left — kubectl cordon, applying a quota, applying a deployment, and kubelet self-registration — all converge on a single central box labelled the API server and ONE DOOR, which then fans out to four controllers introduced in earlier chapters and writes down to etcd; no act reaches a controller directly"
+  alt_text_seed: "Four administrative actions on the left — kubectl cordon, applying a quota, applying a deployment, and kubelet self-registration — all converge on a single central box labelled the API server, one door; four arrows leave it to the scheduler from chapter seven, the node controller from chapters four and eight, the workload controllers from chapter six, and the control loop from chapter three, with a single arrow running down from the box to etcd"
 rendering_hints:
   preferred_orientation: landscape
   grayscale_critical: true
@@ -575,5 +596,5 @@ rendering_hints:
 copyright_clearance:
   rights_holders: [cncf]
   clearance: own_interpretation
-  notes: "Hub-and-spoke restatement of the chapter's own synthesis; component names are project terminology, no upstream figure reproduced"
+  notes: "Original hub-and-spoke restatement of the documented hub-and-spoke API pattern; no vendor artwork or icons reproduced."
 ```

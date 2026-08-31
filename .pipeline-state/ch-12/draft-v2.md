@@ -1,15 +1,17 @@
 # Chapter 12: Locks, Keys, and Watchstanders
 ## *"RBAC has no deny rule, and Secrets aren't encrypted"*
 
-**Domain: Container Orchestration (D2) — 28% of the exam** [source: cncf-kcna-curriculum-2025-11-24] **| Chapter allocation: ~7% | Complexity: Mixed | Novelty: Moderate**
+**Domain: Container Orchestration (D2) — 28% of the exam** [source: cncf-kcna-curriculum-pdf-2026-08-23] **| Chapter allocation: ~7% | Complexity: Mixed | Novelty: Moderate**
 
-> **A note on that 7%.** The CNCF publishes weights for the four domains and for nothing below them. There is no published figure for how much of Domain 2 is security, and anyone who gives you one is guessing. The ~7% above is this book's own allocation, derived from the competency list and the shape of the published objectives. It is a planning number for your study time, not a fact about the exam. Treat it the way you would treat any estimate: useful for deciding what to read next, useless for arguing with.
+> **A note on that 7%.** The CNCF publishes weights for the four domains and for nothing below them [source: cncf-kcna-curriculum-pdf-2026-08-23]. There is no published figure for how much of Domain 2 is security, and anyone who gives you one is guessing. The ~7% above is this book's own allocation, derived from the competency list and the shape of the published objectives. It is a planning number for your study time, not a fact about the exam. Treat it the way you would treat any estimate: useful for deciding what to read next, useless for arguing with.
+
+<!-- AUTHOR-REVIEW: this chapter's outline declares D2.2 only, but §1, §7 and §8 teach from snapshots tagged D4 (Cloud Native Ecosystem and Principles) — the 4Cs page, the CNCF Policy-as-Code glossary entry, Sigstore, in-toto, TUF, Harbor, Kyverno and Falco. That is under-declaration, not scope creep, but D4 is 12% of the exam and this is one of the few chapters teaching its ecosystem content. Recommend adding D4 to the chapter's declared objectives so the book-close coverage report does not raise a phantom "D4 under-covered" finding. -->
 
 ---
 
 ## Attention Budget
 
-**Total time: ~155 minutes | Recommended: split across two sessions**
+**Total time: ~155 minutes of reading, plus about 35 more for the exam alert, the practice questions and the summary | Recommended: split the reading across two sessions**
 
 The natural seam is after Checkpoint #2. Sections 1 through 6 are the Kubernetes API and the workload; sections 7 through 9 leave the cluster, go looking at what you shipped, and come back. They are genuinely different material and a break between them costs you nothing.
 
@@ -31,7 +33,7 @@ The natural seam is after Checkpoint #2. Sections 1 through 6 are the Kubernetes
 | ☆ Taking Your Bearings #3 | 8 min | Medium | After a brief break |
 | §9 Additive, Never Deny | 6 min | Low | When you can think, not when you can grind |
 | Exam Alert | 4 min | Low | Anytime |
-| Practice Questions (21) | 25 min | High | A separate sitting from the reading |
+| Practice Questions (23) | 28 min | High | A separate sitting from the reading |
 | Chapter Summary / The Voyage Ahead | 4 min | Low | Anytime |
 
 **Attention Cost Key:**
@@ -44,7 +46,7 @@ The natural seam is after Checkpoint #2. Sections 1 through 6 are the Kubernetes
 ---
 
 > *"The RBAC API prevents users from escalating privileges by editing roles or role bindings. Because this is enforced at the API level, it applies even when the RBAC authorizer is not in use."*
-> — Kubernetes documentation, *RBAC good practices*
+> — Kubernetes documentation, *Using RBAC Authorization*
 
 ---
 
@@ -52,7 +54,7 @@ The natural seam is after Checkpoint #2. Sections 1 through 6 are the Kubernetes
 
 Before reading this chapter, try these eight questions. Your score sets your reading strategy. There is no wrong score, only different approaches.
 
-Five of these test material from earlier chapters. Three test professional intuitions you may have built outside Kubernetes entirely. Answer both kinds honestly; the second kind is doing more work than it looks like.
+Six of these test material from earlier chapters. Two of them, questions 6 and 7, ask you to reason from professional intuition you may have built outside Kubernetes entirely. Answer both kinds honestly; the second kind is doing more work than it looks like.
 
 1. A resource is cluster-scoped rather than namespaced. Can a permission over it be granted "inside one namespace"? Is your answer a matter of policy, or is it forced by something structural?
 
@@ -85,13 +87,13 @@ Five of these test material from earlier chapters. Three test professional intui
 
 **6.** Almost certainly yes. Unix has no explicit deny, but cloud IAM does, Windows ACLs do, and firewall rulesets are built out of it, with the order-dependence that comes along for the ride. Hold on to that expectation. This chapter is going to violate it twice.
 
-**7.** A signature proves that some specific bytes were signed by the holder of some specific key, and nothing more. It does not prove the software is safe, correct, or free of vulnerabilities. And a signature over a *tag* would prove close to nothing, because a tag is a mutable pointer: whatever it named at signing time is not necessarily what it names now. *[cross-bearing: see Ch 2 §3 — registries, tags, and digests]*
+**7.** A signature proves that some specific bytes were signed by the holder of some specific key, and nothing more. It does not prove the software is safe, correct, or free of vulnerabilities. On the second half: if your instinct was that a signature over a tag and a signature over a digest are not the same statement, hold that answer — §7 shows what signing tools actually do about it. *[cross-bearing: see Ch 2 §3 — registries, tags, and digests]*
 
-**8.** Chapter 2 §1 gives you the material: a container is a process in a set of Linux namespaces and cgroups, sharing the host's kernel. That points both ways at once. The process is *isolated* from the host's view of things, but it is running against the same kernel, and by default it is genuinely UID 0 to that kernel. Which of those two facts dominates is exactly what §5 is about.
+**8.** Chapter 2 §1 gives you the material: a container is a process in a set of Linux namespaces and cgroups, sharing the host's kernel. That points both ways at once. The process is *isolated* from the host's view of things, but it is running against the same kernel. Which of those two facts dominates is exactly what §5 is about.
 
 ---
 
-**If you got 6 or more right:** skim. Read the ★ Fixed Points, the ⚠ Navigational Hazards, and §3 and §9 in full: §3 because it carries seven of this chapter's ten sourced traps, §9 because it makes an argument you cannot get from a summary. Then go straight to the Practice Questions.
+**If you got 6 or more right:** skim. Read the ★ Fixed Points, the ⚠ Navigational Hazards, and §3 and §9 in full: §3 because it is where most of this chapter's traps live, §9 because it makes an argument you cannot get from a summary. Then go straight to the Practice Questions.
 
 **If you got 3 to 5 right:** read at normal pace. The chapter is calibrated for you.
 
@@ -109,9 +111,9 @@ That question stays open for the next eight sections. Chapter 11 also gave you s
 
 Something changes for you along the way. There is a line between an engineer who can *use* a cluster and an engineer who can be trusted with somebody else's, and this chapter is most of it. Every control in here answers a question a platform team gets asked in a room with an auditor in it: *Who can read the database password? What stops a compromised container from reading the node's kubelet credentials? How do you know the image running in production is the one your build system produced?* Naming which control answers which question is the job. Not reciting the controls: mapping them onto questions.
 
-That is also why this chapter carries two framings rather than one, and why §1 spends its time on maps instead of features. The industry arrived at the 4Cs and at the lifecycle phases because practitioners kept solving one layer beautifully and shipping the other three wide open. A cluster with immaculate RBAC and an unsigned image from an unverified registry is not a secure cluster. It is a cluster with immaculate RBAC.
+That is also why this chapter carries two framings rather than one, and why §1 spends its time on maps instead of features. The two maps answer different questions, and neither answer implies the other. A cluster with immaculate RBAC and an unsigned image from an unverified registry is not a secure cluster. It is a cluster with immaculate RBAC.
 
-Two facts in this chapter are things a competent engineer will get wrong on a real cluster, today, without noticing. The first is that a Secret is protected because its values are base64-encoded. The second is that a namespace where somebody holds only a `view` RoleBinding is a safe place to let them look around. Both are wrong, both are wrong quietly, and both are wrong in a way that produces no error message and no alert. That is the honest stake here — not a story about a breach, just the plain observation that these two mistakes are invisible right up until they are not.
+Two facts in this chapter are things a competent engineer will get wrong on a real cluster, today, without noticing. The first is that a Secret is protected because its values are base64-encoded. The second is that a namespace where somebody holds only a `view` RoleBinding is a safe place to let them look around. Both are wrong, both are wrong quietly, and both are wrong in a way that produces no error message and no alert. That is the honest stake here: not a story about a breach, just the plain observation that these two mistakes are invisible right up until they are not.
 
 > **Dead Reckoning:** Security in Kubernetes is not one system. It is five systems that answer five different questions: *who are you*, *what may you do*, *what is stored where*, *what may your workload do to the machine it runs on*, and *what did you actually ship*. They were built at different times by different people. They do not check each other's work. None of them substitutes for another, and the failure of any one of them is not detected by the other four.
 
@@ -158,13 +160,13 @@ The Kubernetes documentation now frames cloud native security around the lifecyc
 - **Runtime protection: compute.** Enforce Pod Security Standards so applications run with only the privileges they need; run a specialized, typically read-only immutable node operating system; define ResourceQuotas and LimitRanges; **partition workloads across different nodes to improve isolation**; use a container runtime that provides security restrictions; and on Linux nodes use a security module such as AppArmor or seccomp [source: k8s-docs-cloud-native-security-2026-08-23]. That is §5 and §6, and note two familiar objects showing up in a new role. ResourceQuota and LimitRange were fairness controls when you met them; here they are security controls, because a workload that can exhaust a node is a workload that can affect every other workload on it. *[cross-bearing: see Ch 8 §3 — dividing a shared cluster]* And "partition workloads across different nodes" is the isolation use of node selection that Chapter 7 told you would come back. *[cross-bearing: see Ch 7 §4 — when the berth refuses you]*
 - **Runtime protection: storage.** Integrate an external storage plugin providing encryption at rest for volumes; enable encryption at rest for API objects; protect durability with backups you have verified you can restore; authenticate connections between nodes and network storage; and encrypt data within the application itself [source: k8s-docs-cloud-native-security-2026-08-23]. That is §4.
 
-Sandboxed runtimes sit in runtime/compute. The "container runtime that provides security restrictions" clause is where RuntimeClass and gVisor and Kata belong on this map. *[cross-bearing: see Ch 2 §7 — not all isolation is equal]*
+Sandboxed runtimes sit in runtime/compute. The "container runtime that provides security restrictions" clause [source: k8s-docs-cloud-native-security-2026-08-23] is where RuntimeClass and the sandboxed runtimes belong on this map. *[cross-bearing: see Ch 2 §7 — not all isolation is equal]*
 
 ### The layers: where
 
-The other framing is older and you will meet it everywhere. The **4Cs of Cloud Native security are Cloud, Clusters, Containers, and Code** [source: k8s-docs-4cs-cloud-native-security-v1-22-archived-2026-08-31], and they nest: each layer of the model builds upon the next outermost layer, so the Code layer benefits from strong Cloud, Cluster and Container security beneath it. The documentation states the consequence bluntly — *"You cannot safeguard against poor security standards in the base layers by addressing security at the Code level"* [source: k8s-docs-4cs-cloud-native-security-v1-22-archived-2026-08-31].
+The other framing is older. It is the one the Kubernetes project's own security overview carried in the v1.22 documentation, and it is still the framing most third-party material uses. **The 4Cs of Cloud Native security are Cloud, Clusters, Containers, and Code** [source: k8s-docs-4cs-cloud-native-security-v1-22-archived-2026-08-31], and they nest: each layer of the model builds upon the next outermost layer, so the Code layer benefits from strong Cloud, Cluster and Container security beneath it. That page states the consequence bluntly — *"You cannot safeguard against poor security standards in the base layers by addressing security at the Code level"* [source: k8s-docs-4cs-cloud-native-security-v1-22-archived-2026-08-31].
 
-**Cloud** is the trusted computing base. The documentation is direct: *"If the Cloud layer is vulnerable (or configured in a vulnerable way) then there is no guarantee that the components built on top of this base are secure"* [source: k8s-docs-4cs-cloud-native-security-v1-22-archived-2026-08-31]. Its concerns are network access to the API server and the nodes, the permissions the cluster holds against the cloud provider's own API, and access to etcd, including the recommendation that etcd's disk especially should be encrypted at rest, *since etcd holds the state of the entire cluster (including Secrets)* [source: k8s-docs-4cs-cloud-native-security-v1-22-archived-2026-08-31]. Hold that clause. §4 is going to need it.
+**Cloud** is the trusted computing base. The page is direct: *"If the Cloud layer is vulnerable (or configured in a vulnerable way) then there is no guarantee that the components built on top of this base are secure"* [source: k8s-docs-4cs-cloud-native-security-v1-22-archived-2026-08-31]. Its concerns are network access to the API server and the nodes, the permissions the cluster holds against the cloud provider's own API, and access to etcd, including the recommendation that etcd's disk especially should be encrypted at rest, *since etcd holds the state of the entire cluster (including Secrets)* [source: k8s-docs-4cs-cloud-native-security-v1-22-archived-2026-08-31]. Hold that clause. §4 is going to need it.
 
 **Cluster** splits into securing the configurable cluster components and securing the applications that run in the cluster, and the workload-security list reads like this chapter's index: RBAC authorization, authentication, application secrets management including encryption at rest, Pod Security Standards, resource management, network policies, and TLS for Ingress [source: k8s-docs-4cs-cloud-native-security-v1-22-archived-2026-08-31].
 
@@ -178,7 +180,7 @@ A reasonable question at this point is why a book would teach you two maps of th
 
 The current kubernetes.io security overview presents the lifecycle phases. It *replaced* the 4Cs framing on that page [source: k8s-docs-cloud-native-security-2026-08-23]. So the phases are the current framing from the primary authority, and if the exam draws from the current documentation, the phases are what it is drawing from.
 
-But the 4Cs have not gone anywhere else. They are in essentially every third-party study guide, every conference talk from the last five years, and a great deal of internal security documentation written by people who learned Kubernetes when that page said something different. You will meet them. They are also genuinely useful, because they answer a question the phases do not.
+But the 4Cs have not gone anywhere else. The framing predates the current page, and you will still meet it in third-party material and in internal security documentation written before the change. It is also genuinely useful, because it answers a question the phases do not.
 
 Which brings us to the actual distinction, and it is worth more than either list.
 
@@ -244,9 +246,11 @@ You met the object in Chapter 5, where it was introduced as the identity a Pod r
 
 What Chapter 5 could not tell you is the contrast that makes ServiceAccounts interesting. Service accounts are **different from user accounts**, which are authenticated human users in the cluster — and *"by default, user accounts don't exist in the Kubernetes API server"* [source: k8s-docs-service-accounts-2026-08-23].
 
-Read that twice. Kubernetes has no User object. There is no `kubectl create user`. A human identity arrives at the API server from *outside* — from a certificate authority, an OIDC provider, an authenticating proxy — and Kubernetes' job is to validate the claim, extract a username and a set of groups, and hand those strings to the next gate. It stores nothing. Usernames are just strings, and *"it is up to you as a cluster administrator to configure the authentication modules so that authentication produces usernames in the format you want"* [source: k8s-docs-rbac-depth-2026-08-31]. Groups likewise are strings, supplied by the authenticator, with the `system:` prefix reserved [source: k8s-docs-rbac-depth-2026-08-31].
+Read that twice. Kubernetes has no User object. There is no `kubectl create user`. A human identity arrives at the API server from *outside the cluster*, and Kubernetes' job is to validate the claim, extract a username and a set of groups, and hand those strings to the next gate. It stores nothing. Usernames are just strings, and *"it is up to you as a cluster administrator to configure the authentication modules so that authentication produces usernames in the format you want"* [source: k8s-docs-rbac-depth-2026-08-31]. Groups likewise are strings, supplied by the authenticator, with the `system:` prefix reserved [source: k8s-docs-rbac-depth-2026-08-31].
 
-That asymmetry — in-cluster identities are objects, human identities are not — surprises people, and it is the reason ServiceAccounts get their own section while users get a paragraph. Human identity is somebody else's system. Workload identity is Kubernetes'.
+<!-- AUTHOR-REVIEW: this chapter's corpus has no snapshot covering Kubernetes authentication *mechanisms* — X.509 client certificates, OIDC token authentication, authenticating proxies. The paragraph above therefore says only "from outside the cluster" rather than naming them, which is what the corpus supports. If the author wants the three named, it needs a fetch of https://kubernetes.io/docs/reference/access-authn-authz/authentication/. -->
+
+That asymmetry surprises people: in-cluster identities are objects, human identities are not. It is the reason ServiceAccounts get their own section while users get a paragraph. Human identity is somebody else's system. Workload identity is Kubernetes'.
 
 > 🔭 **Closer Look:** ServiceAccounts get names prefixed with `system:serviceaccount:` and belong to groups prefixed with `system:serviceaccounts:` [source: k8s-docs-rbac-depth-2026-08-31]. Singular for the account, plural for the group. That one-character difference is real, and it is exactly the sort of thing that is unpleasant to debug at 3 a.m.
 
@@ -264,7 +268,9 @@ API discovery means the endpoints that tell a client what API groups and version
 >
 > **An identity and a permission are two different things, kept in two different objects.** The `default` ServiceAccount is the proof: every Pod in the cluster has an identity, and almost none of them can do anything with it.
 
-This is the single most useful sentence in the chapter for reasoning about the rest of it, and it is why §2 comes before §3 rather than merging with it. Creating a ServiceAccount grants nothing. Assigning it to a Pod grants nothing. The Pod authenticates successfully, arrives at the second gate, and is turned away — a completely different failure from not being recognized at all, and one that produces a different message. *[cross-bearing: see Ch 8 §2 — three gates and a logbook]*
+The sidebar's first panel was about exactly this. A key is stamped, issued, and unmistakably yours; what it opens is written down somewhere else entirely, and until somebody writes it there, the key turns nothing.
+
+This is the single most useful sentence in the chapter for reasoning about the rest of it, and it is why §2 comes before §3 rather than merging with it. Creating a ServiceAccount grants nothing. Assigning it to a Pod grants nothing. The Pod authenticates successfully, arrives at the second gate, and is turned away: a completely different failure from not being recognized at all, and one that produces a different message. *[cross-bearing: see Ch 8 §2 — three gates and a logbook]*
 
 You assign one with `spec.serviceAccountName` in the Pod spec. The documented sequence is: create a ServiceAccount object; grant permissions to it using an authorization mechanism such as RBAC; and assign it to Pods at creation time via `spec.serviceAccountName` [source: k8s-docs-service-accounts-2026-08-23]. Three steps, and the middle one is §3.
 
@@ -333,7 +339,7 @@ The emptiness on the right is the Fixed Point drawn. The identity is complete. T
 
 One more thing, easy to miss and directly consequential.
 
-When you delete a Deployment, cascading deletion removes what the Deployment owns: its ReplicaSet, and through that, its Pods. It does **not** remove the ServiceAccount those Pods ran as. Owner references are what drive garbage collection, and cross-namespace owner references are disallowed by design while namespaced dependents may specify namespaced owners in the same namespace [source: k8s-docs-garbage-collection-2026-08-24] — but a ServiceAccount you created alongside a Deployment is not *owned* by it. Neither are the Secrets it referenced. Neither are the RoleBindings that granted it anything.
+Kubernetes checks for and deletes objects that no longer have owner references, and owner references are what drive that garbage collection [source: k8s-docs-garbage-collection-2026-08-24]. When you delete a Deployment, cascading deletion removes what the Deployment owns. It does **not** remove the ServiceAccount those Pods ran as, because a ServiceAccount you created alongside a Deployment carries no owner reference back to it. Neither do the Secrets it referenced. Neither do the RoleBindings that granted it anything.
 
 Chapter 6 told you that deleting a workload does not delete everything it referenced, and pointed here. *[cross-bearing: see Ch 6 §3 — how a controller knows its own]* This is the security consequence: **identity and grants outlive the workload that used them.** A cluster that has been in production for three years accumulates ServiceAccounts nobody remembers creating, still holding grants nobody remembers making, ready to be used by anything that can name them. Nobody deletes them, because nobody is certain what would break.
 
@@ -385,7 +391,9 @@ And then the sentence that does the work:
 
 Four objects, and the natural reflex is to make a two-by-two table and memorize the cells. Chapter 4 told you not to. *[cross-bearing: see Ch 4 §3 — where a name lives]* Chapter 8 told you the same thing in nearly the same words. So: the derivation instead, and it needs exactly one thing you already have.
 
-Chapter 4 established that some resources are namespaced and some are cluster-scoped, and it stated the consequence that matters here in as many words: **a permission over a cluster-scoped resource cannot be granted inside one namespace, because there is no namespace to grant it in.** Not "should not." *Cannot.* A cluster-scoped resource belongs to no namespace, not to all of them, and the difference between those two phrasings is the entire derivation.
+Chapter 4 established that some resources are namespaced and some are cluster-scoped. Put that beside two sentences you already have from the RBAC reference: *"A Role always sets permissions within a particular namespace"*, and *"ClusterRole, by contrast, is a non-namespaced resource"* [source: k8s-docs-rbac-2026-08-23]. A cluster-scoped resource belongs to no namespace, not to all of them — so **there is no namespace inside which a Role could hold a rule about it**. Not "should not." *Could not.* The difference between "no namespace" and "all namespaces" is the entire derivation.
+
+<!-- AUTHOR-REVIEW: the consequence stated above — that a cluster-scoped rule has nowhere to land when a ClusterRole is bound by a namespace-scoped RoleBinding — follows from the two sourced sentences quoted immediately before it, but no page in this chapter's corpus states it outright. Four reader-facing conclusions rest on it: this paragraph, figure ch12-fig02's fourth row, Taking Your Bearings #1 answer 3, and Practice Question 5's option-B explanation. Recommend fetching the RBAC reference's RoleBinding/ClusterRoleBinding section to confirm before release; if it cannot be confirmed, all four sites need softening together, not individually. -->
 
 Start from there and ask two independent questions.
 
@@ -436,8 +444,10 @@ Those two questions are independent, which is why there are four objects rather 
    Role      + RoleBinding         → those rules, in that namespace
    ClusterRole + RoleBinding       → those rules, in that ONE namespace
    ClusterRole + ClusterRoleBinding→ those rules, everywhere
-   Role      + ClusterRoleBinding  → ✗ does not exist. A Role's rules
-                                       are namespace-local; there is
+   Role      + ClusterRoleBinding  → ✗ does not exist. A Role "always sets
+                                       permissions within a particular
+                                       namespace"; a ClusterRoleBinding
+                                       grants access cluster-wide. There is
                                        nothing cluster-wide to grant.
 
    ┌───────────────────────────────────────────────────────────────┐
@@ -459,13 +469,13 @@ Inside a Role or ClusterRole, the rules name verbs and resources. The verbs the 
 
 You can narrow further. *"You can also refer to resources by name for certain requests through the `resourceNames` list. When specified, requests can be restricted to individual instances of a resource"* [source: k8s-docs-rbac-depth-2026-08-31], so "may read the Secret named `db-password`, and no other Secret" is expressible. With limits: *"You cannot restrict deletecollection or top-level create requests by resource name. For create, this limitation is because the name of the new object may not be known at authorization time"* [source: k8s-docs-rbac-depth-2026-08-31]. Which is exactly right when you think about it: you cannot filter on a name that does not exist yet.
 
-And a fact that costs one sentence and saves a lot of confusion later: **RBAC rules name custom resources exactly as they name built-in ones.** A CRD-backed resource lives in the same API, gets addressed the same way, and is granted the same way. Chapter 6 promised you that custom resources work with `kubectl get`, labels, selectors, namespaces, RBAC, all of it. *[cross-bearing: see Ch 6 §8 — the control loop, extended]* Nothing special is required here, and that is the whole point of putting custom resources in the API in the first place.
+And a fact that costs one sentence and saves a lot of confusion later: **RBAC rules name custom resources exactly as they name built-in ones.** The documentation says so directly — aggregation *"lets you, as a cluster administrator, include rules for custom resources, such as those served by CustomResourceDefinitions or aggregated API servers, to extend the default roles"*, and *"You can assume that CronTab objects are named `"crontabs"` in URLs as seen by the API server"* [source: k8s-docs-rbac-depth-2026-08-31]. A CRD-backed resource lives in the same API, gets addressed the same way, and is granted the same way. Chapter 6 promised you that custom resources work with `kubectl get`, labels, selectors, namespaces, RBAC, all of it. *[cross-bearing: see Ch 6 §8 — the control loop, extended]* Nothing special is required here, and that is the whole point of putting custom resources in the API in the first place.
 
 ### Aggregated ClusterRoles
 
 *"You can aggregate several ClusterRoles into one combined ClusterRole. A controller, running as part of the cluster control plane, watches for ClusterRole objects with an `aggregationRule` set. The `aggregationRule` defines a label selector that the controller uses to match other ClusterRole objects that should be combined into the `rules` field of this one"* [source: k8s-docs-rbac-depth-2026-08-31]. Create a new ClusterRole matching the selector and its rules get added to the aggregate automatically.
 
-Which is a control loop — desired state expressed as a selector, a controller reconciling toward it — doing a job you have watched it do in six other places. *[cross-bearing: see Ch 3 §6 — controllers and the control loop]*
+Which is a control loop — desired state expressed as a selector, a controller reconciling toward it — doing a job you have watched it do elsewhere. *[cross-bearing: see Ch 3 §6 — controllers and the control loop]*
 
 The default user-facing roles use aggregation, which is how a cluster administrator can extend `admin`, `edit` and `view` to cover custom resources [source: k8s-docs-rbac-depth-2026-08-31]. Define a ClusterRole with the right labels and the built-in roles quietly gain the rules.
 
@@ -479,13 +489,13 @@ This is that prediction. RBAC does not select its subjects. It **names** them. *
 
 Why is the interesting question, and the documentation does not answer it, so here is the reading that makes sense of it.
 
-<!-- AUTHOR-REVIEW: the docs state that subjects are named strings and never explain the design choice. The paragraph below is the author's reasoning, not a sourced claim, and is marked as such in the prose. Flagging so a later stage does not attach a [source:] tag to it. -->
+<!-- AUTHOR-REVIEW: the docs state that subjects are named strings and never explain the design choice. The paragraphs below are the author's reasoning, not a sourced claim, and are marked as such in the prose. Flagging so a later stage does not attach a [source:] tag to them. -->
 
 A selector is a *query*, evaluated continuously against a set that changes. That is a feature everywhere else in Kubernetes: a Deployment should pick up a Pod that starts matching, a Service should route to an endpoint that becomes ready. The set moving underneath you is the point.
 
 Privilege is the one place where the set moving underneath you is a catastrophe. A grant defined by selector would silently expand the moment somebody added a label, and adding a label is one of the lowest-privilege operations in the entire system, something dozens of people and every controller in the cluster can do. You would have a permission system in which the answer to "who can read the production Secrets?" changed without anyone editing a permission, and could not be answered by reading the permission objects. Naming subjects means the list of who holds a grant is written down in the grant, and it changes only when somebody changes it.
 
-> ⚓ **Worth Securing:** The general form of that argument shows up throughout security design: *dynamic membership is a feature for routing and a liability for authorization*. Cloud IAM systems that do support attribute-based group membership generally pair it with heavy audit tooling for exactly this reason, because the question "who currently has this?" stops being answerable by reading the policy.
+> ⚓ **Worth Securing:** The general form of that argument shows up throughout security design: *dynamic membership is a feature for routing and a liability for authorization*. Cloud IAM systems that do support attribute-based group membership generally pair it with heavy audit tooling for exactly this reason, because the question "who currently has this?" stops being answerable by reading the policy. `[inferred]`
 
 ### The four default roles, and what each cannot do
 
@@ -527,7 +537,7 @@ That is the whole rule, and it is one parenthetical in the documentation.
 
 One more mechanism, because it explains a class of error message.
 
-*"The RBAC API prevents users from escalating privileges by editing roles or role bindings. Because this is enforced at the API level, it applies even when the RBAC authorizer is not in use"* [source: k8s-docs-rbac-good-practices-2026-08-31].
+*"The RBAC API prevents users from escalating privileges by editing roles or role bindings. Because this is enforced at the API level, it applies even when the RBAC authorizer is not in use"* [source: k8s-docs-rbac-depth-2026-08-31].
 
 Concretely: you can only create or update a role if you already have all the permissions it contains, at the same scope, *or* you have been granted the `escalate` verb on roles [source: k8s-docs-rbac-depth-2026-08-31]. And you can only create or update a binding if you already hold all the permissions in the referenced role, *or* you hold the `bind` verb on it [source: k8s-docs-rbac-depth-2026-08-31]. The example the documentation gives is exact: *"if `user-1` does not have the ability to list Secrets cluster-wide, they cannot create a ClusterRole containing that permission"* [source: k8s-docs-rbac-depth-2026-08-31].
 
@@ -556,8 +566,8 @@ Five questions covering §1 through §3. Take them before continuing — the sec
 
 A) Distribute phase; Container layer
 B) Runtime phase (storage); Cloud shading into Cluster layer
-C) Deploy phase; Code layer
-D) Develop phase; Cluster layer
+C) Runtime phase (storage); Container layer
+D) Deploy phase; Cluster layer
 
 **2.** A Pod is created in the `payments` namespace with no `serviceAccountName` field. The Pod starts successfully and its application immediately tries to list the Pods in its own namespace. What happens, and why?
 
@@ -566,12 +576,12 @@ B) The Pod fails to start, because no ServiceAccount was named
 C) Authentication fails, because the `default` ServiceAccount has no token
 D) Authentication succeeds and authorization fails, because the `default` ServiceAccount holds only API discovery permissions
 
-**3.** *[retrieval: ch4]* Your team needs a group of engineers to be able to read `PersistentVolume` objects — which are cluster-scoped — but *only* as part of a wider set of read permissions you want to reuse across three namespaces for namespaced resources too. You do not want them to have any access in a fourth namespace. Which combination of objects does this call for, and what forces the choice?
+**3.** *[retrieval: ch4]* Your team needs a group of engineers to be able to read `PersistentVolume` objects — which are cluster-scoped — as part of a read-only permission set you want to reuse. Which combination of objects does this call for, and what forces the choice?
 
-A) A Role in each of the three namespaces, bound by a RoleBinding in each — Roles are the correct object for namespace-limited access
-B) A ClusterRole, bound by a RoleBinding in each of the three namespaces — but note this does not grant the PersistentVolume access
-C) A ClusterRole, bound by a ClusterRoleBinding — cluster-scoped resources require a cluster-wide binding
-D) A ClusterRole holding both sets of rules, bound by a ClusterRoleBinding — because the cluster-scoped resource forces the ClusterRole, and there is no way to grant a cluster-scoped permission in only some namespaces
+A) A Role in each namespace where the engineers work, bound by a RoleBinding in each — Roles are the correct object for a team-scoped grant
+B) A ClusterRole, bound by a RoleBinding in each namespace where the engineers work
+C) A ClusterRole, bound by a ClusterRoleBinding — because the cluster-scoped resource forces the ClusterRole, and a permission over a resource that is in no namespace cannot be scoped to one
+D) Either A or B, depending on how many namespaces are involved
 
 **4.** A RoleBinding in the `staging` namespace currently references the ClusterRole `edit`. You need it to reference `view` instead. What do you do?
 
@@ -591,15 +601,35 @@ D) `cluster-admin` always confers cluster-wide power regardless of which binding
 
 **Answers with Explanations:**
 
-**1. B.** Encryption at rest for API objects is squarely in the runtime phase's **storage** area; the documentation's runtime/storage list names "enable encryption at rest for API objects" directly [source: k8s-docs-cloud-native-security-2026-08-23]. On the layer map it starts at Cloud, where the 4Cs page recommends the etcd disk be encrypted at rest *"since etcd holds the state of the entire cluster (including Secrets)"* [source: k8s-docs-4cs-cloud-native-security-v1-22-archived-2026-08-31], and extends into Cluster, where the API-object encryption is configured. **A** is the position of image signing. **C** and **D** put a storage control in phases that end before storage exists. The point of the question is that both coordinates are required and neither implies the other.
+**1. B.** Encryption at rest for API objects is squarely in the runtime phase's **storage** area; the documentation's runtime/storage list names "enable encryption at rest for API objects" directly [source: k8s-docs-cloud-native-security-2026-08-23]. On the layer map it starts at Cloud, where the 4Cs page recommends the etcd disk be encrypted at rest *"since etcd holds the state of the entire cluster (including Secrets)"* [source: k8s-docs-4cs-cloud-native-security-v1-22-archived-2026-08-31], and extends into Cluster, where the API-object encryption is configured.
+
+**A** is the position of image signing — both coordinates wrong, and worth recognizing as a pair.
+**C** has the phase right and the layer wrong. The Container layer covers the image and what runs from it; etcd is neither. This is the error you make if you reason "it's a Kubernetes thing, so it must be Container."
+**D** has the layer half-right and the phase wrong. The deploy phase is about restrictions on what can be deployed, who can deploy it, and where [source: k8s-docs-cloud-native-security-2026-08-23]; encryption at rest governs data already in the datastore, which is runtime. This is the error you make if you reason "an operator configures it, so it must be a deploy-time act."
+
+The point of the question is that both coordinates are required and neither implies the other.
 
 **2. D.** Every namespace gets a `default` ServiceAccount, and Kubernetes assigns it to any Pod that does not name one [source: k8s-docs-service-accounts-2026-08-23]. The Pod gets a valid, projected, rotating token, so **authentication succeeds**. But the `default` account gets no permissions beyond API discovery [source: k8s-docs-service-accounts-2026-08-23], so **authorization fails**. **A** is the widespread and wrong assumption that a Pod can read its own namespace. **B** confuses identity assignment with a scheduling or admission failure; the Pod runs fine. **C** is the common misdiagnosis: people see a 403 and go looking at the token. The token is fine. This is the Fixed Point in question form.
 
-**3. D.** Work it from the boundary. `PersistentVolume` is cluster-scoped, so it lives in no namespace, so a Role — which is defined within a namespace — has nowhere to put the rule. The **ClusterRole is forced** [source: k8s-docs-rbac-2026-08-23]. Then the second, independent question: where should the grant apply? A cluster-scoped resource cannot be granted "in three namespaces but not a fourth," because the resource is not in any of them. So the binding must be a ClusterRoleBinding, and the namespace-limiting requirement in the scenario is not achievable for the cluster-scoped half. **B** is the trap built from the misconception that a ClusterRole bound by a RoleBinding does everything: it does grant that ClusterRole's *namespaced* rules in that namespace, but the cluster-scoped rule simply has no effect there, which is a subtle and genuinely confusing outcome. **A** fails at the first question. **C** reaches the right answer through the wrong reasoning; it says cluster-scoped resources require a cluster-wide binding as though that were a rule about bindings, when it is a consequence of what "cluster-scoped" means.
+**3. C.** Work it from the boundary. `PersistentVolume` is cluster-scoped, so it lives in no namespace, so a Role — which *"always sets permissions within a particular namespace"* [source: k8s-docs-rbac-2026-08-23] — has nowhere to put the rule. The **ClusterRole is forced**. Then the second, independent question: where should the grant apply? A resource that is in no namespace cannot have a permission over it scoped to one, so the binding must be a ClusterRoleBinding.
+
+**A** fails at the first question — it reaches for the object whose scope cannot hold the rule.
+**B** is the trap, and it is the most instructive wrong answer here. A RoleBinding *can* reference a ClusterRole, and doing so is correct and common [source: k8s-docs-rbac-2026-08-23] — but it binds that ClusterRole into the RoleBinding's namespace, and the `PersistentVolume` rule has no namespace to land in. The result looks configured and grants nothing. This is the misconception that a ClusterRole bound by a RoleBinding does everything a ClusterRoleBinding would, just in one place.
+**D** treats a structural constraint as a matter of scale. The number of namespaces is irrelevant; a cluster-scoped resource is not in any of them.
 
 **4. B.** *"After you create a binding, you cannot change the Role or ClusterRole that it refers to"* [source: k8s-docs-rbac-2026-08-23]. **A** fails; the API rejects the change to `roleRef`. **C** is the deny-rule misconception wearing a different hat: bindings are additive, so a second binding referencing `view` would add nothing that `edit` did not already include and would certainly not restrict anything. **D** would change the meaning of `edit` for every subject in the cluster, which is a much larger blast radius than the problem calls for, and the API's escalation-prevention rules may well refuse it anyway.
 
 **5. C.** Both halves are documented: `view` *"does not allow viewing Secrets"* [source: k8s-docs-rbac-depth-2026-08-31], and `edit` *"does not allow viewing or modifying roles or role bindings"* [source: k8s-docs-rbac-2026-08-23]. **A** inverts both, and its second half is specifically wrong in a way worth remembering: `edit` *does* have access to Secrets [source: k8s-docs-rbac-depth-2026-08-31]. **B** inverts the delegation boundary; `admin` can create roles and bindings in its namespace, `edit` cannot. **D** is the `cluster-admin` trap: in a RoleBinding it is scoped to that binding's namespace [source: k8s-docs-rbac-2026-08-23].
+
+---
+
+**How'd You Do?**
+
+**5/5:** move on. §4 will land cleanly.
+
+**3–4:** re-read the section behind each miss before continuing. This chapter's sections are near-independent arcs, so a gap here does not close itself later — it just stays a gap.
+
+**0–2:** stop and re-read §3 in full before starting §4. Not a skim: the four objects, the derivation, and the negative space of the four default roles. §4's central argument is built directly on the default roles and the additive rule, and it will read as a list of unrelated cautions without them.
 
 ---
 
@@ -661,7 +691,7 @@ And the second half is worse: because a Pod can name any ServiceAccount in the n
 >
 > This is the most consequential practical fact in the chapter, and the most invisible.
 >
-> An RBAC audit that greps for `get secrets` and finds nobody holding it will report the Secrets as safe. It is reading the wrong permission. In a namespace where a dozen engineers hold `edit` so they can deploy, a dozen engineers can read every Secret, and no line in any Role says so.
+> An RBAC audit that greps for `get secrets` and finds nobody holding it will report the Secrets as safe. It is reading the wrong permission. In a namespace where a dozen engineers hold permission to deploy, a dozen engineers can read every Secret, and no line in any Role says so.
 >
 > The documentation draws the only correct conclusion: *"namespaces should be used to separate resources requiring different levels of trust or tenancy. It is still considered best practice to follow least privilege principles and assign the minimum set of permissions, but **boundaries within a namespace should be considered weak**"* [source: k8s-docs-rbac-good-practices-2026-08-31].
 >
@@ -671,7 +701,7 @@ Recall from §3, one section ago, that `view` cannot read Secrets precisely beca
 
 ### Encryption at rest, and what it buys
 
-So enable encryption at rest. What does that actually mean?
+So enable encryption at rest. This is the lock finally being fitted to the strongbox, and it pays to be exact about which door it closes.
 
 *"All of the APIs in Kubernetes that let you write persistent API resource data support at-rest encryption. For example, you can enable at-rest encryption for Secrets. This at-rest encryption is additional to any system-level encryption for the etcd cluster or for the filesystem(s) on hosts where you are running the kube-apiserver"* [source: k8s-docs-encrypt-data-2026-08-31]. And the default is unambiguous: *"By default, the API server stores plain-text representations of resources into etcd, with no at-rest encryption"* [source: k8s-docs-encrypt-data-2026-08-31].
 
@@ -681,7 +711,7 @@ One trap in the checking: even *with* the flag set, if the referenced file lists
 
 Note the scope carefully. *"This task covers encryption for resource data stored using the Kubernetes API. If you want to encrypt data in filesystems that are mounted into containers, you instead need to either: use a storage integration that provides encrypted volumes [or] encrypt the data within your own application"* [source: k8s-docs-encrypt-data-2026-08-31].
 
-So the honest accounting of what encryption at rest gives you. It protects the object **as written to etcd**, which closes route two, the etcd-access and etcd-backup route, and closes it well. It does nothing whatsoever about routes one and three, because a caller the API server has authorized gets the object decrypted, in full, as normal. That is not a shortcoming; it is the definition of the control. But an engineer who enables encryption at rest and believes the Secrets problem is now solved has closed one of three doors and stopped counting.
+So the honest accounting of what encryption at rest gives you. It protects the object **as written to etcd**, which closes route two, the etcd-access and etcd-backup route, and closes it well. It does nothing whatsoever about routes one and three, because a caller the API server has authorized gets the object decrypted, in full, as normal. The lock is on the box; it says nothing about who is handed the box. That is not a shortcoming; it is the definition of the control. But an engineer who enables encryption at rest and believes the Secrets problem is now solved has closed one of three doors and stopped counting.
 
 > 🔭 **Closer Look:** This is also the moment to draw a line you will need in a later chapter. **Encryption at rest and encryption in transit are separate decisions with separate mechanisms.** At rest is about bytes sitting in storage. In transit is about bytes moving across a network: TLS between components, and, at the workload layer, mutual TLS between services. Enabling one says nothing about the other. *[cross-bearing: see Ch 17 §5 — a network that knows what it's carrying]*
 
@@ -732,9 +762,11 @@ Secrets carry a type, and the type tells consumers what shape of data to expect 
 | `kubernetes.io/tls` | data for a TLS client or server |
 | `bootstrap.kubernetes.io/token` | bootstrap token data |
 
-Two of those connect to material you already have. `kubernetes.io/dockerconfigjson` is what an `imagePullSecret` is. Chapter 2 introduced pull secrets and flagged that they are a genuine security boundary rather than a convenience feature *[cross-bearing: see Ch 2 §6 — when Kubernetes pulls, and when it doesn't]*, and §7 will pick that up as the last checkpoint in the supply chain. And `kubernetes.io/service-account-token` is the legacy credential §2 warned you about.
+Two of those connect to material you already have. `kubernetes.io/dockerconfigjson` holds a serialized `~/.docker/config.json` [source: k8s-docs-secret-2026-08-23], which is precisely what a workload needs for *"authenticating to a private image registry using an imagePullSecret"* [source: k8s-docs-service-accounts-2026-08-23]. Chapter 2 introduced pull secrets and flagged that they are a genuine security boundary rather than a convenience feature *[cross-bearing: see Ch 2 §6 — when Kubernetes pulls, and when it doesn't]*, and §7 will pick that up as the last checkpoint in the supply chain. And `kubernetes.io/service-account-token` is the legacy credential §2 warned you about.
 
-A closing note for the next chapter: a Pod that references a Secret which does not exist does not start. It is a specific, recognizable failure shape, distinct from a Pod that starts and then dies, and it is one of the first things to check when a Pod sits in `Pending` or shows a config error. *[cross-bearing: see Ch 13 §2 — pods that never start]*
+A closing note for the next chapter: a Pod that references a Secret which does not exist does not get a running container. The kubelet cannot assemble the container's configuration, so the container sits waiting rather than starting and crashing — a recognizably different shape from a Pod that runs and then dies, and one of the first things to check when a Pod never comes up. *[cross-bearing: see Ch 13 §2 — pods that never start]*
+
+<!-- AUTHOR-REVIEW: the missing-Secret startup behaviour above is not stated on any page in this chapter's corpus — the Secret concept page, the Secret risks page and the Secrets good-practices page were all checked and none of them describes what happens when a referenced Secret is absent. The wording has been kept deliberately non-specific (no reason string, no phase name) for that reason. Ch 13 §2 is planned to grade on this and The Voyage Ahead hands it forward, so it should be sourced before Ch 13 drafts: recommend the Secrets page's "Using a Secret" section or the Pod lifecycle documentation. -->
 
 ---
 
@@ -742,17 +774,19 @@ A closing note for the next chapter: a Pod that references a Secret which does n
 
 Chapter 10 drew you two axes and filled in one of them. NetworkPolicy governs which Pod may open a connection to which Pod: reachability, workload to workload. The other axis, it said, was what a Pod may do to the machine it is running on, and it was Chapter 12's. Chapter 11 pointed at the same place twice: once when it warned you about `hostPath` and called this *the workload-to-host boundary problem, and why an entire security apparatus exists to police it*, and once when it insisted that a volume access mode is not a permission system.
 
-This is that axis, and that apparatus.
+This is that axis, and that apparatus. It is also the boundary the chapter's title is actually about. Everything else here arranges who may ask the API for what; this section is about what a workload can do to the deck it is standing on.
 
 You have in fact already seen the word. Chapter 11 quoted the storage documentation verbatim: *"it does not prevent an application from writing to the mounted volume if the Pod's securityContext allows write access."* You met `securityContext` inside a sourced quotation, doing exactly the job this section is about, with a pointer attached. Now it gets defined.
+
+<!-- AUTHOR-REVIEW: the Ch 11 sentence re-quoted above is verbatim documentation, but no persistent-volumes snapshot is in this chapter's source set — the citation lives in Ch 11's corpus. Re-quoted documentation should carry its tag on every appearance. Recommend pulling Ch 11's access-modes snapshot into this chapter's set, or attributing the quote to Ch 11 explicitly rather than to "the storage documentation." -->
 
 ### The default position
 
 Start with the uncomfortable baseline, because everything here is a departure from it.
 
-A container is a process in a set of Linux namespaces and cgroups, sharing the host's kernel *[cross-bearing: see Ch 2 §1 — what a container actually is]*. That gives it an isolated *view*: its own filesystem, its own process table, its own network stack. It does not give it a different kernel or, by default, a different user database. A process running as root inside a container is, absent further configuration, running as **UID 0 against the host's kernel**. The isolation is real and it is not the same thing as being unprivileged.
+A container is a process in a set of Linux namespaces and cgroups, sharing the host's kernel *[cross-bearing: see Ch 2 §1 — what a container actually is]*. That gives it an isolated *view*: its own filesystem, its own process table, its own network stack. It does not give it a different kernel or, by default, a different user database.
 
-The Kubernetes documentation's own recommendation follows directly: *"When you deploy a workload in Kubernetes, use the Pod specification to restrict that workload from running as the root user on the node"* [source: k8s-docs-linux-kernel-security-constraints-2026-08-31]. Note the phrasing: *root user on the node*. Not "root in the container." The documentation is treating them as the same thing, because absent the controls in this section they largely are.
+The Kubernetes documentation's own recommendation says so by implication: *"When you deploy a workload in Kubernetes, use the Pod specification to restrict that workload from running as the root user on the node"* [source: k8s-docs-linux-kernel-security-constraints-2026-08-31]. Note the phrasing — *root user on the node*, not "root in the container." The documentation treats those as the same thing, and the feature that separates them exists precisely because they otherwise are not separate: `hostUsers: false` lets you *"run containers as root users in the user namespace, but as non-root users in the host namespace on the node"* [source: k8s-docs-linux-kernel-security-constraints-2026-08-31]. Absent that, a process running as root inside a container is running as **UID 0 against the host's kernel**. The isolation is real and it is not the same thing as being unprivileged.
 
 ### The field
 
@@ -777,7 +811,7 @@ At **container scope**: *"Security settings that you specify for a Container app
 
 > 🪝 **Snag:** **The container's setting wins where both are set.** Pod scope is the default for everything in the Pod; container scope is a per-container override. And the tail of that sentence matters too: container settings do not affect the Pod's Volumes, so volume ownership behavior (`fsGroup`, for instance) is a Pod-level concern only.
 
-Concretely at Pod scope: `runAsUser` specifies that all processes in any container run with a given user ID; `runAsGroup` specifies the primary group ID, and *"if this field is omitted, the primary group ID of the containers will be root(0)"*; `fsGroup` makes all container processes part of a supplementary group and sets the owner group for mounted volumes and files created in them [source: k8s-docs-security-context-2026-08-31]. That `runAsGroup` default is worth noticing: omitting it does not mean "no group," it means group 0.
+Concretely at Pod scope: `runAsUser` specifies that all processes in any container run with a given user ID; `runAsGroup` specifies the primary group ID, and *"if this field is omitted, the primary group ID of the containers will be root(0)"*; `fsGroup` makes all container processes part of a supplementary group and sets the owner group for mounted volumes and files created in them [source: k8s-docs-security-context-2026-08-31]. Notice what omitting `runAsGroup` does: it does not mean "no group," it means group 0.
 
 ### Capabilities
 
@@ -825,11 +859,11 @@ Specifically: privileged containers run as the `Unconfined` seccomp profile, ove
 
 The section's promise was an apparatus, so the rest of it: the controls that sit beside `securityContext` rather than inside it.
 
-**Stronger isolation at the runtime layer.** If the shared-kernel model is not acceptable for a workload, you change the runtime rather than tuning the fields. RuntimeClass selects a runtime that provides stronger isolation, and gVisor and Kata Containers are the named implementations. That is Chapter 2's material and it is not re-taught here. *[cross-bearing: see Ch 2 §7 — not all isolation is equal]* The documentation itself points this way when it recommends a sandbox over hand-written seccomp profiles [source: k8s-docs-linux-kernel-security-constraints-2026-08-31].
+**Stronger isolation at the runtime layer.** If the shared-kernel model is not acceptable for a workload, you change the runtime rather than tuning the fields. The 4Cs page's Container-layer guidance is to *"select container runtime classes that provide stronger isolation"* [source: k8s-docs-4cs-cloud-native-security-v1-22-archived-2026-08-31], and the seccomp guidance points the same way: *"If you need a more isolated environment, consider using a sandbox, such as gVisor"* [source: k8s-docs-linux-kernel-security-constraints-2026-08-31]. That is Chapter 2's material and it is not re-taught here. *[cross-bearing: see Ch 2 §7 — not all isolation is equal]*
 
 **Isolation at the placement layer.** Where a workload runs is a security control. The runtime/compute list says to *"partition workloads across different nodes to improve isolation"* [source: k8s-docs-cloud-native-security-2026-08-23], and the RBAC good-practices page is more specific: limit the number of nodes running powerful Pods, and *"avoid running powerful pods alongside untrusted or publicly-exposed ones. Consider using Taints and Toleration, NodeAffinity, or PodAntiAffinity to ensure pods don't run alongside untrusted or less-trusted Pods"* [source: k8s-docs-rbac-good-practices-2026-08-31]. Every mechanism in that sentence is Chapter 7's. *[cross-bearing: see Ch 7 §4 — when the berth refuses you]* Chapter 7 taught them as scheduling controls and told you they would come back as isolation controls. Here they are, unchanged, doing a different job.
 
-**Avoid needing root at all.** *"Configuring the kernel security features on this page provides fine-grained control over the actions that processes in your cluster can take, but managing these configurations can be challenging at scale. Running containers as non-root, or in user namespaces if you need root privileges, helps to reduce the chance that you'll need to enforce your configured kernel security capabilities"* [source: k8s-docs-linux-kernel-security-constraints-2026-08-31]. The documentation's summarized recommendation: *"Unless necessary, run Linux workloads as non-root by setting specific user and group IDs in your Pod manifest and by specifying `runAsNonRoot: true`"* [source: k8s-docs-linux-kernel-security-constraints-2026-08-31]. There is also `hostUsers: false`, which runs containers as root in a user namespace and non-root on the host, though the documentation notes it *"is still in early stages of development and might not have the level of support that you need"* [source: k8s-docs-linux-kernel-security-constraints-2026-08-31].
+**Avoid needing root at all.** *"Configuring the kernel security features on this page provides fine-grained control over the actions that processes in your cluster can take, but managing these configurations can be challenging at scale. Running containers as non-root, or in user namespaces if you need root privileges, helps to reduce the chance that you'll need to enforce your configured kernel security capabilities"* [source: k8s-docs-linux-kernel-security-constraints-2026-08-31]. The documentation's summarized recommendation: *"Unless necessary, run Linux workloads as non-root by setting specific user and group IDs in your Pod manifest and by specifying `runAsNonRoot: true`"* [source: k8s-docs-linux-kernel-security-constraints-2026-08-31]. There is also `hostUsers: false`, though the documentation notes it *"is still in early stages of development and might not have the level of support that you need"* [source: k8s-docs-linux-kernel-security-constraints-2026-08-31].
 
 **Watch what you assign.** One practical warning: *"Ensure that the user or group that you assign to the workload has the permissions required for the application to function correctly. Changing the user or group to one that doesn't have the correct permissions could lead to file access issues or failed operations"* [source: k8s-docs-linux-kernel-security-constraints-2026-08-31]. Setting `runAsUser: 1000` on an image built expecting root is a fast way to produce a container that starts and immediately fails on a permission error.
 
@@ -838,6 +872,8 @@ The section's promise was an apparatus, so the rest of it: the controls that sit
 > **`securityContext` governs the workload-to-host axis. NetworkPolicy governs the workload-to-workload axis.** They are separate systems on separate objects at separate layers. They fail independently, and neither substitutes for the other: a Pod perfectly isolated by NetworkPolicy can still be `privileged: true` and read every Secret on its node.
 
 Chapter 10 told you those were two axes. This section is the proof.
+
+<!-- AUTHOR-REVIEW: this chapter's source set contains no NetworkPolicy snapshot, yet the Fixed Point above, §9's Zenith argument, Practice Q15 and Practice Q21 all rest on three NetworkPolicy claims: that it is additive with no deny rule, that it is implemented by a CNI plugin rather than the API server, and that it was designed against lateral movement in a flat network. Ch 10 carried those citations, and this chapter says so in prose, but the strongest single improvement available here is to pull Ch 10's NetworkPolicy snapshot into this chapter's set so §9 is verifiable in place. Recommended source: https://kubernetes.io/docs/concepts/services-networking/network-policies/ -->
 
 ---
 
@@ -869,7 +905,7 @@ What you need beyond that is the policy — three of them — and what "does som
 
 **Baseline** is *"aimed at ease of adoption for common containerized workloads while preventing known privilege escalations"*, targeted at application operators and developers of non-critical applications [source: k8s-docs-pod-security-standards-2026-08-23]. Crucially, it allows the default minimally-specified Pod: a Pod spec with no `securityContext` at all passes Baseline.
 
-**Restricted** is *"aimed at enforcing current Pod hardening best practices, at the expense of some compatibility"*, targeted at operators and developers of security-critical applications and at lower-trust users [source: k8s-docs-pod-security-standards-2026-08-23]. The "expense of some compatibility" is not a hedge: Restricted requires `runAsNonRoot: true`, and a great many published images assume root.
+**Restricted** is *"aimed at enforcing current Pod hardening best practices, at the expense of some compatibility"*, targeted at operators and developers of security-critical applications and at lower-trust users [source: k8s-docs-pod-security-standards-2026-08-23]. The "expense of some compatibility" is not a hedge: Restricted requires `runAsNonRoot: true` [source: k8s-docs-pod-security-standards-profiles-2026-08-31], and an image built to run as root cannot satisfy that without being changed.
 
 The levels are the §5 fields with names on them. What each actually checks:
 
@@ -901,9 +937,9 @@ The levels are the §5 fields with names on them. What each actually checks:
                                                            emptyDir, secret,
                                                            projected, pvc, …)
 
-   cumulative:  privileged  ⊃  baseline  ⊃  restricted
-                (restricted includes every baseline requirement,
-                 plus the rows below the line)
+   cumulative — PERMITTED PODS:  privileged  ⊃  baseline  ⊃  restricted
+                (restricted imposes every baseline requirement,
+                 plus the rows below the line, so it admits fewer Pods)
 
 
    THE MODES — what happens when a check fails
@@ -927,9 +963,9 @@ The levels are the §5 fields with names on them. What each actually checks:
              This is not a contradiction. It is a migration.
 ```
 
-The rows in that figure are the documented Baseline and Restricted controls: Baseline forbids `privileged`, host namespaces (`hostNetwork`, `hostPID`, `hostIPC`), `hostPath` volumes, and unconfined seccomp; restricts `hostPort`, added capabilities to a known list, AppArmor and SELinux to approved values, `/proc` mount type to `Default`, and sysctls to a safe list. Restricted adds every Baseline requirement plus: volumes limited to a safe list; `allowPrivilegeEscalation: false`; `runAsNonRoot: true`; `runAsUser` non-zero or unset; seccomp explicitly `RuntimeDefault` or `Localhost`; and capabilities dropping `ALL` with only `NET_BIND_SERVICE` addable back [source: k8s-docs-pod-security-standards-profiles-2026-08-31].
+The rows in that figure are the Baseline and Restricted controls this chapter grades on, not the complete published list. Baseline forbids `privileged`, host namespaces (`hostNetwork`, `hostPID`, `hostIPC`), `hostPath` volumes, and unconfined seccomp; restricts `hostPort`, added capabilities to a known list, AppArmor and SELinux to approved values, `/proc` mount type to `Default`, and sysctls to a safe list. It also forbids Windows host access via `hostProcess` and, from v1.34, disallows direct host connections from probes and lifecycle hooks — two controls the figure omits because neither is Linux-workload material. Restricted adds every Baseline requirement plus: volumes limited to a safe list; `allowPrivilegeEscalation: false`; `runAsNonRoot: true`; `runAsUser` non-zero or unset; seccomp explicitly `RuntimeDefault` or `Localhost`; and capabilities dropping `ALL` with only `NET_BIND_SERVICE` addable back [source: k8s-docs-pod-security-standards-profiles-2026-08-31].
 
-> 🔭 **Closer Look:** The Restricted capability rule rewards a precise reading: drop must include `ALL`, and add is limited to `undefined/nil` or `NET_BIND_SERVICE` [source: k8s-docs-pod-security-standards-profiles-2026-08-31]. `NET_BIND_SERVICE` is the exception because binding a port below 1024 is the single most common legitimate reason a container wants a scrap of root's authority, and refusing it would break a large fraction of otherwise-conformant images for no security gain.
+> 🔭 **Closer Look:** The Restricted capability rule rewards a precise reading: drop must include `ALL`, and add is limited to `undefined/nil` or `NET_BIND_SERVICE` [source: k8s-docs-pod-security-standards-profiles-2026-08-31]. `NET_BIND_SERVICE` is the exception because binding a port below 1024 is a common legitimate reason a container wants a scrap of root's authority, and refusing it would break otherwise-conformant images for no security gain.
 
 There is no fourth level between Privileged and Baseline, and the FAQ explains why: *"The three profiles defined here have a clear linear progression from most secure (Restricted) to least secure (Privileged), and cover a broad set of workloads. Privileges required above the Baseline policy are typically very application specific, so we do not offer a standard profile in this niche"* [source: k8s-docs-pod-security-standards-profiles-2026-08-31].
 
@@ -938,6 +974,8 @@ There is no fourth level between Privileged and Baseline, and the FAQ explains w
 The Standards are enforced by the built-in Pod Security Admission controller, which applies a policy **per namespace** via labels of the form `pod-security.kubernetes.io/<MODE>: <LEVEL>`, where MODE is **`enforce`** (violations are rejected), **`audit`** (violations are recorded in the audit log), or **`warn`** (violations trigger a user-facing warning), and LEVEL is `privileged`, `baseline`, or `restricted` [source: k8s-docs-pod-security-standards-2026-08-23].
 
 > **Dead Reckoning:** Three levels: `privileged`, `baseline`, `restricted`. Three modes: `enforce`, `audit`, `warn`. They are applied to a namespace as labels of the form `pod-security.kubernetes.io/<MODE>: <LEVEL>`. A namespace may carry all three modes at once, at three different levels. The level names the policy to check against. The mode names what happens if the check fails.
+
+<!-- AUTHOR-REVIEW: the claim that one namespace may carry all three mode labels simultaneously, at different levels, follows directly from the label grammar `pod-security.kubernetes.io/<MODE>: <LEVEL>` [k8s-docs-pod-security-standards-2026-08-23] but is not stated in so many words by any snapshot in this set. The Pod Security Admission snapshot (k8s-docs-pod-security-admission-2026-08-31) is TRUNCATED — it ends at the heading "Pod Security Admission labels for namespaces / The label form:" with the body missing — and that is exactly where the multi-label example lives. The migration argument below and Taking Your Bearings #2 question 4 both depend on it. Recommend re-fetching that snapshot in full, then tagging rather than rewriting. -->
 
 > **★ Fixed Point**
 >
@@ -959,7 +997,9 @@ Patching a label is about as innocuous-looking as an operation gets. Here it is 
 
 One clause, because you will meet it.
 
-PodSecurityPolicy was the predecessor, it was removed in Kubernetes 1.25, and Pod Security Admission is what supersedes it. It appears throughout prep material written before 2025, which makes its *absence* the load-bearing fact. If a question offers PodSecurityPolicy as a current mechanism, that is the distractor.
+PodSecurityPolicy was the predecessor, and Pod Security Admission is what supersedes it. It is not the mechanism a current cluster uses, which makes its *absence* the load-bearing fact. If a question offers PodSecurityPolicy as a current mechanism, that is the distractor.
+
+<!-- AUTHOR-REVIEW: the version in which PodSecurityPolicy was removed is deliberately NOT stated above. The Pod Security Admission snapshot declares `podsecuritypolicy-removed` in its concepts_covered frontmatter, but the snapshot body is truncated before any PSP text and contains none of it, so no source in this set supports a version number. Draft-v1 asserted "removed in Kubernetes 1.25" untagged, in two places; both have been softened to "superseded." Re-fetch k8s-docs-pod-security-admission-2026-08-31 in full, then restore the version if the page carries it. The Exam Alert trap row was softened to match. -->
 
 ### Two failure shapes, for later
 
@@ -977,21 +1017,21 @@ Five questions covering §4 through §6.
 
 **1.** ⚠️ **This one is intentionally difficult.** Struggle is the point — it is the single most consequential practical question in the chapter, and getting it wrong here is much cheaper than getting it wrong on a cluster.
 
-You are auditing a namespace called `payments`. You enumerate every Role, ClusterRole, RoleBinding and ClusterRoleBinding that touches it. No subject holds `get`, `list`, or `watch` on `secrets`. Eight engineers hold the `edit` ClusterRole via RoleBindings so they can deploy. The Secrets in the namespace include the production database password.
+You are auditing a namespace called `payments`. You enumerate every Role, ClusterRole, RoleBinding and ClusterRoleBinding that touches it. No subject holds `get`, `list`, or `watch` on `secrets`. Eight engineers hold a custom `deployer` Role — `create`, `update`, `patch` and `delete` on `deployments`, `pods` and `services`, and nothing at all on `secrets` — bound by RoleBindings so they can ship. The Secrets in the namespace include the production database password.
 
 Who can read that password, and what is the correct remediation?
 
 A) Nobody — the audit is correct, since no subject holds any read verb on Secrets
 B) Only cluster administrators, via etcd; enable encryption at rest to close it
 C) All eight engineers, because permission to create workloads implicitly grants access to Secrets in the namespace; the remediation is to move the Secret and its consumers into a separate namespace
-D) All eight engineers, because `edit` includes `get secrets`; the remediation is to replace `edit` with `view`
+D) All eight engineers, but only because `deployer` grants `delete` on `pods`; removing that one verb closes the path
 
 **2.** A cluster operator enables encryption at rest for Secrets with an `EncryptionConfiguration`. Which of the following is now true?
 
 A) A user with `get secrets` permission receives an encrypted blob they must decrypt client-side
 B) An etcd backup no longer contains readable Secret values, but an authorized API caller still receives the Secret in the clear
 C) Secrets mounted into containers are now encrypted on the container filesystem
-D) The Secret's `data` field is now double-encoded: base64 over ciphertext, which is why values look different
+D) The kubelet's tmpfs copy on each node is now encrypted too, since it is derived from the encrypted object
 
 **3.** A Pod spec sets `securityContext.runAsUser: 2000` at Pod scope. One of its two containers sets `securityContext.runAsUser: 3000` at container scope. What UID does each container's processes run as?
 
@@ -1011,13 +1051,13 @@ pod-security.kubernetes.io/audit: restricted
 A developer submits a Pod that sets no `securityContext` at all and mounts no host paths. What happens?
 
 A) The Pod is rejected, because it does not meet `restricted`
-B) The Pod is rejected, because a namespace cannot carry three Pod Security labels
+B) The Pod is rejected, because `enforce: baseline` requires an explicit `securityContext`
 C) The Pod is created, and the developer sees a warning that it does not meet `restricted`; a violation is also recorded in the audit log
 D) The Pod is created silently, because `enforce` is the only mode that produces any output
 
 **5.** *[retrieval: ch8]* Explain, in terms of a mechanism you already know, where Pod Security Admission sits in the processing of an API request — and name one consequence of that position.
 
-A) It runs during authentication, before the API server knows who the requester is, so it applies uniformly to all callers
+A) It runs before authorization, so a Pod can be refused for its contents before the API server has decided whether the requester may create Pods at all
 B) It runs during authorization, alongside RBAC, so a Pod can be refused either for who submitted it or for what it contains
 C) It runs at the admission gate — the third and last of the three gates — so it inspects the Pod object itself, and a rejected Pod never enters the cluster at all
 D) It runs after the Pod is scheduled but before the kubelet starts the container, so a rejected Pod appears briefly in `Pending`
@@ -1026,17 +1066,33 @@ D) It runs after the Pod is scheduled but before the kubelet starts the containe
 
 **Answers with Explanations:**
 
-**1. C.** All eight, and not through any Secret permission. *"Permission to create workloads (either Pods, or workload resources that manage Pods) in a namespace implicitly grants access to many other resources in that namespace, such as Secrets, ConfigMaps, and PersistentVolumes that can be mounted in Pods"* [source: k8s-docs-rbac-good-practices-2026-08-31]. Anyone who can create a Pod can create one that mounts the Secret. The documentation's own remediation is the one in C: *"namespaces should be used to separate resources requiring different levels of trust or tenancy… boundaries within a namespace should be considered weak"* [source: k8s-docs-rbac-good-practices-2026-08-31].
+**1. C.** All eight, and not through any Secret permission. *"Permission to create workloads (either Pods, or workload resources that manage Pods) in a namespace implicitly grants access to many other resources in that namespace, such as Secrets, ConfigMaps, and PersistentVolumes that can be mounted in Pods"* [source: k8s-docs-rbac-good-practices-2026-08-31]. Anyone who can create a Pod can create one that mounts the Secret and prints it. The documentation's own remediation is the one in C: *"namespaces should be used to separate resources requiring different levels of trust or tenancy… boundaries within a namespace should be considered weak"* [source: k8s-docs-rbac-good-practices-2026-08-31].
 
-**A** is the audit finding, and it is the whole point of the question: the audit is reading a permission that is not the relevant one. **B** identifies a real route (etcd) and a real control (encryption at rest) but misses the route that is actually open here; encryption at rest does nothing about an authorized API caller. **D** is wrong on the mechanism even though it reaches a nearly-right conclusion. `edit` does have access to Secrets [source: k8s-docs-rbac-depth-2026-08-31], but that is not why all eight can read this one, and swapping `edit` for `view` would stop them deploying without solving the underlying problem: anyone who can create workloads anywhere in that namespace is back in.
+**A** is the audit finding, and it is the whole point of the question. The audit is not sloppy — it enumerated every object correctly and read the permission it was looking for accurately. It is reading a permission that is not the relevant one.
+**B** identifies a real route (etcd) and a real control (encryption at rest) but misses the route that is actually open here. Encryption at rest does nothing about an authorized API caller [source: k8s-docs-encrypt-data-2026-08-31].
+**D** gets the population right and the mechanism exactly backwards. The escalation runs through **create**, not `delete`: a Pod spec can mount any Secret in its namespace, so the operative permission is the one that lets you bring a new Pod into existence. Strip `delete` from `deployer` and all eight engineers can still read the password by tomorrow morning. This distractor exists because people instinctively police the destructive verbs.
 
-**2. B.** Encryption at rest protects the object as written to etcd [source: k8s-docs-encrypt-data-2026-08-31]. It closes the etcd and etcd-backup route completely and does nothing to the API route. **A** inverts the boundary; decryption happens server-side, transparently. **C** is the scope error the documentation explicitly heads off: encrypting data in filesystems mounted into containers requires a storage integration providing encrypted volumes, or application-level encryption [source: k8s-docs-encrypt-data-2026-08-31]. **D** invents a mechanism; the `data` field looks exactly the same to an authorized caller.
+**2. B.** Encryption at rest protects the object as written to etcd [source: k8s-docs-encrypt-data-2026-08-31]. It closes the etcd and etcd-backup route completely and does nothing to the API route. **A** inverts the boundary; decryption happens server-side, transparently. **C** is the scope error the documentation explicitly heads off: encrypting data in filesystems mounted into containers requires a storage integration providing encrypted volumes, or application-level encryption [source: k8s-docs-encrypt-data-2026-08-31]. **D** invents a chain of custody. The kubelet receives the decrypted Secret and places its copy in tmpfs [source: k8s-docs-secret-risks-2026-08-31]; tmpfs is a separate protection with a separate rationale (it is memory-backed and removed with the Pod), not a downstream effect of at-rest encryption.
 
 **3. C.** *"Security settings that you specify for a Container apply only to the individual Container, and they override settings made at the Pod level when there is overlap"* [source: k8s-docs-security-context-2026-08-31]. Pod scope is the default; container scope overrides it, per container. **A** inverts precedence. **B** invents a "most restrictive wins" rule that does not exist, and note 3000 is not obviously more restrictive than 2000 anyway. **D** invents a validation that does not exist; this configuration is entirely ordinary.
 
-**4. C.** Level and mode are independent axes, and a namespace may carry all three modes at different levels [source: k8s-docs-pod-security-standards-2026-08-23]. `enforce: baseline` is the gate that can reject, and *"Baseline… allows the default (minimally specified) Pod configuration"* [source: k8s-docs-pod-security-standards-2026-08-23], so a Pod with no `securityContext` passes it. `warn: restricted` and `audit: restricted` both fire, because the Pod does not meet Restricted (which requires `runAsNonRoot: true`, `allowPrivilegeEscalation: false`, capabilities dropping `ALL`, and an explicit seccomp profile [source: k8s-docs-pod-security-standards-profiles-2026-08-31]), but neither of those modes rejects anything. **A** reads `warn`'s level as though `warn` enforced. **B** invents a constraint and misses the migration pattern entirely. **D** is wrong about `warn` and `audit` being silent, which is precisely their purpose.
+**4. C.** Level and mode are independent axes, and a namespace may carry all three modes at different levels [source: k8s-docs-pod-security-standards-2026-08-23]. `enforce: baseline` is the gate that can reject, and *"Baseline… allows the default (minimally specified) Pod configuration"* [source: k8s-docs-pod-security-standards-2026-08-23], so a Pod with no `securityContext` passes it. `warn: restricted` and `audit: restricted` both fire, because the Pod does not meet Restricted (which requires `runAsNonRoot: true`, `allowPrivilegeEscalation: false`, capabilities dropping `ALL`, and an explicit seccomp profile [source: k8s-docs-pod-security-standards-profiles-2026-08-31]), but neither of those modes rejects anything. **A** reads `warn`'s level as though `warn` enforced. **B** inverts Baseline's defining property — allowing the minimally specified Pod is precisely what distinguishes it from Restricted; it is the one level that asks for nothing. **D** is wrong about `warn` and `audit` being silent, which is precisely their purpose.
 
-**5. C.** Pod Security Admission is *"a built-in Pod Security admission controller"* [source: k8s-docs-pod-security-admission-2026-08-31], and admission is the third and last of the three gates. The consequence that matters: it inspects the object, so it can make decisions no authorization rule could. RBAC can say "this subject may create Pods," but only admission can say "not *this* Pod." And a rejected Pod is never created, so it has no phase, no events, and no logs. **A** and **B** put it at the wrong gates. **D** is the plausible-sounding wrong answer: it describes something that would look like a Pod stuck in `Pending`, which is a genuinely different failure and one you will diagnose in a later chapter.
+**5. C.** Pod Security Admission is *"a built-in Pod Security admission controller"* [source: k8s-docs-pod-security-admission-2026-08-31], and admission is the third and last of the three gates. The consequence that matters: it inspects the object, so it can make decisions no authorization rule could. RBAC can say "this subject may create Pods," but only admission can say "not *this* Pod." And a rejected Pod is never created, so it has no phase, no events, and no logs.
+
+**A** puts admission before authorization. It is a coherent-sounding design and it is not this one — the order is authentication, authorization, admission, and it matters: admission is only ever reached for a request that has already been authorized, so a subject with no `create pods` grant never gets far enough for a Pod Security check to be relevant.
+**B** collapses two gates into one. RBAC and PSA answer different questions at different stages; authorization reasons about verb, resource and namespace, and cannot see the object's field values at all.
+**D** is the plausible-sounding wrong answer: it describes something that would look like a Pod stuck in `Pending`, which is a genuinely different failure and one you will diagnose in a later chapter.
+
+---
+
+**How'd You Do?**
+
+**5/5:** take the session break and start §7 fresh.
+
+**3–4:** re-read the section behind each miss now, while the material is warm. Question 1 is the one to be least comfortable missing.
+
+**0–2:** re-read §5 before you go on to re-read §6. The three levels are a list of `securityContext` fields with names attached, and they are unmemorable — genuinely unmemorable, not just difficult — if the fields themselves are not yet familiar. Fields first, then levels.
 
 ---
 
@@ -1070,7 +1126,7 @@ There is a way to organize this material as a roster of projects, and it is the 
      │         │        │         │          │      │      │
      ▼         ▼        ▼         ▼          ▼      │      ▼
    image     known    binds     append-    private  │   admission
-   +digest   CVEs     to the    only log   registry │   controller
+   +digest   vulns    to the    only log   registry │   controller
    +SBOM              DIGEST                        │
                         ▲                           │   ▲
      ┌──────────────────┴─────────────┐             │   │
@@ -1079,8 +1135,8 @@ There is a way to organize this material as a roster of projects, and it is the 
      │  the whole length of the chain │             │   │
      └────────────────────────────────┘             │   │
                                                     │   │
-   Trivy, Harbor    Cosign     Rekor    Harbor,     │  Kyverno,
-   scanners         Notation            imagePull-  │  Gatekeeper,
+   Harbor,          Cosign     Rekor    Harbor,     │  Kyverno,
+   image scanners   Notation            imagePull-  │  Gatekeeper,
                     Fulcio              Secrets     │  Policy
                                                     │  Controller
                                                     │
@@ -1093,15 +1149,15 @@ That vertical line is the point of the figure. Every step but one happens outsid
 
 ### Scan
 
-*"As part of an image build step, you should scan your containers for known vulnerabilities"* [source: k8s-docs-4cs-cloud-native-security-v1-22-archived-2026-08-31], and the distribute-phase guidance says the same: scan container images and other artifacts for known vulnerabilities [source: k8s-docs-cloud-native-security-2026-08-23]. A **CVE** — Common Vulnerabilities and Exposures — is an identifier for a publicly disclosed vulnerability, and a scanner's job is to enumerate the packages in an image and report which of them have CVEs against them.
+*"As part of an image build step, you should scan your containers for known vulnerabilities"* [source: k8s-docs-4cs-cloud-native-security-v1-22-archived-2026-08-31], and the distribute-phase guidance says the same: scan container images and other artifacts for known vulnerabilities [source: k8s-docs-cloud-native-security-2026-08-23]. A **CVE** — Common Vulnerabilities and Exposures — is an identifier attached to a publicly disclosed vulnerability, and a scanner's job is to enumerate what an image contains and report which of those components have known vulnerabilities against them.
 
 The Code layer's parallel recommendation belongs alongside it: *"It is a good practice to regularly scan your application's third party libraries for known security vulnerabilities"* [source: k8s-docs-4cs-cloud-native-security-v1-22-archived-2026-08-31]. Same activity, different layer. Your dependencies and the image's base OS packages are both other people's code.
 
-<!-- AUTHOR-REVIEW: no cached source describes image scanning as a *practice* in more depth than the two one-line recommendations quoted above (G22, partially open). Harbor's page names "Security and vulnerability analysis" as a feature but does not describe how scanning works. This subsection is deliberately thin as a result. If the author wants scanner mechanics (SBOM-driven vs filesystem-walking, registry-integrated vs CI-stage), it needs a fetch. -->
+<!-- AUTHOR-REVIEW: two gaps in this subsection. (1) No snapshot in this corpus expands CVE or describes the program; the Linux-kernel-constraints page cites CVE-2022-0185 and CVE-2019-5736 by number only, and the CNCF glossary index (checked 2026-08-31) has no CVE entry. The expansion above is carried because B7 assigns CVE to this section and the book's acronym-register convention requires expansion at first use, but it is not sourced — needs a cve.org fetch or a glossary entry. (2) No cached source describes image scanning as a *practice* beyond the two one-line recommendations quoted above (gap G22, partially open); Harbor's page names "Security and vulnerability analysis" as a feature without describing how scanning works. This subsection is deliberately thin as a result. If the author wants scanner mechanics (SBOM-driven vs filesystem-walking, registry-integrated vs CI-stage), it needs a fetch. Trivy was named in draft-v1's figure and appeared in no snapshot; it has been removed. -->
 
 ### Sign
 
-A scan tells you what is *in* an image. A signature tells you *who produced it*, and the two are independent. A signed image can be full of CVEs; a clean image can come from anywhere.
+A scan tells you what is *in* an image. A signature tells you *who produced it*, and the two are independent. A signed image can be full of known vulnerabilities; a clean image can come from anywhere.
 
 *"Sign container images to maintain a system of trust for the content of your containers"* [source: k8s-docs-4cs-cloud-native-security-v1-22-archived-2026-08-31].
 
@@ -1112,7 +1168,7 @@ A scan tells you what is *in* an image. A signature tells you *who produced it*,
 - **Rekor** — an **immutable, append-only transparency log** that records signing events for public audit.
 - **Policy Controller** — enforces signature verification policies within Kubernetes, as an admission controller.
 
-**Keyless signing** is what ties them together, and it removes the worst problem in signing. Conventionally, signing means holding a private key, which means protecting a private key forever, which means that the compromise of that key retroactively invalidates everything it ever signed. Sigstore's flow instead: a Cosign client creates an **ephemeral** key pair and requests a certificate from Fulcio using an OpenID Connect identity token; Fulcio validates the token and issues a short-lived certificate linking the public key to the verified identity; the artifact is signed; **the private key is discarded after a single signing**; and the signature and certificate are recorded in Rekor. Verification then checks the signature, the certificate validity, the identity, and Rekor inclusion [source: sigstore-overview-2026-08-23].
+**Keyless signing** is what ties them together, and it removes the worst problem in signing. Conventionally, signing means holding a private key, which means protecting a private key forever, which means that the compromise of that key retroactively invalidates everything it ever signed. Sigstore's flow instead: a Cosign client creates an **ephemeral** key pair and requests a certificate from Fulcio using an OpenID Connect identity token; Fulcio validates the token and issues a short-lived certificate linking the public key to the verified identity; the artifact is signed; **the private key is discarded after a single signing**; and the signature and certificate are recorded in Rekor [source: sigstore-overview-2026-08-23].
 
 The key exists for seconds and is then gone. What persists is the certificate binding a public key to an identity, and the log entry proving when. There is no long-lived secret to steal.
 
@@ -1142,19 +1198,23 @@ A digest is a cryptographic hash of content. Signing it says: *these exact bytes
 
 ### Record
 
-*"Use validation mechanisms such as digital certificates for supply chain assurance"* [source: k8s-docs-cloud-native-security-2026-08-23], and the transparency log is what makes those mechanisms auditable rather than merely present. Rekor is *"an immutable, append-only transparency log that records signing events for public audit and verification"* [source: sigstore-overview-2026-08-23]. Append-only means entries cannot be removed or altered after the fact, so "was this artifact signed, by whom, and when?" is a question with a durable answer, including for artifacts signed with keys that no longer exist, which under keyless signing is all of them.
+*"Use validation mechanisms such as digital certificates for supply chain assurance"* [source: k8s-docs-cloud-native-security-2026-08-23], and the transparency log is what makes those mechanisms auditable rather than merely present. Rekor is *"an immutable, append-only transparency log that records signing events for public audit and verification"* [source: sigstore-overview-2026-08-23]. Append-only means entries cannot be removed or altered after the fact, so "was this artifact signed, by whom, and when?" is a question with a durable answer, including for artifacts signed with keys that no longer exist — which under keyless signing is all of them.
 
 ### Attestation, provenance, and SBOMs
 
 **Attestation** generalizes signing. A signature says "I vouch for these bytes." An attestation says "I vouch for this *claim* about these bytes": that they were built by a particular pipeline from a particular commit, that they passed a particular test suite, that they contain a particular set of components.
 
-**in-toto** is the framework for the build-process half. It *"is designed to ensure the integrity of a software product from initiation to end-user installation. It does so by making it transparent to the user what steps were performed, by whom and in what order"* [source: in-toto-overview-2026-08-31]. That sentence — *what steps, by whom, in what order* — is in substance what **provenance** means: not just what the artifact is, but the verifiable record of how it came to be. in-toto is a CNCF graduated project [source: in-toto-overview-2026-08-31].
+<!-- AUTHOR-REVIEW: the attestation gloss above is the author's, not a citation. Both in-toto-overview-2026-08-31 and notary-project-signing-digest-2026-08-31 list `attestation` in concepts_covered, and neither body defines it; the in-toto page additionally warns that supply-chain layout, link metadata and steps/inspections are not covered there and must not be described. Draft-v1 flagged the parallel SBOM case in a comment and did not flag this one — the asymmetry is now closed. Either source it (in-toto.io/docs, or the SLSA attestation spec) or mark the gloss [inferred] in prose. -->
 
-An **SBOM** — Software Bill of Materials — is the components half. A bill of materials is a standardized record of what a software artifact is made of. The two dominant standards are **SPDX**, from the Linux Foundation, *"an open standard designed to facilitate the communication of Bill of Materials (BOM) information across diverse domains, including software, artificial intelligence (AI), datasets, and system components"*, covering metadata for packages, files and snippets, licensing information, and *"Provenance and Integrity: Tracking the origin and history of components, including checksums and cryptographic hashes"* [source: sbom-standards-spdx-cyclonedx-2026-08-31]; and **CycloneDX**, from OWASP, *"a full-stack Bill of Materials (BOM) standard that provides advanced supply chain capabilities for cyber risk reduction"*, standardized as ECMA-424 [source: sbom-standards-spdx-cyclonedx-2026-08-31]. SPDX 3.0 is a revision of the version standardized as ISO/IEC 5962:2021 [source: sbom-standards-spdx-cyclonedx-2026-08-31].
+**in-toto** is the framework for the build-process half. It *"is designed to ensure the integrity of a software product from initiation to end-user installation. It does so by making it transparent to the user what steps were performed, by whom and in what order"* [source: in-toto-overview-2026-08-31]. That sentence — *what steps, by whom, in what order* — is in substance what **provenance** means: not just what the artifact is, but the verifiable record of how it came to be. SPDX names the same idea directly, listing *"Provenance and Integrity: Tracking the origin and history of components, including checksums and cryptographic hashes"* among what its standard covers [source: sbom-standards-spdx-cyclonedx-2026-08-31]. in-toto is a CNCF graduated project [source: in-toto-overview-2026-08-31].
 
-And an SBOM is itself an artifact that can be signed; Sigstore names SBOMs explicitly among the artifact types it handles [source: sigstore-overview-2026-08-23]. Which closes a loop: a signed SBOM is a verifiable claim about what is inside a verifiable image, and the two together are what lets you answer "are we affected by this new CVE?" without rebuilding anything.
+<!-- AUTHOR-REVIEW: the in-toto landing page does not itself use the word "provenance" (its own snapshot records this). The SPDX tag above carries the term; the in-toto tag carries the what-steps-by-whom-in-what-order sentence. Verify that split is acceptable, or add an [inferred] marker to the equation between them. -->
 
-<!-- AUTHOR-REVIEW: no source in the corpus defines "SBOM" in a single canonical sentence. CISA and NTIA, which carry the canonical definitions, refused automated retrieval (HTTP 403, 2026-08-31) and the CNCF glossary has no SBOM entry (index checked). The description above is assembled from what SPDX and CycloneDX say their standards cover, which is defensible but is not a quoted definition. Flagging so a later stage does not attach a definition-shaped [source:] tag to it. -->
+An **SBOM** — Software Bill of Materials — is the components half. A bill of materials is a standardized record of what a software artifact is made of. The two dominant standards are **SPDX**, from the Linux Foundation, *"an open standard designed to facilitate the communication of Bill of Materials (BOM) information across diverse domains, including software, artificial intelligence (AI), datasets, and system components"*, covering metadata for packages, files and snippets, licensing information, and provenance and integrity [source: sbom-standards-spdx-cyclonedx-2026-08-31]; and **CycloneDX**, from OWASP, *"a full-stack Bill of Materials (BOM) standard that provides advanced supply chain capabilities for cyber risk reduction"* [source: sbom-standards-spdx-cyclonedx-2026-08-31].
+
+And an SBOM is itself an artifact that can be signed; Sigstore names SBOMs explicitly among the artifact types it handles [source: sigstore-overview-2026-08-23]. Which closes a loop: a signed SBOM is a verifiable claim about what is inside a verifiable image, and the two together are what lets you answer "are we affected by this newly disclosed vulnerability?" without rebuilding anything.
+
+<!-- AUTHOR-REVIEW: no source in the corpus defines "SBOM" in a single canonical sentence. CISA and NTIA, which carry the canonical definitions, refused automated retrieval (HTTP 403, 2026-08-31) and the CNCF glossary has no SBOM entry (index checked). The description above is assembled from what SPDX and CycloneDX say their standards cover, which is defensible but is not a quoted definition. Flagging so a later stage does not attach a definition-shaped [source:] tag to it. Note also: draft-v1 carried the ISO/IEC 5962:2021 and ECMA-424 standardization details; these have been trimmed per the curriculum-alignment finding that §7 is over-covered relative to its recognition-depth allocation. Both facts are sourced in sbom-standards-spdx-cyclonedx-2026-08-31 if the author wants them restored. -->
 
 **TUF** — The Update Framework — belongs here too, though it operates one level up. It is *"a framework for securing software update systems"* that *"maintains the security of software update systems, providing protection even against attackers that compromise the repository or signing keys"* [source: tuf-overview-2026-08-31]. The attacks it names are the ones a naive signature check misses entirely [source: tuf-overview-2026-08-31]:
 
@@ -1169,9 +1229,9 @@ Every one of those involves a *correctly signed* artifact. That is what makes TU
 
 The distribute-phase list ends with a step that is not cryptographic at all: *"restrict access to artifacts — place container images in a private registry that only allows authorized clients to pull images"* [source: k8s-docs-cloud-native-security-2026-08-23].
 
-**Harbor** is the CNCF graduated registry built for this. Its stated mission is *"to be the trusted cloud native repository for Kubernetes"*, and it *"is an open source registry that secures artifacts with policies and role-based access control, ensures images are scanned and free from vulnerabilities, and signs images as trusted"* [source: harbor-overview-2026-08-31]. Its feature list names security and vulnerability analysis, content signing and validation, identity integration and role-based access control, multi-tenancy, and replication across registries [source: harbor-overview-2026-08-31]. Which is to say it does scan, sign and restrict in one place — a useful thing to know when a question offers it as an answer.
+**Harbor** is the CNCF graduated registry built for this. Its stated mission is *"to be the trusted cloud native repository for Kubernetes"*, and it *"is an open source registry that secures artifacts with policies and role-based access control, ensures images are scanned and free from vulnerabilities, and signs images as trusted"* [source: harbor-overview-2026-08-31]. Its feature list names security and vulnerability analysis, content signing and validation, and identity integration with role-based access control [source: harbor-overview-2026-08-31]. Which is to say it does scan, sign and restrict in one place — a useful thing to know when a question offers it as an answer.
 
-And the cluster's side of the restriction is a Secret. An `imagePullSecret` is a Secret of type `kubernetes.io/dockerconfigjson` [source: k8s-docs-secret-2026-08-23] holding registry credentials, and one of the documented ServiceAccount use cases is *"authenticating to a private image registry using an imagePullSecret"* [source: k8s-docs-service-accounts-2026-08-23]. Chapter 2 told you this was a security boundary rather than a convenience. Now you can see the whole boundary: the registry refuses unauthorized pulls, the credential to pull is a Secret, and the rules about who can read Secrets from §4 apply to it in full.
+And the cluster's side of the restriction is a Secret. An `imagePullSecret` holds registry credentials in a Secret of type `kubernetes.io/dockerconfigjson`, which is a serialized `~/.docker/config.json` [source: k8s-docs-secret-2026-08-23], and one of the documented ServiceAccount use cases is *"authenticating to a private image registry using an imagePullSecret"* [source: k8s-docs-service-accounts-2026-08-23]. Chapter 2 told you this was a security boundary rather than a convenience. Now you can see the whole boundary: the registry refuses unauthorized pulls, the credential to pull is a Secret, and the rules about who can read Secrets from §4 apply to it in full.
 
 ### Verify
 
@@ -1181,7 +1241,7 @@ Signing without verification is theater. A signature that nothing checks is a fi
 
 Which is the third gate again, doing a third job. Same position, different question. And it hands us straight into §8.
 
-> ⚓ **Worth Securing:** The one-sentence version of this whole section: **a signature tells you where something came from, a scan tells you what is wrong with it, an SBOM tells you what is in it, provenance tells you how it was made, and none of the four does any of the others' work.** Every real supply-chain question is asking which of those five you need.
+> ⚓ **Worth Securing:** The one-sentence version of this whole section: **a signature tells you where something came from, a scan tells you what is wrong with it, an SBOM tells you what is in it, provenance tells you how it was made, and none of the four does any of the others' work.** Every real supply-chain question is asking which of those you need.
 
 ---
 
@@ -1207,6 +1267,8 @@ Those four verbs are worth separating, because they are not variations on one th
 - **Mutate** — change an object as it passes. Add a missing label, inject a sidecar, set a default.
 - **Generate** — create *other* objects in response. A new Namespace appears; a default NetworkPolicy and a ResourceQuota appear with it.
 - **Clean up** — remove objects meeting a condition.
+
+<!-- AUTHOR-REVIEW: kyverno-overview-2026-08-23 lists the four verbs and defines none of them. The four glosses above, and the examples attached to them, are the author's reading of standard policy-engine semantics rather than product documentation. Either open a small research gap for kyverno.io/docs/policy-types/ or mark the four glosses [inferred] in prose. -->
 
 Validate and mutate map exactly onto a distinction Chapter 8 drew: validating and mutating admission webhooks. *[cross-bearing: see Ch 8 §2 — three gates and a logbook]* Chapter 8 gave you the two webhook types as an abstraction. **A policy engine is one.** It is what people actually install into that extension point, and it is the cleanest possible payoff for having learned the distinction. *[cross-bearing: see Ch 17 §4 — every place Kubernetes lets you in]*
 
@@ -1272,7 +1334,7 @@ D) Verification is not possible, because signatures cannot be applied to tagged 
 A) sign → scan → record → verify → restrict; the cluster performs *restrict*
 B) scan → sign → record → restrict → verify; the cluster performs *verify*
 C) scan → record → sign → verify → restrict; the cluster performs *verify*
-D) verify → scan → sign → record → restrict; the cluster performs *verify*
+D) scan → sign → record → restrict → verify; the cluster performs *restrict*
 
 **3.** Your cluster already enforces the `baseline` Pod Security Standard in every namespace. Your organization now requires that every Pod carry a `cost-center` label, and that any Pod missing one be rejected. What do you reach for, and why can't Pod Security Admission do it?
 
@@ -1284,7 +1346,7 @@ D) An RBAC rule denying `create` on Pods without the label; PSA is for `security
 **4.** A container in your cluster has been running for six hours. During hour six, a process inside it spawns a shell and writes to `/etc`. Which tool in this chapter is positioned to tell you, and what specifically will it do about it?
 
 A) Pod Security Admission — it will terminate the Pod
-B) Kyverno — it will mutate the container to remove the shell
+B) A Kyverno validating policy — it will refuse the write, because the policy is evaluated against every action in the cluster
 C) Falco — it will observe the kernel events, evaluate them against its rules, and emit an alert; it will not stop the process
 D) The `restricted` Pod Security Standard — it will prevent the write, because `readOnlyRootFilesystem` is required
 
@@ -1301,13 +1363,31 @@ D) Add a second RoleBinding to a more restrictive role; the intersection of the 
 
 **1. B.** *"Notation resolves the tag to the digest before signing if a tag is used to identify the container image"* [source: notary-project-signing-digest-2026-08-31] — the signature never covered the tag, only the digest of the content the tag pointed at. New content has a new digest, so the existing signature does not verify against it, and admission refuses. **A** is the misconception the Fixed Point exists to kill, and it is the reason the documentation says *"Always reference and use the image digest instead of a tag since digest is immutable"* [source: notary-project-signing-digest-2026-08-31]. **C** gets the outcome accidentally right for the wrong reason and then adds a false claim: an unverified image is not "pulled unverified" under an enforcing policy, it is refused. **D** contradicts the quoted sentence; you may hand the tool a tag, it just does not sign one.
 
-**2. B.** Scan and sign happen at build time; the signature is recorded in a transparency log; the artifact goes to a registry that restricts who may pull it; and the cluster verifies at admission before running it [source: k8s-docs-cloud-native-security-2026-08-23; sigstore-overview-2026-08-23]. **Verify** is the first step the cluster itself performs; everything before it happened elsewhere, possibly months earlier, under someone else's control. **A** signs before scanning, which would attest to content you have not examined. **C** records before signing, which is backwards — the log records signing events [source: sigstore-overview-2026-08-23]. **D** verifies before there is anything to verify.
+**2. B.** Scan and sign happen at build time; the signature is recorded in a transparency log; the artifact goes to a registry that restricts who may pull it; and the cluster verifies at admission before running it [source: k8s-docs-cloud-native-security-2026-08-23; sigstore-overview-2026-08-23]. **Verify** is the first step the cluster itself performs; everything before it happened elsewhere, possibly months earlier, under someone else's control.
+
+**A** signs before scanning, which would attest to content you have not examined, and then names the wrong cluster-performed step.
+**C** records before signing, which is backwards — the log records signing events [source: sigstore-overview-2026-08-23], so there is nothing to record yet.
+**D** is the one to take slowly, because **the order is correct** and only the second half is wrong. Restricting who may pull is the registry's job, and the registry is not the cluster; the cluster's own first act on this artifact is verification at the admission gate. If you picked D, your model of the sequence is fine and your model of the boundary is not — which is exactly the distinction the figure's vertical line draws.
 
 **3. B.** PSA enforces the Pod Security Standards and nothing else [source: k8s-docs-pod-security-admission-2026-08-31]; its three levels are fixed definitions about `securityContext` and related fields, with no mechanism for expressing an organizational rule about labels. Kyverno validates arbitrary conditions at the admission gate [source: kyverno-overview-2026-08-23], as does OPA Gatekeeper. **A** invents an extension mechanism PSA does not have. **C** puts a runtime detection tool at the admission gate; Falco emits alerts, it does not refuse objects [source: falco-overview-2026-08-23]. **D** misunderstands both systems: RBAC has no deny rules, and it authorizes on verb and resource, not on an object's field values. RBAC cannot see the label.
 
-**4. C.** Falco *"observes Linux kernel events (system calls)… enriches them with metadata from the container runtime and Kubernetes, evaluates the event stream against a rules engine, and emits real-time alerts"*, and its default detections explicitly include unauthorized modifications to sensitive directories such as `/etc` and shell execution inside containers [source: falco-overview-2026-08-23]. It reports; it does not block. **A** and **B** are both admission-time tools reaching six hours past their window; neither has any visibility into a running process. **D** is the closest to defensible and still wrong on two counts: `readOnlyRootFilesystem` is a `securityContext` field the Restricted level does not in fact mandate [source: k8s-docs-pod-security-standards-profiles-2026-08-31], and in any case a level constrains a Pod *at admission*, so it could have prevented the Pod from being created but has no role once it is running.
+**4. C.** Falco *"observes Linux kernel events (system calls)… enriches them with metadata from the container runtime and Kubernetes, evaluates the event stream against a rules engine, and emits real-time alerts"*, and its default detections explicitly include unauthorized modifications to sensitive directories such as `/etc` and shell execution inside containers [source: falco-overview-2026-08-23]. It reports; it does not block.
+
+**A** reaches six hours past admission's window and then invents a capability admission does not have. Admission accepts or refuses objects; it does not terminate running Pods.
+**B** is the sharper version of the same error, and worth naming precisely: a policy engine's validating rules are evaluated against **API requests at the admission gate**, not against process behavior. A process writing a file generates no API request, so there is no admission event for the policy to fire on. Kyverno can also run as a CLI-based scanner [source: kyverno-overview-2026-08-23], but that scans manifests, not syscalls.
+**D** is the closest to defensible and still wrong on two counts: `readOnlyRootFilesystem` is a `securityContext` field the Restricted level does not in fact mandate [source: k8s-docs-pod-security-standards-profiles-2026-08-31], and in any case a level constrains a Pod *at admission*, so it could have prevented the Pod from being created but has no role once it is running.
 
 **5. C.** *"Permissions are purely additive (there are no 'deny' rules)"* [source: k8s-docs-rbac-2026-08-23]. There is no rule that subtracts, so the only path is to stop granting the role that includes the unwanted permission and grant something narrower. **A** invents deny rules. **B** would not work even if `roleRef` were mutable, which it is not [source: k8s-docs-rbac-2026-08-23], because a binding grants a role wholesale; it does not filter it. **D** is the most seductive because it sounds like how firewalls work: additive means *union*, not intersection, so a second binding can only add.
+
+---
+
+**How'd You Do?**
+
+**5/5:** §9 will be a confirmation rather than a surprise, which is how it is meant to read.
+
+**3–4:** review the miss and continue. §9 introduces no new object and depends on no single fact from this checkpoint.
+
+**0–2:** re-read §7 before §8 — §8's whole framing is "the same gate, a different question," and it needs §7's picture of where that gate sits. If the miss was question 5, re-read §3's closing pages on the additive rule before you start §9, because §9 is an argument about that rule and nothing else.
 
 ---
 
@@ -1384,7 +1464,7 @@ A deny rule makes the effect of a grant **non-local**.
 
 That is the whole argument, and everything else follows from it.
 
-Consider a system with deny. You are handed a rule: *this subject may delete Deployments in this namespace.* What does the rule do? You cannot say. Somewhere else there may be a rule that denies it, and until you have read every rule that could possibly apply, you do not know the effect of the one in front of you. The meaning of a rule is no longer contained in the rule.
+Consider a system with deny. You are handed a rule: *this subject may delete Deployments in this namespace.* What does the rule do? You cannot say. Somewhere else there may be a rule that denies it, and until you have read every rule that could possibly apply, you do not know the effect of the one in front of you. A deny rule is a correction pencilled onto somebody else's chart: the sheet in your hands is accurate and still does not tell you where you are, because the correction is on a sheet you have not seen.
 
 Which forces a second thing: **evaluation order becomes semantics.** Once both allow and deny exist, "which one wins?" must be answered, and every real system answers it differently. Deny-overrides. First-match. Most-specific-wins. Explicit-beats-inherited. Each is defensible and none is obvious, and the choice is now part of what a policy *means*. Anyone reasoning about the system has to hold not just the rules but the resolution procedure.
 
@@ -1447,21 +1527,24 @@ These are the specific wrong answers this material produces. Every one of them i
 | `view` can read Secrets | It cannot — nor roles nor bindings. Reading Secrets is transitively becoming a ServiceAccount. [source: k8s-docs-rbac-depth-2026-08-31] |
 | `edit` can manage RBAC in its namespace | It cannot; `admin` can. [source: k8s-docs-rbac-2026-08-23] |
 | `cluster-admin` always means the whole cluster | In a RoleBinding it is scoped to that namespace. [source: k8s-docs-rbac-2026-08-23] |
+| Removing every binding revokes anyone's access | Not for `system:masters` — that membership bypasses RBAC entirely and cannot be revoked by removing bindings. [source: k8s-docs-rbac-good-practices-2026-08-31] |
+| Only `get` on Secrets reveals them | `list` and `watch` reveal the contents of every Secret in scope. [source: k8s-docs-rbac-good-practices-2026-08-31] |
 | Secrets are encrypted | Unencrypted in etcd by default; encryption at rest is opt-in and is a control-plane configuration. [source: k8s-docs-secret-2026-08-23] |
 | An RBAC audit showing no `get secrets` means Secrets are safe | Pod creation in the namespace reads any Secret in it, including via a Deployment. [source: k8s-docs-secret-2026-08-23] |
 | Token Secrets are current best practice | TokenRequest, short-lived and rotating, since v1.22. [source: k8s-docs-service-accounts-2026-08-23] |
-| PSS levels and PSA modes are the same axis | Levels say what is checked; modes say what happens. Independent. `[inferred]` |
-| PodSecurityPolicy is a current control | Removed in 1.25; superseded by Pod Security Admission. |
+| PSS levels and PSA modes are the same axis| PSS levels and PSA modes are the same axis | Levels say what is checked; modes say what happens. Independent. `[inferred]` |
+| PodSecurityPolicy is a current control | Superseded by Pod Security Admission; not the mechanism a current cluster uses. |
 | A signature covers the tag you signed | It resolves to the digest. Tags are mutable; signatures are not. [source: notary-project-signing-digest-2026-08-31] |
+| A valid signature means the artifact is current | It means the bytes came from the signer. Freshness, ordering and key compromise are what TUF addresses. [source: tuf-overview-2026-08-31] |
 | Falco prevents the behavior it detects | It observes and alerts. It does not block. [source: falco-overview-2026-08-23] |
 
-Two of these — the level/mode confusion and any claim about supply-chain project frequency — are marked `[inferred]` because they are things that are *easy to confuse*, not things anyone has published as *frequently tested*. The distinction matters: this book will tell you when material is high-yield by reasoning about the objectives, and it will not manufacture a statistic to make the point land harder.
+One row above carries an `[inferred]` marker: the level/mode confusion. That mark means the row describes something *easy to confuse*, not something anyone has published as *frequently tested*. The distinction matters. This book will tell you when material is high-yield by reasoning about the published objectives, and it will not manufacture a statistic to make the point land harder.
 
 ---
 
 ## Practice Questions
 
-Twenty-one questions. Four of them require material from earlier chapters, and four cannot be answered from any single section of this one.
+Twenty-three questions. Five of them require material from earlier chapters, and several cannot be answered from any single section of this one.
 
 ---
 
@@ -1483,12 +1566,12 @@ D) Protecting the encryption keys used for API traffic
 
 ---
 
-**3.** A ServiceAccount named `reporting` is created in the `analytics` namespace. No RoleBinding or ClusterRoleBinding references it. A Pod is created with `serviceAccountName: reporting` and immediately calls the API server to list ConfigMaps in `analytics`. What is the outcome?
+**3.** A cluster administrator wants to remove an engineer's superuser access. The engineer's credential places them in the `system:masters` group. The administrator deletes every ClusterRoleBinding and RoleBinding that names that engineer. What is the result?
 
-A) The call succeeds; a ServiceAccount can always read its own namespace
-B) The Pod fails to schedule, because the ServiceAccount has no bindings
-C) The call is authenticated successfully and then rejected at authorization
-D) The call fails at authentication, because no token was issued
+A) Access is revoked — `system:masters` is bound to `cluster-admin` by a ClusterRoleBinding, which the administrator has now deleted
+B) Access is unchanged; membership of `system:masters` bypasses all RBAC rights checks and cannot be revoked by removing bindings
+C) Access is reduced to the default API discovery permissions granted to all authenticated principals
+D) Access is unchanged until the API server next restarts, at which point the default bindings are reconciled and the bypass is removed
 
 ---
 
@@ -1497,7 +1580,7 @@ D) The call fails at authentication, because no token was issued
 A) Create a Secret of type `kubernetes.io/service-account-token` and mount it
 B) A short-lived, automatically rotating token from the TokenRequest API, mounted as a projected volume
 C) Store the token in a ConfigMap and reference it as an environment variable
-D) Pass the token as a command-line argument at container start
+D) Have the application call the `TokenReview` API at startup to obtain a token for its own ServiceAccount
 
 ---
 
@@ -1515,7 +1598,7 @@ D) Either Role + RoleBinding or ClusterRole + ClusterRoleBinding, depending on p
 A) The subjects can read Secrets in every namespace, because the role is a ClusterRole
 B) The RoleBinding is invalid; a RoleBinding cannot reference a ClusterRole
 C) The subjects can read Secrets in `staging` only
-D) The subjects can read Secrets in `staging` and in any namespace they can also list
+D) Nothing is granted; a ClusterRole's rules take effect only when a ClusterRoleBinding references them
 
 ---
 
@@ -1533,7 +1616,7 @@ D) A `fieldSelector` on the RoleBinding
 A) Nothing — this is what aggregated ClusterRoles are for
 B) RBAC names subjects as literal strings; there is no subject selector, and a grant that expanded when someone added a label would not be auditable
 C) It would work, but only for ServiceAccounts in the same namespace as the binding
-D) Labels cannot be applied to ServiceAccount objects
+D) It would work if the subjects were users rather than ServiceAccounts; only ServiceAccounts must be named literally
 
 ---
 
@@ -1564,7 +1647,7 @@ D) Mounting Secrets as files rather than environment variables
 
 ---
 
-**12.** Which**12.** Which statement about mounting a Secret is correct?
+**12.** Which statement about mounting a Secret is correct?
 
 A) A Secret mounted as a volume receives updates automatically, except when mounted as a `subPath`
 B) A Secret consumed as an environment variable updates automatically when the Secret changes
@@ -1585,9 +1668,9 @@ D) It applies the `RuntimeDefault` seccomp profile
 **14.** Which statement about `privileged: true` is correct?
 
 A) It grants a single additional capability, `CAP_SYS_ADMIN`
-B) It applies only to init containers
+B) It grants all Linux capabilities, but any seccomp or AppArmor profile you specified in the manifest remains in force
 C) It overrides or undoes many other hardening settings, including the applied seccomp and AppArmor profiles, and grants all Linux capabilities
-D) It is required for a container to mount any volume
+D) It is required in order to set `runAsUser: 0`
 
 ---
 
@@ -1645,32 +1728,67 @@ D) The kubelet, immediately before starting the container
 
 ---
 
-**21.** Which statement most accurately characterizes what RBAC and NetworkPolicy have in common?
+**21.** *[retrieval: ch10]* Which statement most accurately characterizes what RBAC and NetworkPolicy have in common?
 
 A) Both are implemented by the API server and evaluated at the same gate
 B) Both use label selectors to identify the subjects they govern
 C) Both are purely additive: rules only grant, and removing access means removing a grant
-D) Both were designed by the same working group to share a policy model
+D) Both were retrofitted with explicit deny rules in later API versions, which is why the additive behaviour is now the default rather than the only option
+
+---
+
+**22.** A namespace carries `pod-security.kubernetes.io/enforce: restricted`. A developer submits a Pod whose single container sets exactly this and nothing else:
+
+```
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop: ["ALL"]
+```
+
+What happens, and why?
+
+A) Admitted — every Restricted requirement is satisfied by that block
+B) Rejected — Restricted also requires an explicit seccomp profile of `RuntimeDefault` or `Localhost`, and none is set
+C) Rejected — `runAsUser: 1000` conflicts with `runAsNonRoot: true`
+D) Admitted with a warning, because `enforce` applies leniently to capability rules
+
+---
+
+**23.** An organization verifies image signatures at admission and rejects anything unsigned. An attacker with control of a registry serves a client an older image that is correctly signed by the organization's own build pipeline and that contains a vulnerability fixed two releases ago. Does signature verification catch this, and what addresses it?
+
+A) Yes — the signature will not verify, because the older image's digest differs from the current one
+B) No — the artifact is correctly signed, so verification passes; this is the class of attack The Update Framework exists to address
+C) No — but an SBOM attached to the image would refuse to load, because its component list no longer matches the deployed release
+D) Yes — Rekor will reject the lookup, because the older signing event has been superseded by a newer one
 
 ---
 
 ### Answers with Explanations
 
-**1. B.** The two framings answer different questions, and a control has a position on both: image signing is `distribute`/Container, RBAC is `runtime`/Cluster. **A** invents a distinction neither framing makes. **C** overstates the situation. The current kubernetes.io page does present the phases in place of the 4Cs [source: k8s-docs-cloud-native-security-2026-08-23], but the 4Cs are not wrong, they are a different map, and they remain the dominant framing in third-party material. **D** invents a scope split that neither framing has.
+**1. B.** The two framings answer different questions, and a control has a position on both: image signing is `distribute`/Container, RBAC is `runtime`/Cluster. **A** invents a distinction neither framing makes. **C** overstates the situation. The current kubernetes.io page does present the phases in place of the 4Cs [source: k8s-docs-cloud-native-security-2026-08-23], but the 4Cs are not wrong, they are a different map, and they remain the framing most third-party material uses. **D** invents a scope split that neither framing has.
 
 **2. C.** The runtime/compute list names enforcing Pod Security Standards *"for applications to help ensure they run with only the necessary privileges"* [source: k8s-docs-cloud-native-security-2026-08-23]. **A** and **D** are runtime/access; ServiceAccounts and TLS for API traffic both appear in that list. **B** is runtime/storage. The point of the question is that all three areas are runtime; naming the phase is not enough.
 
-**3. C.** Creating a ServiceAccount grants nothing. The Pod receives a valid projected token, so authentication succeeds; with no binding referencing the account, authorization fails. **A** is the persistent misconception that namespace membership implies read access to the namespace. **B** confuses authorization with scheduling; a Pod with an unbound ServiceAccount schedules and runs normally. **D** confuses the two gates; a token is issued regardless of permissions.
+**3. B.** *"Avoid adding users to the `system:masters` group. Any user who is a member of this group bypasses all RBAC rights checks and will always have unrestricted superuser access, which cannot be revoked by removing RoleBindings or ClusterRoleBindings"* [source: k8s-docs-rbac-good-practices-2026-08-31]. Group membership is not an RBAC grant, so removing RBAC objects removes nothing.
 
-**4. B.** *"In Kubernetes v1.22 and later, Kubernetes gets a short-lived, automatically rotating token using the TokenRequest API and mounts the token as a projected volume"* [source: k8s-docs-service-accounts-2026-08-23]. **A** is the legacy mechanism; long-lived token Secrets *"don't expire or rotate and pose a security risk"* [source: k8s-docs-service-accounts-2026-08-23]. **C** puts a credential in the wrong object type entirely. **D** would place the token in the process's command line, visible to anything that can read the process table.
+**A** is the intuitive and wrong model — it treats group membership as though it were expressed through a binding that could be deleted.
+**C** describes what would happen to an ordinary subject whose bindings were all removed: identity intact, permissions down to API discovery [source: k8s-docs-service-accounts-2026-08-23]. It is the right outcome for the wrong principal.
+**D** invents a reconciliation that runs the wrong direction. The API server does reconcile default bindings at startup, but the bypass does not depend on any binding, so a restart restores nothing and removes nothing.
 
-**5. B.** `Node` is cluster-scoped, so a Role — which is defined within a namespace — has nowhere to put the rule, and the ClusterRole is forced [source: k8s-docs-rbac-2026-08-23]. The grant must then be cluster-wide, because the resource is in no namespace to scope it to. **A** misunderstands what `kube-system` is: a namespace containing objects, not a namespace that contains the nodes. **C** is the seductive one. A ClusterRole *can* be bound by a RoleBinding, but doing so grants only its namespaced rules in that namespace; the `Node` rule would simply have no effect. **D** treats a structural constraint as a stylistic preference.
+Two consequences worth carrying: this is invisible to any audit that reads RBAC objects, and if the cluster uses an authorization webhook, requests from members of that group are never sent to it at all [source: k8s-docs-rbac-good-practices-2026-08-31].
 
-**6. C.** *"A RoleBinding can reference a ClusterRole and bind that ClusterRole to the namespace of the RoleBinding"* [source: k8s-docs-rbac-2026-08-23]. The binding determines the scope. **A** is the most common version of this trap and is the reason `cluster-admin` in a RoleBinding surprises people. **B** contradicts the documented behavior. **D** invents a rule about listing that has nothing to do with how bindings scope.
+**4. B.** *"In Kubernetes v1.22 and later, Kubernetes gets a short-lived, automatically rotating token using the TokenRequest API and mounts the token as a projected volume"* [source: k8s-docs-service-accounts-2026-08-23]. **A** is the legacy mechanism; long-lived token Secrets *"don't expire or rotate and pose a security risk"* [source: k8s-docs-service-accounts-2026-08-23]. **C** puts a credential in the wrong object type entirely. **D** is the near-miss worth naming: `TokenRequest` and `TokenReview` are different APIs doing opposite jobs. TokenRequest *issues* a token; TokenReview *validates* one somebody has presented. And a workload that had to authenticate in order to fetch its own credential would have nothing to authenticate with — which is exactly the bootstrap problem the projected volume solves by delivering the token before the process starts.
+
+**5. B.** `Node` is cluster-scoped, so a Role — which *"always sets permissions within a particular namespace"* [source: k8s-docs-rbac-2026-08-23] — has nowhere to put the rule, and the ClusterRole is forced. The grant must then be cluster-wide, because the resource is in no namespace to scope it to. **A** misunderstands what `kube-system` is: a namespace containing objects, not a namespace that contains the nodes. **C** is the seductive one. A ClusterRole *can* be bound by a RoleBinding, and doing so binds it into that namespace [source: k8s-docs-rbac-2026-08-23] — but the `Node` rule has no namespace to land in. **D** treats a structural constraint as a stylistic preference.
+
+**6. C.** *"A RoleBinding can reference a ClusterRole and bind that ClusterRole to the namespace of the RoleBinding"* [source: k8s-docs-rbac-2026-08-23]. The binding determines the scope. **A** is the most common version of this trap and is the reason `cluster-admin` in a RoleBinding surprises people. **B** contradicts the documented behavior. **D** is A's mirror image: where A over-scopes the grant, D refuses it entirely. Both errors come from the same wrong premise — that a ClusterRole's scope is fixed by the role object rather than by the binding.
 
 **7. B.** *"You can also refer to resources by name for certain requests through the `resourceNames` list. When specified, requests can be restricted to individual instances of a resource"* [source: k8s-docs-rbac-depth-2026-08-31]. **A** is the selector reflex again; there is no label selector on an RBAC rule. **C** is wrong about the capability existing, though it correctly identifies that RBAC's naming is literal rather than queried. **D** invents a field.
 
-**8. B.** RBAC names subjects — users, groups, ServiceAccounts — as literal strings [source: k8s-docs-rbac-depth-2026-08-31]. There is no subject selector, and Chapter 4 specifically warned that assuming the selector pattern held here would produce a confident wrong prediction. **A** confuses two different uses of selectors: an aggregated ClusterRole uses a label selector to combine *ClusterRoles*, not to select subjects [source: k8s-docs-rbac-depth-2026-08-31]. **C** invents a namespace constraint on a mechanism that does not exist. **D** is false; ServiceAccounts are ordinary objects and take labels like any other. The labels just have no bearing on RBAC.
+**8. B.** RBAC names subjects — users, groups, ServiceAccounts — as literal strings [source: k8s-docs-rbac-depth-2026-08-31]. There is no subject selector, and Chapter 4 specifically warned that assuming the selector pattern held here would produce a confident wrong prediction. **A** confuses two different uses of selectors: an aggregated ClusterRole uses a label selector to combine *ClusterRoles*, not to select subjects [source: k8s-docs-rbac-depth-2026-08-31]. **C** invents a namespace constraint on a mechanism that does not exist. **D** is a false symmetry, and worth being explicit about: all three subject kinds are named literally. There is no subject kind that RBAC selects rather than names.
 
 **9. C.** *"If used in a RoleBinding, allows read/write access to most resources in a namespace, including the ability to create roles and role bindings within the namespace. This role does not allow write access to resource quota or to the namespace itself"* [source: k8s-docs-rbac-depth-2026-08-31]. **A** and **B** are the two things that sentence explicitly excludes, and the exclusions are principled: writing your own quota would let you raise your own ceiling. **D** confuses a namespaced role with cluster-scoped access.
 
@@ -1678,11 +1796,19 @@ D) Both were designed by the same working group to share a policy model
 
 **11. C.** Encryption at rest protects the object as written to etcd [source: k8s-docs-encrypt-data-2026-08-31], which is exactly the content of an etcd backup. **A** protects access to the running etcd over the network and does nothing about a backup file sitting in object storage. **B** addresses the API route, not the etcd route. **D** is a good practice for a different reason and does not touch etcd at all.
 
-**12. A.** When a Secret is mounted as a volume, updates propagate automatically; *"A container using a Secret as a subPath volume mount does not receive automated Secret updates"* [source: k8s-docs-secret-risks-2026-08-31]. **B** inverts it; an environment variable is read at container start and fixed thereafter. **C** and **D** both get the asymmetry wrong, and that asymmetry is half the file-over-env-var argument.
+**12. A.** When a Secret is mounted as a volume, updates propagate automatically; *"A container using a Secret as a subPath volume mount does not receive automated Secret updates"* [source: k8s-docs-secret-risks-2026-08-31].
+
+**B** inverts the asymmetry: an environment variable is read at container start and is then a fixed string in the process's environment, so a rotated Secret does not reach a running container.
+**C** is wrong about where the difference lies. The two mechanisms differ in *update behaviour*; file permissions are a volume-only concern that has no environment-variable counterpart to differ from.
+**D** generalizes the environment-variable behaviour to both, which erases the whole rotation half of the file-over-env-var argument.
 
 **13. B.** `runAsNonRoot` requires that containers do not run as root — the Restricted level mandates `runAsNonRoot: true` for exactly this reason [source: k8s-docs-pod-security-standards-profiles-2026-08-31], and the documentation recommends it generally [source: k8s-docs-linux-kernel-security-constraints-2026-08-31]. **A** describes `capabilities.drop`. **C** describes `readOnlyRootFilesystem`. **D** describes `seccompProfile`. All four are `securityContext` fields, which is why this question is worth taking slowly.
 
-**14. C.** *"Privileged containers override or undo many other hardening settings such as the applied seccomp profile, AppArmor profile, or SELinux constraints. Privileged containers are given all Linux capabilities, including capabilities that they don't require"* [source: k8s-docs-linux-kernel-security-constraints-2026-08-31]. **A** dramatically understates it; the point is *all* capabilities, and the recommended alternative is to grant specific ones via the `capabilities` field [source: k8s-docs-linux-kernel-security-constraints-2026-08-31]. **B** invents a scope limit. **D** is false; ordinary volume mounts require nothing of the sort.
+**14. C.** *"Privileged containers override or undo many other hardening settings such as the applied seccomp profile, AppArmor profile, or SELinux constraints. Privileged containers are given all Linux capabilities, including capabilities that they don't require"* [source: k8s-docs-linux-kernel-security-constraints-2026-08-31].
+
+**A** dramatically understates it; the point is *all* capabilities, and the recommended alternative is to grant specific ones via the `capabilities` field [source: k8s-docs-linux-kernel-security-constraints-2026-08-31].
+**B** is the version of this misconception most worth killing: it assumes hardening layers stack independently, so that a seccomp profile you wrote would survive a privileged flag somebody else set. The documented behaviour is the opposite — privileged containers run as the `Unconfined` seccomp profile, overriding any profile specified in the manifest, and ignore any applied AppArmor profiles [source: k8s-docs-linux-kernel-security-constraints-2026-08-31].
+**D** invents a dependency. Running as UID 0 inside a container needs no privileged flag at all; `privileged: true` is about capabilities and kernel-constraint bypass, not about which UID the process runs as.
 
 **15. C.** Chapter 10 drew the two axes; this chapter filled in the second. `securityContext` constrains what a workload may do to its node; NetworkPolicy constrains which workloads may reach which. Different objects, different implementers, independent failure. **A** inverts them. **B** is false: one is a Pod spec field enforced by the runtime and kubelet, the other is an object enforced by a CNI plugin. **D** invents a supersession that would make no sense, since a NetworkPolicy has nothing to say about `privileged: true`.
 
@@ -1694,9 +1820,25 @@ D) Both were designed by the same working group to share a policy model
 
 **19. B.** *"Notation resolves the tag to the digest before signing if a tag is used to identify the container image"* [source: notary-project-signing-digest-2026-08-31]. **A** is the misconception, and it matters because a tag-covering signature would attest to content the signer has never seen — Chapter 2's mutable-pointer lesson, arriving as a security consequence. **C** would attest to a location rather than to content. **D** inverts the relationship: an SBOM is a separate signable artifact that describes an image, not the thing a signature on the image binds to.
 
-**20. B.** Sigstore's Policy Controller *"enforces signature verification policies within Kubernetes as an admission controller"* [source: sigstore-overview-2026-08-23], and Kyverno can *"verify container images and metadata"* [source: kyverno-overview-2026-08-23]. Verification at admission is the first checkpoint the cluster itself performs; everything before it (scan, sign, record, restrict) happened outside, under someone else's control. **A**, **C**, and **D** each place verification somewhere plausible but wrong, and the third of them is the most tempting: the kubelet does pull the image, but the enforcement decision is made at admission, before the object is accepted.
+**20. B.** Sigstore's Policy Controller *"enforces signature verification policies within Kubernetes as an admission controller"* [source: sigstore-overview-2026-08-23], and Kyverno can *"verify container images and metadata"* [source: kyverno-overview-2026-08-23]. Verification at admission is the first checkpoint the cluster itself performs; everything before it (scan, sign, record, restrict) happened outside, under someone else's control.
 
-**21. C.** Both are purely additive; in both, the only way to remove access is to remove a grant [source: k8s-docs-rbac-2026-08-23]. That is the shared semantic, and §9 argues it is not a coincidence. **A** is false on both halves: NetworkPolicy is enforced by a CNI plugin, not the API server, and not at the authorization gate. **B** is half true and therefore the best distractor here — NetworkPolicy does use selectors, and RBAC pointedly does not. **D** invents a shared origin; the argument in §9 is precisely that they converged *without* coordinating.
+**A** places verification at the runtime, at pull time. That is late by one gate and wrong about the actor: by the time anything is pulled, the object has already been accepted, so a refusal there would leave a Pod the API server has already admitted.
+**C** places it at the registry. A registry can restrict *who may pull*, which is a real control [source: k8s-docs-cloud-native-security-2026-08-23], but it is not the cluster deciding whether to accept the object, and a registry you do not administer is exactly what verification exists to be independent of.
+**D** is the most tempting: the kubelet does pull the image, and it is inside the cluster. But the enforcement decision is made at admission, before the object is accepted and long before any kubelet is involved.
+
+**21. C.** Both are purely additive; in both, the only way to remove access is to remove a grant [source: k8s-docs-rbac-2026-08-23]. That is the shared semantic, and §9 argues it is not a coincidence. **A** is false on both halves: NetworkPolicy is enforced by a CNI plugin, not the API server, and not at the authorization gate. **B** is half true and therefore the best distractor here — NetworkPolicy does use selectors, and RBAC pointedly does not. **D** invents a version history. Neither system has ever had a deny rule, and §9's argument is that the additive design is load-bearing rather than a default somebody happened to pick.
+
+**22. B.** Restricted's seccomp control requires the profile type to be `RuntimeDefault` or `Localhost` explicitly [source: k8s-docs-pod-security-standards-profiles-2026-08-31], and no `seccompProfile` is set. Everything else in that block conforms: `runAsNonRoot: true`, `runAsUser` non-zero, `allowPrivilegeEscalation: false`, and capabilities dropping `ALL`.
+
+**A** is the near miss this question exists to produce — four of five requirements met, and the missing one is the least visible because it is the only one that is not obviously about root.
+**C** invents a conflict. A non-zero `runAsUser` is precisely what Restricted's "Running as Non-root user" control asks for [source: k8s-docs-pod-security-standards-profiles-2026-08-31]; the two fields agree rather than collide.
+**D** crosses the axes. `enforce` rejects, full stop — it is a mode, not a severity, and it does not apply differently to different controls. If you wanted the warning behaviour, that is a different label.
+
+**23. B.** TUF names exactly this attack: *"An attacker gives you an older, insecure version of a file that you already have and tricks you into thinking it's newer"* [source: tuf-overview-2026-08-31]. Every attack in TUF's list involves a *correctly signed* artifact, which is what distinguishes freshness and ordering from authenticity — and why TUF *"maintains the security of software update systems, providing protection even against attackers that compromise the repository or signing keys"* [source: tuf-overview-2026-08-31].
+
+**A** misunderstands what verification checks. A signature over the older digest is entirely valid for that older digest. Verification asks "did these bytes come from who I think?" and answers nothing about which version they are.
+**C** invents an enforcement behaviour. An SBOM is a record of what an artifact contains, not a gate, and the older image's SBOM correctly describes the older image.
+**D** inverts the transparency log's function. Rekor is append-only and records signing events for public audit [source: sigstore-overview-2026-08-23]; entries are never superseded or expired, and nothing about it is a freshness check performed at pull time.
 
 ---
 
@@ -1714,21 +1856,24 @@ D) Both were designed by the same working group to share a policy model
 | The derivation | Cluster-scoped resource → ClusterRole is forced. Where the grant applies → the binding decides. **The binding determines the scope of the grant.** |
 | Additive, no deny | Permissions are the union of grants. To remove access, remove the grant. There is no other operation. |
 | Binding immutability | `roleRef` cannot change after creation. Delete and recreate. |
-| Subjects | Named as literal strings. There is no subject selector, and that is deliberate. |
+| Subjects | Named as literal strings — users, groups and ServiceAccounts alike. There is no subject selector, and that is deliberate. |
+| Escalation prevention | You cannot create a role holding permissions you do not have, absent the `escalate` verb; you cannot bind one, absent `bind`. |
+| `system:masters` | Not an RBAC grant. Bypasses every rights check, cannot be revoked by deleting bindings, invisible to an RBAC audit. |
 | Default roles | `view` cannot read Secrets. `edit` cannot touch RBAC. `admin` cannot write its quota or namespace. `cluster-admin` in a RoleBinding is namespace-scoped. |
 | base64 | Encoding. Provides no confidentiality over plain text. |
 | Secret storage | Unencrypted in etcd by default. Encryption at rest is opt-in, via `EncryptionConfiguration` on the API server. |
-| Three exposure paths | API access · etcd access (including backups) · **the ability to create a Pod**. |
+| Three exposure paths | API access (including `list` and `watch`) · etcd access, including backups · **the ability to create a Pod**. |
 | The weak boundary | Boundaries within a namespace are weak. Separate trust levels with separate namespaces. |
 | File over env var | A mounted Secret updates automatically (except via `subPath`); an environment variable is fixed at container start. |
 | `securityContext` | Pod scope sets the default; container scope overrides it. Governs the workload-to-host axis. |
 | `privileged: true` | Not one more setting — the setting that turns the others off. All capabilities; seccomp, AppArmor and SELinux constraints bypassed; every Secret on the node readable. |
-| The three PSS levels | `privileged` (no restrictions) · `baseline` (prevents known escalations, allows the default Pod) · `restricted` (current hardening best practice). Cumulative. |
+| The three PSS levels | `privileged` (no restrictions) · `baseline` (prevents known escalations, allows the default Pod) · `restricted` (current hardening best practice). Cumulative in permitted Pods. |
 | The three PSA modes | `enforce` (reject) · `audit` (log) · `warn` (tell the user). |
 | Levels × modes | Independent axes, applied per namespace by label `pod-security.kubernetes.io/<MODE>: <LEVEL>`. Level = what. Mode = what happens. |
 | The supply chain | build → scan → sign → record → restrict → **verify** → run. Verify is the first step the cluster performs itself. |
-| Signatures | Bind to the **digest**. A tool hands a tag and signs the digest it resolves to. |
-| Sigstore | Cosign (client) · Fulcio (short-lived certs from a verified identity) · Rekor (append-only transparency log) · Policy Controller (admission-time verification). |
+| Signatures | Bind to the **digest**. A tool handed a tag signs the digest it resolves to. |
+| Sigstore | Cosign (client) · Fulcio (short-lived certs from a verified identity) · Rekor (append-only transparency log) · Policy Controller (admission-time verification). Keyless: the private key is discarded after one signing. |
+| TUF | Freshness, ordering and key compromise — the attacks that use a *correctly signed* artifact. Signing alone does not address them. |
 | Policy engines | Kyverno (YAML/CEL, validate/mutate/generate/clean up) and OPA Gatekeeper (Rego), both at admission. An arbitrary question where PSA answers a fixed one. |
 | Falco | Runtime. Observes kernel events, evaluates rules, **emits alerts**. Detects; does not prevent. |
 | The shared semantic | RBAC and NetworkPolicy both allow and never deny, from different layers for different reasons — because a deny rule makes a grant's effect non-local, and these policies are written by many hands against objects that will not hold still. |
@@ -1745,7 +1890,7 @@ That is the next chapter's problem. A Pod stuck in `Pending`. A Pod that starts 
 
 Chapter 13 is about reading those signatures. Not guessing at them — reading them, in a fixed order, starting with a question most people skip: *whose problem is this?* There is a triage flow, it has a specific sequence, and the sequence exists because the cheap checks eliminate whole categories of cause before you spend an hour reading logs that were never going to contain the answer.
 
-Bring three things with you from this chapter. The first is the shape of a Pod that was *rejected* rather than one that *failed*: you now know that admission can refuse an object outright, and that a refused object leaves nothing behind to inspect. The second is the `securityContext` fields, because a container that cannot write where it expects to write is a permissions failure wearing an application error's clothing. The third is Secrets: a Pod that references one that does not exist does not start, and it does not start in a specific, recognizable way.
+Bring three things with you from this chapter. The first is the shape of a Pod that was *rejected* rather than one that *failed*: you now know that admission can refuse an object outright, and that a refused object leaves nothing behind to inspect. The second is the `securityContext` fields, because a container that cannot write where it expects to write is a permissions failure wearing an application error's clothing. The third is Secrets: a Pod that references one that does not exist never gets a running container, and it fails in a recognizable way rather than a mysterious one.
 
 You have spent twelve chapters learning what the cluster does when everything works. The next two are about the other case, and the honest truth is that the second kind of knowledge is what people actually get paid for.
 

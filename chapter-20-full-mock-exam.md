@@ -11,8 +11,10 @@ prereq_factor: "heavy"
 
 # --- Section plan (no word budgets) ---
 # THESE ARE BLOCKS, NOT NUMBERED SECTIONS. Per the B6 skeleton, Ch 20 has no
-# §N anchors, deliberately. Nothing anywhere in the book may emit
-# *[cross-bearing: see Ch 20 §N — …]*. Address this chapter by name only.
+# §N anchors, deliberately. No chapter may emit a section-numbered
+# cross-bearing into Chapter 20. Address this chapter by name only.
+# (Stated without the literal form on purpose: writing it out makes the
+#  reconcile cross-bearing audit report this comment as a real pointer.)
 # `checkpoint_after` is false throughout: mock_exam is exempt from ☆ Taking
 # Your Bearings, and a checkpoint inside a timed instrument would break it.
 sections:

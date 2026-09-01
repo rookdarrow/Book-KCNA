@@ -1275,52 +1275,193 @@ ResourceQuota caps the namespace's aggregate; LimitRange supplies per-object def
 - **C is wrong** because `Never` means use only what is already on the node, and fail if nothing is there. The kubelet builds nothing.
 - **D is wrong** because `Always` re-checks the registry on every container start but places no requirement on how the image is referenced. A digest reference is a separate, stronger guarantee.
 
-<!-- =====================================================================================
-     AUTHOR-REVIEW — SHIP-BLOCKING. THE INPUT TO THIS STAGE IS TRUNCATED. NOT A VOICE ISSUE.
+<!-- RESOLVED 2026-08-31 (integration gate): walkthroughs 43-60 and the Scoring Rubric are
+     written below, against draft-v2's stems rather than draft-v1's (the numbering does not
+     map — draft-v2 rebuilt the exam block to break draft-v1's answer-key clustering).
+     The rubric's per-domain item lists were DERIVED MECHANICALLY from the per-item domain
+     tags in this answer key, not hand-keyed, which is what draft-v1's rubric got wrong:
+     asserted 26/17/10/7 and verified that every item 1-60 appears exactly once.
+     The guard that missed this now checks for a dropped tail as well as a short output
+     (certcomp pipeline/orchestrator.py) — draft-v2 was LARGER than draft-v1, so the size
+     floor could not see it. -->
 
-     WHAT IS MISSING. `ch-20/draft-v2.md` (the stage-11 revision output, 1187 lines, 68,835
-     bytes) ends here, mid-document, immediately after walkthrough 42. Absent from it:
-       * walkthroughs 43-60 (eighteen items), and
-       * the entire `## Scoring Rubric` section — per-domain score sheet, the passing-standard
-         Dead Reckoning block with `[source: lf-mc-exam-faq-2026-08-31]`, the band table, and
-         the "What to do next" guidance, and
-       * the chapter's closing metadata line.
-     draft-v1.md carries all of it (1249 lines; `## Scoring Rubric` at line 1203). draft-v2 does
-     not. The voice stage does not author eighteen walkthroughs and a scoring instrument, so this
-     document is emitted at the length its input gave it, with the gap marked rather than papered
-     over. Restoring the tail is a stage-11 job and must happen before this chapter ships.
+**43. C** — *D2.4 · Ch 11 §3 · ⚪*
 
-     WHY draft-v1's TAIL CANNOT SIMPLY BE PASTED IN. draft-v2 did not merely edit draft-v1 — it
-     rebuilt the exam block. draft-v1's answer key was **B** for roughly 55 of its 60 items, a
-     position giveaway that would let a reader score well without knowing the material; draft-v2
-     distributes the key across A-D and rewrote every stem and distractor to suit. Item 43 in
-     draft-v1 is a DaemonSet/log-collector question; item 43 in draft-v2 is dynamic provisioning
-     via StorageClass. The numbering does not map. Each of 43-60 needs a walkthrough written
-     against draft-v2's stem, in the established shape: `**N. X** — *Dn.n · Ch N §M · <difficulty>*`,
-     one-paragraph rationale with a cross-bearing, then a refutation bullet per wrong option.
-     Two defects draft-v2 DID fix, so do not re-fix them: draft-v1's stray "43 continues on the
-     next item." line in the exam block is gone, and draft-v1's missing walkthrough 42 is present.
+A StorageClass names a provisioner, and that provisioner creates the PersistentVolume when a claim asks for the class. That is what "dynamic" means: supply is manufactured in response to demand, rather than pre-staged by an administrator. *[cross-bearing: see Ch 11 §3 — provisioning on demand]*
 
-     WHY THE LENGTH GUARD DID NOT CATCH THIS. draft-v2 is 68,835 bytes against draft-v1's 68,256 —
-     it is LARGER. The rewritten four-option stems absorbed almost exactly the bytes the dropped
-     tail freed, so a guard comparing total size against draft-v1 sees growth and passes. Worth a
-     fix in `pipeline/incremental_revise.py` / the stage-11 length guard: for `mock_exam` chapters,
-     assert the final H2 of draft-v1 still exists in draft-v2, and assert the answer-key item count
-     matches the exam item count. A structural tail check would have caught this; a size ratio
-     cannot.
+- **A is wrong** because `accessModes` describes how many nodes may mount the volume and in what mode. It is a compatibility constraint on matching, not a switch between static and dynamic supply. *[cross-bearing: see Ch 11 §4 — access modes and what happens after]*
+- **B is wrong**, and it is the answer that sounds most like "storage appears by itself." `hostPath` ties the data to one node's filesystem, which is the opposite of what a claim is for.
+- **D is wrong** because a reclaim policy governs what happens to a volume *after* its claim is deleted. It acts at the end of the lifecycle, not the beginning.
 
-     WHY IT IS SHIP-BLOCKING RATHER THAN COSMETIC. The Instructions section promises the score
-     sheet twice — "That is the whole argument for the score sheet at the end of this chapter" and
-     "the per-domain breakdown you are about to generate" — and the walkthrough preamble instructs
-     the reader to "record two things per question ... which domain it belonged to," which is only
-     useful if the tally table exists. As it stands the chapter asks the reader to collect data for
-     an instrument that is not there, and answers 42 of the 60 questions it sets.
+**44. B** — *D3.1 · Ch 14 §5 · 🔵*
 
-     CARRY FORWARD WHEN THE RUBRIC IS REBUILT. draft-v1's own Scoring Rubric carried an unresolved
-     AUTHOR-REVIEW: its per-domain item lists did not sum to their stated maximums and items 9, 12
-     and 48 appeared in two rows each (D3 listed 7 items against a max of 10; D4 listed 9 against a
-     max of 7). Do not re-key that table by hand against draft-v2's numbering. Derive each row
-     mechanically from the per-item domain tags in the answer key, then assert the row counts equal
-     26 / 17 / 10 / 7 — the maximums are correct and come from the published blueprint weighting
-     `[source: cncf-curriculum-kcna-readme-2026-08-31]`.
-     ===================================================================================== -->
+Kustomize patches a shared base with one overlay per environment, and it does so without a templating language — the overlays are ordinary YAML fragments merged onto the base. The question's two constraints, no duplication and no templating, name Kustomize exactly. *[cross-bearing: see Ch 14 §5 — patching instead of templating]*
+
+- **A is wrong** on the second constraint only, which is what makes it the strongest distractor. Separate values files genuinely solve the duplication; Helm reaches that answer *through* a template language, which the question rules out. *[cross-bearing: see Ch 14 §6 — which one, when]*
+- **C is wrong** because sync waves order the objects within an apply. Ordering is not variation between environments. *[cross-bearing: see Ch 15 §5 — ordering the sync]*
+- **D is wrong** because it is still Helm, and a generator does not remove the templating the question excludes.
+
+**45. D** — *D1.3 · Ch 7 §1 · ⚪*
+
+Filter, then score, then bind. Filtering reduces the nodes to the feasible ones; scoring ranks what survives; binding writes the choice. The order matters because each stage operates on the output of the one before it. *[cross-bearing: see Ch 7 §1 — one decision, made once]*
+
+- **A is wrong** because it inverts the two stages. Scoring every node and then discarding low scorers would let an infeasible node be ranked at all, and feasibility is not a matter of degree. *[cross-bearing: see Ch 7 §2 — what makes a node feasible]*
+- **B is wrong** because binding is the last act, not the first. A Pod is bound once, to a node already chosen.
+- **C is wrong** because the kubelet is not consulted for placement. It acts on Pods already assigned to its node. *[cross-bearing: see Ch 3 §3 — node components in context]*
+
+**46. A** — *D2.1 · Ch 10 §5 · 🔵*
+
+The Gateway API's three kinds are modeled on three roles: GatewayClass for the infrastructure provider, Gateway for the cluster operator, HTTPRoute for the application developer. The split is the design, not an accident of the API. *[cross-bearing: see Ch 10 §5 — roles, not just routes]*
+
+- **B is wrong** because it scrambles the mapping. Reading it against the responsibilities is the check: an application developer does not supply the cluster's networking infrastructure.
+- **C is wrong** on both counts. HTTPRoute is namespaced and belongs to the team that owns the application, which is the whole point of a role-oriented API.
+- **D is wrong** for the same reason as B — it inverts the outermost and innermost roles.
+
+**47. C** — *D4.2 · Ch 17 §3 · 🔵*
+
+Independent deployment and independent scaling are the gains; operational and network complexity is the price. The honest characterization keeps both halves, because a trade-off with only an upside is not a trade-off. *[cross-bearing: see Ch 17 §3 — small pieces, replaced whole]*
+
+- **A is wrong**, and it is the most seductive option here. Decomposition *relocates* complexity into the spaces between services; it does not reduce the total. What was a function call becomes a network call that can fail.
+- **B is wrong** because service boundaries change the *shape* of coupling rather than removing it. Two services that must be released together are still coupled, now across a network.
+- **D is wrong** because a repository and a pipeline per service are the mechanics of independent deployment, not its cause. Shared databases and lockstep releases defeat it regardless.
+
+**48. B** — *D1.1 · Ch 6 §7 · ⚪*
+
+A CronJob creates a Job on its schedule, and the Job creates the Pod or Pods that run the work to completion. Two objects, one for the schedule and one for the run. *[cross-bearing: see Ch 6 §7 — one per node, and work that ends]*
+
+- **A is wrong** because it collapses the layer that makes retries and completion tracking work. Without a Job there is nothing holding the notion of "this run finished."
+- **C is wrong** because a Deployment is for work that should keep running. Its controller replaces a Pod that exits, which is the opposite of what run-to-completion needs.
+- **D is wrong** because a DaemonSet is about node coverage, not scheduled work.
+
+**49. A** — *D2.2 · Ch 12 §7 · 🔵*
+
+An SBOM is the inventory: it records which components the image contains, which is exactly the question an auditor is asking when a new vulnerability is disclosed. *[cross-bearing: see Ch 12 §7 — trusting what you ship]*
+
+- **B is wrong** because a scan report is a point-in-time answer against the vulnerabilities known on the day it ran. A vulnerability disclosed afterwards is not in it, which is the scenario the question describes.
+- **C is wrong**, and the distinction is worth holding: provenance records *how and where* the artifact was built. It is the build-process half; the SBOM is the components half.
+- **D is wrong** because a digest identifies the image uniquely without saying anything about what is inside it. *[cross-bearing: see Ch 2 §3 — registries, tags, and digests]*
+
+**50. D** — *D3.2 · Ch 16 §5 · 🔵*
+
+A working port-forward proves the application is running and answering on its port. The Service path is the only thing left between that Pod and the client, so the fault is in the Service path — selector, ports, or endpoint membership. *[cross-bearing: see Ch 16 §5 — bypassing the Service on purpose]*
+
+- **A is wrong**, and it is the answer that feels responsible. If the application were unhealthy it would not have answered the port-forward. A successful port-forward rules this out rather than supporting it.
+- **B is wrong** because port-forward and Service traffic are not separable that way at this level; a CNI failing between nodes would not leave a single Pod cleanly reachable while its Service silently times out.
+- **C is wrong** because cluster IPs are allocated from a range and not handed out twice. Inventing an allocator bug is a heavier explanation than the ordinary one.
+
+**51. B** — *D1.1 · Ch 4 §5 · ⚪*
+
+Labels identify and select; annotations carry metadata that nothing selects on. That is the whole distinction, and it is why a selector is a query over labels specifically. *[cross-bearing: see Ch 4 §5 — the universal join]*
+
+- **A is wrong** because the difference is mechanical rather than stylistic. Put a value in an annotation and no selector can find it.
+- **C is wrong** because selectors cannot match annotations at all, whatever the length. Length is a real constraint on label values, but it does not open a door to annotations.
+- **D is wrong** because labels are not unique keys. Non-uniqueness is the point: a selector matches a *set*.
+
+**52. C** — *D2.1 · Ch 9 §7 · 🔵*
+
+An unqualified name resolves in the client Pod's own namespace, because that namespace comes first in the Pod's DNS search list. A Pod in `orders` reaches the `billing` Service in `orders`. *[cross-bearing: see Ch 9 §7 — names, and where they resolve]*
+
+- **A is wrong**, and it is the most common wrong model. `default` is a namespace like any other; it has no privileged position in resolution.
+- **B is wrong** because the search list exists precisely so that short names work. Requiring an FQDN everywhere would make the convenience pointless.
+- **D is wrong** because resolution is not first-come-first-served across the cluster. Two namespaces may each hold a `billing` Service, and each resolves within its own.
+
+**53. D** — *D4.3 · Ch 17 §8 · 🔵*
+
+A substantial change goes through a Kubernetes Enhancement Proposal, brought to the SIG that owns the subsystem. The KEP is the document; the SIG is the structure. *[cross-bearing: see Ch 17 §8 — how the project actually runs, and how you'd join]*
+
+- **A is wrong** because a pull request is how a change *lands*, not how it is proposed and agreed. The Steering Committee handles project governance rather than technical review of subsystems.
+- **B is wrong** because the Landscape is a catalog of the ecosystem, not an intake path for Kubernetes changes.
+- **C is wrong** because a TAG operates at CNCF level across projects. It is the wrong altitude for a change to one Kubernetes subsystem.
+
+**54. A** — *D1.4 · Ch 2 §4 · ⚪*
+
+CRI standardizes the boundary between the kubelet and the container runtime. Because the interface is fixed, runtimes behind it are interchangeable — which is what let the ecosystem change runtimes without changing Kubernetes. *[cross-bearing: see Ch 2 §4 — the container runtime interface]*
+
+- **B is wrong** because image format and layer ordering are the OCI image specification's business. *[cross-bearing: see Ch 2 §5 — the Open Container Initiative]*
+- **C is wrong** because registry distribution is the OCI distribution specification.
+- **D is wrong** because giving a container a network address is CNI's job. Keeping the four interfaces apart by *what they stand between* is the reliable way to hold them. *[cross-bearing: see Ch 17 §4 — every place Kubernetes lets you in]*
+
+**55. C** — *D1.1 · Ch 5 §1 · ⚪*
+
+Containers in a Pod share a network namespace, so they reach each other on `localhost` and share one IP address and one port space. *[cross-bearing: see Ch 5 §1 — the Pod as the unit of scheduling]*
+
+- **A is wrong** because filesystems are not shared by default. Sharing files between containers in a Pod takes a volume, mounted into both. *[cross-bearing: see Ch 11 §1 — three lifetimes, and the volumes that have them]*
+- **B is wrong** because process-namespace sharing is opt-in, not the default.
+- **D is wrong** because limits are set per container. What the Pod has is a QoS class derived from all of them together. *[cross-bearing: see Ch 5 §8 — what a Pod is owed]*
+
+**56. B** — *D3.1 · Ch 15 §1 · ⚪*
+
+ConfigMaps and Secrets supply configuration at run time, so one image runs unchanged in every environment. That is twelve-factor III implemented with Kubernetes objects. *[cross-bearing: see Ch 15 §1 — twelve factors, and the ones Kubernetes already solved]*
+
+- **A is wrong** and is the practice the factor exists to forbid. An image per environment means the artifact you tested is not the artifact you shipped. *[cross-bearing: see Ch 2 §2 — what's inside an image]*
+- **C is wrong** because a `hostPath` makes the configuration a property of the node, which is worse than baking it in: now it varies invisibly.
+- **D is wrong** because rebuilding on a configuration change is exactly the coupling between build and config that the factor separates.
+
+**57. D** — *D1.1 · Ch 6 §4 · 🟡*
+
+Five. `maxSurge: 1` permits one Pod above the desired count of four, so the ceiling during a rolling update is five. `maxUnavailable: 0` sets the floor at four ready Pods rather than the ceiling. *[cross-bearing: see Ch 6 §4 — changing the fleet under way]*
+
+- **A is wrong** because it reads `maxUnavailable: 0` as freezing the total. It constrains how far the count may fall, not whether it may rise.
+- **B is wrong** because that is a blue/green shape, not a rolling update. `maxSurge` is one, not the replica count. *[cross-bearing: see Ch 15 §2 — ways to replace what's running]*
+- **C is wrong** because taking a Pod down first is precisely what `maxUnavailable: 0` forbids. This configuration adds before it removes.
+
+**58. A** — *D1.3 · Ch 7 §3 · 🔵*
+
+`preferredDuringSchedulingIgnoredDuringExecution` expresses a preference: the scheduler favors matching nodes when they exist and schedules the Pod anyway when they do not. Soft rules score; they do not filter. *[cross-bearing: see Ch 7 §3 — asking for a particular berth]*
+
+- **B is wrong** because `nodeSelector` is a hard requirement. No matching node means the Pod stays `Pending` — the exact outcome the question rules out.
+- **C is wrong** because taints and tolerations work the other way round: a toleration lets a Pod onto a tainted node, it does not express a preference among untainted ones. *[cross-bearing: see Ch 7 §4 — when the berth refuses you]*
+- **D is wrong** because a `required` rule is the hard form, and hard rules filter.
+
+**59. B** — *D3.2 · Ch 16 §4 · 🟡*
+
+The Service selects `app=orders`; the Pods carry `app=order-api`. The EndpointSlice exists and is empty, which is the signature of a selector that matches nothing. *[cross-bearing: see Ch 16 §4 — is anything even selected]*
+
+Read the output in the order it is printed. The slice was created, so the Service has a selector and the control plane is doing its job. Its `ENDPOINTS` column reads `<none>`, so nothing matched. And both Pods are `1/1 READY`, which rules out readiness as the cause — a Pod that matched but was not ready would still be *listed*, carrying a condition saying it must not receive traffic. **An empty list is a selector problem; a list that serves nothing is a readiness problem.** *[cross-bearing: see Ch 9 §4 — the list behind the name]*
+
+- **A is wrong** on the evidence in front of you. `1/1 READY` is the readiness probe passing; a startup probe still running would show `0/1`.
+- **C is wrong** because a `targetPort` mismatch produces endpoints that exist and refuse connections. The slice would not be empty.
+- **D is wrong** because an Ingress controller has nothing to do with a Service's endpoint list. A ClusterIP Service does not route through one. *[cross-bearing: see Ch 10 §3 — the object is not the implementation]*
+
+**60. C** — *D1.1 · Ch 3 §6 · ⚪*
+
+A controller loops continuously, comparing desired state against observed state and acting to close the difference. Not once, not on demand, not when invoked — continuously. *[cross-bearing: see Ch 3 §6 — controllers and the control loop]*
+
+- **A is wrong** because a one-shot sequence at creation cannot explain the behavior you have watched all book: delete a Pod under a Deployment and it comes back, with nobody running anything.
+- **B is wrong** because it inverts the relationship. The scheduler is itself one of these loops; it does not invoke the others. *[cross-bearing: see Ch 7 §1 — one decision, made once]*
+- **D is wrong** because `kubectl apply` writes the desired state and stops. What acts on it afterwards is the loop, running whether or not anyone is at a terminal. *[cross-bearing: see Ch 4 §6 — a declaration, not an order]*
+
+---
+
+## Scoring Rubric
+
+Mark each item right or wrong, then tally by domain. The per-domain maximums below come from the published blueprint weighting applied to sixty items [source: cncf-curriculum-kcna-readme-2026-08-31]; the item lists are this instrument's own.
+
+| Domain | Items | Max | Your score |
+|---|---|---|---|
+| **D1 — Kubernetes Fundamentals** (44%) | 1, 3, 5, 8, 10, 13, 16, 19, 21, 23, 26, 28, 30, 33, 35, 38, 40, 42, 45, 48, 51, 54, 55, 57, 58, 60 | 26 | ___ |
+| **D2 — Container Orchestration** (28%) | 2, 6, 9, 12, 14, 17, 20, 24, 27, 31, 34, 36, 41, 43, 46, 49, 52 | 17 | ___ |
+| **D3 — Cloud Native Application Delivery** (16%) | 4, 11, 18, 25, 32, 37, 44, 50, 56, 59 | 10 | ___ |
+| **D4 — Cloud Native Architecture** (12%) | 7, 15, 22, 29, 39, 47, 53 | 7 | ___ |
+| **Total** | | **60** | ___ |
+
+> **Dead Reckoning:** The Linux Foundation publishes the passing standard for its multiple-choice exams in the candidate FAQ: a score of 75% or above must be earned to pass [source: lf-mc-exam-faq-2026-08-31]. That is 45 of 60 on an instrument this size. The figure is published for multiple-choice exams as a class rather than on the KCNA product page, which is the provenance point Chapter 1 made and this chapter's Instructions restated.
+
+**What your score means here.** This is a calibrated practice instrument, not a predictor. Treat the bands as a reading of where your study time should go next, and nothing more.
+
+| Band | Reading | What to do next |
+|---|---|---|
+| **52–60** | Comfortable across all four domains. | Work the items you missed rather than re-reading whole chapters. Then Chapter 19 §6's final-week plan. |
+| **45–51** | Above the published standard, with soft spots. | Find the domain where you lost the most *proportionally*, not absolutely — losing 3 of 7 in D4 is worse than 5 of 26 in D1. Re-read that domain's chapters' Fixed Points and Bearings. |
+| **36–44** | Below the standard, and the gap is addressable. | Do not re-read the book front to back. Take the two weakest domains, re-read only their ☆ Taking Your Bearings checkpoints and ★ Fixed Points, then retake those items. |
+| **Under 36** | The material has not consolidated yet. | Go back to the chapters, not the questions. Read the Zenith section of each chapter first — they are the syntheses — and use Chapter 19 §1's nine threads as the map. |
+
+**The per-domain reading matters more than the total.** A total that clears 75% while D4 sits at 3 of 7 is a real risk: Cloud Native Architecture is 12% of the exam and the competency technically strong candidates most reliably under-study. The tally exists so that a passing total cannot hide a failing domain. *[cross-bearing: see Ch 19 §4 — where the weight actually is]*
+
+**One thing the score cannot tell you.** The real exam reports an outcome, not a domain breakdown. This is the last time you will see one, so use it.
+
+And if you cleared the band comfortably with even sub-scores, you are not looking for more study material. You are looking for a date.
+
+---
+
+**Calculated Length: n/a (content-driven) | Chapter type: mock_exam**

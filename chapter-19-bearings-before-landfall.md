@@ -738,9 +738,14 @@ What is *not* on that list: re-reading chapters you scored well on. It feels lik
 
 ## ⚪ §5 — Using The Lodestar
 
-`the-lodestar.md` is this book's one-page reference, living at the repository root: the concentrated form of everything worth having in front of you in the hour before you sit down, and nothing else.
+`the-lodestar.md` ships with this book, at the repository root. It is the one-page reference: the concentrated form of everything worth having in front of you in the hour before you sit down, and nothing else.
 
-<!-- AUTHOR-REVIEW — BLOCKING. `the-lodestar.md` does not yet exist in the Book-KCNA repository. Two consequences. (1) The opening sentence has been changed from the present-tense "ships with this book" to a description of what the file is for, so the chapter does not assert a shipped artifact that has not shipped; restore the stronger phrasing once the file exists. (2) The six block descriptions below are drafted against the intended structure declared in skill Part 16 and style-decisions.md [LOCKED 2026-04-19] — domain weights and question counts; exam-critical formulas with interpretation rules; top role/artifact/methodology distinctions; top exam traps; exam-day pacing reminders. The block names are provisional and become factual claims about a shipped artifact the moment the file is written; they must be reconciled against it. This section cannot be cut or deferred: Ch 1 tells the reader outright that "Chapter 19 walks you through using it." -->
+<!-- RESOLVED 2026-08-31 (integration gate): the-lodestar.md is written and lives at the
+     repository root. Its blocks match this section's six, in this order: the exam's published
+     shape, exam-day pacing, the four hazards, the version-skew numbers, the confusion-pair
+     discriminators (which carry §2's homonym table as a subsection, since this section
+     describes that block as a compressed form of §2), and governance. The opening sentence is
+     present-tense again. Shipped Ch 1 line 452's promise of the file now resolves. -->
 
 ### What is in it
 

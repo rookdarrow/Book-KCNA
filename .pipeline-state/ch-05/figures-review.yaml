@@ -3,7 +3,7 @@ book: kcna
 generated: '2026-09-01T07:27:15+00:00'
 figures:
 - anchor_id: ch05-fig01-pod-shared-network-namespace
-  status: pending
+  status: regenerate
   render_paths:
     svg: figures/ch05-fig01-pod-shared-network-namespace.svg
     png: figures/ch05-fig01-pod-shared-network-namespace.png
@@ -16,7 +16,9 @@ figures:
     aspect_ratio: pass
     grayscale_legibility: pass
     alt_text_present: pass
-  regenerate_hint: ''
+  regenerate_hint: Make the localhost connector bidirectional (double-headed arrow
+    or two opposing arrows) between app and helper to show mutual reachability, not
+    one-way.
   review_notes: ''
   last_applied_hash: null
   ai_review:
@@ -33,7 +35,7 @@ figures:
       or two opposing arrows) between app and helper to show mutual reachability,
       not one-way.
 - anchor_id: ch05-fig03-init-containers-sequence
-  status: pending
+  status: regenerate
   render_paths:
     svg: figures/ch05-fig03-init-containers-sequence.svg
     png: figures/ch05-fig03-init-containers-sequence.png
@@ -46,7 +48,9 @@ figures:
     aspect_ratio: pass
     grayscale_legibility: pass
     alt_text_present: pass
-  regenerate_hint: ''
+  regenerate_hint: Split the success path into two side-by-side app-a/app-b boxes
+    off a fork bar to visualize parallelism, and route EXIT 1 through RESTART with
+    a loop-back arrow to init-2 before the terminal NEVER STARTED state.
   review_notes: ''
   last_applied_hash: null
   ai_review:
@@ -124,7 +128,7 @@ figures:
     fixed_point_visible_detail: ''
     suggested_fix: ''
 - anchor_id: ch05-fig05-requests-limits-qos-classes
-  status: pending
+  status: regenerate
   render_paths:
     svg: figures/ch05-fig05-requests-limits-qos-classes.svg
     png: figures/ch05-fig05-requests-limits-qos-classes.png
@@ -137,7 +141,8 @@ figures:
     aspect_ratio: pass
     grayscale_legibility: pass
     alt_text_present: pass
-  regenerate_hint: ''
+  regenerate_hint: increase left canvas margin/padding so the 'Limit' and 'Request'
+    y-axis labels render in full instead of being clipped off the left edge
   review_notes: ''
   last_applied_hash: null
   ai_review:

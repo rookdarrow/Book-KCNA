@@ -94,7 +94,7 @@ figures:
       and non-color emphasis requirements.'
     suggested_fix: ''
 - anchor_id: ch03-fig02-control-loop-desired-vs-current
-  status: pending
+  status: regenerate
   render_paths:
     svg: figures/ch03-fig02-control-loop-desired-vs-current.svg
     png: figures/ch03-fig02-control-loop-desired-vs-current.png
@@ -107,7 +107,9 @@ figures:
     aspect_ratio: pass
     grayscale_legibility: pass
     alt_text_present: pass
-  regenerate_hint: ''
+  regenerate_hint: Increase stroke width (e.g. ~3px vs ~1.5px) or add a double-line
+    treatment on the three Brass loop arrows so the closed cycle is distinguished
+    by both color and a non-color signal, not color alone.
   review_notes: ''
   last_applied_hash: null
   ai_review:

@@ -3,31 +3,31 @@ book: kcna
 generated: '2026-09-01T15:24:44+00:00'
 figures:
 - anchor_id: ch13-fig01-two-audience-split
-  source_hash: 0669ee94fae3791c01ddb8cebe1e6cb9fe4a8173d0376f008243809f1e99b6bf
+  source_hash: 61079eb008f4e944b8bd4a79068b25b20503196a38eb619dbd4b16e388fab3e0
   output_hash:
-    svg: a2b597a31fc656e83bbe883118c0ac294a8fc01cd368a2094e38bb58f797281d
-    png: 34e266da4ee14a43b494677fc02ebf65366da94f060bb5d2f72a77b07c734068
+    svg: d1cf8633f94ca7529e807b5567a96c91520a2daeb7258f6e1952f50ab47bc482
+    png: 3a8d0ac239d76858bfe8e3d12f50cec50e463a7fcb0fbc3757951249db060e49
   validations:
     label_count:
       result: fail
-      value: 22
+      value: 12
       max: 7
-      reason: 22 labels exceeds working-memory limit of 7
+      reason: 12 labels exceeds working-memory limit of 7
     palette_conformance:
       result: pass
     min_font_size:
       result: pass
-      value: 16.0
+      value: 14.0
       min: 14
       reason: ''
     max_dimensions:
       result: pass
       value:
-      - 1120
-      - 1056
+      - 1280
+      - 1694
     aspect_ratio:
       result: pass
-      value: 1.06
+      value: 1.32
     grayscale_legibility:
       result: pass
       value: 8

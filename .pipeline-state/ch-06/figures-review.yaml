@@ -33,7 +33,7 @@ figures:
       emphasis requirement.
     suggested_fix: ''
 - anchor_id: ch06-fig02-rolling-update-maxsurge-maxunavailable
-  status: pending
+  status: regenerate
   render_paths:
     svg: figures/ch06-fig02-rolling-update-maxsurge-maxunavailable.svg
     png: figures/ch06-fig02-rolling-update-maxsurge-maxunavailable.png
@@ -46,7 +46,9 @@ figures:
     aspect_ratio: pass
     grayscale_legibility: pass
     alt_text_present: pass
-  regenerate_hint: ''
+  regenerate_hint: Give the old-population and new-population lines a non-color differentiator
+    (e.g. solid vs. dashed stroke, or a visibly lighter teal) since navy and teal
+    are too close in value to distinguish at a glance.
   review_notes: ''
   last_applied_hash: null
   ai_review:
@@ -92,7 +94,7 @@ figures:
       the mechanism without requiring prose.'
     suggested_fix: ''
 - anchor_id: ch06-fig05-statefulset-vs-deployment-identity
-  status: pending
+  status: regenerate
   render_paths:
     svg: figures/ch06-fig05-statefulset-vs-deployment-identity.svg
     png: figures/ch06-fig05-statefulset-vs-deployment-identity.png
@@ -105,7 +107,9 @@ figures:
     aspect_ratio: pass
     grayscale_legibility: pass
     alt_text_present: pass
-  regenerate_hint: ''
+  regenerate_hint: Add a non-dashed replacement db-0 pod node between the terminated
+    db-0 and vol db-0 so the brass SAME IDENTITY arrow visibly runs terminated-pod
+    -> new-pod -> volume, mirroring the Deployment panel's dead-pod -> new-pod structure.
   review_notes: ''
   last_applied_hash: null
   ai_review:

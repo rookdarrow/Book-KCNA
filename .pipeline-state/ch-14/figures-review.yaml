@@ -107,14 +107,16 @@ figures:
     png: figures/ch14-fig04-kustomize-base-overlay.png
   source_path: figures/sources/ch14-fig04-kustomize-base-overlay.html
   validation_results:
-    label_count: fail
+    label_count: pass
     palette_conformance: pass
     min_font_size: pass
     max_dimensions: pass
     aspect_ratio: pass
     grayscale_legibility: pass
     alt_text_present: pass
-  regenerate_hint: ''
+  regenerate_hint: Add a short annotation on or near the APPLY boxes, e.g. 'kubectl
+    apply -k — kustomize built in, no plugin/engine to install', so the no-engine-required
+    point isn't left entirely to prose.
   review_notes: ''
   last_applied_hash: null
   ai_review:
@@ -147,7 +149,9 @@ figures:
     aspect_ratio: pass
     grayscale_legibility: pass
     alt_text_present: pass
-  regenerate_hint: ''
+  regenerate_hint: Make the HELM and KUSTOMIZE outcome boxes in the decision band
+    visually identical (both brass-outlined with cream fill, or both filled) so neither
+    option appears emphasized over the other.
   review_notes: ''
   last_applied_hash: null
   ai_review:

@@ -96,7 +96,7 @@ figures:
       read as a proper flowchart/derivation structure.
     suggested_fix: ''
 - anchor_id: ch12-fig04-pod-security-standards-levels
-  status: pending
+  status: regenerate
   render_paths:
     svg: figures/ch12-fig04-pod-security-standards-levels.svg
     png: figures/ch12-fig04-pod-security-standards-levels.png
@@ -109,7 +109,9 @@ figures:
     aspect_ratio: pass
     grayscale_legibility: pass
     alt_text_present: pass
-  regenerate_hint: ''
+  regenerate_hint: Bold (or box/underline) the two axis subtitles so the level-vs-mode
+    contrast survives grayscale, and restrict Brass to those two phrases only, recoloring
+    the legend swatch and triangle marker to Fog or Navy.
   review_notes: ''
   last_applied_hash: null
   ai_review:
@@ -129,7 +131,7 @@ figures:
       contrast survives grayscale, and restrict Brass to those two phrases only, recoloring
       the legend swatch and triangle marker to Fog or Navy.
 - anchor_id: ch12-fig05-supply-chain-checkpoints
-  status: pending
+  status: regenerate
   render_paths:
     svg: figures/ch12-fig05-supply-chain-checkpoints.svg
     png: figures/ch12-fig05-supply-chain-checkpoints.png
@@ -142,7 +144,9 @@ figures:
     aspect_ratio: pass
     grayscale_legibility: pass
     alt_text_present: pass
-  regenerate_hint: ''
+  regenerate_hint: Regenerate as a horizontal left-to-right pipeline (BUILD through
+    RUN running left to right) with a vertical dashed boundary between RESTRICT and
+    VERIFY, keeping VERIFY's brass emphasis.
   review_notes: ''
   last_applied_hash: null
   ai_review:

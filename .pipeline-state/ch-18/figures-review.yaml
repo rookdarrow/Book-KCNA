@@ -3,7 +3,7 @@ book: kcna
 generated: '2026-09-01T15:39:48+00:00'
 figures:
 - anchor_id: ch18-fig01-monitoring-vs-observability
-  status: pending
+  status: regenerate
   render_paths:
     svg: figures/ch18-fig01-monitoring-vs-observability.svg
     png: figures/ch18-fig01-monitoring-vs-observability.png
@@ -16,7 +16,9 @@ figures:
     aspect_ratio: pass
     grayscale_legibility: pass
     alt_text_present: pass
-  regenerate_hint: ''
+  regenerate_hint: Add a non-color signal to the 02:10-to-Open-Query stem and the
+    Open Query box — thicken that arrow's stroke and/or give Open Query a double border
+    — so the fixed point reads even without color.
   review_notes: ''
   last_applied_hash: null
   ai_review:
@@ -65,7 +67,7 @@ figures:
       backends reads as a clear pipeline.
     suggested_fix: ''
 - anchor_id: ch18-fig04-prometheus-pull-architecture
-  status: pending
+  status: regenerate
   render_paths:
     svg: figures/ch18-fig04-prometheus-pull-architecture.svg
     png: figures/ch18-fig04-prometheus-pull-architecture.png
@@ -78,7 +80,8 @@ figures:
     aspect_ratio: pass
     grayscale_legibility: pass
     alt_text_present: pass
-  regenerate_hint: ''
+  regenerate_hint: Collapse Alertmanager and Grafana into a single 'downstream consumers'
+    box (or drop one scrape target) to bring the label count to <=7.
   review_notes: ''
   last_applied_hash: null
   ai_review:
@@ -156,7 +159,7 @@ figures:
       the fixed point against the Teal connectors elsewhere.
     suggested_fix: ''
 - anchor_id: ch18-fig05-sli-slo-golden-signals
-  status: pending
+  status: regenerate
   render_paths:
     svg: figures/ch18-fig05-sli-slo-golden-signals.svg
     png: figures/ch18-fig05-sli-slo-golden-signals.png
@@ -169,7 +172,8 @@ figures:
     aspect_ratio: pass
     grayscale_legibility: pass
     alt_text_present: pass
-  regenerate_hint: ''
+  regenerate_hint: Thicken the SLI-to-SLO 'measures' arrow stroke (or give it a double
+    line) so the fixed point is legible by shape as well as by brass color.
   review_notes: ''
   last_applied_hash: null
   ai_review:
@@ -186,7 +190,7 @@ figures:
     suggested_fix: Thicken the SLI-to-SLO 'measures' arrow stroke (or give it a double
       line) so the fixed point is legible by shape as well as by brass color.
 - anchor_id: ch18-zenith-instruments-answer-one-question
-  status: pending
+  status: regenerate
   render_paths:
     svg: figures/ch18-zenith-instruments-answer-one-question.svg
     png: figures/ch18-zenith-instruments-answer-one-question.png
@@ -199,7 +203,8 @@ figures:
     aspect_ratio: pass
     grayscale_legibility: pass
     alt_text_present: pass
-  regenerate_hint: ''
+  regenerate_hint: Give the BAGGAGE box a visibly thicker or doubled Brass border
+    (or a subtle fill pattern) so it reads as emphasized independent of color alone.
   review_notes: ''
   last_applied_hash: null
   ai_review:

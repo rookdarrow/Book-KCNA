@@ -3,7 +3,7 @@ book: kcna
 generated: '2026-09-01T08:30:40+00:00'
 figures:
 - anchor_id: ch15-fig01-twelve-factor-in-kubernetes
-  status: pending
+  status: regenerate
   render_paths:
     svg: figures/ch15-fig01-twelve-factor-in-kubernetes.svg
     png: figures/ch15-fig01-twelve-factor-in-kubernetes.png
@@ -16,7 +16,9 @@ figures:
     aspect_ratio: pass
     grayscale_legibility: pass
     alt_text_present: pass
-  regenerate_hint: ''
+  regenerate_hint: Lay the three ownership groups out as side-by-side columns (equal
+    width, shared baseline) instead of vertically stacked full-width panels, keeping
+    the Brass emphasis on the third column header.
   review_notes: ''
   last_applied_hash: null
   ai_review:

@@ -16,7 +16,8 @@ figures:
     aspect_ratio: pass
     grayscale_legibility: pass
     alt_text_present: pass
-  regenerate_hint: ''
+  regenerate_hint: Thicken the kube-scheduler→kube-apiserver arrow stroke (or add
+    a double line / bold outline) so the fixed point reads even without color.
   review_notes: ''
   last_applied_hash: null
   ai_review:
@@ -74,7 +75,10 @@ figures:
     aspect_ratio: pass
     grayscale_legibility: pass
     alt_text_present: pass
-  regenerate_hint: ''
+  regenerate_hint: Make all three arrows point outward from the node toward each Pod
+    (consistent with 'repels'), and differentiate arriving-vs-resident semantics with
+    a separate visual cue (e.g., dashed vs solid line, or a small 'blocked' vs 'evicted'
+    glyph) rather than reversing arrow direction.
   review_notes: ''
   last_applied_hash: null
   ai_review:

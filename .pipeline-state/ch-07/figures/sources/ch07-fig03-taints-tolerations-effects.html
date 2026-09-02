@@ -1,201 +1,213 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Taint effects on arriving and resident pods</title>
+<meta charset="utf-8">
+<title>Taints, Tolerations &amp; Effects</title>
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;700&family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Fira+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
     --paper: #F5EFE4;
-    --ink:   #0B1E3B;
+    --ink: #0B1E3B;
     --muted: #1F4A4E;
-    --soft:  #8A8D90;
-    --accent:#B58B3E;
-    --font-title: 'Roboto Slab', serif;
-    --font-sans:  'Fira Sans', sans-serif;
-    --font-mono:  'Fira Mono', monospace;
+    --soft: #8A8D90;
+    --rule: rgba(11,30,59,0.12);
+    --accent: #B58B3E;
+    --accent-tint: rgba(181,139,62,0.10);
   }
+  * { box-sizing: border-box; }
   body {
-    font-family: var(--font-sans);
+    margin: 0;
     background: var(--paper);
     color: var(--ink);
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 3rem 1.5rem;
+    font-family: 'Fira Sans', sans-serif;
+    padding: 2.5rem 1.5rem 3rem;
   }
-  .frame { max-width: 520px; width: 100%; }
+  .page {
+    max-width: 760px;
+    margin: 0 auto;
+  }
   .eyebrow {
-    font-family: var(--font-mono);
-    font-size: 0.78rem;
+    font-family: 'Fira Mono', monospace;
+    font-size: 14px;
     font-weight: 500;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--muted);
-    margin-bottom: 0.5rem;
+    margin: 0 0 0.5rem;
   }
   h1 {
-    font-family: var(--font-title);
-    font-size: 1.5rem;
+    font-family: 'Roboto Slab', serif;
     font-weight: 500;
-    letter-spacing: -0.01em;
-    line-height: 1.2;
+    font-size: 1.75rem;
+    margin: 0 0 0.5rem;
     color: var(--ink);
-    margin-bottom: 1.5rem;
   }
-  svg { width: 100%; display: block; }
+  .subtitle {
+    font-family: 'Fira Sans', sans-serif;
+    font-size: 16px;
+    color: var(--muted);
+    margin: 0 0 1.75rem;
+    max-width: 56ch;
+  }
+  .diagram {
+    width: 100%;
+  }
+  svg { display: block; width: 100%; height: auto; }
+  footer {
+    margin-top: 1.5rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--rule);
+    font-family: 'Fira Mono', monospace;
+    font-size: 14px;
+    color: var(--soft);
+  }
 </style>
 </head>
 <body>
-<div class="frame">
-  <p class="eyebrow">Scheduling · Kubernetes</p>
-  <h1>How Taint Effects Treat Arriving and Resident Pods</h1>
+<div class="page">
+  <p class="eyebrow">Kubernetes &middot; Scheduling</p>
+  <h1>Taints, Tolerations &amp; Effects</h1>
+  <p class="subtitle">What each taint effect does to a Pod arriving at the node&mdash;and to one already running there.</p>
 
-  <svg viewBox="0 0 672 896" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ttef-title ttef-desc">
-    <title id="ttef-title">Taint effects on arriving and resident pods</title>
-    <desc id="ttef-desc">A node carrying a taint repels three Pods — two arriving and one already resident — and a table below shows NoSchedule and PreferNoSchedule leaving the resident Pod unaffected while NoExecute evicts it.</desc>
-    <defs>
-      <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-        <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"/>
-      </marker>
-      <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-        <polygon points="0 0, 8 3, 0 6" fill="#B58B3E"/>
-      </marker>
-      <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-        <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"/>
-      </marker>
-    </defs>
+  <div class="diagram">
+    <svg viewBox="0 0 800 936" role="img" aria-labelledby="ch07-fig03-title ch07-fig03-desc" xmlns="http://www.w3.org/2000/svg">
+      <title id="ch07-fig03-title">Taint effects on arriving and resident Pods</title>
+      <desc id="ch07-fig03-desc">A node carrying a taint repels three Pods: two arriving and one already resident. A table below shows that NoSchedule and PreferNoSchedule leave the resident Pod unaffected, while NoExecute evicts it.</desc>
+      <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"/>
+        </marker>
+      </defs>
 
-    <rect width="100%" height="100%" fill="#F5EFE4"/>
+      <rect width="800" height="936" fill="#F5EFE4"/>
 
-    <!-- ===== Top: node repelling three pods ===== -->
+      <!-- connectors: node repels each Pod (arrows point outward, per node) -->
+      <path d="M 328,120 V 140 Q 328,148 320,148 H 176 Q 168,148 168,156 V 176"
+            fill="none" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <path d="M 400,120 V 176" fill="none" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <path d="M 472,120 V 140 Q 472,148 480,148 H 624 Q 632,148 632,156 V 176"
+            fill="none" stroke="#1F4A4E" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
 
-    <!-- connectors (drawn before boxes) -->
-    <path d="M196,232 V144" fill="none" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
-    <path d="M336,232 V144" fill="none" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
-    <path d="M476,144 V232" fill="none" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <!-- NODE -->
+      <rect x="256" y="32" width="288" height="88" rx="6" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1"/>
+      <text x="400" y="60" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">NODE</text>
+      <text x="400" y="84" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E">taint: key=value:EFFECT</text>
+      <text x="400" y="108" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" font-weight="500" fill="#0B1E3B">&#8594; repels</text>
 
-    <!-- NODE -->
-    <rect x="56" y="48" width="560" height="96" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1.2"/>
-    <text x="80" y="80" font-family="'Fira Sans'" font-size="16" font-weight="600" fill="#0B1E3B">NODE</text>
-    <text x="80" y="104" font-family="'Fira Mono'" font-size="14" fill="#1F4A4E">taint:  key=value:EFFECT</text>
-    <text x="80" y="124" font-family="'Fira Sans'" font-size="14" fill="#1F4A4E">&#8594; repels</text>
+      <!-- Pod A: arriving, no toleration -->
+      <rect x="68" y="176" width="200" height="96" rx="6" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1"/>
+      <text x="168" y="200" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.08em" fill="#1F4A4E">ARRIVING</text>
+      <text x="168" y="224" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">Pod A</text>
+      <text x="168" y="248" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" fill="#1F4A4E">no toleration</text>
 
-    <!-- Pod A: arriving, no toleration -->
-    <rect x="136" y="232" width="120" height="120" rx="6" fill="rgba(31,74,78,0.10)" stroke="#8A8D90" stroke-width="1"/>
-    <text x="196" y="260" text-anchor="middle" font-family="'Fira Sans'" font-size="16" font-weight="600" fill="#0B1E3B">Pod A</text>
-    <text x="196" y="282" text-anchor="middle" font-family="'Fira Sans'" font-size="14" fill="#1F4A4E">arriving</text>
-    <text x="196" y="302" text-anchor="middle" font-family="'Fira Sans'" font-size="14" fill="#1F4A4E">no toleration</text>
+      <!-- Pod B: arriving, tolerating -->
+      <rect x="300" y="176" width="200" height="96" rx="6" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1"/>
+      <text x="400" y="200" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.08em" fill="#1F4A4E">ARRIVING</text>
+      <text x="400" y="224" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">Pod B</text>
+      <text x="400" y="248" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" fill="#1F4A4E">tolerating</text>
 
-    <!-- Pod B: arriving, tolerates -->
-    <rect x="276" y="232" width="120" height="120" rx="6" fill="rgba(31,74,78,0.10)" stroke="#8A8D90" stroke-width="1"/>
-    <text x="336" y="260" text-anchor="middle" font-family="'Fira Sans'" font-size="16" font-weight="600" fill="#0B1E3B">Pod B</text>
-    <text x="336" y="282" text-anchor="middle" font-family="'Fira Sans'" font-size="14" fill="#1F4A4E">arriving</text>
-    <text x="336" y="302" text-anchor="middle" font-family="'Fira Sans'" font-size="14" fill="#1F4A4E">tolerates</text>
+      <!-- Pod C: already running, no toleration -->
+      <rect x="532" y="176" width="200" height="96" rx="6" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1"/>
+      <text x="632" y="200" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.08em" fill="#1F4A4E">RESIDENT</text>
+      <text x="632" y="224" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">Pod C</text>
+      <text x="632" y="248" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" fill="#1F4A4E">no toleration</text>
 
-    <!-- Pod C: already resident, no toleration -->
-    <rect x="416" y="232" width="120" height="120" rx="6" fill="rgba(11,30,59,0.05)" stroke="#1F4A4E" stroke-width="1"/>
-    <text x="476" y="260" text-anchor="middle" font-family="'Fira Sans'" font-size="16" font-weight="600" fill="#0B1E3B">Pod C</text>
-    <text x="476" y="282" text-anchor="middle" font-family="'Fira Sans'" font-size="14" fill="#1F4A4E">resident</text>
-    <text x="476" y="302" text-anchor="middle" font-family="'Fira Sans'" font-size="14" fill="#1F4A4E">no toleration</text>
+      <!-- caption -->
+      <text x="400" y="304" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="16" fill="#1F4A4E">(tolerations belong to the POD)</text>
 
-    <!-- editorial callout: refusal originates at the taint -->
-    <text x="632" y="28" text-anchor="end" font-family="'Fira Sans'" font-style="italic" font-size="16" fill="#1F4A4E">refusal originates HERE</text>
-    <path d="M 560,36 Q 440,76 260,112" fill="none" stroke="rgba(31,74,78,0.40)" stroke-width="1" stroke-dasharray="4,3"/>
-    <circle cx="260" cy="112" r="2" fill="#1F4A4E"/>
+      <!-- separator -->
+      <line x1="40" y1="336" x2="760" y2="336" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+      <text x="40" y="360" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.12em" fill="#1F4A4E">EFFECT &times; POD OUTCOME</text>
 
-    <!-- caption -->
-    <text x="336" y="384" text-anchor="middle" font-family="'Fira Sans'" font-style="italic" font-size="16" fill="#8A8D90">(tolerations belong to the Pod)</text>
+      <!-- matrix header row -->
+      <rect x="40" y="384" width="192" height="80" rx="6" fill="#FFFFFF" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+      <text x="136" y="408" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">EFFECT</text>
+      <text x="136" y="428" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E">(taint value)</text>
 
-    <!-- ===== Bottom: effect matrix ===== -->
+      <rect x="248" y="384" width="160" height="80" rx="6" fill="#0B1E3B"/>
+      <text x="328" y="408" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#F5EFE4">Pod A</text>
+      <text x="328" y="428" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" fill="rgba(245,239,228,0.85)">arriving,</text>
+      <text x="328" y="448" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" fill="rgba(245,239,228,0.85)">no toleration</text>
 
-    <!-- header row -->
-    <rect x="40" y="440" width="176" height="80" rx="6" fill="#F5EFE4" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
-    <text x="128" y="484" text-anchor="middle" font-family="'Fira Sans'" font-size="16" font-weight="600" fill="#0B1E3B">EFFECT</text>
+      <rect x="424" y="384" width="160" height="80" rx="6" fill="#0B1E3B"/>
+      <text x="504" y="408" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#F5EFE4">Pod B</text>
+      <text x="504" y="428" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" fill="rgba(245,239,228,0.85)">arriving,</text>
+      <text x="504" y="448" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" fill="rgba(245,239,228,0.85)">tolerating</text>
 
-    <rect x="232" y="440" width="124" height="80" rx="6" fill="#0B1E3B"/>
-    <text x="294" y="464" text-anchor="middle" font-family="'Fira Sans'" font-size="16" font-weight="600" fill="#F5EFE4">Pod A</text>
-    <text x="294" y="484" text-anchor="middle" font-family="'Fira Sans'" font-size="14" fill="#F5EFE4" fill-opacity="0.85">arriving,</text>
-    <text x="294" y="504" text-anchor="middle" font-family="'Fira Sans'" font-size="14" fill="#F5EFE4" fill-opacity="0.85">no toleration</text>
+      <rect x="600" y="384" width="160" height="80" rx="6" fill="#0B1E3B"/>
+      <text x="680" y="408" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#F5EFE4">Pod C</text>
+      <text x="680" y="428" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" fill="rgba(245,239,228,0.85)">already running,</text>
+      <text x="680" y="448" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" fill="rgba(245,239,228,0.85)">no toleration</text>
 
-    <rect x="372" y="440" width="124" height="80" rx="6" fill="#0B1E3B"/>
-    <text x="434" y="464" text-anchor="middle" font-family="'Fira Sans'" font-size="16" font-weight="600" fill="#F5EFE4">Pod B</text>
-    <text x="434" y="484" text-anchor="middle" font-family="'Fira Sans'" font-size="14" fill="#F5EFE4" fill-opacity="0.85">arriving,</text>
-    <text x="434" y="504" text-anchor="middle" font-family="'Fira Sans'" font-size="14" fill="#F5EFE4" fill-opacity="0.85">tolerates</text>
+      <!-- row: NoSchedule -->
+      <rect x="40" y="480" width="192" height="88" rx="4" fill="#FFFFFF" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+      <text x="56" y="528" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">NoSchedule</text>
 
-    <rect x="512" y="440" width="124" height="80" rx="6" fill="#0B1E3B"/>
-    <text x="574" y="464" text-anchor="middle" font-family="'Fira Sans'" font-size="16" font-weight="600" fill="#F5EFE4">Pod C</text>
-    <text x="574" y="484" text-anchor="middle" font-family="'Fira Sans'" font-size="14" fill="#F5EFE4" fill-opacity="0.85">resident,</text>
-    <text x="574" y="504" text-anchor="middle" font-family="'Fira Sans'" font-size="14" fill="#F5EFE4" fill-opacity="0.85">no toleration</text>
+      <rect x="248" y="480" width="160" height="88" rx="4" fill="rgba(11,30,59,0.04)" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+      <text x="328" y="528" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" fill="#8A8D90">not placed</text>
 
-    <!-- row 1: NoSchedule -->
-    <rect x="40" y="536" width="176" height="56" rx="4" fill="#F5EFE4" stroke="rgba(11,30,59,0.12)" stroke-width="0.6"/>
-    <text x="56" y="570" font-family="'Fira Mono'" font-size="14" fill="#0B1E3B">NoSchedule</text>
+      <rect x="424" y="480" width="160" height="88" rx="4" fill="#FFFFFF" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+      <text x="504" y="528" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" font-weight="500" fill="#0B1E3B">may be placed</text>
 
-    <rect x="232" y="536" width="124" height="56" rx="4" fill="#F5EFE4" stroke="rgba(11,30,59,0.12)" stroke-width="0.6"/>
-    <text x="294" y="570" text-anchor="middle" font-family="'Fira Sans'" font-size="14" fill="#8A8D90">not placed</text>
+      <rect x="600" y="480" width="160" height="88" rx="4" fill="rgba(11,30,59,0.04)" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+      <text x="680" y="528" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" fill="#8A8D90">unaffected</text>
 
-    <rect x="372" y="536" width="124" height="56" rx="4" fill="rgba(11,30,59,0.04)" stroke="rgba(11,30,59,0.12)" stroke-width="0.6"/>
-    <text x="434" y="570" text-anchor="middle" font-family="'Fira Sans'" font-size="14" fill="#0B1E3B">may be placed</text>
+      <!-- row: PreferNoSchedule -->
+      <rect x="40" y="572" width="192" height="88" rx="4" fill="#FFFFFF" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+      <text x="56" y="620" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">PreferNoSchedule</text>
 
-    <rect x="512" y="536" width="124" height="56" rx="4" fill="rgba(11,30,59,0.08)" stroke="rgba(11,30,59,0.12)" stroke-width="0.6"/>
-    <text x="574" y="570" text-anchor="middle" font-family="'Fira Sans'" font-size="14" font-weight="600" fill="#0B1E3B">unaffected</text>
+      <rect x="248" y="572" width="160" height="88" rx="4" fill="rgba(31,74,78,0.08)" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+      <text x="328" y="608" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" fill="#1F4A4E">avoided where</text>
+      <text x="328" y="632" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" fill="#1F4A4E">possible</text>
 
-    <!-- row 2: PreferNoSchedule -->
-    <rect x="40" y="608" width="176" height="56" rx="4" fill="#F5EFE4" stroke="rgba(11,30,59,0.12)" stroke-width="0.6"/>
-    <text x="56" y="642" font-family="'Fira Mono'" font-size="14" fill="#0B1E3B">PreferNoSchedule</text>
+      <rect x="424" y="572" width="160" height="88" rx="4" fill="#FFFFFF" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+      <text x="504" y="620" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" font-weight="500" fill="#0B1E3B">may be placed</text>
 
-    <rect x="232" y="608" width="124" height="56" rx="4" fill="rgba(31,74,78,0.08)" stroke="rgba(11,30,59,0.12)" stroke-width="0.6"/>
-    <text x="294" y="632" text-anchor="middle" font-family="'Fira Sans'" font-size="14" fill="#1F4A4E">avoided where</text>
-    <text x="294" y="652" text-anchor="middle" font-family="'Fira Sans'" font-size="14" fill="#1F4A4E">possible</text>
+      <rect x="600" y="572" width="160" height="88" rx="4" fill="rgba(11,30,59,0.04)" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+      <text x="680" y="620" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" fill="#8A8D90">unaffected</text>
 
-    <rect x="372" y="608" width="124" height="56" rx="4" fill="rgba(11,30,59,0.04)" stroke="rgba(11,30,59,0.12)" stroke-width="0.6"/>
-    <text x="434" y="642" text-anchor="middle" font-family="'Fira Sans'" font-size="14" fill="#0B1E3B">may be placed</text>
+      <!-- row: NoExecute -->
+      <rect x="40" y="664" width="192" height="88" rx="4" fill="#FFFFFF" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+      <text x="56" y="712" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">NoExecute</text>
 
-    <rect x="512" y="608" width="124" height="56" rx="4" fill="rgba(11,30,59,0.08)" stroke="rgba(11,30,59,0.12)" stroke-width="0.6"/>
-    <text x="574" y="642" text-anchor="middle" font-family="'Fira Sans'" font-size="14" font-weight="600" fill="#0B1E3B">unaffected</text>
+      <rect x="248" y="664" width="160" height="88" rx="4" fill="rgba(11,30,59,0.04)" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+      <text x="328" y="712" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" fill="#8A8D90">not placed</text>
 
-    <!-- row 3: NoExecute -->
-    <rect x="40" y="680" width="176" height="56" rx="4" fill="#F5EFE4" stroke="rgba(11,30,59,0.12)" stroke-width="0.6"/>
-    <text x="56" y="714" font-family="'Fira Mono'" font-size="14" fill="#0B1E3B">NoExecute</text>
+      <rect x="424" y="664" width="160" height="88" rx="4" fill="#FFFFFF" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+      <text x="504" y="712" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" font-weight="500" fill="#0B1E3B">may be placed</text>
 
-    <rect x="232" y="680" width="124" height="56" rx="4" fill="#F5EFE4" stroke="rgba(11,30,59,0.12)" stroke-width="0.6"/>
-    <text x="294" y="714" text-anchor="middle" font-family="'Fira Sans'" font-size="14" fill="#8A8D90">not placed</text>
+      <rect x="600" y="664" width="160" height="88" rx="4" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.4"/>
+      <text x="680" y="700" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#B58B3E">EVICTED</text>
+      <text x="680" y="724" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" fill="rgba(181,139,62,0.85)">no toleration</text>
 
-    <rect x="372" y="680" width="124" height="56" rx="4" fill="rgba(11,30,59,0.04)" stroke="rgba(11,30,59,0.12)" stroke-width="0.6"/>
-    <text x="434" y="714" text-anchor="middle" font-family="'Fira Sans'" font-size="14" fill="#0B1E3B">may be placed</text>
+      <!-- footnote -->
+      <text x="400" y="784" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="16" fill="#1F4A4E">&quot;may be placed&quot; &mdash; never &quot;is placed.&quot; The other filters and scores still run.</text>
 
-    <!-- FOCAL: EVICTED -->
-    <rect x="512" y="680" width="124" height="56" rx="4" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.4"/>
-    <text x="574" y="714" text-anchor="middle" font-family="'Fira Sans'" font-size="16" font-weight="600" fill="#B58B3E">EVICTED</text>
+      <!-- legend -->
+      <line x1="40" y1="812" x2="760" y2="812" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+      <text x="40" y="836" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.12em" fill="#1F4A4E">LEGEND</text>
 
-    <!-- legend -->
-    <line x1="40" y1="776" x2="636" y2="776" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
-    <text x="40" y="796" font-family="'Fira Mono'" font-size="14" font-weight="500" letter-spacing="0.12em" fill="#1F4A4E">LEGEND</text>
+      <line x1="40" y1="860" x2="64" y2="860" stroke="#1F4A4E" stroke-width="1.2"/>
+      <text x="72" y="864" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.04em" fill="#0B1E3B">ARRIVING</text>
 
-    <rect x="40" y="806" width="14" height="12" rx="2" fill="#F5EFE4" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
-    <text x="58" y="816" font-family="'Fira Mono'" font-size="14" fill="#1F4A4E">Blocked</text>
+      <line x1="216" y1="860" x2="240" y2="860" stroke="#1F4A4E" stroke-width="1" stroke-dasharray="4,3"/>
+      <text x="248" y="864" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.04em" fill="#0B1E3B">RESIDENT</text>
 
-    <rect x="160" y="806" width="14" height="12" rx="2" fill="rgba(31,74,78,0.08)" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
-    <text x="178" y="816" font-family="'Fira Mono'" font-size="14" fill="#1F4A4E">Discouraged</text>
+      <rect x="40" y="892" width="16" height="12" rx="2" fill="#FFFFFF" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+      <text x="64" y="904" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">MAY BE PLACED</text>
 
-    <rect x="280" y="806" width="14" height="12" rx="2" fill="rgba(11,30,59,0.04)" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
-    <text x="298" y="816" font-family="'Fira Mono'" font-size="14" fill="#1F4A4E">Conditional</text>
+      <rect x="232" y="892" width="16" height="12" rx="2" fill="rgba(31,74,78,0.08)" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+      <text x="256" y="904" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">AVOIDED</text>
 
-    <rect x="400" y="806" width="14" height="12" rx="2" fill="rgba(11,30,59,0.08)" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
-    <text x="418" y="816" font-family="'Fira Mono'" font-size="14" fill="#1F4A4E">Unaffected</text>
+      <rect x="360" y="892" width="16" height="12" rx="2" fill="rgba(11,30,59,0.04)" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+      <text x="384" y="904" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">NOT PLACED / UNAFFECTED</text>
 
-    <rect x="520" y="806" width="14" height="12" rx="2" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1"/>
-    <text x="538" y="816" font-family="'Fira Mono'" font-size="14" fill="#1F4A4E">Evicted</text>
+      <rect x="600" y="892" width="16" height="12" rx="2" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.4"/>
+      <text x="624" y="904" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">EVICTED</text>
+    </svg>
+  </div>
 
-    <!-- footnote -->
-    <text x="336" y="854" text-anchor="middle" font-family="'Fira Sans'" font-style="italic" font-size="16" fill="#8A8D90">&quot;may be placed&quot; &#8212; never &quot;is placed.&quot;</text>
-    <text x="336" y="874" text-anchor="middle" font-family="'Fira Sans'" font-style="italic" font-size="16" fill="#8A8D90">The other filters and scores still run.</text>
-
-  </svg>
+  <footer>ch07 &middot; fig 03 &middot; taints-tolerations-effects</footer>
 </div>
 </body>
 </html>

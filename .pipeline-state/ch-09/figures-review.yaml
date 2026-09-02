@@ -3,7 +3,7 @@ book: kcna
 generated: '2026-09-01T16:28:39+00:00'
 figures:
 - anchor_id: ch09-fig01-network-model-four-rules
-  status: pending
+  status: regenerate
   render_paths:
     svg: figures/ch09-fig01-network-model-four-rules.svg
     png: figures/ch09-fig01-network-model-four-rules.png
@@ -16,7 +16,9 @@ figures:
     aspect_ratio: pass
     grayscale_legibility: pass
     alt_text_present: pass
-  regenerate_hint: ''
+  regenerate_hint: Increase the stroke width (and/or add a subtle dash or double-line
+    treatment) on the Brass cross-node edge between Pod 10.244.1.7 and Pod 10.244.4.2
+    so it's redundantly coded, not color-only.
   review_notes: ''
   last_applied_hash: null
   ai_review:
@@ -159,7 +161,7 @@ figures:
       adding clutter.
     suggested_fix: ''
 - anchor_id: ch09-zenith-stable-name-over-churn
-  status: pending
+  status: regenerate
   render_paths:
     svg: figures/ch09-zenith-stable-name-over-churn.svg
     png: figures/ch09-zenith-stable-name-over-churn.png
@@ -172,7 +174,8 @@ figures:
     aspect_ratio: pass
     grayscale_legibility: pass
     alt_text_present: pass
-  regenerate_hint: ''
+  regenerate_hint: Widen the canvas or reduce right-side padding so the legend row
+    ('POD GENERATION' + glyph key) isn't clipped at the right edge.
   review_notes: ''
   last_applied_hash: null
   ai_review:

@@ -115,16 +115,16 @@ figures:
     the marketing release has a left-to-right chain of numbered revisions, and a rollback
     arrow points back at revision two
 - anchor_id: ch14-fig04-kustomize-base-overlay
-  source_hash: e0c2d96a5aab8217389f351cfa4fe9a6029594297f6b8dc6e258636ab48610b7
+  source_hash: 929186bc82bc6886ae40aa82b2e42fdc4a194887ab174212811b82cd21bc2471
   output_hash:
-    svg: 1aa6a53c4db8a732c1c4057847ed150253481b776af82f3b4c17b4d9d173f4c8
-    png: db3eb4d38e2dd07eead5a81c0c31e0f62876ccee5be2a8938deb0f1ebf47a45c
+    svg: b74edbde6c363379e553dfabbfa48fd7c24dfbefe5c2a4f6c1f1f0160051a32d
+    png: 5cfcb4515b54eb1141e0e7f11592f61598bec593b76b98c7d530456cfe4f706f
   validations:
     label_count:
-      result: fail
-      value: 43
+      result: pass
+      value: 0
       max: 7
-      reason: 43 labels exceeds working-memory limit of 7
+      reason: ''
     palette_conformance:
       result: pass
     min_font_size:
@@ -136,10 +136,10 @@ figures:
       result: pass
       value:
       - 1280
-      - 1670
+      - 1450
     aspect_ratio:
       result: pass
-      value: 1.3
+      value: 1.13
     grayscale_legibility:
       result: pass
       value: 8
@@ -152,16 +152,16 @@ figures:
     edited and never copied; applying each overlay with kubectl apply -k produces
     prefixed objects with different replica counts
 - anchor_id: ch14-fig05-templating-vs-overlay-decision
-  source_hash: 985db8005aeea1dd1ae2c8617b7a2aa6db16c28b85f06c2e8a8557808a390941
+  source_hash: 1760b48650b052dff796a7fd79cc12140a0c384f212c384068bd19ec5b5b3401
   output_hash:
-    svg: d5d3b0967c7968003812a69d77bbe417576b391bea8034b1cb7ee38c86dbf7a9
-    png: 95151a660e5218671ca3a0254d028239559d417990465c4cb43ad3462cd826d8
+    svg: 07df28a60beeffe2fa605fec5fdc81e1cec801cf6c9f89646c8a5bf4cb53245e
+    png: 704dab77616ad68553587c81997f69aca7c9be940c6bbccfd8a64632cd8be5d5
   validations:
     label_count:
       result: fail
-      value: 34
+      value: 14
       max: 7
-      reason: 34 labels exceeds working-memory limit of 7
+      reason: 14 labels exceeds working-memory limit of 7
     palette_conformance:
       result: pass
     min_font_size:
@@ -172,11 +172,11 @@ figures:
     max_dimensions:
       result: pass
       value:
-      - 1440
-      - 1352
+      - 1280
+      - 1346
     aspect_ratio:
       result: pass
-      value: 1.07
+      value: 1.05
     grayscale_legibility:
       result: pass
       value: 8

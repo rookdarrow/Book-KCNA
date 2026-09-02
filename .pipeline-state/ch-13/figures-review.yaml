@@ -16,7 +16,8 @@ figures:
     aspect_ratio: pass
     grayscale_legibility: pass
     alt_text_present: pass
-  regenerate_hint: ''
+  regenerate_hint: Fix the source text/escaping for the fixed_point_emphasis_target
+    label so it renders as a clean phrase without a dangling quote character.
   review_notes: ''
   last_applied_hash: null
   ai_review:

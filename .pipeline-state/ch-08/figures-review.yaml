@@ -58,7 +58,7 @@ figures:
       correctly isolating admission as the sole request-modifying gate.
     suggested_fix: ''
 - anchor_id: ch08-fig05-quota-vs-limitrange
-  status: pending
+  status: regenerate
   render_paths:
     svg: figures/ch08-fig05-quota-vs-limitrange.svg
     png: figures/ch08-fig05-quota-vs-limitrange.png
@@ -71,7 +71,8 @@ figures:
     aspect_ratio: pass
     grayscale_legibility: pass
     alt_text_present: pass
-  regenerate_hint: ''
+  regenerate_hint: Lay out the two panels side by side (ResourceQuota left, LimitRange
+    right) instead of stacked top/bottom, per the spec's alt_text_seed.
   review_notes: ''
   last_applied_hash: null
   ai_review:
@@ -151,7 +152,7 @@ figures:
       reinforces the encoding without adding ambiguity.'
     suggested_fix: ''
 - anchor_id: ch08-zenith-consequences-not-rules
-  status: pending
+  status: regenerate
   render_paths:
     svg: figures/ch08-zenith-consequences-not-rules.svg
     png: figures/ch08-zenith-consequences-not-rules.png
@@ -164,7 +165,10 @@ figures:
     aspect_ratio: pass
     grayscale_legibility: pass
     alt_text_present: pass
-  regenerate_hint: ''
+  regenerate_hint: 'Collapse the two column headers into a single caption/subtitle
+    and merge the four right-side controller boxes into one grouped box (e.g. ''downstream
+    consumers: scheduler / node controller / workload controllers / control loop'')
+    to bring the label count to ≤7.'
   review_notes: ''
   last_applied_hash: null
   ai_review:

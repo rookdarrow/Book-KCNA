@@ -3,16 +3,16 @@ book: kcna
 generated: '2026-09-01T14:56:32+00:00'
 figures:
 - anchor_id: ch07-fig01-filter-score-bind
-  source_hash: b30d967fd9db010ed858ca367dbd5c6b71325abb9c73e9d5451190670552955d
+  source_hash: bb882acf71f8a79fc66154209f0159a46a7a9ef4df533d00f559d7773147ca39
   output_hash:
-    svg: 9236b75faafbed807b63e143a17cf0ce33706f9baadb093f6969a9f43f90c879
-    png: 7e568604c670ef059520560734ac0b4d65637ca2f8d65711a9c85e668a0eae92
+    svg: 78b529ab6a4c38520837f4c6a2cf5ef5bbf358228e49a0f63f7eca9abd43d52e
+    png: aa70d6613062c24582e317829a95f360fbbb366e4ce3b9a4862b0f629b205d8b
   validations:
     label_count:
       result: fail
-      value: 32
+      value: 36
       max: 7
-      reason: 32 labels exceeds working-memory limit of 7
+      reason: 36 labels exceeds working-memory limit of 7
     palette_conformance:
       result: pass
     min_font_size:
@@ -24,10 +24,10 @@ figures:
       result: pass
       value:
       - 1520
-      - 2164
+      - 2736
     aspect_ratio:
       result: pass
-      value: 1.42
+      value: 1.8
     grayscale_legibility:
       result: pass
       value: 8
@@ -77,16 +77,16 @@ figures:
     Only three cells are filled, and only the bottom-right preferred-affinity cell
     is soft.
 - anchor_id: ch07-fig03-taints-tolerations-effects
-  source_hash: 6737e543e0f410e3620f5b72ba53d53da27c5707d4e868d9365c32c237bc6c7d
+  source_hash: b9e69d41a7431ca1fcd34c22457bb665100a0ab1886a4cb90df6e3df90154755
   output_hash:
-    svg: 2ce64e202af7bae007fc516aa45e53e56b4d47b77913e0bf40a3569821df9288
-    png: 954db906e8fee704d7b4e3d42d1413041d66115800785cb0135bfcf31c8eed3a
+    svg: a2271a24c4177459f57b1ef712b4da0dffce810853c621432f1928baab4997a3
+    png: 00d58cedd91b5882141086516387105a4956081e1a3b2f762111b1e8b842ff74
   validations:
     label_count:
       result: fail
-      value: 45
+      value: 47
       max: 7
-      reason: 45 labels exceeds working-memory limit of 7
+      reason: 47 labels exceeds working-memory limit of 7
     palette_conformance:
       result: pass
     min_font_size:
@@ -97,11 +97,11 @@ figures:
     max_dimensions:
       result: pass
       value:
-      - 1040
-      - 1388
+      - 1520
+      - 1780
     aspect_ratio:
       result: pass
-      value: 1.33
+      value: 1.17
     grayscale_legibility:
       result: pass
       value: 8

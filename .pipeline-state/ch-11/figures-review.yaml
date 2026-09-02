@@ -3,7 +3,7 @@ book: kcna
 generated: '2026-09-01T07:27:10+00:00'
 figures:
 - anchor_id: ch11-fig01-volume-lifetime-ladder
-  status: pending
+  status: regenerate
   render_paths:
     svg: figures/ch11-fig01-volume-lifetime-ladder.svg
     png: figures/ch11-fig01-volume-lifetime-ladder.png
@@ -16,7 +16,10 @@ figures:
     aspect_ratio: pass
     grayscale_legibility: pass
     alt_text_present: pass
-  regenerate_hint: ''
+  regenerate_hint: Shrink the Container Writable Layer box to fit its single caption,
+    tighten the gap between each boundary's dashed line and the next rung's edge,
+    and cut the duplicate '(data below this line is discarded)' caption (fold it into
+    the boundary label) to bring the label count under 7.
   review_notes: ''
   last_applied_hash: null
   ai_review:
@@ -100,7 +103,7 @@ figures:
       what is a stall condition rather than a hazard.
     suggested_fix: ''
 - anchor_id: ch11-fig04-access-modes-and-reclaim-policies
-  status: pending
+  status: regenerate
   render_paths:
     svg: figures/ch11-fig04-access-modes-and-reclaim-policies.svg
     png: figures/ch11-fig04-access-modes-and-reclaim-policies.png
@@ -113,7 +116,8 @@ figures:
     aspect_ratio: pass
     grayscale_legibility: pass
     alt_text_present: pass
-  regenerate_hint: ''
+  regenerate_hint: Lay the two panels out side-by-side (Access Modes left, Reclaim
+    Policies right) instead of stacked top-to-bottom, per the alt_text_seed.
   review_notes: ''
   last_applied_hash: null
   ai_review:
@@ -158,7 +162,7 @@ figures:
       reader gets the concept faster than from prose.
     suggested_fix: ''
 - anchor_id: ch11-zenith-outliving-the-pod
-  status: pending
+  status: regenerate
   render_paths:
     svg: figures/ch11-zenith-outliving-the-pod.svg
     png: figures/ch11-zenith-outliving-the-pod.png
@@ -171,7 +175,10 @@ figures:
     aspect_ratio: pass
     grayscale_legibility: pass
     alt_text_present: pass
-  regenerate_hint: ''
+  regenerate_hint: 'Rotate to a horizontal timeline: Pod lane on top with three web-1
+    segments and visible gaps, single unbroken www-web-1 storage bar spanning the
+    full width directly beneath it, vertical claim connectors dropping from each Pod
+    segment down to the storage bar, time flowing left-to-right.'
   review_notes: ''
   last_applied_hash: null
   ai_review:

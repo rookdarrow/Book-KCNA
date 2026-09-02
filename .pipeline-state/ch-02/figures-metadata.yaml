@@ -82,7 +82,7 @@ figures:
     by a dashed arrow to a different point, showing that a tag is a label that can
     be moved to point at a different image.'
 - anchor_id: ch02-fig04-cri-runtime-chain
-  source_hash: e9bc6b27e22c0f8c4ca15d0dda269cef1d83848406ef0c6159aa25c4735d4f2e
+  source_hash: 73f51f5da376f388dffdfb3d5ca2ee9d8e7735a39af262e4d1075008dd71ff56
   output_hash:
     svg: c0fe28fab8d112bf26703533c438f68c92f260052dce6cc49b0791a87a3ff68e
     png: 6f62cfcaf8c02d4d7215436e770b182da7f7b553766bcbf610cf96986b2614bb
@@ -119,8 +119,9 @@ figures:
     Kubernetes defines this line and implements nothing below it. Below the boundary,
     a socket into which exactly one conformant CRI runtime plugs — containerd or CRI-O.
     Below the socket, runC, which starts a running process.'
+  partial: true
 - anchor_id: ch02-fig03-oci-three-specs
-  source_hash: a7d8fe68bc97c2707cb853507d342689874d0b496dfce0a134d0396d2b6177e0
+  source_hash: 07e6985cb2c796a6691569c7850a17e305a7734607cc547a0cdb68a9944f514e
   output_hash:
     svg: 75b8ea63b70042fbf52558f2914a05976f39ea0d1581ea5a9912f4ef44e04bc8
     png: 719a2e9f4608397981567c78288a9a8eba5fa35f57b601f9cc45562adea2c184
@@ -156,6 +157,7 @@ figures:
     how to run a filesystem bundle. Each has an arrow descending to the stage it governs
     in the flow beneath: an OCI Image is pulled, then unpacked, becoming a filesystem
     bundle, which is then run. Kubernetes appears nowhere in the figure.'
+  partial: true
 - anchor_id: ch02-fig05-imagepullpolicy-decision
   source_hash: 7177f2856183c2c8f0437ece82f30e7ecd8086ac52169c4109d5151c5d29aaff
   output_hash:

@@ -59,7 +59,7 @@ figures:
       rung, with a connecting note clarifying it's not part of the ladder.
     suggested_fix: ''
 - anchor_id: ch17-fig02-extension-points-map
-  status: pending
+  status: regenerate
   render_paths:
     svg: figures/ch17-fig02-extension-points-map.svg
     png: figures/ch17-fig02-extension-points-map.png
@@ -72,7 +72,9 @@ figures:
     aspect_ratio: pass
     grayscale_legibility: pass
     alt_text_present: pass
-  regenerate_hint: ''
+  regenerate_hint: Widen the canvas (or wrap/shorten the legend text) so it doesn't
+    clip at the right edge, and trim label count by dropping the per-band section
+    titles or the plain-language descriptions to get back under the 7-label ceiling.
   review_notes: ''
   last_applied_hash: null
   ai_review:
@@ -91,7 +93,7 @@ figures:
       clip at the right edge, and trim label count by dropping the per-band section
       titles or the plain-language descriptions to get back under the 7-label ceiling.
 - anchor_id: ch17-fig03-mesh-data-vs-control-plane
-  status: pending
+  status: regenerate
   render_paths:
     svg: figures/ch17-fig03-mesh-data-vs-control-plane.svg
     png: figures/ch17-fig03-mesh-data-vs-control-plane.png
@@ -104,7 +106,10 @@ figures:
     aspect_ratio: pass
     grayscale_legibility: pass
     alt_text_present: pass
-  regenerate_hint: ''
+  regenerate_hint: Give Envoy-labeled boxes ([E] sidecars, waypoint) a visibly thicker
+    or double border (not just brass color) versus the ztunnel/pod boxes, and add
+    spacing/line-break between the 'waypoint' label and its 'per-NS · L7 (Envoy)'
+    annotation so they don't collide.
   review_notes: ''
   last_applied_hash: null
   ai_review:
@@ -215,7 +220,7 @@ figures:
       End User TAB back to TOC), consistent with hierarchy_tree.
     suggested_fix: ''
 - anchor_id: ch17-zenith-one-pluggability-story
-  status: pending
+  status: regenerate
   render_paths:
     svg: figures/ch17-zenith-one-pluggability-story.svg
     png: figures/ch17-zenith-one-pluggability-story.png
@@ -228,7 +233,9 @@ figures:
     aspect_ratio: pass
     grayscale_legibility: pass
     alt_text_present: pass
-  regenerate_hint: ''
+  regenerate_hint: Regenerate with the socket arrow rendered 2-3x the box-border stroke
+    weight (or doubled line) in brass, and lay the diagram out as two side-by-side
+    halves — shape on the left, evidence list on the right — per the alt text.
   review_notes: ''
   last_applied_hash: null
   ai_review:

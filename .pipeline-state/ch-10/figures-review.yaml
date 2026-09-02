@@ -34,7 +34,7 @@ figures:
       arrangement in each panel is a clean, correctly structured data-flow diagram.'
     suggested_fix: ''
 - anchor_id: ch10-fig03-gateway-api-role-split
-  status: pending
+  status: regenerate
   render_paths:
     svg: figures/ch10-fig03-gateway-api-role-split.svg
     png: figures/ch10-fig03-gateway-api-role-split.png
@@ -47,7 +47,9 @@ figures:
     aspect_ratio: pass
     grayscale_legibility: pass
     alt_text_present: pass
-  regenerate_hint: ''
+  regenerate_hint: Give the 'exactly 1' and 'many (parentRefs)' edges a visibly thicker
+    brass stroke (or a double-line/dash pattern) than the diagram's other connectors
+    so the fixed point reads without relying on color alone.
   review_notes: ''
   last_applied_hash: null
   ai_review:

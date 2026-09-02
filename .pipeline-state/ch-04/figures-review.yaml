@@ -121,7 +121,7 @@ figures:
       announces its message before a reader parses any text.
     suggested_fix: ''
 - anchor_id: ch04-fig03-labels-selectors-join
-  status: pending
+  status: regenerate
   render_paths:
     svg: figures/ch04-fig03-labels-selectors-join.svg
     png: figures/ch04-fig03-labels-selectors-join.png
@@ -134,7 +134,10 @@ figures:
     aspect_ratio: pass
     grayscale_legibility: pass
     alt_text_present: pass
-  regenerate_hint: ''
+  regenerate_hint: Draw connector lines (or an overlap/Venn-style grouping) from each
+    Pod card down to every selector result it belongs to, and bold/brass-highlight
+    the 'A' glyph specifically within the three result sets it appears in, so the
+    recurrence is visible without re-reading each line.
   review_notes: ''
   last_applied_hash: null
   ai_review:
@@ -153,7 +156,7 @@ figures:
       the 'A' glyph specifically within the three result sets it appears in, so the
       recurrence is visible without re-reading each line.
 - anchor_id: ch04-zenith-declaration-not-order
-  status: pending
+  status: regenerate
   render_paths:
     svg: figures/ch04-zenith-declaration-not-order.svg
     png: figures/ch04-zenith-declaration-not-order.png
@@ -166,7 +169,10 @@ figures:
     aspect_ratio: pass
     grayscale_legibility: pass
     alt_text_present: pass
-  regenerate_hint: ''
+  regenerate_hint: Lay all five reader boxes out on a single flat row (or a radial/star
+    layout) connecting to the same horizontal bus, instead of staggering two of them
+    into a lower tier, so the geometry itself reads as flat independent consultation
+    rather than subordination.
   review_notes: ''
   last_applied_hash: null
   ai_review:

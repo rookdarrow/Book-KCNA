@@ -34,7 +34,7 @@ figures:
       and a legend swatch calling it out as 'Root — application scope'.
     suggested_fix: ''
 - anchor_id: ch16-fig05-init-sequence-debug-points
-  status: pending
+  status: regenerate
   render_paths:
     svg: figures/ch16-fig05-init-sequence-debug-points.svg
     png: figures/ch16-fig05-init-sequence-debug-points.png
@@ -47,7 +47,10 @@ figures:
     aspect_ratio: pass
     grayscale_legibility: pass
     alt_text_present: pass
-  regenerate_hint: ''
+  regenerate_hint: Render the Init:N/M and Running status labels inside an actual
+    brass-bordered or brass-filled badge/pill (matching what the legend already promises)
+    instead of plain brass-colored text, so the fixed point has a non-color signal
+    too.
   review_notes: ''
   last_applied_hash: null
   ai_review:
@@ -126,7 +129,7 @@ figures:
       style) distinction.
     suggested_fix: ''
 - anchor_id: ch16-fig03-portforward-vs-service-path
-  status: pending
+  status: regenerate
   render_paths:
     svg: figures/ch16-fig03-portforward-vs-service-path.svg
     png: figures/ch16-fig03-portforward-vs-service-path.png
@@ -139,7 +142,11 @@ figures:
     aspect_ratio: pass
     grayscale_legibility: pass
     alt_text_present: pass
-  regenerate_hint: ''
+  regenerate_hint: Fold the three floating annotation boxes (selector/endpoints, pods/portforward
+    subresource, kube-proxy rules) into node subtitles instead of separate call-out
+    boxes, and drop the 'SAME POD' text label since the dashed connector plus legend
+    entry already convey it — this should bring the distinct-label count at or under
+    7.
   review_notes: ''
   last_applied_hash: null
   ai_review:

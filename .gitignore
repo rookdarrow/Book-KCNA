@@ -21,3 +21,9 @@ __pycache__/
 # Pipeline transient sidecars (locks, heartbeats)
 .pipeline-state/**/*.lock
 .pipeline-state/**/.*.heartbeat
+
+# Beads / Dolt files (added by bd init)
+.dolt/
+*.db
+.beads-credential-key
+.beads/proxieddb/

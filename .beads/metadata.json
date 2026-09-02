@@ -1,0 +1,7 @@
+{
+  "database": "dolt",
+  "backend": "dolt",
+  "dolt_mode": "embedded",
+  "dolt_database": "Book_KCNA",
+  "project_id": "331d240a-7c14-412b-b6a0-7af4c43ef4c9"
+}

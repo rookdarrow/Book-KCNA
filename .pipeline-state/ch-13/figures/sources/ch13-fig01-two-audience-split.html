@@ -3,19 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Platform scope or application scope?</title>
+<title>Platform Scope vs. Application Scope</title>
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;700&family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Fira+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
-    --color-paper:   #F5EFE4;
-    --color-ink:     #0B1E3B;
-    --color-muted:   #1F4A4E;
-    --color-soft:    #8A8D90;
-    --color-accent:  #B58B3E;
-    --font-sans:  'Fira Sans', sans-serif;
-    --font-slab:  'Roboto Slab', serif;
-    --font-mono:  'Fira Mono', monospace;
+    --color-paper:  #F5EFE4;
+    --color-ink:    #0B1E3B;
+    --color-muted:  #1F4A4E;
+    --color-soft:   #8A8D90;
+    --color-accent: #B58B3E;
+    --font-slab: 'Roboto Slab', serif;
+    --font-sans: 'Fira Sans', sans-serif;
+    --font-mono: 'Fira Mono', monospace;
   }
   body {
     font-family: var(--font-sans);
@@ -27,12 +27,12 @@
     justify-content: center;
     padding: 3rem 2rem;
   }
-  .frame { max-width: 640px; width: 100%; }
+  .frame { max-width: 760px; width: 100%; }
   .eyebrow {
     font-family: var(--font-mono);
-    font-size: 0.85rem;
+    font-size: 14px;
     font-weight: 500;
-    letter-spacing: 0.16em;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--color-muted);
     margin-bottom: 0.5rem;
@@ -41,102 +41,100 @@
     font-family: var(--font-slab);
     font-size: 1.75rem;
     font-weight: 500;
-    letter-spacing: -0.01em;
     line-height: 1.2;
     color: var(--color-ink);
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.5rem;
   }
   .subtitle {
     font-family: var(--font-sans);
-    font-size: 1rem;
+    font-style: italic;
+    font-size: 16px;
     color: var(--color-muted);
-    line-height: 1.4;
     margin-bottom: 1.5rem;
-    max-width: 46ch;
   }
-  svg { width: 100%; display: block; margin: 0 auto; }
+  svg { width: 100%; max-width: 560px; display: block; margin: 0 auto; }
 </style>
 </head>
 <body>
-  <div class="frame">
-    <p class="eyebrow">Concept Map &middot; Chapter 13</p>
-    <h1>Platform Scope or Application Scope?</h1>
-    <p class="subtitle">Decide which side of the line owns the failure before you spend time debugging either one.</p>
+<div class="frame">
+  <p class="eyebrow">Concept Map · Ch.13</p>
+  <h1>Platform Scope vs. Application Scope</h1>
+  <p class="subtitle">Decide which side owns the failure before you spend time on either.</p>
 
-    <svg viewBox="0 0 680 900" xmlns="http://www.w3.org/2000/svg" role="img"
-         aria-labelledby="ch13-fig01-two-audience-split-title ch13-fig01-two-audience-split-desc">
-      <title id="ch13-fig01-two-audience-split-title">Platform scope vs. application scope: which owns the bug</title>
-      <desc id="ch13-fig01-two-audience-split-desc">Two stacked panels of diagnostic questions, platform scope on top and application scope below, joined by a single downward arrow labelled with the condition that the Pod is Running and Ready and the behavior is still wrong.</desc>
+  <svg viewBox="0 0 640 604" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch13-fig01-two-audience-split-title ch13-fig01-two-audience-split-desc">
+    <title id="ch13-fig01-two-audience-split-title">Platform scope vs. application scope: where to start debugging</title>
+    <desc id="ch13-fig01-two-audience-split-desc">Concept map splitting Kubernetes troubleshooting into two scopes: platform questions about scheduling, image pulls, container start, node health, and kills on the left; application questions about process behavior, configuration, dependencies, results, and Service selection on the right. A single arrow runs one way, from platform to application, labelled with the condition that the Pod is Running and Ready and the behavior is still wrong.</desc>
+    <defs>
+      <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"/>
+      </marker>
+      <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#B58B3E"/>
+      </marker>
+      <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"/>
+      </marker>
+    </defs>
 
-      <defs>
-        <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-          <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"/>
-        </marker>
-        <marker id="arrow-accent" markerWidth="9" markerHeight="7" refX="7.5" refY="3.5" orient="auto">
-          <polygon points="0 0, 9 3.5, 0 7" fill="#B58B3E"/>
-        </marker>
-        <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-          <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"/>
-        </marker>
-      </defs>
+    <rect width="100%" height="100%" fill="#F5EFE4"/>
 
-      <rect width="680" height="900" fill="#F5EFE4"/>
+    <!-- Connector (drawn before boxes): platform bottom -> application bottom, one-way -->
+    <path d="M168,476 L168,564 Q168,572 176,572 L464,572 Q472,572 472,564 L472,476"
+          fill="none" stroke="#B58B3E" stroke-width="2" marker-end="url(#arrow-accent)"/>
 
-      <!-- Panel: Platform Scope -->
-      <rect x="48" y="48" width="584" height="312" rx="8"
-            fill="rgba(11,30,59,0.02)" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+    <!-- Focal label mask + text, sits 8px clear of the connector stroke -->
+    <rect x="180" y="492" width="280" height="72" rx="4" fill="#F5EFE4"/>
+    <text x="320" y="512" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="16" fill="#B58B3E">the Pod is Running and Ready,</text>
+    <text x="320" y="532" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="16" fill="#B58B3E">and the behavior is still</text>
+    <text x="320" y="552" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="16" fill="#B58B3E">wrong"</text>
 
-      <text x="72" y="80" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.12em">
-        <tspan fill="#1F4A4E" font-weight="600">PLATFORM SCOPE</tspan>
-        <tspan fill="#8A8D90" font-weight="400">   &middot;   THIS CHAPTER</tspan>
-      </text>
+    <!-- Left zone: Platform Scope -->
+    <rect x="32" y="32" width="272" height="444" rx="8" fill="rgba(11,30,59,0.03)" stroke="#0B1E3B" stroke-width="1"/>
+    <text x="56" y="68" font-family="'Fira Sans', sans-serif" font-weight="600" font-size="20" letter-spacing="0.02em" fill="#0B1E3B">PLATFORM SCOPE</text>
+    <text x="56" y="96" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="16" fill="#8A8D90">(this chapter)</text>
+    <line x1="56" y1="112" x2="280" y2="112" stroke="rgba(11,30,59,0.12)" stroke-width="1"/>
 
-      <circle cx="72" cy="115" r="3" fill="#8A8D90"/>
-      <text x="88" y="120" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif">Did the Pod get scheduled?</text>
+    <rect x="56" y="148" width="8" height="8" fill="#1F4A4E"/>
+    <text x="76" y="164" font-family="'Fira Sans', sans-serif" font-size="16" fill="#0B1E3B">Did the Pod get scheduled?</text>
 
-      <circle cx="72" cy="159" r="3" fill="#8A8D90"/>
-      <text x="88" y="164" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif">Did the image pull?</text>
+    <rect x="56" y="212" width="8" height="8" fill="#1F4A4E"/>
+    <text x="76" y="228" font-family="'Fira Sans', sans-serif" font-size="16" fill="#0B1E3B">Did the image pull?</text>
 
-      <circle cx="72" cy="203" r="3" fill="#8A8D90"/>
-      <text x="88" y="208" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif">Did the container start?</text>
+    <rect x="56" y="276" width="8" height="8" fill="#1F4A4E"/>
+    <text x="76" y="292" font-family="'Fira Sans', sans-serif" font-size="16" fill="#0B1E3B">Did the container start?</text>
 
-      <circle cx="72" cy="247" r="3" fill="#8A8D90"/>
-      <text x="88" y="252" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif">Is the node healthy?</text>
+    <rect x="56" y="340" width="8" height="8" fill="#1F4A4E"/>
+    <text x="76" y="356" font-family="'Fira Sans', sans-serif" font-size="16" fill="#0B1E3B">Is the node healthy?</text>
 
-      <circle cx="72" cy="291" r="3" fill="#8A8D90"/>
-      <text x="88" y="296" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif">Did something kill it?</text>
+    <rect x="56" y="404" width="8" height="8" fill="#1F4A4E"/>
+    <text x="76" y="420" font-family="'Fira Sans', sans-serif" font-size="16" fill="#0B1E3B">Did something kill it?</text>
 
-      <!-- Panel: Application Scope -->
-      <rect x="48" y="540" width="584" height="312" rx="8"
-            fill="rgba(11,30,59,0.02)" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+    <!-- Right zone: Application Scope -->
+    <rect x="336" y="32" width="272" height="444" rx="8" fill="rgba(11,30,59,0.03)" stroke="#0B1E3B" stroke-width="1"/>
+    <text x="360" y="68" font-family="'Fira Sans', sans-serif" font-weight="600" font-size="20" letter-spacing="0.02em" fill="#0B1E3B">APPLICATION SCOPE</text>
+    <text x="360" y="96" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="16" fill="#8A8D90">(Chapter 16)</text>
+    <line x1="360" y1="112" x2="584" y2="112" stroke="rgba(11,30,59,0.12)" stroke-width="1"/>
 
-      <text x="72" y="572" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.12em">
-        <tspan fill="#1F4A4E" font-weight="600">APPLICATION SCOPE</tspan>
-        <tspan fill="#8A8D90" font-weight="400">   &middot;   CHAPTER 16</tspan>
-      </text>
+    <rect x="360" y="148" width="8" height="8" fill="#1F4A4E"/>
+    <text x="380" y="156" font-family="'Fira Sans', sans-serif" font-size="16" fill="#0B1E3B">Is the process doing</text>
+    <text x="380" y="176" font-family="'Fira Sans', sans-serif" font-size="16" fill="#0B1E3B">the right thing?</text>
 
-      <circle cx="72" cy="607" r="3" fill="#8A8D90"/>
-      <text x="88" y="612" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif">Is the process doing the right thing?</text>
+    <rect x="360" y="212" width="8" height="8" fill="#1F4A4E"/>
+    <text x="380" y="220" font-family="'Fira Sans', sans-serif" font-size="16" fill="#0B1E3B">Is it reading the right</text>
+    <text x="380" y="240" font-family="'Fira Sans', sans-serif" font-size="16" fill="#0B1E3B">config?</text>
 
-      <circle cx="72" cy="651" r="3" fill="#8A8D90"/>
-      <text x="88" y="656" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif">Is it reading the right config?</text>
+    <rect x="360" y="276" width="8" height="8" fill="#1F4A4E"/>
+    <text x="380" y="284" font-family="'Fira Sans', sans-serif" font-size="16" fill="#0B1E3B">Is it reaching its</text>
+    <text x="380" y="304" font-family="'Fira Sans', sans-serif" font-size="16" fill="#0B1E3B">dependencies?</text>
 
-      <circle cx="72" cy="695" r="3" fill="#8A8D90"/>
-      <text x="88" y="700" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif">Is it reaching its dependencies?</text>
+    <rect x="360" y="340" width="8" height="8" fill="#1F4A4E"/>
+    <text x="380" y="348" font-family="'Fira Sans', sans-serif" font-size="16" fill="#0B1E3B">Is it returning correct</text>
+    <text x="380" y="368" font-family="'Fira Sans', sans-serif" font-size="16" fill="#0B1E3B">results?</text>
 
-      <circle cx="72" cy="739" r="3" fill="#8A8D90"/>
-      <text x="88" y="744" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif">Is it returning correct results?</text>
-
-      <circle cx="72" cy="783" r="3" fill="#8A8D90"/>
-      <text x="88" y="788" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif">Is it selected by its Service?</text>
-
-      <!-- Focal: the one-way handoff -->
-      <line x1="340" y1="360" x2="340" y2="540" stroke="#B58B3E" stroke-width="1.6" marker-end="url(#arrow-accent)"/>
-
-      <rect x="348" y="428" width="208" height="44" rx="2" fill="#F5EFE4"/>
-      <text x="452" y="446" fill="#B58B3E" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif" text-anchor="middle">Running and Ready,</text>
-      <text x="452" y="466" fill="#B58B3E" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif" text-anchor="middle">and still wrong</text>
-    </svg>
-  </div>
+    <rect x="360" y="404" width="8" height="8" fill="#1F4A4E"/>
+    <text x="380" y="412" font-family="'Fira Sans', sans-serif" font-size="16" fill="#0B1E3B">Is it selected by its</text>
+    <text x="380" y="432" font-family="'Fira Sans', sans-serif" font-size="16" fill="#0B1E3B">Service?</text>
+  </svg>
+</div>
 </body>
 </html>

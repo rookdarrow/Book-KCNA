@@ -27,3 +27,8 @@ __pycache__/
 *.db
 .beads-credential-key
 .beads/proxieddb/
+
+# Raw agent session telemetry: rate_limit_event JSON, session ids, uuids.
+# Never useful after the run that produced it, and 182 MB of it reached
+# GitHub in Book-KCNA before this rule existed.
+**/*.progress.log

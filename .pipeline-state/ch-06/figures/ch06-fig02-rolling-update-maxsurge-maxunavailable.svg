@@ -1,0 +1,75 @@
+<svg viewBox="0 0 720 976" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch06fig02-title ch06fig02-desc" width="560" height="760">
+      <title id="ch06fig02-title">Rolling update Pod-count bounds: ceiling, desired, floor</title>
+      <desc id="ch06fig02-desc">Count-versus-time chart for a ten-replica rolling update: a dashed ceiling line at thirteen marks desired plus maxSurge, a solid line at ten marks the desired count, and a dashed floor line at eight marks desired minus maxUnavailable; an old Pod population declines while a new population rises, their total never crossing the ceiling and the available count never falling below the floor.</desc>
+
+      <rect width="100%" height="100%" fill="#F5EFE4"></rect>
+
+      <!-- Threshold reference lines, drawn first so the population fills glaze over them -->
+      <line x1="120" y1="240" x2="632" y2="240" stroke="#B58B3E" stroke-width="1.8" stroke-dasharray="10,5"></line>
+      <line x1="120" y1="360" x2="632" y2="360" stroke="#8A8D90" stroke-width="1.2"></line>
+      <line x1="120" y1="440" x2="632" y2="440" stroke="#B58B3E" stroke-width="1.8" stroke-dasharray="10,5"></line>
+
+      <!-- OLD population (declining) -->
+      <polygon points="120,760 120,360 184,360 184,440 248,440 312,440 376,440 376,520 440,520 504,520 504,640 568,640 632,640 632,760" fill="#0B1E3B" fill-opacity="0.14"></polygon>
+      <polyline points="120,360 184,360 184,440 248,440 312,440 376,440 376,520 440,520 504,520 504,640 568,640 632,640 632,760" fill="none" stroke="#0B1E3B" stroke-width="1.6" stroke-linejoin="round"></polyline>
+
+      <!-- NEW population (rising), stacked on OLD — its top edge is the OLD+NEW total -->
+      <polygon points="120,360 184,360 184,440 248,440 312,440 376,440 376,520 440,520 504,520 504,640 568,640 632,640 632,760 632,360 632,280 568,280 568,360 504,360 504,240 440,240 440,320 376,320 376,240 312,240 312,320 248,320 248,440 184,440 184,360 120,360" fill="#1F4A4E" fill-opacity="0.16"></polygon>
+      <polyline points="120,360 184,360 184,440 248,440 248,320 312,320 312,240 376,240 376,320 440,320 440,240 504,240 504,360 568,360 568,280 632,280 632,360" fill="none" stroke="#1F4A4E" stroke-width="1.6" stroke-linejoin="round"></polyline>
+
+      <!-- Axes -->
+      <line x1="120" y1="140" x2="120" y2="760" stroke="#8A8D90" stroke-width="1" stroke-opacity="0.5"></line>
+      <line x1="120" y1="760" x2="644" y2="760" stroke="#8A8D90" stroke-width="1" stroke-opacity="0.6"></line>
+      <polygon points="644,753 656,760 644,767" fill="#8A8D90"></polygon>
+
+      <line x1="120" y1="760" x2="120" y2="768" stroke="#8A8D90" stroke-width="1" stroke-opacity="0.6"></line>
+      <line x1="184" y1="760" x2="184" y2="768" stroke="#8A8D90" stroke-width="1" stroke-opacity="0.6"></line>
+      <line x1="248" y1="760" x2="248" y2="768" stroke="#8A8D90" stroke-width="1" stroke-opacity="0.6"></line>
+      <line x1="312" y1="760" x2="312" y2="768" stroke="#8A8D90" stroke-width="1" stroke-opacity="0.6"></line>
+      <line x1="376" y1="760" x2="376" y2="768" stroke="#8A8D90" stroke-width="1" stroke-opacity="0.6"></line>
+      <line x1="440" y1="760" x2="440" y2="768" stroke="#8A8D90" stroke-width="1" stroke-opacity="0.6"></line>
+      <line x1="504" y1="760" x2="504" y2="768" stroke="#8A8D90" stroke-width="1" stroke-opacity="0.6"></line>
+      <line x1="568" y1="760" x2="568" y2="768" stroke="#8A8D90" stroke-width="1" stroke-opacity="0.6"></line>
+      <line x1="632" y1="760" x2="632" y2="768" stroke="#8A8D90" stroke-width="1" stroke-opacity="0.6"></line>
+
+      <line x1="114" y1="240" x2="120" y2="240" stroke="#B58B3E" stroke-width="1"></line>
+      <line x1="114" y1="360" x2="120" y2="360" stroke="#8A8D90" stroke-width="1"></line>
+      <line x1="114" y1="440" x2="120" y2="440" stroke="#B58B3E" stroke-width="1"></line>
+      <line x1="114" y1="760" x2="120" y2="760" stroke="#8A8D90" stroke-width="1"></line>
+
+      <text x="104" y="244" fill="#B58B3E" font-size="14" font-weight="600" font-family="'Fira Mono', monospace" text-anchor="end">13</text>
+      <text x="104" y="364" fill="#8A8D90" font-size="14" font-family="'Fira Mono', monospace" text-anchor="end">10</text>
+      <text x="104" y="444" fill="#B58B3E" font-size="14" font-weight="600" font-family="'Fira Mono', monospace" text-anchor="end">8</text>
+      <text x="104" y="764" fill="#8A8D90" font-size="14" font-family="'Fira Mono', monospace" text-anchor="end">0</text>
+
+      <text x="120" y="108" fill="#8A8D90" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" letter-spacing="0.12em" text-anchor="start">COUNT</text>
+      <text x="376" y="792" fill="#8A8D90" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" letter-spacing="0.12em" text-anchor="middle">TIME</text>
+
+      <!-- Focal captions for the paired bound, drawn last so their masks sit cleanly over any fill beneath -->
+      <rect x="244" y="160" width="264" height="48" rx="4" fill="#F5EFE4"></rect>
+      <text x="376" y="180" fill="#B58B3E" font-size="14" font-weight="600" font-family="'Fira Mono', monospace" letter-spacing="0.04em" text-anchor="middle">CEILING · 13</text>
+      <text x="376" y="200" fill="#B58B3E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle">desired + maxSurge (10 + 3)</text>
+
+      <rect x="212" y="464" width="328" height="48" rx="4" fill="#F5EFE4"></rect>
+      <text x="376" y="484" fill="#B58B3E" font-size="14" font-weight="600" font-family="'Fira Mono', monospace" letter-spacing="0.04em" text-anchor="middle">FLOOR · 8</text>
+      <text x="376" y="504" fill="#B58B3E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle">desired − maxUnavailable (10 − 2)</text>
+
+      <text x="376" y="820" fill="#0B1E3B" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif" text-anchor="middle">Old + new never rises above the ceiling.</text>
+      <text x="376" y="844" fill="#0B1E3B" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif" text-anchor="middle">Available never falls below the floor.</text>
+
+      <!-- Legend -->
+      <line x1="64" y1="872" x2="656" y2="872" stroke="#0B1E3B" stroke-opacity="0.12" stroke-width="0.8"></line>
+      <text x="64" y="888" fill="#8A8D90" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" letter-spacing="0.12em">LEGEND</text>
+
+      <line x1="64" y1="908" x2="88" y2="908" stroke="#0B1E3B" stroke-width="1.6"></line>
+      <text x="96" y="912" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif">Old population</text>
+
+      <line x1="376" y1="908" x2="400" y2="908" stroke="#1F4A4E" stroke-width="1.6"></line>
+      <text x="408" y="912" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif">New population</text>
+
+      <line x1="64" y1="936" x2="88" y2="936" stroke="#8A8D90" stroke-width="1.2"></line>
+      <text x="96" y="940" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif">Desired = 10</text>
+
+      <line x1="376" y1="936" x2="400" y2="936" stroke="#B58B3E" stroke-width="1.8" stroke-dasharray="10,5"></line>
+      <text x="408" y="940" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif">Ceiling / floor bound</text>
+    </svg>

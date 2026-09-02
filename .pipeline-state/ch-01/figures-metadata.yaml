@@ -1,0 +1,87 @@
+chapter: 1
+book: kcna
+generated: '2026-09-01T23:59:01+00:00'
+figures:
+- anchor_id: ch01-fig01-blueprint-change-2025
+  source_hash: 3d4da66856e3c2225ed1b50d96fd5c8fbfa17c2c1d0e586e2773bfbd45f24b71
+  output_hash:
+    svg: cb6b0d870e739b42313fa1f8ec2fa677d3b297a4994fd32aee45c9d313b790cc
+    png: 398fbdbb551e0d392a82006935d7cd593613523ad5cad6a2d82321e791e613a9
+  validations:
+    label_count:
+      result: fail
+      value: 34
+      max: 7
+      reason: 34 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1280
+      - 1700
+    aspect_ratio:
+      result: pass
+      value: 1.33
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 536
+  alt_text: Two-column diagram comparing the retired five-domain KCNA blueprint on
+    the left with the current four-domain blueprint on the right. Kubernetes Fundamentals
+    moves from 46 percent to 44 percent, Container Orchestration from 22 to 28 percent,
+    Cloud Native Application Delivery from 8 to 16 percent. Cloud Native Architecture
+    at 16 percent and Cloud Native Observability at 8 percent merge into a single
+    Cloud Native Architecture domain at 12 percent, with Observability folded in as
+    a competency rather than remaining a standalone domain.
+- anchor_id: ch01-fig02-book-map-parts-to-domains
+  source_hash: a82ae080caa190573323383c37eb4d89d20dfcd5ca04a6e7ac4d64aa7119ce14
+  output_hash:
+    svg: e0b13e0179654512f63bf275e50d2a35b93c9e72f77a2a242d1196b179fb9913
+    png: 9b8301feff943ad4d77d2cf84781c97e965e8f99149a994e69fc200bcda3f393
+  validations:
+    label_count:
+      result: fail
+      value: 43
+      max: 7
+      reason: 43 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1280
+      - 1708
+    aspect_ratio:
+      result: pass
+      value: 1.33
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 773
+  alt_text: A map of the book's six Parts against the four KCNA exam domains. Part
+    one, Orientation, covers Chapter 1 and carries no exam weight. Part two, Kubernetes
+    Fundamentals, covers Chapters 2 to 8 and maps to the Kubernetes Fundamentals domain
+    at 44 percent. Part three, Container Orchestration, covers Chapters 9 to 13 and
+    maps to Container Orchestration at 28 percent. Part four, Application Delivery,
+    covers Chapters 14 to 16 and maps to Cloud Native Application Delivery at 16 percent.
+    Part five, Cloud Native Architecture, covers Chapters 17 to 18 and maps to Cloud
+    Native Architecture at 12 percent. Part six, Departure, covers Chapters 19 to
+    20 for synthesis and the mock exam, and carries no exam weight. Parts two through
+    five map one to one onto the four exam domains.

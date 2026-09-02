@@ -1,0 +1,263 @@
+chapter: 3
+book: kcna
+generated: '2026-09-01T06:35:31+00:00'
+figures:
+- anchor_id: ch03-fig03-deployment-eras-timeline
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch03-fig03-deployment-eras-timeline.html
+  output_paths:
+    svg: figures/ch03-fig03-deployment-eras-timeline.svg
+    png: figures/ch03-fig03-deployment-eras-timeline.png
+    alt: figures/ch03-fig03-deployment-eras-timeline.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: deployment_diagram
+  figure_spec:
+    anchor_id: ch03-fig03-deployment-eras-timeline
+    diagram_type: deployment_diagram
+    source_ascii: "TRADITIONAL              VIRTUALIZED                CONTAINER\n\
+      ───────────              ───────────                ─────────\n\n┌───────────┐\
+      \          ┌─────┐ ┌─────┐            ┌───┐┌───┐┌───┐\n│    App    │       \
+      \   │ App │ │ App │            │App││App││App│\n├───────────┤          ├─────┤\
+      \ ├─────┤            └───┘└───┘└───┘\n│    OS     │          │Guest│ │Guest│\
+      \            ┌─────────────┐\n├───────────┤          │ OS  │ │ OS  │       \
+      \     │  Shared OS  │\n│ Hardware  │          ├─────┴─┴─────┤            ├─────────────┤\n\
+      └───────────┘          │  Hypervisor │            │  Hardware   │\n        \
+      \               ├─────────────┤            └─────────────┘\nshares: nothing\
+      \        │  Host OS    │\n(one app per box)      ├─────────────┤           \
+      \ shares: the OS\n                       │  Hardware   │            kernel\n\
+      \                       └─────────────┘\n                       shares: hardware\n\
+      \                       (own OS per VM)\n"
+    vendor_terms: []
+    complexity_hint:
+      node_count: 15
+      edge_count: 0
+      label_count: 21
+    pedagogy:
+      part_18_criteria_met:
+      - distinguishing_alternatives
+      - temporal_structure
+      - spatial_structure
+      learning_outcome: Explain what each deployment era shares at the machine level,
+        and why the container era changes the management problem
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: 'the bottom row of shares: annotations, read across
+        all three panels'
+    accessibility:
+      alt_text_seed: Three side-by-side layer stacks comparing traditional, virtualized,
+        and container deployment; traditional runs one app on an OS on hardware, virtualized
+        adds a hypervisor and a guest OS per virtual machine, and containers place
+        three apps directly on one shared operating system
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Concept and era names come from the kubernetes.io overview page (CC BY
+        4.0, Linux Foundation/CNCF); redrawn from the ASCII in Lodestar's own visual
+        language, not traced from the upstream figure.
+- anchor_id: ch03-fig01-control-plane-and-node-components
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch03-fig01-control-plane-and-node-components.html
+  output_paths:
+    svg: figures/ch03-fig01-control-plane-and-node-components.svg
+    png: figures/ch03-fig01-control-plane-and-node-components.png
+    alt: figures/ch03-fig01-control-plane-and-node-components.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: k8s_architecture
+  figure_spec:
+    anchor_id: ch03-fig01-control-plane-and-node-components
+    diagram_type: k8s_architecture
+    source_ascii: "┌─── CONTROL PLANE ────────────────────────────────────────────┐\n\
+      │                                                              │\n│   ┌────────────────┐\
+      \   ┌────────┐   ┌──────────────────┐     │\n│   │ kube-apiserver │   │  etcd\
+      \  │   │  kube-scheduler  │     │\n│   └────────────────┘   └────────┘   └──────────────────┘\
+      \     │\n│                                                              │\n\
+      │   ┌─────────────────────────┐   ╭─────────────────────────╮  │\n│   │ kube-controller-manager\
+      \ │   ╎ cloud-controller-manager╎  │\n│   └─────────────────────────┘   ╰─────────────────────────╯\
+      \  │\n└──────────────────────────────────────────────────────────────┘\n\n┌───\
+      \ NODE ─────────────────────────┐  ┌─── NODE ──────────────┐\n│            \
+      \                      │  │                       │\n│  ┌─────────┐  ╭────────────╮\
+      \     │  │  ┌─────────┐  ╭─────  │\n│  │ kubelet │  ╎ kube-proxy ╎     │  │\
+      \  │ kubelet │  ╎ kube-  ...\n│  └─────────┘  ╰────────────╯     │  │  └─────────┘\
+      \  ╰─────  │\n│  ┌───────────────────┐           │  │  ┌──────────────     \
+      \ │\n│  │ container runtime │           │  │  │ container run ...\n│  └───────────────────┘\
+      \           │  │  └──────────────      │\n└──────────────────────────────────┘\
+      \  └───────────────────────┘\n\n  ┌───┐ solid border = always present\n  ╭╌╌╌╮\
+      \ dashed border = OPTIONAL (see §4)\n"
+    vendor_terms:
+    - kube-apiserver
+    - etcd
+    - kube-scheduler
+    - kube-controller-manager
+    - cloud-controller-manager
+    - kubelet
+    - kube-proxy
+    - containerd
+    complexity_hint:
+      node_count: 14
+      edge_count: 0
+      label_count: 16
+    pedagogy:
+      part_18_criteria_met:
+      - spatial_structure
+      - vendor_taxonomy
+      - distinguishing_alternatives
+      learning_outcome: Place any Kubernetes component on the correct side of the
+        control-plane/node line and name the two that are optional
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: the two dashed-border boxes, cloud-controller-manager
+        and kube-proxy
+    accessibility:
+      alt_text_seed: 'Cluster component census: a control plane region holding kube-apiserver,
+        etcd, kube-scheduler, kube-controller-manager and a dashed optional cloud-controller-manager,
+        above two node regions each holding kubelet, a dashed optional kube-proxy,
+        and a container runtime'
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Component names are upstream Kubernetes binary names (factual, not protectable);
+        layout and the solid/dashed optionality convention are Lodestar's own, not
+        the upstream components figure.
+- anchor_id: ch03-fig04-request-path-through-apiserver
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch03-fig04-request-path-through-apiserver.html
+  output_paths:
+    svg: figures/ch03-fig04-request-path-through-apiserver.svg
+    png: figures/ch03-fig04-request-path-through-apiserver.png
+    alt: figures/ch03-fig04-request-path-through-apiserver.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: data_flow
+  figure_spec:
+    anchor_id: ch03-fig04-request-path-through-apiserver
+    diagram_type: data_flow
+    source_ascii: " kubectl          kube-scheduler       kube-controller-manager\n\
+      \    │                    │                        │\n    │                \
+      \    │                        │\n    └──────────┐         │         ┌──────────────┘\n\
+      \               ▼         ▼         ▼\n           ┌───────────────────────────┐\n\
+      \           │      kube-apiserver       │\n           └───────────────────────────┘\n\
+      \               ▲         │         ▲\n    ┌──────────┘         │         └──────────────┐\n\
+      \    │                    ▼                        │\n    │              ┌──────────┐\
+      \                   │\nkubelet            │   etcd   │               kubelet\n\
+      (node A)           └──────────┘               (node B)\n"
+    vendor_terms:
+    - kubectl
+    - kube-apiserver
+    - kube-scheduler
+    - kube-controller-manager
+    - kubelet
+    - etcd
+    complexity_hint:
+      node_count: 7
+      edge_count: 6
+      label_count: 9
+    pedagogy:
+      part_18_criteria_met:
+      - spatial_structure
+      - fixed_point
+      learning_outcome: Recognize the cluster as a hub around the API server, and
+        identify which component pairs never communicate directly
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: the kube-apiserver box and its sole edge to etcd
+    accessibility:
+      alt_text_seed: Hub diagram with kube-apiserver at the center; kubectl, kube-scheduler,
+        kube-controller-manager, and two kubelets each connect only to the API server,
+        and the API server alone connects to etcd, with no direct links between any
+        of the surrounding components
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: true
+      max_width_px: 1100
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: flagged_for_legal_review
+      notes: Not an IP concern — flagged because the depicted architecture is not
+        yet supported by a cached source (draft AUTHOR-REVIEW line 490); clearance
+        downgrades to own_interpretation once control-plane-node-communication is
+        fetched.
+- anchor_id: ch03-fig02-control-loop-desired-vs-current
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch03-fig02-control-loop-desired-vs-current.html
+  output_paths:
+    svg: figures/ch03-fig02-control-loop-desired-vs-current.svg
+    png: figures/ch03-fig02-control-loop-desired-vs-current.png
+    alt: figures/ch03-fig02-control-loop-desired-vs-current.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: flowchart
+  figure_spec:
+    anchor_id: ch03-fig02-control-loop-desired-vs-current
+    diagram_type: flowchart
+    source_ascii: "            ┌──────────────────┐\n     ┌─────▶│  DESIRED STATE\
+      \   │──────┐\n     │      └──────────────────┘      │\n     │              \
+      \                  ▼\n┌─────────┐                     ┌──────────┐\n│ CURRENT\
+      \ │◀────────────────────│ COMPARE  │\n│  STATE  │                     └──────────┘\n\
+      └─────────┘                           │\n     ▲                            \
+      \    ▼\n     │      ┌──────────────────┐      │\n     └──────│  ACT TO CLOSE\
+      \    │◀─────┘\n            │     THE GAP      │\n            └──────────────────┘\n\
+      \n      no start.  no end.  no exit condition.\n"
+    vendor_terms: []
+    complexity_hint:
+      node_count: 4
+      edge_count: 4
+      label_count: 5
+    pedagogy:
+      part_18_criteria_met:
+      - temporal_structure
+      - fixed_point
+      learning_outcome: Describe a controller as a non-terminating loop that compares
+        desired to current state and acts on the difference, rather than as a procedure
+        that runs to completion
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: the closed cycle path itself — no entry arrow,
+        no terminus
+    accessibility:
+      alt_text_seed: 'A closed four-step cycle with no beginning or end: compare reads
+        desired state and current state, acting to close the gap changes current state,
+        and comparison begins again; captioned no start, no end, no exit condition'
+    rendering_hints:
+      preferred_orientation: portrait
+      grayscale_critical: true
+      max_width_px: 900
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Desired/current-state control-loop concept is from the kubernetes.io
+        controllers page (CC BY 4.0); the closed-cycle rendering with the no-start-no-end
+        assertion is Lodestar's own pedagogical framing.

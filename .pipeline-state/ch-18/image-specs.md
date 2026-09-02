@@ -92,7 +92,7 @@ A landscape figure with a centred title, "THE SAME SYSTEM, TWO POSTURES". Two eq
 ```yaml-figure-spec
 anchor_id: ch18-fig01-monitoring-vs-observability
 diagram_type: concept_map
-source_ascii: |
+source_ascii: |4
                 THE SAME SYSTEM, TWO POSTURES
 
     MONITORING                        OBSERVABILITY
@@ -210,7 +210,7 @@ The dashed-versus-solid contrast is the mechanism of the figure: baggage *accomp
 ```yaml-figure-spec
 anchor_id: ch18-fig02-otel-four-signals
 diagram_type: component_diagram
-source_ascii: |
+source_ascii: |5
                 F O U R   S I G N A L S
 
      ┌─────────────────────────────────────────────────┐
@@ -340,7 +340,7 @@ Title across the top: "ARROWS OUT, NOT IN". A tall central box on the right-of-c
 ```yaml-figure-spec
 anchor_id: ch18-fig04-prometheus-pull-architecture
 diagram_type: data_flow
-source_ascii: |
+source_ascii: |5
                       ARROWS OUT, NOT IN
 
      ┌──────────────┐                  ┌──────────────────┐
@@ -873,7 +873,7 @@ Composition is symmetric and vertical: question at the apex, three instruments i
 ```yaml-figure-spec
 anchor_id: ch18-zenith-instruments-answer-one-question
 diagram_type: concept_map
-source_ascii: |
+source_ascii: |9
                       ┌───────────────────────────┐
                       │   "Is the service doing   │
                       │   what users expect       │

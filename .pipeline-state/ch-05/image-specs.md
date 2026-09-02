@@ -369,7 +369,7 @@ A four-column table with a header row and three body rows, rendered as a designe
 ```yaml-figure-spec
 anchor_id: ch05-fig04-three-probes-compared
 diagram_type: other
-source_ascii: |
+source_ascii: |2
                │ ASKS                    │ ON FAILURE           │ DOES *NOT*
   ─────────────┼─────────────────────────┼──────────────────────┼──────────────────────
    liveness    │ Is the container        │ kubelet KILLS the    │ remove it from
@@ -560,7 +560,7 @@ A single emphasised root box sits centred at the top, containing the chapter's t
 ```yaml-figure-spec
 anchor_id: ch05-zenith-smallest-deployable-unit
 diagram_type: hierarchy_tree
-source_ascii: |
+source_ascii: |4
                       ┌───────────────────────────┐
                       │   THE UNIT OF SCHEDULING  │
                       │    WRAPS CONTAINERS —     │

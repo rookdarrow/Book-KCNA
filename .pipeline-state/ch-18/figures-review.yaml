@@ -1,0 +1,123 @@
+chapter: 18
+book: kcna
+generated: '2026-09-01T15:39:48+00:00'
+figures:
+- anchor_id: ch18-fig01-monitoring-vs-observability
+  status: pending
+  render_paths:
+    svg: figures/ch18-fig01-monitoring-vs-observability.svg
+    png: figures/ch18-fig01-monitoring-vs-observability.png
+  source_path: figures/sources/ch18-fig01-monitoring-vs-observability.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch18-fig02-otel-four-signals
+  status: pending
+  render_paths:
+    svg: figures/ch18-fig02-otel-four-signals.svg
+    png: figures/ch18-fig02-otel-four-signals.png
+  source_path: figures/sources/ch18-fig02-otel-four-signals.html
+  validation_results:
+    label_count: pass
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch18-fig04-prometheus-pull-architecture
+  status: pending
+  render_paths:
+    svg: figures/ch18-fig04-prometheus-pull-architecture.svg
+    png: figures/ch18-fig04-prometheus-pull-architecture.png
+  source_path: figures/sources/ch18-fig04-prometheus-pull-architecture.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch18-fig03-trace-spans-across-services
+  status: pending
+  render_paths:
+    svg: figures/ch18-fig03-trace-spans-across-services.svg
+    png: figures/ch18-fig03-trace-spans-across-services.png
+  source_path: figures/sources/ch18-fig03-trace-spans-across-services.html
+  validation_results:
+    label_count: pass
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch18-fig06-cluster-logging-architectures
+  status: pending
+  render_paths:
+    svg: figures/ch18-fig06-cluster-logging-architectures.svg
+    png: figures/ch18-fig06-cluster-logging-architectures.png
+  source_path: figures/sources/ch18-fig06-cluster-logging-architectures.html
+  validation_results:
+    label_count: pass
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch18-fig05-sli-slo-golden-signals
+  status: pending
+  render_paths:
+    svg: figures/ch18-fig05-sli-slo-golden-signals.svg
+    png: figures/ch18-fig05-sli-slo-golden-signals.png
+  source_path: figures/sources/ch18-fig05-sli-slo-golden-signals.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch18-zenith-instruments-answer-one-question
+  status: pending
+  render_paths:
+    svg: figures/ch18-zenith-instruments-answer-one-question.svg
+    png: figures/ch18-zenith-instruments-answer-one-question.png
+  source_path: figures/sources/ch18-zenith-instruments-answer-one-question.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null

@@ -1,0 +1,242 @@
+chapter: 16
+book: kcna
+generated: '2026-09-01T16:28:32+00:00'
+figures:
+- anchor_id: ch16-fig01-application-scope-triage
+  source_hash: caa6fc9e7dd2620521a10d6ea1bd2a8a26656ca204591a47f1b9736f355e87ae
+  output_hash:
+    svg: 05a39956f38ced1471a848c87e812e9b764627161d69f2deb518caf81ac7103d
+    png: c1b28ce512e48138232d243a94cf1ebd85e8b40e693baeb390d66091b9698506
+  validations:
+    label_count:
+      result: fail
+      value: 17
+      max: 7
+      reason: 17 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1280
+      - 1536
+    aspect_ratio:
+      result: pass
+      value: 1.2
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 364
+  alt_text: 'A tree diagram. An arrow labelled ''from Chapter 13, platform scope discharged''
+    enters a single box labelled ''Application scope: this book, this chapter, your
+    problem''. Below the box, four branches fan out to four questions: is it running
+    (section 2), is it healthy and configured (section 3), is it reachable (sections
+    4 then 5), and is it per-replica (section 6).'
+- anchor_id: ch16-fig05-init-sequence-debug-points
+  source_hash: 41b8d68407b22b2f2fddd2bd29c894f9b91bbb1b8029fddc954b7ebf44bfa0a5
+  output_hash:
+    svg: 6b59863b6862c3cf737209ac17c5418e4f5075a904fbc802b59592fdfb22d667
+    png: 9dea1cca41120365944bc559769654d77412e10c93685f8a684c3f2555f7a584
+  validations:
+    label_count:
+      result: fail
+      value: 29
+      max: 7
+      reason: 29 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1120
+      - 1120
+    aspect_ratio:
+      result: pass
+      value: 1.0
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 508
+  alt_text: 'A left-to-right sequence of three init containers followed by the app
+    containers. Beneath each, the Pod status it produces: Init:0/3 under the first
+    init container, Init:1/3 under the second, Init:2/3 under the third, and Running
+    under the app containers. Below, the commands for reading init container logs,
+    and three failure signatures paired with their causes: stuck with no error means
+    an ordering deadlock, failing only on restart means non-idempotency, and exiting
+    non-zero means a configuration error.'
+- anchor_id: ch16-fig02-ephemeral-container-debug
+  source_hash: 27c214a663900555ad4e164d1b8f29a3dc8c05b3d77a3997d6249b33246b5cdf
+  output_hash:
+    svg: 0a1fcfb12a8a471977e6aabaf6725be69f1c3418eeffebec3bd505b19655358c
+    png: 7a445aea91ae9e9ec8782d737b53fa7ab311a0edf969a599f74f64c341d1980e
+  validations:
+    label_count:
+      result: fail
+      reason: SVG unparseable
+      value: 0
+      max: 7
+    palette_conformance:
+      result: fail
+      reason: SVG unparseable
+    min_font_size:
+      result: fail
+      reason: SVG unparseable
+    max_dimensions:
+      result: pass
+      value:
+      - 1280
+      - 1748
+    aspect_ratio:
+      result: pass
+      value: 1.37
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 565
+  alt_text: 'Three panels comparing kubectl debug''s shapes. Panel A: an ephemeral
+    debug container added inside an unchanged Pod alongside a distroless app container,
+    annotated as unable to be removed; it asks what the running process sees now.
+    Panel B: two unconnected Pods side by side, the original still running and crashing
+    on startup, and a separate copy with its entrypoint replaced; it asks what would
+    happen if something changed. Panel C, shown as platform scope: a debug Pod on
+    a Node with the host filesystem mounted; it asks whether the machine itself is
+    the problem.'
+- anchor_id: ch16-fig04-service-break-points
+  source_hash: d9276995bb4d6319f0ab1aa155aebae6bc0a323a8d3600bf952f5998b48f1fc9
+  output_hash:
+    svg: 9ee52ebe05a970ca60f8c74293daf69a17efa379f131f5701bf356679df46ada
+    png: 6bc2cf7e8ddac450cbb84d785a33c62faf917a9fc6e889ea399b7576f1be63c9
+  validations:
+    label_count:
+      result: pass
+      value: 0
+      max: 7
+      reason: ''
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1120
+      - 1398
+    aspect_ratio:
+      result: pass
+      value: 1.25
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 626
+  alt_text: 'A request path runs left to right from client, to DNS name, to Service,
+    to EndpointSlice, to Pod, to container port. Three callouts drop from it. From
+    the DNS name: break four, the name does not resolve to this Service. From the
+    EndpointSlice: breaks one and two, the list is empty, caused either by a selector
+    mismatch or by Pods not being Ready. From the container port: break three, port
+    does not equal targetPort, and here the list is populated. A legend notes that
+    upstream breaks empty the list, the downstream break leaves it populated while
+    the request still fails, and break four means this Service was never reached.'
+- anchor_id: ch16-fig03-portforward-vs-service-path
+  source_hash: cb4fd314c4083f46004beeb48c6b737e45cb15c9ad2da9135f50a41d984d8415
+  output_hash:
+    svg: 518d44cfd2a5409c47c3609295da7f7c71f4db97f896171e476b21485bcd719c
+    png: f071301d7c0338601d4a800110901ab1874141d8d31ab12b6af85c3f52f0680c
+  validations:
+    label_count:
+      result: fail
+      value: 30
+      max: 7
+      reason: 30 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 960
+      - 1294
+    aspect_ratio:
+      result: pass
+      value: 1.35
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 509
+  alt_text: Two separate request paths. The Service path, travelled by users, runs
+    from client to DNS to the Service's ClusterIP to the service proxy to the Pod's
+    targetPort, annotated with selector and endpoints at the Service and kube-proxy
+    rules at the proxy; all four of section four's break points live on this path.
+    The port-forward path, travelled by the engineer, runs from kubectl to the API
+    server via the pods/portforward subresource and on to the Pod's port. The two
+    paths share no step except the Pod itself.
+- anchor_id: ch16-zenith-mine-or-the-platforms
+  source_hash: 1e31fc5b530ded82535b3885415529a8e4190c5015c78acc87384835d7ef4948
+  output_hash:
+    svg: fedbbcb1ec842d9ffd425a9acbd8694341387237f1904eb19f902f11464fc890
+    png: 9264fc47f322318e5df9c05b93b6883ae44d8fe6fa59d153dc9ebb640eeb51d5
+  validations:
+    label_count:
+      result: fail
+      value: 18
+      max: 7
+      reason: 18 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1120
+      - 1400
+    aspect_ratio:
+      result: pass
+      value: 1.25
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 460
+  alt_text: 'A symmetrical diagram divided by a heavy vertical line. On the left,
+    platform scope from Chapter 13: phase, then conditions, then events, then logs,
+    then node. On the right, application scope from Chapter 16: is it running, is
+    it healthy, is it reachable, is it configured, and which replica. Below each column,
+    a long arrow points inward toward the centre line, each labelled narrowing. At
+    the centre, the caption reads: the boundary, this line is the method.'

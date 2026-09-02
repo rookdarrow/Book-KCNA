@@ -1,0 +1,106 @@
+chapter: 11
+book: kcna
+generated: '2026-09-01T07:27:10+00:00'
+figures:
+- anchor_id: ch11-fig01-volume-lifetime-ladder
+  status: pending
+  render_paths:
+    svg: figures/ch11-fig01-volume-lifetime-ladder.svg
+    png: figures/ch11-fig01-volume-lifetime-ladder.png
+  source_path: figures/sources/ch11-fig01-volume-lifetime-ladder.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch11-fig02-pv-pvc-storageclass-binding
+  status: pending
+  render_paths:
+    svg: figures/ch11-fig02-pv-pvc-storageclass-binding.svg
+    png: figures/ch11-fig02-pv-pvc-storageclass-binding.png
+  source_path: figures/sources/ch11-fig02-pv-pvc-storageclass-binding.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch11-fig03-static-vs-dynamic-provisioning
+  status: pending
+  render_paths:
+    svg: figures/ch11-fig03-static-vs-dynamic-provisioning.svg
+    png: figures/ch11-fig03-static-vs-dynamic-provisioning.png
+  source_path: figures/sources/ch11-fig03-static-vs-dynamic-provisioning.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch11-fig04-access-modes-and-reclaim-policies
+  status: pending
+  render_paths:
+    svg: figures/ch11-fig04-access-modes-and-reclaim-policies.svg
+    png: figures/ch11-fig04-access-modes-and-reclaim-policies.png
+  source_path: figures/sources/ch11-fig04-access-modes-and-reclaim-policies.html
+  validation_results:
+    label_count: pass
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch11-fig05-statefulset-pvc-pairing
+  status: pending
+  render_paths:
+    svg: figures/ch11-fig05-statefulset-pvc-pairing.svg
+    png: figures/ch11-fig05-statefulset-pvc-pairing.png
+  source_path: figures/sources/ch11-fig05-statefulset-pvc-pairing.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch11-zenith-outliving-the-pod
+  status: pending
+  render_paths:
+    svg: figures/ch11-zenith-outliving-the-pod.svg
+    png: figures/ch11-zenith-outliving-the-pod.png
+  source_path: figures/sources/ch11-zenith-outliving-the-pod.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null

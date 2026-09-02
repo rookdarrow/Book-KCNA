@@ -1,0 +1,1 @@
+Two panels compared side by side: on the left, four Pods enclosed in a bordered namespace box with a namespace total bar marked at cap, and a fifth arriving Pod rejected; on the right, four unenclosed Pods each carrying its own minimum and maximum bounds, and a fifth arriving Pod that declares nothing being accepted with defaults filled in

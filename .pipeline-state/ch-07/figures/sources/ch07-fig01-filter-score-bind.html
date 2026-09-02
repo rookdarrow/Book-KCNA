@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Filter, Score, Bind — Then the Kubelet Takes Over</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;700&family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Fira+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --color-paper:   #F5EFE4;
+      --color-ink:     #0B1E3B;
+      --color-muted:   #1F4A4E;
+      --color-soft:    #8A8D90;
+      --color-accent:  #B58B3E;
+      --font-sans:     'Fira Sans', system-ui, sans-serif;
+      --font-serif:    'Roboto Slab', serif;
+      --font-mono:     'Fira Mono', ui-monospace, monospace;
+    }
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-paper);
+      color: var(--color-ink);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 2rem;
+    }
+    .frame { max-width: 760px; width: 100%; }
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      margin-bottom: 0.5rem;
+    }
+    h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(1.4rem, 2vw + 0.75rem, 1.75rem);
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+      color: var(--color-ink);
+      margin-bottom: 1.5rem;
+    }
+    svg { width: 100%; min-width: 480px; display: block; }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <p class="eyebrow">Flowchart · Ch07-Fig01</p>
+    <h1>Filter, Score, Bind — Then the Kubelet Takes Over</h1>
+
+    <svg viewBox="0 0 680 968" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch07-fig01-filter-score-bind-title ch07-fig01-filter-score-bind-desc">
+      <title id="ch07-fig01-filter-score-bind-title">Kubernetes scheduling: filter, score, and bind a Pod</title>
+      <desc id="ch07-fig01-filter-score-bind-desc">Three-stage scheduler pipeline narrows five candidate nodes through filter and score to node-c, then kube-scheduler binds the Pod by writing the decision to kube-apiserver, while a separate, unconnected panel shows the kubelet on node-c starting containers via the container runtime.</desc>
+      <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"/></marker>
+        <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#B58B3E"/></marker>
+        <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"/></marker>
+      </defs>
+
+      <rect width="100%" height="100%" fill="#F5EFE4"/>
+
+      <!-- ===== Arrows (drawn first, behind nodes) ===== -->
+      <line x1="340" y1="104" x2="340" y2="160" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <rect x="348" y="124" width="200" height="16" fill="#F5EFE4"/>
+      <text x="448" y="136" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.04em">TRIGGERS SCHEDULING</text>
+
+      <line x1="340" y1="360" x2="340" y2="392" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <line x1="340" y1="552" x2="340" y2="584" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+      <line x1="340" y1="664" x2="340" y2="700" stroke="#B58B3E" stroke-width="1.4" marker-end="url(#arrow-accent)"/>
+      <rect x="348" y="672" width="224" height="16" fill="#F5EFE4"/>
+      <text x="460" y="684" fill="#B58B3E" font-size="14" font-family="'Fira Mono', monospace" font-weight="500" text-anchor="middle" letter-spacing="0.02em">PATCHES spec.nodeName</text>
+
+      <line x1="340" y1="864" x2="340" y2="884" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+      <!-- ===== Nodes ===== -->
+      <rect x="200" y="40" width="280" height="64" rx="32" fill="rgba(11,30,59,0.05)" stroke="#0B1E3B" stroke-width="1"/>
+      <text x="340" y="64" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle">UNBOUND POD</text>
+      <text x="340" y="88" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle">spec.nodeName: empty</text>
+
+      <rect x="40" y="160" width="600" height="200" rx="8" fill="rgba(11,30,59,0.05)" stroke="#0B1E3B" stroke-width="1"/>
+      <text x="340" y="188" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle">1 &#183; FILTER</text>
+
+      <text x="120" y="216" fill="#0B1E3B" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="start">node-a</text>
+      <text x="560" y="216" fill="#0B1E3B" font-size="14" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="end">keep</text>
+      <text x="120" y="240" fill="#8A8D90" font-size="14" font-weight="400" font-family="'Fira Mono', monospace" text-anchor="start">node-b</text>
+      <text x="560" y="240" fill="#8A8D90" font-size="14" font-weight="400" font-family="'Fira Sans', sans-serif" text-anchor="end">drop</text>
+      <text x="120" y="264" fill="#0B1E3B" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="start">node-c</text>
+      <text x="560" y="264" fill="#0B1E3B" font-size="14" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="end">keep</text>
+      <text x="120" y="288" fill="#8A8D90" font-size="14" font-weight="400" font-family="'Fira Mono', monospace" text-anchor="start">node-d</text>
+      <text x="560" y="288" fill="#8A8D90" font-size="14" font-weight="400" font-family="'Fira Sans', sans-serif" text-anchor="end">drop</text>
+      <text x="120" y="312" fill="#0B1E3B" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="start">node-e</text>
+      <text x="560" y="312" fill="#0B1E3B" font-size="14" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="end">keep</text>
+
+      <text x="340" y="340" fill="#8A8D90" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif" text-anchor="middle">= feasible set &#8212; three of five nodes</text>
+
+      <rect x="40" y="392" width="600" height="160" rx="8" fill="rgba(11,30,59,0.05)" stroke="#0B1E3B" stroke-width="1"/>
+      <text x="340" y="420" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle">2 &#183; SCORE</text>
+
+      <text x="120" y="452" fill="#8A8D90" font-size="14" font-weight="400" font-family="'Fira Mono', monospace" text-anchor="start">node-a</text>
+      <text x="560" y="452" fill="#8A8D90" font-size="14" font-weight="400" font-family="'Fira Mono', monospace" text-anchor="end">72</text>
+      <text x="120" y="476" fill="#0B1E3B" font-size="14" font-weight="700" font-family="'Fira Mono', monospace" text-anchor="start">node-c</text>
+      <text x="560" y="476" fill="#0B1E3B" font-size="14" font-weight="700" font-family="'Fira Mono', monospace" text-anchor="end">91</text>
+      <text x="120" y="500" fill="#8A8D90" font-size="14" font-weight="400" font-family="'Fira Mono', monospace" text-anchor="start">node-e</text>
+      <text x="560" y="500" fill="#8A8D90" font-size="14" font-weight="400" font-family="'Fira Mono', monospace" text-anchor="end">68</text>
+
+      <text x="340" y="532" fill="#8A8D90" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.12em">HIGHEST SCORE WINS</text>
+
+      <rect x="40" y="584" width="600" height="176" rx="8" fill="rgba(11,30,59,0.05)" stroke="#0B1E3B" stroke-width="1"/>
+      <text x="340" y="612" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle">3 &#183; BIND</text>
+
+      <rect x="140" y="632" width="400" height="32" rx="6" fill="rgba(11,30,59,0.05)" stroke="#0B1E3B" stroke-width="1"/>
+      <text x="340" y="652" fill="#0B1E3B" font-size="14" font-weight="600" font-family="'Fira Mono', monospace" text-anchor="middle">kube-scheduler</text>
+
+      <rect x="140" y="700" width="400" height="48" rx="6" fill="rgba(11,30,59,0.05)" stroke="#0B1E3B" stroke-width="1"/>
+      <text x="340" y="720" fill="#0B1E3B" font-size="14" font-weight="600" font-family="'Fira Mono', monospace" text-anchor="middle">kube-apiserver</text>
+      <text x="340" y="740" fill="#1F4A4E" font-size="14" font-weight="400" font-family="'Fira Mono', monospace" text-anchor="middle">spec.nodeName: node-c</text>
+
+      <text x="340" y="780" fill="#8A8D90" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.12em">SEPARATE ACTOR, SEPARATE MOMENT, SEPARATE ARROW</text>
+      <line x1="100" y1="796" x2="580" y2="796" stroke="#8A8D90" stroke-width="1" stroke-dasharray="4,4"/>
+
+      <rect x="120" y="820" width="440" height="124" rx="8" fill="rgba(31,74,78,0.05)" stroke="#1F4A4E" stroke-width="1"/>
+      <text x="340" y="852" fill="#0B1E3B" font-size="14" font-weight="600" font-family="'Fira Mono', monospace" text-anchor="middle">kubelet on node-c</text>
+      <text x="340" y="900" fill="#1F4A4E" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="middle">container runtime &#8594; containers</text>
+      <text x="340" y="924" fill="#8A8D90" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif" text-anchor="middle">kubelet starts containers &#8212; not the scheduler</text>
+    </svg>
+  </div>
+</body>
+</html>

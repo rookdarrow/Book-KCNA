@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kubernetes pod network model — direct reachability across two nodes</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;700&family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Fira+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --navy:   #0B1E3B;
+    --teal:   #1F4A4E;
+    --brass:  #B58B3E;
+    --cream:  #F5EFE4;
+    --fog:    #8A8D90;
+    --font-serif: 'Roboto Slab', serif;
+    --font-sans:  'Fira Sans', sans-serif;
+    --font-mono:  'Fira Mono', monospace;
+  }
+  body {
+    font-family: var(--font-sans);
+    background: var(--cream);
+    color: var(--navy);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2.5rem 1.5rem;
+  }
+  .frame { max-width: 520px; width: 100%; }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 0.6rem;
+  }
+  h1 {
+    font-family: var(--font-serif);
+    font-size: 1.75rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+    color: var(--navy);
+    margin-bottom: 0.5rem;
+  }
+  .subtitle {
+    font-family: var(--font-sans);
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--teal);
+    margin-bottom: 1.5rem;
+  }
+  svg { width: 100%; height: auto; display: block; }
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem 1.5rem;
+    margin-top: 1.25rem;
+    padding-top: 0.9rem;
+    border-top: 1px solid rgba(11,30,59,0.12);
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    letter-spacing: 0.02em;
+    color: var(--teal);
+  }
+  .swatch { display: inline-block; width: 22px; height: 0; border-top-width: 3px; border-top-style: solid; }
+  .swatch.brass  { border-color: var(--brass); }
+  .swatch.teal   { border-color: var(--teal); }
+  .swatch.dashed { border-color: var(--fog); border-top-style: dashed; }
+  .caption {
+    font-family: var(--font-sans);
+    font-style: italic;
+    font-size: 16px;
+    color: var(--navy);
+    margin-top: 1rem;
+  }
+</style>
+</head>
+<body>
+<div class="frame">
+  <p class="eyebrow">K8S Architecture &middot; Ch09 Fig01</p>
+  <h1>Every Pod reaches every Pod, directly</h1>
+  <p class="subtitle">No NAT. No proxy. Just a routable, cluster-wide address on every Pod.</p>
+
+  <svg viewBox="0 0 600 800" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="network-model-title network-model-desc">
+    <title id="network-model-title">Kubernetes pod network model across two nodes</title>
+    <desc id="network-model-desc">Two worker nodes side by side, each holding Pods labelled with 10.244.x.x addresses. One Pod holds two containers joined over the local loopback interface. Direct lines connect a Pod to another Pod on the same node, to a Pod on the other node, and to the local kubelet, with no intermediate device on any line.</desc>
+    <defs>
+      <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"/>
+      </marker>
+      <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#B58B3E"/>
+      </marker>
+      <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"/>
+      </marker>
+    </defs>
+
+    <rect width="600" height="800" fill="#F5EFE4"/>
+
+    <!-- Zones -->
+    <rect x="16" y="32" width="256" height="636" rx="8" fill="rgba(11,30,59,0.03)" stroke="rgba(11,30,59,0.25)" stroke-width="1" stroke-dasharray="4,4"/>
+    <rect x="324" y="32" width="256" height="524" rx="8" fill="rgba(11,30,59,0.03)" stroke="rgba(11,30,59,0.25)" stroke-width="1" stroke-dasharray="4,4"/>
+    <rect x="32" y="40" width="112" height="16" rx="2" fill="#F5EFE4"/>
+    <rect x="340" y="40" width="120" height="16" rx="2" fill="#F5EFE4"/>
+    <text x="40" y="52" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.12em" fill="#8A8D90">WORKER-3<tspan x="348" y="52">WORKER-11</tspan></text>
+
+    <!-- Connectors (drawn before nodes) -->
+    <!-- intra-node: Pod 10.244.1.7 -> Pod 10.244.1.8, same worker -->
+    <path d="M144,248 L144,440" fill="none" stroke="#1F4A4E" stroke-width="1"/>
+    <!-- cross-node, focal: Pod 10.244.1.7 -> Pod 10.244.4.2, crosses both node boundaries -->
+    <path d="M184,248 V304 Q184,312 192,312 H444 Q452,312 452,304 V180" fill="none" stroke="#B58B3E" stroke-width="1.2"/>
+    <!-- kubelet -> Pod 10.244.1.8 -->
+    <path d="M144,580 L144,516" fill="none" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"/>
+    <!-- loopback: ctr a <-> ctr b -->
+    <line x1="124" y1="208" x2="164" y2="208" stroke="#1F4A4E" stroke-width="1"/>
+
+    <!-- Pod 10.244.1.7 (worker-3) -->
+    <rect x="36" y="104" width="216" height="144" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"/>
+    <rect x="44" y="184" width="80" height="48" rx="4" fill="#F5EFE4" stroke="#1F4A4E" stroke-width="1"/>
+    <rect x="164" y="184" width="80" height="48" rx="4" fill="#F5EFE4" stroke="#1F4A4E" stroke-width="1"/>
+    <rect x="132" y="184" width="24" height="16" rx="2" fill="#F5EFE4"/>
+    <text x="144" y="136" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Pod<tspan x="144" y="160" font-family="'Fira Mono', monospace" font-size="14" font-weight="400" fill="#1F4A4E">10.244.1.7</tspan></text>
+    <text x="84" y="216" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">ctr a<tspan x="144" y="196" font-family="'Fira Mono', monospace" font-size="14" font-weight="400" fill="#8A8D90">lo</tspan><tspan x="204" y="216">ctr b</tspan></text>
+
+    <!-- Pod 10.244.1.8 (worker-3) -->
+    <rect x="36" y="440" width="216" height="76" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"/>
+    <text x="144" y="472" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Pod<tspan x="144" y="496" font-family="'Fira Mono', monospace" font-size="14" font-weight="400" fill="#1F4A4E">10.244.1.8</tspan></text>
+
+    <!-- kubelet (worker-3) -->
+    <rect x="72" y="580" width="144" height="48" rx="6" fill="#F5EFE4" stroke="#1F4A4E" stroke-width="1"/>
+    <text x="144" y="612" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">kubelet</text>
+
+    <!-- Pod 10.244.4.2 (worker-11) -->
+    <rect x="344" y="104" width="216" height="76" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"/>
+    <text x="452" y="136" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Pod<tspan x="452" y="160" font-family="'Fira Mono', monospace" font-size="14" font-weight="400" fill="#1F4A4E">10.244.4.2</tspan></text>
+
+    <!-- Pod 10.244.4.3 (worker-11) -->
+    <rect x="344" y="440" width="216" height="76" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"/>
+    <text x="452" y="472" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Pod<tspan x="452" y="496" font-family="'Fira Mono', monospace" font-size="14" font-weight="400" fill="#1F4A4E">10.244.4.3</tspan></text>
+  </svg>
+
+  <div class="legend">
+    <span class="legend-item"><span class="swatch brass"></span>CROSS-NODE (DIRECT)</span>
+    <span class="legend-item"><span class="swatch teal"></span>SAME-NODE / KUBELET</span>
+    <span class="legend-item"><span class="swatch dashed"></span>NODE BOUNDARY</span>
+  </div>
+  <p class="caption">Every line above is a direct connection &mdash; nothing sits between the Pods.</p>
+</div>
+</body>
+</html>

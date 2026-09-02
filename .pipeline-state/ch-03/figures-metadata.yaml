@@ -1,0 +1,151 @@
+chapter: 3
+book: kcna
+generated: '2026-09-01T06:59:34+00:00'
+figures:
+- anchor_id: ch03-fig03-deployment-eras-timeline
+  source_hash: 7879832f0d54e65036be1348da4258c24b1a2cd49a217bb954fe1263798fe944
+  output_hash:
+    svg: 295e25912b57c6226d06554af5ed45c3fb48e412a7a552380ccdf1bf526c3f7b
+    png: 56aab12535df2edaad5c3c76563834730abe38b7169fcf8e28fde13b825fcdac
+  validations:
+    label_count:
+      result: fail
+      value: 18
+      max: 7
+      reason: 18 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1280
+      - 1516
+    aspect_ratio:
+      result: pass
+      value: 1.18
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 278
+  alt_text: Three side-by-side layer stacks comparing traditional, virtualized, and
+    container deployment; traditional runs one app on an OS on hardware, virtualized
+    adds a hypervisor and a guest OS per virtual machine, and containers place three
+    apps directly on one shared operating system
+- anchor_id: ch03-fig01-control-plane-and-node-components
+  source_hash: 50a22b2353a85531c8c9dc732fdf5703775ac06a92f358b137e1256d5efc4abd
+  output_hash:
+    svg: 063d56e2f05f3387b46d500ca50e81fcc7147618fe4760c212b5ea8360adaba3
+    png: 6600270eeb59920a6daf0f9c73627071147c5284a788bc65742cf04963c401ed
+  validations:
+    label_count:
+      result: fail
+      value: 14
+      max: 7
+      reason: 14 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1120
+      - 1662
+    aspect_ratio:
+      result: pass
+      value: 1.48
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 265
+  alt_text: 'Cluster component census: a control plane region holding kube-apiserver,
+    etcd, kube-scheduler, kube-controller-manager and a dashed optional cloud-controller-manager,
+    above two node regions each holding kubelet, a dashed optional kube-proxy, and
+    a container runtime'
+- anchor_id: ch03-fig04-request-path-through-apiserver
+  source_hash: f62eeef6c982b8ed9c602964af3e03599537c3cead833bee51c604259023561d
+  output_hash:
+    svg: 9592e8547147ea5d1b7b9e6a71de64b4aa4e4570a7efabe9214c357a367f3382
+    png: 3ef1750ee9bb880e0bdbe87396a46c1666d490b756a05693a16ec7cd37a006b1
+  validations:
+    label_count:
+      result: fail
+      value: 16
+      max: 7
+      reason: 16 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 840
+      - 1120
+    aspect_ratio:
+      result: pass
+      value: 1.33
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 256
+  alt_text: Hub diagram with kube-apiserver at the center; kubectl, kube-scheduler,
+    kube-controller-manager, and two kubelets each connect only to the API server,
+    and the API server alone connects to etcd, with no direct links between any of
+    the surrounding components
+- anchor_id: ch03-fig02-control-loop-desired-vs-current
+  source_hash: ecb6665deb3299b0e884c97f5f069ed8ac09c9e3736d2507a3aae5bc5273d63e
+  output_hash:
+    svg: ed735d778ad4580520c8e919133eaf7c076fb150c02da969fb8f0ab250d706bf
+    png: c8e0a926502528d23a55e08b4a71f6d25805e2c10016b0083406c7a8b3d1827f
+  validations:
+    label_count:
+      result: fail
+      value: 9
+      max: 7
+      reason: 9 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 960
+      - 1218
+    aspect_ratio:
+      result: pass
+      value: 1.27
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 219
+  alt_text: 'A closed four-step cycle with no beginning or end: compare reads desired
+    state and current state, acting to close the gap changes current state, and comparison
+    begins again; captioned no start, no end, no exit condition'

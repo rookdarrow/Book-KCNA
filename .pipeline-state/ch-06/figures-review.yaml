@@ -1,0 +1,106 @@
+chapter: 6
+book: kcna
+generated: '2026-09-01T08:35:38+00:00'
+figures:
+- anchor_id: ch06-fig01-deployment-replicaset-pod-ownership
+  status: pending
+  render_paths:
+    svg: figures/ch06-fig01-deployment-replicaset-pod-ownership.svg
+    png: figures/ch06-fig01-deployment-replicaset-pod-ownership.png
+  source_path: figures/sources/ch06-fig01-deployment-replicaset-pod-ownership.html
+  validation_results:
+    label_count: pass
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch06-fig02-rolling-update-maxsurge-maxunavailable
+  status: pending
+  render_paths:
+    svg: figures/ch06-fig02-rolling-update-maxsurge-maxunavailable.svg
+    png: figures/ch06-fig02-rolling-update-maxsurge-maxunavailable.png
+  source_path: figures/sources/ch06-fig02-rolling-update-maxsurge-maxunavailable.html
+  validation_results:
+    label_count: pass
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch06-fig03-recreate-vs-rolling
+  status: pending
+  render_paths:
+    svg: figures/ch06-fig03-recreate-vs-rolling.svg
+    png: figures/ch06-fig03-recreate-vs-rolling.png
+  source_path: figures/sources/ch06-fig03-recreate-vs-rolling.html
+  validation_results:
+    label_count: pass
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch06-fig05-statefulset-vs-deployment-identity
+  status: pending
+  render_paths:
+    svg: figures/ch06-fig05-statefulset-vs-deployment-identity.svg
+    png: figures/ch06-fig05-statefulset-vs-deployment-identity.png
+  source_path: figures/sources/ch06-fig05-statefulset-vs-deployment-identity.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch06-fig04-workload-resource-decision-tree
+  status: pending
+  render_paths:
+    svg: figures/ch06-fig04-workload-resource-decision-tree.svg
+    png: figures/ch06-fig04-workload-resource-decision-tree.png
+  source_path: figures/sources/ch06-fig04-workload-resource-decision-tree.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch06-zenith-control-loop-instantiated
+  status: pending
+  render_paths:
+    svg: figures/ch06-zenith-control-loop-instantiated.svg
+    png: figures/ch06-zenith-control-loop-instantiated.png
+  source_path: figures/sources/ch06-zenith-control-loop-instantiated.html
+  validation_results:
+    label_count: pass
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null

@@ -1,0 +1,1 @@
+A matrix of fourteen securityContext fields checked against the privileged, baseline and restricted Pod Security levels, noted as cumulative; a list of the three modes enforce, audit and warn with what each does when a check fails; and the per-namespace label form with a worked example carrying all three modes at two different levels

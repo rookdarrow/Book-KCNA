@@ -1,0 +1,106 @@
+chapter: 8
+book: kcna
+generated: '2026-09-01T07:29:27+00:00'
+figures:
+- anchor_id: ch08-fig01-kubectl-verb-resource-grammar
+  status: pending
+  render_paths:
+    svg: figures/ch08-fig01-kubectl-verb-resource-grammar.svg
+    png: figures/ch08-fig01-kubectl-verb-resource-grammar.png
+  source_path: figures/sources/ch08-fig01-kubectl-verb-resource-grammar.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch08-fig02-three-api-gates
+  status: pending
+  render_paths:
+    svg: figures/ch08-fig02-three-api-gates.svg
+    png: figures/ch08-fig02-three-api-gates.png
+  source_path: figures/sources/ch08-fig02-three-api-gates.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch08-fig05-quota-vs-limitrange
+  status: pending
+  render_paths:
+    svg: figures/ch08-fig05-quota-vs-limitrange.svg
+    png: figures/ch08-fig05-quota-vs-limitrange.png
+  source_path: figures/sources/ch08-fig05-quota-vs-limitrange.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch08-fig04-node-lifecycle-cordon-drain
+  status: pending
+  render_paths:
+    svg: figures/ch08-fig04-node-lifecycle-cordon-drain.svg
+    png: figures/ch08-fig04-node-lifecycle-cordon-drain.png
+  source_path: figures/sources/ch08-fig04-node-lifecycle-cordon-drain.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch08-fig03-version-skew-window
+  status: pending
+  render_paths:
+    svg: figures/ch08-fig03-version-skew-window.svg
+    png: figures/ch08-fig03-version-skew-window.png
+  source_path: figures/sources/ch08-fig03-version-skew-window.html
+  validation_results:
+    label_count: fail
+    palette_conformance: fail
+    min_font_size: fail
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch08-zenith-consequences-not-rules
+  status: pending
+  render_paths:
+    svg: figures/ch08-zenith-consequences-not-rules.svg
+    png: figures/ch08-zenith-consequences-not-rules.png
+  source_path: figures/sources/ch08-zenith-consequences-not-rules.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null

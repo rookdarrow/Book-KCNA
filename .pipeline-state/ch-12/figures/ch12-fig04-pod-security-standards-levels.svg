@@ -1,0 +1,182 @@
+<svg viewBox="0 0 852 1432" role="img" aria-labelledby="ch12-fig04-title ch12-fig04-desc" xmlns="http://www.w3.org/2000/svg" width="900" height="1513">
+<title id="ch12-fig04-title">Pod Security Standards: levels, modes, namespace labels</title>
+<desc id="ch12-fig04-desc">A matrix of twelve securityContext fields checked cumulatively against the privileged, baseline, and restricted Pod Security levels; a list of the enforce, audit, and warn modes with what each does when a check fails; and the per-namespace label pattern with a worked example applying all three modes at two different levels on one namespace.</desc>
+<defs>
+  <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+    <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon>
+  </marker>
+</defs>
+
+<style>
+  .eyebrow-ink   { font-family:'Fira Mono',monospace; font-size:14px; font-weight:500; letter-spacing:0.10em; text-transform:uppercase; fill:#0B1E3B; }
+  .subtitle-acc  { font-family:'Fira Sans',sans-serif; font-size:16px; font-weight:600; fill:#B58B3E; text-transform:none; letter-spacing:normal; }
+  .col-header    { font-family:'Fira Mono',monospace; font-size:14px; font-weight:600; fill:#0B1E3B; }
+  .field-mono    { font-family:'Fira Mono',monospace; font-size:14px; font-weight:400; fill:#0B1E3B; }
+  .cell-sans     { font-family:'Fira Sans',sans-serif; font-size:14px; font-weight:400; fill:#0B1E3B; text-anchor:middle; }
+  .cell-sans-b   { font-family:'Fira Sans',sans-serif; font-size:14px; font-weight:600; fill:#0B1E3B; text-anchor:middle; }
+  .cell-na       { font-family:'Fira Sans',sans-serif; font-size:14px; font-weight:400; fill:#8A8D90; text-anchor:middle; }
+  .cumulative    { font-family:'Fira Mono',monospace; font-size:14px; font-weight:500; fill:#0B1E3B; }
+  .callout       { font-family:'Fira Sans',sans-serif; font-style:italic; font-size:16px; font-weight:400; fill:#1F4A4E; }
+  .mode-tag      { font-family:'Fira Mono',monospace; font-size:14px; font-weight:600; fill:#0B1E3B; text-anchor:middle; }
+  .mode-desc     { font-family:'Fira Sans',sans-serif; font-size:14px; font-weight:400; fill:#0B1E3B; }
+  .mode-desc-b   { font-family:'Fira Sans',sans-serif; font-size:14px; font-weight:700; fill:#0B1E3B; }
+  .code-mono     { font-family:'Fira Mono',monospace; font-size:14px; font-weight:400; fill:#0B1E3B; }
+  .code-mono-m   { font-family:'Fira Mono',monospace; font-size:14px; font-weight:400; fill:#1F4A4E; }
+  .legend-txt    { font-family:'Fira Mono',monospace; font-size:14px; font-weight:400; fill:#1F4A4E; }
+</style>
+
+<rect width="852" height="1432" fill="#F5EFE4"></rect>
+
+<!-- ================= PANEL 1 — THE LEVELS ================= -->
+<text x="24" y="44" class="eyebrow-ink">THE LEVELS <tspan>—</tspan> <tspan class="subtitle-acc">what gets checked</tspan></text>
+<line x1="24" y1="56" x2="828" y2="56" stroke="#0B1E3B" stroke-opacity="0.30" stroke-width="1"></line>
+
+<rect x="24" y="72" width="804" height="40" fill="#0B1E3B" fill-opacity="0.04"></rect>
+<text x="40" y="96" class="col-header">securityContext field</text>
+<text x="404" y="96" class="col-header" text-anchor="middle">privileged</text>
+<text x="576" y="96" class="col-header" text-anchor="middle">baseline</text>
+<text x="748" y="96" class="col-header" text-anchor="middle">restricted</text>
+<line x1="24" y1="112" x2="828" y2="112" stroke="#0B1E3B" stroke-opacity="0.30" stroke-width="1"></line>
+
+<line x1="312" y1="72" x2="312" y2="704" stroke="#0B1E3B" stroke-opacity="0.10" stroke-width="1"></line>
+<line x1="484" y1="72" x2="484" y2="704" stroke="#0B1E3B" stroke-opacity="0.10" stroke-width="1"></line>
+<line x1="656" y1="72" x2="656" y2="704" stroke="#0B1E3B" stroke-opacity="0.10" stroke-width="1"></line>
+
+<rect x="24" y="148" width="804" height="36" fill="#0B1E3B" fill-opacity="0.03"></rect>
+<rect x="24" y="220" width="804" height="36" fill="#0B1E3B" fill-opacity="0.03"></rect>
+<rect x="24" y="312" width="804" height="36" fill="#0B1E3B" fill-opacity="0.03"></rect>
+<rect x="24" y="404" width="804" height="56" fill="#0B1E3B" fill-opacity="0.03"></rect>
+<rect x="24" y="496" width="804" height="36" fill="#0B1E3B" fill-opacity="0.03"></rect>
+<rect x="24" y="588" width="804" height="116" fill="#0B1E3B" fill-opacity="0.03"></rect>
+
+<!-- row 1 — privileged: true -->
+<text x="40" y="132" class="field-mono">privileged: true</text>
+<text x="404" y="132" class="cell-sans">allowed</text>
+<text x="576" y="132" class="cell-sans-b">✗ forbidden</text>
+<text x="748" y="132" class="cell-sans-b">✗ forbidden</text>
+
+<!-- row 2 — hostNetwork/hostPID/hostIPC -->
+<text x="40" y="168" class="field-mono">hostNetwork/hostPID/hostIPC</text>
+<text x="404" y="168" class="cell-sans">allowed</text>
+<text x="576" y="168" class="cell-sans-b">✗ forbidden</text>
+<text x="748" y="168" class="cell-sans-b">✗ forbidden</text>
+
+<!-- row 3 — hostPath volumes -->
+<text x="40" y="204" class="field-mono">hostPath volumes</text>
+<text x="404" y="204" class="cell-sans">allowed</text>
+<text x="576" y="204" class="cell-sans-b">✗ forbidden</text>
+<text x="748" y="204" class="cell-sans-b">✗ forbidden</text>
+
+<!-- row 4 — hostPort -->
+<text x="40" y="240" class="field-mono">hostPort</text>
+<text x="404" y="240" class="cell-sans">allowed</text>
+<text x="576" y="240" class="cell-sans">restricted</text>
+<text x="748" y="240" class="cell-sans">restricted</text>
+
+<!-- row 5 — capabilities.add -->
+<text x="40" y="276" class="field-mono">capabilities.add</text>
+<text x="404" y="276" class="cell-sans">allowed</text>
+<text x="576" y="276" class="cell-sans">known list</text>
+<text x="748" y="276" class="cell-sans">only</text>
+<text x="748" y="296" class="cell-sans">NET_BIND_SERVICE</text>
+
+<!-- row 6 — capabilities.drop -->
+<text x="40" y="332" class="field-mono">capabilities.drop</text>
+<text x="404" y="332" class="cell-na">—</text>
+<text x="576" y="332" class="cell-na">—</text>
+<text x="748" y="332" class="cell-sans-b">must include ALL</text>
+
+<!-- row 7 — seccompProfile.type -->
+<text x="40" y="368" class="field-mono">seccompProfile.type</text>
+<text x="404" y="368" class="cell-sans">allowed</text>
+<text x="576" y="368" class="cell-sans">not Unconfined</text>
+<text x="748" y="368" class="cell-sans">RuntimeDefault or</text>
+<text x="748" y="388" class="cell-sans">Localhost</text>
+
+<!-- row 8 — appArmorProfile.type -->
+<text x="40" y="424" class="field-mono">appArmorProfile.type</text>
+<text x="404" y="424" class="cell-sans">allowed</text>
+<text x="576" y="424" class="cell-sans">RuntimeDefault or</text>
+<text x="576" y="444" class="cell-sans">Localhost</text>
+<text x="748" y="424" class="cell-sans">RuntimeDefault or</text>
+<text x="748" y="444" class="cell-sans">Localhost</text>
+
+<!-- row 9 — allowPrivilegeEscalation -->
+<text x="40" y="480" class="field-mono">allowPrivilegeEscalation</text>
+<text x="404" y="480" class="cell-sans">allowed</text>
+<text x="576" y="480" class="cell-na">—</text>
+<text x="748" y="480" class="cell-sans-b">must be false</text>
+
+<!-- row 10 — runAsNonRoot -->
+<text x="40" y="516" class="field-mono">runAsNonRoot</text>
+<text x="404" y="516" class="cell-na">—</text>
+<text x="576" y="516" class="cell-na">—</text>
+<text x="748" y="516" class="cell-sans-b">must be true</text>
+
+<!-- row 11 — runAsUser -->
+<text x="40" y="552" class="field-mono">runAsUser</text>
+<text x="404" y="552" class="cell-sans">any</text>
+<text x="576" y="552" class="cell-sans">any</text>
+<text x="748" y="552" class="cell-sans">must be non-zero</text>
+<text x="748" y="572" class="cell-sans">or unset</text>
+
+<!-- row 12 — volume types -->
+<text x="40" y="608" class="field-mono">volume types</text>
+<text x="404" y="608" class="cell-sans">any</text>
+<text x="576" y="608" class="cell-sans">any</text>
+<text x="748" y="608" class="cell-sans">safe list only</text>
+<text x="748" y="628" class="cell-sans">(configMap, csi,</text>
+<text x="748" y="648" class="cell-sans">emptyDir, secret,</text>
+<text x="748" y="668" class="cell-sans">projected, pvc,</text>
+<text x="748" y="688" class="cell-sans">…)</text>
+
+<line x1="24" y1="704" x2="828" y2="704" stroke="#0B1E3B" stroke-opacity="0.30" stroke-width="1"></line>
+
+<text x="24" y="732" class="cumulative">cumulative:  privileged ⊃ baseline ⊃ restricted</text>
+<text x="24" y="752" class="callout">restricted includes every baseline requirement,</text>
+<text x="24" y="772" class="callout">plus every row below it in this table.</text>
+
+<!-- ================= PANEL 2 — THE MODES ================= -->
+<text x="24" y="844" class="eyebrow-ink">THE MODES <tspan>—</tspan> <tspan class="subtitle-acc">what happens when a check fails</tspan></text>
+<line x1="24" y1="856" x2="828" y2="856" stroke="#0B1E3B" stroke-opacity="0.30" stroke-width="1"></line>
+
+<line x1="136" y1="892" x2="172" y2="892" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+<rect x="24" y="876" width="112" height="32" rx="4" fill="#F5EFE4" stroke="#0B1E3B" stroke-opacity="0.40" stroke-width="0.8"></rect>
+<text x="80" y="896" class="mode-tag">enforce</text>
+<text x="192" y="896" class="mode-desc">the Pod is <tspan class="mode-desc-b">REJECTED</tspan></text>
+
+<line x1="136" y1="932" x2="172" y2="932" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+<rect x="24" y="916" width="112" height="32" rx="4" fill="#F5EFE4" stroke="#0B1E3B" stroke-opacity="0.40" stroke-width="0.8"></rect>
+<text x="80" y="936" class="mode-tag">audit</text>
+<text x="192" y="936" class="mode-desc">recorded in the audit log; the Pod runs</text>
+
+<line x1="136" y1="972" x2="172" y2="972" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+<rect x="24" y="956" width="112" height="32" rx="4" fill="#F5EFE4" stroke="#0B1E3B" stroke-opacity="0.40" stroke-width="0.8"></rect>
+<text x="80" y="976" class="mode-tag">warn</text>
+<text x="192" y="976" class="mode-desc">user-facing warning; the Pod runs</text>
+
+<!-- ================= PANEL 3 — APPLIED PER NAMESPACE ================= -->
+<text x="24" y="1044" class="eyebrow-ink">APPLIED PER NAMESPACE, BY LABEL</text>
+<line x1="24" y1="1056" x2="828" y2="1056" stroke="#0B1E3B" stroke-opacity="0.30" stroke-width="1"></line>
+
+<rect x="24" y="1072" width="804" height="40" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-opacity="0.15" stroke-width="1"></rect>
+<text x="40" y="1096" class="code-mono">pod-security.kubernetes.io/<tspan class="code-mono-m">&lt;MODE&gt;</tspan>: <tspan class="code-mono-m">&lt;LEVEL&gt;</tspan></text>
+
+<rect x="24" y="1128" width="804" height="84" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-opacity="0.15" stroke-width="1"></rect>
+<text x="40" y="1152" class="code-mono">pod-security.kubernetes.io/enforce:<tspan x="440" class="code-mono">baseline</tspan></text>
+<text x="40" y="1172" class="code-mono">pod-security.kubernetes.io/warn:<tspan x="440" class="code-mono">restricted</tspan></text>
+<text x="40" y="1192" class="code-mono">pod-security.kubernetes.io/audit:<tspan x="440" class="code-mono">restricted</tspan></text>
+
+<text x="24" y="1252" class="callout">▲ all three, on one namespace, at two different levels.</text>
+<text x="24" y="1272" class="callout">This is not a contradiction. It is a migration.</text>
+
+<!-- ================= LEGEND ================= -->
+<line x1="24" y1="1324" x2="828" y2="1324" stroke="#0B1E3B" stroke-opacity="0.12" stroke-width="0.8"></line>
+<text x="24" y="1344" class="eyebrow-ink">LEGEND</text>
+
+<text x="24" y="1368" class="legend-txt">✗ = forbidden outright</text>
+<text x="24" y="1392" class="legend-txt">— = no requirement at that level</text>
+<rect x="24" y="1404" width="14" height="12" rx="2" fill="#B58B3E" fill-opacity="0.10" stroke="#B58B3E" stroke-width="1"></rect>
+<text x="48" y="1416" class="legend-txt">level axis vs. mode axis — the two things to read first</text>
+
+</svg>

@@ -1,0 +1,1 @@
+Two mirrored panels sharing one cluster boundary. In push, a pipeline outside the boundary holds the key and reaches inward to the API server. In pull, a repository outside the boundary holds no key while an agent inside the boundary holds the key, reaching outward to fetch from the repository and inward to the API server.

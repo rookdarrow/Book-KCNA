@@ -90,7 +90,7 @@ Draw a left-to-right process diagram in two horizontal bands separated by a dash
 ```yaml-figure-spec
 anchor_id: ch07-fig01-filter-score-bind
 diagram_type: flowchart
-source_ascii: |
+source_ascii: |3
      UNBOUND POD
      ┌───────────────┐
      │ spec.nodeName │   (empty — this is what the scheduler watches for)
@@ -195,7 +195,7 @@ Draw a 2-row × 3-column grid of equal cells. Above the columns, run a horizonta
 ```yaml-figure-spec
 anchor_id: ch07-fig02-nodeselector-vs-affinity
 diagram_type: other
-source_ascii: |
+source_ascii: |6
                       EXPRESSIVENESS  ────────────────────────────────▶
 
                     nodeSelector          required node        preferred node
@@ -296,7 +296,7 @@ Two stacked halves in one figure. **Upper half:** a wide box spanning the figure
 ```yaml-figure-spec
 anchor_id: ch07-fig03-taints-tolerations-effects
 diagram_type: other
-source_ascii: |
+source_ascii: |5
           ┌────────────────────────────────────────────────┐
           │  NODE                                          │
           │  taint:  key=value:EFFECT   ───▶  repels       │  refusal originates HERE

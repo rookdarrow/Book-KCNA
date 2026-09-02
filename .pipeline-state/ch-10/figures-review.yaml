@@ -1,0 +1,72 @@
+chapter: 10
+book: kcna
+generated: '2026-09-01T17:14:23+00:00'
+figures:
+- anchor_id: ch10-fig02-ingress-fanout-and-name-based-hosts
+  status: pending
+  render_paths:
+    svg: figures/ch10-fig02-ingress-fanout-and-name-based-hosts.svg
+    png: figures/ch10-fig02-ingress-fanout-and-name-based-hosts.png
+  source_path: figures/sources/ch10-fig02-ingress-fanout-and-name-based-hosts.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch10-fig03-gateway-api-role-split
+  status: pending
+  render_paths:
+    svg: figures/ch10-fig03-gateway-api-role-split.svg
+    png: figures/ch10-fig03-gateway-api-role-split.png
+  source_path: figures/sources/ch10-fig03-gateway-api-role-split.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch10-fig04-networkpolicy-additive-selectors
+  status: pending
+  render_paths:
+    svg: figures/ch10-fig04-networkpolicy-additive-selectors.svg
+    png: figures/ch10-fig04-networkpolicy-additive-selectors.png
+  source_path: figures/sources/ch10-fig04-networkpolicy-additive-selectors.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch10-zenith-nothing-without-a-controller
+  status: pending
+  render_paths:
+    svg: figures/ch10-zenith-nothing-without-a-controller.svg
+    png: figures/ch10-zenith-nothing-without-a-controller.png
+  source_path: figures/sources/ch10-zenith-nothing-without-a-controller.html
+  validation_results:
+    label_count: pass
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null

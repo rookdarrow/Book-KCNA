@@ -1,0 +1,106 @@
+chapter: 5
+book: kcna
+generated: '2026-09-01T07:27:15+00:00'
+figures:
+- anchor_id: ch05-fig01-pod-shared-network-namespace
+  status: pending
+  render_paths:
+    svg: figures/ch05-fig01-pod-shared-network-namespace.svg
+    png: figures/ch05-fig01-pod-shared-network-namespace.png
+  source_path: figures/sources/ch05-fig01-pod-shared-network-namespace.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch05-fig03-init-containers-sequence
+  status: pending
+  render_paths:
+    svg: figures/ch05-fig03-init-containers-sequence.svg
+    png: figures/ch05-fig03-init-containers-sequence.png
+  source_path: figures/sources/ch05-fig03-init-containers-sequence.html
+  validation_results:
+    label_count: pass
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch05-fig02-pod-phases-and-container-states
+  status: pending
+  render_paths:
+    svg: figures/ch05-fig02-pod-phases-and-container-states.svg
+    png: figures/ch05-fig02-pod-phases-and-container-states.png
+  source_path: figures/sources/ch05-fig02-pod-phases-and-container-states.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch05-fig04-three-probes-compared
+  status: pending
+  render_paths:
+    svg: figures/ch05-fig04-three-probes-compared.svg
+    png: figures/ch05-fig04-three-probes-compared.png
+  source_path: figures/sources/ch05-fig04-three-probes-compared.html
+  validation_results:
+    label_count: pass
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch05-fig05-requests-limits-qos-classes
+  status: pending
+  render_paths:
+    svg: figures/ch05-fig05-requests-limits-qos-classes.svg
+    png: figures/ch05-fig05-requests-limits-qos-classes.png
+  source_path: figures/sources/ch05-fig05-requests-limits-qos-classes.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch05-zenith-smallest-deployable-unit
+  status: pending
+  render_paths:
+    svg: figures/ch05-zenith-smallest-deployable-unit.svg
+    png: figures/ch05-zenith-smallest-deployable-unit.png
+  source_path: figures/sources/ch05-zenith-smallest-deployable-unit.html
+  validation_results:
+    label_count: pass
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null

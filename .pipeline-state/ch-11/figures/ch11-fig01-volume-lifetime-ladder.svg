@@ -1,0 +1,53 @@
+<svg viewBox="0 0 720 960" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch11-fig01-title ch11-fig01-desc" width="760" height="1014">
+      <title id="ch11-fig01-title">Kubernetes Storage Lifetime Ladder</title>
+      <desc id="ch11-fig01-desc">Three nested rectangles show widening Kubernetes storage lifetimes: an innermost container writable layer that survives nothing, a middle Pod-scoped volume that survives a container restart, and an outermost cluster-scoped storage boundary that survives the Pod's deletion, with the two lifecycle boundaries marked where data below the line is discarded.</desc>
+
+      <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon>
+        </marker>
+        <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#B58B3E"></polygon>
+        </marker>
+        <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon>
+        </marker>
+      </defs>
+
+      <rect width="100%" height="100%" fill="#F5EFE4"></rect>
+
+      <!-- RING 3 — CLUSTER-SCOPED STORAGE (outermost) -->
+      <rect x="40" y="64" width="640" height="856" rx="8" fill="rgba(11,30,59,0.02)" stroke="rgba(31,74,78,0.35)" stroke-width="1"></rect>
+      <rect x="60" y="56" width="380" height="16" fill="#F5EFE4"></rect>
+      <text x="68" y="68" fill="#1F4A4E" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" letter-spacing="0.12em">CLUSTER-SCOPED STORAGE — RUNG 3</text>
+      <text x="68" y="104" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">survives the Pod’s deletion</text>
+
+      <!-- RING 2 — POD-SCOPED VOLUME -->
+      <rect x="96" y="156" width="528" height="504" rx="8" fill="rgba(11,30,59,0.035)" stroke="rgba(11,30,59,0.45)" stroke-width="1"></rect>
+      <rect x="116" y="148" width="340" height="16" fill="#F5EFE4"></rect>
+      <text x="124" y="160" fill="#0B1E3B" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" letter-spacing="0.12em">POD-SCOPED VOLUME — RUNG 2</text>
+      <text x="124" y="196" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">survives a container restart</text>
+
+      <!-- RING 1 — CONTAINER WRITABLE LAYER (innermost) -->
+      <rect x="152" y="248" width="416" height="268" rx="8" fill="rgba(11,30,59,0.05)" stroke="#0B1E3B" stroke-width="1.2"></rect>
+      <rect x="172" y="240" width="380" height="16" fill="#F5EFE4"></rect>
+      <text x="180" y="252" fill="#0B1E3B" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" letter-spacing="0.12em">CONTAINER WRITABLE LAYER — RUNG 1</text>
+      <text x="180" y="288" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">survives nothing</text>
+
+      <!-- BOUNDARY 1 — CONTAINER RESTART (focal) -->
+      <path d="M 152 560 L 568 560" fill="none" stroke="#B58B3E" stroke-width="1.2" stroke-dasharray="6,4"></path>
+      <path d="M 200 560 L 200 516" fill="none" stroke="#B58B3E" stroke-width="1.2" marker-end="url(#arrow-accent)"></path>
+      <rect x="152" y="528" width="300" height="20" fill="#F5EFE4"></rect>
+      <text x="160" y="544" fill="#B58B3E" font-size="14" font-weight="400" font-family="'Fira Mono', monospace" letter-spacing="0.04em">BOUNDARY: CONTAINER RESTART</text>
+      <text x="160" y="580" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">(data below this line is discarded)</text>
+
+      <!-- BOUNDARY 2 — POD CEASES TO EXIST (focal) -->
+      <path d="M 96 740 L 624 740" fill="none" stroke="#B58B3E" stroke-width="1.2" stroke-dasharray="6,4"></path>
+      <path d="M 192 740 L 192 660" fill="none" stroke="#B58B3E" stroke-width="1.2" marker-end="url(#arrow-accent)"></path>
+      <rect x="96" y="708" width="320" height="20" fill="#F5EFE4"></rect>
+      <text x="104" y="724" fill="#B58B3E" font-size="14" font-weight="400" font-family="'Fira Mono', monospace" letter-spacing="0.04em">BOUNDARY: POD CEASES TO EXIST</text>
+      <text x="104" y="760" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">(data below this line is discarded)</text>
+
+      <!-- Closing note — editorial callout -->
+      <text x="360" y="832" fill="#0B1E3B" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif" text-anchor="middle">nothing in a Pod’s lifecycle crosses this outer boundary</text>
+    </svg>

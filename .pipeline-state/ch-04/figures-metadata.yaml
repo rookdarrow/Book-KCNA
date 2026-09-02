@@ -1,0 +1,227 @@
+chapter: 4
+book: kcna
+generated: '2026-09-01T08:02:58+00:00'
+figures:
+- anchor_id: ch04-fig01-object-anatomy-spec-status
+  source_hash: dd4e5325806581d448dc0d36dd0274032622db165d24769e76eaf0bb297f8f43
+  output_hash:
+    svg: 3bb7e24da9da5a0b2064c0a3d3e01d045aab305fd01b566521e134e9f14161fd
+    png: 15f38a78b6de60b4549b080ac8aa145e3bd1a9c39bc73f5a1d767ea949627545
+  validations:
+    label_count:
+      result: fail
+      value: 21
+      max: 7
+      reason: 21 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1240
+      - 1716
+    aspect_ratio:
+      result: pass
+      value: 1.38
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 282
+  alt_text: Two stacked panels split by a heavy horizontal line labelled authorship
+    boundary. The upper panel, headed YOU AUTHOR THIS, lists apiVersion, kind, metadata
+    with nested name, uid and optional namespace, and spec. The lower panel, headed
+    THE SYSTEM AUTHORS THIS, contains only status.
+- anchor_id: ch04-fig02-apply-round-trip
+  source_hash: 78379cc12db7139fca91d28f8f7d8653e0b5ee86aa7c8908b17daacd8b51c9a0
+  output_hash:
+    svg: c0a42d5c6e6d20598c1a83cbe4279b09bb732ba894016bf19b854fa27b2bf944
+    png: 7fd5ea160db8541b84b9513c5965e4fd75c03c5311978988f5e2bfbf86d7900a
+  validations:
+    label_count:
+      result: fail
+      value: 18
+      max: 7
+      reason: 18 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1120
+      - 1318
+    aspect_ratio:
+      result: pass
+      value: 1.18
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 312
+  alt_text: A vertical flow from manifest.yaml through kubectl apply into kube-apiserver,
+    which writes the record to etcd. A controller watches the API server, compares
+    spec against status, acts when they differ, and reality changes so status is updated;
+    an arrow returns to the compare step, forming a loop that never ends.
+- anchor_id: ch04-fig04-namespaced-vs-cluster-scoped
+  source_hash: 2f939be9ba66f689601e4912b40dcb8eb79500e26d3d2079c5306e6d04dc99e0
+  output_hash:
+    svg: b3c3c693a86192c3ff16aebd05b8cc127e5b94c7c1ca281d538468d94ca9a4e3
+    png: d0fcaa6907d341c6ac0b2a763468780894194a2755190203d25b442826449747
+  validations:
+    label_count:
+      result: fail
+      value: 31
+      max: 7
+      reason: 31 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 960
+      - 1120
+    aspect_ratio:
+      result: pass
+      value: 1.17
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 305
+  alt_text: 'A cluster boundary containing Node, PersistentVolume, StorageClass and
+    Namespace in its outer region, and two side-by-side namespace boxes, team-a and
+    team-b, each holding an identical set of four objects: a Deployment and Service
+    both named database, a ConfigMap named settings, and a Secret named creds.'
+- anchor_id: ch04-fig05-configmap-secret-contrast
+  source_hash: 6c45a267df88f346f63e9e34c0ef2b87c989f748131edd5f89be7c9b539cc1f0
+  output_hash:
+    svg: cb7340546bc4837f909d2e849d344baad98211f7bbf3e8ed3207615481fff992
+    png: 3445142f38dff7498da241be291ec980574c463b689b0cd3c86b79cc9a8920b2
+  validations:
+    label_count:
+      result: fail
+      value: 39
+      max: 7
+      reason: 39 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1360
+      - 1456
+    aspect_ratio:
+      result: pass
+      value: 1.07
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 233
+  alt_text: A four-row comparison of ConfigMap and Secret covering intended contents,
+    how a Pod consumes them, how they are stored, and what each adds. The storage
+    row reads unencrypted in etcd for both, with by default noted on the Secret side.
+- anchor_id: ch04-fig03-labels-selectors-join
+  source_hash: c98415bf907d9af7a50872f64c56ae0afc94c00abf25f24aee3ada86f7243eb4
+  output_hash:
+    svg: a11d5b71a86a24fa878308f8fc03ce295173fd320fd722afd3effdfdeadb2b9e
+    png: ec021ffddd06bdc6bf7fb79b20f51003d9e023c3918de6f3559ec892e6df4d0a
+  validations:
+    label_count:
+      result: pass
+      value: 7
+      max: 7
+      reason: ''
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 880
+      - 1114
+    aspect_ratio:
+      result: pass
+      value: 1.27
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 315
+  alt_text: 'Four Pod cards labelled A through D, each carrying a tier and an env
+    label. Below them, four selectors resolve to sets: tier equals fe gives A and
+    B; env equals prod gives A and C; env in prod or qa also gives A and C; tier equals
+    be and env equals prod gives C alone. Pod A appears in three sets and Pod D in
+    none.'
+- anchor_id: ch04-zenith-declaration-not-order
+  source_hash: 82ad1739d37ea4da6e73a277fa94548bbc61de256a7379e3ab155dcd37d9044f
+  output_hash:
+    svg: 7dbf4599c96945d5ebe075178da4fb4471e91c76b3cad2c7b07914cd19303f2e
+    png: 94e3ac3a9a2e72cfed230dcfd53a3e87689350d563f9f583412b46869f9e0fd2
+  validations:
+    label_count:
+      result: fail
+      value: 19
+      max: 7
+      reason: 19 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1040
+      - 1114
+    aspect_ratio:
+      result: pass
+      value: 1.07
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 396
+  alt_text: 'A single box labelled THE FILED DECLARATION, what should be true, connected
+    to five separate readers below it: a scheduler, a controller, a kubelet, and two
+    more controllers, each annotated as consulting the record at a different time
+    — 09:00, 09:04, 09:04, 11:20 and 03:17. Text beneath reads: no hand receives an
+    instruction; every hand reads the record, observes the world, and closes the gap.'

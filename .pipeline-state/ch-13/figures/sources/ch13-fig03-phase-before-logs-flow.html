@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Triage in order: scope, phase, conditions, events, logs</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;700&family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Fira+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --color-paper:  #F5EFE4;
+    --color-ink:    #0B1E3B;
+    --color-muted:  #1F4A4E;
+    --color-soft:   #8A8D90;
+    --color-accent: #B58B3E;
+    --font-sans: 'Fira Sans', system-ui, sans-serif;
+    --font-slab: 'Roboto Slab', serif;
+    --font-mono: 'Fira Mono', ui-monospace, monospace;
+  }
+  body {
+    font-family: var(--font-sans);
+    background: var(--color-paper);
+    color: var(--color-ink);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 2rem;
+  }
+  .frame { max-width: 640px; width: 100%; }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    margin-bottom: 0.5rem;
+  }
+  h1 {
+    font-family: var(--font-slab);
+    font-size: clamp(1.375rem, 2vw + 0.75rem, 1.75rem);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    color: var(--color-ink);
+    margin-bottom: 1.5rem;
+  }
+  svg { width: 100%; display: block; }
+</style>
+</head>
+<body>
+<div class="frame">
+  <p class="eyebrow">Flowchart &middot; Kubernetes Troubleshooting</p>
+  <h1>Triage in order: scope, phase, conditions, events, logs</h1>
+
+  <svg viewBox="0 0 720 1064" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch13-fig03-phase-before-logs-flow-title ch13-fig03-phase-before-logs-flow-desc">
+    <title id="ch13-fig03-phase-before-logs-flow-title">Kubernetes pod triage: five-stage command sequence</title>
+    <desc id="ch13-fig03-phase-before-logs-flow-desc">A five-stage vertical flowchart for Kubernetes pod triage: scope, phase, conditions, events, and logs, each stage listing its kubectl commands and the question it answers, with logs placed last because it is only meaningful once you know the container actually ran.</desc>
+    <defs>
+      <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"/></marker>
+      <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#B58B3E"/></marker>
+      <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"/></marker>
+    </defs>
+
+    <rect width="100%" height="100%" fill="#F5EFE4"/>
+
+    <!-- Arrows (behind boxes). All endpoints share x=360, so straight verticals are correct per the connector rules. -->
+    <line x1="360" y1="148" x2="360" y2="176" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
+    <line x1="360" y1="352" x2="360" y2="380" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
+    <line x1="360" y1="556" x2="360" y2="584" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
+    <line x1="360" y1="760" x2="360" y2="788" stroke="#B58B3E" stroke-width="1.4" marker-end="url(#arrow-accent)"/>
+
+    <!-- Stage 1: SCOPE -->
+    <rect x="40" y="24" width="640" height="124" rx="6" fill="rgba(11,30,59,0.03)" stroke="#0B1E3B" stroke-width="1"/>
+    <rect x="64" y="40" width="40" height="24" rx="2" fill="none" stroke="#0B1E3B" stroke-width="0.8" stroke-opacity="0.4"/>
+    <text x="84" y="56" fill="#1F4A4E" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.06em">01</text>
+    <text x="120" y="58" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif">SCOPE</text>
+    <line x1="64" y1="80" x2="656" y2="80" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+    <text x="64" y="104" fill="#0B1E3B" font-size="14" font-weight="400" font-family="'Fira Mono', monospace">kubectl config current-context</text>
+    <text x="64" y="124" fill="#1F4A4E" font-size="14" font-weight="400" font-family="'Fira Sans', sans-serif">Right cluster? Right namespace?</text>
+
+    <!-- Stage 2: PHASE -->
+    <rect x="40" y="176" width="640" height="176" rx="6" fill="rgba(11,30,59,0.03)" stroke="#0B1E3B" stroke-width="1"/>
+    <rect x="64" y="192" width="40" height="24" rx="2" fill="none" stroke="#0B1E3B" stroke-width="0.8" stroke-opacity="0.4"/>
+    <text x="84" y="208" fill="#1F4A4E" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.06em">02</text>
+    <text x="120" y="210" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif">PHASE</text>
+    <line x1="64" y1="232" x2="656" y2="232" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+    <text x="64" y="256" fill="#0B1E3B" font-size="14" font-weight="400" font-family="'Fira Mono', monospace">kubectl get pods</text>
+    <text x="64" y="276" fill="#1F4A4E" font-size="14" font-weight="400" font-family="'Fira Sans', sans-serif">Pending? Running? Restarts &gt; 0?</text>
+    <text x="64" y="308" fill="#0B1E3B" font-size="14" font-weight="400" font-family="'Fira Mono', monospace">kubectl get pod &lt;name&gt; -o wide</text>
+    <text x="64" y="328" fill="#1F4A4E" font-size="14" font-weight="400" font-family="'Fira Sans', sans-serif">Which node? Which IP?</text>
+
+    <!-- Stage 3: CONDITIONS -->
+    <rect x="40" y="380" width="640" height="176" rx="6" fill="rgba(11,30,59,0.03)" stroke="#0B1E3B" stroke-width="1"/>
+    <rect x="64" y="396" width="40" height="24" rx="2" fill="none" stroke="#0B1E3B" stroke-width="0.8" stroke-opacity="0.4"/>
+    <text x="84" y="412" fill="#1F4A4E" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.06em">03</text>
+    <text x="120" y="414" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif">CONDITIONS</text>
+    <line x1="64" y1="436" x2="656" y2="436" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+    <text x="64" y="460" fill="#0B1E3B" font-size="14" font-weight="400" font-family="'Fira Mono', monospace">kubectl describe pod &lt;name&gt;</text>
+    <text x="64" y="480" fill="#1F4A4E" font-size="14" font-weight="400" font-family="'Fira Sans', sans-serif">Container state + Reason.</text>
+    <text x="64" y="512" fill="#0B1E3B" font-size="14" font-weight="400" font-family="'Fira Mono', monospace">kubectl describe node &lt;node&gt;</text>
+    <text x="64" y="532" fill="#1F4A4E" font-size="14" font-weight="400" font-family="'Fira Sans', sans-serif">Node conditions, if suspect.</text>
+
+    <!-- Stage 4: EVENTS -->
+    <rect x="40" y="584" width="640" height="176" rx="6" fill="rgba(11,30,59,0.03)" stroke="#0B1E3B" stroke-width="1"/>
+    <rect x="64" y="600" width="40" height="24" rx="2" fill="none" stroke="#0B1E3B" stroke-width="0.8" stroke-opacity="0.4"/>
+    <text x="84" y="616" fill="#1F4A4E" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.06em">04</text>
+    <text x="120" y="618" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif">EVENTS</text>
+    <line x1="64" y1="640" x2="656" y2="640" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+    <text x="64" y="664" fill="#0B1E3B" font-size="14" font-weight="400" font-family="'Fira Mono', monospace">kubectl events --for pod/&lt;name&gt;</text>
+    <text x="64" y="684" fill="#1F4A4E" font-size="14" font-weight="400" font-family="'Fira Sans', sans-serif">What did the components SAY?</text>
+    <text x="64" y="716" fill="#0B1E3B" font-size="14" font-weight="400" font-family="'Fira Mono', monospace">kubectl get events --sort-by=...</text>
+    <text x="64" y="736" fill="#1F4A4E" font-size="14" font-weight="400" font-family="'Fira Sans', sans-serif">Chronology, when object unknown.</text>
+
+    <!-- Stage 5: LOGS (focal) -->
+    <rect x="40" y="788" width="640" height="176" rx="6" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"/>
+    <rect x="64" y="804" width="40" height="24" rx="2" fill="none" stroke="#B58B3E" stroke-width="0.8" stroke-opacity="0.6"/>
+    <text x="84" y="820" fill="#B58B3E" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.06em">05</text>
+    <text x="120" y="822" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif">LOGS</text>
+    <line x1="64" y1="844" x2="656" y2="844" stroke="rgba(181,139,62,0.30)" stroke-width="0.8"/>
+    <text x="64" y="868" fill="#0B1E3B" font-size="14" font-weight="400" font-family="'Fira Mono', monospace">kubectl logs &lt;name&gt; -c &lt;container&gt;</text>
+    <text x="64" y="888" fill="#0B1E3B" font-size="14" font-weight="400" font-family="'Fira Mono', monospace">kubectl logs &lt;name&gt; --previous</text>
+    <text x="64" y="916" fill="#0B1E3B" font-size="16" font-style="italic" font-weight="400" font-family="'Fira Sans', sans-serif">Only meaningful once you know</text>
+    <text x="64" y="936" fill="#0B1E3B" font-size="16" font-style="italic" font-weight="400" font-family="'Fira Sans', sans-serif">the container actually ran.</text>
+
+    <!-- Legend -->
+    <line x1="40" y1="992" x2="680" y2="992" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+    <text x="64" y="1008" fill="#1F4A4E" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" letter-spacing="0.14em">LEGEND</text>
+
+    <rect x="64" y="1024" width="28" height="24" rx="6" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"/>
+    <text x="104" y="1040" fill="#1F4A4E" font-size="14" font-weight="400" font-family="'Fira Sans', sans-serif">Accent = read this step last</text>
+
+    <text x="340" y="1040" fill="#0B1E3B" font-size="14" font-weight="500" font-family="'Fira Mono', monospace">kubectl</text>
+    <text x="415" y="1040" fill="#1F4A4E" font-size="14" font-weight="400" font-family="'Fira Sans', sans-serif">= exact command to run</text>
+  </svg>
+</div>
+</body>
+</html>

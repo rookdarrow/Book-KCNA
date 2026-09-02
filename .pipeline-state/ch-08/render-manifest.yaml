@@ -1,0 +1,381 @@
+chapter: 8
+book: kcna
+generated: '2026-09-01T06:20:13+00:00'
+figures:
+- anchor_id: ch08-fig01-kubectl-verb-resource-grammar
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch08-fig01-kubectl-verb-resource-grammar.html
+  output_paths:
+    svg: figures/ch08-fig01-kubectl-verb-resource-grammar.svg
+    png: figures/ch08-fig01-kubectl-verb-resource-grammar.png
+    alt: figures/ch08-fig01-kubectl-verb-resource-grammar.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: other
+  figure_spec:
+    anchor_id: ch08-fig01-kubectl-verb-resource-grammar
+    diagram_type: other
+    source_ascii: "kubectl   [command]        [TYPE]        [NAME]      [flags]\n\
+      \          ─────────        ──────        ──────      ───────\n\nkubectl   cordon\
+      \                         node-7\nkubectl   get              pods\nkubectl \
+      \  apply                                      -f deploy.yaml\nkubectl   scale\
+      \            deployment    web         --replicas=5\nkubectl   describe    \
+      \     node          worker-3\n\n                              ▲            \
+      \ ▲\n                  case-INsensitive     case-SENSITIVE\n               \
+      \   pod = pods = po      node-7 ≠ Node-7\n"
+    vendor_terms:
+    - kubectl
+    complexity_hint:
+      node_count: 25
+      edge_count: 2
+      label_count: 27
+    pedagogy:
+      part_18_criteria_met:
+      - spatial_structure
+      - distinguishing_alternatives
+      - fixed_point
+      learning_outcome: Decompose any kubectl command into its four slots, and state
+        which slots are case-sensitive
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: 'The paired annotations under the TYPE and NAME
+        columns: case-INsensitive versus case-SENSITIVE'
+    accessibility:
+      alt_text_seed: A five-column table aligning five kubectl commands on the slots
+        kubectl, command, TYPE, NAME and flags; some cells are empty because those
+        commands omit those slots; two arrows below point up at the TYPE column labelled
+        case-insensitive and the NAME column labelled case-sensitive
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Kubernetes command syntax redrawn as an original alignment grid; no vendor
+        artwork or icons reproduced.
+- anchor_id: ch08-fig02-three-api-gates
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch08-fig02-three-api-gates.html
+  output_paths:
+    svg: figures/ch08-fig02-three-api-gates.svg
+    png: figures/ch08-fig02-three-api-gates.png
+    alt: figures/ch08-fig02-three-api-gates.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: flowchart
+  figure_spec:
+    anchor_id: ch08-fig02-three-api-gates
+    diagram_type: flowchart
+    source_ascii: "               gate 1              gate 2              gate 3\n\
+      \          ┌──────────────┐   ┌──────────────┐   ┌──────────────┐\nrequest ─►│Authentication├──►│Authorization\
+      \ ├──►│  Admission   ├──► persisted\n          └──────┬───────┘   └──────┬───────┘\
+      \   └──┬───────┬───┘     to etcd\n                 │                  │    \
+      \         │       │              ▲\n                 ▼                  ▼  \
+      \           ▼       │              │\n              REJECT             REJECT\
+      \        REJECT     └── REWRITTEN ─┘\n"
+    vendor_terms:
+    - etcd
+    - kube-apiserver
+    complexity_hint:
+      node_count: 8
+      edge_count: 8
+      label_count: 11
+    pedagogy:
+      part_18_criteria_met:
+      - temporal_structure
+      - distinguishing_alternatives
+      - fixed_point
+      learning_outcome: Trace a request through authentication, authorization and
+        admission in order, and identify admission as the only gate that can modify
+        the request
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: The REWRITTEN return path from gate three that
+        rejoins the forward flow
+    accessibility:
+      alt_text_seed: Three boxes in a row labelled Authentication, Authorization and
+        Admission, with a request arrow entering on the left and persistence to etcd
+        on the right; each box has a downward arrow to a REJECT outcome, and the Admission
+        box has an additional arrow labelled REWRITTEN that loops back into the forward
+        path
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Original depiction of the documented API access-control sequence; no
+        vendor artwork reproduced.
+- anchor_id: ch08-fig05-quota-vs-limitrange
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch08-fig05-quota-vs-limitrange.html
+  output_paths:
+    svg: figures/ch08-fig05-quota-vs-limitrange.svg
+    png: figures/ch08-fig05-quota-vs-limitrange.png
+    alt: figures/ch08-fig05-quota-vs-limitrange.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: component_diagram
+  figure_spec:
+    anchor_id: ch08-fig05-quota-vs-limitrange
+    diagram_type: component_diagram
+    source_ascii: "     ResourceQuota                          LimitRange\n┌──────────────────────────┐\
+      \          (no namespace boundary)\n│ namespace: team-atlas    │\n│  ┌────┐┌────┐┌────┐┌────┐│\
+      \           ┌─────┐┌─────┐┌─────┐┌─────┐\n│  │Pod ││Pod ││Pod ││Pod ││     \
+      \      │ Pod ││ Pod ││ Pod ││ Pod │\n│  └────┘└────┘└────┘└────┘│          \
+      \ │min ≤││min ≤││min ≤││min ≤│\n│  ═══ namespace total ═══ │           │≤ max││≤\
+      \ max││≤ max││≤ max│\n│  ═══════ AT CAP ════════ │           └─────┘└─────┘└─────┘└─────┘\n\
+      └──────────────────────────┘\n          ▲                                  \
+      \     ▲\n   5th Pod arrives:                    5th Pod arrives declaring\n\
+      \     REJECTED                          nothing:  ACCEPTED — with\nthe namespace\
+      \ total is reached           defaults FILLED IN\n"
+    vendor_terms:
+    - ResourceQuota
+    - LimitRange
+    - Pod
+    - namespace
+    complexity_hint:
+      node_count: 12
+      edge_count: 2
+      label_count: 14
+    pedagogy:
+      part_18_criteria_met:
+      - distinguishing_alternatives
+      - spatial_structure
+      - fixed_point
+      learning_outcome: Distinguish ResourceQuota from LimitRange by scope — namespace
+        aggregate versus individual object — and by failure mode
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: The namespace boundary present on the left panel
+        and conspicuously absent on the right
+    accessibility:
+      alt_text_seed: 'Two panels compared side by side: on the left, four Pods enclosed
+        in a bordered namespace box with a namespace total bar marked at cap, and
+        a fifth arriving Pod rejected; on the right, four unenclosed Pods each carrying
+        its own minimum and maximum bounds, and a fifth arriving Pod that declares
+        nothing being accepted with defaults filled in'
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Original scope comparison of two Kubernetes API objects; no vendor artwork
+        reproduced.
+- anchor_id: ch08-fig04-node-lifecycle-cordon-drain
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch08-fig04-node-lifecycle-cordon-drain.html
+  output_paths:
+    svg: figures/ch08-fig04-node-lifecycle-cordon-drain.svg
+    png: figures/ch08-fig04-node-lifecycle-cordon-drain.png
+    alt: figures/ch08-fig04-node-lifecycle-cordon-drain.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: state_machine
+  figure_spec:
+    anchor_id: ch08-fig04-node-lifecycle-cordon-drain
+    diagram_type: state_machine
+    source_ascii: " SCHEDULABLE            CORDONED             DRAINED          \
+      \ SCHEDULABLE\n┌────────────┐        ┌────────────┐      ┌────────────┐    \
+      \  ┌────────────┐\n│ [A][B][C]  │        │ [A][B][C]  │      │            │\
+      \      │            │\n│            │──────► │            │─────►│  (empty)\
+      \   │─────►│            │\n└────────────┘ cordon └────────────┘ drain└────────────┘uncord└────────────┘\n\
+      \      ▲                     ✗                                        ▲\n  \
+      \ new Pod              new Pod                                   new Pod\n \
+      \  admitted            turned away                                admitted\n\
+      \n      A, B and C are UNCHANGED between panel 1 and panel 2.\n      They are\
+      \ still running. That is what cordon does and does not do.\n"
+    vendor_terms:
+    - kubectl
+    - Pod
+    - Node
+    complexity_hint:
+      node_count: 10
+      edge_count: 6
+      label_count: 13
+    pedagogy:
+      part_18_criteria_met:
+      - temporal_structure
+      - distinguishing_alternatives
+      - fixed_point
+      learning_outcome: Predict what happens to the Pods on a node at each step of
+        cordon, drain and uncordon
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: Pods A, B and C rendered identically in the SCHEDULABLE
+        and CORDONED panels
+    accessibility:
+      alt_text_seed: Four node panels in a row labelled schedulable, cordoned, drained
+        and schedulable, connected by transitions labelled cordon, drain and uncordon;
+        the same three Pods A, B and C appear unchanged in the first two panels and
+        are gone from the third, while an arriving Pod is admitted in panels one and
+        four and turned away in panel two
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Original four-panel depiction of the documented node maintenance sequence;
+        no vendor artwork reproduced.
+- anchor_id: ch08-fig03-version-skew-window
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch08-fig03-version-skew-window.html
+  output_paths:
+    svg: figures/ch08-fig03-version-skew-window.svg
+    png: figures/ch08-fig03-version-skew-window.png
+    alt: figures/ch08-fig03-version-skew-window.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: other
+  figure_spec:
+    anchor_id: ch08-fig03-version-skew-window
+    diagram_type: other
+    source_ascii: "                older ◄───────── kube-apiserver ─────────► newer\n\
+      \                  -3      -2      -1       0       +1\n                   │\
+      \       │       │       ║       │\n\nkubelet            ●━━━━━━━━━━━━━━━━━━━━━━━┫\n\
+      kube-proxy         ●━━━━━━━━━━━━━━━━━━━━━━━┫\ncontroller-manager           \
+      \      ●━━━━━━━┫\nscheduler                          ●━━━━━━━┫\ncloud-ctrl-manager\
+      \                 ●━━━━━━━┫\nkubectl                            ●━━━━━━━╬━━━━━━━●\n\
+      \                                           ║\n                            \
+      \      ▲ the only bar that crosses\n"
+    vendor_terms:
+    - kube-apiserver
+    - kubelet
+    - kube-proxy
+    - kube-controller-manager
+    - kube-scheduler
+    - cloud-controller-manager
+    - kubectl
+    complexity_hint:
+      node_count: 6
+      edge_count: 6
+      label_count: 13
+    pedagogy:
+      part_18_criteria_met:
+      - quantitative_relationships
+      - distinguishing_alternatives
+      - fixed_point
+      learning_outcome: State which Kubernetes components may disagree about their
+        version, by how much, and in which direction
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: The kubectl bar, the only one crossing the double
+        line to the right of the API server's version
+    accessibility:
+      alt_text_seed: A horizontal range chart on a relative axis from minus three
+        to plus one minor versions, with the API server's version marked by a double
+        line at zero; bars for kubelet and kube-proxy reach back three versions, bars
+        for the controller manager, scheduler and cloud controller manager reach back
+        one, and all five stop at the double line, while the kubectl bar alone extends
+        one version past it
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Original chart rendering of the published version skew policy; no vendor
+        artwork reproduced and no concrete release numbers shown.
+- anchor_id: ch08-zenith-consequences-not-rules
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch08-zenith-consequences-not-rules.html
+  output_paths:
+    svg: figures/ch08-zenith-consequences-not-rules.svg
+    png: figures/ch08-zenith-consequences-not-rules.png
+    alt: figures/ch08-zenith-consequences-not-rules.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: k8s_architecture
+  figure_spec:
+    anchor_id: ch08-zenith-consequences-not-rules
+    diagram_type: k8s_architecture
+    source_ascii: "administrative acts                                 controllers\
+      \ you\n(§1, §3, §4)                    ┌───────────┐       already met\n   \
+      \                             │           │\nkubectl cordon ────────────►  \
+      \  │    the    │ ──►  scheduler            (Ch 7)\nkubectl apply -f quota.yaml\
+      \ ►   │    API    │ ──►  node controller    (Ch 4/8)\nkubectl apply -f deploy.yaml►\
+      \   │  server   │ ──►  workload contrls    (Ch 6)\nkubelet self-registration\
+      \ ─►    │           │ ──►  the control loop     (Ch 3)\n                   \
+      \             │ ONE DOOR  │\n                                └─────┬─────┘\n\
+      \                                      │\n                                 \
+      \     ▼\n                                    etcd\n"
+    vendor_terms:
+    - kubectl
+    - kube-apiserver
+    - kubelet
+    - kube-scheduler
+    - etcd
+    complexity_hint:
+      node_count: 10
+      edge_count: 9
+      label_count: 15
+    pedagogy:
+      part_18_criteria_met:
+      - zenith
+      - spatial_structure
+      learning_outcome: Recognise every administrative act in the chapter as a write
+        through one door, reconciled by a controller already met
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: The central ONE DOOR box that every arrow must
+        pass through
+    accessibility:
+      alt_text_seed: Four administrative actions on the left — kubectl cordon, applying
+        a quota, applying a deployment, and kubelet self-registration — all converge
+        on a single central box labelled the API server, one door; four arrows leave
+        it to the scheduler from chapter seven, the node controller from chapters
+        four and eight, the workload controllers from chapter six, and the control
+        loop from chapter three, with a single arrow running down from the box to
+        etcd
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Original hub-and-spoke restatement of the documented hub-and-spoke API
+        pattern; no vendor artwork or icons reproduced.

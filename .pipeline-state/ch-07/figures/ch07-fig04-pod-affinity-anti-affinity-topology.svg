@@ -1,0 +1,88 @@
+<svg viewBox="0 0 664 880" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch07-fig04-pod-affinity-anti-affinity-topology-title ch07-fig04-pod-affinity-anti-affinity-topology-desc" width="600" height="796">
+      <title id="ch07-fig04-pod-affinity-anti-affinity-topology-title">topologyKey scope: hostname vs. zone anti-affinity</title>
+      <desc id="ch07-fig04-pod-affinity-anti-affinity-topology-desc">Two panels showing the same six-node, two-zone cluster. With topologyKey set to hostname, all six nodes host a web Pod. With topologyKey set to zone, only one node per zone does — six placements become two.</desc>
+
+      <rect width="100%" height="100%" fill="#F5EFE4"></rect>
+
+      <!-- zone containers -->
+      <rect x="116" y="160" width="432" height="112" rx="8" fill="rgba(11,30,59,0.03)" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></rect>
+      <rect x="116" y="296" width="432" height="112" rx="8" fill="rgba(11,30,59,0.03)" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></rect>
+      <rect x="116" y="532" width="432" height="112" rx="8" fill="rgba(11,30,59,0.03)" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></rect>
+      <rect x="116" y="668" width="432" height="112" rx="8" fill="rgba(11,30,59,0.03)" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></rect>
+
+      <!-- panel divider -->
+      <line x1="116" y1="460" x2="548" y2="460" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+
+      <!-- panel 1 (hostname) — zone-a nodes, all web-labelled -->
+      <rect x="136" y="200" width="120" height="64" rx="6" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"></rect>
+      <rect x="272" y="200" width="120" height="64" rx="6" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"></rect>
+      <rect x="408" y="200" width="120" height="64" rx="6" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"></rect>
+      <!-- panel 1 — zone-b nodes, all web-labelled -->
+      <rect x="136" y="336" width="120" height="64" rx="6" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"></rect>
+      <rect x="272" y="336" width="120" height="64" rx="6" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"></rect>
+      <rect x="408" y="336" width="120" height="64" rx="6" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"></rect>
+
+      <!-- panel 2 (zone) — zone-a: only n1 web-labelled -->
+      <rect x="136" y="572" width="120" height="64" rx="6" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"></rect>
+      <rect x="272" y="572" width="120" height="64" rx="6" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1"></rect>
+      <rect x="408" y="572" width="120" height="64" rx="6" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1"></rect>
+      <!-- panel 2 — zone-b: only n4 web-labelled -->
+      <rect x="136" y="708" width="120" height="64" rx="6" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"></rect>
+      <rect x="272" y="708" width="120" height="64" rx="6" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1"></rect>
+      <rect x="408" y="708" width="120" height="64" rx="6" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1"></rect>
+
+      <!-- framing statement -->
+      <text text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" fill="#0B1E3B">
+        <tspan x="332" y="64">Same cluster. Same rule: no two Pods labelled app=web in one domain.</tspan>
+        <tspan x="332" y="88">The only difference is the topologyKey.</tspan>
+      </text>
+
+      <!-- panel 1 header + outcome -->
+      <text text-anchor="middle">
+        <tspan x="332" y="124" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.12em" fill="#0B1E3B">TOPOLOGYKEY: KUBERNETES.IO/HOSTNAME</tspan>
+        <tspan x="332" y="148" font-family="'Fira Sans', sans-serif" font-size="16" font-style="italic" font-weight="400" fill="#1F4A4E">a domain = one node</tspan>
+        <tspan x="332" y="430" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">6 domains → up to 6 Pods placed</tspan>
+      </text>
+
+      <!-- panel 1 zone labels + node contents -->
+      <text>
+        <tspan x="132" y="182" text-anchor="start" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.12em" fill="#1F4A4E">ZONE-A</tspan>
+        <tspan x="196" y="224" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">n1</tspan>
+        <tspan x="196" y="246" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#B58B3E">[web]</tspan>
+        <tspan x="332" y="224" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">n2</tspan>
+        <tspan x="332" y="246" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#B58B3E">[web]</tspan>
+        <tspan x="468" y="224" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">n3</tspan>
+        <tspan x="468" y="246" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#B58B3E">[web]</tspan>
+        <tspan x="132" y="318" text-anchor="start" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.12em" fill="#1F4A4E">ZONE-B</tspan>
+        <tspan x="196" y="360" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">n4</tspan>
+        <tspan x="196" y="382" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#B58B3E">[web]</tspan>
+        <tspan x="332" y="360" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">n5</tspan>
+        <tspan x="332" y="382" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#B58B3E">[web]</tspan>
+        <tspan x="468" y="360" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">n6</tspan>
+        <tspan x="468" y="382" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#B58B3E">[web]</tspan>
+      </text>
+
+      <!-- panel 2 header + outcome -->
+      <text text-anchor="middle">
+        <tspan x="332" y="496" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.12em" fill="#0B1E3B">TOPOLOGYKEY: TOPOLOGY.KUBERNETES.IO/ZONE</tspan>
+        <tspan x="332" y="520" font-family="'Fira Sans', sans-serif" font-size="16" font-style="italic" font-weight="400" fill="#1F4A4E">a domain = one zone</tspan>
+        <tspan x="332" y="802" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">2 domains → at most 2 Pods placed</tspan>
+      </text>
+
+      <!-- panel 2 zone labels + node contents -->
+      <text>
+        <tspan x="132" y="554" text-anchor="start" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.12em" fill="#1F4A4E">ZONE-A</tspan>
+        <tspan x="196" y="596" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">n1</tspan>
+        <tspan x="196" y="618" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#B58B3E">[web]</tspan>
+        <tspan x="332" y="610" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">n2</tspan>
+        <tspan x="468" y="610" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">n3</tspan>
+        <tspan x="132" y="690" text-anchor="start" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.12em" fill="#1F4A4E">ZONE-B</tspan>
+        <tspan x="196" y="732" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">n4</tspan>
+        <tspan x="196" y="754" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#B58B3E">[web]</tspan>
+        <tspan x="332" y="746" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">n5</tspan>
+        <tspan x="468" y="746" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">n6</tspan>
+      </text>
+
+      <!-- closing insight -->
+      <text x="332" y="850" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-style="italic" font-weight="400" fill="#0B1E3B">One label key changed. The rule’s meaning changed with it.</text>
+    </svg>

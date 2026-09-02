@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Render vs. patch: two paths, one installable unit</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;700&family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Fira+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --color-paper:   #F5EFE4;
+      --color-ink:     #0B1E3B;
+      --color-muted:   #1F4A4E;
+      --color-accent:  #B58B3E;
+      --color-soft:    #8A8D90;
+      --font-slab:     'Roboto Slab', serif;
+      --font-sans:     'Fira Sans', system-ui, sans-serif;
+      --font-mono:     'Fira Mono', ui-monospace, monospace;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-paper);
+      color: var(--color-ink);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 2rem;
+    }
+
+    .frame { max-width: 620px; width: 100%; }
+
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    h1 {
+      font-family: var(--font-slab);
+      font-size: clamp(1.5rem, 2vw + 1rem, 1.75rem);
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      line-height: 1.15;
+      color: var(--color-ink);
+      margin-bottom: 1.5rem;
+    }
+
+    svg { width: 100%; max-width: 600px; display: block; margin: 0 auto; }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <p class="eyebrow">Ch. 14 &middot; Zenith &middot; Flowchart</p>
+    <h1>Package, Not Template</h1>
+
+    <svg viewBox="0 0 600 800" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch14-zenith-package-not-template-title ch14-zenith-package-not-template-desc">
+      <title id="ch14-zenith-package-not-template-title">Render vs. patch: two paths, one installable unit</title>
+      <desc id="ch14-zenith-package-not-template-desc">Two symmetric paths, one labeled render that fills in holes from templates and values and one labeled patch that merges deltas from a base and overlay, converge with opposing arrows on a single highlighted box reading one named, versioned, installable unit, which then flows to a cluster.</desc>
+      <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"/>
+        </marker>
+      </defs>
+
+      <rect width="100%" height="100%" fill="#F5EFE4"/>
+
+      <!-- Header: RENDER / PATCH column labels -->
+      <text x="160" y="40" fill="#0B1E3B" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.12em">RENDER</text>
+      <text x="440" y="40" fill="#0B1E3B" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.12em">PATCH</text>
+      <line x1="40" y1="52" x2="280" y2="52" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+      <line x1="320" y1="52" x2="560" y2="52" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+
+      <!-- Arrows (drawn before boxes) -->
+      <line x1="160" y1="148" x2="160" y2="212" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <line x1="440" y1="148" x2="440" y2="212" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <path d="M160,276 L160,332 Q160,340 168,340 L180,340" fill="none" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <path d="M440,276 L440,332 Q440,340 432,340 L420,340" fill="none" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <line x1="300" y1="420" x2="300" y2="484" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+      <!-- Source: templates/ + values -->
+      <rect x="40" y="84" width="240" height="64" rx="6" fill="#F5EFE4"/>
+      <rect x="40" y="84" width="240" height="64" rx="6" fill="rgba(31,74,78,0.10)" stroke="#8A8D90" stroke-width="1"/>
+      <text x="160" y="120" fill="#0B1E3B" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle">templates/ + values</text>
+
+      <!-- Source: base/ + overlay/ -->
+      <rect x="320" y="84" width="240" height="64" rx="6" fill="#F5EFE4"/>
+      <rect x="320" y="84" width="240" height="64" rx="6" fill="rgba(31,74,78,0.10)" stroke="#8A8D90" stroke-width="1"/>
+      <text x="440" y="120" fill="#0B1E3B" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle">base/ + overlay/</text>
+
+      <!-- Process: fill in holes -->
+      <rect x="40" y="212" width="240" height="64" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"/>
+      <text x="160" y="248" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">fill in holes</text>
+
+      <!-- Process: merge deltas -->
+      <rect x="320" y="212" width="240" height="64" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"/>
+      <text x="440" y="248" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">merge deltas</text>
+
+      <!-- Focal: ONE NAMED, VERSIONED, INSTALLABLE UNIT -->
+      <rect x="180" y="292" width="240" height="128" rx="8" fill="#F5EFE4"/>
+      <rect x="180" y="292" width="240" height="128" rx="8" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"/>
+      <text x="300" y="332" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle" letter-spacing="0.02em">ONE NAMED,</text>
+      <text x="300" y="360" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle" letter-spacing="0.02em">VERSIONED,</text>
+      <text x="300" y="388" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle" letter-spacing="0.02em">INSTALLABLE UNIT</text>
+
+      <!-- Destination: cluster -->
+      <rect x="220" y="484" width="160" height="64" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"/>
+      <text x="300" y="520" fill="#0B1E3B" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle">cluster</text>
+
+      <!-- Editorial aside -->
+      <line x1="40" y1="612" x2="560" y2="612" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+      <text x="300" y="640" fill="#1F4A4E" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif" text-anchor="middle">The mechanisms could not be more different.</text>
+      <text x="300" y="668" fill="#1F4A4E" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif" text-anchor="middle">The destination is the same one.</text>
+      <text x="300" y="696" fill="#1F4A4E" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif" text-anchor="middle">The destination is the point.</text>
+    </svg>
+  </div>
+</body>
+</html>

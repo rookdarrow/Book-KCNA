@@ -1,0 +1,400 @@
+chapter: 4
+book: kcna
+generated: '2026-09-01T06:59:34+00:00'
+figures:
+- anchor_id: ch04-fig01-object-anatomy-spec-status
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch04-fig01-object-anatomy-spec-status.html
+  output_paths:
+    svg: figures/ch04-fig01-object-anatomy-spec-status.svg
+    png: figures/ch04-fig01-object-anatomy-spec-status.png
+    alt: figures/ch04-fig01-object-anatomy-spec-status.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: component_diagram
+  figure_spec:
+    anchor_id: ch04-fig01-object-anatomy-spec-status
+    diagram_type: component_diagram
+    source_ascii: "        ┌──────────────────────────────────────────────────────┐\n\
+      \        │  YOU AUTHOR THIS                                     │\n        │\
+      \                                                      │\n        │  apiVersion:\
+      \ ...........  which API version          │\n        │  kind: .................\
+      \  what kind of object        │\n        │  metadata:                which one,\
+      \ specifically    │\n        │    name: ...                                \
+      \         │\n        │    uid: ...                                         \
+      \ │\n        │    namespace: ...        (optional)                  │\n    \
+      \    │  spec:                    what it should look like   │\n        │   \
+      \ ...                                               │\n        └──────────────────────────────────────────────────────┘\n\
+      \        ═══════════════ authorship boundary ═══════════════════\n        ┌──────────────────────────────────────────────────────┐\n\
+      \        │  THE SYSTEM AUTHORS THIS                             │\n        │\
+      \                                                      │\n        │  status:\
+      \                  what is actually true      │\n        │    ...          \
+      \                                     │\n        └──────────────────────────────────────────────────────┘\n"
+    vendor_terms:
+    - apiVersion
+    - kind
+    - metadata
+    - spec
+    - status
+    complexity_hint:
+      node_count: 2
+      edge_count: 1
+      label_count: 11
+    pedagogy:
+      part_18_criteria_met:
+      - spatial_structure
+      - fixed_point
+      - distinguishing_alternatives
+      learning_outcome: Name the four top-level fields of any Kubernetes object and
+        state which of spec/status the author writes and which the system writes
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: the authorship boundary rule separating the spec
+        panel from the status panel
+    accessibility:
+      alt_text_seed: Two stacked panels split by a heavy horizontal line labelled
+        authorship boundary. The upper panel, headed YOU AUTHOR THIS, lists apiVersion,
+        kind, metadata with nested name, uid and optional namespace, and spec. The
+        lower panel, headed THE SYSTEM AUTHORS THIS, contains only status.
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: true
+      max_width_px: 900
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Kubernetes API field names are functional identifiers; layout and the
+        authorship-boundary framing are Lodestar's own.
+- anchor_id: ch04-fig02-apply-round-trip
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch04-fig02-apply-round-trip.html
+  output_paths:
+    svg: figures/ch04-fig02-apply-round-trip.svg
+    png: figures/ch04-fig02-apply-round-trip.png
+    alt: figures/ch04-fig02-apply-round-trip.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: flowchart
+  figure_spec:
+    anchor_id: ch04-fig02-apply-round-trip
+    diagram_type: flowchart
+    source_ascii: "     manifest.yaml\n          │\n          │  kubectl apply -f\n\
+      \          ▼\n    ┌──────────────┐  writes the record   ┌──────────┐\n    │\
+      \ kube-apiserver├─────────────────────►│   etcd   │\n    └──────┬───────┘  \
+      \                     └────┬─────┘\n           │                           \
+      \         │\n           │  a controller watches ◄────────────┘\n           ▼\n\
+      \    the controller compares  spec  vs  status\n           │\n           │ \
+      \ they differ → it acts\n           ▼\n    reality changes ──► status is updated\
+      \ ──┐\n           ▲                                │\n           └────────────────────────────────┘\n\
+      \                    and it watches again, forever\n"
+    vendor_terms:
+    - kube-apiserver
+    - etcd
+    - kubectl
+    complexity_hint:
+      node_count: 5
+      edge_count: 6
+      label_count: 11
+    pedagogy:
+      part_18_criteria_met:
+      - temporal_structure
+      - spatial_structure
+      learning_outcome: Trace what happens to a single object after kubectl apply,
+        and explain why the reconciliation loop never terminates
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: the closed return loop and its caption, and it
+        watches again, forever
+    accessibility:
+      alt_text_seed: A vertical flow from manifest.yaml through kubectl apply into
+        kube-apiserver, which writes the record to etcd. A controller watches the
+        API server, compares spec against status, acts when they differ, and reality
+        changes so status is updated; an arrow returns to the compare step, forming
+        a loop that never ends.
+    rendering_hints:
+      preferred_orientation: portrait
+      grayscale_critical: true
+      max_width_px: 800
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Component names are Kubernetes project identifiers; the round-trip framing
+        and loop emphasis are Lodestar's own composition.
+- anchor_id: ch04-fig04-namespaced-vs-cluster-scoped
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch04-fig04-namespaced-vs-cluster-scoped.html
+  output_paths:
+    svg: figures/ch04-fig04-namespaced-vs-cluster-scoped.svg
+    png: figures/ch04-fig04-namespaced-vs-cluster-scoped.png
+    alt: figures/ch04-fig04-namespaced-vs-cluster-scoped.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: k8s_architecture
+  figure_spec:
+    anchor_id: ch04-fig04-namespaced-vs-cluster-scoped
+    diagram_type: k8s_architecture
+    source_ascii: " ╔══════════════════════════════════════════════════════════════════╗\n\
+      \ ║  CLUSTER SCOPE                                                   ║\n ║ \
+      \                                                                 ║\n ║   Node\
+      \        PersistentVolume        StorageClass               ║\n ║   Namespace\
+      \  (the namespace objects themselves live out here)    ║\n ║               \
+      \                                                   ║\n ║   ┌────────────────────────────┐\
+      \  ┌────────────────────────────┐ ║\n ║   │  namespace: team-a         │  │\
+      \  namespace: team-b         │ ║\n ║   │                            │  │   \
+      \                         │ ║\n ║   │    Deployment \"database\"   │  │    Deployment\
+      \ \"database\"   │ ║\n ║   │    Service    \"database\"   │  │    Service  \
+      \  \"database\"   │ ║\n ║   │    ConfigMap  \"settings\"   │  │    ConfigMap\
+      \  \"settings\"   │ ║\n ║   │    Secret     \"creds\"      │  │    Secret  \
+      \   \"creds\"      │ ║\n ║   └────────────────────────────┘  └────────────────────────────┘\
+      \ ║\n ╚══════════════════════════════════════════════════════════════════╝\n"
+    vendor_terms:
+    - Node
+    - PersistentVolume
+    - StorageClass
+    - Namespace
+    - Deployment
+    - Service
+    - ConfigMap
+    - Secret
+    complexity_hint:
+      node_count: 15
+      edge_count: 0
+      label_count: 15
+    pedagogy:
+      part_18_criteria_met:
+      - spatial_structure
+      - distinguishing_alternatives
+      - fixed_point
+      learning_outcome: Distinguish namespaced from cluster-scoped resources, and
+        explain why identical resource names in two namespaces do not collide
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: the four cluster-scoped resource names sitting
+        outside both namespace boxes
+    accessibility:
+      alt_text_seed: 'A cluster boundary containing Node, PersistentVolume, StorageClass
+        and Namespace in its outer region, and two side-by-side namespace boxes, team-a
+        and team-b, each holding an identical set of four objects: a Deployment and
+        Service both named database, a ConfigMap named settings, and a Secret named
+        creds.'
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: true
+      max_width_px: 1000
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Kubernetes resource kind names are functional identifiers; the team-a/team-b
+        illustration is Lodestar's own construction.
+- anchor_id: ch04-fig05-configmap-secret-contrast
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch04-fig05-configmap-secret-contrast.html
+  output_paths:
+    svg: figures/ch04-fig05-configmap-secret-contrast.svg
+    png: figures/ch04-fig05-configmap-secret-contrast.png
+    alt: figures/ch04-fig05-configmap-secret-contrast.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: other
+  figure_spec:
+    anchor_id: ch04-fig05-configmap-secret-contrast
+    diagram_type: other
+    source_ascii: "                        ConfigMap                    Secret\n ─────────────────────────────────────────────────────────────────────────\n\
+      \ Intended contents      non-confidential             small amounts of\n   \
+      \                     key-value data               sensitive data\n        \
+      \                                             (password, token, key)\n\n Consumed\
+      \ by a Pod as   command and args             command and args\n            \
+      \            environment variables        environment variables\n          \
+      \              file in a read-only volume   file in a volume\n             \
+      \           read via the Kubernetes API  read via the Kubernetes API\n\n Stored\
+      \                 unencrypted, in etcd         unencrypted, in etcd\n      \
+      \                                               (by default)\n\n What it adds\
+      \           nothing — the docs state     a distinct object type,\n         \
+      \               plainly that it provides     a distinct access-control\n   \
+      \                     no secrecy or encryption     surface, and a defined\n\
+      \                                                     place to attach\n    \
+      \                                                 encryption at rest\n"
+    vendor_terms:
+    - ConfigMap
+    - Secret
+    - etcd
+    - Pod
+    complexity_hint:
+      node_count: 8
+      edge_count: 0
+      label_count: 14
+    pedagogy:
+      part_18_criteria_met:
+      - distinguishing_alternatives
+      - vendor_taxonomy
+      learning_outcome: State how ConfigMap and Secret differ in intent and handling,
+        and that neither is encrypted at rest by default
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: the Stored row, whose two cells are substantively
+        identical
+    accessibility:
+      alt_text_seed: A four-row comparison of ConfigMap and Secret covering intended
+        contents, how a Pod consumes them, how they are stored, and what each adds.
+        The storage row reads unencrypted in etcd for both, with by default noted
+        on the Secret side.
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: true
+      max_width_px: 1000
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Cell text paraphrases Kubernetes documentation (CC BY 4.0); the four-dimension
+        contrast and the emphasis on the identical storage row are Lodestar's editorial
+        framing.
+- anchor_id: ch04-fig03-labels-selectors-join
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch04-fig03-labels-selectors-join.html
+  output_paths:
+    svg: figures/ch04-fig03-labels-selectors-join.svg
+    png: figures/ch04-fig03-labels-selectors-join.png
+    alt: figures/ch04-fig03-labels-selectors-join.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: concept_map
+  figure_spec:
+    anchor_id: ch04-fig03-labels-selectors-join
+    diagram_type: concept_map
+    source_ascii: "  OBJECTS, each carrying labels\n\n    ┌───────────┐   ┌───────────┐\
+      \   ┌───────────┐   ┌───────────┐\n    │  Pod A    │   │  Pod B    │   │  Pod\
+      \ C    │   │  Pod D    │\n    │ tier=fe   │   │ tier=fe   │   │ tier=be   │\
+      \   │ tier=be   │\n    │ env=prod  │   │ env=dev   │   │ env=prod  │   │ env=dev\
+      \   │\n    └───────────┘   └───────────┘   └───────────┘   └───────────┘\n\n\
+      \  SELECTORS, each resolving to a set\n\n    tier = fe                ──►  \
+      \ { A , B }\n    env  = prod              ──►   { A ,     C }\n    env in (prod,\
+      \ qa)        ──►   { A ,     C }\n    tier = be , env = prod   ──►   {     \
+      \    C }\n"
+    vendor_terms:
+    - Pod
+    complexity_hint:
+      node_count: 12
+      edge_count: 4
+      label_count: 20
+    pedagogy:
+      part_18_criteria_met:
+      - spatial_structure
+      - distinguishing_alternatives
+      - fixed_point
+      learning_outcome: Explain that a label selector describes a set by attribute,
+        so selected sets may overlap and need not partition the objects
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: Pod A, which appears in three of the four resolved
+        sets
+    accessibility:
+      alt_text_seed: 'Four Pod cards labelled A through D, each carrying a tier and
+        an env label. Below them, four selectors resolve to sets: tier equals fe gives
+        A and B; env equals prod gives A and C; env in prod or qa also gives A and
+        C; tier equals be and env equals prod gives C alone. Pod A appears in three
+        sets and Pod D in none.'
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: true
+      max_width_px: 1000
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Label keys follow the documentation's example vocabulary; the four-Pod
+        worked example and its overlap are Lodestar's own construction.
+- anchor_id: ch04-zenith-declaration-not-order
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch04-zenith-declaration-not-order.html
+  output_paths:
+    svg: figures/ch04-zenith-declaration-not-order.svg
+    png: figures/ch04-zenith-declaration-not-order.png
+    alt: figures/ch04-zenith-declaration-not-order.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: concept_map
+  figure_spec:
+    anchor_id: ch04-zenith-declaration-not-order
+    diagram_type: concept_map
+    source_ascii: "                    ┌─────────────────────────────┐\n         \
+      \           │    THE FILED DECLARATION    │\n                    │    (what\
+      \ should be true)    │\n                    └──────────────┬──────────────┘\n\
+      \                                   │\n          ┌────────────┬───────────┼───────────┬────────────┐\n\
+      \          │            │           │           │            │\n      consulted\
+      \    consulted   consulted   consulted    consulted\n       at 09:00     at\
+      \ 09:04    at 09:04    at 11:20     at 03:17\n          │            │     \
+      \      │           │            │\n          ▼            ▼           ▼    \
+      \       ▼            ▼\n     ( a scheduler )( a controller )( a kubelet )( a\
+      \ controller )( a controller )\n\n     No hand receives an instruction.\n  \
+      \   Every hand reads the record, observes the world, and closes the gap.\n"
+    vendor_terms:
+    - kubelet
+    - scheduler
+    - controller
+    complexity_hint:
+      node_count: 6
+      edge_count: 5
+      label_count: 13
+    pedagogy:
+      part_18_criteria_met:
+      - zenith
+      - temporal_structure
+      - spatial_structure
+      learning_outcome: 'Explain that the author supplies the loop''s reference rather
+        than participating in it: one filed record is read repeatedly by independent
+        components at unrelated times'
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: the single THE FILED DECLARATION box that all five
+        branches return to
+    accessibility:
+      alt_text_seed: 'A single box labelled THE FILED DECLARATION, what should be
+        true, connected to five separate readers below it: a scheduler, a controller,
+        a kubelet, and two more controllers, each annotated as consulting the record
+        at a different time — 09:00, 09:04, 09:04, 11:20 and 03:17. Text beneath reads:
+        no hand receives an instruction; every hand reads the record, observes the
+        world, and closes the gap.'
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: false
+      max_width_px: 1100
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Component roles are generic Kubernetes terms; the consulted-at-times
+        framing and the closing two lines are original Lodestar prose.

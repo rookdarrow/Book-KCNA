@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Service selector to EndpointSlice: the Ready gate</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;700&family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Fira+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --paper:  #F5EFE4;
+      --ink:    #0B1E3B;
+      --muted:  #1F4A4E;
+      --soft:   #8A8D90;
+      --accent: #B58B3E;
+      --accent-tint: rgba(181,139,62,0.10);
+      --sans:  'Fira Sans', system-ui, sans-serif;
+      --serif: 'Roboto Slab', serif;
+      --mono:  'Fira Mono', ui-monospace, monospace;
+    }
+    body {
+      font-family: var(--sans);
+      background: var(--paper);
+      color: var(--ink);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 2rem;
+    }
+    .frame { max-width: 640px; width: 100%; }
+    .eyebrow {
+      font-family: var(--mono);
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+    h1 {
+      font-family: var(--serif);
+      font-size: 1.75rem;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      line-height: 1.15;
+      color: var(--ink);
+      margin-bottom: 1.5rem;
+    }
+    svg { width: 100%; display: block; }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <p class="eyebrow">Data flow · Ch. 09 Fig. 03</p>
+    <h1>Service selector to EndpointSlice: the Ready gate</h1>
+
+    <svg viewBox="0 0 600 776" xmlns="http://www.w3.org/2000/svg" role="img"
+         aria-labelledby="ch09-fig03-title ch09-fig03-desc">
+      <title id="ch09-fig03-title">Service selector to EndpointSlice via the Ready gate</title>
+      <desc id="ch09-fig03-desc">Three Pods matching a Service's selector reach a Ready gate; two that are Ready pass through into the EndpointSlice's address list, one that is not Ready is stopped at the gate, a fourth Pod with a different label never matches the selector and sends no arrow, and the EndpointSlice controller in kube-controller-manager watches Services and Pods to write the slice.</desc>
+
+      <defs>
+        <marker id="arr-muted" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"/>
+        </marker>
+        <marker id="arr-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#B58B3E"/>
+        </marker>
+      </defs>
+
+      <rect width="600" height="776" fill="#F5EFE4"/>
+
+      <!-- ============ ARROWS (drawn before nodes) ============ -->
+
+      <!-- Query: Service -> Pods -->
+      <path d="M168,96 L168,136" fill="none" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arr-muted)"/>
+      <rect x="176" y="108" width="52" height="18" rx="2" fill="#F5EFE4"/>
+      <text x="202" y="121" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Mono', monospace" font-size="14">query</text>
+
+      <!-- Pod 10.244.1.7 -> Gate (Ready, admitted) -->
+      <path d="M296,172 L312,172 Q320,172 320,180 L320,192 Q320,200 328,200 L344,200"
+            fill="none" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arr-muted)"/>
+
+      <!-- Pod 10.244.4.2 -> Gate (Ready, admitted) -->
+      <path d="M296,264 L344,264" fill="none" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arr-muted)"/>
+
+      <!-- Pod 10.244.4.9 -> Gate (NOT Ready, focal: stopped at the gate face) -->
+      <path d="M296,356 L312,356 Q320,356 320,348 L320,336 Q320,328 328,328 L344,328"
+            fill="none" stroke="#B58B3E" stroke-width="1.2" marker-end="url(#arr-accent)"/>
+
+      <!-- Gate -> EndpointSlice (admitted addresses) -->
+      <path d="M444,392 L444,432" fill="none" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arr-muted)"/>
+
+      <!-- Controller watches Services + Pods -->
+      <path d="M76,96 L36,96 Q28,96 28,104 L28,592" fill="none" stroke="#1F4A4E" stroke-width="1"
+            stroke-dasharray="4,3" marker-end="url(#arr-muted)"/>
+      <rect x="40" y="520" width="230" height="22" rx="2" fill="#F5EFE4"/>
+      <text x="155" y="535" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Mono', monospace"
+            font-size="14" letter-spacing="0.02em">watches Services + Pods</text>
+
+      <!-- Controller writes the slice -->
+      <path d="M444,592 L444,528" fill="none" stroke="#1F4A4E" stroke-width="1"
+            stroke-dasharray="4,3" marker-end="url(#arr-muted)"/>
+      <rect x="464" y="550" width="70" height="18" rx="2" fill="#F5EFE4"/>
+      <text x="499" y="563" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Mono', monospace" font-size="14">writes</text>
+
+      <!-- ============ NODES ============ -->
+
+      <!-- Service: database -->
+      <rect x="40" y="24" width="256" height="72" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+      <rect x="48" y="32" width="84" height="18" rx="4" fill="none" stroke="rgba(11,30,59,0.4)" stroke-width="0.8"/>
+      <text x="90" y="45" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Mono', monospace" font-size="14"
+            letter-spacing="0.08em">SERVICE</text>
+      <text x="168" y="64" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif"
+            font-size="16" font-weight="500">database</text>
+      <text x="168" y="84" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Mono', monospace"
+            font-size="14">selector: app: db</text>
+
+      <!-- Pod 1: matches, Ready -->
+      <rect x="40" y="136" width="256" height="72" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+      <rect x="48" y="144" width="56" height="18" rx="4" fill="none" stroke="rgba(11,30,59,0.4)" stroke-width="0.8"/>
+      <text x="76" y="157" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Mono', monospace" font-size="14"
+            letter-spacing="0.08em">POD</text>
+      <text x="168" y="176" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif"
+            font-size="16" font-weight="500">app: db</text>
+      <text x="168" y="196" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Mono', monospace"
+            font-size="14">10.244.1.7 &#183; &#10003; READY</text>
+
+      <!-- Pod 2: matches, Ready -->
+      <rect x="40" y="228" width="256" height="72" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+      <rect x="48" y="236" width="56" height="18" rx="4" fill="none" stroke="rgba(11,30,59,0.4)" stroke-width="0.8"/>
+      <text x="76" y="249" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Mono', monospace" font-size="14"
+            letter-spacing="0.08em">POD</text>
+      <text x="168" y="268" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif"
+            font-size="16" font-weight="500">app: db</text>
+      <text x="168" y="288" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Mono', monospace"
+            font-size="14">10.244.4.2 &#183; &#10003; READY</text>
+
+      <!-- Pod 3: matches, NOT Ready -->
+      <rect x="40" y="320" width="256" height="72" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+      <rect x="48" y="328" width="56" height="18" rx="4" fill="none" stroke="rgba(11,30,59,0.4)" stroke-width="0.8"/>
+      <text x="76" y="341" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Mono', monospace" font-size="14"
+            letter-spacing="0.08em">POD</text>
+      <text x="168" y="360" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif"
+            font-size="16" font-weight="500">app: db</text>
+      <text x="168" y="380" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Mono', monospace"
+            font-size="14">10.244.4.9 &#183; &#10007; NOT READY</text>
+
+      <!-- Pod 4: never matched the selector -->
+      <rect x="40" y="412" width="256" height="72" rx="6" fill="#F5EFE4"/>
+      <rect x="40" y="412" width="256" height="72" rx="6" fill="rgba(11,30,59,0.02)"
+            stroke="rgba(11,30,59,0.20)" stroke-width="1" stroke-dasharray="4,3"/>
+      <rect x="48" y="420" width="56" height="18" rx="4" fill="none" stroke="rgba(11,30,59,0.3)" stroke-width="0.8"/>
+      <text x="76" y="433" text-anchor="middle" fill="rgba(11,30,59,0.6)" font-family="'Fira Mono', monospace"
+            font-size="14" letter-spacing="0.08em">POD</text>
+      <text x="168" y="452" text-anchor="middle" fill="rgba(11,30,59,0.6)" font-family="'Fira Sans', sans-serif"
+            font-size="16" font-weight="500">app: cache</text>
+      <text x="168" y="472" text-anchor="middle" fill="#8A8D90" font-family="'Fira Mono', monospace"
+            font-size="14">10.244.1.9 &#183; &#10007; no match</text>
+
+      <!-- Ready? gate (focal) -->
+      <rect x="344" y="136" width="200" height="256" rx="8" fill="#F5EFE4"/>
+      <rect x="344" y="136" width="200" height="256" rx="8" fill="rgba(181,139,62,0.10)"
+            stroke="#B58B3E" stroke-width="1.2"/>
+      <rect x="352" y="152" width="60" height="18" rx="4" fill="none" stroke="rgba(181,139,62,0.5)" stroke-width="0.8"/>
+      <text x="382" y="165" text-anchor="middle" fill="#B58B3E" font-family="'Fira Mono', monospace" font-size="14"
+            letter-spacing="0.08em">GATE</text>
+      <text x="444" y="206" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif"
+            font-size="16" font-weight="600">Ready?</text>
+
+      <!-- Stop mark: where the NOT-Ready Pod's arrow terminates against the gate face -->
+      <rect x="340" y="320" width="8" height="16" fill="#B58B3E"/>
+
+      <!-- EndpointSlice -->
+      <rect x="344" y="432" width="200" height="96" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+      <rect x="352" y="440" width="68" height="18" rx="4" fill="none" stroke="rgba(11,30,59,0.4)" stroke-width="0.8"/>
+      <text x="386" y="453" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Mono', monospace" font-size="14"
+            letter-spacing="0.08em">OBJECT</text>
+      <text x="444" y="474" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif"
+            font-size="16" font-weight="500">EndpointSlice</text>
+      <text x="444" y="492" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Mono', monospace"
+            font-size="14">10.244.1.7:5432</text>
+      <text x="444" y="508" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Mono', monospace"
+            font-size="14">10.244.4.2:5432</text>
+
+      <!-- EndpointSlice controller -->
+      <rect x="16" y="592" width="520" height="80" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+      <rect x="24" y="600" width="50" height="18" rx="4" fill="none" stroke="rgba(11,30,59,0.4)" stroke-width="0.8"/>
+      <text x="49" y="613" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Mono', monospace" font-size="14"
+            letter-spacing="0.08em">CTRL</text>
+      <text x="276" y="632" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif"
+            font-size="16" font-weight="500">EndpointSlice controller</text>
+      <text x="276" y="652" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Mono', monospace"
+            font-size="14">(in kube-controller-manager)</text>
+
+      <!-- ============ LEGEND ============ -->
+      <line x1="30" y1="692" x2="570" y2="692" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+      <text x="30" y="708" fill="#8A8D90" font-family="'Fira Mono', monospace" font-size="14"
+            letter-spacing="0.12em" text-transform="uppercase">LEGEND</text>
+
+      <!-- Row A: arrow styles -->
+      <line x1="30" y1="724" x2="54" y2="724" stroke="#1F4A4E" stroke-width="1.5" marker-end="url(#arr-muted)"/>
+      <text x="62" y="728" fill="#0B1E3B" font-family="'Fira Mono', monospace" font-size="14">ADMITTED (READY)</text>
+
+      <line x1="210" y1="724" x2="234" y2="724" stroke="#B58B3E" stroke-width="1.5" marker-end="url(#arr-accent)"/>
+      <text x="242" y="728" fill="#0B1E3B" font-family="'Fira Mono', monospace" font-size="14">STOPPED AT GATE</text>
+
+      <line x1="390" y1="724" x2="414" y2="724" stroke="#1F4A4E" stroke-width="1.5" stroke-dasharray="4,3"
+            marker-end="url(#arr-muted)"/>
+      <text x="422" y="728" fill="#0B1E3B" font-family="'Fira Mono', monospace" font-size="14">WATCH / WRITE</text>
+
+      <!-- Row B: node treatments -->
+      <rect x="30" y="742" width="16" height="14" rx="2" fill="rgba(11,30,59,0.02)"
+            stroke="rgba(11,30,59,0.20)" stroke-width="1" stroke-dasharray="4,3"/>
+      <text x="54" y="752" fill="#0B1E3B" font-family="'Fira Mono', monospace" font-size="14">EXCLUDED &#8212; NO MATCH</text>
+
+      <rect x="300" y="742" width="16" height="14" rx="2" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"/>
+      <text x="324" y="752" fill="#0B1E3B" font-family="'Fira Mono', monospace" font-size="14">FOCAL &#8212; READINESS GATE</text>
+    </svg>
+  </div>
+</body>
+</html>

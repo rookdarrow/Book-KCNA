@@ -1,0 +1,1 @@
+Three-tier ownership diagram: a Deployment box holding a Pod template, an update strategy and replicas 3 owns a ReplicaSet box holding replicas 3 and a selector, which in turn owns three identical Pod boxes; intent flows downward and existence is reported upward

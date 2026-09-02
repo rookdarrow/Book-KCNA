@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kubernetes metrics pipeline and the metrics-server gap</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;700&family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Fira+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --color-paper:  #F5EFE4;
+    --color-ink:    #0B1E3B;
+    --color-muted:  #1F4A4E;
+    --color-soft:   #8A8D90;
+    --color-accent: #B58B3E;
+    --font-slab: 'Roboto Slab', serif;
+    --font-sans: 'Fira Sans', sans-serif;
+    --font-mono: 'Fira Mono', monospace;
+  }
+  body {
+    font-family: var(--font-sans);
+    background: var(--color-paper);
+    color: var(--color-ink);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 2rem;
+  }
+  .frame { max-width: 720px; width: 100%; }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    margin-bottom: 0.5rem;
+  }
+  h1 {
+    font-family: var(--font-slab);
+    font-size: 1.75rem;
+    font-weight: 500;
+    line-height: 1.2;
+    color: var(--color-ink);
+    margin-bottom: 1.5rem;
+  }
+  svg { width: 100%; display: block; }
+</style>
+</head>
+<body>
+<div class="frame">
+  <p class="eyebrow">Data Flow &middot; Ch.13</p>
+  <h1>Why kubectl top Fails: The Metrics Pipeline Gap</h1>
+
+  <svg viewBox="0 0 560 640" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="metrics-pipeline-title metrics-pipeline-desc">
+    <title id="metrics-pipeline-title">Kubernetes metrics pipeline and the metrics-server gap</title>
+    <desc id="metrics-pipeline-desc">A metrics pipeline flowing from the container runtime through cAdvisor to the kubelet, then over /metrics/resource to a metrics-server box drawn with a dashed border and marked not installed by default, then over metrics.k8s.io to the API server, which serves both the horizontal pod autoscaler and kubectl top.</desc>
+    <defs>
+      <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"/>
+      </marker>
+    </defs>
+
+    <rect width="100%" height="100%" fill="#F5EFE4"/>
+
+    <line x1="180" y1="108" x2="204" y2="108" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"/>
+    <line x1="356" y1="108" x2="380" y2="108" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"/>
+
+    <path d="M456,152 L456,176 Q456,184 448,184 L288,184 Q280,184 280,192 L280,216"
+          fill="none" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"/>
+    <rect x="292" y="163" width="152" height="15" rx="3" fill="#F5EFE4"/>
+    <text x="368" y="175" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Mono', monospace"
+          font-size="14" letter-spacing="0.04em">/metrics/resource</text>
+
+    <line x1="280" y1="304" x2="280" y2="352" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"/>
+    <rect x="292" y="320" width="128" height="16" rx="3" fill="#F5EFE4"/>
+    <text x="300" y="332" text-anchor="start" fill="#1F4A4E" font-family="'Fira Mono', monospace"
+          font-size="14" letter-spacing="0.04em">metrics.k8s.io</text>
+
+    <path d="M252,424 L252,448 Q252,456 244,456 L200,456 Q192,456 192,464 L192,480"
+          fill="none" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"/>
+    <path d="M308,424 L308,448 Q308,456 316,456 L360,456 Q368,456 368,464 L368,480"
+          fill="none" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"/>
+
+    <rect x="28" y="64" width="152" height="88" rx="6" fill="#F5EFE4"/>
+    <rect x="28" y="64" width="152" height="88" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+    <text x="104" y="102" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500">container</text>
+    <text x="104" y="122" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500">runtime</text>
+
+    <rect x="204" y="64" width="152" height="88" rx="6" fill="#F5EFE4"/>
+    <rect x="204" y="64" width="152" height="88" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+    <text x="280" y="113" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500">cAdvisor</text>
+
+    <rect x="380" y="64" width="152" height="88" rx="6" fill="#F5EFE4"/>
+    <rect x="380" y="64" width="152" height="88" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+    <text x="456" y="113" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500">kubelet</text>
+
+    <rect x="204" y="216" width="152" height="88" rx="6" fill="#F5EFE4"/>
+    <rect x="204" y="216" width="152" height="88" rx="6" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2" stroke-dasharray="4,4"/>
+    <text x="280" y="252" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500">metrics-server</text>
+    <text x="280" y="274" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Mono', monospace" font-size="14">(cluster addon)</text>
+
+    <rect x="204" y="352" width="152" height="72" rx="6" fill="#F5EFE4"/>
+    <rect x="204" y="352" width="152" height="72" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+    <text x="280" y="393" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500">API server</text>
+
+    <rect x="116" y="480" width="152" height="72" rx="6" fill="#F5EFE4"/>
+    <rect x="116" y="480" width="152" height="72" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+    <text x="192" y="521" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500">HPA</text>
+
+    <rect x="292" y="480" width="152" height="72" rx="6" fill="#F5EFE4"/>
+    <rect x="292" y="480" width="152" height="72" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+    <text x="368" y="521" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500">kubectl top</text>
+
+    <text x="548" y="20" text-anchor="end" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-style="italic">in the kubelet binary,</text>
+    <text x="548" y="38" text-anchor="end" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-style="italic">on every node, always present</text>
+    <path d="M500,44 Q480,56 456,64" fill="none" stroke="rgba(11,30,59,0.40)" stroke-width="1" stroke-dasharray="4,3"/>
+    <circle cx="456" cy="64" r="2" fill="#0B1E3B"/>
+
+    <text x="548" y="232" text-anchor="end" fill="#B58B3E" font-family="'Fira Sans', sans-serif" font-size="16" font-style="italic">NOT INSTALLED BY DEFAULT&mdash;</text>
+    <text x="548" y="250" text-anchor="end" fill="#B58B3E" font-family="'Fira Sans', sans-serif" font-size="16" font-style="italic">the reason kubectl top fails</text>
+    <path d="M500,256 Q430,258 356,260" fill="none" stroke="rgba(181,139,62,0.55)" stroke-width="1" stroke-dasharray="4,3"/>
+    <circle cx="356" cy="260" r="2" fill="#B58B3E"/>
+
+    <line x1="28" y1="572" x2="532" y2="572" stroke="#8A8D90" stroke-width="0.8"/>
+    <text x="28" y="588" fill="#1F4A4E" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.12em">LEGEND</text>
+
+    <rect x="28" y="604" width="16" height="16" rx="4" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+    <text x="52" y="616" fill="#0B1E3B" font-family="'Fira Mono', monospace" font-size="14">SHIPS BY DEFAULT</text>
+
+    <rect x="220" y="604" width="16" height="16" rx="4" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2" stroke-dasharray="4,4"/>
+    <text x="244" y="616" fill="#0B1E3B" font-family="'Fira Mono', monospace" font-size="14">NOT INSTALLED BY DEFAULT</text>
+  </svg>
+</div>
+</body>
+</html>

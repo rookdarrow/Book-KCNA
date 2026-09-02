@@ -1,0 +1,54 @@
+<svg viewBox="0 0 640 860" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch15-fig05-opengitops-four-principles-title ch15-fig05-opengitops-four-principles-desc" width="680" height="914">
+        <title id="ch15-fig05-opengitops-four-principles-title">The four OpenGitOps principles</title>
+        <desc id="ch15-fig05-opengitops-four-principles-desc">Four OpenGitOps principles shown as equal cards in a two-by-two grid; only Versioned and Immutable is tagged as new material, while the other three are tagged as already covered in earlier chapters.</desc>
+
+        <rect x="0" y="0" width="640" height="860" fill="#F5EFE4"></rect>
+
+        <!-- Box 1: Declarative -->
+        <rect x="24" y="28" width="280" height="376" rx="6" fill="rgba(11,30,59,0.03)" stroke="#0B1E3B" stroke-width="1"></rect>
+        <text x="48" y="72" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" letter-spacing="0.02em" fill="#0B1E3B">1 · DECLARATIVE</text>
+        <text font-family="'Fira Sans', sans-serif" font-size="14" font-weight="400" fill="#0B1E3B">
+          <tspan x="48" y="132">desired state expressed</tspan>
+          <tspan x="48" y="152">declaratively</tspan>
+        </text>
+        <text x="48" y="364" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="16" font-weight="400" fill="#8A8D90">◄ you know this: Ch 4 §1</text>
+
+        <!-- Box 2: Versioned & Immutable (FOCAL) -->
+        <rect x="336" y="28" width="280" height="376" rx="6" fill="rgba(11,30,59,0.03)" stroke="#0B1E3B" stroke-width="1"></rect>
+        <text font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" letter-spacing="0.02em" fill="#0B1E3B">
+          <tspan x="360" y="72">2 · VERSIONED &amp;</tspan>
+          <tspan x="360" y="96">IMMUTABLE</tspan>
+        </text>
+        <text font-family="'Fira Sans', sans-serif" font-size="14" font-weight="400" fill="#0B1E3B">
+          <tspan x="360" y="132">stored so as to enforce</tspan>
+          <tspan x="360" y="152">immutability, versioning,</tspan>
+          <tspan x="360" y="172">complete history</tspan>
+        </text>
+        <rect x="360" y="340" width="140" height="32" rx="4" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"></rect>
+        <text x="376" y="360" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" letter-spacing="0.04em" fill="#0B1E3B">◄ NEW HERE</text>
+
+        <!-- Box 3: Pulled Automatically -->
+        <rect x="24" y="456" width="280" height="376" rx="6" fill="rgba(11,30,59,0.03)" stroke="#0B1E3B" stroke-width="1"></rect>
+        <text font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" letter-spacing="0.02em" fill="#0B1E3B">
+          <tspan x="48" y="500">3 · PULLED</tspan>
+          <tspan x="48" y="524">AUTOMATICALLY</tspan>
+        </text>
+        <text font-family="'Fira Sans', sans-serif" font-size="14" font-weight="400" fill="#0B1E3B">
+          <tspan x="48" y="560">agents automatically pull</tspan>
+          <tspan x="48" y="580">desired state from source</tspan>
+        </text>
+        <text x="48" y="792" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="16" font-weight="400" fill="#8A8D90">◄ you know this: Ch 3 §5</text>
+
+        <!-- Box 4: Continuously Reconciled -->
+        <rect x="336" y="456" width="280" height="376" rx="6" fill="rgba(11,30,59,0.03)" stroke="#0B1E3B" stroke-width="1"></rect>
+        <text font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" letter-spacing="0.02em" fill="#0B1E3B">
+          <tspan x="360" y="500">4 · CONTINUOUSLY</tspan>
+          <tspan x="360" y="524">RECONCILED</tspan>
+        </text>
+        <text font-family="'Fira Sans', sans-serif" font-size="14" font-weight="400" fill="#0B1E3B">
+          <tspan x="360" y="560">agents continuously observe</tspan>
+          <tspan x="360" y="580">actual state and apply</tspan>
+          <tspan x="360" y="600">desired state</tspan>
+        </text>
+        <text x="360" y="792" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="16" font-weight="400" fill="#8A8D90">◄ you know this: Ch 3 §6</text>
+      </svg>

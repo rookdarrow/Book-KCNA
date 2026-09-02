@@ -1,0 +1,1 @@
+Comparison table of Helm and Kustomize across five rows — what varies, the unit, distribution, lifecycle, and where the engine lives — closing with a decision band stating that distributing to strangers who will not read it points to Helm, while adapting what you already have for yourself points to Kustomize

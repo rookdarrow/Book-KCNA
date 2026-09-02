@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CNCF Project Maturity Levels</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;700&family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Fira+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F5EFE4;
+    --ink: #0B1E3B;
+    --muted: #1F4A4E;
+    --soft: #8A8D90;
+    --rule: rgba(11,30,59,0.12);
+    --accent: #B58B3E;
+    --accent-tint: rgba(181,139,62,0.10);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    font-family: 'Fira Sans', sans-serif;
+    color: var(--ink);
+  }
+  .page {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 48px 32px 40px;
+  }
+  .eyebrow {
+    font-family: 'Fira Mono', monospace;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 12px;
+  }
+  h1 {
+    font-family: 'Roboto Slab', serif;
+    font-weight: 500;
+    font-size: 1.75rem;
+    color: var(--ink);
+    margin: 0 0 8px;
+  }
+  .subtitle {
+    font-family: 'Fira Sans', sans-serif;
+    font-size: 16px;
+    color: var(--muted);
+    margin: 0 0 32px;
+    max-width: 46ch;
+  }
+  .diagram { display: block; width: 100%; height: auto; }
+  footer {
+    margin-top: 24px;
+    padding-top: 12px;
+    border-top: 1px solid var(--rule);
+    font-family: 'Fira Mono', monospace;
+    font-size: 14px;
+    color: var(--soft);
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <p class="eyebrow">CNCF Project Lifecycle</p>
+  <h1>Project Maturity Levels</h1>
+  <p class="subtitle">Three ascending levels — plus one terminal state that isn&#8217;t a rung at all.</p>
+
+  <svg class="diagram" viewBox="0 0 640 840" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-labelledby="ch17-fig05-cncf-maturity-levels-title ch17-fig05-cncf-maturity-levels-desc">
+    <title id="ch17-fig05-cncf-maturity-levels-title">CNCF Project Maturity Levels</title>
+    <desc id="ch17-fig05-cncf-maturity-levels-desc">An ascending staircase of three CNCF maturity levels — Sandbox, Incubating, and Graduated — each captioned with what that level asserts, with Archived shown as a separate terminal state rather than a fourth rung.</desc>
+
+    <defs>
+      <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"/>
+      </marker>
+      <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#B58B3E"/>
+      </marker>
+    </defs>
+
+    <rect width="640" height="840" fill="#F5EFE4"/>
+
+    <!-- ===== Arrows (drawn before boxes) ===== -->
+    <!-- Sandbox -> Incubating -->
+    <line x1="260" y1="380" x2="260" y2="340" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
+    <!-- Incubating -> Graduated (accent: leads to the focal tier) -->
+    <line x1="340" y1="200" x2="340" y2="160" stroke="#B58B3E" stroke-width="1.2" marker-end="url(#arrow-accent)"/>
+
+    <!-- ===== GRADUATED (focal) ===== -->
+    <rect x="300" y="40" width="280" height="120" rx="6" fill="#B58B3E" fill-opacity="0.10" stroke="#B58B3E" stroke-width="1.2"/>
+    <rect x="316" y="56" width="72" height="20" rx="2" fill="transparent" stroke="#B58B3E" stroke-opacity="0.55" stroke-width="0.8"/>
+    <text x="352" y="70" fill="#B58B3E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.08em">LEVEL 3</text>
+    <text x="440" y="96" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">GRADUATED</text>
+    <text x="440" y="120" fill="#0B1E3B" font-size="14" font-family="'Fira Sans', sans-serif" text-anchor="middle">Stable, widely adopted,</text>
+    <text x="440" y="140" fill="#0B1E3B" font-size="14" font-family="'Fira Sans', sans-serif" text-anchor="middle">production-ready.</text>
+
+    <!-- ===== INCUBATING ===== -->
+    <rect x="220" y="200" width="360" height="140" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"/>
+    <rect x="236" y="216" width="72" height="20" rx="2" fill="transparent" stroke="#0B1E3B" stroke-opacity="0.40" stroke-width="0.8"/>
+    <text x="272" y="230" fill="#0B1E3B" fill-opacity="0.80" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.08em">LEVEL 2</text>
+    <text x="400" y="256" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">INCUBATING</text>
+    <text x="400" y="280" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif" text-anchor="middle">In production use by a small</text>
+    <text x="400" y="300" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif" text-anchor="middle">number of users; healthy pool</text>
+    <text x="400" y="320" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif" text-anchor="middle">of contributors.</text>
+
+    <!-- ===== SANDBOX ===== -->
+    <rect x="140" y="380" width="440" height="120" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"/>
+    <rect x="156" y="396" width="72" height="20" rx="2" fill="transparent" stroke="#0B1E3B" stroke-opacity="0.40" stroke-width="0.8"/>
+    <text x="192" y="410" fill="#0B1E3B" fill-opacity="0.80" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.08em">LEVEL 1</text>
+    <text x="360" y="436" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">SANDBOX</text>
+    <text x="360" y="460" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif" text-anchor="middle">Experimental; not yet widely tested</text>
+    <text x="360" y="480" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif" text-anchor="middle">in production; bleeding edge.</text>
+
+    <!-- ===== Editorial callout: where the criteria live ===== -->
+    <text x="40" y="556" fill="#0B1E3B" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif">Criteria for each level live with the TOC,</text>
+    <text x="40" y="580" fill="#0B1E3B" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif">in the lifecycle docs &#8212; not the projects page.</text>
+    <path d="M 60 588 Q 100 548 168 500" fill="none" stroke="rgba(11,30,59,0.35)" stroke-width="1" stroke-dasharray="4,3"/>
+    <circle cx="168" cy="500" r="2" fill="#0B1E3B"/>
+
+    <!-- ===== ARCHIVED — detached terminal-state note, not a rung ===== -->
+    <rect x="40" y="624" width="560" height="104" rx="6" fill="#0B1E3B" fill-opacity="0.02" stroke="#8A8D90" stroke-width="1" stroke-dasharray="4,4"/>
+    <rect x="56" y="640" width="136" height="20" rx="2" fill="transparent" stroke="#8A8D90" stroke-width="0.8"/>
+    <text x="124" y="654" fill="#8A8D90" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.08em">TERMINAL STATE</text>
+    <text x="56" y="680" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif">ARCHIVED</text>
+    <text x="56" y="704" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">Not a rung &#8212; it&#8217;s where projects go when they stop.</text>
+
+    <!-- ===== Legend ===== -->
+    <line x1="40" y1="764" x2="600" y2="764" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+    <text x="40" y="784" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" letter-spacing="0.14em">LEGEND</text>
+
+    <rect x="40" y="800" width="16" height="16" rx="3" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"/>
+    <text x="64" y="812" fill="#0B1E3B" font-size="14" font-family="'Fira Mono', monospace">MATURITY LEVEL</text>
+
+    <rect x="248" y="800" width="16" height="16" rx="3" fill="#0B1E3B" fill-opacity="0.02" stroke="#8A8D90" stroke-width="1" stroke-dasharray="3,2"/>
+    <text x="272" y="812" fill="#0B1E3B" font-size="14" font-family="'Fira Mono', monospace">ARCHIVED &#8212; NOT A RUNG</text>
+
+    <rect x="488" y="800" width="16" height="16" rx="3" fill="#B58B3E" fill-opacity="0.10" stroke="#B58B3E" stroke-width="1.2"/>
+    <text x="512" y="812" fill="#0B1E3B" font-size="14" font-family="'Fira Mono', monospace">FOCAL TIER</text>
+  </svg>
+
+  <footer>ch17-fig05-cncf-maturity-levels</footer>
+</div>
+</body>
+</html>

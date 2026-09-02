@@ -1,0 +1,232 @@
+chapter: 11
+book: kcna
+generated: '2026-09-01T07:27:10+00:00'
+figures:
+- anchor_id: ch11-fig01-volume-lifetime-ladder
+  source_hash: e6e61421e62e17ed595b72441481f105ebd657af57123c415c39f9fec1c761d3
+  output_hash:
+    svg: 3191c0bcdf1e930050f77ddf50f16d800e85a44779d7059e9d6dc4da62024d59
+    png: 444e6a1d3f55bf66e628d572ff2c749af611cfe7fcfa017b563fc7c5ba0f05b2
+  validations:
+    label_count:
+      result: fail
+      value: 11
+      max: 7
+      reason: 11 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1520
+      - 2026
+    aspect_ratio:
+      result: pass
+      value: 1.33
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 332
+  alt_text: 'Three nested rectangles showing widening storage lifetimes: an innermost
+    container writable layer that survives nothing, a middle Pod-scoped volume that
+    survives a container restart, and an outermost cluster-scoped storage box that
+    survives the Pod''s deletion; two arrows mark the boundaries at container restart
+    and at Pod deletion'
+- anchor_id: ch11-fig02-pv-pvc-storageclass-binding
+  source_hash: 3911302a8d4a681903630d56ecda88d0d98195ee2e6fd6690eeee0dcde884a43
+  output_hash:
+    svg: eccbf41f61e01d04da526cfcc5d14f74210eb9efcce82d72534c92b434855920
+    png: 57f21d599ac7b0617bb37c7ffb68d07704783b82a8225067fd161aac552dec42
+  validations:
+    label_count:
+      result: fail
+      value: 30
+      max: 7
+      reason: 30 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1240
+      - 1588
+    aspect_ratio:
+      result: pass
+      value: 1.28
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 323
+  alt_text: A supply column holding a cluster-scoped PersistentVolume and a demand
+    column holding a namespaced PersistentVolumeClaim, both feeding a central binding
+    control loop that produces an exclusive one-to-one bound pair; a Pod arrow points
+    at the bound claim and stops there, and a disconnected StorageClass box sits to
+    one side
+- anchor_id: ch11-fig03-static-vs-dynamic-provisioning
+  source_hash: c91452e83dd60e747148cc4a4bb468a596d16c442aaf96198035d2f248fb2b78
+  output_hash:
+    svg: 12ad3b1c358e33a9cbdbf0a157b89405c80d7beee676a06f1ec811d633690b20
+    png: 69b1b0d2fdb6be887b5c2e508743cfba50a3bc856f3e3050b08e0e8fe8407e0f
+  validations:
+    label_count:
+      result: fail
+      value: 37
+      max: 7
+      reason: 37 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1800
+      - 2124
+    aspect_ratio:
+      result: pass
+      value: 1.18
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 367
+  alt_text: A flowchart starting at PVC creation, branching on whether a matching
+    PersistentVolume already exists; yes leads to static binding, no leads to a second
+    decision requiring both a named StorageClass and a configured provisioner, whose
+    true branch is dynamic provisioning and whose false branch dead-ends at a claim
+    that waits indefinitely with the Pod stuck in Pending
+- anchor_id: ch11-fig04-access-modes-and-reclaim-policies
+  source_hash: 63f0a9577778f98103bfdde1d3d76fbbb893d227c31420c321216c110671707e
+  output_hash:
+    svg: 7ac70586f284024942936a917a94aa59d19216747bc071950511436bf9c48e22
+    png: fa9c8c4cabad629f64de55f4c0f6fb818e9571c437f4354f2ec930c6d0dd287b
+  validations:
+    label_count:
+      result: pass
+      value: 1
+      max: 7
+      reason: ''
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1120
+      - 1722
+    aspect_ratio:
+      result: pass
+      value: 1.54
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 400
+  alt_text: 'Two side-by-side reference panels: the left lists four access modes with
+    the unit being nodes except for ReadWriteOncePod, which is highlighted as the
+    only Pod-scoped mode; the right tabulates three reclaim policies showing Retain
+    keeps the PV object, asset and data, Delete destroys all three, and Recycle is
+    deprecated, with a footer noting Delete is the default for dynamically provisioned
+    volumes'
+- anchor_id: ch11-fig05-statefulset-pvc-pairing
+  source_hash: bc5940a3bbe73bb09fb4b20f71009e9cb7418ae15eeac5ec9da6fb023b00f7ae
+  output_hash:
+    svg: 5cd3386ed6332552c75967a89c695062fa08537f7eb252bc99f7464888830aa1
+    png: a09db046dab8f9cab03aa49253d722668edd8f4df4076257852274ad5775ae2b
+  validations:
+    label_count:
+      result: fail
+      value: 42
+      max: 7
+      reason: 42 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1760
+      - 1664
+    aspect_ratio:
+      result: pass
+      value: 1.06
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 311
+  alt_text: Three stacked bands showing a three-replica StatefulSet named web, each
+    Pod paired one-to-one with its own PersistentVolumeClaim named www-web-0 through
+    www-web-2; in the second band web-1 has moved to a different node and keeps its
+    claim, and in the third band web-1 is deleted while its claim remains in place
+- anchor_id: ch11-zenith-outliving-the-pod
+  source_hash: 51e8e56e5673834ddbfd9f3fdba8daf433a015d066c25ad490f66644e89f6301
+  output_hash:
+    svg: cf2216e483780de476eff94f77187c128319ca5b9e3df7685521b8709752b481
+    png: f90918108730de459cc76450a5550ff49cd6c0cd681c37af4b0d325134e56cfc
+  validations:
+    label_count:
+      result: fail
+      value: 25
+      max: 7
+      reason: 25 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1520
+      - 1814
+    aspect_ratio:
+      result: pass
+      value: 1.19
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 322
+  alt_text: 'A two-lane timeline: the upper Pod lane shows three separate segments
+    each labelled web-1, on node-b then node-e then node-e, with visible gaps between
+    them; the lower Storage lane is a single unbroken line labelled www-web-1 running
+    the full width, with claim connectors dropping from each Pod segment to the storage
+    line'

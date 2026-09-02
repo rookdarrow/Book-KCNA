@@ -1,0 +1,123 @@
+chapter: 13
+book: kcna
+generated: '2026-09-01T15:24:44+00:00'
+figures:
+- anchor_id: ch13-fig01-two-audience-split
+  status: pending
+  render_paths:
+    svg: figures/ch13-fig01-two-audience-split.svg
+    png: figures/ch13-fig01-two-audience-split.png
+  source_path: figures/sources/ch13-fig01-two-audience-split.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch13-fig02-pod-failure-signature-map
+  status: pending
+  render_paths:
+    svg: figures/ch13-fig02-pod-failure-signature-map.svg
+    png: figures/ch13-fig02-pod-failure-signature-map.png
+  source_path: figures/sources/ch13-fig02-pod-failure-signature-map.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch13-fig03-phase-before-logs-flow
+  status: pending
+  render_paths:
+    svg: figures/ch13-fig03-phase-before-logs-flow.svg
+    png: figures/ch13-fig03-phase-before-logs-flow.png
+  source_path: figures/sources/ch13-fig03-phase-before-logs-flow.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch13-fig05-oomkilled-vs-evicted
+  status: pending
+  render_paths:
+    svg: figures/ch13-fig05-oomkilled-vs-evicted.svg
+    png: figures/ch13-fig05-oomkilled-vs-evicted.png
+  source_path: figures/sources/ch13-fig05-oomkilled-vs-evicted.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch13-fig06-diagnostic-layer-stack
+  status: pending
+  render_paths:
+    svg: figures/ch13-fig06-diagnostic-layer-stack.svg
+    png: figures/ch13-fig06-diagnostic-layer-stack.png
+  source_path: figures/sources/ch13-fig06-diagnostic-layer-stack.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch13-fig04-metrics-pipeline-and-metrics-server
+  status: pending
+  render_paths:
+    svg: figures/ch13-fig04-metrics-pipeline-and-metrics-server.svg
+    png: figures/ch13-fig04-metrics-pipeline-and-metrics-server.png
+  source_path: figures/sources/ch13-fig04-metrics-pipeline-and-metrics-server.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch13-zenith-read-the-phase-first
+  status: pending
+  render_paths:
+    svg: figures/ch13-zenith-read-the-phase-first.svg
+    png: figures/ch13-zenith-read-the-phase-first.png
+  source_path: figures/sources/ch13-zenith-read-the-phase-first.html
+  validation_results:
+    label_count: pass
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null

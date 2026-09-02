@@ -1,0 +1,1 @@
+A three-band Kubernetes stack: the API surface at the top holding CRDs for new object kinds, a control plane band in the middle, and the node at the bottom holding CRI for running containers, CNI for pod networking, and CSI for attaching storage; four identical sockets on the left edge mark each extension point with its chapter reference

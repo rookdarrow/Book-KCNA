@@ -1,0 +1,389 @@
+chapter: 16
+book: kcna
+generated: '2026-09-01T15:24:44+00:00'
+figures:
+- anchor_id: ch16-fig01-application-scope-triage
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch16-fig01-application-scope-triage.html
+  output_paths:
+    svg: figures/ch16-fig01-application-scope-triage.svg
+    png: figures/ch16-fig01-application-scope-triage.png
+    alt: figures/ch16-fig01-application-scope-triage.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: hierarchy_tree
+  figure_spec:
+    anchor_id: ch16-fig01-application-scope-triage
+    diagram_type: hierarchy_tree
+    source_ascii: "        FROM CH 13 — platform scope discharged\n              \
+      \          │\n                        ▼\n        ┌───────────────────────────────────┐\n\
+      \        │   APPLICATION SCOPE  (this book,  │\n        │   this chapter, your\
+      \ problem)     │\n        └───────────────┬───────────────────┘\n          \
+      \              │\n     ┌──────────┬───────┴───────┬─────────────┐\n     ▼  \
+      \        ▼               ▼             ▼\n  RUNNING?   HEALTHY?       REACHABLE?\
+      \    PER-REPLICA?\n   (§2)     CONFIGURED?     (§4 → §5)        (§6)\n     \
+      \         (§3)\n"
+    vendor_terms: []
+    complexity_hint:
+      node_count: 6
+      edge_count: 5
+      label_count: 6
+    pedagogy:
+      part_18_criteria_met:
+      - spatial_structure
+      - distinguishing_alternatives
+      learning_outcome: Decompose an application-scope fault into four triage questions,
+        asked in the order that eliminates the most ground first
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: the APPLICATION SCOPE box — the point where Ch
+        13's handoff lands and this chapter's method begins
+    accessibility:
+      alt_text_seed: 'A tree diagram. An arrow labelled ''from Chapter 13, platform
+        scope discharged'' enters a single box labelled ''Application scope: this
+        book, this chapter, your problem''. Below the box, four branches fan out to
+        four questions: is it running (section 2), is it healthy and configured (section
+        3), is it reachable (sections 4 then 5), and is it per-replica (section 6).'
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders: []
+      clearance: own_interpretation
+      notes: Abstract triage tree; no vendor marks, product names, or reproduced diagrams.
+- anchor_id: ch16-fig05-init-sequence-debug-points
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch16-fig05-init-sequence-debug-points.html
+  output_paths:
+    svg: figures/ch16-fig05-init-sequence-debug-points.svg
+    png: figures/ch16-fig05-init-sequence-debug-points.png
+    alt: figures/ch16-fig05-init-sequence-debug-points.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: flowchart
+  figure_spec:
+    anchor_id: ch16-fig05-init-sequence-debug-points
+    diagram_type: flowchart
+    source_ascii: "  init-1 ──────▶ init-2 ──────▶ init-3 ──────▶ app containers\n\
+      \    │              │              │                  │\n    ▼             \
+      \ ▼              ▼                  ▼\n STATUS:        STATUS:        STATUS:\
+      \            STATUS:\n Init:0/3       Init:1/3       Init:2/3           Running\n\
+      \n READ WITH:  kubectl logs <pod> -c <init-name>\n ALSO READ:  kubectl describe\
+      \ pod <pod>   (exit codes, order, state)\n\n STUCK, NO ERROR ......... ordering\
+      \ deadlock — what is it waiting for?\n FAILS ONLY ON RESTART ... non-idempotent\
+      \ — it assumed a clean slate\n EXITS NON-ZERO, LOUDLY .. config error — read\
+      \ the message, it's telling you\n"
+    vendor_terms:
+    - kubectl
+    - init-container
+    - pod
+    complexity_hint:
+      node_count: 8
+      edge_count: 7
+      label_count: 13
+    pedagogy:
+      part_18_criteria_met:
+      - temporal_structure
+      - distinguishing_alternatives
+      learning_outcome: Read an Init:N/M status string to identify which init container
+        to inspect, and match an init failure's signature to its cause
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: the row of Init:N/M status labels and their alignment
+        beneath the containers they name
+    accessibility:
+      alt_text_seed: 'A left-to-right sequence of three init containers followed by
+        the app containers. Beneath each, the Pod status it produces: Init:0/3 under
+        the first init container, Init:1/3 under the second, Init:2/3 under the third,
+        and Running under the app containers. Below, the commands for reading init
+        container logs, and three failure signatures paired with their causes: stuck
+        with no error means an ordering deadlock, failing only on restart means non-idempotency,
+        and exiting non-zero means a configuration error.'
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Kubernetes API object names and kubectl command strings only; no CNCF
+        logos, icons, or reproduced documentation figures.
+- anchor_id: ch16-fig02-ephemeral-container-debug
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch16-fig02-ephemeral-container-debug.html
+  output_paths:
+    svg: figures/ch16-fig02-ephemeral-container-debug.svg
+    png: figures/ch16-fig02-ephemeral-container-debug.png
+    alt: figures/ch16-fig02-ephemeral-container-debug.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: component_diagram
+  figure_spec:
+    anchor_id: ch16-fig02-ephemeral-container-debug
+    diagram_type: component_diagram
+    source_ascii: "  (A) EPHEMERAL CONTAINER — into the running Pod\n      ┌───────────\
+      \ Pod (unchanged) ───────────┐\n      │  [app: distroless]  + [debug: busybox]│\
+      \  ← added, cannot be removed\n      └───────────────────────────────────────┘\n\
+      \      ASKS: \"what does the running process see right now?\"\n\n  (B) --copy-to\
+      \ — a NEW Pod, original untouched\n      ┌─── Pod (running, untouched) ───┐\
+      \   ┌─── Pod-copy ────────┐\n      │  [app: crashing on startup]    │   │  [app:\
+      \ entrypoint   │\n      │                                │   │        replaced]\
+      \    │\n      └────────────────────────────────┘   └─────────────────────┘\n\
+      \      ASKS: \"what would happen if I changed something?\"\n\n  (C) node/ —\
+      \ the host, not the workload\n      ┌─── Node ───────────────────────────────┐\n\
+      \      │  [debug Pod, host filesystem mounted]  │  ← PLATFORM SCOPE\n      └────────────────────────────────────────┘\n\
+      \      ASKS: \"is the machine itself the problem?\"   (see Ch 13 §5)\n"
+    vendor_terms:
+    - kubectl
+    - busybox
+    - pod
+    - node
+    complexity_hint:
+      node_count: 9
+      edge_count: 2
+      label_count: 12
+    pedagogy:
+      part_18_criteria_met:
+      - distinguishing_alternatives
+      - fixed_point
+      learning_outcome: Choose among kubectl debug's three shapes by the question
+        each one answers, and recognize that --copy-to leaves the original Pod untouched
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: panel B's gap between the untouched original Pod
+        and its copy
+    accessibility:
+      alt_text_seed: 'Three panels comparing kubectl debug''s shapes. Panel A: an
+        ephemeral debug container added inside an unchanged Pod alongside a distroless
+        app container, annotated as unable to be removed; it asks what the running
+        process sees now. Panel B: two unconnected Pods side by side, the original
+        still running and crashing on startup, and a separate copy with its entrypoint
+        replaced; it asks what would happen if something changed. Panel C, shown as
+        platform scope: a debug Pod on a Node with the host filesystem mounted; it
+        asks whether the machine itself is the problem.'
+    rendering_hints:
+      preferred_orientation: portrait
+      grayscale_critical: true
+      max_width_px: 1000
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Kubernetes object names and kubectl flags; busybox named as a generic
+        debug image, no logo or icon reproduced.
+- anchor_id: ch16-fig04-service-break-points
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch16-fig04-service-break-points.html
+  output_paths:
+    svg: figures/ch16-fig04-service-break-points.svg
+    png: figures/ch16-fig04-service-break-points.png
+    alt: figures/ch16-fig04-service-break-points.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: data_flow
+  figure_spec:
+    anchor_id: ch16-fig04-service-break-points
+    diagram_type: data_flow
+    source_ascii: "  client ──▶ DNS name ──▶ Service ──▶ EndpointSlice ──▶ Pod ──▶\
+      \ container port\n               │                          │              \
+      \          │\n               │                          │                  \
+      \      │\n          ┌────┴────┐              ┌──────┴──────┐          ┌──────┴──────┐\n\
+      \          │ BREAK 4 │              │  BREAK 1+2  │          │   BREAK 3   │\n\
+      \          │ name    │              │  LIST EMPTY │          │ port ≠      │\n\
+      \          │ doesn't │              │  1 selector │          │ targetPort  │\n\
+      \          │ resolve │              │    mismatch │          │             │\n\
+      \          │ to this │              │  2 not Ready│          │ (list is    │\n\
+      \          │ Service │              │             │          │  POPULATED) │\n\
+      \          └─────────┘              └─────────────┘          └─────────────┘\n\
+      \n  UPSTREAM of the list ....... breaks 1 and 2 → EMPTY LIST\n  DOWNSTREAM of\
+      \ the list ..... break 3 → POPULATED LIST, request still fails\n  BESIDE the\
+      \ whole path ...... break 4 → you never reached this Service at all\n"
+    vendor_terms:
+    - service
+    - endpointslice
+    - pod
+    - dns
+    complexity_hint:
+      node_count: 9
+      edge_count: 8
+      label_count: 12
+    pedagogy:
+      part_18_criteria_met:
+      - spatial_structure
+      - distinguishing_alternatives
+      - fixed_point
+      learning_outcome: Locate a Service failure at its position on the request path,
+        and distinguish an empty endpoint list from a populated list with a failing
+        request
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: the BREAK 1+2 / LIST EMPTY callout at the EndpointSlice
+        — a Service with no endpoints is working exactly as written
+    accessibility:
+      alt_text_seed: 'A request path runs left to right from client, to DNS name,
+        to Service, to EndpointSlice, to Pod, to container port. Three callouts drop
+        from it. From the DNS name: break four, the name does not resolve to this
+        Service. From the EndpointSlice: breaks one and two, the list is empty, caused
+        either by a selector mismatch or by Pods not being Ready. From the container
+        port: break three, port does not equal targetPort, and here the list is populated.
+        A legend notes that upstream breaks empty the list, the downstream break leaves
+        it populated while the request still fails, and break four means this Service
+        was never reached.'
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Kubernetes API object names only; no CNCF icons or reproduced documentation
+        figures.
+- anchor_id: ch16-fig03-portforward-vs-service-path
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch16-fig03-portforward-vs-service-path.html
+  output_paths:
+    svg: figures/ch16-fig03-portforward-vs-service-path.svg
+    png: figures/ch16-fig03-portforward-vs-service-path.png
+    alt: figures/ch16-fig03-portforward-vs-service-path.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: data_flow
+  figure_spec:
+    anchor_id: ch16-fig03-portforward-vs-service-path
+    diagram_type: data_flow
+    source_ascii: "  THE SERVICE PATH (what your users travel)\n  client ──▶ DNS ──▶\
+      \ Service (ClusterIP) ──▶ service proxy ──▶ Pod:targetPort\n               \
+      \           │                        │\n                     selector, endpoints\
+      \      kube-proxy rules\n                     [ §4 breaks 1-4 all live on this\
+      \ path ]\n\n  THE PORT-FORWARD PATH (what you travel)\n  kubectl ──▶ API server\
+      \ ──▶ kubelet ──▶ Pod:port\n                    │\n            pods/portforward\
+      \ subresource\n            [ shares NO step with the path above except the Pod\
+      \ itself ]\n"
+    vendor_terms:
+    - kubectl
+    - kube-apiserver
+    - kubelet
+    - kube-proxy
+    - service
+    - pod
+    complexity_hint:
+      node_count: 9
+      edge_count: 7
+      label_count: 14
+    pedagogy:
+      part_18_criteria_met:
+      - spatial_structure
+      - distinguishing_alternatives
+      - fixed_point
+      learning_outcome: Explain why a working port-forward beside a failing Service
+        call localizes the fault to the Service path rather than clearing the application
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: the two terminal Pod nodes — the only step the
+        two paths share
+    accessibility:
+      alt_text_seed: Two separate request paths. The Service path, travelled by users,
+        runs from client to DNS to the Service's ClusterIP to the service proxy to
+        the Pod's targetPort, annotated with selector and endpoints at the Service
+        and kube-proxy rules at the proxy; all four of section four's break points
+        live on this path. The port-forward path, travelled by the engineer, runs
+        from kubectl to the API server via the pods/portforward subresource and on
+        to the Pod's port. The two paths share no step except the Pod itself.
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Kubernetes component and subresource names only; no CNCF icons. Technical
+        accuracy of the kubelet node is flagged for author review before render.
+- anchor_id: ch16-zenith-mine-or-the-platforms
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch16-zenith-mine-or-the-platforms.html
+  output_paths:
+    svg: figures/ch16-zenith-mine-or-the-platforms.svg
+    png: figures/ch16-zenith-mine-or-the-platforms.png
+    alt: figures/ch16-zenith-mine-or-the-platforms.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: concept_map
+  figure_spec:
+    anchor_id: ch16-zenith-mine-or-the-platforms
+    diagram_type: concept_map
+    source_ascii: "   PLATFORM SCOPE                    │                 APPLICATION\
+      \ SCOPE\n   (Ch 13)                           │                 (Ch 16)\n  \
+      \                                   │\n   phase ──▶ conditions ──▶ events  \
+      \ │   running? ──▶ healthy? ──▶ reachable?\n        ──▶ logs ──▶ node      \
+      \      │        ──▶ configured? ──▶ which replica?\n                       \
+      \              │\n              ─────────────────────▶ │ ◀─────────────────────\n\
+      \                   narrowing         │        narrowing\n                 \
+      \                    │\n                            THE BOUNDARY\n         \
+      \           ( this line is the method )\n"
+    vendor_terms: []
+    complexity_hint:
+      node_count: 10
+      edge_count: 10
+      label_count: 16
+    pedagogy:
+      part_18_criteria_met:
+      - zenith
+      - spatial_structure
+      learning_outcome: Recognize platform-scope and application-scope diagnosis as
+        one narrowing method meeting at an ownership boundary, rather than two separate
+        subjects
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: the central vertical boundary line, with both narrowing
+        arrows converging on it
+    accessibility:
+      alt_text_seed: 'A symmetrical diagram divided by a heavy vertical line. On the
+        left, platform scope from Chapter 13: phase, then conditions, then events,
+        then logs, then node. On the right, application scope from Chapter 16: is
+        it running, is it healthy, is it reachable, is it configured, and which replica.
+        Below each column, a long arrow points inward toward the centre line, each
+        labelled narrowing. At the centre, the caption reads: the boundary, this line
+        is the method.'
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders: []
+      clearance: own_interpretation
+      notes: Abstract method map; generic diagnostic vocabulary only, no vendor marks
+        or product names.

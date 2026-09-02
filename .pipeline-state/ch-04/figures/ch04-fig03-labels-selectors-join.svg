@@ -1,0 +1,34 @@
+<svg viewBox="0 0 600 760" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch04-fig03-labels-selectors-join-title ch04-fig03-labels-selectors-join-desc" width="440" height="558">
+    <title id="ch04-fig03-labels-selectors-join-title">Label selectors resolving to overlapping Pod sets</title>
+    <desc id="ch04-fig03-labels-selectors-join-desc">Four Pod objects carry tier and env labels; four label selectors below each resolve to their own subset of Pods, and the resulting sets overlap rather than partition the Pods -- Pod A is matched by three of the four selectors, and Pod D by none.</desc>
+
+    <rect width="100%" height="100%" fill="#F5EFE4"></rect>
+
+    <rect x="24" y="56" width="120" height="96" rx="6" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"></rect>
+    <text x="84" y="88" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-weight="500" font-size="16" fill="#0B1E3B">Pod A<tspan x="84" y="108" font-family="'Fira Mono', monospace" font-weight="400" font-size="14" fill="#1F4A4E">tier=fe</tspan><tspan x="84" y="128" font-family="'Fira Mono', monospace" font-weight="400" font-size="14" fill="#1F4A4E">env=prod</tspan></text>
+
+    <rect x="168" y="56" width="120" height="96" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+    <text x="228" y="88" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-weight="500" font-size="16" fill="#0B1E3B">Pod B<tspan x="228" y="108" font-family="'Fira Mono', monospace" font-weight="400" font-size="14" fill="#1F4A4E">tier=fe</tspan><tspan x="228" y="128" font-family="'Fira Mono', monospace" font-weight="400" font-size="14" fill="#1F4A4E">env=dev</tspan></text>
+
+    <rect x="312" y="56" width="120" height="96" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+    <text x="372" y="88" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-weight="500" font-size="16" fill="#0B1E3B">Pod C<tspan x="372" y="108" font-family="'Fira Mono', monospace" font-weight="400" font-size="14" fill="#1F4A4E">tier=be</tspan><tspan x="372" y="128" font-family="'Fira Mono', monospace" font-weight="400" font-size="14" fill="#1F4A4E">env=prod</tspan></text>
+
+    <rect x="456" y="56" width="120" height="96" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+    <text x="516" y="88" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-weight="500" font-size="16" fill="#0B1E3B">Pod D<tspan x="516" y="108" font-family="'Fira Mono', monospace" font-weight="400" font-size="14" fill="#1F4A4E">tier=be</tspan><tspan x="516" y="128" font-family="'Fira Mono', monospace" font-weight="400" font-size="14" fill="#1F4A4E">env=dev</tspan></text>
+
+    <line x1="24" y1="176" x2="576" y2="176" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+
+    <line x1="292" y1="276" x2="312" y2="276" stroke="#1F4A4E" stroke-width="1.2"></line>
+    <polygon points="312,272 320,276 312,280" fill="#1F4A4E"></polygon>
+    <text x="24" y="280" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">tier = fe<tspan x="332" y="280">{ A, B }</tspan></text>
+
+    <line x1="292" y1="448" x2="312" y2="448" stroke="#1F4A4E" stroke-width="1.2"></line>
+    <polygon points="312,444 320,448 312,452" fill="#1F4A4E"></polygon>
+    <line x1="292" y1="484" x2="312" y2="484" stroke="#1F4A4E" stroke-width="1.2"></line>
+    <polygon points="312,480 320,484 312,488" fill="#1F4A4E"></polygon>
+    <text x="24" y="452" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">env = prod<tspan x="332" y="452">{ A, C }</tspan><tspan x="24" y="488">env in (prod, qa)</tspan><tspan x="332" y="488">{ A, C }</tspan></text>
+
+    <line x1="292" y1="644" x2="312" y2="644" stroke="#1F4A4E" stroke-width="1.2"></line>
+    <polygon points="312,640 320,644 312,648" fill="#1F4A4E"></polygon>
+    <text x="24" y="648" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">tier = be, env = prod<tspan x="332" y="648">{ C }</tspan></text>
+  </svg>

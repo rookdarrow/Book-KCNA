@@ -1,0 +1,1 @@
+A supply column holding a cluster-scoped PersistentVolume and a demand column holding a namespaced PersistentVolumeClaim, both feeding a central binding control loop that produces an exclusive one-to-one bound pair; a Pod arrow points at the bound claim and stops there, and a disconnected StorageClass box sits to one side

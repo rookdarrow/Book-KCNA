@@ -182,7 +182,7 @@ Do not add a mutating/validating phase split inside gate 3, do not add webhook b
 ```yaml-figure-spec
 anchor_id: ch08-fig02-three-api-gates
 diagram_type: flowchart
-source_ascii: |
+source_ascii: |3
                   gate 1              gate 2              gate 3
              ┌──────────────┐   ┌──────────────┐   ┌──────────────┐
    request ─►│Authentication├──►│Authorization ├──►│  Admission   ├──► persisted
@@ -269,7 +269,7 @@ The two outcome words — `REJECTED` and `ACCEPTED` — must be typographically 
 ```yaml-figure-spec
 anchor_id: ch08-fig05-quota-vs-limitrange
 diagram_type: component_diagram
-source_ascii: |
+source_ascii: |5
           ResourceQuota                          LimitRange
      ┌──────────────────────────┐          (no namespace boundary)
      │ namespace: team-atlas    │
@@ -360,7 +360,7 @@ Beneath the whole figure, set the two-line assertion as an integral part of the 
 ```yaml-figure-spec
 anchor_id: ch08-fig04-node-lifecycle-cordon-drain
 diagram_type: state_machine
-source_ascii: |
+source_ascii: |4
      SCHEDULABLE            CORDONED             DRAINED           SCHEDULABLE
     ┌────────────┐        ┌────────────┐      ┌────────────┐      ┌────────────┐
     │ [A][B][C]  │        │ [A][B][C]  │      │            │      │            │
@@ -459,7 +459,7 @@ The five API-server-bounded bars stack above `kubectl` and share a uniform muted
 ```yaml-figure-spec
 anchor_id: ch08-fig03-version-skew-window
 diagram_type: other
-source_ascii: |
+source_ascii: |4
                     older ◄───────── kube-apiserver ─────────► newer
                       -3      -2      -1       0       +1
                        │       │       │       ║       │

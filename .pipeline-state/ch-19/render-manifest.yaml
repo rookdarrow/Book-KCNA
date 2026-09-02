@@ -1,0 +1,230 @@
+chapter: 19
+book: kcna
+generated: '2026-09-01T15:39:48+00:00'
+figures:
+- anchor_id: ch19-fig01-cross-domain-integration-map
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch19-fig01-cross-domain-integration-map.html
+  output_paths:
+    svg: figures/ch19-fig01-cross-domain-integration-map.svg
+    png: figures/ch19-fig01-cross-domain-integration-map.png
+    alt: figures/ch19-fig01-cross-domain-integration-map.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: concept_map
+  figure_spec:
+    anchor_id: ch19-fig01-cross-domain-integration-map
+    diagram_type: concept_map
+    source_ascii: "            Ch:  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17\
+      \ 18\n                 │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │\nSTRUCTURAL\
+      \ TIER  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │\n1 control loop  \
+      \ │  ●──┼──┼──●──┼──┼──┼──┼──●──┼──┼──┼──●──┼──●──┤\n2 scope boundary │  │ \
+      \ ●──┼──┼──┼──●──┼──┼──┼──●──┼──┼──┼──┼──┼──┤\n3 absent compnt  │  ●──┼──┼──●──┼──┼──┼──●──●──┼──●──┼──┼──●──●──┤\n\
+      \                 │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │\nINTERFACE\
+      \ TIER   │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │\n4 declarative  \
+      \  │  │  ●──┼──●──┼──┼──┼──┼──┼──┼──┼──●──●──┼──┼──┤\n5 label join     │  │\
+      \  ●──┼──●──●──┼──●──●──┼──●──┼──┼──●──┼──┤\n6 pluggability   ●──┼──┼──┼──●──┼──┼──●──┼──●──┼──┼──┼──┼──┼──●──┤\n\
+      \                 │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │\nPOLICY\
+      \ TIER      │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │\n7 identity  \
+      \     │  │  │  ●──┼──┼──┼──┼──┼──┼──●──┼──┼──●──┼──┼──┤\n8 requests/limits│\
+      \  │  │  ●──┼──●──┼──┼──┼──┼──┼──●──┼──┼──┼──●──●\n9 additive/allow │  │  │\
+      \  │  │  │  │  │  ●──┼──●──┼──┼──┼──┼──┼──┤\n"
+    vendor_terms: []
+    complexity_hint:
+      node_count: 26
+      edge_count: 40
+      label_count: 29
+    pedagogy:
+      part_18_criteria_met:
+      - spatial_structure
+      - zenith
+      learning_outcome: Recognize the book as nine reusable cross-cutting patterns
+        distributed across eighteen chapters, and identify which threads are dense
+        enough to appear in question stems that never name them
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: The thread 3 column (absent component) — the chapter's
+        stated Fixed Point
+    accessibility:
+      alt_text_seed: Presence matrix of nine cross-cutting themes against chapters
+        2 to 18, grouped into structural, interface and policy tiers; the absent-component
+        thread is highlighted and, with the control-loop and label-join threads, spans
+        the most chapters
+    rendering_hints:
+      preferred_orientation: portrait
+      grayscale_critical: true
+      max_width_px: 900
+    copyright_clearance:
+      rights_holders: []
+      clearance: own_interpretation
+      notes: Original Lodestar synthesis of the book's own thematic structure; depicts
+        no vendor diagram, logo or trademarked artwork
+- anchor_id: ch19-fig02-confusion-pair-matrix
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch19-fig02-confusion-pair-matrix.html
+  output_paths:
+    svg: figures/ch19-fig02-confusion-pair-matrix.svg
+    png: figures/ch19-fig02-confusion-pair-matrix.png
+    alt: figures/ch19-fig02-confusion-pair-matrix.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: concept_map
+  figure_spec:
+    anchor_id: ch19-fig02-confusion-pair-matrix
+    diagram_type: concept_map
+    source_ascii: 'PAIR                          →  DISCRIMINATOR (the question to
+      ask)
+
+      ───────────────────────────────────────────────────────────────────
+
+      D1  Pod phase / container state → "Lifecycle, or one container?"
+
+      D1  liveness / readiness        → "Restart it, or stop sending traffic?"
+
+      D1  labels / annotations        → "Does anything select on it?"
+
+      D1  ConfigMap / Secret          → "Would you mind this in a log?"
+
+      D1  Deployment / StatefulSet    → "Does replica 0 need to BE replica 0?"
+
+      D1  OCI / CRI                   → "Artifact format, or kubelet''s API?"
+
+      ───────────────────────────────────────────────────────────────────
+
+      D2  ClusterIP/NodePort/LB       → "Reachable from where?"
+
+      D2  Ingress object / controller → "The record, or the thing that acts?"
+
+      D2  NetworkPolicy default       → "Is this Pod selected by any policy?"
+
+      D2  Role / ClusterRole binding  → "What scope is the BINDING?"
+
+      D2  PV / PVC                    → "Supply, or demand?"
+
+      D2  RWO / RWOP                  → "One node, or one Pod?"
+
+      ───────────────────────────────────────────────────────────────────
+
+      D3  chart / release / revision  → "Package, install, or version of it?"
+
+      D3  rollout undo / helm rollback→ "Whose history is being rewound?"
+
+      D3  push / pull delivery        → "Where do the credentials live?"
+
+      D3  OutOfSync                   → "Difference, or failure?"
+
+      ───────────────────────────────────────────────────────────────────
+
+      D4  mesh CP / cluster CP        → "Whose control plane?"
+
+      D4  sidecar / ambient           → "Proxy per Pod, or per node?"
+
+      D4  HPA / VPA                   → "More replicas, or bigger ones?"
+
+      D4  observability / monitoring  → "New questions, or known ones?"
+
+      D4  span / trace                → "One hop, or the whole journey?"
+
+      D4  SLI / SLO / SLA             → "Measure, target, or consequence?"
+
+      D4  TOC / Governing Board       → "Technical, or business?"
+
+      '
+    vendor_terms:
+    - kubernetes
+    - helm
+    complexity_hint:
+      node_count: 27
+      edge_count: 23
+      label_count: 50
+    pedagogy:
+      part_18_criteria_met:
+      - distinguishing_alternatives
+      - spatial_structure
+      learning_outcome: Separate every confusion pair in the book using a one-line
+        procedural test rather than two competing definitions held side by side
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: The arrow column and the DISCRIMINATOR header —
+        the figure's claim that a pair resolves to a question, not to a second definition
+    accessibility:
+      alt_text_seed: Two-column reference card listing twenty-three confusion pairs
+        from the book, each paired with a one-line question that separates them, banded
+        into the four exam domains
+    rendering_hints:
+      preferred_orientation: portrait
+      grayscale_critical: false
+      max_width_px: 1000
+    copyright_clearance:
+      rights_holders: []
+      clearance: own_interpretation
+      notes: Discriminator questions are original Lodestar phrasing; API object names
+        are functional terms, not reproduced vendor artwork
+- anchor_id: ch19-fig03-exam-day-pacing
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch19-fig03-exam-day-pacing.html
+  output_paths:
+    svg: figures/ch19-fig03-exam-day-pacing.svg
+    png: figures/ch19-fig03-exam-day-pacing.png
+    alt: figures/ch19-fig03-exam-day-pacing.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: timeline
+  figure_spec:
+    anchor_id: ch19-fig03-exam-day-pacing
+    diagram_type: timeline
+    source_ascii: "0                              54 min                        90\
+      \ min\n├───────────── FIRST PASS ───────┼──── SECOND PASS ────────────┤\n│ \
+      \                               │                             │\n│  every question,\
+      \ once          │  flagged questions only     │\n│  answer everything      \
+      \       │  full discriminator work    │\n│  flag freely                   │\
+      \  change only with a reason  │\n│                                │        \
+      \                     │\n│  rate = 0.6 × clock ÷ count    │  reserve = 0.4 ×\
+      \ clock      │\n│                                │                         \
+      \    │\n└────────────────────────────────┴─────────────────────────────┘\n \
+      \  ▲                                                    ▲\n   read the count\
+      \ off the screen                   submit with\n   and divide — do not memorize\
+      \                    time on the clock\n   a seconds-per-question number\n"
+    vendor_terms: []
+    complexity_hint:
+      node_count: 5
+      edge_count: 3
+      label_count: 14
+    pedagogy:
+      part_18_criteria_met:
+      - temporal_structure
+      - fixed_point
+      learning_outcome: Execute a two-pass pacing plan on a ninety-minute closed-book
+        exam from memory, banking the first pass at sixty percent of the clock
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: The 54-minute division rule separating the first
+        and second passes
+    accessibility:
+      alt_text_seed: Ninety-minute exam timeline split at fifty-four minutes; the
+        longer first-pass segment answers and flags every question, and the shorter
+        reserved second-pass segment revisits only flagged ones
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders: []
+      clearance: own_interpretation
+      notes: The ninety-minute duration is a published factual figure; the two-pass
+        allocation and both formulas are original Lodestar guidance

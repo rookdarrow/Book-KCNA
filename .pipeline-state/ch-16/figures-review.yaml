@@ -1,0 +1,106 @@
+chapter: 16
+book: kcna
+generated: '2026-09-01T16:28:32+00:00'
+figures:
+- anchor_id: ch16-fig01-application-scope-triage
+  status: pending
+  render_paths:
+    svg: figures/ch16-fig01-application-scope-triage.svg
+    png: figures/ch16-fig01-application-scope-triage.png
+  source_path: figures/sources/ch16-fig01-application-scope-triage.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch16-fig05-init-sequence-debug-points
+  status: pending
+  render_paths:
+    svg: figures/ch16-fig05-init-sequence-debug-points.svg
+    png: figures/ch16-fig05-init-sequence-debug-points.png
+  source_path: figures/sources/ch16-fig05-init-sequence-debug-points.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch16-fig02-ephemeral-container-debug
+  status: pending
+  render_paths:
+    svg: figures/ch16-fig02-ephemeral-container-debug.svg
+    png: figures/ch16-fig02-ephemeral-container-debug.png
+  source_path: figures/sources/ch16-fig02-ephemeral-container-debug.html
+  validation_results:
+    label_count: fail
+    palette_conformance: fail
+    min_font_size: fail
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch16-fig04-service-break-points
+  status: pending
+  render_paths:
+    svg: figures/ch16-fig04-service-break-points.svg
+    png: figures/ch16-fig04-service-break-points.png
+  source_path: figures/sources/ch16-fig04-service-break-points.html
+  validation_results:
+    label_count: pass
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch16-fig03-portforward-vs-service-path
+  status: pending
+  render_paths:
+    svg: figures/ch16-fig03-portforward-vs-service-path.svg
+    png: figures/ch16-fig03-portforward-vs-service-path.png
+  source_path: figures/sources/ch16-fig03-portforward-vs-service-path.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch16-zenith-mine-or-the-platforms
+  status: pending
+  render_paths:
+    svg: figures/ch16-zenith-mine-or-the-platforms.svg
+    png: figures/ch16-zenith-mine-or-the-platforms.png
+  source_path: figures/sources/ch16-zenith-mine-or-the-platforms.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null

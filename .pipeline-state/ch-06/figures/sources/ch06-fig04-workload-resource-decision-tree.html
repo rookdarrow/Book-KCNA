@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Choosing the Right Workload Resource</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;700&family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Fira+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --color-paper:   #F5EFE4;
+      --color-ink:     #0B1E3B;
+      --color-muted:   #1F4A4E;
+      --color-accent:  #B58B3E;
+      --font-sans:     'Fira Sans', system-ui, sans-serif;
+      --font-title:    'Roboto Slab', serif;
+      --font-mono:     'Fira Mono', ui-monospace, monospace;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-paper);
+      color: var(--color-ink);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 2rem;
+    }
+
+    .frame { max-width: 1200px; width: 100%; }
+
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    h1 {
+      font-family: var(--font-title);
+      font-size: clamp(1.5rem, 2.4vw + 0.75rem, 1.75rem);
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+      color: var(--color-ink);
+      margin-bottom: 1.5rem;
+    }
+
+    svg { width: 100%; min-width: 560px; max-width: 720px; display: block; margin: 0 auto; }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <p class="eyebrow">Flowchart &middot; Ch. 06 &middot; Fig. 04</p>
+    <h1>Choosing the Right Workload Resource</h1>
+
+    <svg viewBox="0 0 952 920" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch06-fig04-title ch06-fig04-desc">
+      <title id="ch06-fig04-title">Kubernetes workload resource decision tree</title>
+      <desc id="ch06-fig04-desc">Decision tree for choosing a Kubernetes workload resource: if the work ends, ask whether it repeats on a schedule, giving CronJob for yes and Job for no; if the work does not end, ask whether it must run on every node, giving DaemonSet for yes, and otherwise ask whether the Pods are interchangeable, giving Deployment for yes and StatefulSet for no.</desc>
+      <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"/></marker>
+        <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#B58B3E"/></marker>
+        <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"/></marker>
+      </defs>
+
+      <rect width="100%" height="100%" fill="#F5EFE4"/>
+
+      <!-- ============ ARROWS (drawn first, behind nodes) ============ -->
+
+      <!-- Root -> Subtree1 (YES: work ends) -->
+      <path d="M264,88 L144,88 Q136,88 136,96 L136,240" fill="none" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <!-- Root -> Subtree2 (NO: work does not end) -->
+      <path d="M472,88 L592,88 Q600,88 600,96 L600,240" fill="none" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <!-- Subtree1 -> CronJob (YES: repeats on schedule) -->
+      <line x1="240" y1="296" x2="312" y2="296" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <!-- Subtree1 -> Job (NO) -->
+      <line x1="136" y1="352" x2="136" y2="472" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <!-- Subtree2 -> DaemonSet (YES: every node) -->
+      <line x1="704" y1="296" x2="776" y2="296" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <!-- Subtree2 -> Interchangeable (NO) -->
+      <line x1="600" y1="352" x2="600" y2="448" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <!-- Interchangeable -> Deployment (YES) -->
+      <line x1="704" y1="504" x2="776" y2="504" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <!-- Interchangeable -> StatefulSet (NO) -->
+      <line x1="600" y1="560" x2="600" y2="656" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+      <!-- Arrow labels (opaque mask + gap above/beside the stroke) -->
+      <rect x="176" y="60" width="48" height="20" rx="2" fill="#F5EFE4"/>
+      <text x="200" y="74" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.04em">YES</text>
+
+      <rect x="512" y="60" width="48" height="20" rx="2" fill="#F5EFE4"/>
+      <text x="536" y="74" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.04em">NO</text>
+
+      <rect x="252" y="268" width="48" height="20" rx="2" fill="#F5EFE4"/>
+      <text x="276" y="282" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.04em">YES</text>
+
+      <rect x="144" y="400" width="48" height="20" rx="2" fill="#F5EFE4"/>
+      <text x="168" y="414" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.04em">NO</text>
+
+      <rect x="716" y="268" width="48" height="20" rx="2" fill="#F5EFE4"/>
+      <text x="740" y="282" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.04em">YES</text>
+
+      <rect x="608" y="392" width="48" height="20" rx="2" fill="#F5EFE4"/>
+      <text x="632" y="406" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.04em">NO</text>
+
+      <rect x="716" y="476" width="48" height="20" rx="2" fill="#F5EFE4"/>
+      <text x="740" y="490" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.04em">YES</text>
+
+      <rect x="608" y="596" width="48" height="20" rx="2" fill="#F5EFE4"/>
+      <text x="632" y="610" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.04em">NO</text>
+
+      <!-- ============ NODES ============ -->
+
+      <!-- Root diamond (FOCAL): Does the work END? -->
+      <polygon points="368,32 472,88 368,144 264,88" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"/>
+      <text x="368" y="93" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">Does the work END?</text>
+
+      <!-- Subtree1 diamond: Does it repeat on a schedule? -->
+      <polygon points="136,240 240,296 136,352 32,296" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+      <text x="136" y="290" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">Does it repeat</text>
+      <text x="136" y="310" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">on a schedule?</text>
+
+      <!-- CronJob -->
+      <rect x="312" y="264" width="144" height="64" rx="32" fill="rgba(11,30,59,0.03)" stroke="rgba(11,30,59,0.30)" stroke-width="1"/>
+      <text x="384" y="301" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">CronJob</text>
+
+      <!-- Job -->
+      <rect x="64" y="472" width="144" height="64" rx="32" fill="rgba(11,30,59,0.03)" stroke="rgba(11,30,59,0.30)" stroke-width="1"/>
+      <text x="136" y="509" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">Job</text>
+
+      <!-- Subtree2 diamond: Must it run on EVERY node? -->
+      <polygon points="600,240 704,296 600,352 496,296" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+      <text x="600" y="290" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">Must it run on</text>
+      <text x="600" y="310" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">EVERY node?</text>
+
+      <!-- DaemonSet -->
+      <rect x="776" y="264" width="144" height="64" rx="32" fill="rgba(11,30,59,0.03)" stroke="rgba(11,30,59,0.30)" stroke-width="1"/>
+      <text x="848" y="301" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">DaemonSet</text>
+
+      <!-- Interchangeable diamond: Are the Pods INTERCHANGEABLE? -->
+      <polygon points="600,448 704,504 600,560 496,504" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+      <text x="600" y="498" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">Are the Pods</text>
+      <text x="600" y="518" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">INTERCHANGEABLE?</text>
+
+      <!-- Deployment (manages a ReplicaSet) -->
+      <rect x="776" y="456" width="144" height="96" rx="48" fill="rgba(11,30,59,0.03)" stroke="rgba(11,30,59,0.30)" stroke-width="1"/>
+      <text x="848" y="490" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">Deployment</text>
+      <text x="848" y="508" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle">manages a</text>
+      <text x="848" y="524" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle">ReplicaSet</text>
+
+      <!-- StatefulSet -->
+      <rect x="528" y="656" width="144" height="64" rx="32" fill="rgba(11,30,59,0.03)" stroke="rgba(11,30,59,0.30)" stroke-width="1"/>
+      <text x="600" y="693" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">StatefulSet</text>
+
+      <!-- ============ LEGEND ============ -->
+      <line x1="32" y1="768" x2="920" y2="768" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+      <text x="32" y="788" fill="#1F4A4E" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" letter-spacing="0.12em">LEGEND &middot; SHAPE CARRIES TYPE</text>
+
+      <polygon points="40,808 56,820 40,832 24,820" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+      <text x="68" y="824" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">Decision</text>
+
+      <rect x="220" y="804" width="40" height="24" rx="12" fill="rgba(11,30,59,0.03)" stroke="rgba(11,30,59,0.30)" stroke-width="1"/>
+      <text x="272" y="824" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">Outcome (resource)</text>
+
+      <polygon points="480,808 496,820 480,832 464,820" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"/>
+      <text x="508" y="824" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">Root question &mdash; asked first</text>
+    </svg>
+  </div>
+</body>
+</html>

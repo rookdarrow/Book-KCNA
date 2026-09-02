@@ -1,0 +1,94 @@
+<svg viewBox="0 0 720 900" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="boundary-method-title boundary-method-desc" width="560" height="700">
+    <title id="boundary-method-title">Platform and application scope narrowing to one boundary</title>
+    <desc id="boundary-method-desc">Concept map showing platform-scope diagnosis — phase, conditions, events, logs, node — on the left, and application-scope diagnosis — running, healthy, reachable, configured, which replica — on the right, as two symmetric chains whose narrowing arrows converge on a shared central boundary captioned "the boundary, this line is the method."</desc>
+
+    <defs>
+      <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon>
+      </marker>
+      <marker id="arrow-accent" markerWidth="9" markerHeight="7" refX="7.5" refY="3.5" orient="auto">
+        <polygon points="0 0, 9 3.5, 0 7" fill="#B58B3E"></polygon>
+      </marker>
+      <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon>
+      </marker>
+    </defs>
+
+    <rect width="100%" height="100%" fill="#F5EFE4"></rect>
+
+    <!-- central boundary line: the focal element -->
+    <line x1="360" y1="64" x2="360" y2="740" stroke="#B58B3E" stroke-width="3" stroke-linecap="round"></line>
+
+    <!-- column headers -->
+    <text x="168" y="88" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-weight="700" font-size="20" fill="#0B1E3B" letter-spacing="0.01em">PLATFORM SCOPE</text>
+    <text x="168" y="116" text-anchor="middle" font-family="'Fira Mono', monospace" font-weight="500" font-size="14" fill="#8A8D90" letter-spacing="0.12em">CH 13</text>
+
+    <text x="552" y="88" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-weight="700" font-size="20" fill="#0B1E3B" letter-spacing="0.01em">APPLICATION SCOPE</text>
+    <text x="552" y="116" text-anchor="middle" font-family="'Fira Mono', monospace" font-weight="500" font-size="14" fill="#8A8D90" letter-spacing="0.12em">CH 16</text>
+
+    <!-- chain connectors: left column (drawn before boxes) -->
+    <line x1="168" y1="220" x2="168" y2="284" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+    <line x1="168" y1="332" x2="168" y2="396" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+    <line x1="168" y1="444" x2="168" y2="508" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+    <line x1="168" y1="556" x2="168" y2="620" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+
+    <!-- chain connectors: right column -->
+    <line x1="552" y1="220" x2="552" y2="284" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+    <line x1="552" y1="332" x2="552" y2="396" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+    <line x1="552" y1="444" x2="552" y2="508" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+    <line x1="552" y1="556" x2="552" y2="620" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+
+    <!-- narrowing connectors converging on the boundary -->
+    <path d="M168,668 V732 Q168,740 176,740 H352" fill="none" stroke="#B58B3E" stroke-width="2.4" marker-end="url(#arrow-accent)"></path>
+    <path d="M552,668 V732 Q552,740 544,740 H368" fill="none" stroke="#B58B3E" stroke-width="2.4" marker-end="url(#arrow-accent)"></path>
+
+    <!-- left column: platform scope -->
+    <g font-family="'Fira Sans', sans-serif" font-weight="500" font-size="16" fill="#0B1E3B" text-anchor="middle">
+      <rect x="68" y="172" width="200" height="48" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="168" y="204">phase</text>
+
+      <rect x="68" y="284" width="200" height="48" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="168" y="316">conditions</text>
+
+      <rect x="68" y="396" width="200" height="48" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="168" y="428">events</text>
+
+      <rect x="68" y="508" width="200" height="48" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="168" y="540">logs</text>
+
+      <rect x="68" y="620" width="200" height="48" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="168" y="652">node</text>
+    </g>
+
+    <!-- right column: application scope -->
+    <g font-family="'Fira Sans', sans-serif" font-weight="500" font-size="16" fill="#0B1E3B" text-anchor="middle">
+      <rect x="452" y="172" width="200" height="48" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="552" y="204">running?</text>
+
+      <rect x="452" y="284" width="200" height="48" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="552" y="316">healthy?</text>
+
+      <rect x="452" y="396" width="200" height="48" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="552" y="428">reachable?</text>
+
+      <rect x="452" y="508" width="200" height="48" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="552" y="540">configured?</text>
+
+      <rect x="452" y="620" width="200" height="48" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="552" y="652">which replica?</text>
+    </g>
+
+    <!-- convergence marker: where both narrowing arrows meet the boundary -->
+    <circle cx="360" cy="740" r="6" fill="#B58B3E"></circle>
+
+    <!-- narrowing labels, masked off the connector strokes -->
+    <rect x="216" y="712" width="96" height="20" rx="2" fill="#F5EFE4"></rect>
+    <text x="264" y="728" text-anchor="middle" font-family="'Fira Mono', monospace" font-weight="500" font-size="14" fill="#0B1E3B" letter-spacing="0.08em">NARROWING</text>
+
+    <rect x="408" y="712" width="96" height="20" rx="2" fill="#F5EFE4"></rect>
+    <text x="456" y="728" text-anchor="middle" font-family="'Fira Mono', monospace" font-weight="500" font-size="14" fill="#0B1E3B" letter-spacing="0.08em">NARROWING</text>
+
+    <!-- boundary caption -->
+    <text x="360" y="812" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-weight="700" font-size="24" fill="#0B1E3B" letter-spacing="0.04em">THE BOUNDARY</text>
+    <text x="360" y="844" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-weight="400" font-style="italic" font-size="16" fill="#8A8D90">(this line is the method)</text>
+  </svg>

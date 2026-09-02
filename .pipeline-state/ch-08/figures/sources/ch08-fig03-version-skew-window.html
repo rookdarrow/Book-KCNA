@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Version Skew Window</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;700&family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Fira+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --paper:   #F5EFE4;
+    --ink:     #0B1E3B;
+    --muted:   #1F4A4E;
+    --soft:    #8A8D90;
+    --accent:  #B58B3E;
+    --rule:    rgba(11,30,59,0.12);
+    --font-slab: 'Roboto Slab', serif;
+    --font-sans: 'Fira Sans', sans-serif;
+    --font-mono: 'Fira Mono', monospace;
+  }
+  body {
+    font-family: var(--font-sans);
+    background: var(--paper);
+    color: var(--ink);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1.5rem;
+  }
+  .frame { max-width: 560px; width: 100%; }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.6rem;
+  }
+  h1 {
+    font-family: var(--font-slab);
+    font-size: 1.75rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    color: var(--ink);
+    margin-bottom: 0.6rem;
+  }
+  .subtitle {
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+    max-width: 46ch;
+  }
+  svg { width: 100%; height: auto; display: block; }
+  footer {
+    margin-top: 1.25rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--soft);
+  }
+</style>
+</head>
+<body>
+  <div class="frame">
+    <p class="eyebrow">Kubernetes Control Plane &middot; Version Skew</p>
+    <h1>The Version Skew Window</h1>
+    <p class="subtitle">kube-apiserver sets version zero. Every other component may only lag behind it &mdash; except kubectl, which alone may run one minor version ahead.</p>
+
+    <svg viewBox="0 0 760 1000" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch08-fig03-version-skew-window-title ch08-fig03-version-skew-window-desc">
+      <title id="ch08-fig03-version-skew-window-title">Kubernetes control-plane version skew window</title>
+      <desc id="ch08-fig03-version-skew-window-desc">Horizontal range chart on an axis from -3 to +1 minor versions relative to kube-apiserver at zero: kubelet and kube-proxy may lag up to three versions, kube-controller-manager, kube-scheduler and cloud-controller-manager up to one, all stopping at zero, while kubectl alone continues one version past it.</desc>
+
+      <rect width="100%" height="100%" fill="#F5EFE4"/>
+
+      <!-- axis header -->
+      <text x="284" y="36" fill="#8A8D90" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" letter-spacing="0.12em" text-anchor="start">OLDER</text>
+      <text x="700" y="36" fill="#8A8D90" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" letter-spacing="0.12em" text-anchor="end">NEWER</text>
+      <text x="596" y="64" fill="#0B1E3B" font-size="16" font-weight="700" font-family="'Fira Mono', monospace" text-anchor="middle">kube-apiserver</text>
+      <text x="284" y="88" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle">-3</text>
+      <text x="388" y="88" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle">-2</text>
+      <text x="492" y="88" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle">-1</text>
+      <text x="596" y="88" fill="#0B1E3B" font-size="14" font-weight="700" font-family="'Fira Mono', monospace" text-anchor="middle">0</text>
+      <text x="700" y="88" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle">+1</text>
+      <line x1="40" y1="100" x2="720" y2="100" stroke="rgba(138,141,144,0.4)" stroke-width="1"/>
+
+      <!-- faint gridlines (0 handled by the reference double-line, drawn later) -->
+      <line x1="284" y1="112" x2="284" y2="832" stroke="rgba(11,30,59,0.08)" stroke-width="0.8"/>
+      <line x1="388" y1="112" x2="388" y2="832" stroke="rgba(11,30,59,0.08)" stroke-width="0.8"/>
+      <line x1="492" y1="112" x2="492" y2="832" stroke="rgba(11,30,59,0.08)" stroke-width="0.8"/>
+      <line x1="700" y1="112" x2="700" y2="832" stroke="rgba(11,30,59,0.08)" stroke-width="0.8"/>
+
+      <!-- kubelet: -3 to 0 -->
+      <rect x="284" y="160" width="312" height="24" rx="4" fill="rgba(31,74,78,0.15)" stroke="#1F4A4E" stroke-width="1"/>
+      <circle cx="284" cy="172" r="6" fill="#1F4A4E"/>
+      <text x="272" y="177" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="end">kubelet</text>
+
+      <!-- kube-proxy: -3 to 0 -->
+      <rect x="284" y="280" width="312" height="24" rx="4" fill="rgba(31,74,78,0.15)" stroke="#1F4A4E" stroke-width="1"/>
+      <circle cx="284" cy="292" r="6" fill="#1F4A4E"/>
+      <text x="272" y="297" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="end">kube-proxy</text>
+
+      <!-- kube-controller-manager: -1 to 0 -->
+      <rect x="492" y="400" width="104" height="24" rx="4" fill="rgba(31,74,78,0.15)" stroke="#1F4A4E" stroke-width="1"/>
+      <circle cx="492" cy="412" r="6" fill="#1F4A4E"/>
+      <text x="272" y="417" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="end">kube-controller-manager</text>
+
+      <!-- kube-scheduler: -1 to 0 -->
+      <rect x="492" y="520" width="104" height="24" rx="4" fill="rgba(31,74,78,0.15)" stroke="#1F4A4E" stroke-width="1"/>
+      <circle cx="492" cy="532" r="6" fill="#1F4A4E"/>
+      <text x="272" y="537" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="end">kube-scheduler</text>
+
+      <!-- cloud-controller-manager: -1 to 0 -->
+      <rect x="492" y="640" width="104" height="24" rx="4" fill="rgba(31,74,78,0.15)" stroke="#1F4A4E" stroke-width="1"/>
+      <circle cx="492" cy="652" r="6" fill="#1F4A4E"/>
+      <text x="272" y="657" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="end">cloud-controller-manager</text>
+
+      <!-- kubectl: -1 to +1 -- FOCAL, the only one crossing 0 -->
+      <rect x="492" y="760" width="208" height="24" rx="4" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.5"/>
+      <circle cx="492" cy="772" r="6" fill="#B58B3E"/>
+      <circle cx="700" cy="772" r="6" fill="#B58B3E"/>
+      <text x="272" y="777" fill="#B58B3E" font-size="16" font-weight="700" font-family="'Fira Mono', monospace" text-anchor="end">kubectl</text>
+
+      <!-- reference double-line: kube-apiserver's version, always 0. Drawn last so it always reads clearly, even where kubectl's bar crosses it. -->
+      <line x1="592" y1="112" x2="592" y2="832" stroke="#0B1E3B" stroke-width="2"/>
+      <line x1="600" y1="112" x2="600" y2="832" stroke="#0B1E3B" stroke-width="2"/>
+
+      <!-- legend -->
+      <line x1="40" y1="864" x2="720" y2="864" stroke="rgba(138,141,144,0.4)" stroke-width="1"/>
+      <text x="40" y="884" fill="#8A8D90" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" letter-spacing="0.14em" text-anchor="start">LEGEND</text>
+
+      <circle cx="44" cy="910" r="4" fill="#1F4A4E"/>
+      <rect x="52" y="904" width="40" height="12" rx="4" fill="rgba(31,74,78,0.15)" stroke="#1F4A4E" stroke-width="1"/>
+      <text x="104" y="916" fill="#0B1E3B" font-size="14" font-family="'Fira Mono', monospace" text-anchor="start">supported version range</text>
+
+      <circle cx="44" cy="942" r="4" fill="#B58B3E"/>
+      <rect x="52" y="936" width="40" height="12" rx="4" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.5"/>
+      <text x="104" y="948" fill="#B58B3E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="start">kubectl &mdash; may run one version ahead of kube-apiserver</text>
+
+      <line x1="68" y1="968" x2="68" y2="980" stroke="#0B1E3B" stroke-width="2"/>
+      <line x1="76" y1="968" x2="76" y2="980" stroke="#0B1E3B" stroke-width="2"/>
+      <text x="104" y="980" fill="#0B1E3B" font-size="14" font-family="'Fira Mono', monospace" text-anchor="start">kube-apiserver &mdash; reference version (always 0)</text>
+    </svg>
+
+    <footer>
+      <span>ch08-fig03-version-skew-window</span>
+      <span>Lodestar Ledgers &middot; Kubernetes Certification</span>
+    </footer>
+  </div>
+</body>
+</html>

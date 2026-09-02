@@ -1,0 +1,93 @@
+<svg viewBox="0 0 800 1040" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch02-zenith-standard-crate-title ch02-zenith-standard-crate-desc" width="760" height="988">
+    <title id="ch02-zenith-standard-crate-title">The Zenith Standard Crate: one interface, any carrier</title>
+    <desc id="ch02-zenith-standard-crate-desc">Identical standardized crates moving between carriers of visibly different kinds—an ocean freighter, a rail flatcar, a truck chassis—each carrier built once against a published specification and able to handle any crate presented to it, unopened.</desc>
+
+    <defs>
+      <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon>
+      </marker>
+    </defs>
+
+    <rect width="100%" height="100%" fill="#F5EFE4"></rect>
+
+    <!-- ============ CONNECTORS (drawn before nodes) ============ -->
+    <!-- Spec bottom-center -> spine top: two-bend orthogonal elbow -->
+    <path d="M400,172 V192 Q400,200 392,200 H136 Q128,200 128,208" fill="none" stroke="#1F4A4E" stroke-width="1" stroke-dasharray="4,3"></path>
+    <!-- Spine: one trunk connector, tapped at each carrier row -->
+    <line x1="128" y1="208" x2="128" y2="780" stroke="#1F4A4E" stroke-width="1" stroke-dasharray="4,3"></line>
+    <!-- Branches: spine -> each carrier's left edge -->
+    <line x1="128" y1="308" x2="180" y2="308" stroke="#1F4A4E" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrow)"></line>
+    <line x1="128" y1="544" x2="180" y2="544" stroke="#1F4A4E" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrow)"></line>
+    <line x1="128" y1="780" x2="180" y2="780" stroke="#1F4A4E" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrow)"></line>
+
+    <!-- ============ SPEC NODE (focal - the only accent element) ============ -->
+    <rect x="200" y="40" width="400" height="132" rx="8" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"></rect>
+    <g transform="translate(388,52)" fill="none" stroke="#B58B3E" stroke-width="1.4" stroke-linecap="round">
+      <rect x="0" y="8" width="24" height="10" rx="2"></rect>
+      <line x1="6" y1="8" x2="6" y2="2"></line>
+      <line x1="18" y1="8" x2="18" y2="2"></line>
+    </g>
+    <text x="400" y="108" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle">Published Specification</text>
+    <text x="400" y="130" fill="#8A8D90" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.02em">fixed interface · published once</text>
+
+    <!-- ============ shared column header for the identical crate ============ -->
+    <rect x="565" y="192" width="150" height="16" fill="#F5EFE4"></rect>
+    <text x="640" y="204" fill="#8A8D90" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.1em">STANDARD CRATE</text>
+
+    <!-- ============ CARRIER 1: Ocean Freighter ============ -->
+    <rect x="180" y="220" width="520" height="176" rx="8" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+    <line x1="560" y1="236" x2="560" y2="380" stroke="rgba(11,30,59,0.12)" stroke-width="1"></line>
+    <g transform="translate(206,248) scale(1.3)" fill="none" stroke="#0B1E3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4,34 L10,44 L70,44 L70,34 Z"></path>
+      <rect x="50" y="18" width="14" height="16"></rect>
+      <rect x="60" y="10" width="4" height="8"></rect>
+      <line x1="0" y1="44" x2="74" y2="44"></line>
+    </g>
+    <text x="206" y="352" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif">Ocean Freighter</text>
+    <!-- crate riding carrier 1 -->
+    <rect x="584" y="260" width="112" height="96" rx="4" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1.2"></rect>
+    <line x1="584" y1="292" x2="696" y2="292" stroke="rgba(11,30,59,0.25)" stroke-width="1"></line>
+    <line x1="584" y1="324" x2="696" y2="324" stroke="rgba(11,30,59,0.25)" stroke-width="1"></line>
+    <rect x="584" y="346" width="112" height="10" fill="rgba(11,30,59,0.08)" stroke="rgba(11,30,59,0.4)" stroke-width="0.8"></rect>
+
+    <!-- ============ CARRIER 2: Rail Flatcar ============ -->
+    <rect x="180" y="456" width="520" height="176" rx="8" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+    <line x1="560" y1="472" x2="560" y2="616" stroke="rgba(11,30,59,0.12)" stroke-width="1"></line>
+    <g transform="translate(206,500) scale(1.3)" fill="none" stroke="#0B1E3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="0" y="23" width="6" height="4"></rect>
+      <rect x="68" y="23" width="6" height="4"></rect>
+      <rect x="6" y="20" width="62" height="10"></rect>
+      <circle cx="18" cy="34" r="5"></circle>
+      <circle cx="56" cy="34" r="5"></circle>
+    </g>
+    <text x="206" y="588" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif">Rail Flatcar</text>
+    <!-- crate riding carrier 2: identical geometry, no repeated label -->
+    <rect x="584" y="496" width="112" height="96" rx="4" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1.2"></rect>
+    <line x1="584" y1="528" x2="696" y2="528" stroke="rgba(11,30,59,0.25)" stroke-width="1"></line>
+    <line x1="584" y1="560" x2="696" y2="560" stroke="rgba(11,30,59,0.25)" stroke-width="1"></line>
+    <rect x="584" y="582" width="112" height="10" fill="rgba(11,30,59,0.08)" stroke="rgba(11,30,59,0.4)" stroke-width="0.8"></rect>
+
+    <!-- ============ CARRIER 3: Truck Chassis ============ -->
+    <rect x="180" y="692" width="520" height="176" rx="8" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+    <line x1="560" y1="708" x2="560" y2="852" stroke="rgba(11,30,59,0.12)" stroke-width="1"></line>
+    <g transform="translate(206,736) scale(1.3)" fill="none" stroke="#0B1E3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="4" y="14" width="16" height="20"></rect>
+      <line x1="8" y1="14" x2="8" y2="8"></line>
+      <line x1="8" y1="8" x2="18" y2="8"></line>
+      <line x1="18" y1="8" x2="18" y2="14"></line>
+      <rect x="20" y="26" width="48" height="8"></rect>
+      <circle cx="12" cy="38" r="5"></circle>
+      <circle cx="44" cy="38" r="5"></circle>
+      <circle cx="60" cy="38" r="5"></circle>
+    </g>
+    <text x="206" y="824" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif">Truck Chassis</text>
+    <!-- crate riding carrier 3: identical geometry, no repeated label -->
+    <rect x="584" y="732" width="112" height="96" rx="4" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1.2"></rect>
+    <line x1="584" y1="764" x2="696" y2="764" stroke="rgba(11,30,59,0.25)" stroke-width="1"></line>
+    <line x1="584" y1="796" x2="696" y2="796" stroke="rgba(11,30,59,0.25)" stroke-width="1"></line>
+    <rect x="584" y="818" width="112" height="10" fill="rgba(11,30,59,0.08)" stroke="rgba(11,30,59,0.4)" stroke-width="0.8"></rect>
+
+    <!-- ============ CAPTION STRIP ============ -->
+    <line x1="180" y1="912" x2="700" y2="912" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+    <text x="440" y="948" fill="#1F4A4E" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif" text-anchor="middle">Same crate, different carriers—because the interface is the standard.</text>
+  </svg>

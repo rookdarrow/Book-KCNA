@@ -1,0 +1,1 @@
+A cluster boundary containing Node, PersistentVolume, StorageClass and Namespace in its outer region, and two side-by-side namespace boxes, team-a and team-b, each holding an identical set of four objects: a Deployment and Service both named database, a ConfigMap named settings, and a Secret named creds.

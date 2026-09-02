@@ -1,0 +1,235 @@
+chapter: 2
+book: kcna
+generated: '2026-09-01T06:35:31+00:00'
+figures:
+- anchor_id: ch02-fig01-vm-vs-container-stack
+  source_hash: c999953ca8849de5c20bca3fa3f5d2251a320f2ba66fcde531231991d5ab2d41
+  output_hash:
+    svg: 7e8a6f1b8ab29be4bdd3bc5394dd9fb3d8c16edfec0082a2c1713a7c51e1a656
+    png: 1642e152cf5821db4d86f27306599eed6469291d3ff4d1f401154698132ec22e
+  validations:
+    label_count:
+      result: fail
+      value: 26
+      max: 7
+      reason: 26 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1512
+      - 1512
+    aspect_ratio:
+      result: pass
+      value: 1.0
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 445
+  alt_text: 'Two stacks side by side. On the left, virtual machines: hardware, host
+    OS, then a hypervisor, then three columns each containing a guest OS with an app
+    above it — three operating system copies for three apps. On the right, containers:
+    hardware, host OS, then a single container runtime with three apps sitting directly
+    on it — one operating system for three apps. The guest OS row present three times
+    on the left is absent entirely on the right.'
+- anchor_id: ch02-fig02-image-layers-and-digests
+  source_hash: f84df140e67f07d9c85796f80789ef19ca6fbf840ae7a282d4f0a2dbc29d4734
+  output_hash:
+    svg: c4003ba19ba3a977ac527517c3f622449ee868d57a63a17f0eb538c99015fa25
+    png: a27dd4dbf42b495499a281c40ff8d6c3c20788017dfdf3ce5005a0325613337b
+  validations:
+    label_count:
+      result: fail
+      value: 24
+      max: 7
+      reason: 24 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1280
+      - 1372
+    aspect_ratio:
+      result: pass
+      value: 1.07
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 520
+  alt_text: 'Left: two image stacks, image A and image B, each with an app layer above
+    a shared base layer, the two base layers joined to show they are one stored layer
+    named by both manifests. Right: a card showing a truncated digest sha256:9f2c...be41
+    labelled content hash and immutable, with two identical :v2 tag boxes below it
+    — one labelled today connected by a solid arrow, one labelled next week connected
+    by a dashed arrow to a different point, showing that a tag is a label that can
+    be moved to point at a different image.'
+- anchor_id: ch02-fig04-cri-runtime-chain
+  source_hash: e9bc6b27e22c0f8c4ca15d0dda269cef1d83848406ef0c6159aa25c4735d4f2e
+  output_hash:
+    svg: c0fe28fab8d112bf26703533c438f68c92f260052dce6cc49b0791a87a3ff68e
+    png: 6f62cfcaf8c02d4d7215436e770b182da7f7b553766bcbf610cf96986b2614bb
+  validations:
+    label_count:
+      result: fail
+      value: 21
+      max: 7
+      reason: 21 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1392
+      - 1844
+    aspect_ratio:
+      result: pass
+      value: 1.32
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 378
+  alt_text: 'A vertical chain. At the top, the kubelet, the node agent Kubernetes
+    ships. A connector descends across a heavy horizontal boundary labelled CRI, annotated:
+    Kubernetes defines this line and implements nothing below it. Below the boundary,
+    a socket into which exactly one conformant CRI runtime plugs — containerd or CRI-O.
+    Below the socket, runC, which starts a running process.'
+- anchor_id: ch02-fig03-oci-three-specs
+  source_hash: a7d8fe68bc97c2707cb853507d342689874d0b496dfce0a134d0396d2b6177e0
+  output_hash:
+    svg: 75b8ea63b70042fbf52558f2914a05976f39ea0d1581ea5a9912f4ef44e04bc8
+    png: 719a2e9f4608397981567c78288a9a8eba5fa35f57b601f9cc45562adea2c184
+  validations:
+    label_count:
+      result: fail
+      reason: SVG unparseable
+      value: 0
+      max: 7
+    palette_conformance:
+      result: fail
+      reason: SVG unparseable
+    min_font_size:
+      result: fail
+      reason: SVG unparseable
+    max_dimensions:
+      result: pass
+      value:
+      - 1360
+      - 1400
+    aspect_ratio:
+      result: pass
+      value: 1.03
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 387
+  alt_text: 'Three specification boxes across the top: image-spec, the format of the
+    artifact; distribution-spec, the API for moving it over the wire; runtime-spec,
+    how to run a filesystem bundle. Each has an arrow descending to the stage it governs
+    in the flow beneath: an OCI Image is pulled, then unpacked, becoming a filesystem
+    bundle, which is then run. Kubernetes appears nowhere in the figure.'
+- anchor_id: ch02-fig05-imagepullpolicy-decision
+  source_hash: 7177f2856183c2c8f0437ece82f30e7ecd8086ac52169c4109d5151c5d29aaff
+  output_hash:
+    svg: b1d6be5c8ef45ff297a96899d52eca8773d629b7a7b038dd8c5a49531d14161f
+    png: 79bd472af1386550c06b1b92c2140ebd3107ebcec2fb277df44bfe75d6d43a66
+  validations:
+    label_count:
+      result: fail
+      value: 31
+      max: 7
+      reason: 31 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1520
+      - 1804
+    aspect_ratio:
+      result: pass
+      value: 1.19
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 534
+  alt_text: 'A decision tree. Root question: was imagePullPolicy set explicitly? On
+    the YES branch, three policies: Always, which resolves the name to a digest and
+    reuses the local cache on a match; IfNotPresent, which pulls only if the image
+    is absent; and Never, which never fetches and fails if the image is absent. On
+    the NO branch, a second question asks the reference form, fanning to four outcomes:
+    a digest defaults to IfNotPresent, the :latest tag defaults to Always, no tag
+    defaults to Always, and any other tag defaults to IfNotPresent.'
+- anchor_id: ch02-zenith-standard-crate
+  source_hash: cff51a5e2d41def3a23d5ff7a65a347032a0c397e15af61c40cf499e0cbd2f5d
+  output_hash:
+    svg: 7df6f8cfa3be906d1afd7171b3e41b573b8df4b3c13a040939d75cebf343cb08
+    png: 8e62d802c8d897d2f4b7ef8734303b38cc3b28d45d6b31800a9f0cac972d9cfb
+  validations:
+    label_count:
+      result: pass
+      value: 7
+      max: 7
+      reason: ''
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1520
+      - 1976
+    aspect_ratio:
+      result: pass
+      value: 1.3
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 246
+  alt_text: Identical standardized crates moving between carriers of visibly different
+    kinds, each carrier built once against a published specification and handling
+    any crate presented to it. No crate is opened; the contents are never shown and
+    never matter.

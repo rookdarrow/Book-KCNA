@@ -1,0 +1,187 @@
+chapter: 7
+book: kcna
+generated: '2026-09-01T14:56:32+00:00'
+figures:
+- anchor_id: ch07-fig01-filter-score-bind
+  source_hash: b30d967fd9db010ed858ca367dbd5c6b71325abb9c73e9d5451190670552955d
+  output_hash:
+    svg: 9236b75faafbed807b63e143a17cf0ce33706f9baadb093f6969a9f43f90c879
+    png: 7e568604c670ef059520560734ac0b4d65637ca2f8d65711a9c85e668a0eae92
+  validations:
+    label_count:
+      result: fail
+      value: 32
+      max: 7
+      reason: 32 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1520
+      - 2164
+    aspect_ratio:
+      result: pass
+      value: 1.42
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 253
+  alt_text: 'Three-stage scheduler pipeline: FILTER keeps three of five nodes, SCORE
+    ranks them with node-c highest at 91, BIND draws an arrow from kube-scheduler
+    to kube-apiserver. A separate, unconnected panel below shows the kubelet on node-c
+    starting containers.'
+- anchor_id: ch07-fig02-nodeselector-vs-affinity
+  source_hash: ac0f28b3a57d436d5cf3a3f4caa6e4d4d1df776d2da7a35564fb4dc7272dc1bc
+  output_hash:
+    svg: 8dfca23e6a7610a465c92907f82de5b404492444477a16ef77a4bdd741453138
+    png: fbf1edd08402c72a549019616faf8f0e05e0b0c511feba5c0041e17b77ae4760
+  validations:
+    label_count:
+      result: pass
+      value: 7
+      max: 7
+      reason: ''
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 960
+      - 1042
+    aspect_ratio:
+      result: pass
+      value: 1.09
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 239
+  alt_text: A two-by-three matrix. Columns are nodeSelector, required node affinity,
+    preferred node affinity, increasing in expressiveness. Rows are hard and soft.
+    Only three cells are filled, and only the bottom-right preferred-affinity cell
+    is soft.
+- anchor_id: ch07-fig03-taints-tolerations-effects
+  source_hash: 6737e543e0f410e3620f5b72ba53d53da27c5707d4e868d9365c32c237bc6c7d
+  output_hash:
+    svg: 2ce64e202af7bae007fc516aa45e53e56b4d47b77913e0bf40a3569821df9288
+    png: 954db906e8fee704d7b4e3d42d1413041d66115800785cb0135bfcf31c8eed3a
+  validations:
+    label_count:
+      result: fail
+      value: 45
+      max: 7
+      reason: 45 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1040
+      - 1388
+    aspect_ratio:
+      result: pass
+      value: 1.33
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 200
+  alt_text: 'A node carrying a taint repels three Pods: two arriving and one already
+    resident. A table below shows that NoSchedule and PreferNoSchedule leave the resident
+    Pod unaffected, while NoExecute evicts it.'
+- anchor_id: ch07-fig04-pod-affinity-anti-affinity-topology
+  source_hash: 6870ccc0eb432bcb7812745c7119473930e96aac31d36dfde42553287a7ea926
+  output_hash:
+    svg: 78d0ab0a4f2070e2fd69b6f0c06e73dee04bf59e77558a9e091d5fb38c7b6a3e
+    png: cc0d07d8e31cad67522a8e8604bb4a0f2f65a009297cbf40f9561f4a698b3c87
+  validations:
+    label_count:
+      result: pass
+      value: 1
+      max: 7
+      reason: ''
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1200
+      - 1590
+    aspect_ratio:
+      result: pass
+      value: 1.32
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 206
+  alt_text: Two panels showing the same six-node, two-zone cluster. With topologyKey
+    set to hostname, all six nodes host a web Pod. With topologyKey set to zone, only
+    one node per zone does — six placements become two.
+- anchor_id: ch07-zenith-berth-assignment
+  source_hash: 31732997a22ef36cf4bcd050adb0a74c8226739ec2affd5d03263b97fb784ca8
+  output_hash:
+    svg: bc5e053a5013e0c17622719e72ec475d956589e4bbf6fb304c9a0b01fb57cbb9
+    png: 23fa063040cb37abf96296de7d8ea8eec23e1135f0a8155868ab1b92a85f375c
+  validations:
+    label_count:
+      result: fail
+      value: 23
+      max: 7
+      reason: 23 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1280
+      - 1422
+    aspect_ratio:
+      result: pass
+      value: 1.11
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 249
+  alt_text: Seven filter mechanisms feed the FILTER stage and five score mechanisms
+    feed the SCORE stage of the filter-score-bind pipeline, which ends at a chosen
+    node. A separate arrow from spec.nodeName bypasses all three stages and reaches
+    the node directly.

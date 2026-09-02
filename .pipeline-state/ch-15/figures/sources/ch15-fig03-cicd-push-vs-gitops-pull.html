@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CI/CD push vs. GitOps pull: where the key lives</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;700&family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Fira+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --color-paper:  #F5EFE4;
+      --color-ink:    #0B1E3B;
+      --color-muted:  #1F4A4E;
+      --color-accent: #B58B3E;
+      --color-soft:   #8A8D90;
+      --font-sans:  'Fira Sans', sans-serif;
+      --font-slab:  'Roboto Slab', serif;
+      --font-mono:  'Fira Mono', ui-monospace, monospace;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-paper);
+      color: var(--color-ink);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 2rem;
+    }
+
+    .frame { max-width: 640px; width: 100%; }
+
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    h1 {
+      font-family: var(--font-slab);
+      font-size: 1.75rem;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+      color: var(--color-ink);
+      margin-bottom: 0.75rem;
+    }
+
+    .subtitle {
+      font-family: var(--font-sans);
+      font-size: 1rem;
+      color: var(--color-muted);
+      line-height: 1.5;
+      margin-bottom: 1.5rem;
+      max-width: 42ch;
+    }
+
+    svg { width: 100%; max-width: 480px; display: block; margin: 0 auto; height: auto; }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <p class="eyebrow">Security topology · Ch.15 Fig.03</p>
+    <h1>CI/CD push vs. GitOps pull: where the key lives</h1>
+    <p class="subtitle">Locate the cluster-write credential relative to the cluster boundary — the blast radius follows from that one placement.</p>
+
+    <svg viewBox="0 0 464 704" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="cicdpushpull-title cicdpushpull-desc">
+      <title id="cicdpushpull-title">CI/CD push vs. GitOps pull: where the key lives</title>
+      <desc id="cicdpushpull-desc">Security topology comparing two deployment models against one cluster boundary: in push, a pipeline outside the boundary holds the cluster-write credential and reaches inward to the API server; in pull, an agent inside the boundary holds the credential, reaching outward to fetch from a repository that holds no credential and inward to the API server.</desc>
+      <defs>
+        <marker id="arrow-ink" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#0B1E3B"/></marker>
+        <marker id="arrow-muted" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"/></marker>
+        <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#B58B3E"/></marker>
+
+        <symbol id="key-icon" viewBox="0 0 24 24">
+          <g fill="none" stroke="#B58B3E" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="7" cy="12" r="5"/>
+            <line x1="12" y1="12" x2="21" y2="12"/>
+            <line x1="16" y1="12" x2="16" y2="17"/>
+            <line x1="20" y1="12" x2="20" y2="16"/>
+          </g>
+        </symbol>
+      </defs>
+
+      <rect width="100%" height="100%" fill="#F5EFE4"/>
+
+      <!-- ===================== PUSH PANEL ===================== -->
+      <text x="24" y="44" fill="#0B1E3B" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" letter-spacing="0.14em">PUSH</text>
+
+      <!-- Zone: cluster boundary (push) -->
+      <rect x="216" y="56" width="224" height="132" rx="8" fill="rgba(31,74,78,0.04)" stroke="rgba(31,74,78,0.55)" stroke-width="1" stroke-dasharray="4,4"/>
+      <rect x="252" y="60" width="152" height="16" rx="2" fill="#F5EFE4"/>
+      <text x="328" y="72" fill="#8A8D90" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.12em">CLUSTER BOUNDARY</text>
+
+      <!-- Arrow: pipeline -> API server (WRITE, privileged, crosses the boundary) -->
+      <line x1="168" y1="132" x2="256" y2="132" stroke="#0B1E3B" stroke-width="1.2" marker-end="url(#arrow-ink)"/>
+      <rect x="172" y="104" width="40" height="16" rx="2" fill="#F5EFE4"/>
+      <text x="192" y="116" fill="#0B1E3B" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.06em">WRITE</text>
+
+      <!-- Node: Pipeline (focal — holds the key, OUTSIDE the boundary) -->
+      <rect x="24" y="92" width="144" height="80" rx="6" fill="#F5EFE4"/>
+      <rect x="24" y="92" width="144" height="80" rx="6" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1"/>
+      <use href="#key-icon" x="136" y="100" width="24" height="24"/>
+      <text x="96" y="156" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">Pipeline</text>
+
+      <!-- Node: API server (backend, INSIDE the boundary) -->
+      <rect x="256" y="92" width="144" height="80" rx="6" fill="#F5EFE4"/>
+      <rect x="256" y="92" width="144" height="80" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+      <text x="328" y="128" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">API server</text>
+      <text x="328" y="148" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle">kube-apiserver</text>
+
+      <!-- Caption -->
+      <text x="96" y="204" fill="#8A8D90" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif" text-anchor="middle">the key lives OUT HERE</text>
+
+      <!-- ===================== PULL PANEL ===================== -->
+      <text x="24" y="284" fill="#0B1E3B" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" letter-spacing="0.14em">PULL</text>
+
+      <!-- Zone: cluster boundary (pull) -->
+      <rect x="216" y="288" width="224" height="252" rx="8" fill="rgba(31,74,78,0.04)" stroke="rgba(31,74,78,0.55)" stroke-width="1" stroke-dasharray="4,4"/>
+      <rect x="252" y="292" width="152" height="16" rx="2" fill="#F5EFE4"/>
+      <text x="328" y="304" fill="#8A8D90" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.12em">CLUSTER BOUNDARY</text>
+
+      <!-- Arrow: agent -> repo (FETCH, ordinary, reaches OUT through the boundary — no credential exposed to repo) -->
+      <line x1="256" y1="364" x2="168" y2="364" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow-muted)"/>
+      <rect x="172" y="336" width="40" height="16" rx="2" fill="#F5EFE4"/>
+      <text x="192" y="348" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.06em">FETCH</text>
+
+      <!-- Arrow: agent -> API server (WRITE, privileged, stays INSIDE the boundary) -->
+      <line x1="328" y1="404" x2="328" y2="444" stroke="#0B1E3B" stroke-width="1.2" marker-end="url(#arrow-ink)"/>
+      <rect x="336" y="416" width="56" height="16" rx="2" fill="#F5EFE4"/>
+      <text x="364" y="428" fill="#0B1E3B" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.06em">WRITE</text>
+
+      <!-- Node: Repo (backend, OUTSIDE the boundary, holds no credential) -->
+      <rect x="24" y="324" width="144" height="80" rx="6" fill="#F5EFE4"/>
+      <rect x="24" y="324" width="144" height="80" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+      <text x="96" y="368" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">Repo</text>
+
+      <!-- Node: Agent (focal — holds the key, INSIDE the boundary) -->
+      <rect x="256" y="324" width="144" height="80" rx="6" fill="#F5EFE4"/>
+      <rect x="256" y="324" width="144" height="80" rx="6" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1"/>
+      <use href="#key-icon" x="368" y="332" width="24" height="24"/>
+      <text x="328" y="388" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">Agent</text>
+
+      <!-- Node: API server (backend, INSIDE the boundary) -->
+      <rect x="256" y="444" width="144" height="80" rx="6" fill="#F5EFE4"/>
+      <rect x="256" y="444" width="144" height="80" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+      <text x="328" y="480" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">API server</text>
+      <text x="328" y="500" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle">kube-apiserver</text>
+
+      <!-- Caption -->
+      <text x="328" y="572" fill="#8A8D90" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif" text-anchor="middle">the key lives IN HERE</text>
+
+      <!-- ===================== LEGEND ===================== -->
+      <line x1="24" y1="624" x2="440" y2="624" stroke="#8A8D90" stroke-width="0.8" stroke-opacity="0.4"/>
+      <text x="24" y="640" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" letter-spacing="0.14em">LEGEND</text>
+
+      <use href="#key-icon" x="24" y="652" width="16" height="16"/>
+      <text x="48" y="664" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">Cluster-write credential</text>
+
+      <line x1="248" y1="660" x2="272" y2="660" stroke="rgba(31,74,78,0.55)" stroke-width="1.2" stroke-dasharray="4,4"/>
+      <text x="280" y="664" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">Cluster boundary</text>
+
+      <line x1="24" y1="688" x2="48" y2="688" stroke="#0B1E3B" stroke-width="1.2" marker-end="url(#arrow-ink)"/>
+      <text x="56" y="692" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">Privileged write</text>
+
+      <line x1="248" y1="688" x2="272" y2="688" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow-muted)"/>
+      <text x="280" y="692" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">External fetch</text>
+    </svg>
+  </div>
+</body>
+</html>

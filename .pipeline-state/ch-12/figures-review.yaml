@@ -1,0 +1,106 @@
+chapter: 12
+book: kcna
+generated: '2026-09-01T08:39:08+00:00'
+figures:
+- anchor_id: ch12-fig01-4cs-and-lifecycle-phases
+  status: pending
+  render_paths:
+    svg: figures/ch12-fig01-4cs-and-lifecycle-phases.svg
+    png: figures/ch12-fig01-4cs-and-lifecycle-phases.png
+  source_path: figures/sources/ch12-fig01-4cs-and-lifecycle-phases.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch12-fig03-serviceaccount-token-flow
+  status: pending
+  render_paths:
+    svg: figures/ch12-fig03-serviceaccount-token-flow.svg
+    png: figures/ch12-fig03-serviceaccount-token-flow.png
+  source_path: figures/sources/ch12-fig03-serviceaccount-token-flow.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch12-fig02-rbac-four-way-matrix
+  status: pending
+  render_paths:
+    svg: figures/ch12-fig02-rbac-four-way-matrix.svg
+    png: figures/ch12-fig02-rbac-four-way-matrix.png
+  source_path: figures/sources/ch12-fig02-rbac-four-way-matrix.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch12-fig04-pod-security-standards-levels
+  status: pending
+  render_paths:
+    svg: figures/ch12-fig04-pod-security-standards-levels.svg
+    png: figures/ch12-fig04-pod-security-standards-levels.png
+  source_path: figures/sources/ch12-fig04-pod-security-standards-levels.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: fail
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch12-fig05-supply-chain-checkpoints
+  status: pending
+  render_paths:
+    svg: figures/ch12-fig05-supply-chain-checkpoints.svg
+    png: figures/ch12-fig05-supply-chain-checkpoints.png
+  source_path: figures/sources/ch12-fig05-supply-chain-checkpoints.html
+  validation_results:
+    label_count: pass
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch12-zenith-additive-never-deny
+  status: pending
+  render_paths:
+    svg: figures/ch12-zenith-additive-never-deny.svg
+    png: figures/ch12-zenith-additive-never-deny.png
+  source_path: figures/sources/ch12-zenith-additive-never-deny.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null

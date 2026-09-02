@@ -1,0 +1,227 @@
+chapter: 14
+book: kcna
+generated: '2026-09-01T07:15:37+00:00'
+figures:
+- anchor_id: ch14-fig01-manifest-to-package-progression
+  source_hash: 9abb6d15ffe1bd3aa81e75e06acc7cabe141cc712d38e08c8d196e4c726d5cb6
+  output_hash:
+    svg: 284f4fc084ccd9ad33a982637e0db49a90a4383dee3cc20b03d16aeeec6134f1
+    png: 9e832459798f8e0ed67e7a9ed02a0a030cc47126cf5002f1b719cebaecf2e493
+  validations:
+    label_count:
+      result: fail
+      value: 36
+      max: 7
+      reason: 36 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1280
+      - 1690
+    aspect_ratio:
+      result: pass
+      value: 1.32
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 366
+  alt_text: 'Three-panel comparison: one manifests directory deploying to one cluster,
+    labelled correct; three near-identical directories for dev, staging and production
+    bracketed as ninety-five percent identical with nothing marking the difference,
+    labelled as where most teams live; and one versioned package plus three per-environment
+    value files fanning out to three clusters'
+- anchor_id: ch14-fig02-helm-chart-anatomy
+  source_hash: be011cd8756eb9fd09dcc53fb47beb341fa38ecfeca119d73aa84b4ae7b24e41
+  output_hash:
+    svg: 190f401de77c0b3e4c209aa677554a923c38a13a65a994a2ff36761dec0d9c63
+    png: 79b6b32d5e5719cc4ed64d2088a8581f40aaeee66ba0cd6cef691236fa93f3de
+  validations:
+    label_count:
+      result: fail
+      value: 36
+      max: 7
+      reason: 36 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1280
+      - 1436
+    aspect_ratio:
+      result: pass
+      value: 1.12
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 259
+  alt_text: Directory tree of a Helm chart named wordpress, with Chart.yaml, values.yaml,
+    templates, charts and crds each annotated with its purpose; the charts directory
+    is marked emphatically as not a repository but a directory inside the chart holding
+    its dependencies
+- anchor_id: ch14-fig03-release-vs-chart-vs-revision
+  source_hash: 98595532aa01dc6c7ea09206d311383b18aa487ea9ccb750efa27bbdd28e90b1
+  output_hash:
+    svg: 2860b855ab9ca1e2306df7bdafe5edccb4e27340ccde70b26c64e0cd8660e6d8
+    png: 34234710b3baa4772d1db8bdea53a0aa6cdd67a0dc65ef647fb12130edf6b349
+  validations:
+    label_count:
+      result: fail
+      value: 33
+      max: 7
+      reason: 33 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1120
+      - 1358
+    aspect_ratio:
+      result: pass
+      value: 1.21
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 275
+  alt_text: One Helm chart at the top installs twice, producing two independent releases
+    named marketing and docs in separate namespaces with different replica counts;
+    the marketing release has a left-to-right chain of numbered revisions, and a rollback
+    arrow points back at revision two
+- anchor_id: ch14-fig04-kustomize-base-overlay
+  source_hash: e0c2d96a5aab8217389f351cfa4fe9a6029594297f6b8dc6e258636ab48610b7
+  output_hash:
+    svg: 1aa6a53c4db8a732c1c4057847ed150253481b776af82f3b4c17b4d9d173f4c8
+    png: db3eb4d38e2dd07eead5a81c0c31e0f62876ccee5be2a8938deb0f1ebf47a45c
+  validations:
+    label_count:
+      result: fail
+      value: 43
+      max: 7
+      reason: 43 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1280
+      - 1670
+    aspect_ratio:
+      result: pass
+      value: 1.3
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 282
+  alt_text: Two Kustomize overlay directories for staging and production, each listing
+    only its own deltas, both referencing a single shared base directory that is never
+    edited and never copied; applying each overlay with kubectl apply -k produces
+    prefixed objects with different replica counts
+- anchor_id: ch14-fig05-templating-vs-overlay-decision
+  source_hash: 985db8005aeea1dd1ae2c8617b7a2aa6db16c28b85f06c2e8a8557808a390941
+  output_hash:
+    svg: d5d3b0967c7968003812a69d77bbe417576b391bea8034b1cb7ee38c86dbf7a9
+    png: 95151a660e5218671ca3a0254d028239559d417990465c4cb43ad3462cd826d8
+  validations:
+    label_count:
+      result: fail
+      value: 34
+      max: 7
+      reason: 34 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1440
+      - 1352
+    aspect_ratio:
+      result: pass
+      value: 1.07
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 309
+  alt_text: Comparison table of Helm and Kustomize across five rows — what varies,
+    the unit, distribution, lifecycle, and where the engine lives — closing with a
+    decision band stating that distributing to strangers who will not read it points
+    to Helm, while adapting what you already have for yourself points to Kustomize
+- anchor_id: ch14-zenith-package-not-template
+  source_hash: 63083ca58e7d0dd3142980e677fcc785619d28c28128f2b63480dd4a86b47e2e
+  output_hash:
+    svg: 1d4b83bbb56f7894f222e12ea01aba490bf1edbbbbcda38a453c5d8e6b39121d
+    png: 0079b5cba464d8c763e77b5f693f8186bb5647d46b3e1425b2fe9f50835d2fe9
+  validations:
+    label_count:
+      result: fail
+      value: 13
+      max: 7
+      reason: 13 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1200
+      - 1600
+    aspect_ratio:
+      result: pass
+      value: 1.33
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 288
+  alt_text: Two symmetric paths, one labelled render that fills in holes from templates
+    and values, one labelled patch that merges deltas from a base and overlay, converging
+    with opposing arrows on a single highlighted box reading one named, versioned,
+    installable unit, which then flows to a cluster

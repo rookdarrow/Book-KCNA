@@ -1,0 +1,556 @@
+chapter: 17
+book: kcna
+generated: '2026-09-01T06:20:16+00:00'
+figures:
+- anchor_id: ch17-fig01-cloud-native-definition-characteristics
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch17-fig01-cloud-native-definition-characteristics.html
+  output_paths:
+    svg: figures/ch17-fig01-cloud-native-definition-characteristics.svg
+    png: figures/ch17-fig01-cloud-native-definition-characteristics.png
+    alt: figures/ch17-fig01-cloud-native-definition-characteristics.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: hierarchy_tree
+  figure_spec:
+    anchor_id: ch17-fig01-cloud-native-definition-characteristics
+    diagram_type: hierarchy_tree
+    source_ascii: "                  LOOSELY COUPLED SYSTEMS\n                  that\
+      \ interoperate in a manner that is:\n                              |\n    +---------+---------+-----+-----+---------+-----------+\n\
+      \    |         |         |           |         |           |\n SECURE   RESILIENT\
+      \  MANAGEABLE  SUSTAINABLE      OBSERVABLE\n\n verified   survives   changeable\
+      \   affordable    you can ask\n at every   the loss   without       to keep\
+      \      it what it\n boundary,  of any     rebuilding    running,     is doing,\n\
+      \ not just   one part   it            in people    and it will\n at the    \
+      \                          and in       answer\n edge                      \
+      \          power\n"
+    vendor_terms: []
+    complexity_hint:
+      node_count: 6
+      edge_count: 5
+      label_count: 11
+    pedagogy:
+      part_18_criteria_met:
+      - spatial_structure
+      - fixed_point
+      learning_outcome: State the five characteristics of cloud native and recognise
+        that they are properties of loosely coupled systems, not a free-standing list
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: the root box reading LOOSELY COUPLED SYSTEMS
+    accessibility:
+      alt_text_seed: 'A single root box labelled LOOSELY COUPLED SYSTEMS branches
+        down to five characteristics: secure, resilient, manageable, sustainable,
+        and observable, each with a short explanatory gloss beneath it'
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Structure redrawn in Lodestar style over the five characteristic terms
+        of CNCF Cloud Native Definition v1.1; short quotation, cited in adjacent prose,
+        no marks reproduced.
+- anchor_id: ch17-fig05-cncf-maturity-levels
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch17-fig05-cncf-maturity-levels.html
+  output_paths:
+    svg: figures/ch17-fig05-cncf-maturity-levels.svg
+    png: figures/ch17-fig05-cncf-maturity-levels.png
+    alt: figures/ch17-fig05-cncf-maturity-levels.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: flowchart
+  figure_spec:
+    anchor_id: ch17-fig05-cncf-maturity-levels
+    diagram_type: flowchart
+    source_ascii: "                                    +--------------------+\n  \
+      \                                  |     GRADUATED      |\n                \
+      \                    |  stable, widely    |\n                              \
+      \      |  adopted,          |\n                                    |  production\
+      \ ready  |\n                    +---------------+--------------------+\n   \
+      \                 |    INCUBATING                      |\n                 \
+      \   |  in production use by a small       |\n                    |  number of\
+      \ users; healthy pool      |\n                    |  of contributors       \
+      \             |\n    +---------------+-------------------------------------+\n\
+      \    |    SANDBOX                                          |\n    |  experimental;\
+      \ not yet widely tested in             |\n    |  production; bleeding edge \
+      \                         |\n    +-----------------------------------------------------+\n\
+      \n    ^ the criteria for each step live with the TOC, in the\n      project\
+      \ lifecycle documentation -- NOT on the projects page\n\n    ( ARCHIVED is not\
+      \ a rung. It is where projects go when\n      they stop. See below. )\n"
+    vendor_terms: []
+    complexity_hint:
+      node_count: 4
+      edge_count: 3
+      label_count: 8
+    pedagogy:
+      part_18_criteria_met:
+      - spatial_structure
+      - distinguishing_alternatives
+      - fixed_point
+      learning_outcome: Order the CNCF maturity levels and state what each one asserts,
+        while recognising Archived as a terminal state rather than a rung
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: the GRADUATED step at the top of the staircase
+    accessibility:
+      alt_text_seed: An ascending three-step staircase labelled Sandbox at the bottom,
+        Incubating in the middle, and Graduated at the top, each step captioned with
+        what that level asserts, with a separate detached note explaining that Archived
+        is not a rung
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Level names and short descriptions paraphrase the public CNCF projects
+        page; redrawn structure, no logos or project marks.
+- anchor_id: ch17-fig02-extension-points-map
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch17-fig02-extension-points-map.html
+  output_paths:
+    svg: figures/ch17-fig02-extension-points-map.svg
+    png: figures/ch17-fig02-extension-points-map.png
+    alt: figures/ch17-fig02-extension-points-map.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: k8s_architecture
+  figure_spec:
+    anchor_id: ch17-fig02-extension-points-map
+    diagram_type: k8s_architecture
+    source_ascii: "            +==================================================+\n\
+      \            |          THE KUBERNETES API SURFACE              |\n        \
+      \    |                                                  |\n    (o)-----|  CRDs\
+      \                     ..... new object kinds |\n   Ch 6 §8  |              \
+      \                                    |\n            +==================================================+\n\
+      \            |               CONTROL PLANE                      |\n        \
+      \    +==================================================+\n            |   \
+      \            THE NODE                           |\n            |           \
+      \                                       |\n    (o)-----|  CRI          .............\
+      \ running containers   |\n   Ch 2 §4  |                                    \
+      \              |\n            |                                            \
+      \      |\n    (o)-----|  CNI          ............. pod networking       |\n\
+      \   Ch 9 §1  |                                                  |\n        \
+      \    |                                                  |\n    (o)-----|  CSI\
+      \          ............. attaching storage    |\n   Ch 11 §5 |             \
+      \                                     |\n            +==================================================+\n\
+      \n            (o) = a socket. Kubernetes defines the shape.\n              \
+      \    Somebody else supplies the plug.\n"
+    vendor_terms:
+    - kubernetes
+    complexity_hint:
+      node_count: 7
+      edge_count: 4
+      label_count: 12
+    pedagogy:
+      part_18_criteria_met:
+      - spatial_structure
+      - fixed_point
+      learning_outcome: State the shape CRI, CNI, CSI and CRDs have in common, and
+        place each at the layer of the cluster it serves
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: the four identical socket glyphs on the left edge
+    accessibility:
+      alt_text_seed: 'A three-band Kubernetes stack: the API surface at the top holding
+        CRDs for new object kinds, a control plane band in the middle, and the node
+        at the bottom holding CRI for running containers, CNI for pod networking,
+        and CSI for attaching storage; four identical sockets on the left edge mark
+        each extension point with its chapter reference'
+    rendering_hints:
+      preferred_orientation: portrait
+      grayscale_critical: true
+      max_width_px: 900
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Depicts Kubernetes interface names and architecture concepts only; original
+        diagram, no upstream figure reproduced, no project logos.
+- anchor_id: ch17-fig03-mesh-data-vs-control-plane
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch17-fig03-mesh-data-vs-control-plane.html
+  output_paths:
+    svg: figures/ch17-fig03-mesh-data-vs-control-plane.svg
+    png: figures/ch17-fig03-mesh-data-vs-control-plane.png
+    alt: figures/ch17-fig03-mesh-data-vs-control-plane.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: k8s_architecture
+  figure_spec:
+    anchor_id: ch17-fig03-mesh-data-vs-control-plane
+    diagram_type: k8s_architecture
+    source_ascii: "   ############################################################\n\
+      \   #  THE CLUSTER'S CONTROL PLANE            ( Ch 3 §2 )      #\n   #  kube-apiserver\
+      \ . etcd . scheduler . controller-manager  #\n   #  Manages: Kubernetes OBJECTS\
+      \                             #\n   ############################################################\n\
+      \                    (a different thing entirely)\n\n\n   +----------------------------------------------------------+\n\
+      \   |  THE MESH'S CONTROL PLANE                                |\n   |  Distributes\
+      \ policy + certificates to the proxies        |\n   |  Manages: PROXIES    \
+      \                                    |\n   +----------------------------------------------------------+\n\
+      \              |                 |                 |\n              v      \
+      \           v                 v\n   ------------------------------------------------------------\n\
+      \     THE MESH'S DATA PLANE  -- the proxies themselves\n     Every byte between\
+      \ services passes through here\n\n     SIDECAR MODE                 |  AMBIENT\
+      \ MODE\n                                  |\n     +--------------+         \
+      \    |  +--------------+\n     | Pod          |             |  | Pod       \
+      \   |\n     |  app <-> [E] |             |  |  app         |\n     +--------------+\
+      \             |  +--------------+\n     +--------------+             |  +--------------+\n\
+      \     | Pod          |             |  | Pod          |\n     |  app <-> [E]\
+      \ |             |  |  app         |\n     +--------------+             |  +--------------+\n\
+      \                                  |         |\n     one Envoy per Pod     \
+      \       |    [ztunnel]  per-NODE L4\n                                  |   \
+      \ [waypoint] per-NS  L7 (Envoy)\n   ------------------------------------------------------------\n\
+      \n     [E] = Envoy.  Both columns are the SAME data plane,\n           arranged\
+      \ two ways -- not two products.\n"
+    vendor_terms:
+    - istio
+    - envoy
+    - ztunnel
+    - waypoint
+    - kubernetes
+    - etcd
+    - kube-apiserver
+    complexity_hint:
+      node_count: 10
+      edge_count: 7
+      label_count: 16
+    pedagogy:
+      part_18_criteria_met:
+      - distinguishing_alternatives
+      - spatial_structure
+      - fixed_point
+      learning_outcome: Distinguish a service mesh's data plane from its control plane,
+        and both from the cluster's control plane; recognise sidecar and ambient as
+        two arrangements of one data plane
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: every Envoy instance — the [E] sidecars and the
+        ambient waypoint — accented identically to show one engine in both modes
+    accessibility:
+      alt_text_seed: 'Three separate layers: the cluster''s control plane drawn apart
+        at the top with no connection to anything, the mesh''s control plane below
+        it sending arrows down to the mesh''s data plane, and the data plane split
+        into a sidecar column with an Envoy proxy inside each Pod and an ambient column
+        where Pods hold only the app and proxying happens in a per-node ztunnel and
+        an optional per-namespace Envoy waypoint'
+    rendering_hints:
+      preferred_orientation: portrait
+      grayscale_critical: true
+      max_width_px: 1000
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Istio and Envoy are CNCF projects; architecture redrawn from published
+        descriptions in Lodestar style, no upstream figure traced and no project logos
+        used.
+- anchor_id: ch17-fig07-scale-to-zero-and-the-knative-service
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch17-fig07-scale-to-zero-and-the-knative-service.html
+  output_paths:
+    svg: figures/ch17-fig07-scale-to-zero-and-the-knative-service.svg
+    png: figures/ch17-fig07-scale-to-zero-and-the-knative-service.png
+    alt: figures/ch17-fig07-scale-to-zero-and-the-knative-service.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: flowchart
+  figure_spec:
+    anchor_id: ch17-fig07-scale-to-zero-and-the-knative-service
+    diagram_type: flowchart
+    source_ascii: "   IDLE                REQUEST ARRIVES         SERVING\n   ----\
+      \                ---------------         -------\n\n   Knative Service     Knative\
+      \ Service         Knative Service\n   replicas: 0    -->  replicas: 0 -> N \
+      \  -->  replicas: N\n                       (KPA scales up)\n\n   ( nothing\
+      \            +------------+          +------------+\n     running )        \
+      \  |  Pod       |          |  Pod       |\n                        | +--------+\
+      \ |          | +--------+ |\n                        | |contain-| |        \
+      \  | |contain-| |\n                        | |  er    | |          | |  er \
+      \   | |\n                        | +--------+ |          | +--------+ |\n  \
+      \                      +------------+          +------------+\n            \
+      \                                    +------------+\n                      \
+      \                          |  Pod  ...  |\n                                \
+      \                +------------+\n\n                                        \
+      \             |\n              TRAFFIC STOPS                          |\n  \
+      \            -------------                          v\n                    \
+      \                            +------------+\n   Knative Service        <-- KPA\
+      \ scales down --|  replicas  |\n   replicas: 0                             \
+      \     |   N -> 0   |\n                                                +------------+\n\
+      \n   The containers and Pods are real at every populated step.\n   \"Serverless\"\
+      \ describes the LIFECYCLE, not their absence.\n"
+    vendor_terms:
+    - knative
+    - kubernetes
+    complexity_hint:
+      node_count: 7
+      edge_count: 4
+      label_count: 11
+    pedagogy:
+      part_18_criteria_met:
+      - temporal_structure
+      - fixed_point
+      learning_outcome: Explain that serverless workloads on Kubernetes are still
+        containers in Pods, and that the serverless property is the request-driven
+        lifecycle including scale to zero
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: the container rectangles nested inside each Pod
+        box
+    accessibility:
+      alt_text_seed: 'A closed cycle: an idle Knative Service at zero replicas with
+        nothing running, a request arriving and the Knative Pod Autoscaler scaling
+        from zero to N with a container visible inside a Pod, a serving state with
+        several such Pods, then traffic stopping and the autoscaler scaling back down
+        to zero replicas'
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Knative is a CNCF Graduated project; lifecycle redrawn from published
+        documentation, original diagram, no logos.
+- anchor_id: ch17-fig04-autoscaler-landscape
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch17-fig04-autoscaler-landscape.html
+  output_paths:
+    svg: figures/ch17-fig04-autoscaler-landscape.svg
+    png: figures/ch17-fig04-autoscaler-landscape.png
+    alt: figures/ch17-fig04-autoscaler-landscape.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: other
+  figure_spec:
+    anchor_id: ch17-fig04-autoscaler-landscape
+    diagram_type: other
+    source_ascii: "   +-------------------+------------------+---------------------+\n\
+      \   | AUTOSCALER        | WHAT MOVES       | WHAT TRIGGERS IT    |\n   +-------------------+------------------+---------------------+\n\
+      \   | HPA               | replica count    | observed            |\n   | (ships\
+      \ with K8s)  |                  | utilization         |\n   +-------------------+------------------+---------------------+\n\
+      \   | KEDA          [*] | replica count    | external EVENT      |\n   |   \
+      \                |    ^^^ same axis | (queue depth,       |\n   |          \
+      \         |    as HPA        |  schedule via Cron) |\n   +-------------------+------------------+---------------------+\n\
+      \   | VPA          [!]  | per-replica      | observed usage      |\n   | **\
+      \ ADD-ON.        |   resources      | (needs metrics-     |\n   | NOT SHIPPED.\
+      \ **   |   (CPU, memory)  |  server)            |\n   +-------------------+------------------+---------------------+\n\
+      \   | Cluster Auto-     | the NODE POOL    | unschedulable Pods  |\n   | scaler\
+      \            |                  | (provision);        |\n   | / Karpenter  \
+      \     |                  | underutilized nodes |\n   |                   | \
+      \                 | (consolidate)       |\n   +-------------------+------------------+---------------------+\n\
+      \n   [!] VPA is the one that is NOT there by default.\n   [*] KEDA shares HPA's\
+      \ axis with a different trigger.\n       Axis and trigger are two separate questions.\n"
+    vendor_terms:
+    - kubernetes
+    - keda
+    - karpenter
+    - cluster-autoscaler
+    - metrics-server
+    complexity_hint:
+      node_count: 12
+      edge_count: 0
+      label_count: 17
+    pedagogy:
+      part_18_criteria_met:
+      - distinguishing_alternatives
+      - spatial_structure
+      learning_outcome: Say which axis each autoscaler moves and what triggers it,
+        and identify which one does not ship with Kubernetes
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: the VPA row's ADD-ON, NOT SHIPPED flag
+    accessibility:
+      alt_text_seed: 'A four-row comparison table of autoscalers: HPA moves replica
+        count on observed utilization and ships with Kubernetes; KEDA moves replica
+        count on external events and schedules; VPA moves per-replica CPU and memory
+        on observed usage and is flagged as an add-on that is not shipped; Cluster
+        Autoscaler and Karpenter move the node pool in response to unschedulable Pods
+        and underutilized nodes'
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Original comparison matrix built from kubernetes.io documentation prose;
+        no vendor marks, and Karpenter deliberately carries no CNCF maturity claim.
+- anchor_id: ch17-fig06-cncf-and-k8s-governance
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch17-fig06-cncf-and-k8s-governance.html
+  output_paths:
+    svg: figures/ch17-fig06-cncf-and-k8s-governance.svg
+    png: figures/ch17-fig06-cncf-and-k8s-governance.png
+    alt: figures/ch17-fig06-cncf-and-k8s-governance.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: hierarchy_tree
+  figure_spec:
+    anchor_id: ch17-fig06-cncf-and-k8s-governance
+    diagram_type: hierarchy_tree
+    source_ascii: "   ==================== CNCF ====================    ====== KUBERNETES\
+      \ ======\n   ( the foundation -- 227+ projects )              ( ONE of those\
+      \ projects )\n\n   +-------------------------+                      +----------------------+\n\
+      \   |    GOVERNING BOARD      |                      | STEERING COMMITTEE  \
+      \ |\n   |  marketing, business    |                      |  overall project\
+      \     |\n   |  oversight, budget      |                      |  governance \
+      \         |\n   +-----------+-------------+                      +-----------+----------+\n\
+      \               | sets the scope                                 | charters\n\
+      \               v                                                v\n   +-------------------------+\
+      \                      +----------------------+\n   |          TOC         \
+      \   |                      |  COMMITTEES  [X]     |\n   |  technical vision;\
+      \      |                      |  Code of Conduct     |\n   |  approves projects\
+      \      |                      |  Security Response   |\n   |  within that scope\
+      \      |                      |  Steering            |\n   +-----------+-------------+\
+      \                      |  [X] NOT open        |\n               | aligns   \
+      \                          |      membership      |\n               v      \
+      \                              +----------------------+\n   +-------------------------+\n\
+      \   |         TAGs            |                      +----------------------+\n\
+      \   |  5 of them, restruc-    |                      |  SIGs               \
+      \ |\n   |  tured 2025. Bridge     |                      |  durable, topic-\
+      \     |\n   |  projects <-> TOC       |                      |  scoped. ~24\
+      \ of them |\n   +-------------------------+                      +----------------------+\n\
+      \                                                    +----------------------+\n\
+      \   +-------------------------+                      |  WORKING GROUPS     \
+      \ |\n   |    END USER TAB         |                      |  time-bounded,  \
+      \     |\n   |  voice of end users;    |                      |  cross-SIG  \
+      \         |\n   |  feeds the TOC          |                      +----------------------+\n\
+      \   +-------------------------+\n\n   TAGs are CNCF-wide.  SIGs are Kubernetes-internal.\n\
+      \   Different organizations, different scopes.\n"
+    vendor_terms:
+    - cncf
+    - kubernetes
+    complexity_hint:
+      node_count: 8
+      edge_count: 4
+      label_count: 18
+    pedagogy:
+      part_18_criteria_met:
+      - spatial_structure
+      - distinguishing_alternatives
+      learning_outcome: Name which body does what in CNCF and in Kubernetes, and keep
+        CNCF TAGs distinct from Kubernetes SIGs
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: the COMMITTEES box's NOT open membership marker
+    accessibility:
+      alt_text_seed: Two org charts side by side separated by a divider. On the CNCF
+        side, the Governing Board sets the scope for the TOC, which aligns the five
+        TAGs, with an End User TAB feeding the TOC. On the Kubernetes side, the Steering
+        Committee charters three committees marked as not having open membership,
+        alongside separate boxes for durable topic-scoped SIGs and time-bounded cross-SIG
+        Working Groups
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: false
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Governance structures described in the public CNCF charter and Kubernetes
+        community docs; original chart, no logos or trademarked marks reproduced.
+- anchor_id: ch17-zenith-one-pluggability-story
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch17-zenith-one-pluggability-story.html
+  output_paths:
+    svg: figures/ch17-zenith-one-pluggability-story.svg
+    png: figures/ch17-zenith-one-pluggability-story.png
+    alt: figures/ch17-zenith-one-pluggability-story.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: concept_map
+  figure_spec:
+    anchor_id: ch17-zenith-one-pluggability-story
+    diagram_type: concept_map
+    source_ascii: "              THE SHAPE                    THE EVIDENCE\n     \
+      \         ---------                    ------------\n\n     +-------------------------+\
+      \           CRI    ( Ch 2 §4 )\n     |   Kubernetes defines    |           CNI\
+      \    ( Ch 9 §1 )\n     |   WHAT MUST BE TRUE     |           CSI    ( Ch 11\
+      \ §5 )\n     +-----------+-------------+           CRDs   ( Ch 6 §8 )\n    \
+      \             |\n            (the socket)                   Four instances.\n\
+      \                 |                         Not four decisions.\n     +-----------v-------------+\n\
+      \     |   Somebody else         |           One decision,\n     |   SUPPLIES\
+      \ THE THING    |           made four times\n     +-------------------------+\
+      \           because it was\n                                           right\
+      \ four times.\n\n     ^ the four sockets of ch17-fig02, collapsed into\n   \
+      \    the single relation they were always instances of\n"
+    vendor_terms:
+    - kubernetes
+    complexity_hint:
+      node_count: 6
+      edge_count: 1
+      label_count: 10
+    pedagogy:
+      part_18_criteria_met:
+      - zenith
+      - spatial_structure
+      learning_outcome: Recognise CRI, CNI, CSI and CRDs as four instances of one
+        architectural decision rather than four separate mechanisms
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: the single arrow labelled (the socket) joining
+        the two boxes
+    accessibility:
+      alt_text_seed: 'Two halves: on the left, a box reading Kubernetes defines what
+        must be true connected by one arrow labelled the socket to a box reading somebody
+        else supplies the thing; on the right, a plain list of CRI, CNI, CSI and CRDs
+        with their chapter references, captioned four instances, not four decisions'
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: true
+      max_width_px: 1000
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Abstract restatement of Kubernetes interface naming; wholly original
+        composition, no upstream figure or vendor IP.

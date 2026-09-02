@@ -1,0 +1,265 @@
+chapter: 13
+book: kcna
+generated: '2026-09-01T15:24:44+00:00'
+figures:
+- anchor_id: ch13-fig01-two-audience-split
+  source_hash: 0669ee94fae3791c01ddb8cebe1e6cb9fe4a8173d0376f008243809f1e99b6bf
+  output_hash:
+    svg: a2b597a31fc656e83bbe883118c0ac294a8fc01cd368a2094e38bb58f797281d
+    png: 34e266da4ee14a43b494677fc02ebf65366da94f060bb5d2f72a77b07c734068
+  validations:
+    label_count:
+      result: fail
+      value: 22
+      max: 7
+      reason: 22 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 16.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1120
+      - 1056
+    aspect_ratio:
+      result: pass
+      value: 1.06
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 266
+  alt_text: Two columns of diagnostic questions side by side, platform scope on the
+    left and application scope on the right, joined by a single arrow that runs only
+    from left to right, labelled with the condition that the Pod is Running and Ready
+    and the behavior is still wrong
+- anchor_id: ch13-fig02-pod-failure-signature-map
+  source_hash: 6ebe6d5dc786f88ea52033b83adb18cf3f84bb0daf533fc7b64c6bca399fb697
+  output_hash:
+    svg: cd0e2946c45c685318de5f8c8ef7d4e32df2ba2d6baa87c4ce104bee2cc1da39
+    png: c6ecf406578db7695005a4669b8b1b7ca55d10249348a1c2ccc701e45ad3ad8c
+  validations:
+    label_count:
+      result: fail
+      value: 38
+      max: 7
+      reason: 38 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1520
+      - 1748
+    aspect_ratio:
+      result: pass
+      value: 1.15
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 312
+  alt_text: A decision tree beginning with the question of whether the Pod object
+    exists; the No branch leads to admission refusal, and the Yes branch splits by
+    phase into Pending, meaning not scheduled, and Running with containers waiting,
+    which fans out into the image-pull, configuration, and image-policy failure reasons
+- anchor_id: ch13-fig03-phase-before-logs-flow
+  source_hash: 619b5364e51a5f318b31dc87120a31527ec5fd318cbe514f453e53349de80b79
+  output_hash:
+    svg: 7a55aeeac18ba3e98a17c85a9f9425d79044128b089091182e7933eb58204440
+    png: cfd4f3031814f868eabf72774e087d85bf12ef0df6bc57505d21c0f371687d5e
+  validations:
+    label_count:
+      result: fail
+      value: 32
+      max: 7
+      reason: 32 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1280
+      - 1892
+    aspect_ratio:
+      result: pass
+      value: 1.48
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 185
+  alt_text: A five-stage vertical sequence — scope, phase, conditions, events, logs
+    — each stage listing its kubectl commands and the question those commands answer,
+    with logs in the final position
+- anchor_id: ch13-fig05-oomkilled-vs-evicted
+  source_hash: b2187bc3e435ca29cbe057ed67d56ef59f0bded7baae209b5517c1f37cc00065
+  output_hash:
+    svg: 03e938fd2fada46cce3fa8eabdb27be58ef5eb2506784619731920d61e9d7e34
+    png: 70f07344281816b627944b59c752ecd72a43dfd57551f67071d573236c4a4d2d
+  validations:
+    label_count:
+      result: fail
+      value: 12
+      max: 7
+      reason: 12 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1280
+      - 1664
+    aspect_ratio:
+      result: pass
+      value: 1.3
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 296
+  alt_text: 'Two parallel vertical chains compared row by row: OOMKilled, where a
+    container exceeds its own limit and the kernel kills it and the kubelet restarts
+    it in place, against Evicted, where the node runs low on a resource and the kubelet
+    terminates the whole Pod so a controller replaces it elsewhere'
+- anchor_id: ch13-fig06-diagnostic-layer-stack
+  source_hash: 3f3b59fbc4b8b1e26ace2f79e3f1c82112d00eb29c8ace5b6e1594c6684edd94
+  output_hash:
+    svg: 36ca72daaf56fa416589489ce9e328137b060ec406fc08bcb097e752a2275f51
+    png: 93561495796df8a191be2c0aa094ae5fc03b8d8b8199d31c63443cd8da56e8cb
+  validations:
+    label_count:
+      result: fail
+      value: 35
+      max: 7
+      reason: 35 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1600
+      - 1936
+    aspect_ratio:
+      result: pass
+      value: 1.21
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 324
+  alt_text: A five-layer stack from kubectl at the top through kube-apiserver and
+    kubelet, then a heavy rule marking the API boundary, then CRI and the containerd
+    or CRI-O runtime at the bottom, annotated to show that everything above the boundary
+    is the cluster's recorded view and that crictl attaches directly to the runtime
+    below it
+- anchor_id: ch13-fig04-metrics-pipeline-and-metrics-server
+  source_hash: 796d1dd86ced3811c7b33bffddff38c0cceb32c4179d68227ae21988a3c49378
+  output_hash:
+    svg: 822e579e0f6539e14f44791ac4ebbb32dd049032e7e8e464f8e94c820cf3be53
+    png: 3d7e189e404dec4febc5e84f71b6ae3750862f20accf9da07920e733e0b6b683
+  validations:
+    label_count:
+      result: fail
+      value: 18
+      max: 7
+      reason: 18 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1440
+      - 1646
+    aspect_ratio:
+      result: pass
+      value: 1.14
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 334
+  alt_text: A metrics pipeline flowing from the container runtime through cAdvisor
+    to the kubelet, then over the slash metrics slash resource endpoint to a metrics-server
+    box drawn with a dashed border and marked not installed by default, then over
+    metrics.k8s.io to the API server, which serves both the horizontal pod autoscaler
+    and kubectl top
+- anchor_id: ch13-zenith-read-the-phase-first
+  source_hash: 3dc1c2bbb75bc31407912cfa836916a6ede14c91e308c3d74b1cc5593d15f4e0
+  output_hash:
+    svg: 5b99f53f57e320221a14d81a332c1e8272692543e5315dd53f780705b18e89b4
+    png: abbd409f81eebeba4fa5293fa66e47773ce36bff94d05dd52fde9cd23bf0e8f9
+  validations:
+    label_count:
+      result: pass
+      value: 7
+      max: 7
+      reason: ''
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1280
+      - 1776
+    aspect_ratio:
+      result: pass
+      value: 1.39
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 335
+  alt_text: A tree rooted in one key, the Pod phase, branching to four outcomes —
+    no Pod object stopped at admission, Pending never placed by the scheduler, scheduled
+    but containers never ran, and scheduled with containers that ran and then ended
+    — each branch naming the component that owns it before listing its failure signatures,
+    nine in total

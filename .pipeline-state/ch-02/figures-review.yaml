@@ -1,0 +1,106 @@
+chapter: 2
+book: kcna
+generated: '2026-09-01T06:35:31+00:00'
+figures:
+- anchor_id: ch02-fig01-vm-vs-container-stack
+  status: pending
+  render_paths:
+    svg: figures/ch02-fig01-vm-vs-container-stack.svg
+    png: figures/ch02-fig01-vm-vs-container-stack.png
+  source_path: figures/sources/ch02-fig01-vm-vs-container-stack.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch02-fig02-image-layers-and-digests
+  status: pending
+  render_paths:
+    svg: figures/ch02-fig02-image-layers-and-digests.svg
+    png: figures/ch02-fig02-image-layers-and-digests.png
+  source_path: figures/sources/ch02-fig02-image-layers-and-digests.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch02-fig04-cri-runtime-chain
+  status: pending
+  render_paths:
+    svg: figures/ch02-fig04-cri-runtime-chain.svg
+    png: figures/ch02-fig04-cri-runtime-chain.png
+  source_path: figures/sources/ch02-fig04-cri-runtime-chain.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch02-fig03-oci-three-specs
+  status: pending
+  render_paths:
+    svg: figures/ch02-fig03-oci-three-specs.svg
+    png: figures/ch02-fig03-oci-three-specs.png
+  source_path: figures/sources/ch02-fig03-oci-three-specs.html
+  validation_results:
+    label_count: fail
+    palette_conformance: fail
+    min_font_size: fail
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch02-fig05-imagepullpolicy-decision
+  status: pending
+  render_paths:
+    svg: figures/ch02-fig05-imagepullpolicy-decision.svg
+    png: figures/ch02-fig05-imagepullpolicy-decision.png
+  source_path: figures/sources/ch02-fig05-imagepullpolicy-decision.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch02-zenith-standard-crate
+  status: pending
+  render_paths:
+    svg: figures/ch02-zenith-standard-crate.svg
+    png: figures/ch02-zenith-standard-crate.png
+  source_path: figures/sources/ch02-zenith-standard-crate.html
+  validation_results:
+    label_count: pass
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null

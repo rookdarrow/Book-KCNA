@@ -1,0 +1,369 @@
+chapter: 7
+book: kcna
+generated: '2026-09-01T13:58:39+00:00'
+figures:
+- anchor_id: ch07-fig01-filter-score-bind
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch07-fig01-filter-score-bind.html
+  output_paths:
+    svg: figures/ch07-fig01-filter-score-bind.svg
+    png: figures/ch07-fig01-filter-score-bind.png
+    alt: figures/ch07-fig01-filter-score-bind.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: flowchart
+  figure_spec:
+    anchor_id: ch07-fig01-filter-score-bind
+    diagram_type: flowchart
+    source_ascii: "  UNBOUND POD\n  ┌───────────────┐\n  │ spec.nodeName │   (empty\
+      \ — this is what the scheduler watches for)\n  └───────┬───────┘\n         \
+      \ │\n          ▼\n┌──────────────────┐    ┌──────────────────┐    ┌───────────────────────┐\n\
+      │  1. FILTER       │    │  2. SCORE        │    │  3. BIND              │\n\
+      │                  │    │                  │    │                       │\n\
+      │  node-a   keep   │    │  node-a ..... 72 │    │  kube-scheduler       │\n\
+      │  node-b   drop   │───▶│  node-c ..... 91 │───▶│         │             │\n\
+      │  node-c   keep   │    │  node-e ..... 68 │    │         ▼             │\n\
+      │  node-d   drop   │    │                  │    │  kube-apiserver       │\n\
+      │  node-e   keep   │    │  highest wins    │    │  \"this Pod: node-c\"   │\n\
+      │                  │    │                  │    │                       │\n\
+      │  = FEASIBLE SET  │    │                  │    │                       │\n\
+      └──────────────────┘    └──────────────────┘    └───────────────────────┘\n\n\
+      \    ─ ─ ─ ─ ─  separate actor, separate moment, separate arrow  ─ ─ ─ ─ ─\n\
+      \n                    ┌────────────────────────────────────┐\n             \
+      \       │  kubelet on node-c                 │\n                    │      \
+      \   │                          │\n                    │         ▼          \
+      \                │\n                    │  container runtime → containers  \
+      \  │\n                    └────────────────────────────────────┘\n"
+    vendor_terms:
+    - kube-scheduler
+    - kube-apiserver
+    - kubelet
+    - container-runtime
+    complexity_hint:
+      node_count: 8
+      edge_count: 5
+      label_count: 22
+    pedagogy:
+      part_18_criteria_met:
+      - spatial_structure
+      - temporal_structure
+      - fixed_point
+      learning_outcome: Trace a Pod from creation to placement through filter, score,
+        bind — and identify the kubelet, not the scheduler, as the component that
+        starts containers
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: the arrow from kube-scheduler to kube-apiserver
+        inside the BIND stage
+    accessibility:
+      alt_text_seed: 'Three-stage scheduler pipeline: FILTER keeps three of five nodes,
+        SCORE ranks them with node-c highest at 91, BIND draws an arrow from kube-scheduler
+        to kube-apiserver. A separate, unconnected panel below shows the kubelet on
+        node-c starting containers.'
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Original redraw of scheduler behaviour documented in the Kubernetes docs;
+        no CNCF artwork or trade dress reproduced.
+- anchor_id: ch07-fig02-nodeselector-vs-affinity
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch07-fig02-nodeselector-vs-affinity.html
+  output_paths:
+    svg: figures/ch07-fig02-nodeselector-vs-affinity.svg
+    png: figures/ch07-fig02-nodeselector-vs-affinity.png
+    alt: figures/ch07-fig02-nodeselector-vs-affinity.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: other
+  figure_spec:
+    anchor_id: ch07-fig02-nodeselector-vs-affinity
+    diagram_type: other
+    source_ascii: "                EXPRESSIVENESS  ────────────────────────────────▶\n\
+      \n              nodeSelector          required node        preferred node\n\
+      \                                      affinity              affinity\n    \
+      \       ┌──────────────────┐  ┌──────────────────┐  ┌──────────────────┐\nHARD\
+      \       │ exact matches,   │  │ In, NotIn,       │  │                  │\nthe\
+      \ rule   │ all of them      │  │ Exists,          │  │        —         │\n\
+      must be    │ (implicit AND)   │  │ DoesNotExist,    │  │                  │\n\
+      met        │                  │  │ Gt, Lt           │  │                  │\n\
+      \           │ no match →       │  │ no match →       │  │                  │\n\
+      \           │ no placement     │  │ no placement     │  │                  │\n\
+      \           └──────────────────┘  └──────────────────┘  └──────────────────┘\n\
+      \           ┌──────────────────┐  ┌──────────────────┐  ┌──────────────────┐\n\
+      SOFT       │                  │  │                  │  │ same operators   │\n\
+      the rule   │        —         │  │        —         │  │                  │\n\
+      is a wish  │                  │  │                  │  │ no match →       │\n\
+      \           │                  │  │                  │  │ placed anyway    │\n\
+      \           └──────────────────┘  └──────────────────┘  └──────────────────┘\n\
+      \nHardness and expressiveness are independent. Only ONE of the six cells is\
+      \ soft.\n"
+    vendor_terms: []
+    complexity_hint:
+      node_count: 6
+      edge_count: 1
+      label_count: 13
+    pedagogy:
+      part_18_criteria_met:
+      - distinguishing_alternatives
+      - fixed_point
+      learning_outcome: Choose between nodeSelector, required node affinity, and preferred
+        node affinity by treating hardness and expressiveness as two independent axes
+        rather than one upgrade path
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: the single soft cell — preferred node affinity,
+        bottom-right
+    accessibility:
+      alt_text_seed: A two-by-three matrix. Columns are nodeSelector, required node
+        affinity, preferred node affinity, increasing in expressiveness. Rows are
+        hard and soft. Only three cells are filled, and only the bottom-right preferred-affinity
+        cell is soft.
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: false
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Original classification of documented Kubernetes API field behaviour;
+        no vendor artwork involved.
+- anchor_id: ch07-fig03-taints-tolerations-effects
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch07-fig03-taints-tolerations-effects.html
+  output_paths:
+    svg: figures/ch07-fig03-taints-tolerations-effects.svg
+    png: figures/ch07-fig03-taints-tolerations-effects.png
+    alt: figures/ch07-fig03-taints-tolerations-effects.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: other
+  figure_spec:
+    anchor_id: ch07-fig03-taints-tolerations-effects
+    diagram_type: other
+    source_ascii: "     ┌────────────────────────────────────────────────┐\n     │\
+      \  NODE                                          │\n     │  taint:  key=value:EFFECT\
+      \   ───▶  repels       │  refusal originates HERE\n     └────────────────────────────────────────────────┘\n\
+      \          ▲                ▲                  ●\n          │              \
+      \  │                  └─ Pod C: already aboard, no toleration\n          │ \
+      \               └───────────────────  Pod B: arriving, matching toleration\n\
+      \          └────────────────────────────────────  Pod A: arriving, no toleration\n\
+      \                     (tolerations belong to the POD)\n\n┌──────────────────┬────────────────┬─────────────────┬─────────────────────┐\n\
+      │ EFFECT           │ Pod A          │ Pod B           │ Pod C              \
+      \ │\n│                  │ arriving,      │ arriving,       │ already running,\
+      \    │\n│                  │ no toleration  │ tolerating      │ no toleration\
+      \       │\n├──────────────────┼────────────────┼─────────────────┼─────────────────────┤\n\
+      │ NoSchedule       │ not placed     │ may be placed   │ unaffected         \
+      \ │\n│ PreferNoSchedule │ avoided where  │ may be placed   │ unaffected    \
+      \      │\n│                  │ possible       │                 │          \
+      \           │\n│ NoExecute        │ not placed     │ may be placed   │ EVICTED\
+      \             │\n└──────────────────┴────────────────┴─────────────────┴─────────────────────┘\n\
+      \n\"may be placed\" — never \"is placed.\" The other filters and scores still\
+      \ run.\n"
+    vendor_terms:
+    - kubernetes-node
+    - kubernetes-pod
+    complexity_hint:
+      node_count: 5
+      edge_count: 4
+      label_count: 24
+    pedagogy:
+      part_18_criteria_met:
+      - distinguishing_alternatives
+      - temporal_structure
+      - fixed_point
+      learning_outcome: Predict what each of the three taint effects does to an arriving
+        Pod and to a Pod already running on the node, and place the taint on the node
+        and the toleration on the Pod
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: the EVICTED cell at the intersection of the NoExecute
+        row and the Pod C column
+    accessibility:
+      alt_text_seed: 'A node carrying a taint repels three Pods: two arriving and
+        one already resident. A table below shows that NoSchedule and PreferNoSchedule
+        leave the resident Pod unaffected, while NoExecute evicts it.'
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Original tabulation of taint-effect behaviour described in the Kubernetes
+        docs; no vendor artwork reproduced.
+- anchor_id: ch07-fig04-pod-affinity-anti-affinity-topology
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch07-fig04-pod-affinity-anti-affinity-topology.html
+  output_paths:
+    svg: figures/ch07-fig04-pod-affinity-anti-affinity-topology.svg
+    png: figures/ch07-fig04-pod-affinity-anti-affinity-topology.png
+    alt: figures/ch07-fig04-pod-affinity-anti-affinity-topology.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: k8s_architecture
+  figure_spec:
+    anchor_id: ch07-fig04-pod-affinity-anti-affinity-topology
+    diagram_type: k8s_architecture
+    source_ascii: 'SAME CLUSTER. SAME RULE: "no two Pods labelled app=web in one domain."
+
+      THE ONLY DIFFERENCE IS THE topologyKey.
+
+
+      topologyKey: kubernetes.io/hostname       topologyKey: topology.kubernetes.io/zone
+
+      a domain = one node                       a domain = one zone
+
+
+      ┌── zone-a ──────────────────┐            ┌── zone-a ──────────────────┐
+
+      │  n1 [web]   n2 [web]       │            │  n1 [web]   n2      n3     │
+
+      │  n3 [web]                  │            │                            │
+
+      └────────────────────────────┘            └────────────────────────────┘
+
+      ┌── zone-b ──────────────────┐            ┌── zone-b ──────────────────┐
+
+      │  n4 [web]   n5 [web]       │            │  n4 [web]   n5      n6     │
+
+      │  n6 [web]                  │            │                            │
+
+      └────────────────────────────┘            └────────────────────────────┘
+
+
+      6 domains  →  up to 6 Pods placed         2 domains  →  at most 2 Pods placed
+
+
+      One label key changed. The rule''s meaning changed with it.
+
+      '
+    vendor_terms:
+    - kubernetes-node
+    - kubernetes-pod
+    complexity_hint:
+      node_count: 16
+      edge_count: 0
+      label_count: 22
+    pedagogy:
+      part_18_criteria_met:
+      - spatial_structure
+      - distinguishing_alternatives
+      - quantitative_relationships
+      learning_outcome: Explain how changing topologyKey changes the meaning of an
+        unchanged inter-Pod anti-affinity rule, and why zone-level spread is dramatically
+        stricter than node-level spread
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: the [web] Pod tags — six of them in the left panel,
+        two in the right
+    accessibility:
+      alt_text_seed: Two panels showing the same six-node, two-zone cluster. With
+        topologyKey set to hostname, all six nodes host a web Pod. With topologyKey
+        set to zone, only one node per zone does — six placements become two.
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: false
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Original worked example using well-known Kubernetes node label keys;
+        no vendor artwork or trade dress.
+- anchor_id: ch07-zenith-berth-assignment
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch07-zenith-berth-assignment.html
+  output_paths:
+    svg: figures/ch07-zenith-berth-assignment.svg
+    png: figures/ch07-zenith-berth-assignment.png
+    alt: figures/ch07-zenith-berth-assignment.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: flowchart
+  figure_spec:
+    anchor_id: ch07-zenith-berth-assignment
+    diagram_type: flowchart
+    source_ascii: "FILTERS — remove nodes                     SCORES — rank what remains\n\
+      ┌────────────────────────────────┐         ┌────────────────────────────────┐\n\
+      │ requests vs allocatable        │         │ preferred node affinity       \
+      \ │\n│ nodeSelector                   │         │ PreferNoSchedule         \
+      \      │\n│ required node affinity         │         │ preferred inter-Pod rules\
+      \      │\n│ untolerated NoSchedule         │         │ ScheduleAnyway spread\
+      \          │\n│ untolerated NoExecute          │         │ other scoring plugins\
+      \          │\n│ required inter-Pod rules       │         │                 \
+      \               │\n│ DoNotSchedule spread           │         │            \
+      \                    │\n└───────────────┬────────────────┘         └────────────────┬───────────────┘\n\
+      \                │                                           │\n           \
+      \     ▼                                           ▼\n        ┌──────────────┐\
+      \       ┌──────────────┐      ┌──────────────┐\n        │  1. FILTER   │ ────▶\
+      \ │  2. SCORE    │ ───▶ │  3. BIND     │\n        └──────────────┘       └──────────────┘\
+      \      └──────┬───────┘\n                                                  \
+      \          │\n                                                            ▼\n\
+      \                                                      ┌───────────┐\nspec.nodeName\
+      \ ────────────────────────────────────────▶│  a node   │\nneither a filter nor\
+      \ a score — it deletes the choice   └───────────┘\n"
+    vendor_terms: []
+    complexity_hint:
+      node_count: 7
+      edge_count: 6
+      label_count: 20
+    pedagogy:
+      part_18_criteria_met:
+      - spatial_structure
+      - distinguishing_alternatives
+      - zenith
+      - fixed_point
+      learning_outcome: Classify every placement mechanism in the chapter as either
+        a filter or a score, and recognise spec.nodeName as the one mechanism that
+        is neither
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: the spec.nodeName bypass arrow running past all
+        three stages straight into 'a node'
+    accessibility:
+      alt_text_seed: Seven filter mechanisms feed the FILTER stage and five score
+        mechanisms feed the SCORE stage of the filter-score-bind pipeline, which ends
+        at a chosen node. A separate arrow from spec.nodeName bypasses all three stages
+        and reaches the node directly.
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Original synthesis classifying documented Kubernetes scheduling mechanisms
+        into the two scheduler stages; no vendor artwork.

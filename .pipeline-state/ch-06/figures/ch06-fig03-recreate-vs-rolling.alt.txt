@@ -1,0 +1,1 @@
+Two stacked availability timelines: the Recreate strategy shows a solid bar, then a bracketed gap labelled zero available while all old Pods are killed before new ones are created, then a solid bar again; the RollingUpdate strategy shows an unbroken bar whose fill shifts from old to new through an overlapping middle region, never reaching zero

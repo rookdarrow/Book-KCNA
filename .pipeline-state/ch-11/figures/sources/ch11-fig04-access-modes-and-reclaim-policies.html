@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Access Modes and Reclaim Policies</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;700&family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Fira+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --color-paper:  #F5EFE4;
+    --color-ink:    #0B1E3B;
+    --color-muted:  #1F4A4E;
+    --color-accent: #B58B3E;
+    --font-sans:  'Fira Sans', sans-serif;
+    --font-slab:  'Roboto Slab', serif;
+    --font-mono:  'Fira Mono', ui-monospace, monospace;
+  }
+  body {
+    font-family: var(--font-sans);
+    background: var(--color-paper);
+    color: var(--color-ink);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1.5rem;
+  }
+  .frame { max-width: 620px; width: 100%; }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    margin-bottom: 0.5rem;
+  }
+  h1 {
+    font-family: var(--font-slab);
+    font-size: 1.75rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    color: var(--color-ink);
+    margin-bottom: 1.5rem;
+  }
+  svg { width: 100%; max-width: 560px; height: auto; display: block; margin: 0 auto; }
+</style>
+</head>
+<body>
+<div class="frame">
+  <p class="eyebrow">Kubernetes Storage · Ch. 11 Fig. 04</p>
+  <h1>Access Modes &amp; Reclaim Policies</h1>
+
+  <svg viewBox="0 0 640 984" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch11-fig04-title ch11-fig04-desc">
+    <title id="ch11-fig04-title">Access Modes and Reclaim Policies</title>
+    <desc id="ch11-fig04-desc">Two stacked reference panels: the top ranks four PersistentVolume access modes by node count and flags ReadWriteOncePod as the only Pod-scoped mode; the bottom tabulates what each reclaim policy destroys when a claim is deleted, noting Delete is the default for dynamically provisioned volumes.</desc>
+
+    <rect width="100%" height="100%" fill="#F5EFE4"/>
+
+    <!-- ============ PANEL A — Access Modes ============ -->
+    <rect x="24" y="24" width="592" height="424" rx="8" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1"/>
+
+    <text>
+      <tspan x="48" y="56" font-family="'Fira Mono',monospace" font-size="14" font-weight="500" letter-spacing="0.12em" fill="#1F4A4E">WHAT YOU MAY DO</tspan>
+      <tspan x="48" y="84" font-family="'Fira Sans',sans-serif" font-size="20" font-weight="600" fill="#0B1E3B">Access Modes</tspan>
+      <tspan x="48" y="108" font-family="'Fira Sans',sans-serif" font-size="14" font-weight="400" fill="#1F4A4E">Unit = nodes, except RWOP</tspan>
+    </text>
+
+    <!-- row separators -->
+    <line x1="24" y1="208" x2="616" y2="208" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+    <line x1="24" y1="280" x2="616" y2="280" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+    <line x1="24" y1="352" x2="616" y2="352" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+
+    <!-- focal row: RWOP -->
+    <rect x="26" y="352" width="588" height="72" rx="6" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"/>
+
+    <!-- code chips -->
+    <rect x="48" y="152" width="64" height="40" rx="6" fill="#FFFFFF" stroke="rgba(11,30,59,0.20)" stroke-width="1"/>
+    <rect x="48" y="224" width="64" height="40" rx="6" fill="#FFFFFF" stroke="rgba(11,30,59,0.20)" stroke-width="1"/>
+    <rect x="48" y="296" width="64" height="40" rx="6" fill="#FFFFFF" stroke="rgba(11,30,59,0.20)" stroke-width="1"/>
+    <rect x="48" y="368" width="64" height="40" rx="6" fill="#FFFFFF" stroke="#B58B3E" stroke-width="1.2"/>
+
+    <!-- unit icons: filled square = 1 node, outline square = not this many, filled circle = 1 Pod -->
+    <rect x="128" y="164" width="16" height="16" rx="4" fill="#0B1E3B"/>
+    <rect x="152" y="164" width="16" height="16" rx="4" fill="none" stroke="rgba(11,30,59,0.30)" stroke-width="1.2"/>
+    <rect x="176" y="164" width="16" height="16" rx="4" fill="none" stroke="rgba(11,30,59,0.30)" stroke-width="1.2"/>
+
+    <rect x="128" y="236" width="16" height="16" rx="4" fill="#0B1E3B"/>
+    <rect x="152" y="236" width="16" height="16" rx="4" fill="#0B1E3B"/>
+    <rect x="176" y="236" width="16" height="16" rx="4" fill="#0B1E3B"/>
+
+    <rect x="128" y="308" width="16" height="16" rx="4" fill="#0B1E3B"/>
+    <rect x="152" y="308" width="16" height="16" rx="4" fill="#0B1E3B"/>
+    <rect x="176" y="308" width="16" height="16" rx="4" fill="#0B1E3B"/>
+
+    <circle cx="136" cy="388" r="8" fill="#B58B3E"/>
+    <circle cx="160" cy="388" r="3" fill="rgba(11,30,59,0.25)"/>
+    <circle cx="184" cy="388" r="3" fill="rgba(11,30,59,0.25)"/>
+
+    <text>
+      <tspan x="60" y="178" font-family="'Fira Mono',monospace" font-size="16" font-weight="700" fill="#0B1E3B">RWO</tspan>
+      <tspan x="216" y="178" font-family="'Fira Sans',sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">1 node &#183; read + write</tspan>
+      <tspan x="60" y="250" font-family="'Fira Mono',monospace" font-size="16" font-weight="700" fill="#0B1E3B">ROX</tspan>
+      <tspan x="216" y="250" font-family="'Fira Sans',sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">many nodes &#183; read-only</tspan>
+      <tspan x="60" y="322" font-family="'Fira Mono',monospace" font-size="16" font-weight="700" fill="#0B1E3B">RWX</tspan>
+      <tspan x="216" y="322" font-family="'Fira Sans',sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">many nodes &#183; read + write</tspan>
+      <tspan x="60" y="394" font-family="'Fira Mono',monospace" font-size="16" font-weight="700" fill="#B58B3E">RWOP</tspan>
+      <tspan x="216" y="394" font-family="'Fira Sans',sans-serif" font-size="16" font-weight="600" fill="#B58B3E">1 Pod &#183; read + write</tspan>
+    </text>
+
+    <!-- editorial callout -->
+    <path d="M 300 476 Q 208 432 136 380" fill="none" stroke="rgba(181,139,62,0.55)" stroke-width="1" stroke-dasharray="4,3"/>
+    <circle cx="136" cy="376" r="2.5" fill="#B58B3E"/>
+    <text x="592" y="488" text-anchor="end" font-family="'Fira Sans',sans-serif" font-style="italic" font-size="16" font-weight="400" fill="#B58B3E">the unit changes HERE, and only here</text>
+
+    <!-- ============ PANEL B — Reclaim Policies ============ -->
+    <rect x="24" y="504" width="592" height="396" rx="8" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1"/>
+
+    <text>
+      <tspan x="48" y="536" font-family="'Fira Mono',monospace" font-size="14" font-weight="500" letter-spacing="0.12em" fill="#1F4A4E">WHAT HAPPENS AFTER</tspan>
+      <tspan x="48" y="564" font-family="'Fira Sans',sans-serif" font-size="20" font-weight="600" fill="#0B1E3B">Reclaim Policies</tspan>
+      <tspan x="48" y="588" font-family="'Fira Sans',sans-serif" font-size="14" font-weight="400" fill="#1F4A4E">When the claim is deleted</tspan>
+    </text>
+
+    <line x1="208" y1="616" x2="208" y2="824" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+    <line x1="24" y1="656" x2="616" y2="656" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+    <line x1="24" y1="712" x2="616" y2="712" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+    <line x1="24" y1="768" x2="616" y2="768" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+    <line x1="24" y1="832" x2="616" y2="832" stroke="rgba(11,30,59,0.18)" stroke-width="1"/>
+
+    <text>
+      <tspan x="56" y="640" font-family="'Fira Mono',monospace" font-size="14" font-weight="500" letter-spacing="0.10em" fill="#1F4A4E">POLICY</tspan>
+      <tspan x="272" y="640" text-anchor="middle" font-family="'Fira Mono',monospace" font-size="14" font-weight="500" letter-spacing="0.10em" fill="#1F4A4E">PV OBJECT</tspan>
+      <tspan x="400" y="640" text-anchor="middle" font-family="'Fira Mono',monospace" font-size="14" font-weight="500" letter-spacing="0.10em" fill="#1F4A4E">ASSET</tspan>
+      <tspan x="528" y="640" text-anchor="middle" font-family="'Fira Mono',monospace" font-size="14" font-weight="500" letter-spacing="0.10em" fill="#1F4A4E">DATA</tspan>
+
+      <tspan x="56" y="688" font-family="'Fira Sans',sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">Retain</tspan>
+      <tspan x="272" y="688" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">kept</tspan>
+      <tspan x="400" y="688" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">kept</tspan>
+      <tspan x="528" y="688" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">kept</tspan>
+
+      <tspan x="56" y="744" font-family="'Fira Sans',sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">Delete</tspan>
+      <tspan x="272" y="744" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-size="16" font-weight="500" fill="#1F4A4E">gone</tspan>
+      <tspan x="400" y="744" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-size="16" font-weight="500" fill="#1F4A4E">gone</tspan>
+      <tspan x="528" y="744" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-size="16" font-weight="500" fill="#1F4A4E">gone</tspan>
+
+      <tspan x="56" y="800" text-decoration="line-through" font-family="'Fira Sans',sans-serif" font-size="16" font-weight="600" fill="#1F4A4E">Recycle</tspan>
+      <tspan x="122" y="800" font-family="'Fira Mono',monospace" font-size="14" font-weight="400" fill="#1F4A4E">(deprecated)</tspan>
+      <tspan x="272" y="800" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-size="16" font-weight="500" fill="#1F4A4E">&#8212;</tspan>
+      <tspan x="400" y="800" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-size="16" font-weight="500" fill="#1F4A4E">&#8212;</tspan>
+      <tspan x="528" y="800" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-size="16" font-weight="500" fill="#1F4A4E">&#8212;</tspan>
+    </text>
+
+    <text>
+      <tspan x="56" y="860" font-family="'Fira Mono',monospace" font-size="14" font-weight="700" letter-spacing="0.06em" fill="#0B1E3B">DEFAULT</tspan>
+      <tspan x="140" y="860" font-family="'Fira Sans',sans-serif" font-size="16" font-weight="500" fill="#0B1E3B"> for dynamically provisioned volumes: Delete</tspan>
+    </text>
+
+    <!-- ============ LEGEND ============ -->
+    <line x1="24" y1="920" x2="616" y2="920" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+    <rect x="140" y="932" width="16" height="16" rx="4" fill="#0B1E3B"/>
+    <circle cx="292" cy="940" r="8" fill="#B58B3E"/>
+    <text>
+      <tspan x="24" y="944" font-family="'Fira Mono',monospace" font-size="14" font-weight="500" letter-spacing="0.14em" fill="#1F4A4E">LEGEND</tspan>
+      <tspan x="164" y="944" font-family="'Fira Mono',monospace" font-size="14" font-weight="400" fill="#0B1E3B">= one node</tspan>
+      <tspan x="316" y="944" font-family="'Fira Mono',monospace" font-size="14" font-weight="400" fill="#B58B3E">= one Pod (RWOP only)</tspan>
+    </text>
+  </svg>
+</div>
+</body>
+</html>

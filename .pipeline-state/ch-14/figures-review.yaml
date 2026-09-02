@@ -1,0 +1,106 @@
+chapter: 14
+book: kcna
+generated: '2026-09-01T07:15:37+00:00'
+figures:
+- anchor_id: ch14-fig01-manifest-to-package-progression
+  status: pending
+  render_paths:
+    svg: figures/ch14-fig01-manifest-to-package-progression.svg
+    png: figures/ch14-fig01-manifest-to-package-progression.png
+  source_path: figures/sources/ch14-fig01-manifest-to-package-progression.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch14-fig02-helm-chart-anatomy
+  status: pending
+  render_paths:
+    svg: figures/ch14-fig02-helm-chart-anatomy.svg
+    png: figures/ch14-fig02-helm-chart-anatomy.png
+  source_path: figures/sources/ch14-fig02-helm-chart-anatomy.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch14-fig03-release-vs-chart-vs-revision
+  status: pending
+  render_paths:
+    svg: figures/ch14-fig03-release-vs-chart-vs-revision.svg
+    png: figures/ch14-fig03-release-vs-chart-vs-revision.png
+  source_path: figures/sources/ch14-fig03-release-vs-chart-vs-revision.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch14-fig04-kustomize-base-overlay
+  status: pending
+  render_paths:
+    svg: figures/ch14-fig04-kustomize-base-overlay.svg
+    png: figures/ch14-fig04-kustomize-base-overlay.png
+  source_path: figures/sources/ch14-fig04-kustomize-base-overlay.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch14-fig05-templating-vs-overlay-decision
+  status: pending
+  render_paths:
+    svg: figures/ch14-fig05-templating-vs-overlay-decision.svg
+    png: figures/ch14-fig05-templating-vs-overlay-decision.png
+  source_path: figures/sources/ch14-fig05-templating-vs-overlay-decision.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch14-zenith-package-not-template
+  status: pending
+  render_paths:
+    svg: figures/ch14-zenith-package-not-template.svg
+    png: figures/ch14-zenith-package-not-template.png
+  source_path: figures/sources/ch14-zenith-package-not-template.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null

@@ -1,0 +1,140 @@
+chapter: 17
+book: kcna
+generated: '2026-09-01T07:45:47+00:00'
+figures:
+- anchor_id: ch17-fig01-cloud-native-definition-characteristics
+  status: pending
+  render_paths:
+    svg: figures/ch17-fig01-cloud-native-definition-characteristics.svg
+    png: figures/ch17-fig01-cloud-native-definition-characteristics.png
+  source_path: figures/sources/ch17-fig01-cloud-native-definition-characteristics.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch17-fig05-cncf-maturity-levels
+  status: pending
+  render_paths:
+    svg: figures/ch17-fig05-cncf-maturity-levels.svg
+    png: figures/ch17-fig05-cncf-maturity-levels.png
+  source_path: figures/sources/ch17-fig05-cncf-maturity-levels.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch17-fig02-extension-points-map
+  status: pending
+  render_paths:
+    svg: figures/ch17-fig02-extension-points-map.svg
+    png: figures/ch17-fig02-extension-points-map.png
+  source_path: figures/sources/ch17-fig02-extension-points-map.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch17-fig03-mesh-data-vs-control-plane
+  status: pending
+  render_paths:
+    svg: figures/ch17-fig03-mesh-data-vs-control-plane.svg
+    png: figures/ch17-fig03-mesh-data-vs-control-plane.png
+  source_path: figures/sources/ch17-fig03-mesh-data-vs-control-plane.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch17-fig07-scale-to-zero-and-the-knative-service
+  status: pending
+  render_paths:
+    svg: figures/ch17-fig07-scale-to-zero-and-the-knative-service.svg
+    png: figures/ch17-fig07-scale-to-zero-and-the-knative-service.png
+  source_path: figures/sources/ch17-fig07-scale-to-zero-and-the-knative-service.html
+  validation_results:
+    label_count: pass
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch17-fig04-autoscaler-landscape
+  status: pending
+  render_paths:
+    svg: figures/ch17-fig04-autoscaler-landscape.svg
+    png: figures/ch17-fig04-autoscaler-landscape.png
+  source_path: figures/sources/ch17-fig04-autoscaler-landscape.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch17-fig06-cncf-and-k8s-governance
+  status: pending
+  render_paths:
+    svg: figures/ch17-fig06-cncf-and-k8s-governance.svg
+    png: figures/ch17-fig06-cncf-and-k8s-governance.png
+  source_path: figures/sources/ch17-fig06-cncf-and-k8s-governance.html
+  validation_results:
+    label_count: pass
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch17-zenith-one-pluggability-story
+  status: pending
+  render_paths:
+    svg: figures/ch17-zenith-one-pluggability-story.svg
+    png: figures/ch17-zenith-one-pluggability-story.png
+  source_path: figures/sources/ch17-zenith-one-pluggability-story.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null

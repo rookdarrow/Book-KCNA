@@ -1,0 +1,506 @@
+chapter: 18
+book: kcna
+generated: '2026-09-01T13:58:39+00:00'
+figures:
+- anchor_id: ch18-fig01-monitoring-vs-observability
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch18-fig01-monitoring-vs-observability.html
+  output_paths:
+    svg: figures/ch18-fig01-monitoring-vs-observability.svg
+    png: figures/ch18-fig01-monitoring-vs-observability.png
+    alt: figures/ch18-fig01-monitoring-vs-observability.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: concept_map
+  figure_spec:
+    anchor_id: ch18-fig01-monitoring-vs-observability
+    diagram_type: concept_map
+    source_ascii: "            THE SAME SYSTEM, TWO POSTURES\n\nMONITORING       \
+      \                 OBSERVABILITY\nknown unknowns                    unknown unknowns\n\
+      \n┌───────────────────┐             ┌───────────────────┐\n│  questions chosen\
+      \ │             │  question arrives │\n│   IN ADVANCE      │             │ \
+      \  AT 02:10 AM     │\n└─────────┬─────────┘             └─────────┬─────────┘\n\
+      \          │                                 │\n   ┌──────┴──────┐         \
+      \                 │  \"why were\n   ▼      ▼      ▼                        \
+      \  │   requests\n ┌───┐  ┌───┐  ┌───┐                        │   from one\n\
+      \ │CPU│  │mem│  │5xx│   <- fixed             │   client\n └─┬─┘  └─┬─┘  └─┬─┘\
+      \      indicators        │   slow in\n   └──────┼──────┘                   \
+      \       │   region 2?\"\n          ▼                                 ▼\n   ┌─────────────┐\
+      \                   ┌─────────────┐\n   │  DASHBOARD  │                   │\
+      \  OPEN QUERY │\n   │ answers the │                   │  over rich  │\n   │\
+      \  4 questions│                   │  telemetry  │\n   │  you picked │      \
+      \             │             │\n   └──────┬──────┘                   └──────┬──────┘\n\
+      \          ▼                                 ▼\n   ┌───────────────────────────────────────────────┐\n\
+      \   │        T H E   R U N N I N G   S Y S T E M    │\n   └───────────────────────────────────────────────┘\n\
+      \nBoth read the same system. The difference is upstream:\none has a fixed question\
+      \ set, one does not.\n"
+    vendor_terms: []
+    complexity_hint:
+      node_count: 8
+      edge_count: 10
+      label_count: 13
+    pedagogy:
+      part_18_criteria_met:
+      - distinguishing_alternatives
+      - fixed_point
+      - spatial_structure
+      learning_outcome: Distinguish observability from monitoring by when the question
+        was chosen, not by tooling
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: The right column's unbroken stem from the 02:10
+        question straight to OPEN QUERY, with no fixed-indicator layer between them
+    accessibility:
+      alt_text_seed: Two columns above one shared system box. The monitoring column
+        passes through three fixed indicators labelled CPU, memory and 5xx into a
+        dashboard. The observability column runs straight from a question that arrives
+        at 2:10 a.m. into an open query, with no indicator layer in between.
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders: []
+      clearance: own_interpretation
+      notes: Generic monitoring/observability concepts; no vendor product, mark or
+        published diagram reproduced.
+- anchor_id: ch18-fig02-otel-four-signals
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch18-fig02-otel-four-signals.html
+  output_paths:
+    svg: figures/ch18-fig02-otel-four-signals.svg
+    png: figures/ch18-fig02-otel-four-signals.png
+    alt: figures/ch18-fig02-otel-four-signals.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: component_diagram
+  figure_spec:
+    anchor_id: ch18-fig02-otel-four-signals
+    diagram_type: component_diagram
+    source_ascii: "           F O U R   S I G N A L S\n\n┌─────────────────────────────────────────────────┐\n\
+      │  BAGGAGE — contextual info passed BETWEEN the   │  <- rides across\n│  others;\
+      \ a separate key-value store, not a      │     all three\n│  measurement. Carries\
+      \ user/account/origin IDs.  │\n└───────┬─────────────┬─────────────┬─────────────┘\n\
+      \        :             :             :\n════════╪═════════════╪═════════════╪════════════\n\
+      \        ▼             ▼             ▼\n┌──────────────┐┌──────────────┐┌──────────────┐\n\
+      │   TRACES     ││   METRICS    ││    LOGS      │\n│ path of a    ││ a measurement││\
+      \ a recording  │\n│ request      ││ at runtime   ││ of an event  │\n│      \
+      \        ││              ││              │\n│ answers      ││ answers      ││\
+      \ answers      │\n│  WHERE       ││  WHETHER     ││  WHAT        │\n└──────┬───────┘└──────┬───────┘└──────┬───────┘\n\
+      \       └───────────────┼───────────────┘\n                       ▼\n      \
+      \     ┌───────────────────────┐\n           │  OTel COLLECTOR       │\n    \
+      \       │  receive · process ·  │\n           │  export               │\n  \
+      \         └───────────┬───────────┘\n                       ▼\n            \
+      \  one or more backends\n"
+    vendor_terms:
+    - opentelemetry
+    - otel-collector
+    complexity_hint:
+      node_count: 6
+      edge_count: 7
+      label_count: 12
+    pedagogy:
+      part_18_criteria_met:
+      - vendor_taxonomy
+      - spatial_structure
+      - fixed_point
+      learning_outcome: Name all four OpenTelemetry signals and place baggage correctly
+        as context carried between the other three
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: The BAGGAGE band and its three dashed connectors
+        crossing to traces, metrics and logs
+    accessibility:
+      alt_text_seed: A wide baggage band spans the top, connected by dashed lines
+        to three boxes below it labelled traces, metrics and logs, which answer where,
+        whether and what. The three converge into an OpenTelemetry Collector that
+        receives, processes and exports to one or more backends.
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: true
+      max_width_px: 1100
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: OpenTelemetry signal taxonomy redrawn in Lodestar style; project name
+        used nominatively, no logo or published diagram reproduced.
+- anchor_id: ch18-fig04-prometheus-pull-architecture
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch18-fig04-prometheus-pull-architecture.html
+  output_paths:
+    svg: figures/ch18-fig04-prometheus-pull-architecture.svg
+    png: figures/ch18-fig04-prometheus-pull-architecture.png
+    alt: figures/ch18-fig04-prometheus-pull-architecture.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: data_flow
+  figure_spec:
+    anchor_id: ch18-fig04-prometheus-pull-architecture
+    diagram_type: data_flow
+    source_ascii: "                 ARROWS OUT, NOT IN\n\n┌──────────────┐       \
+      \           ┌──────────────────┐\n│ SERVICE      │◄─── scrape ──────┤      \
+      \            │\n│ DISCOVERY    │                  │                  │\n│ (finds\
+      \       │  \"what exists?\"  │                  │\n│  targets)    │◄─────────────────┤\
+      \                  │\n└──────────────┘                  │                  │\n\
+      \                                  │   PROMETHEUS     │\n┌──────────────┐  \
+      \                │     SERVER       │\n│ instrumented │◄─── scrape ──────┤ \
+      \                 │\n│ app          │      HTTP        │   scrapes  +     │\n\
+      │ (client lib) │                  │   stores locally │\n└──────────────┘   \
+      \               │                  │\n                                  │  \
+      \ standalone,    │\n┌──────────────┐                  │   autonomous     │\n\
+      │ EXPORTER     │◄─── scrape ──────┤                  │\n│ (binary next │   \
+      \   HTTP        │                  │\n│  to a thing  │                  │  \
+      \                │\n│  you didn't  │                  │                  │\n\
+      │  write)      │                  │                  │\n└──────────────┘   \
+      \               │                  │\n                                  │  \
+      \                │\n┌──────────────┐                  │                  │\n\
+      │ PUSHGATEWAY  │◄─── scrape ──────┤                  │\n│              │   \
+      \               │                  │\n│  ▲ push      │                  │  \
+      \                │\n│  │ ONLY from │                  └────┬───────┬─────┘\n\
+      │  │ service-  │                       │       │\n│  │ level     │         \
+      \        push  │       │ HTTP API\n│  │ BATCH     │                alerts │\
+      \       │ (read)\n│  │ jobs      │                       ▼       ▼\n│ ┌┴────────┐\
+      \  │              ┌────────────┐ ┌──────────┐\n│ │short job│  │            \
+      \  │ALERTMANAGER│ │ GRAFANA  │\n│ └─────────┘  │              │ routes to  │\
+      \ │ dashboards│\n└──────────────┘              │ email/pager│ │(NOT CNCF)│\n\
+      \   one narrow                 └────────────┘ └──────────┘\n   inbound path\n\
+      \nEvery arrow into Prometheus is Prometheus reaching out.\n"
+    vendor_terms:
+    - prometheus
+    - alertmanager
+    - pushgateway
+    - grafana
+    complexity_hint:
+      node_count: 8
+      edge_count: 8
+      label_count: 16
+    pedagogy:
+      part_18_criteria_met:
+      - spatial_structure
+      - distinguishing_alternatives
+      - fixed_point
+      learning_outcome: Explain that Prometheus pulls by scraping targets over HTTP,
+        and identify the single narrow inbound path through the Pushgateway
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: The four scrape arrows, all originating at the
+        Prometheus server and pointing outward at their targets
+    accessibility:
+      alt_text_seed: A central Prometheus server reaches out with four scrape arrows
+        to service discovery, an instrumented app, an exporter and a pushgateway.
+        Only a short batch job pushes inward, into the pushgateway, which Prometheus
+        then scrapes. Prometheus pushes alerts to Alertmanager and serves Grafana
+        over an HTTP API.
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      - grafana-labs
+      clearance: own_interpretation
+      notes: Component names used nominatively in a redrawn architecture; no logos
+        or published diagrams reproduced. Re-evaluate to licensed_icon_set if the
+        renderer substitutes vendor icon-pack assets for any box.
+- anchor_id: ch18-fig03-trace-spans-across-services
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch18-fig03-trace-spans-across-services.html
+  output_paths:
+    svg: figures/ch18-fig03-trace-spans-across-services.svg
+    png: figures/ch18-fig03-trace-spans-across-services.png
+    alt: figures/ch18-fig03-trace-spans-across-services.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: gantt
+  figure_spec:
+    anchor_id: ch18-fig03-trace-spans-across-services
+    diagram_type: gantt
+    source_ascii: "ONE TRACE = the whole request path.  ONE SPAN = one unit of work.\n\
+      trace ID: 4bf92f...  (crosses every boundary below)\n\ntime ──────────────────────────────────────────────────────►\n\
+      \     0ms                                              4000ms\n\n┌────────────────────────────────────────────────────────┐\n\
+      │ ROOT SPAN   api-gateway: POST /checkout      4000ms    │  request\n└─┬──────────────────────────────────────────────────────┘\
+      \  start→finish\n  │\n  ├─┌──────────────┐\n  │ │ auth-svc      120ms      \
+      \                            │\n  │ └─┬────────────┘\n  │   └─┌────────────┐\n\
+      \  │     │ user-store   85ms                                │\n  │     └────────────┘\n\
+      \  │\n  └─────┌──────────────────────────────────────────────┐\n        │ catalog-svc\
+      \                        3700ms    │\n        └─┬────────────────────────────────────────────┘\n\
+      \          │\n          ├─┌───────┐\n          │ │ cache   8ms             \
+      \                     │\n          │ └───────┘\n          │\n          └─┌──────────────────────────────────────────┐\n\
+      \            │ pricing-svc → database         3650ms    │ ◄── here\n       \
+      \     └──────────────────────────────────────────┘\n\nSeven services. Seven\
+      \ sets of logs, each internally complete.\nOnly the trace ID makes them one\
+      \ story — and only then does\n\"where did the 4 seconds go?\" have an answer.\n"
+    vendor_terms: []
+    complexity_hint:
+      node_count: 6
+      edge_count: 5
+      label_count: 14
+    pedagogy:
+      part_18_criteria_met:
+      - temporal_structure
+      - quantitative_relationships
+      - fixed_point
+      learning_outcome: Distinguish a span from a trace and read where a request's
+        time was spent from a nested span timeline
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: The pricing-svc to database span at 3650ms, which
+        accounts for almost the whole 4000ms root span
+    accessibility:
+      alt_text_seed: A trace waterfall on a four-second time axis. A root span for
+        the API gateway spans the full width; nested beneath it are auth-svc at 120
+        milliseconds with user-store at 85 milliseconds inside it, and catalog-svc
+        at 3700 milliseconds containing a cache call of 8 milliseconds and a pricing
+        service database call of 3650 milliseconds, which accounts for almost all
+        of the elapsed time.
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders: []
+      clearance: own_interpretation
+      notes: Invented service names and timings; the trace ID is a truncated W3C TraceContext-format
+        example. No vendor IP.
+- anchor_id: ch18-fig06-cluster-logging-architectures
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch18-fig06-cluster-logging-architectures.html
+  output_paths:
+    svg: figures/ch18-fig06-cluster-logging-architectures.svg
+    png: figures/ch18-fig06-cluster-logging-architectures.png
+    alt: figures/ch18-fig06-cluster-logging-architectures.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: k8s_architecture
+  figure_spec:
+    anchor_id: ch18-fig06-cluster-logging-architectures
+    diagram_type: k8s_architecture
+    source_ascii: "THREE WAYS TO COLLECT.  Same backend in all three;\nthe difference\
+      \ is WHERE collection happens.\n\n┌─ 1. NODE-LEVEL AGENT ────────┐  ← the default\
+      \ answer\n│  NODE                        │\n│  ┌──────┐ ┌──────┐ ┌──────┐  │\n\
+      │  │ Pod  │ │ Pod  │ │ Pod  │  │\n│  └──┬───┘ └──┬───┘ └──┬───┘  │\n│     └────────┼────────┘\
+      \      │\n│        node filesystem       │\n│              ▼               │\n\
+      │      ┌───────────────┐       │\n│      │ AGENT (Daemon │───────┼──────┐\n\
+      │      │ Set: 1/node)  │       │      │\n│      └───────────────┘       │  \
+      \    │\n└──────────────────────────────┘      │\n                          \
+      \             │\n┌─ 2. SIDECAR IN THE POD ──────┐      │\n│  NODE          \
+      \              │      │\n│  ┌────────────────────────┐  │      ▼\n│  │ Pod \
+      \                   │  │  ┌────────┐\n│  │ ┌─────┐  ┌───────────┐ │  │  │ LOGGING│\n\
+      │  │ │ app │─►│ sidecar   │─┼──┼─►│ BACKEND│\n│  │ └─────┘  │ collector │ │\
+      \  │  │        │\n│  │          └───────────┘ │  │  │(outside│\n│  └────────────────────────┘\
+      \  │  │  k8s)  │\n│   one collector PER POD      │  │        │\n└──────────────────────────────┘\
+      \  │        │\n                                   │        │\n┌─ 3. APP PUSHES\
+      \ DIRECTLY ─────┐  │        │\n│  NODE                        │  │        │\n\
+      │  ┌────────────────────────┐  │  │        │\n│  │ Pod                    │\
+      \  │  │        │\n│  │ ┌─────────────────┐    │  │  │        │\n│  │ │ app w/\
+      \ logging  │────┼──┼──┼───────►│\n│  │ │ library         │    │  │  └────────┘\n\
+      │  │ └─────────────────┘    │  │\n│  └────────────────────────┘  │   app must\
+      \ know\n│   no collector at all        │   about the backend\n└──────────────────────────────┘\n"
+    vendor_terms:
+    - kubernetes-node
+    - kubernetes-pod
+    - daemonset
+    complexity_hint:
+      node_count: 14
+      edge_count: 8
+      label_count: 20
+    pedagogy:
+      part_18_criteria_met:
+      - distinguishing_alternatives
+      - spatial_structure
+      - vendor_taxonomy
+      learning_outcome: Name the three cluster-logging architectures and justify the
+        node-level DaemonSet agent as the default
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: Panel 1's agent box, labelled DaemonSet one-per-node,
+        and its connector out to the shared backend
+    accessibility:
+      alt_text_seed: Three stacked panels, all feeding one logging backend on the
+        right. In the first, three Pods write to the node filesystem and a DaemonSet
+        agent reads it and forwards. In the second, a sidecar collector inside each
+        Pod forwards the app's logs. In the third, the app pushes straight to the
+        backend with no collector.
+    rendering_hints:
+      preferred_orientation: portrait
+      grayscale_critical: true
+      max_width_px: 1000
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Kubernetes logging architectures redrawn in Lodestar style; resource
+        names used nominatively, no logo or published diagram reproduced.
+- anchor_id: ch18-fig05-sli-slo-golden-signals
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch18-fig05-sli-slo-golden-signals.html
+  output_paths:
+    svg: figures/ch18-fig05-sli-slo-golden-signals.svg
+    png: figures/ch18-fig05-sli-slo-golden-signals.png
+    alt: figures/ch18-fig05-sli-slo-golden-signals.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: concept_map
+  figure_spec:
+    anchor_id: ch18-fig05-sli-slo-golden-signals
+    diagram_type: concept_map
+    source_ascii: "MEASUREMENT → COMMITMENT → CONTRACT     THE FOUR GOLDEN SIGNALS\n\
+      \n┌─────────────────────────────┐        ┌──────────┐ ┌──────────┐\n│  INTERNAL\
+      \                   │        │ LATENCY  │ │ TRAFFIC  │\n│                  \
+      \           │        │ time to  │ │ demand   │\n│   ┌─────┐    measures    \
+      \   │        │ serve a  │ │ on the   │\n│   │ SLI │  ──────────┐      │    \
+      \    │ request  │ │ system   │\n│   │     │            │      │        │   \
+      \       │ │          │\n│   │ the │            ▼      │        │ track OK │\
+      \ │ req/sec, │\n│   │ mea-│      ┌──────────┐ │        │ and FAIL │ │ sessions\
+      \ │\n│   │sure-│      │   SLO    │ │        │ separate │ │          │\n│   │\
+      \ ment│      │ the      │ │        └──────────┘ └──────────┘\n│   └─────┘  \
+      \    │ target   │ │        ┌──────────┐ ┌──────────┐\n│                │ you\
+      \      │ │        │  ERRORS  │ │SATURATION│\n│  from the      │ commit to│ │\
+      \        │ rate of  │ │ how FULL │\n│  USER's        └────┬─────┘ │        │\
+      \ failed   │ │ the svc  │\n│  perspective        │       │        │ requests\
+      \ │ │ is       │\n└─────────────────────┼───────┘        │          │ │    \
+      \      │\n                      │                │ explicit,│ │ degrades │\n\
+      \      ══════ boundary ══════            │ implicit,│ │ BEFORE   │\n       \
+      \               │                │ or by    │ │ 100%     │\n┌─────────────────────▼───────┐\
+      \        │ policy   │ │          │\n│  EXTERNAL                   │        └──────────┘\
+      \ └────▲─────┘\n│        ┌──────────┐         │                          │\n\
+      │        │   SLA    │         │        latency increases ─┘\n│        │ contract\
+      \ │         │        are often a LEADING\n│        │ w/ CONSE-│         │  \
+      \      INDICATOR of saturation\n│        │ QUENCES  │         │\n│        └──────────┘\
+      \         │\n│  \"what happens if the SLO   │\n│   isn't met?\" No consequence│\n\
+      │   = it's an SLO, not an SLA │\n└─────────────────────────────┘\n"
+    vendor_terms: []
+    complexity_hint:
+      node_count: 9
+      edge_count: 3
+      label_count: 15
+    pedagogy:
+      part_18_criteria_met:
+      - distinguishing_alternatives
+      - spatial_structure
+      - fixed_point
+      learning_outcome: Distinguish an SLI from an SLO from an SLA, and name the four
+        golden signals with latency as a leading indicator of saturation
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: The SLI to SLO arrow labelled 'measures' — the
+        step from an observed number to a committed target
+    accessibility:
+      alt_text_seed: On the left, an internal frame holds an SLI, measured from the
+        user's perspective, feeding an SLO target; below a labelled boundary, an external
+        frame holds an SLA contract with consequences. On the right, a two-by-two
+        grid of latency, traffic, errors and saturation, with an arrow from latency
+        to saturation marking latency increases as a leading indicator of saturation.
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders:
+      - google
+      clearance: own_interpretation
+      notes: SLI/SLO/SLA and four-golden-signals terminology originate in Google's
+        SRE book; taxonomy redrawn in Lodestar style, terms used nominatively, and
+        all quoted definitions cited to the cached snapshot in the surrounding prose.
+        No figure reproduced.
+- anchor_id: ch18-zenith-instruments-answer-one-question
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch18-zenith-instruments-answer-one-question.html
+  output_paths:
+    svg: figures/ch18-zenith-instruments-answer-one-question.svg
+    png: figures/ch18-zenith-instruments-answer-one-question.png
+    alt: figures/ch18-zenith-instruments-answer-one-question.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: concept_map
+  figure_spec:
+    anchor_id: ch18-zenith-instruments-answer-one-question
+    diagram_type: concept_map
+    source_ascii: "             ┌───────────────────────────┐\n             │   \"\
+      Is the service doing   │\n             │   what users expect       │\n     \
+      \        │   it to be doing?\"        │\n             └─────────────▲─────────────┘\n\
+      \                           │\n       ┌───────────────────┼───────────────────┐\n\
+      \       │                   │                   │\n┌──────┴──────┐     ┌──────┴──────┐\
+      \     ┌──────┴──────┐\n│   METRIC    │     │    TRACE    │     │     LOG   \
+      \  │\n│             │     │             │     │             │\n│  WHETHER  \
+      \  │     │   WHERE     │     │    WHAT     │\n│             │     │        \
+      \     │     │             │\n│ error rate  │     │ 3.65s of 4s │     │ the line\
+      \    │\n│ crossed 2%  │     │ in pricing- │     │ the code    │\n│ at 02:07\
+      \    │     │ svc's query │     │ actually    │\n│             │     │      \
+      \       │     │ emitted     │\n└──────┬──────┘     └──────┬──────┘     └──────┬──────┘\n\
+      \       │                   │                   │\n       └───────────────────┼───────────────────┘\n\
+      \                           │\n             ┌─────────────┴─────────────┐\n\
+      \             │  BAGGAGE — what makes all │\n             │  three about THE\
+      \ SAME     │\n             │  REQUEST rather than      │\n             │  three\
+      \ separate stories   │\n             └───────────────────────────┘\n\n    Not\
+      \ four topics. One question, four resolutions.\n"
+    vendor_terms: []
+    complexity_hint:
+      node_count: 5
+      edge_count: 6
+      label_count: 13
+    pedagogy:
+      part_18_criteria_met:
+      - zenith
+      - spatial_structure
+      - distinguishing_alternatives
+      learning_outcome: Choose the right signal for a question — whether, where or
+        what — and explain why baggage is what makes the three cohere
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: The BAGGAGE box at the base, joined to all three
+        instruments
+    accessibility:
+      alt_text_seed: 'One question at the top asks whether the service is doing what
+        users expect. Three boxes below point up into it: a metric answering whether,
+        a trace answering where, and a log answering what. A baggage box beneath connects
+        to all three, making them about the same request rather than three separate
+        stories.'
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Quoted reliability question and the OpenTelemetry signal names are cited
+        to cached snapshots in the surrounding prose; diagram is an original synthesis,
+        no vendor logo or published figure reproduced.

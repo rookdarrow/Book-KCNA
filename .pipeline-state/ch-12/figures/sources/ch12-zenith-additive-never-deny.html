@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RBAC and NetworkPolicy: denied by absence</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;700&family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Fira+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --color-paper:  #F5EFE4;
+      --color-ink:    #0B1E3B;
+      --color-muted:  #1F4A4E;
+      --color-accent: #B58B3E;
+      --font-sans:  'Fira Sans', system-ui, sans-serif;
+      --font-serif: 'Roboto Slab', serif;
+      --font-mono:  'Fira Mono', ui-monospace, monospace;
+    }
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-paper);
+      color: var(--color-ink);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 2rem;
+    }
+    .frame { max-width: 640px; width: 100%; }
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      margin-bottom: 0.5rem;
+    }
+    h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(1.4rem, 2vw + 0.75rem, 1.75rem);
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+      color: var(--color-ink);
+      margin-bottom: 1.5rem;
+    }
+    svg { width: 100%; max-width: 480px; display: block; margin: 0 auto; }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <p class="eyebrow">Flowchart &middot; Diagram Design</p>
+    <h1>Different layer, different object &mdash; the same shape</h1>
+
+    <svg viewBox="0 0 592 768" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch12-zenith-additive-never-deny-title ch12-zenith-additive-never-deny-desc">
+      <title id="ch12-zenith-additive-never-deny-title">RBAC and NetworkPolicy: denied by absence</title>
+      <desc id="ch12-zenith-additive-never-deny-desc">Two side-by-side flowcharts, one for RBAC at the API layer and one for NetworkPolicy at the network layer, each showing a request that reaches a decision with only an allow outcome defined, so finding no matching rule denies the request by absence even though neither system defines an explicit deny rule.</desc>
+      <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"/></marker>
+        <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#B58B3E"/></marker>
+        <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"/></marker>
+      </defs>
+
+      <rect width="100%" height="100%" fill="#F5EFE4"/>
+
+      <!-- ===== Panel chrome (zones — painted before arrows/nodes) ===== -->
+      <rect x="24" y="24" width="264" height="624" rx="8" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1.2"/>
+      <text x="156" y="56" text-anchor="middle" font-family="'Roboto Slab', serif" font-size="20" font-weight="500" fill="#0B1E3B" letter-spacing="0.02em">RBAC</text>
+      <text x="156" y="80" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" fill="#1F4A4E">the API layer</text>
+      <line x1="24" y1="96" x2="288" y2="96" stroke="rgba(11,30,59,0.12)" stroke-width="1"/>
+
+      <rect x="304" y="24" width="264" height="624" rx="8" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1.2"/>
+      <text x="436" y="56" text-anchor="middle" font-family="'Roboto Slab', serif" font-size="20" font-weight="500" fill="#0B1E3B" letter-spacing="0.02em">NETWORKPOLICY</text>
+      <text x="436" y="80" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" fill="#1F4A4E">the network layer</text>
+      <line x1="304" y1="96" x2="568" y2="96" stroke="rgba(11,30,59,0.12)" stroke-width="1"/>
+
+      <line x1="24" y1="680" x2="568" y2="680" stroke="rgba(11,30,59,0.10)" stroke-width="0.8"/>
+
+      <!-- ===== Panel A — RBAC — connectors ===== -->
+      <line x1="156" y1="168" x2="156" y2="200" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <line x1="156" y1="248" x2="156" y2="280" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <line x1="96" y1="352" x2="96" y2="400" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <line x1="216" y1="352" x2="216" y2="400" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <path d="M216,448 V456 Q216,464 208,464 H164 Q156,464 156,472 V480" fill="none" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <line x1="156" y1="544" x2="156" y2="576" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+      <!-- Panel A — nodes -->
+      <rect x="56" y="120" width="200" height="48" rx="24" fill="rgba(11,30,59,0.03)" stroke="rgba(11,30,59,0.30)" stroke-width="1"/>
+      <text x="156" y="150" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">identity</text>
+
+      <rect x="56" y="200" width="200" height="48" rx="6" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1"/>
+      <text x="156" y="230" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">API request</text>
+
+      <polygon points="156,280 276,328 156,376 36,328" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1"/>
+      <text x="156" y="332" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">grant?</text>
+
+      <rect x="48" y="400" width="96" height="48" rx="24" fill="rgba(11,30,59,0.03)" stroke="rgba(11,30,59,0.30)" stroke-width="1"/>
+      <text x="96" y="430" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" font-weight="500" fill="#0B1E3B">allow</text>
+
+      <rect x="168" y="400" width="96" height="48" rx="6" fill="rgba(11,30,59,0.02)" stroke="rgba(11,30,59,0.20)" stroke-width="1" stroke-dasharray="4,3"/>
+      <text x="216" y="430" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" font-weight="500" fill="#8A8D90">(nothing)</text>
+
+      <rect x="56" y="480" width="200" height="64" rx="32" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"/>
+      <text x="156" y="500" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" fill="#0B1E3B">denied by</text>
+      <text x="156" y="524" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="700" letter-spacing="0.06em" fill="#B58B3E">ABSENCE</text>
+
+      <rect x="48" y="576" width="216" height="48" rx="6" fill="rgba(11,30,59,0.02)" stroke="rgba(11,30,59,0.20)" stroke-width="1" stroke-dasharray="4,3"/>
+      <text x="156" y="606" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" font-style="italic" fill="#1F4A4E">no deny rule exists</text>
+
+      <!-- ===== Panel B — NetworkPolicy — connectors ===== -->
+      <line x1="436" y1="168" x2="436" y2="200" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <line x1="436" y1="248" x2="436" y2="280" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <line x1="376" y1="352" x2="376" y2="400" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <line x1="496" y1="352" x2="496" y2="400" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <path d="M496,448 V456 Q496,464 488,464 H444 Q436,464 436,472 V480" fill="none" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <line x1="436" y1="544" x2="436" y2="576" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+      <!-- Panel B — nodes -->
+      <rect x="336" y="120" width="200" height="48" rx="24" fill="rgba(11,30,59,0.03)" stroke="rgba(11,30,59,0.30)" stroke-width="1"/>
+      <text x="436" y="150" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Pod</text>
+
+      <rect x="336" y="200" width="200" height="48" rx="6" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1"/>
+      <text x="436" y="230" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">connection</text>
+
+      <polygon points="436,280 556,328 436,376 316,328" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1"/>
+      <text x="436" y="332" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">allow rule?</text>
+
+      <rect x="328" y="400" width="96" height="48" rx="24" fill="rgba(11,30,59,0.03)" stroke="rgba(11,30,59,0.30)" stroke-width="1"/>
+      <text x="376" y="430" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" font-weight="500" fill="#0B1E3B">allow</text>
+
+      <rect x="448" y="400" width="96" height="48" rx="6" fill="rgba(11,30,59,0.02)" stroke="rgba(11,30,59,0.20)" stroke-width="1" stroke-dasharray="4,3"/>
+      <text x="496" y="430" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" font-weight="500" fill="#8A8D90">(nothing)</text>
+
+      <rect x="336" y="480" width="200" height="64" rx="32" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"/>
+      <text x="436" y="500" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" fill="#0B1E3B">denied by</text>
+      <text x="436" y="524" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="700" letter-spacing="0.06em" fill="#B58B3E">ABSENCE</text>
+
+      <rect x="328" y="576" width="216" height="48" rx="6" fill="rgba(11,30,59,0.02)" stroke="rgba(11,30,59,0.20)" stroke-width="1" stroke-dasharray="4,3"/>
+      <text x="436" y="606" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" font-style="italic" fill="#1F4A4E">no deny rule exists</text>
+
+      <!-- ===== Closing caption ===== -->
+      <text x="296" y="704" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-style="italic" fill="#1F4A4E">different layer.  different object.  different decade.</text>
+      <text x="296" y="732" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-style="italic" fill="#1F4A4E">the same shape.</text>
+    </svg>
+  </div>
+</body>
+</html>

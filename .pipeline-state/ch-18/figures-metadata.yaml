@@ -1,0 +1,265 @@
+chapter: 18
+book: kcna
+generated: '2026-09-01T15:39:48+00:00'
+figures:
+- anchor_id: ch18-fig01-monitoring-vs-observability
+  source_hash: 636a17e371e3a6fcac958673b75c4e4bac863b0c20fa26ba55b2e9b8eeacdc5e
+  output_hash:
+    svg: d54acd4c18bbf6b93ccb64f376acfff5204645a9ce7f34630913c767398ae19c
+    png: e2dc867bb3ffd8654de7b3fad744f159da5a5209a97a30794d75428f4f8f5c94
+  validations:
+    label_count:
+      result: fail
+      value: 27
+      max: 7
+      reason: 27 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1360
+      - 1854
+    aspect_ratio:
+      result: pass
+      value: 1.36
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 284
+  alt_text: Two columns above one shared system box. The monitoring column passes
+    through three fixed indicators labelled CPU, memory and 5xx into a dashboard.
+    The observability column runs straight from a question that arrives at 2:10 a.m.
+    into an open query, with no indicator layer in between.
+- anchor_id: ch18-fig02-otel-four-signals
+  source_hash: c1f27e87533e3e0a18ac0a550e79526023af3e2280d342f0271c7bf393353eff
+  output_hash:
+    svg: 3ff21204aa539523cf78793b967b6ec75426aa80deaa51d6141c037819ff24f0
+    png: 6f5c0cc92aa34130c17d9b98081456044c2241f7ded56b5d7b7c242f66a5c3b6
+  validations:
+    label_count:
+      result: pass
+      value: 7
+      max: 7
+      reason: ''
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1120
+      - 1440
+    aspect_ratio:
+      result: pass
+      value: 1.29
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 270
+  alt_text: A wide baggage band spans the top, connected by dashed lines to three
+    boxes below it labelled traces, metrics and logs, which answer where, whether
+    and what. The three converge into an OpenTelemetry Collector that receives, processes
+    and exports to one or more backends.
+- anchor_id: ch18-fig04-prometheus-pull-architecture
+  source_hash: 8d4ca63339f4cac026ba2a9e861063f3d8ae4b2061ac0ad4997aefe6e9f93349
+  output_hash:
+    svg: f58f5a1aed9014a301302dd1ae93e29283e9e5e0ab53fdf82282134d57dea503
+    png: e86ea9fb7f569758cda004d3626e90b2c0baaa7de4511d2e150afcce550e4e90
+  validations:
+    label_count:
+      result: fail
+      value: 26
+      max: 7
+      reason: 26 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1240
+      - 1510
+    aspect_ratio:
+      result: pass
+      value: 1.22
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 306
+  alt_text: A central Prometheus server reaches out with four scrape arrows to service
+    discovery, an instrumented app, an exporter and a pushgateway. Only a short batch
+    job pushes inward, into the pushgateway, which Prometheus then scrapes. Prometheus
+    pushes alerts to Alertmanager and serves Grafana over an HTTP API.
+- anchor_id: ch18-fig03-trace-spans-across-services
+  source_hash: 2a66a55414eea5a430a14db54c8d004cd5023c9af51cbb7353c2e4fd000374d2
+  output_hash:
+    svg: 525a6be212c6afbc06dbff9b7153fb487acffb69fbed16691ea09b7b605bd386
+    png: 923c6a8462a4fb8455578291d2350a4d96c8f7f75d03a4b96811effaf6b92330
+  validations:
+    label_count:
+      result: pass
+      value: 0
+      max: 7
+      reason: 'not applicable to gantt: axis labels are data'
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1360
+      - 1512
+    aspect_ratio:
+      result: pass
+      value: 1.11
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 384
+  alt_text: A trace waterfall on a four-second time axis. A root span for the API
+    gateway spans the full width; nested beneath it are auth-svc at 120 milliseconds
+    with user-store at 85 milliseconds inside it, and catalog-svc at 3700 milliseconds
+    containing a cache call of 8 milliseconds and a pricing service database call
+    of 3650 milliseconds, which accounts for almost all of the elapsed time.
+- anchor_id: ch18-fig06-cluster-logging-architectures
+  source_hash: 7041fa12885e101ee09007350e8e5e2c73246b33fccccb5144aff83501593db7
+  output_hash:
+    svg: af286f4d07aeb51a91107a40d68c9297a91a8fb2c53a563d5b5291766a5834eb
+    png: 39f55fee24351fe8facc659f934f7a80a6fa68c5cc48216a1b1b640d73e81aad
+  validations:
+    label_count:
+      result: pass
+      value: 7
+      max: 7
+      reason: ''
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1120
+      - 1544
+    aspect_ratio:
+      result: pass
+      value: 1.38
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 314
+  alt_text: Three stacked panels, all feeding one logging backend on the right. In
+    the first, three Pods write to the node filesystem and a DaemonSet agent reads
+    it and forwards. In the second, a sidecar collector inside each Pod forwards the
+    app's logs. In the third, the app pushes straight to the backend with no collector.
+- anchor_id: ch18-fig05-sli-slo-golden-signals
+  source_hash: 2e89d139dfa8e000bf0857e9134efc51a85e6e576c977b76627797150c5e52ec
+  output_hash:
+    svg: 422832044a8e45e5518a951f573941f4c6ff25ee2afbd6d33fc3270f7ff780f2
+    png: cd26a0c0adb480a2075a887f0f20e350c93d2d0d9b92dd9909af1a8d74a56f18
+  validations:
+    label_count:
+      result: fail
+      value: 39
+      max: 7
+      reason: 39 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1040
+      - 1388
+    aspect_ratio:
+      result: pass
+      value: 1.33
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 372
+  alt_text: On the left, an internal frame holds an SLI, measured from the user's
+    perspective, feeding an SLO target; below a labelled boundary, an external frame
+    holds an SLA contract with consequences. On the right, a two-by-two grid of latency,
+    traffic, errors and saturation, with an arrow from latency to saturation marking
+    latency increases as a leading indicator of saturation.
+- anchor_id: ch18-zenith-instruments-answer-one-question
+  source_hash: b15b8a03ad439e2d1e9e42d738007e7d7a81a93db5bf5423f83b8a0b2f92cdab
+  output_hash:
+    svg: 957b05b78b99c3b88abdc185eb64b6a5d46a36b631e4406b40890de39b91c73d
+    png: 030541d8c83a0bd1096cc232ee1f7f46e1985c7f3d36582cabb7d3657ad736b4
+  validations:
+    label_count:
+      result: fail
+      value: 21
+      max: 7
+      reason: 21 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1280
+      - 1590
+    aspect_ratio:
+      result: pass
+      value: 1.24
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 307
+  alt_text: 'One question at the top asks whether the service is doing what users
+    expect. Three boxes below point up into it: a metric answering whether, a trace
+    answering where, and a log answering what. A baggage box beneath connects to all
+    three, making them about the same request rather than three separate stories.'

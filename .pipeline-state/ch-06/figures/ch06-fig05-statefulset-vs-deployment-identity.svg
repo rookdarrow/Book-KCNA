@@ -1,0 +1,105 @@
+<svg viewBox="0 0 600 840" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="sfs-vs-deploy-title sfs-vs-deploy-desc" width="600" height="840">
+      <title id="sfs-vs-deploy-title">Deployment vs. StatefulSet: where Pod identity lives</title>
+      <desc id="sfs-vs-deploy-desc">Two-panel comparison: in a Deployment, a dying Pod is replaced by a Pod with a new name and UID and no attached storage; in a StatefulSet, db-0 dies and its replacement keeps the same name and reattaches to the same volume, showing that the identity outlived the Pod.</desc>
+
+      <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon>
+        </marker>
+        <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#B58B3E"></polygon>
+        </marker>
+        <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon>
+        </marker>
+      </defs>
+
+      <rect width="100%" height="100%" fill="#F5EFE4"></rect>
+
+      <!-- ============ PANEL 1: DEPLOYMENT ============ -->
+      <text x="40" y="60" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.12em" fill="#0B1E3B">DEPLOYMENT</text>
+      <text x="40" y="84" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="16" fill="#1F4A4E">Pods are interchangeable</text>
+
+      <!-- dies -> replacement arrow (drawn before boxes) -->
+      <line x1="300" y1="168" x2="300" y2="264" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+      <rect x="310" y="206" width="120" height="20" rx="2" fill="#F5EFE4"></rect>
+      <text x="370" y="220" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.04em" fill="#1F4A4E">NEW IDENTITY</text>
+
+      <!-- pod row -->
+      <rect x="40" y="104" width="152" height="64" rx="6" fill="#F5EFE4"></rect>
+      <rect x="40" y="104" width="152" height="64" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="116" y="140" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">web-7d4b-x9k2</text>
+
+      <rect x="224" y="104" width="152" height="64" rx="6" fill="#F5EFE4"></rect>
+      <rect x="224" y="104" width="152" height="64" rx="6" fill="rgba(11,30,59,0.02)" stroke="rgba(11,30,59,0.20)" stroke-width="1" stroke-dasharray="4,3"></rect>
+      <text x="300" y="140" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">web-7d4b-mn4p</text>
+      <circle cx="376" cy="104" r="12" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></circle>
+      <text x="376" y="109" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" fill="#0B1E3B">✗</text>
+
+      <rect x="408" y="104" width="152" height="64" rx="6" fill="#F5EFE4"></rect>
+      <rect x="408" y="104" width="152" height="64" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="484" y="140" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">web-7d4b-qq81</text>
+
+      <!-- replacement pod -->
+      <rect x="224" y="264" width="152" height="64" rx="6" fill="#F5EFE4"></rect>
+      <rect x="224" y="264" width="152" height="64" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="300" y="300" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">web-7d4b-z7rt</text>
+
+      <text x="300" y="372" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="16" fill="#8A8D90">New name, new UID — nothing depended on which one it was.</text>
+
+      <line x1="40" y1="412" x2="560" y2="412" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+
+      <!-- ============ PANEL 2: STATEFULSET ============ -->
+      <text x="40" y="444" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.12em" fill="#0B1E3B">STATEFULSET</text>
+      <text x="40" y="468" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="16" fill="#1F4A4E">Identity is sticky — the storage belongs to the identity</text>
+
+      <!-- focal reattachment loop: db-0 dies, comes back to its own volume (drawn before boxes) -->
+      <path d="M116,556 V564 Q116,572 108,572 H84 Q76,572 76,580 V604 Q76,612 84,612 H108 Q116,612 116,620 V628" fill="none" stroke="#B58B3E" stroke-width="1.4" marker-end="url(#arrow-accent)"></path>
+      <rect x="86" y="582" width="120" height="20" rx="2" fill="#F5EFE4"></rect>
+      <text x="146" y="596" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.04em" fill="#B58B3E">SAME IDENTITY</text>
+
+      <!-- column A: db-0, dies and reattaches -->
+      <rect x="40" y="492" width="152" height="64" rx="6" fill="#F5EFE4"></rect>
+      <rect x="40" y="492" width="152" height="64" rx="6" fill="rgba(11,30,59,0.02)" stroke="rgba(11,30,59,0.20)" stroke-width="1" stroke-dasharray="4,3"></rect>
+      <text x="116" y="528" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">db-0</text>
+      <circle cx="192" cy="492" r="12" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></circle>
+      <text x="192" y="497" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" fill="#0B1E3B">✗</text>
+
+      <rect x="40" y="628" width="152" height="64" rx="6" fill="#F5EFE4"></rect>
+      <rect x="40" y="628" width="152" height="64" rx="6" fill="rgba(11,30,59,0.05)" stroke="#1F4A4E" stroke-width="1"></rect>
+      <text x="116" y="664" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E">vol db-0</text>
+
+      <!-- column B: db-1, compound pod+volume, undisturbed -->
+      <rect x="224" y="560" width="152" height="64" rx="6" fill="#F5EFE4"></rect>
+      <rect x="224" y="560" width="152" height="64" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <rect x="225" y="593" width="150" height="24" rx="4" fill="rgba(11,30,59,0.05)"></rect>
+      <line x1="225" y1="592" x2="375" y2="592" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+      <text x="300" y="580" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">db-1</text>
+      <text x="300" y="612" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E">vol db-1</text>
+
+      <!-- column C: db-2, compound pod+volume, undisturbed -->
+      <rect x="408" y="560" width="152" height="64" rx="6" fill="#F5EFE4"></rect>
+      <rect x="408" y="560" width="152" height="64" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <rect x="409" y="593" width="150" height="24" rx="4" fill="rgba(11,30,59,0.05)"></rect>
+      <line x1="409" y1="592" x2="559" y2="592" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+      <text x="484" y="580" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">db-2</text>
+      <text x="484" y="612" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E">vol db-2</text>
+
+      <text x="300" y="728" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="16" fill="#8A8D90">Same name, same volume — the identity outlived the Pod.</text>
+
+      <!-- ============ LEGEND ============ -->
+      <line x1="40" y1="760" x2="560" y2="760" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+      <text x="40" y="796" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.12em" fill="#8A8D90">LEGEND</text>
+
+      <rect x="132" y="784" width="16" height="16" rx="2" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="156" y="796" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">POD</text>
+
+      <rect x="204" y="784" width="16" height="16" rx="2" fill="rgba(11,30,59,0.05)" stroke="#1F4A4E" stroke-width="1"></rect>
+      <text x="228" y="796" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">VOLUME</text>
+
+      <rect x="300" y="784" width="16" height="16" rx="2" fill="rgba(11,30,59,0.02)" stroke="rgba(11,30,59,0.20)" stroke-width="1" stroke-dasharray="4,3"></rect>
+      <text x="324" y="796" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">TERMINATED</text>
+
+      <line x1="428" y1="792" x2="444" y2="792" stroke="#B58B3E" stroke-width="2.4" stroke-linecap="round"></line>
+      <text x="456" y="796" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">REATTACHED</text>
+    </svg>

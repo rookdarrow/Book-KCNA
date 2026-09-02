@@ -1,0 +1,107 @@
+<svg viewBox="0 0 760 968" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch17-fig03-mesh-data-vs-control-plane-title ch17-fig03-mesh-data-vs-control-plane-desc" width="820" height="1045">
+      <title id="ch17-fig03-mesh-data-vs-control-plane-title">Service mesh data vs. control planes, sidecar vs. ambient</title>
+      <desc id="ch17-fig03-mesh-data-vs-control-plane-desc">Three separate layers: the cluster's control plane sits apart at top with no connection below; the mesh's control plane sends policy and certificates down into the mesh's data plane; the data plane splits into a sidecar column where an Envoy proxy sits inside each Pod, and an ambient column where Pods hold only the app while a per-node ztunnel and an optional per-namespace Envoy waypoint handle proxying instead.</desc>
+
+      <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto-start-reverse">
+          <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon>
+        </marker>
+        <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto-start-reverse">
+          <polygon points="0 0, 8 3, 0 6" fill="#B58B3E"></polygon>
+        </marker>
+        <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto-start-reverse">
+          <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon>
+        </marker>
+      </defs>
+
+      <rect width="760" height="968" fill="#F5EFE4"></rect>
+
+      <!-- Zone: the mesh's data plane (drawn before arrows and nodes) -->
+      <rect x="40" y="392" width="680" height="452" rx="8" fill="rgba(11,30,59,0.02)" stroke="rgba(11,30,59,0.10)" stroke-width="0.8"></rect>
+      <rect x="268" y="396" width="224" height="16" fill="#F5EFE4"></rect>
+      <text x="380" y="408" fill="#8A8D90" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.12em">THE MESH'S DATA PLANE</text>
+      <text x="380" y="432" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif" text-anchor="middle">the proxies themselves — every byte between services passes through here</text>
+
+      <!-- Arrows: mesh control plane distributes policy + certs down to both arrangements -->
+      <path d="M 268,352 V 392 Q 268,400 260,400 H 228 Q 220,400 220,408 V 452" fill="none" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></path>
+      <path d="M 492,352 V 392 Q 492,400 500,400 H 532 Q 540,400 540,408 V 452" fill="none" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></path>
+
+      <!-- Node: the cluster's control plane (isolated, no connections) -->
+      <rect x="40" y="40" width="680" height="136" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="60" y="72" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif">THE CLUSTER'S CONTROL PLANE</text>
+      <text x="700" y="72" fill="#8A8D90" font-size="14" font-family="'Fira Mono', monospace" text-anchor="end">(Ch 3 §2)</text>
+      <line x1="60" y1="88" x2="700" y2="88" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+      <text x="380" y="116" fill="#0B1E3B" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle">kube-apiserver · etcd · scheduler · controller-manager</text>
+      <text x="380" y="148" fill="#0B1E3B" font-size="14" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">Manages: Kubernetes OBJECTS</text>
+
+      <!-- Callout 1: explicitly disconnected from everything below -->
+      <text x="380" y="208" fill="#1F4A4E" font-style="italic" font-size="16" font-family="'Fira Sans', sans-serif" text-anchor="middle">(a different thing entirely)</text>
+
+      <!-- Node: the mesh's control plane -->
+      <rect x="40" y="232" width="680" height="120" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="60" y="264" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif">THE MESH'S CONTROL PLANE</text>
+      <text x="60" y="292" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">Distributes policy + certificates to the proxies</text>
+      <text x="60" y="316" fill="#0B1E3B" font-size="14" font-weight="500" font-family="'Fira Sans', sans-serif">Manages: PROXIES</text>
+
+      <!-- Column headers -->
+      <text x="220" y="472" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">SIDECAR MODE</text>
+      <text x="540" y="472" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">AMBIENT MODE</text>
+
+      <!-- Divider between the two arrangements -->
+      <line x1="380" y1="452" x2="380" y2="820" stroke="#8A8D90" stroke-width="1" stroke-dasharray="4,3"></line>
+
+      <!-- Sidecar Pod 1: app <-> [E] (focal: Envoy sidecar) -->
+      <rect x="92" y="492" width="256" height="88" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="108" y="520" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif">Pod</text>
+      <line x1="108" y1="532" x2="336" y2="532" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+      <text x="144" y="556" fill="#0B1E3B" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle">app</text>
+      <line x1="164" y1="552" x2="276" y2="552" stroke="#1F4A4E" stroke-width="1" marker-start="url(#arrow)" marker-end="url(#arrow)"></line>
+      <rect x="284" y="540" width="40" height="24" rx="4" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"></rect>
+      <text x="304" y="556" fill="#0B1E3B" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle">[E]</text>
+
+      <!-- Sidecar Pod 2: app <-> [E] (focal: Envoy sidecar) -->
+      <rect x="92" y="604" width="256" height="88" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="108" y="632" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif">Pod</text>
+      <line x1="108" y1="644" x2="336" y2="644" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+      <text x="144" y="668" fill="#0B1E3B" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle">app</text>
+      <line x1="164" y1="664" x2="276" y2="664" stroke="#1F4A4E" stroke-width="1" marker-start="url(#arrow)" marker-end="url(#arrow)"></line>
+      <rect x="284" y="652" width="40" height="24" rx="4" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"></rect>
+      <text x="304" y="668" fill="#0B1E3B" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle">[E]</text>
+
+      <text x="220" y="772" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif" text-anchor="middle">one Envoy per Pod</text>
+
+      <!-- Ambient Pod 1: app only, no in-pod proxy -->
+      <rect x="412" y="492" width="256" height="88" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="428" y="520" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif">Pod</text>
+      <line x1="428" y1="532" x2="656" y2="532" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+      <text x="540" y="556" fill="#0B1E3B" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle">app</text>
+
+      <!-- Ambient Pod 2: app only, no in-pod proxy -->
+      <rect x="412" y="604" width="256" height="88" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="428" y="632" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif">Pod</text>
+      <line x1="428" y1="644" x2="656" y2="644" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+      <text x="540" y="668" fill="#0B1E3B" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle">app</text>
+
+      <!-- ztunnel: per-node L4 relay — NOT Envoy, plain treatment -->
+      <rect x="412" y="716" width="256" height="40" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="428" y="740" fill="#0B1E3B" font-size="14" font-family="'Fira Mono', monospace">ztunnel</text>
+      <text x="652" y="740" fill="#8A8D90" font-size="14" font-family="'Fira Mono', monospace" text-anchor="end">per-NODE · L4</text>
+
+      <!-- waypoint: per-namespace L7 — focal: this IS Envoy -->
+      <rect x="412" y="780" width="256" height="40" rx="6" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"></rect>
+      <text x="428" y="804" fill="#0B1E3B" font-size="14" font-family="'Fira Mono', monospace">waypoint</text>
+      <text x="652" y="804" fill="#8A8D90" font-size="14" font-family="'Fira Mono', monospace" text-anchor="end">per-NS · L7 (Envoy)</text>
+
+      <!-- Callout 2: the unifying fact -->
+      <text x="380" y="884" fill="#1F4A4E" font-style="italic" font-size="16" font-family="'Fira Sans', sans-serif" text-anchor="middle">[E] = Envoy. Both columns are the same data plane, arranged two ways — not two products.</text>
+
+      <!-- Legend -->
+      <line x1="40" y1="908" x2="720" y2="908" stroke="#8A8D90" stroke-width="0.8"></line>
+      <text x="40" y="924" fill="#8A8D90" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" letter-spacing="0.12em">LEGEND</text>
+
+      <rect x="200" y="940" width="14" height="10" rx="2" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1"></rect>
+      <text x="220" y="948" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">Envoy — sidecar + waypoint</text>
+
+      <rect x="480" y="940" width="14" height="10" rx="2" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="500" y="948" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">Ztunnel — not Envoy</text>
+    </svg>

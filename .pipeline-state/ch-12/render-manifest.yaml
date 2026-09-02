@@ -1,0 +1,471 @@
+chapter: 12
+book: kcna
+generated: '2026-09-01T07:27:10+00:00'
+figures:
+- anchor_id: ch12-fig01-4cs-and-lifecycle-phases
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch12-fig01-4cs-and-lifecycle-phases.html
+  output_paths:
+    svg: figures/ch12-fig01-4cs-and-lifecycle-phases.svg
+    png: figures/ch12-fig01-4cs-and-lifecycle-phases.png
+    alt: figures/ch12-fig01-4cs-and-lifecycle-phases.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: concept_map
+  figure_spec:
+    anchor_id: ch12-fig01-4cs-and-lifecycle-phases
+    diagram_type: concept_map
+    source_ascii: "   THE PHASES — when a control acts\n   ─────────────────────────────────────────────────────────────────\n\
+      \n   DEVELOP  ────▶  DISTRIBUTE  ────▶  DEPLOY  ────▶  RUNTIME\n           \
+      \                                            │\n                           \
+      \               ┌────────────┼────────────┐\n                              \
+      \            │            │            │\n                                 \
+      \       ACCESS      COMPUTE      STORAGE\n\n\n   THE LAYERS — where a control\
+      \ acts\n   ─────────────────────────────────────────────────────────────────\n\
+      \n   ┌─ CLOUD ──────────────────────────────────────────────┐\n   │  ┌─ CLUSTER\
+      \ ─────────────────────────────────────┐   │\n   │  │  ┌─ CONTAINER ────────────────────────────┐\
+      \   │   │\n   │  │  │  ┌─ CODE ──────────────────────────┐   │   │   │\n   │\
+      \  │  │  │                                 │   │   │   │\n   │  │  │  └─────────────────────────────────┘\
+      \   │   │   │\n   │  │  └────────────────────────────────────────┘   │   │\n\
+      \   │  └───────────────────────────────────────────────┘   │\n   └──────────────────────────────────────────────────────┘\n\
+      \n\n   FIVE CONTROLS, PLOTTED ON BOTH\n   ─────────────────────────────────────────────────────────────────\n\
+      \n   control                    phase                layer\n   ──────────────────────────────────────────────────────────────\n\
+      \   RBAC                       runtime / access     Cluster\n   ServiceAccount\
+      \             runtime / access     Cluster\n   securityContext            runtime\
+      \ / compute    Container\n   encryption at rest         runtime / storage  \
+      \  Cloud → Cluster\n   image signing              distribute           Container\n"
+    vendor_terms: []
+    complexity_hint:
+      node_count: 16
+      edge_count: 9
+      label_count: 32
+    pedagogy:
+      part_18_criteria_met:
+      - spatial_structure
+      - temporal_structure
+      - distinguishing_alternatives
+      - fixed_point
+      learning_outcome: Place any Kubernetes security control on both maps at once
+        — which lifecycle phase it acts in and which of the 4C layers it protects
+        — and recognise the two coordinates as independent
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: the 'phase' and 'layer' column headers in the five-control
+        table, accented as a matched pair of independent axes
+    accessibility:
+      alt_text_seed: 'Three-panel figure: four lifecycle phases in sequence from develop
+        to runtime with runtime branching into access, compute and storage; four nested
+        layers from Cloud outermost to Code innermost; and a table plotting five security
+        controls against both a phase and a layer'
+    rendering_hints:
+      preferred_orientation: portrait
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: The 4Cs model and the develop/distribute/deploy/runtime phases are Kubernetes
+        documentation concepts, redrawn in Lodestar's visual language; no CNCF diagram,
+        logo or mark is reproduced.
+- anchor_id: ch12-fig03-serviceaccount-token-flow
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch12-fig03-serviceaccount-token-flow.html
+  output_paths:
+    svg: figures/ch12-fig03-serviceaccount-token-flow.svg
+    png: figures/ch12-fig03-serviceaccount-token-flow.png
+    alt: figures/ch12-fig03-serviceaccount-token-flow.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: flowchart
+  figure_spec:
+    anchor_id: ch12-fig03-serviceaccount-token-flow
+    diagram_type: flowchart
+    source_ascii: "   ┌──────────────────────┐\n   │  ServiceAccount      │      a\
+      \ namespaced object in the API server\n   │  ns/my-app           │      — an\
+      \ IDENTITY, and nothing more\n   └──────────┬───────────┘\n              │\n\
+      \              │  spec.serviceAccountName: my-app\n              ▼\n   ┌──────────────────────┐\n\
+      \   │  TokenRequest API    │      short-lived, automatically rotating\n   └──────────┬───────────┘\n\
+      \              │\n              ▼\n   ┌──────────────────────────────────────────┐\n\
+      \   │  Pod                                     │\n   │    projected volume \
+      \                     │\n   │      └── token  ◀── mounted, rotated     │\n \
+      \  └──────────┬───────────────────────────────┘\n              │\n         \
+      \     │  API request, bearing the token\n              ▼\n   ┌──────────────────────┐\n\
+      \   │  GATE 1              │      \"who are you?\"\n   │  AUTHENTICATION   \
+      \   │      ✔ you are ns/my-app\n   └──────────┬───────────┘\n              │\n\
+      \              ▼\n   ┌──────────────────────┐\n   │  GATE 2              │ \
+      \     \"what may you do?\"\n   │  AUTHORIZATION       │\n   │              \
+      \        │      ┌─────────────────────────┐\n   │      ...             │◀─────┤\
+      \  nothing here yet.      │\n   │                      │      │  see §3.   \
+      \             │\n   └──────────────────────┘      └─────────────────────────┘\n"
+    vendor_terms: []
+    complexity_hint:
+      node_count: 7
+      edge_count: 7
+      label_count: 16
+    pedagogy:
+      part_18_criteria_met:
+      - temporal_structure
+      - fixed_point
+      learning_outcome: Distinguish a workload identity from a permission by tracing
+        a ServiceAccount token to a successful authentication and finding authorization
+        still empty
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: the empty GATE 2 / AUTHORIZATION box together with
+        its 'nothing here yet. see §3.' callout
+    accessibility:
+      alt_text_seed: Vertical flow from a ServiceAccount object through the TokenRequest
+        API to a Pod's projected token volume, then to gate one authentication which
+        succeeds, then to gate two authorization which is drawn empty with a note
+        reading nothing here yet
+    rendering_hints:
+      preferred_orientation: portrait
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Kubernetes object and API names appear as text only; the flow, framing
+        and the empty-gate device are the book's own.
+- anchor_id: ch12-fig02-rbac-four-way-matrix
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch12-fig02-rbac-four-way-matrix.html
+  output_paths:
+    svg: figures/ch12-fig02-rbac-four-way-matrix.svg
+    png: figures/ch12-fig02-rbac-four-way-matrix.png
+    alt: figures/ch12-fig02-rbac-four-way-matrix.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: flowchart
+  figure_spec:
+    anchor_id: ch12-fig02-rbac-four-way-matrix
+    diagram_type: flowchart
+    source_ascii: "   THE BOUNDARY YOU ALREADY HAVE  (Ch 4 §3)\n   ─────────────────────────────────────────\n\
+      \n   NAMESPACED resource                       CLUSTER-SCOPED resource\n   lives\
+      \ inside a namespace                  lives in NO namespace\n   Pod, Service,\
+      \ Secret,                     Node, PersistentVolume,\n   Deployment, ConfigMap\
+      \                     StorageClass, Namespace\n        │                   \
+      \                         │\n        │                                     \
+      \       │\n        │  a Role's scope has room for it            │  a Role has\
+      \ nowhere\n        │                                            │  to put it\n\
+      \        ▼                                            ▼\n   ┌─────────────────────┐\
+      \                  ┌─────────────────────┐\n   │ Role                │     \
+      \             │ ClusterRole         │\n   │  or ClusterRole     │  ◀── either\
+      \ ──   │  FORCED             │\n   └─────────────────────┘                 \
+      \ └─────────────────────┘\n\n\n   THE SECOND, INDEPENDENT QUESTION\n   ─────────────────────────────────────────\n\
+      \n        where should the grant apply?\n                  │\n        ┌─────────┴──────────┐\n\
+      \        ▼                    ▼\n   one namespace        every namespace\n \
+      \       │                    │\n        ▼                    ▼\n   ┌──────────────┐\
+      \    ┌─────────────────────┐\n   │ RoleBinding  │    │ ClusterRoleBinding  │\n\
+      \   └──────────────┘    └─────────────────────┘\n\n\n   THE FOUR COMBINATIONS\
+      \ FALL OUT\n   ─────────────────────────────────────────\n\n   Role      + RoleBinding\
+      \         → those rules, in that namespace\n   ClusterRole + RoleBinding   \
+      \    → those rules, in that ONE namespace\n   ClusterRole + ClusterRoleBinding→\
+      \ those rules, everywhere\n   Role      + ClusterRoleBinding  → ✗ does not exist.\
+      \ A Role's rules\n                                       are namespace-local;\
+      \ there is\n                                       nothing cluster-wide to grant.\n\
+      \n   ┌───────────────────────────────────────────────────────────────┐\n   │\
+      \  ▶  THE BINDING DETERMINES THE SCOPE OF THE GRANT.            │\n   └───────────────────────────────────────────────────────────────┘\n"
+    vendor_terms: []
+    complexity_hint:
+      node_count: 14
+      edge_count: 11
+      label_count: 30
+    pedagogy:
+      part_18_criteria_met:
+      - spatial_structure
+      - distinguishing_alternatives
+      - fixed_point
+      learning_outcome: Derive which of Role, ClusterRole, RoleBinding and ClusterRoleBinding
+        a situation calls for from the namespaced/cluster-scoped boundary, rather
+        than from a memorised matrix
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: the closing banner reading THE BINDING DETERMINES
+        THE SCOPE OF THE GRANT
+    accessibility:
+      alt_text_seed: 'Three-panel derivation: namespaced resources permit either a
+        Role or a ClusterRole while cluster-scoped resources force a ClusterRole;
+        a separate question of where the grant applies selects a RoleBinding or a
+        ClusterRoleBinding; four combinations follow, of which Role plus ClusterRoleBinding
+        does not exist; a banner states that the binding determines the scope of the
+        grant'
+    rendering_hints:
+      preferred_orientation: portrait
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Kubernetes RBAC object names appear as text only; the two-question derivation
+        and the banner are the book's own framing, not reproduced from Kubernetes
+        documentation.
+- anchor_id: ch12-fig04-pod-security-standards-levels
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch12-fig04-pod-security-standards-levels.html
+  output_paths:
+    svg: figures/ch12-fig04-pod-security-standards-levels.svg
+    png: figures/ch12-fig04-pod-security-standards-levels.png
+    alt: figures/ch12-fig04-pod-security-standards-levels.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: other
+  figure_spec:
+    anchor_id: ch12-fig04-pod-security-standards-levels
+    diagram_type: other
+    source_ascii: "   THE LEVELS — what gets checked\n   ══════════════════════════════════════════════════════════════════\n\
+      \n   securityContext field          privileged   baseline    restricted\n  \
+      \ ──────────────────────────────────────────────────────────────────\n   privileged:\
+      \ true               allowed      ✗ forbidden ✗ forbidden\n   hostNetwork/hostPID/hostIPC\
+      \    allowed      ✗ forbidden ✗ forbidden\n   hostPath volumes             \
+      \  allowed      ✗ forbidden ✗ forbidden\n   hostPort                       allowed\
+      \      restricted  restricted\n   capabilities.add               allowed   \
+      \   known list  only\n                                                     \
+      \      NET_BIND_SERVICE\n   capabilities.drop              —            —  \
+      \         must include ALL\n   seccompProfile.type            allowed      not\
+      \          RuntimeDefault\n                                               Unconfined\
+      \   or Localhost\n   appArmorProfile.type           allowed      Runtime   \
+      \   Runtime\n                                               Default or   Default\
+      \ or\n                                               Localhost    Localhost\n\
+      \   allowPrivilegeEscalation       allowed      —           must be false\n\
+      \   runAsNonRoot                   —            —           must be true\n \
+      \  runAsUser                      any          any         must be non-zero\n\
+      \                                                           or unset\n   volume\
+      \ types                   any          any         safe list only\n        \
+      \                                                   (configMap, csi,\n     \
+      \                                                      emptyDir, secret,\n \
+      \                                                          projected, pvc, …)\n\
+      \n   cumulative:  privileged  ⊃  baseline  ⊃  restricted\n                (restricted\
+      \ includes every baseline requirement,\n                 plus the rows below\
+      \ the line)\n\n\n   THE MODES — what happens when a check fails\n   ══════════════════════════════════════════════════════════════════\n\
+      \n           enforce  ──▶  the Pod is REJECTED\n           audit    ──▶  recorded\
+      \ in the audit log; the Pod runs\n           warn     ──▶  user-facing warning;\
+      \ the Pod runs\n\n\n   APPLIED PER NAMESPACE, BY LABEL\n   ══════════════════════════════════════════════════════════════════\n\
+      \n           pod-security.kubernetes.io/<MODE>: <LEVEL>\n\n   e.g.    pod-security.kubernetes.io/enforce:\
+      \ baseline\n           pod-security.kubernetes.io/warn:    restricted\n    \
+      \       pod-security.kubernetes.io/audit:   restricted\n\n           ▲ all three,\
+      \ on one namespace, at two different levels.\n             This is not a contradiction.\
+      \ It is a migration.\n"
+    vendor_terms: []
+    complexity_hint:
+      node_count: 17
+      edge_count: 4
+      label_count: 60
+    pedagogy:
+      part_18_criteria_met:
+      - distinguishing_alternatives
+      - spatial_structure
+      - fixed_point
+      learning_outcome: Read a namespace's Pod Security labels together with a Pod's
+        securityContext and predict whether the Pod is admitted, warned about, or
+        refused
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: the two panel subtitles 'what gets checked' and
+        'what happens when a check fails', accented as the level axis against the
+        mode axis
+    accessibility:
+      alt_text_seed: A matrix of fourteen securityContext fields checked against the
+        privileged, baseline and restricted Pod Security levels, noted as cumulative;
+        a list of the three modes enforce, audit and warn with what each does when
+        a check fails; and the per-namespace label form with a worked example carrying
+        all three modes at two different levels
+    rendering_hints:
+      preferred_orientation: portrait
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Pod Security Standards field, level and mode names are Kubernetes API
+        terminology quoted as text; the matrix layout, the mode panel and the migration
+        note are the book's own composition.
+- anchor_id: ch12-fig05-supply-chain-checkpoints
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch12-fig05-supply-chain-checkpoints.html
+  output_paths:
+    svg: figures/ch12-fig05-supply-chain-checkpoints.svg
+    png: figures/ch12-fig05-supply-chain-checkpoints.png
+    alt: figures/ch12-fig05-supply-chain-checkpoints.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: data_flow
+  figure_spec:
+    anchor_id: ch12-fig05-supply-chain-checkpoints
+    diagram_type: data_flow
+    source_ascii: "   OUTSIDE THE CLUSTER                              │   INSIDE\n\
+      \   ═════════════════════════════════════════════════╪═══════════\n        \
+      \                                            │\n   BUILD ──▶ SCAN ──▶ SIGN ──▶\
+      \ RECORD ──▶ RESTRICT ─┼─▶ VERIFY ──▶ RUN\n     │         │        │       \
+      \  │          │      │      │\n     │         │        │         │         \
+      \ │      │      │\n     ▼         ▼        ▼         ▼          ▼      │   \
+      \   ▼\n   image     known    binds     append-    private  │   admission\n \
+      \  +digest   CVEs     to the    only log   registry │   controller\n   +SBOM\
+      \              DIGEST                        │\n                        ▲  \
+      \                         │   ▲\n     ┌──────────────────┴─────────────┐   \
+      \          │   │\n     │  the artifact's identity —     │             │   │\n\
+      \     │  the same digest — is carried  │             │   │\n     │  the whole\
+      \ length of the chain │             │   │\n     └────────────────────────────────┘\
+      \             │   │\n                                                    │ \
+      \  │\n   Trivy, Harbor    Cosign     Rekor    Harbor,     │  Kyverno,\n   scanners\
+      \         Notation            imagePull-  │  Gatekeeper,\n                 \
+      \   Fulcio              Secrets     │  Policy\n                            \
+      \                        │  Controller\n                                   \
+      \                 │\n   ◀── everything left of the line happened somewhere else,\n\
+      \       under somebody else's control, possibly months ago.\n       VERIFY is\
+      \ the first checkpoint the cluster performs itself.\n"
+    vendor_terms:
+    - trivy
+    - harbor
+    - cosign
+    - notation
+    - fulcio
+    - rekor
+    - kyverno
+    - gatekeeper
+    - sigstore-policy-controller
+    complexity_hint:
+      node_count: 21
+      edge_count: 13
+      label_count: 32
+    pedagogy:
+      part_18_criteria_met:
+      - temporal_structure
+      - spatial_structure
+      - fixed_point
+      learning_outcome: Trace an image from build to running container, name the checkpoint
+        at each handoff, and identify verification at admission as the first checkpoint
+        the cluster performs itself
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: the vertical cluster boundary falling between RESTRICT
+        and VERIFY, together with the VERIFY step immediately to its right
+    accessibility:
+      alt_text_seed: A left-to-right supply chain pipeline of build, scan, sign, record,
+        restrict, verify and run, crossed by a vertical boundary between restrict
+        and verify that separates work done outside the cluster from work done inside
+        it; each step is annotated with what it produces and with the tools that perform
+        it, and a callout notes that the artifact's digest is carried the whole length
+        of the chain
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      - openssf
+      - aqua-security
+      clearance: own_interpretation
+      notes: Project names (Trivy, Harbor, Cosign, Notation, Fulcio, Rekor, Kyverno,
+        Gatekeeper, Policy Controller) appear as plain text set in the book's own
+        faces; no logo or wordmark is reproduced. Substituting any vendor logo or
+        icon-pack mark changes this clearance and must be re-reviewed before render.
+- anchor_id: ch12-zenith-additive-never-deny
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch12-zenith-additive-never-deny.html
+  output_paths:
+    svg: figures/ch12-zenith-additive-never-deny.svg
+    png: figures/ch12-zenith-additive-never-deny.png
+    alt: figures/ch12-zenith-additive-never-deny.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: flowchart
+  figure_spec:
+    anchor_id: ch12-zenith-additive-never-deny
+    diagram_type: flowchart
+    source_ascii: "   ┌─────────────────────────────┐   ┌─────────────────────────────┐\n\
+      \   │  RBAC                       │   │  NETWORKPOLICY              │\n   │\
+      \  the API layer              │   │  the network layer          │\n   ├─────────────────────────────┤\
+      \   ├─────────────────────────────┤\n   │                             │   │\
+      \                             │\n   │       identity              │   │    \
+      \      Pod                │\n   │          │                  │   │        \
+      \   │                 │\n   │          ▼                  │   │           ▼\
+      \                 │\n   │      API request            │   │      connection\
+      \             │\n   │          │                  │   │           │        \
+      \         │\n   │          ▼                  │   │           ▼            \
+      \     │\n   │   ┌─────────────┐           │   │   ┌─────────────┐          \
+      \ │\n   │   │ grant?      │           │   │   │ allow rule? │           │\n\
+      \   │   └──────┬──────┘           │   │   └──────┬──────┘           │\n   │\
+      \          │                  │   │          │                  │\n   │    \
+      \ ┌────┴────┐             │   │     ┌────┴────┐             │\n   │     ▼  \
+      \       ▼             │   │     ▼         ▼             │\n   │   allow    (nothing)\
+      \        │   │   allow    (nothing)        │\n   │              │          \
+      \    │   │              │              │\n   │              ▼              │\
+      \   │              ▼              │\n   │          denied by          │   │\
+      \          denied by          │\n   │          ABSENCE            │   │    \
+      \      ABSENCE            │\n   │                             │   │        \
+      \                     │\n   │   ┌──────────────────────┐  │   │   ┌──────────────────────┐\
+      \  │\n   │   │  no deny rule exists │  │   │   │  no deny rule exists │  │\n\
+      \   │   └──────────────────────┘  │   │   └──────────────────────┘  │\n   └─────────────────────────────┘\
+      \   └─────────────────────────────┘\n\n              different layer.  different\
+      \ object.  different decade.\n                            the same shape.\n"
+    vendor_terms: []
+    complexity_hint:
+      node_count: 16
+      edge_count: 10
+      label_count: 20
+    pedagogy:
+      part_18_criteria_met:
+      - zenith
+      - distinguishing_alternatives
+      - spatial_structure
+      learning_outcome: Recognise that RBAC and NetworkPolicy converged independently
+        on additive-only policy with no deny rule, and predict that same shape in
+        an unfamiliar access-control system
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: the word ABSENCE in both panels, accented identically
+        so the two outcomes read as one shape
+    accessibility:
+      alt_text_seed: Two structurally identical panels side by side, one labelled
+        RBAC at the API layer and one labelled NetworkPolicy at the network layer;
+        in each, a request reaches a check that either allows it or finds nothing,
+        and finding nothing means denied by absence, with a note in both panels that
+        no deny rule exists; the caption reads different layer, different object,
+        different decade, the same shape
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: RBAC and NetworkPolicy named as text only; the twin-panel symmetry device
+        and the caption are the book's own argument, not sourced from any Kubernetes
+        documentation diagram.

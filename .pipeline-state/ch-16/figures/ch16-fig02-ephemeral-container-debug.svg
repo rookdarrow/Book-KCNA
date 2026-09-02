@@ -1,0 +1,101 @@
+<svg viewBox="0 0 600 820" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch16-fig02-ephemeral-container-debug-title ch16-fig02-ephemeral-container-debug-desc" width="640" height="875">
+      <title id="ch16-fig02-ephemeral-container-debug-title">kubectl debug: three shapes, three questions</title>
+      <desc id="ch16-fig02-ephemeral-container-debug-desc">Three panels comparing kubectl debug's shapes: an ephemeral container added inside an unchanged Pod alongside its app container, unable to be removed; a --copy-to Pod created separately while the original keeps running untouched; and a node-scoped debug Pod with the host filesystem mounted, shown as platform scope.</desc>
+
+      <rect width="600" height="820" fill="#F5EFE4"></rect>
+
+      <!-- ===== Panel A — ephemeral container ===== -->
+      <text x="24" y="40" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.08em" fill="#0B1E3B">(A) EPHEMERAL CONTAINER</text>
+      <text x="24" y="60" font-family="'Fira Sans', sans-serif" font-size="14" fill="#1F4A4E">into the running Pod</text>
+
+      <rect x="24" y="76" width="552" height="88" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <rect x="32" y="84" width="48" height="20" rx="2" fill="none" stroke="rgba(11,30,59,0.4)" stroke-width="0.8"></rect>
+      <text x="56" y="98" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.06em" text-anchor="middle" fill="rgba(11,30,59,0.8)">POD</text>
+      <text x="92" y="98" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Pod (unchanged)</text>
+
+      <rect x="40" y="124" width="248" height="32" rx="4" fill="rgba(11,30,59,0.05)" stroke="#1F4A4E" stroke-width="1"></rect>
+      <text x="52" y="145" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">app</text>
+      <text x="280" y="145" text-anchor="end" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E">distroless</text>
+
+      <rect x="304" y="124" width="248" height="32" rx="4" fill="rgba(11,30,59,0.05)" stroke="#1F4A4E" stroke-width="1"></rect>
+      <text x="316" y="145" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">debug</text>
+      <text x="544" y="145" text-anchor="end" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E">busybox</text>
+
+      <text x="552" y="176" text-anchor="end" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.04em" fill="#8A8D90">ADDED — CANNOT BE REMOVED</text>
+
+      <text x="24" y="200" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="16" fill="#0B1E3B">ASKS: “what does the running process see right now?”</text>
+
+      <line x1="24" y1="216" x2="576" y2="216" stroke="rgba(11,30,59,0.12)" stroke-width="1"></line>
+
+      <!-- ===== Panel B — --copy-to ===== -->
+      <text x="24" y="248" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.08em" fill="#0B1E3B">(B) --COPY-TO</text>
+      <text x="24" y="268" font-family="'Fira Sans', sans-serif" font-size="14" fill="#1F4A4E">a new Pod, original untouched</text>
+
+      <rect x="24" y="284" width="244" height="104" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <rect x="32" y="292" width="48" height="20" rx="2" fill="none" stroke="rgba(11,30,59,0.4)" stroke-width="0.8"></rect>
+      <text x="56" y="306" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.06em" text-anchor="middle" fill="rgba(11,30,59,0.8)">POD</text>
+      <text x="92" y="306" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Pod (untouched)</text>
+      <rect x="40" y="328" width="212" height="48" rx="4" fill="rgba(11,30,59,0.05)" stroke="#1F4A4E" stroke-width="1"></rect>
+      <text x="52" y="349" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">app</text>
+      <text x="52" y="367" font-family="'Fira Sans', sans-serif" font-size="14" fill="#1F4A4E">crashing on startup</text>
+
+      <rect x="332" y="284" width="244" height="104" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <rect x="340" y="292" width="48" height="20" rx="2" fill="none" stroke="rgba(11,30,59,0.4)" stroke-width="0.8"></rect>
+      <text x="364" y="306" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.06em" text-anchor="middle" fill="rgba(11,30,59,0.8)">POD</text>
+      <text x="396" y="306" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Pod-copy</text>
+      <rect x="348" y="328" width="212" height="48" rx="4" fill="rgba(11,30,59,0.05)" stroke="#1F4A4E" stroke-width="1"></rect>
+      <text x="360" y="349" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">app</text>
+      <text x="360" y="367" font-family="'Fira Sans', sans-serif" font-size="14" fill="#1F4A4E">entrypoint replaced</text>
+
+      <!-- Focal: the gap between the two Pods — deliberately no connector -->
+      <line x1="300" y1="300" x2="300" y2="372" stroke="#B58B3E" stroke-width="1.2" stroke-dasharray="4,4"></line>
+      <line x1="292" y1="300" x2="308" y2="300" stroke="#B58B3E" stroke-width="1.2"></line>
+      <line x1="292" y1="372" x2="308" y2="372" stroke="#B58B3E" stroke-width="1.2"></line>
+      <circle cx="248" cy="408" r="4" fill="#B58B3E"></circle>
+      <text x="260" y="412" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.06em" fill="#B58B3E">ORIGINAL POD STAYS UNTOUCHED</text>
+
+      <text x="24" y="440" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="16" fill="#0B1E3B">ASKS: “what would happen if I changed something?”</text>
+
+      <line x1="24" y1="456" x2="576" y2="456" stroke="rgba(11,30,59,0.12)" stroke-width="1"></line>
+
+      <!-- ===== Panel C — node/ ===== -->
+      <text x="24" y="480" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.08em" fill="#0B1E3B">(C) NODE/</text>
+      <text x="24" y="500" font-family="'Fira Sans', sans-serif" font-size="14" fill="#1F4A4E">the host, not the workload</text>
+
+      <rect x="24" y="516" width="552" height="140" rx="8" fill="rgba(11,30,59,0.02)" stroke="rgba(11,30,59,0.20)" stroke-width="1" stroke-dasharray="4,4"></rect>
+      <rect x="32" y="508" width="64" height="16" fill="#F5EFE4"></rect>
+      <text x="64" y="520" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.08em" fill="rgba(11,30,59,0.7)">NODE</text>
+
+      <rect x="48" y="540" width="336" height="88" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <rect x="56" y="548" width="48" height="20" rx="2" fill="none" stroke="rgba(11,30,59,0.4)" stroke-width="0.8"></rect>
+      <text x="80" y="562" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.06em" text-anchor="middle" fill="rgba(11,30,59,0.8)">POD</text>
+      <text x="116" y="562" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">debug Pod</text>
+      <rect x="64" y="584" width="304" height="32" rx="4" fill="rgba(11,30,59,0.05)" stroke="#1F4A4E" stroke-width="1"></rect>
+      <text x="76" y="605" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">host filesystem</text>
+      <text x="356" y="605" text-anchor="end" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E">mounted</text>
+
+      <rect x="392" y="540" width="152" height="24" rx="2" fill="none" stroke="rgba(138,141,144,0.6)" stroke-width="0.8"></rect>
+      <text x="468" y="556" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.04em" fill="#8A8D90">PLATFORM SCOPE</text>
+
+      <text x="24" y="684" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="16" fill="#0B1E3B">ASKS: “is the machine itself the problem?”</text>
+      <text x="24" y="704" font-family="'Fira Sans', sans-serif" font-size="14" fill="#8A8D90">(see Ch 13 §5)</text>
+
+      <line x1="24" y1="724" x2="576" y2="724" stroke="rgba(11,30,59,0.12)" stroke-width="1"></line>
+
+      <!-- ===== Legend ===== -->
+      <text x="24" y="740" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.14em" fill="#1F4A4E">LEGEND</text>
+
+      <rect x="24" y="752" width="16" height="16" rx="2" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="48" y="764" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E">POD — CONTAINER GROUP</text>
+
+      <rect x="304" y="752" width="16" height="16" rx="2" fill="rgba(11,30,59,0.02)" stroke="rgba(11,30,59,0.20)" stroke-width="1" stroke-dasharray="3,3"></rect>
+      <text x="328" y="764" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E">NODE — HOST BOUNDARY</text>
+
+      <line x1="24" y1="792" x2="40" y2="792" stroke="#B58B3E" stroke-width="1.2" stroke-dasharray="2,2"></line>
+      <line x1="24" y1="788" x2="24" y2="796" stroke="#B58B3E" stroke-width="1.2"></line>
+      <line x1="40" y1="788" x2="40" y2="796" stroke="#B58B3E" stroke-width="1.2"></line>
+      <text x="48" y="796" font-family="'Fira Mono', monospace" font-size="14" fill="#B58B3E">NO CONNECTION — FOCAL</text>
+
+      <rect x="304" y="784" width="16" height="16" rx="2" fill="none" stroke="rgba(138,141,144,0.6)" stroke-width="0.8"></rect>
+      <text x="328" y="796" font-family="'Fira Mono', monospace" font-size="14" fill="#8A8D90">PLATFORM-SCOPE TAG</text>
+    </svg>

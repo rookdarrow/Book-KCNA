@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ch. 18 · The Four OpenTelemetry Signals</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;700&family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Fira+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --color-paper:  #F5EFE4;
+      --color-ink:    #0B1E3B;
+      --color-muted:  #1F4A4E;
+      --color-soft:   #8A8D90;
+      --color-accent: #B58B3E;
+      --font-sans: 'Fira Sans', sans-serif;
+      --font-serif: 'Roboto Slab', serif;
+      --font-mono: 'Fira Mono', monospace;
+    }
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-paper);
+      color: var(--color-ink);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 2rem;
+    }
+    .frame { max-width: 640px; width: 100%; }
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      margin-bottom: 0.5rem;
+    }
+    h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(1.4rem, 2vw + 0.8rem, 1.75rem);
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      line-height: 1.15;
+      color: var(--color-ink);
+      margin-bottom: 1.5rem;
+    }
+    svg { width: 100%; max-width: 560px; display: block; margin: 0 auto; }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <p class="eyebrow">Component Diagram · Ch. 18</p>
+    <h1>The Four OpenTelemetry Signals</h1>
+
+    <svg viewBox="0 0 560 720" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch18-fig02-otel-four-signals-title ch18-fig02-otel-four-signals-desc">
+      <title id="ch18-fig02-otel-four-signals-title">OpenTelemetry's four signals and shared baggage context</title>
+      <desc id="ch18-fig02-otel-four-signals-desc">A wide baggage band spans the top, connected by dashed lines to three boxes below it labelled traces, metrics, and logs, which answer where, whether, and what. The three converge into an OpenTelemetry Collector that receives, processes, and exports to one or more backends.</desc>
+      <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"/>
+        </marker>
+        <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#B58B3E"/>
+        </marker>
+      </defs>
+
+      <rect width="100%" height="100%" fill="#F5EFE4"/>
+
+      <!-- Eyebrow (in-canvas heading, matches source ASCII's centered title) -->
+      <text x="280" y="48" fill="#8A8D90" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.12em">OPENTELEMETRY &#183; FOUR SIGNALS</text>
+
+      <!-- ===== Connectors (drawn before boxes) ===== -->
+
+      <!-- Baggage -> Traces / Metrics / Logs: dashed brass, the focal relationship -->
+      <line x1="112" y1="220" x2="112" y2="268" stroke="#B58B3E" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#arrow-accent)"/>
+      <line x1="280" y1="220" x2="280" y2="268" stroke="#B58B3E" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#arrow-accent)"/>
+      <line x1="448" y1="220" x2="448" y2="268" stroke="#B58B3E" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#arrow-accent)"/>
+
+      <!-- Traces / Metrics / Logs -> Collector: solid teal, regular signal flow -->
+      <path d="M 112,388 V 404 Q 112,412 120,412 H 212 Q 220,412 220,420 V 436" fill="none" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <line x1="280" y1="388" x2="280" y2="436" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <path d="M 448,388 V 404 Q 448,412 440,412 H 348 Q 340,412 340,420 V 436" fill="none" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+      <!-- Collector -> Backends -->
+      <line x1="280" y1="532" x2="280" y2="572" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+      <!-- ===== Nodes ===== -->
+
+      <!-- BAGGAGE band (focal) -->
+      <rect x="40" y="88" width="480" height="132" rx="8" fill="#F5EFE4"/>
+      <rect x="40" y="88" width="480" height="132" rx="8" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"/>
+
+      <!-- Traces -->
+      <rect x="40" y="268" width="144" height="120" rx="6" fill="#F5EFE4"/>
+      <rect x="40" y="268" width="144" height="120" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+
+      <!-- Metrics -->
+      <rect x="208" y="268" width="144" height="120" rx="6" fill="#F5EFE4"/>
+      <rect x="208" y="268" width="144" height="120" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+
+      <!-- Logs -->
+      <rect x="376" y="268" width="144" height="120" rx="6" fill="#F5EFE4"/>
+      <rect x="376" y="268" width="144" height="120" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+
+      <!-- Collector -->
+      <rect x="160" y="436" width="240" height="96" rx="6" fill="#F5EFE4"/>
+      <rect x="160" y="436" width="240" height="96" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+
+      <!-- ===== Node text (drawn after all boxes) ===== -->
+
+      <text x="280" y="120" fill="#0B1E3B" font-size="16" font-weight="700" font-family="'Fira Sans', sans-serif" text-anchor="middle" letter-spacing="0.02em">BAGGAGE<tspan x="280" dy="24" font-size="14" font-weight="400" fill="#1F4A4E">Context carried BETWEEN traces, metrics &amp; logs</tspan><tspan x="280" dy="20" font-size="14" font-weight="400" fill="#1F4A4E">A separate key-value store, not a measurement</tspan><tspan x="280" dy="20" font-size="14" font-weight="400" fill="#1F4A4E">Carries user, account &amp; origin IDs</tspan></text>
+
+      <text x="112" y="296" fill="#0B1E3B" font-size="16" font-weight="700" font-family="'Fira Sans', sans-serif" text-anchor="middle">TRACES<tspan x="112" dy="20" font-size="14" font-weight="400" fill="#1F4A4E">path of a</tspan><tspan x="112" dy="20" font-size="14" font-weight="400" fill="#1F4A4E">request</tspan><tspan x="112" dy="20" font-size="14" font-weight="600" fill="#0B1E3B" font-family="'Fira Mono', monospace" letter-spacing="0.08em">WHERE</tspan></text>
+
+      <text x="280" y="296" fill="#0B1E3B" font-size="16" font-weight="700" font-family="'Fira Sans', sans-serif" text-anchor="middle">METRICS<tspan x="280" dy="20" font-size="14" font-weight="400" fill="#1F4A4E">a measurement</tspan><tspan x="280" dy="20" font-size="14" font-weight="400" fill="#1F4A4E">at runtime</tspan><tspan x="280" dy="20" font-size="14" font-weight="600" fill="#0B1E3B" font-family="'Fira Mono', monospace" letter-spacing="0.08em">WHETHER</tspan></text>
+
+      <text x="448" y="296" fill="#0B1E3B" font-size="16" font-weight="700" font-family="'Fira Sans', sans-serif" text-anchor="middle">LOGS<tspan x="448" dy="20" font-size="14" font-weight="400" fill="#1F4A4E">a recording</tspan><tspan x="448" dy="20" font-size="14" font-weight="400" fill="#1F4A4E">of an event</tspan><tspan x="448" dy="20" font-size="14" font-weight="600" fill="#0B1E3B" font-family="'Fira Mono', monospace" letter-spacing="0.08em">WHAT</tspan></text>
+
+      <text x="280" y="464" fill="#0B1E3B" font-size="16" font-weight="700" font-family="'Fira Sans', sans-serif" text-anchor="middle">OTel COLLECTOR<tspan x="280" dy="24" font-size="14" font-weight="400" fill="#1F4A4E" font-family="'Fira Mono', monospace">receive &#183; process</tspan><tspan x="280" dy="20" font-size="14" font-weight="400" fill="#1F4A4E" font-family="'Fira Mono', monospace">&#183; export</tspan></text>
+
+      <!-- Backends (plain label, no box — matches source ASCII's unboxed terminus) -->
+      <text x="280" y="592" fill="#8A8D90" font-size="14" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">one or more backends</text>
+    </svg>
+  </div>
+</body>
+</html>

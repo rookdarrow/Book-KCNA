@@ -1,0 +1,162 @@
+chapter: 10
+book: kcna
+generated: '2026-09-01T17:14:23+00:00'
+figures:
+- anchor_id: ch10-fig02-ingress-fanout-and-name-based-hosts
+  source_hash: a438413d74e89235619baa93c05a9c005bdb281254baa72c38d41a39326d8a32
+  output_hash:
+    svg: 87cb27e6610c0a51ac5f72397273a3f3e1fa80956130dce3314a9ac5904d09b3
+    png: 966c41cc73ba23d9b1ff0141f66a49fcbbc51a8d816c40b2558372a34ccfdbcd
+  validations:
+    label_count:
+      result: fail
+      value: 20
+      max: 7
+      reason: 20 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1280
+      - 1386
+    aspect_ratio:
+      result: pass
+      value: 1.08
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 489
+  alt_text: 'Two stacked panels comparing Ingress routing. In the upper panel, two
+    HTTP requests share the host shop.example.com but differ by path; a single IP
+    address 203.0.113.10 feeds a box labelled ''reads: path'' that forks to a catalog
+    Service and a checkout Service. In the lower panel, two requests share the path
+    slash but differ by host; the same IP address feeds a box labelled ''reads: host''
+    that forks to a shop Service and a blog Service. The matched fragment of each
+    request is underlined.'
+- anchor_id: ch10-fig03-gateway-api-role-split
+  source_hash: 5ef44510d6958ead6e5e1277cac8a27b4816a5de1ddf7d9c58e3724b4d9dccc9
+  output_hash:
+    svg: 23f382d9eb3ab2e71673e5fea1de7bab4ddcfd1f5fcdac1518a524f8b3312af3
+    png: 8a1c803240cc7a56e77328cdad3fbc56fb0d6d3b583e4e6050635dcf8878b06f
+  validations:
+    label_count:
+      result: fail
+      value: 12
+      max: 7
+      reason: 12 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1200
+      - 1600
+    aspect_ratio:
+      result: pass
+      value: 1.33
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 429
+  alt_text: Three stacked ownership bands. The top band, infrastructure provider,
+    contains a GatewayClass box. The middle band, cluster operator, contains a Gateway
+    box joined upward to GatewayClass by an edge labelled 'exactly 1'. The bottom
+    band, application developer, contains three HTTPRoute boxes joined upward to the
+    Gateway by edges labelled 'many, parentRefs'. A caption notes the bands are ownership
+    boundaries, not runtime layers.
+- anchor_id: ch10-fig04-networkpolicy-additive-selectors
+  source_hash: 9875d916644a8c58fa7a69c79763b9a4471ad55af74993ec1706366b7db6a509
+  output_hash:
+    svg: 09a896e14211b6668b7bee4e96f5d6c93a5252aa1fa6f376a93fe0cb23e56dc9
+    png: c37aeff64e432d485d53dd5dd93735d071b7b9fb1cc33b887529105391363340
+  validations:
+    label_count:
+      result: fail
+      value: 23
+      max: 7
+      reason: 23 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 960
+      - 1280
+    aspect_ratio:
+      result: pass
+      value: 1.33
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 486
+  alt_text: Two NetworkPolicy stanzas, A and B, both selecting Pods labelled role
+    equals db, one permitting ingress from app equals web and the other from app equals
+    batch. Heavy edges run from both stanzas to a single Pod box, and a single arrow
+    runs from that Pod to a rounded blob labelled permitted set containing app equals
+    web plus app equals batch, glossed as one set with two grants. A fourth box labelled
+    app equals other sits unconnected, annotated as not denied but simply never granted.
+- anchor_id: ch10-zenith-nothing-without-a-controller
+  source_hash: 41acb18c238f0420a04f7987f4e3d0f6f92c308d3a97113c08c90ccbfe0dda50
+  output_hash:
+    svg: 83e4e8e0afd7d23dee8a45a7452c5b09b55ea0381b3a05841790a737b4bc476d
+    png: 32ebfea38a016bd512b50cdb87de01466db9ca832bade1454f143e8eab7643a2
+  validations:
+    label_count:
+      result: pass
+      value: 6
+      max: 7
+      reason: ''
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1184
+      - 1506
+    aspect_ratio:
+      result: pass
+      value: 1.27
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 550
+  alt_text: 'Four side-by-side panels, each with three rows. The top row names a valid
+    object: a LoadBalancer Service, a Service with an empty selector, an Ingress with
+    host and path rules, and a NetworkPolicy with a pod selector. The middle row of
+    each panel shows a dashed, ghosted box naming an absent component — provider,
+    matching Pods, Ingress controller, network plugin — each marked none. The bottom
+    row reads nothing in all four panels; the fourth panel adds the words and nothing
+    tells you. A caption reads: an object without its component does nothing.'

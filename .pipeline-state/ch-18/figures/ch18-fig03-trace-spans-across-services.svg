@@ -1,0 +1,91 @@
+<svg viewBox="0 0 720 800" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch18-fig03-trace-spans-across-services-title ch18-fig03-trace-spans-across-services-desc" width="680" height="756">
+        <title id="ch18-fig03-trace-spans-across-services-title">Trace waterfall: a checkout request across services</title>
+        <desc id="ch18-fig03-trace-spans-across-services-desc">A four-second trace waterfall for a checkout request: the root api-gateway span contains auth-svc with its user-store call, and catalog-svc with a cache lookup and a pricing-service database call that alone accounts for almost all of the elapsed time.</desc>
+
+        <rect width="100%" height="100%" fill="#F5EFE4"></rect>
+
+        <!-- Trace ID banner -->
+        <text x="32" y="40" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.12em" fill="#1F4A4E">TRACE ID</text>
+        <text x="132" y="40" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">4bf92f…</text>
+        <text x="220" y="40" font-family="'Fira Mono', monospace" font-size="14" fill="#8A8D90">— crosses every span below</text>
+        <line x1="32" y1="56" x2="688" y2="56" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+
+        <!-- Time axis -->
+        <text x="200" y="84" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E" text-anchor="middle">0ms</text>
+        <text x="320" y="84" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E" text-anchor="middle">1000ms</text>
+        <text x="440" y="84" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E" text-anchor="middle">2000ms</text>
+        <text x="560" y="84" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E" text-anchor="middle">3000ms</text>
+        <text x="680" y="84" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E" text-anchor="middle">4000ms</text>
+        <line x1="200" y1="88" x2="200" y2="96" stroke="#8A8D90" stroke-width="0.8"></line>
+        <line x1="320" y1="88" x2="320" y2="96" stroke="#8A8D90" stroke-width="0.8"></line>
+        <line x1="440" y1="88" x2="440" y2="96" stroke="#8A8D90" stroke-width="0.8"></line>
+        <line x1="560" y1="88" x2="560" y2="96" stroke="#8A8D90" stroke-width="0.8"></line>
+        <line x1="680" y1="88" x2="680" y2="96" stroke="#8A8D90" stroke-width="0.8"></line>
+        <line x1="32" y1="108" x2="688" y2="108" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+
+        <!-- Nesting tree guides -->
+        <path d="M44,208 L44,396" stroke="#8A8D90" stroke-width="1" fill="none"></path>
+        <path d="M44,236 L56,236" stroke="#8A8D90" stroke-width="1" fill="none"></path>
+        <path d="M44,396 L56,396" stroke="#8A8D90" stroke-width="1" fill="none"></path>
+        <path d="M68,288 L68,308" stroke="#8A8D90" stroke-width="1" fill="none"></path>
+        <path d="M68,308 L80,308" stroke="#8A8D90" stroke-width="1" fill="none"></path>
+        <path d="M68,448 L68,540" stroke="#8A8D90" stroke-width="1" fill="none"></path>
+        <path d="M68,468 L80,468" stroke="#8A8D90" stroke-width="1" fill="none"></path>
+        <path d="M68,540 L80,540" stroke="#8A8D90" stroke-width="1" fill="none"></path>
+
+        <!-- ROOT: api-gateway -->
+        <text x="32" y="156" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">api-gateway</text>
+        <text x="148" y="156" font-family="'Fira Mono', monospace" font-size="14" fill="#8A8D90">POST /checkout</text>
+        <text x="280" y="156" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E">4000ms</text>
+        <rect x="200" y="176" width="480" height="24" rx="4" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1.2"></rect>
+
+        <!-- auth-svc -->
+        <text x="56" y="236" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">auth-svc</text>
+        <text x="144" y="236" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E">120ms</text>
+        <rect x="200" y="256" width="16" height="24" rx="4" fill="rgba(31,74,78,0.08)" stroke="#1F4A4E" stroke-width="1"></rect>
+
+        <!-- user-store (nested in auth-svc) -->
+        <text x="80" y="308" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">user-store</text>
+        <text x="188" y="308" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E">85ms</text>
+        <rect x="204" y="328" width="12" height="24" rx="4" fill="rgba(31,74,78,0.08)" stroke="#1F4A4E" stroke-width="1"></rect>
+
+        <!-- catalog-svc -->
+        <text x="56" y="396" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">catalog-svc</text>
+        <text x="172" y="396" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E">3700ms</text>
+        <rect x="216" y="416" width="444" height="24" rx="4" fill="rgba(31,74,78,0.08)" stroke="#1F4A4E" stroke-width="1"></rect>
+
+        <!-- cache (nested in catalog-svc) -->
+        <text x="80" y="468" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">cache</text>
+        <text x="140" y="468" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E">8ms</text>
+        <rect x="216" y="488" width="8" height="24" rx="4" fill="rgba(31,74,78,0.08)" stroke="#1F4A4E" stroke-width="1"></rect>
+
+        <!-- pricing-svc → database (nested in catalog-svc) — FOCAL -->
+        <text x="80" y="540" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#B58B3E">pricing-svc → database</text>
+        <text x="312" y="540" font-family="'Fira Mono', monospace" font-size="14" fill="#B58B3E">3650ms</text>
+        <rect x="224" y="560" width="436" height="24" rx="4" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"></rect>
+
+        <line x1="32" y1="604" x2="688" y2="604" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+
+        <!-- Legend -->
+        <text x="32" y="620" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.12em" fill="#1F4A4E">LEGEND</text>
+
+        <rect x="32" y="636" width="20" height="8" rx="4" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1.2"></rect>
+        <text x="60" y="644" font-family="'Fira Sans', sans-serif" font-size="14" fill="#0B1E3B">Root span — full request</text>
+
+        <rect x="376" y="636" width="20" height="8" rx="4" fill="rgba(31,74,78,0.08)" stroke="#1F4A4E" stroke-width="1"></rect>
+        <text x="404" y="644" font-family="'Fira Sans', sans-serif" font-size="14" fill="#0B1E3B">Child span</text>
+
+        <rect x="32" y="664" width="20" height="8" rx="4" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"></rect>
+        <text x="60" y="672" font-family="'Fira Sans', sans-serif" font-size="14" fill="#0B1E3B">Focal — most of the time</text>
+
+        <path d="M380,672 L380,664 L396,664" stroke="#8A8D90" stroke-width="1" fill="none"></path>
+        <text x="404" y="672" font-family="'Fira Sans', sans-serif" font-size="14" fill="#0B1E3B">Nested under parent</text>
+
+        <line x1="32" y1="684" x2="688" y2="684" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+
+        <!-- Closing note -->
+        <text x="32" y="704" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="16" fill="#0B1E3B">Seven services. Seven sets of logs, each internally complete.</text>
+        <text x="32" y="732" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="16" fill="#0B1E3B">Only the trace ID makes them one story — and only then does</text>
+        <text x="32" y="760" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="16" fill="#0B1E3B">"where did the 4 seconds go?" have an answer.</text>
+
+      </svg>

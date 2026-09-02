@@ -1,0 +1,1 @@
+Identical standardized crates moving between carriers of visibly different kinds, each carrier built once against a published specification and handling any crate presented to it. No crate is opened; the contents are never shown and never matter.

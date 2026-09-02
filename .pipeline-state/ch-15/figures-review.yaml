@@ -1,0 +1,123 @@
+chapter: 15
+book: kcna
+generated: '2026-09-01T08:30:40+00:00'
+figures:
+- anchor_id: ch15-fig01-twelve-factor-in-kubernetes
+  status: pending
+  render_paths:
+    svg: figures/ch15-fig01-twelve-factor-in-kubernetes.svg
+    png: figures/ch15-fig01-twelve-factor-in-kubernetes.png
+  source_path: figures/sources/ch15-fig01-twelve-factor-in-kubernetes.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch15-fig02-deployment-strategies-compared
+  status: pending
+  render_paths:
+    svg: figures/ch15-fig02-deployment-strategies-compared.svg
+    png: figures/ch15-fig02-deployment-strategies-compared.png
+  source_path: figures/sources/ch15-fig02-deployment-strategies-compared.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch15-fig03-cicd-push-vs-gitops-pull
+  status: pending
+  render_paths:
+    svg: figures/ch15-fig03-cicd-push-vs-gitops-pull.svg
+    png: figures/ch15-fig03-cicd-push-vs-gitops-pull.png
+  source_path: figures/sources/ch15-fig03-cicd-push-vs-gitops-pull.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch15-fig05-opengitops-four-principles
+  status: pending
+  render_paths:
+    svg: figures/ch15-fig05-opengitops-four-principles.svg
+    png: figures/ch15-fig05-opengitops-four-principles.png
+  source_path: figures/sources/ch15-fig05-opengitops-four-principles.html
+  validation_results:
+    label_count: pass
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch15-fig04-argocd-sync-states-and-hooks
+  status: pending
+  render_paths:
+    svg: figures/ch15-fig04-argocd-sync-states-and-hooks.svg
+    png: figures/ch15-fig04-argocd-sync-states-and-hooks.png
+  source_path: figures/sources/ch15-fig04-argocd-sync-states-and-hooks.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch15-fig06-sync-waves-and-hook-phases
+  status: pending
+  render_paths:
+    svg: figures/ch15-fig06-sync-waves-and-hook-phases.svg
+    png: figures/ch15-fig06-sync-waves-and-hook-phases.png
+  source_path: figures/sources/ch15-fig06-sync-waves-and-hook-phases.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch15-zenith-control-loop-pointed-at-a-repo
+  status: pending
+  render_paths:
+    svg: figures/ch15-zenith-control-loop-pointed-at-a-repo.svg
+    png: figures/ch15-zenith-control-loop-pointed-at-a-repo.png
+  source_path: figures/sources/ch15-zenith-control-loop-pointed-at-a-repo.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null

@@ -1,0 +1,80 @@
+<svg viewBox="0 0 544 544" role="img" aria-labelledby="kubectl-verb-resource-grammar-title kubectl-verb-resource-grammar-desc" xmlns="http://www.w3.org/2000/svg" width="556" height="556">
+      <title id="kubectl-verb-resource-grammar-title">kubectl command grammar across five example commands</title>
+      <desc id="kubectl-verb-resource-grammar-desc">A table aligning five kubectl commands — cordon, get, apply, scale, and describe — on the slots kubectl, command, TYPE, NAME, and flags, with two callouts noting that TYPE is case-insensitive while NAME is case-sensitive.</desc>
+
+      <defs>
+        <marker id="kg-arrow-default" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon>
+        </marker>
+        <marker id="kg-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#B58B3E"></polygon>
+        </marker>
+        <marker id="kg-arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon>
+        </marker>
+      </defs>
+
+      <rect x="0" y="0" width="544" height="544" fill="#F5EFE4"></rect>
+
+      <rect x="24" y="140" width="496" height="56" fill="rgba(11,30,59,0.02)"></rect>
+      <rect x="24" y="252" width="496" height="56" fill="rgba(11,30,59,0.02)"></rect>
+
+      <rect x="192" y="44" width="104" height="36" rx="4" fill="rgba(181,139,62,0.10)"></rect>
+      <rect x="296" y="44" width="88" height="36" rx="4" fill="rgba(181,139,62,0.10)"></rect>
+
+      <rect x="24" y="40" width="496" height="324" rx="6" fill="none" stroke="#8A8D90" stroke-width="1"></rect>
+      <line x1="24" y1="84" x2="520" y2="84" stroke="#8A8D90" stroke-width="1.2"></line>
+      <line x1="96" y1="40" x2="96" y2="364" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+      <line x1="192" y1="40" x2="192" y2="364" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+      <line x1="296" y1="40" x2="296" y2="364" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+      <line x1="384" y1="40" x2="384" y2="364" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+      <line x1="24" y1="140" x2="520" y2="140" stroke="rgba(11,30,59,0.08)" stroke-width="0.8"></line>
+      <line x1="24" y1="196" x2="520" y2="196" stroke="rgba(11,30,59,0.08)" stroke-width="0.8"></line>
+      <line x1="24" y1="252" x2="520" y2="252" stroke="rgba(11,30,59,0.08)" stroke-width="0.8"></line>
+      <line x1="24" y1="308" x2="520" y2="308" stroke="rgba(11,30,59,0.08)" stroke-width="0.8"></line>
+
+      <text x="60" y="68" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#1F4A4E">kubectl</text>
+      <text x="144" y="68" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#8A8D90">[command]</text>
+      <text x="244" y="68" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="600" fill="#B58B3E">[TYPE]</text>
+      <text x="340" y="68" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="600" fill="#B58B3E">[NAME]</text>
+      <text x="452" y="68" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#8A8D90">[flags]</text>
+
+      <text x="60" y="116" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E">kubectl</text>
+      <text x="144" y="116" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">cordon</text>
+      <text x="244" y="116" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#8A8D90">—</text>
+      <text x="340" y="116" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">node-7</text>
+      <text x="452" y="116" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#8A8D90">—</text>
+
+      <text x="60" y="172" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E">kubectl</text>
+      <text x="144" y="172" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">get</text>
+      <text x="244" y="172" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">pods</text>
+      <text x="340" y="172" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#8A8D90">—</text>
+      <text x="452" y="172" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#8A8D90">—</text>
+
+      <text x="60" y="228" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E">kubectl</text>
+      <text x="144" y="228" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">apply</text>
+      <text x="244" y="228" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#8A8D90">—</text>
+      <text x="340" y="228" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#8A8D90">—</text>
+      <text x="452" y="228" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">-f deploy.yaml</text>
+
+      <text x="60" y="284" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E">kubectl</text>
+      <text x="144" y="284" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">scale</text>
+      <text x="244" y="284" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">deployment</text>
+      <text x="340" y="284" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">web</text>
+      <text x="452" y="284" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">--replicas=5</text>
+
+      <text x="60" y="340" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E">kubectl</text>
+      <text x="144" y="340" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">describe</text>
+      <text x="244" y="340" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">node</text>
+      <text x="340" y="340" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">worker-3</text>
+      <text x="452" y="340" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#8A8D90">—</text>
+
+      <path d="M 244 440 L 244 376" fill="none" stroke="#B58B3E" stroke-width="1.5" marker-end="url(#kg-arrow-accent)"></path>
+      <path d="M 340 440 L 340 376" fill="none" stroke="#B58B3E" stroke-width="1.5" marker-end="url(#kg-arrow-accent)"></path>
+
+      <text x="244" y="464" text-anchor="end" font-family="'Fira Sans', sans-serif" font-size="16"><tspan fill="#0B1E3B" font-weight="400">case-</tspan><tspan fill="#B58B3E" font-weight="700">INsensitive</tspan></text>
+      <text x="244" y="488" text-anchor="end" font-family="'Fira Mono', monospace" font-size="14" fill="#8A8D90">pod = pods = po</text>
+
+      <text x="340" y="464" text-anchor="start" font-family="'Fira Sans', sans-serif" font-size="16"><tspan fill="#0B1E3B" font-weight="400">case-</tspan><tspan fill="#B58B3E" font-weight="700">SENSITIVE</tspan></text>
+      <text x="340" y="488" text-anchor="start" font-family="'Fira Mono', monospace" font-size="14" fill="#8A8D90">node-7 ≠ Node-7</text>
+    </svg>

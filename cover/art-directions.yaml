@@ -1,0 +1,70 @@
+book: kcna
+exam_code: KCNA
+role_family: communications_officer
+seniority_tier: junior
+chassis: knowledge-base/design/cover-spec.yaml
+directions:
+- direction: Flag Locker
+  concept: A close view into an open signal-flag locker on the deck, one flag drawn half out of its
+    slot as if just chosen, the rest racked in orderly rows.
+  focal: the single half-drawn flag, its folded canvas catching what light there is
+  prompt: 'Rendered scene, close and shallow depth of field, on an open teak flag locker aboard a
+    signal deck: one folded signal flag pulled half out of its slot, cream and teal canvas among racked
+    neighbours in brass-fitted compartments, the deck rail and grey sky beyond softened to a blur.
+    Palette strictly navy #0B1E3B, teal #1F4A4E, brass #B58B3E, oxblood #7A2E2E, cream #F5EFE4, fog
+    #8A8D90, teal leading, under flat overcast noon light. Leave the upper-middle third of the frame
+    open sky and out-of-focus haze, uncluttered, with no lettering, logo, or readable text anywhere
+    in the image.'
+- direction: Relay Board
+  concept: A mid-close study of a brass signal relay board mounted on the deck bulkhead, one lever
+    caught mid-throw among a row of dials and indicators.
+  focal: the single lever, thrown against the row of quiet dials
+  prompt: 'Rendered scene, medium-close with moderate depth of field, of a brass relay board bolted
+    to a weathered bulkhead on a signal deck: a row of dial faces and toggle levers, one lever caught
+    mid-throw, faint condensation beading on cold metal under flat overcast light. Palette strictly
+    navy #0B1E3B, teal #1F4A4E, brass #B58B3E, oxblood #7A2E2E, cream #F5EFE4, fog #8A8D90, teal leading,
+    board fading into soft navy shadow at the frame edges. Keep the upper-middle third clear open
+    bulkhead or sky, uncluttered, with no lettering, logo, dial markings, or readable text of any
+    kind.'
+- direction: Ships Standing Off
+  concept: A wide, hazy view down the signal-deck rail toward the flat grey silhouettes of ships standing
+    off in the distance.
+  focal: the faint silhouettes of the distant ships, barely resolved in the fog
+  prompt: 'Rendered scene, wide and deep, looking along a signal deck''s rail and flag lockers toward
+    a bank of low fog where several ships stand off as flat grey-teal silhouettes, the near rail and
+    lockers underexposed and softly detailed in shadow. Palette strictly navy #0B1E3B, teal #1F4A4E,
+    brass #B58B3E, oxblood #7A2E2E, cream #F5EFE4, fog #8A8D90, teal and fog leading under flat, misty
+    overcast noon light. Keep the upper-middle third open grey sky and haze, uncluttered, with no
+    lettering, logo, flag markings, or readable text.'
+- direction: Cleat and Halyard
+  concept: An extreme close, near-diagrammatic study of a coiled halyard looped over a brass deck
+    cleat, rendered almost as a technical illustration.
+  focal: the coiled rope looped tight over the brass cleat
+  prompt: 'Near-diagrammatic macro study, high detail and shallow depth of field, of a coiled halyard
+    looped over a brass deck cleat set into weathered teak planking, rope fibers and wood grain rendered
+    with graphic clarity against a flat navy ground. Palette strictly navy #0B1E3B, teal #1F4A4E,
+    brass #B58B3E, oxblood #7A2E2E, cream #F5EFE4, fog #8A8D90, brass and teal leading, lit by flat
+    overcast noon light with minimal shadow. Compose the cleat and rope low in the frame so the upper-middle
+    third is bare navy or fog negative space, uncluttered, with no lettering, logo, or readable text.'
+- direction: Bearing Log
+  concept: A medium view of a signal log open on a slanted lectern at the edge of the deck, dividers
+    resting on the page, fine rain beading the cover.
+  focal: the open log page under the resting dividers
+  prompt: 'Rendered scene, medium distance with soft depth of field, of a weatherproofed signal log
+    lying open on a slanted brass-edged lectern at a signal deck''s rail, a pair of dividers resting
+    across the blank page, fine drizzle beading on the cover and rail beyond blurred into grey. Palette
+    strictly navy #0B1E3B, teal #1F4A4E, brass #B58B3E, oxblood #7A2E2E, cream #F5EFE4, fog #8A8D90,
+    teal and cream leading under flat, rain-softened overcast noon light. Keep the upper-middle third
+    clear fogged air above the rail, uncluttered, with no lettering, notation, logo, or readable text
+    on the page or elsewhere.'
+- direction: Weather Glass
+  concept: A semi-diagrammatic close view of a ship's weather glass mounted at the signal-deck rail,
+    its single needle and etched face abstracted into clean geometry against drifting fog.
+  focal: the weather glass's dial and single needle
+  prompt: 'Near-diagrammatic composition, flattened perspective and graphic simplification, of a brass
+    weather glass mounted on a deck rail stanchion, its plain unmarked dial face and single needle
+    rendered as clean geometric shapes, thin fog drifting past in soft horizontal bands behind it.
+    Palette strictly navy #0B1E3B, teal #1F4A4E, brass #B58B3E, oxblood #7A2E2E, cream #F5EFE4, fog
+    #8A8D90, teal leading against a muted navy ground, under flat overcast noon light with almost
+    no cast shadow. Position the instrument low-center so the upper-middle third stays open fog and
+    negative space, uncluttered, with no lettering, numerals, logo, or readable text on the dial.'

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The four OpenGitOps principles</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;700&family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Fira+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F5EFE4;
+    --ink: #0B1E3B;
+    --muted: #1F4A4E;
+    --soft: #8A8D90;
+    --accent: #B58B3E;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 48px 24px;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Fira Sans', sans-serif;
+  }
+  .page { max-width: 680px; margin: 0 auto; }
+  .eyebrow {
+    font-family: 'Fira Mono', monospace;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 8px;
+  }
+  h1 {
+    font-family: 'Roboto Slab', serif;
+    font-size: 1.75rem;
+    font-weight: 500;
+    color: var(--ink);
+    margin: 0 0 32px;
+  }
+  .diagram-container { width: 100%; }
+  svg { display: block; width: 100%; height: auto; }
+</style>
+</head>
+<body>
+  <div class="page">
+    <p class="eyebrow">Ch 15 &middot; GitOps</p>
+    <h1>The Four OpenGitOps Principles</h1>
+    <div class="diagram-container">
+      <svg viewBox="0 0 640 860" xmlns="http://www.w3.org/2000/svg" role="img"
+           aria-labelledby="ch15-fig05-opengitops-four-principles-title ch15-fig05-opengitops-four-principles-desc">
+        <title id="ch15-fig05-opengitops-four-principles-title">The four OpenGitOps principles</title>
+        <desc id="ch15-fig05-opengitops-four-principles-desc">Four OpenGitOps principles shown as equal cards in a two-by-two grid; only Versioned and Immutable is tagged as new material, while the other three are tagged as already covered in earlier chapters.</desc>
+
+        <rect x="0" y="0" width="640" height="860" fill="#F5EFE4"/>
+
+        <!-- Box 1: Declarative -->
+        <rect x="24" y="28" width="280" height="376" rx="6" fill="rgba(11,30,59,0.03)" stroke="#0B1E3B" stroke-width="1"/>
+        <text x="48" y="72" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600"
+              letter-spacing="0.02em" fill="#0B1E3B">1 &middot; DECLARATIVE</text>
+        <text font-family="'Fira Sans', sans-serif" font-size="14" font-weight="400" fill="#0B1E3B">
+          <tspan x="48" y="132">desired state expressed</tspan>
+          <tspan x="48" y="152">declaratively</tspan>
+        </text>
+        <text x="48" y="364" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="16"
+              font-weight="400" fill="#8A8D90">&#9668; you know this: Ch 4 &sect;1</text>
+
+        <!-- Box 2: Versioned & Immutable (FOCAL) -->
+        <rect x="336" y="28" width="280" height="376" rx="6" fill="rgba(11,30,59,0.03)" stroke="#0B1E3B" stroke-width="1"/>
+        <text font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" letter-spacing="0.02em" fill="#0B1E3B">
+          <tspan x="360" y="72">2 &middot; VERSIONED &amp;</tspan>
+          <tspan x="360" y="96">IMMUTABLE</tspan>
+        </text>
+        <text font-family="'Fira Sans', sans-serif" font-size="14" font-weight="400" fill="#0B1E3B">
+          <tspan x="360" y="132">stored so as to enforce</tspan>
+          <tspan x="360" y="152">immutability, versioning,</tspan>
+          <tspan x="360" y="172">complete history</tspan>
+        </text>
+        <rect x="360" y="340" width="140" height="32" rx="4" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"/>
+        <text x="376" y="360" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600"
+              letter-spacing="0.04em" fill="#0B1E3B">&#9668; NEW HERE</text>
+
+        <!-- Box 3: Pulled Automatically -->
+        <rect x="24" y="456" width="280" height="376" rx="6" fill="rgba(11,30,59,0.03)" stroke="#0B1E3B" stroke-width="1"/>
+        <text font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" letter-spacing="0.02em" fill="#0B1E3B">
+          <tspan x="48" y="500">3 &middot; PULLED</tspan>
+          <tspan x="48" y="524">AUTOMATICALLY</tspan>
+        </text>
+        <text font-family="'Fira Sans', sans-serif" font-size="14" font-weight="400" fill="#0B1E3B">
+          <tspan x="48" y="560">agents automatically pull</tspan>
+          <tspan x="48" y="580">desired state from source</tspan>
+        </text>
+        <text x="48" y="792" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="16"
+              font-weight="400" fill="#8A8D90">&#9668; you know this: Ch 3 &sect;5</text>
+
+        <!-- Box 4: Continuously Reconciled -->
+        <rect x="336" y="456" width="280" height="376" rx="6" fill="rgba(11,30,59,0.03)" stroke="#0B1E3B" stroke-width="1"/>
+        <text font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" letter-spacing="0.02em" fill="#0B1E3B">
+          <tspan x="360" y="500">4 &middot; CONTINUOUSLY</tspan>
+          <tspan x="360" y="524">RECONCILED</tspan>
+        </text>
+        <text font-family="'Fira Sans', sans-serif" font-size="14" font-weight="400" fill="#0B1E3B">
+          <tspan x="360" y="560">agents continuously observe</tspan>
+          <tspan x="360" y="580">actual state and apply</tspan>
+          <tspan x="360" y="600">desired state</tspan>
+        </text>
+        <text x="360" y="792" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="16"
+              font-weight="400" fill="#8A8D90">&#9668; you know this: Ch 3 &sect;6</text>
+      </svg>
+    </div>
+  </div>
+</body>
+</html>

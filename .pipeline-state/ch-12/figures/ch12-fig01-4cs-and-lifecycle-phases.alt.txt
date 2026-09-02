@@ -1,0 +1,1 @@
+Three-panel figure: four lifecycle phases in sequence from develop to runtime with runtime branching into access, compute and storage; four nested layers from Cloud outermost to Code innermost; and a table plotting five security controls against both a phase and a layer

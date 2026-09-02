@@ -1,0 +1,228 @@
+chapter: 8
+book: kcna
+generated: '2026-09-01T07:29:27+00:00'
+figures:
+- anchor_id: ch08-fig01-kubectl-verb-resource-grammar
+  source_hash: 85e1035e7c30f94694e33898f8f0932e531ceb3b10499c275e80c2b2cd974ab7
+  output_hash:
+    svg: 4fdb0e54a4f82218770905d917d4c1aeafcac0a6ecd00d20b816baf1229d0f7c
+    png: 262c3e79a090d977d7b8af7cb195b6a6a080800fedcc580fade857acbf16e0c6
+  validations:
+    label_count:
+      result: fail
+      value: 32
+      max: 7
+      reason: 32 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1112
+      - 1112
+    aspect_ratio:
+      result: pass
+      value: 1.0
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 280
+  alt_text: A five-column table aligning five kubectl commands on the slots kubectl,
+    command, TYPE, NAME and flags; some cells are empty because those commands omit
+    those slots; two arrows below point up at the TYPE column labelled case-insensitive
+    and the NAME column labelled case-sensitive
+- anchor_id: ch08-fig02-three-api-gates
+  source_hash: 57b2996a47b0a6fe46d66641c53c5637f248fec7a26b4a69cb13ff280d8ab5e9
+  output_hash:
+    svg: 66f881c11c61a654bef576b8e2bd8d479bdce97f4303b2a3a2d5d52c412f7721
+    png: f9387b2907c31ecd91e98838bd6d8fe60fb04801a3d739507a71cd949a3b15d1
+  validations:
+    label_count:
+      result: fail
+      value: 16
+      max: 7
+      reason: 16 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1040
+      - 1386
+    aspect_ratio:
+      result: pass
+      value: 1.33
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 308
+  alt_text: Three boxes in a row labelled Authentication, Authorization and Admission,
+    with a request arrow entering on the left and persistence to etcd on the right;
+    each box has a downward arrow to a REJECT outcome, and the Admission box has an
+    additional arrow labelled REWRITTEN that loops back into the forward path
+- anchor_id: ch08-fig05-quota-vs-limitrange
+  source_hash: 867be4537f5876d0a7307033597b134df4fbe7375486d4209582b10061880272
+  output_hash:
+    svg: dc043ed26b9df0bc09234cb48b1920cc55ad04336bf8c81978ecdb7db585f309
+    png: 3755652f641970780d8e97ca115641fea3c8a6891f1d1d87e9982d21eb4b8ca2
+  validations:
+    label_count:
+      result: fail
+      value: 26
+      max: 7
+      reason: 26 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      note: no explicit font-size; renderer default applies
+    max_dimensions:
+      result: pass
+      value:
+      - 1120
+      - 1344
+    aspect_ratio:
+      result: pass
+      value: 1.2
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 341
+  alt_text: 'Two panels compared side by side: on the left, four Pods enclosed in
+    a bordered namespace box with a namespace total bar marked at cap, and a fifth
+    arriving Pod rejected; on the right, four unenclosed Pods each carrying its own
+    minimum and maximum bounds, and a fifth arriving Pod that declares nothing being
+    accepted with defaults filled in'
+- anchor_id: ch08-fig04-node-lifecycle-cordon-drain
+  source_hash: 3c4ce661d9246921e36803befc88106a68967d25f412c313505c73501ab68153
+  output_hash:
+    svg: 2d137ccab7a54739deabfb3ccd4ebf42e7975a139710e52794c9f13c326cb653
+    png: c45becfd58ea8d8c59a581d4072b9834cfda0aa457573ce0390a32b06b5d6271
+  validations:
+    label_count:
+      result: fail
+      value: 34
+      max: 7
+      reason: 34 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1360
+      - 1836
+    aspect_ratio:
+      result: pass
+      value: 1.35
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 331
+  alt_text: Four node panels in a row labelled schedulable, cordoned, drained and
+    schedulable, connected by transitions labelled cordon, drain and uncordon; the
+    same three Pods A, B and C appear unchanged in the first two panels and are gone
+    from the third, while an arriving Pod is admitted in panels one and four and turned
+    away in panel two
+- anchor_id: ch08-fig03-version-skew-window
+  source_hash: d88cceee7ff6ddbbacfd9164a2737d60beeb4641fa6cb5992d644e1de17d0730
+  output_hash:
+    svg: 9f9e4e17bca79dc194c17cf9c688b4dd0acfbaa99af8ed55a54f1af665300238
+    png: 204e17bd8aee680cfd7762e9e16fdf839c4a294a3490330ffd6ee70015fe291b
+  validations:
+    label_count:
+      result: fail
+      reason: SVG unparseable
+      value: 0
+      max: 7
+    palette_conformance:
+      result: fail
+      reason: SVG unparseable
+    min_font_size:
+      result: fail
+      reason: SVG unparseable
+    max_dimensions:
+      result: pass
+      value:
+      - 1120
+      - 1474
+    aspect_ratio:
+      result: pass
+      value: 1.32
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 392
+  alt_text: A horizontal range chart on a relative axis from minus three to plus one
+    minor versions, with the API server's version marked by a double line at zero;
+    bars for kubelet and kube-proxy reach back three versions, bars for the controller
+    manager, scheduler and cloud controller manager reach back one, and all five stop
+    at the double line, while the kubectl bar alone extends one version past it
+- anchor_id: ch08-zenith-consequences-not-rules
+  source_hash: 0920aaf3599188da90ebaae8e42ea62ac8879fe8beed867915905928af05b972
+  output_hash:
+    svg: ba46e4a6ee3b8e5cd129a6310d3cce88e767e86091a3c3f27d0eeb55529a640f
+    png: 8e2023e0e3ad5e4cc612c1cac749077099db8575719e7cf1a2e3dd2bd6059536
+  validations:
+    label_count:
+      result: fail
+      value: 12
+      max: 7
+      reason: 12 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1216
+      - 1440
+    aspect_ratio:
+      result: pass
+      value: 1.18
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 448
+  alt_text: Four administrative actions on the left — kubectl cordon, applying a quota,
+    applying a deployment, and kubelet self-registration — all converge on a single
+    central box labelled the API server, one door; four arrows leave it to the scheduler
+    from chapter seven, the node controller from chapters four and eight, the workload
+    controllers from chapter six, and the control loop from chapter three, with a
+    single arrow running down from the box to etcd

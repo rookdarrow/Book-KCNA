@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diagnostic layer stack · kubectl to the container runtime</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;700&family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Fira+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --color-paper:   #F5EFE4;
+    --color-ink:     #0B1E3B;
+    --color-muted:   #1F4A4E;
+    --color-soft:    #8A8D90;
+    --color-accent:  #B58B3E;
+    --font-slab: 'Roboto Slab', serif;
+    --font-sans: 'Fira Sans', sans-serif;
+    --font-mono: 'Fira Mono', monospace;
+  }
+  body {
+    font-family: var(--font-sans);
+    background: var(--color-paper);
+    color: var(--color-ink);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 2rem;
+  }
+  .frame { max-width: 800px; width: 100%; }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    margin-bottom: 0.6rem;
+  }
+  h1 {
+    font-family: var(--font-slab);
+    font-size: 1.75rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    color: var(--color-ink);
+    margin-bottom: 1.5rem;
+  }
+  svg { width: 100%; display: block; }
+</style>
+</head>
+<body>
+  <div class="frame">
+    <p class="eyebrow">Ch. 13 · Diagnostic layer stack</p>
+    <h1>The diagnostic layer stack — from kubectl to the runtime</h1>
+
+    <svg viewBox="0 0 760 920" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch13-fig06-title ch13-fig06-desc">
+      <title id="ch13-fig06-title">Diagnostic layer stack: kubectl to the container runtime</title>
+      <desc id="ch13-fig06-desc">Five-layer stack from kubectl through kube-apiserver and kubelet to a doubled API-boundary rule, then CRI and the container runtime, showing crictl attaching directly to the runtime below the boundary while the layers above show only the cluster's recorded view of itself.</desc>
+
+      <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"/>
+        </marker>
+        <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#B58B3E"/>
+        </marker>
+        <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"/>
+        </marker>
+      </defs>
+
+      <rect width="760" height="920" fill="#F5EFE4"/>
+
+      <!-- crictl bypass connector (drawn before boxes) -->
+      <path d="M100,72 H80 Q72,72 72,80 V636 Q72,644 80,644 H100"
+            fill="none" stroke="#B58B3E" stroke-width="2" marker-end="url(#arrow-accent)"/>
+      <rect x="8" y="348" width="56" height="20" rx="4" fill="#F5EFE4"/>
+      <text x="36" y="362" fill="#B58B3E" font-size="14" font-weight="700" font-family="'Fira Mono', monospace"
+            text-anchor="middle" letter-spacing="0.06em">BYPASS</text>
+
+      <!-- zone fill: below the API boundary -->
+      <rect x="100" y="476" width="480" height="112" fill="rgba(138,141,144,0.08)"/>
+      <rect x="100" y="588" width="480" height="112" fill="rgba(138,141,144,0.08)"/>
+
+      <!-- hairline dividers -->
+      <line x1="100" y1="252" x2="580" y2="252" stroke="rgba(11,30,59,0.12)" stroke-width="1"/>
+      <line x1="100" y1="364" x2="580" y2="364" stroke="rgba(11,30,59,0.12)" stroke-width="1"/>
+      <line x1="100" y1="588" x2="580" y2="588" stroke="rgba(11,30,59,0.12)" stroke-width="1"/>
+
+      <!-- outer silhouette -->
+      <rect x="100" y="140" width="480" height="560" fill="none" stroke="#0B1E3B" stroke-width="1"/>
+
+      <!-- doubled API-boundary rule (focal) -->
+      <line x1="100" y1="472" x2="580" y2="472" stroke="#B58B3E" stroke-width="2"/>
+      <line x1="100" y1="480" x2="580" y2="480" stroke="#B58B3E" stroke-width="2"/>
+      <polygon points="612,468 612,484 600,476" fill="#B58B3E"/>
+      <text x="624" y="472" fill="#B58B3E" font-size="14" font-weight="700" font-family="'Fira Mono', monospace"
+            text-anchor="start" letter-spacing="0.08em">API BOUNDARY</text>
+
+      <!-- Row 1 — kubectl -->
+      <text x="116" y="201" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" letter-spacing="0.06em">01</text>
+      <text x="180" y="202" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif">kubectl</text>
+      <text x="564" y="201" fill="#8A8D90" font-size="14" font-family="'Fira Mono', monospace" text-anchor="end">[terminal]</text>
+
+      <!-- Row 2 — kube-apiserver -->
+      <text x="116" y="313" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" letter-spacing="0.06em">02</text>
+      <text x="180" y="314" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif">kube-apiserver</text>
+      <text x="564" y="313" fill="#8A8D90" font-size="14" font-family="'Fira Mono', monospace" text-anchor="end">[server]</text>
+
+      <!-- Row 3 — kubelet -->
+      <text x="116" y="425" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" letter-spacing="0.06em">03</text>
+      <text x="180" y="426" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif">kubelet</text>
+      <text x="564" y="425" fill="#8A8D90" font-size="14" font-family="'Fira Mono', monospace" text-anchor="end">[agent]</text>
+
+      <!-- Row 4 — CRI -->
+      <text x="116" y="537" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" letter-spacing="0.06em">04</text>
+      <text x="180" y="538" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif">CRI</text>
+      <text x="564" y="537" fill="#8A8D90" font-size="14" font-family="'Fira Mono', monospace" text-anchor="end">[contract]</text>
+
+      <!-- Row 5 — containerd / CRI-O -->
+      <text x="116" y="649" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" letter-spacing="0.06em">05</text>
+      <text x="180" y="650" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif">containerd / CRI-O</text>
+      <text x="564" y="649" fill="#8A8D90" font-size="14" font-family="'Fira Mono', monospace" text-anchor="end">[runtime]</text>
+
+      <!-- crictl node -->
+      <rect x="100" y="40" width="180" height="64" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"/>
+      <text x="190" y="68" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle">crictl</text>
+      <text x="190" y="88" fill="#8A8D90" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle">[cli]</text>
+
+      <!-- Callout 1 — recorded view -->
+      <path d="M612,200 Q560,260 600,300" fill="none" stroke="rgba(11,30,59,0.4)" stroke-width="1" stroke-dasharray="4,3"/>
+      <circle cx="600" cy="300" r="2" fill="#0B1E3B"/>
+      <text x="616" y="176" fill="#0B1E3B" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif">Everything</text>
+      <text x="616" y="196" fill="#0B1E3B" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif">above this line</text>
+      <text x="616" y="216" fill="#0B1E3B" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif">is the cluster's</text>
+      <text x="616" y="236" fill="#0B1E3B" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif">recorded view</text>
+      <text x="616" y="256" fill="#0B1E3B" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif">of itself.</text>
+
+      <!-- Callout 2 — crictl bypass -->
+      <path d="M612,600 Q560,624 600,644" fill="none" stroke="rgba(11,30,59,0.4)" stroke-width="1" stroke-dasharray="4,3"/>
+      <circle cx="600" cy="644" r="2" fill="#0B1E3B"/>
+      <text x="616" y="576" fill="#0B1E3B" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif">crictl attaches</text>
+      <text x="616" y="596" fill="#0B1E3B" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif">here — to the</text>
+      <text x="616" y="616" fill="#0B1E3B" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif">runtime directly,</text>
+      <text x="616" y="636" fill="#0B1E3B" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif">bypassing</text>
+      <text x="616" y="656" fill="#0B1E3B" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif">everything above.</text>
+
+      <!-- Legend -->
+      <line x1="40" y1="724" x2="720" y2="724" stroke="#8A8D90" stroke-width="0.8"/>
+      <text x="40" y="752" fill="#1F4A4E" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" letter-spacing="0.12em">LEGEND</text>
+
+      <line x1="140" y1="744" x2="176" y2="744" stroke="#B58B3E" stroke-width="2"/>
+      <line x1="140" y1="752" x2="176" y2="752" stroke="#B58B3E" stroke-width="2"/>
+      <text x="188" y="752" fill="#0B1E3B" font-size="14" font-family="'Fira Mono', monospace">API boundary</text>
+
+      <line x1="420" y1="748" x2="456" y2="748" stroke="#B58B3E" stroke-width="2" marker-end="url(#arrow-accent)"/>
+      <text x="468" y="752" fill="#0B1E3B" font-size="14" font-family="'Fira Mono', monospace">crictl bypass path</text>
+
+      <!-- Caption -->
+      <text x="40" y="792" fill="#1F4A4E" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" letter-spacing="0.12em">WHY IT MATTERS</text>
+      <text x="40" y="818" fill="#0B1E3B" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif">kube-apiserver and kubelet only report what they already recorded.</text>
+      <text x="40" y="842" fill="#0B1E3B" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif">When their answer doesn't match reality, crictl asks the runtime directly.</text>
+    </svg>
+  </div>
+</body>
+</html>

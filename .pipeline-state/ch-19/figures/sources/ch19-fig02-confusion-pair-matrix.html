@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kubernetes &amp; Helm confusion-pair discriminator reference</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;700&family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Fira+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --color-paper:  #F5EFE4;
+    --color-ink:    #0B1E3B;
+    --color-muted:  #1F4A4E;
+    --color-soft:   #8A8D90;
+    --color-accent: #B58B3E;
+    --font-slab: 'Roboto Slab', serif;
+    --font-sans: 'Fira Sans', sans-serif;
+    --font-mono: 'Fira Mono', monospace;
+  }
+  body {
+    font-family: var(--font-sans);
+    background: var(--color-paper);
+    color: var(--color-ink);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1.5rem;
+  }
+  .frame { max-width: 640px; width: 100%; }
+  svg { width: 100%; height: auto; display: block; }
+</style>
+</head>
+<body>
+<div class="frame">
+<svg viewBox="0 0 760 960" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch19-fig02-confusion-pair-matrix-title ch19-fig02-confusion-pair-matrix-desc">
+<title id="ch19-fig02-confusion-pair-matrix-title">Kubernetes &amp; Helm confusion-pair discriminator reference</title>
+<desc id="ch19-fig02-confusion-pair-matrix-desc">Two-column reference card listing twenty-three confusion pairs from the book, each paired with a one-line question that separates them, banded into the four exam domains.</desc>
+
+<rect width="100%" height="100%" fill="#F5EFE4"/>
+
+<!-- Title block -->
+<text x="44" y="40" font-family="var(--font-mono)" font-size="14" font-weight="500" letter-spacing="0.12em" fill="#1F4A4E">KUBERNETES &amp; HELM &#183; QUICK REFERENCE</text>
+<text x="44" y="76" font-family="var(--font-slab)" font-size="28" font-weight="500" fill="#0B1E3B">One Question Beats Two Definitions</text>
+<text x="44" y="104" font-family="var(--font-sans)" font-size="14" fill="#1F4A4E">23 confusion pairs from the book, each resolved by one discriminating</text>
+<text x="44" y="124" font-family="var(--font-sans)" font-size="14" fill="#1F4A4E">question &#8212; banded into the four Kubernetes &amp; Helm exam domains.</text>
+
+<!-- Column header -->
+<text x="44" y="152" font-family="var(--font-mono)" font-size="14" font-weight="500" letter-spacing="0.12em" fill="#0B1E3B">PAIR</text>
+<text x="112" y="152" font-family="var(--font-mono)" font-size="14" font-weight="500" fill="#B58B3E">&#8594;</text>
+<text x="136" y="152" font-family="var(--font-mono)" font-size="14" font-weight="500" letter-spacing="0.12em" fill="#B58B3E">DISCRIMINATOR &#8212; THE QUESTION TO ASK</text>
+<line x1="44" y1="164" x2="716" y2="164" stroke="#8A8D90" stroke-width="0.8"/>
+
+<!-- Column divider -->
+<line x1="380" y1="180" x2="380" y2="788" stroke="#8A8D90" stroke-width="0.8" opacity="0.5"/>
+
+<!-- ===== COLUMN 1 (x=44): D1 + D2 ===== -->
+
+<text x="44" y="196" font-family="var(--font-mono)" font-size="14" font-weight="500" letter-spacing="0.12em" fill="#0B1E3B">D1</text>
+<line x1="44" y1="204" x2="360" y2="204" stroke="#8A8D90" stroke-width="0.8"/>
+
+<text x="44" y="228" font-family="var(--font-mono)" font-size="14" font-weight="500" fill="#0B1E3B">Pod phase / container state</text>
+<text x="44" y="248" font-family="var(--font-mono)" font-size="14" fill="#B58B3E">&#8594;</text>
+<text x="64" y="248" font-family="var(--font-sans)" font-style="italic" font-size="14" fill="#1F4A4E">Lifecycle, or one container?</text>
+
+<text x="44" y="272" font-family="var(--font-mono)" font-size="14" font-weight="500" fill="#0B1E3B">liveness / readiness</text>
+<text x="44" y="292" font-family="var(--font-mono)" font-size="14" fill="#B58B3E">&#8594;</text>
+<text x="64" y="292" font-family="var(--font-sans)" font-style="italic" font-size="14" fill="#1F4A4E">Restart it, or stop sending traffic?</text>
+
+<text x="44" y="316" font-family="var(--font-mono)" font-size="14" font-weight="500" fill="#0B1E3B">labels / annotations</text>
+<text x="44" y="336" font-family="var(--font-mono)" font-size="14" fill="#B58B3E">&#8594;</text>
+<text x="64" y="336" font-family="var(--font-sans)" font-style="italic" font-size="14" fill="#1F4A4E">Does anything select on it?</text>
+
+<text x="44" y="360" font-family="var(--font-mono)" font-size="14" font-weight="500" fill="#0B1E3B">ConfigMap / Secret</text>
+<text x="44" y="380" font-family="var(--font-mono)" font-size="14" fill="#B58B3E">&#8594;</text>
+<text x="64" y="380" font-family="var(--font-sans)" font-style="italic" font-size="14" fill="#1F4A4E">Would you mind this in a log?</text>
+
+<text x="44" y="404" font-family="var(--font-mono)" font-size="14" font-weight="500" fill="#0B1E3B">Deployment / StatefulSet</text>
+<text x="44" y="424" font-family="var(--font-mono)" font-size="14" fill="#B58B3E">&#8594;</text>
+<text x="64" y="424" font-family="var(--font-sans)" font-style="italic" font-size="14" fill="#1F4A4E">Does replica 0 need to BE replica 0?</text>
+
+<text x="44" y="448" font-family="var(--font-mono)" font-size="14" font-weight="500" fill="#0B1E3B">OCI / CRI</text>
+<text x="44" y="468" font-family="var(--font-mono)" font-size="14" fill="#B58B3E">&#8594;</text>
+<text x="64" y="468" font-family="var(--font-sans)" font-style="italic" font-size="14" fill="#1F4A4E">Artifact format, or kubelet's API?</text>
+
+<text x="44" y="508" font-family="var(--font-mono)" font-size="14" font-weight="500" letter-spacing="0.12em" fill="#0B1E3B">D2</text>
+<line x1="44" y1="516" x2="360" y2="516" stroke="#8A8D90" stroke-width="0.8"/>
+
+<text x="44" y="540" font-family="var(--font-mono)" font-size="14" font-weight="500" fill="#0B1E3B">ClusterIP/NodePort/LB</text>
+<text x="44" y="560" font-family="var(--font-mono)" font-size="14" fill="#B58B3E">&#8594;</text>
+<text x="64" y="560" font-family="var(--font-sans)" font-style="italic" font-size="14" fill="#1F4A4E">Reachable from where?</text>
+
+<text x="44" y="584" font-family="var(--font-mono)" font-size="14" font-weight="500" fill="#0B1E3B">Ingress object / controller</text>
+<text x="44" y="604" font-family="var(--font-mono)" font-size="14" fill="#B58B3E">&#8594;</text>
+<text x="64" y="604" font-family="var(--font-sans)" font-style="italic" font-size="14" fill="#1F4A4E">The record, or the thing that acts?</text>
+
+<text x="44" y="628" font-family="var(--font-mono)" font-size="14" font-weight="500" fill="#0B1E3B">NetworkPolicy default</text>
+<text x="44" y="648" font-family="var(--font-mono)" font-size="14" fill="#B58B3E">&#8594;</text>
+<text x="64" y="648" font-family="var(--font-sans)" font-style="italic" font-size="14" fill="#1F4A4E">Is this Pod selected by any policy?</text>
+
+<text x="44" y="672" font-family="var(--font-mono)" font-size="14" font-weight="500" fill="#0B1E3B">Role / ClusterRole binding</text>
+<text x="44" y="692" font-family="var(--font-mono)" font-size="14" fill="#B58B3E">&#8594;</text>
+<text x="64" y="692" font-family="var(--font-sans)" font-style="italic" font-size="14" fill="#1F4A4E">What scope is the BINDING?</text>
+
+<text x="44" y="716" font-family="var(--font-mono)" font-size="14" font-weight="500" fill="#0B1E3B">PV / PVC</text>
+<text x="44" y="736" font-family="var(--font-mono)" font-size="14" fill="#B58B3E">&#8594;</text>
+<text x="64" y="736" font-family="var(--font-sans)" font-style="italic" font-size="14" fill="#1F4A4E">Supply, or demand?</text>
+
+<text x="44" y="760" font-family="var(--font-mono)" font-size="14" font-weight="500" fill="#0B1E3B">RWO / RWOP</text>
+<text x="44" y="780" font-family="var(--font-mono)" font-size="14" fill="#B58B3E">&#8594;</text>
+<text x="64" y="780" font-family="var(--font-sans)" font-style="italic" font-size="14" fill="#1F4A4E">One node, or one Pod?</text>
+
+<!-- ===== COLUMN 2 (x=400): D3 + D4 ===== -->
+
+<text x="400" y="196" font-family="var(--font-mono)" font-size="14" font-weight="500" letter-spacing="0.12em" fill="#0B1E3B">D3</text>
+<line x1="400" y1="204" x2="716" y2="204" stroke="#8A8D90" stroke-width="0.8"/>
+
+<text x="400" y="228" font-family="var(--font-mono)" font-size="14" font-weight="500" fill="#0B1E3B">chart / release / revision</text>
+<text x="400" y="248" font-family="var(--font-mono)" font-size="14" fill="#B58B3E">&#8594;</text>
+<text x="420" y="248" font-family="var(--font-sans)" font-style="italic" font-size="14" fill="#1F4A4E">Package, install, or version of it?</text>
+
+<text x="400" y="272" font-family="var(--font-mono)" font-size="14" font-weight="500" fill="#0B1E3B">rollout undo / helm rollback</text>
+<text x="400" y="292" font-family="var(--font-mono)" font-size="14" fill="#B58B3E">&#8594;</text>
+<text x="420" y="292" font-family="var(--font-sans)" font-style="italic" font-size="14" fill="#1F4A4E">Whose history is being rewound?</text>
+
+<text x="400" y="316" font-family="var(--font-mono)" font-size="14" font-weight="500" fill="#0B1E3B">push / pull delivery</text>
+<text x="400" y="336" font-family="var(--font-mono)" font-size="14" fill="#B58B3E">&#8594;</text>
+<text x="420" y="336" font-family="var(--font-sans)" font-style="italic" font-size="14" fill="#1F4A4E">Where do the credentials live?</text>
+
+<text x="400" y="360" font-family="var(--font-mono)" font-size="14" font-weight="500" fill="#0B1E3B">OutOfSync</text>
+<text x="400" y="380" font-family="var(--font-mono)" font-size="14" fill="#B58B3E">&#8594;</text>
+<text x="420" y="380" font-family="var(--font-sans)" font-style="italic" font-size="14" fill="#1F4A4E">Difference, or failure?</text>
+
+<text x="400" y="420" font-family="var(--font-mono)" font-size="14" font-weight="500" letter-spacing="0.12em" fill="#0B1E3B">D4</text>
+<line x1="400" y1="428" x2="716" y2="428" stroke="#8A8D90" stroke-width="0.8"/>
+
+<text x="400" y="452" font-family="var(--font-mono)" font-size="14" font-weight="500" fill="#0B1E3B">mesh CP / cluster CP</text>
+<text x="400" y="472" font-family="var(--font-mono)" font-size="14" fill="#B58B3E">&#8594;</text>
+<text x="420" y="472" font-family="var(--font-sans)" font-style="italic" font-size="14" fill="#1F4A4E">Whose control plane?</text>
+
+<text x="400" y="496" font-family="var(--font-mono)" font-size="14" font-weight="500" fill="#0B1E3B">sidecar / ambient</text>
+<text x="400" y="516" font-family="var(--font-mono)" font-size="14" fill="#B58B3E">&#8594;</text>
+<text x="420" y="516" font-family="var(--font-sans)" font-style="italic" font-size="14" fill="#1F4A4E">Proxy per Pod, or per node?</text>
+
+<text x="400" y="540" font-family="var(--font-mono)" font-size="14" font-weight="500" fill="#0B1E3B">HPA / VPA</text>
+<text x="400" y="560" font-family="var(--font-mono)" font-size="14" fill="#B58B3E">&#8594;</text>
+<text x="420" y="560" font-family="var(--font-sans)" font-style="italic" font-size="14" fill="#1F4A4E">More replicas, or bigger ones?</text>
+
+<text x="400" y="584" font-family="var(--font-mono)" font-size="14" font-weight="500" fill="#0B1E3B">observability / monitoring</text>
+<text x="400" y="604" font-family="var(--font-mono)" font-size="14" fill="#B58B3E">&#8594;</text>
+<text x="420" y="604" font-family="var(--font-sans)" font-style="italic" font-size="14" fill="#1F4A4E">New questions, or known ones?</text>
+
+<text x="400" y="628" font-family="var(--font-mono)" font-size="14" font-weight="500" fill="#0B1E3B">span / trace</text>
+<text x="400" y="648" font-family="var(--font-mono)" font-size="14" fill="#B58B3E">&#8594;</text>
+<text x="420" y="648" font-family="var(--font-sans)" font-style="italic" font-size="14" fill="#1F4A4E">One hop, or the whole journey?</text>
+
+<text x="400" y="672" font-family="var(--font-mono)" font-size="14" font-weight="500" fill="#0B1E3B">SLI / SLO / SLA</text>
+<text x="400" y="692" font-family="var(--font-mono)" font-size="14" fill="#B58B3E">&#8594;</text>
+<text x="420" y="692" font-family="var(--font-sans)" font-style="italic" font-size="14" fill="#1F4A4E">Measure, target, or consequence?</text>
+
+<text x="400" y="716" font-family="var(--font-mono)" font-size="14" font-weight="500" fill="#0B1E3B">TOC / Governing Board</text>
+<text x="400" y="736" font-family="var(--font-mono)" font-size="14" fill="#B58B3E">&#8594;</text>
+<text x="420" y="736" font-family="var(--font-sans)" font-style="italic" font-size="14" fill="#1F4A4E">Technical, or business?</text>
+
+<!-- Legend -->
+<line x1="44" y1="812" x2="716" y2="812" stroke="#8A8D90" stroke-width="0.8"/>
+<text x="44" y="828" font-family="var(--font-mono)" font-size="14" font-weight="500" letter-spacing="0.14em" fill="#0B1E3B">LEGEND</text>
+
+<text x="148" y="828" font-family="var(--font-mono)" font-size="14" font-weight="500" fill="#0B1E3B">Aa</text>
+<text x="176" y="828" font-family="var(--font-mono)" font-size="14" letter-spacing="0.12em" fill="#1F4A4E">OBJECT / FIELD</text>
+
+<text x="340" y="828" font-family="var(--font-mono)" font-size="14" font-weight="500" fill="#B58B3E">&#8594;</text>
+<text x="360" y="828" font-family="var(--font-mono)" font-size="14" letter-spacing="0.12em" fill="#1F4A4E">THE QUESTION</text>
+
+<line x1="504" y1="824" x2="524" y2="824" stroke="#8A8D90" stroke-width="1.2"/>
+<text x="532" y="828" font-family="var(--font-mono)" font-size="14" letter-spacing="0.12em" fill="#1F4A4E">DOMAIN BAND</text>
+
+<!-- Footer -->
+<text x="44" y="864" font-family="var(--font-sans)" font-style="italic" font-size="14" fill="#1F4A4E">The question is the fix &#8212; when a pair blurs, ask it instead of re-reading two definitions.</text>
+
+</svg>
+</div>
+</body>
+</html>

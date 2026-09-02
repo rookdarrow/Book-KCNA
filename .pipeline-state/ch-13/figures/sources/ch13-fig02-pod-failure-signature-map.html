@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pod Failure Signature Map</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;700&family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Fira+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --color-paper:  #F5EFE4;
+    --color-ink:    #0B1E3B;
+    --color-muted:  #1F4A4E;
+    --color-accent: #B58B3E;
+    --font-title: 'Roboto Slab', serif;
+    --font-sans:  'Fira Sans', sans-serif;
+    --font-mono:  'Fira Mono', monospace;
+  }
+  body {
+    font-family: var(--font-sans);
+    background: var(--color-paper);
+    color: var(--color-ink);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 2rem;
+  }
+  .frame { max-width: 760px; width: 100%; }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    margin-bottom: 0.5rem;
+  }
+  h1 {
+    font-family: var(--font-title);
+    font-size: clamp(1.4rem, 2vw + 0.8rem, 1.75rem);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    color: var(--color-ink);
+    margin-bottom: 1.5rem;
+  }
+  svg { width: 100%; min-width: 480px; display: block; }
+</style>
+</head>
+<body>
+<div class="frame">
+  <p class="eyebrow">Flowchart &middot; Ch. 13</p>
+  <h1>Pod Failure Signature Map</h1>
+
+  <svg viewBox="0 0 800 920" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch13-fig02-pod-failure-signature-map-title ch13-fig02-pod-failure-signature-map-desc">
+    <title id="ch13-fig02-pod-failure-signature-map-title">Pod Failure Signature Map</title>
+    <desc id="ch13-fig02-pod-failure-signature-map-desc">A decision tree beginning with whether the Pod object exists; the No branch leads to admission refusal, and the Yes branch splits by phase into Pending (not scheduled) and Running (containers Waiting), which fans out into image-pull, configuration, and image-policy failure reasons.</desc>
+
+    <defs>
+      <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"/></marker>
+      <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#B58B3E"/></marker>
+    </defs>
+
+    <rect width="100%" height="100%" fill="#F5EFE4"/>
+
+    <!-- ============ CONNECTORS ============ -->
+
+    <!-- Root -> NO box (accent / focal path) -->
+    <path d="M280,104 H172 Q164,104 164,112 V160" fill="none" stroke="#B58B3E" stroke-width="1.4" marker-end="url(#arrow-accent)"/>
+
+    <!-- Root -> Diamond2 (YES, straight vertical) -->
+    <line x1="440" y1="168" x2="440" y2="252" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+    <!-- Diamond2 -> Pending box -->
+    <path d="M308,308 V332 Q308,340 300,340 H176 Q168,340 168,348 V392" fill="none" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+    <!-- Diamond2 -> Running box (straight vertical) -->
+    <line x1="440" y1="364" x2="440" y2="448" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+    <!-- Running box -> Leaf 1 (ErrImagePull / ImagePullBackOff) -->
+    <path d="M370,560 V584 Q370,592 362,592 H136 Q128,592 128,600 V624" fill="none" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+    <!-- Running box -> Leaf 2 (CreateContainerConfigError) -->
+    <path d="M440,560 V584 Q440,592 432,592 H408 Q400,592 400,600 V624" fill="none" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+    <!-- Running box -> Leaf 3 (ImageInspectError / ErrImageNeverPull) -->
+    <path d="M510,560 V584 Q510,592 518,592 H664 Q672,592 672,600 V624" fill="none" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+    <!-- ============ CONNECTOR LABELS ============ -->
+
+    <rect x="210" y="84" width="32" height="12" rx="2" fill="#F5EFE4"/>
+    <text x="226" y="93" fill="#B58B3E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.06em">NO</text>
+
+    <rect x="448" y="204" width="48" height="12" rx="2" fill="#F5EFE4"/>
+    <text x="472" y="213" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.06em">YES</text>
+
+    <rect x="220" y="314" width="80" height="12" rx="2" fill="#F5EFE4"/>
+    <text x="260" y="323" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.04em">PENDING</text>
+
+    <rect x="448" y="400" width="80" height="12" rx="2" fill="#F5EFE4"/>
+    <text x="488" y="409" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.04em">RUNNING</text>
+
+    <!-- ============ NODES ============ -->
+
+    <!-- Root decision (FOCAL) -->
+    <polygon points="440,40 600,104 440,168 280,104" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"/>
+    <text x="440" y="100" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">Does the Pod</text>
+    <text x="440" y="120" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">object exist?</text>
+
+    <!-- NO outcome (FOCAL) -->
+    <rect x="40" y="160" width="248" height="112" rx="6" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"/>
+    <text x="164" y="196" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">Admission refused it.</text>
+    <text x="164" y="216" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif" text-anchor="middle">Read the CREATE error,</text>
+    <text x="164" y="236" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif" text-anchor="middle">not the Pod.</text>
+    <text x="164" y="258" fill="#8A8D90" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle">(Ch 12 &sect;6)</text>
+
+    <!-- Diamond2: phase question -->
+    <polygon points="440,252 572,308 440,364 308,308" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+    <text x="440" y="302" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">What's the</text>
+    <text x="440" y="322" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">phase?</text>
+
+    <!-- Pending outcome -->
+    <rect x="40" y="392" width="256" height="112" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+    <text x="168" y="428" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">Not scheduled yet.</text>
+    <text x="168" y="448" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif" text-anchor="middle">Read: describe &rarr; Events</text>
+    <text x="168" y="468" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif" text-anchor="middle">from the scheduler.</text>
+
+    <!-- Running outcome -->
+    <rect x="300" y="448" width="280" height="112" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+    <text x="440" y="474" fill="#8A8D90" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.02em">(containers Waiting)</text>
+    <text x="440" y="498" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">Scheduled; can't start.</text>
+    <text x="440" y="518" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif" text-anchor="middle">Read: container Reason</text>
+
+    <!-- Leaf 1: ErrImagePull / ImagePullBackOff -->
+    <rect x="20" y="624" width="216" height="176" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+    <text x="128" y="654" fill="#0B1E3B" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="middle">ErrImagePull /</text>
+    <text x="128" y="674" fill="#0B1E3B" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="middle">ImagePullBackOff</text>
+    <text x="128" y="694" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif" text-anchor="middle">Registry said no,</text>
+    <text x="128" y="714" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif" text-anchor="middle">or was never asked</text>
+    <text x="128" y="734" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif" text-anchor="middle">properly.</text>
+    <text x="128" y="766" fill="#8A8D90" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle">(Ch 2 &sect;3, &sect;6)</text>
+
+    <!-- Leaf 2: CreateContainerConfigError -->
+    <rect x="260" y="624" width="280" height="116" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+    <text x="400" y="654" fill="#0B1E3B" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="middle">CreateContainerConfigError</text>
+    <text x="400" y="674" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif" text-anchor="middle">Named ConfigMap or Secret</text>
+    <text x="400" y="694" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif" text-anchor="middle">doesn't exist.</text>
+    <text x="400" y="726" fill="#8A8D90" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle">(Ch 4 &sect;4)</text>
+
+    <!-- Leaf 3: ImageInspectError / ErrImageNeverPull -->
+    <rect x="564" y="624" width="216" height="176" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+    <text x="672" y="654" fill="#0B1E3B" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="middle">ImageInspectError /</text>
+    <text x="672" y="674" fill="#0B1E3B" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="middle">ErrImageNeverPull</text>
+    <text x="672" y="694" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif" text-anchor="middle">Image is broken, or</text>
+    <text x="672" y="714" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif" text-anchor="middle">policy Never with no</text>
+    <text x="672" y="734" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif" text-anchor="middle">local image.</text>
+    <text x="672" y="766" fill="#8A8D90" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle">(Ch 2 &sect;6)</text>
+
+    <!-- ============ LEGEND ============ -->
+    <line x1="20" y1="840" x2="780" y2="840" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+    <text x="20" y="856" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" letter-spacing="0.12em">LEGEND</text>
+
+    <polygon points="32,880 44,872 56,880 44,888" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+    <text x="68" y="884" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">Decision (diamond)</text>
+
+    <rect x="256" y="872" width="24" height="16" rx="4" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+    <text x="292" y="884" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">Diagnostic step</text>
+
+    <rect x="460" y="872" width="24" height="16" rx="4" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"/>
+    <text x="496" y="884" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">Start here &mdash; check this first</text>
+  </svg>
+</div>
+</body>
+</html>

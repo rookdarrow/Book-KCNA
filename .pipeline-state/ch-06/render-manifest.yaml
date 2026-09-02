@@ -1,0 +1,389 @@
+chapter: 6
+book: kcna
+generated: '2026-09-01T07:27:15+00:00'
+figures:
+- anchor_id: ch06-fig01-deployment-replicaset-pod-ownership
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch06-fig01-deployment-replicaset-pod-ownership.html
+  output_paths:
+    svg: figures/ch06-fig01-deployment-replicaset-pod-ownership.svg
+    png: figures/ch06-fig01-deployment-replicaset-pod-ownership.png
+    alt: figures/ch06-fig01-deployment-replicaset-pod-ownership.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: hierarchy_tree
+  figure_spec:
+    anchor_id: ch06-fig01-deployment-replicaset-pod-ownership
+    diagram_type: hierarchy_tree
+    source_ascii: "        ┌──────────────────────────────────────────────────┐\n\
+      \        │  Deployment  \"web\"                               │\n        │ \
+      \                                                 │\n        │    Pod template\
+      \   ──  what a replacement is       │\n        │    strategy       ──  how replacements\
+      \ are made   │\n        │    replicas: 3    ──  the count you write        \
+      \ │\n        └───────────────────────────┬──────────────────────┘\n        \
+      \                            │  owns · sets the count on\n                 \
+      \                   ▼\n        ┌──────────────────────────────────────────────────┐\n\
+      \        │  ReplicaSet  \"web-7d4b9c6f8\"                     │\n        │ \
+      \                                                 │\n        │    replicas:\
+      \ 3    ──  the count it enforces       │\n        │    selector       ──  how\
+      \ it finds its Pods       │\n        └───────┬───────────────┬───────────────┬──────────┘\n\
+      \                │ owns          │ owns          │ owns\n                ▼ \
+      \              ▼               ▼\n          ┌──────────┐    ┌──────────┐   \
+      \ ┌──────────┐\n          │   Pod    │    │   Pod    │    │   Pod    │\n   \
+      \       └──────────┘    └──────────┘    └──────────┘\n\n     intent flows DOWN\
+      \  ·  existence is reported back UP\n"
+    vendor_terms:
+    - Deployment
+    - ReplicaSet
+    - Pod
+    complexity_hint:
+      node_count: 5
+      edge_count: 4
+      label_count: 15
+    pedagogy:
+      part_18_criteria_met:
+      - spatial_structure
+      - fixed_point
+      learning_outcome: Trace the ownership chain from a Deployment down to a running
+        Pod and say which layer holds the template and which enforces the count
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: 'The ReplicaSet''s `replicas: 3 — the count it
+        enforces` row, the layer where the count is acted on'
+    accessibility:
+      alt_text_seed: 'Three-tier ownership diagram: a Deployment box holding a Pod
+        template, an update strategy and replicas 3 owns a ReplicaSet box holding
+        replicas 3 and a selector, which in turn owns three identical Pod boxes; intent
+        flows downward and existence is reported upward'
+    rendering_hints:
+      preferred_orientation: portrait
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Original redrawing of publicly documented Kubernetes object ownership;
+        no CNCF logo, icon or artwork reproduced.
+- anchor_id: ch06-fig02-rolling-update-maxsurge-maxunavailable
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch06-fig02-rolling-update-maxsurge-maxunavailable.html
+  output_paths:
+    svg: figures/ch06-fig02-rolling-update-maxsurge-maxunavailable.svg
+    png: figures/ch06-fig02-rolling-update-maxsurge-maxunavailable.png
+    alt: figures/ch06-fig02-rolling-update-maxsurge-maxunavailable.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: xy_chart
+  figure_spec:
+    anchor_id: ch06-fig02-rolling-update-maxsurge-maxunavailable
+    diagram_type: xy_chart
+    source_ascii: "  count\n        │\n   13   ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈\
+      \  CEILING on total\n        │                                          = desired\
+      \ + maxSurge (10 + 3)\n        │  old ███████████  ████████  █████  ██\n   10\
+      \   ─┼──────────────────────────────────────  DESIRED = 10\n        │  new ░░\
+      \       ░░░░░░    ░░░░░░░  ░░░░░░░░░░\n    8   ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈\
+      \  FLOOR on available\n        │                                          =\
+      \ desired − maxUnavailable (10 − 2)\n        └────────────────────────────────────────▶\
+      \  time\n\n      old + new  never rises above the CEILING\n      available \
+      \ never falls below the FLOOR\n"
+    vendor_terms: []
+    complexity_hint:
+      node_count: 5
+      edge_count: 1
+      label_count: 14
+    pedagogy:
+      part_18_criteria_met:
+      - quantitative_relationships
+      - temporal_structure
+      - distinguishing_alternatives
+      learning_outcome: Predict a rolling update's ceiling on total Pods and floor
+        on available Pods from maxSurge, maxUnavailable and the replica count
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: The paired dashed bound lines at 13 and 8, accented
+        identically to show they are two halves of one rule
+    accessibility:
+      alt_text_seed: 'Count-versus-time chart for a ten-replica rolling update: a
+        dashed ceiling line at thirteen marks desired plus maxSurge, a solid line
+        at ten marks the desired count, and a dashed floor line at eight marks desired
+        minus maxUnavailable; an old Pod population declines while a new population
+        rises, their total never crossing the ceiling and the available count never
+        falling below the floor'
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders: []
+      clearance: own_interpretation
+      notes: Abstract count-versus-time chart; API field names are factual identifiers,
+        no vendor IP depicted.
+- anchor_id: ch06-fig03-recreate-vs-rolling
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch06-fig03-recreate-vs-rolling.html
+  output_paths:
+    svg: figures/ch06-fig03-recreate-vs-rolling.svg
+    png: figures/ch06-fig03-recreate-vs-rolling.png
+    alt: figures/ch06-fig03-recreate-vs-rolling.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: xy_chart
+  figure_spec:
+    anchor_id: ch06-fig03-recreate-vs-rolling
+    diagram_type: xy_chart
+    source_ascii: "  Recreate\n    available  ██████████                    ██████████\n\
+      \                          └── ZERO AVAILABLE ─┘\n               ────────────────────────────────────────▶\
+      \ time\n                   all old killed        then new created\n\n\n  RollingUpdate\n\
+      \    available  ██████████▓▓▓▓▓▓▓▓▓░░░░░░░░░░░░██████████\n                \
+      \        never reaches zero\n               ────────────────────────────────────────▶\
+      \ time\n                   old and new overlap throughout\n"
+    vendor_terms: []
+    complexity_hint:
+      node_count: 4
+      edge_count: 2
+      label_count: 11
+    pedagogy:
+      part_18_criteria_met:
+      - distinguishing_alternatives
+      - temporal_structure
+      learning_outcome: Explain why Recreate exists, what it costs, and when choosing
+        it deliberately is correct
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: The bracketed ZERO AVAILABLE gap in the Recreate
+        panel
+    accessibility:
+      alt_text_seed: 'Two stacked availability timelines: the Recreate strategy shows
+        a solid bar, then a bracketed gap labelled zero available while all old Pods
+        are killed before new ones are created, then a solid bar again; the RollingUpdate
+        strategy shows an unbroken bar whose fill shifts from old to new through an
+        overlapping middle region, never reaching zero'
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders: []
+      clearance: own_interpretation
+      notes: Abstract availability timelines; strategy names are factual API values,
+        no vendor IP depicted.
+- anchor_id: ch06-fig05-statefulset-vs-deployment-identity
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch06-fig05-statefulset-vs-deployment-identity.html
+  output_paths:
+    svg: figures/ch06-fig05-statefulset-vs-deployment-identity.svg
+    png: figures/ch06-fig05-statefulset-vs-deployment-identity.png
+    alt: figures/ch06-fig05-statefulset-vs-deployment-identity.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: component_diagram
+  figure_spec:
+    anchor_id: ch06-fig05-statefulset-vs-deployment-identity
+    diagram_type: component_diagram
+    source_ascii: "  Deployment — Pods are interchangeable\n\n     web-7d4b-x9k2 \
+      \     web-7d4b-mn4p      web-7d4b-qq81\n                             ✗ dies\n\
+      \                               │\n                               └──▶  web-7d4b-z7rt\n\
+      \                                     new name, new UID.\n                 \
+      \                    Nothing depended on which one it was.\n\n\n  StatefulSet\
+      \ — identity is sticky, and the storage belongs to the identity\n\n     db-0\
+      \ ──┐           db-1 ──┐           db-2 ──┐\n            │                 \
+      \ │                  │\n        [ vol db-0 ]       [ vol db-1 ]       [ vol\
+      \ db-2 ]\n       ✗ dies  ▲\n         │     │\n         └──▶ db-0 reattaches\
+      \ here\n              same name, same volume.\n              The identity outlived\
+      \ the Pod.\n"
+    vendor_terms:
+    - Deployment
+    - StatefulSet
+    - Pod
+    complexity_hint:
+      node_count: 11
+      edge_count: 5
+      label_count: 18
+    pedagogy:
+      part_18_criteria_met:
+      - distinguishing_alternatives
+      - spatial_structure
+      - fixed_point
+      learning_outcome: Distinguish a StatefulSet from a Deployment by whether the
+        Pods are interchangeable, not by whether the application writes to disk
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: The reattachment arrow returning db-0 to its own
+        volume, showing the identity outlived the Pod
+    accessibility:
+      alt_text_seed: 'Two-panel comparison: in the Deployment panel three hash-named
+        Pods sit side by side, one dies and is replaced by a Pod with a different
+        name and UID, with no storage shown; in the StatefulSet panel three Pods named
+        db-0, db-1 and db-2 each attach to their own volume, and when db-0 dies the
+        replacement takes the same name and reattaches to the same volume'
+    rendering_hints:
+      preferred_orientation: portrait
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Original redrawing of documented StatefulSet identity semantics; no CNCF
+        logo, icon or artwork reproduced.
+- anchor_id: ch06-fig04-workload-resource-decision-tree
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch06-fig04-workload-resource-decision-tree.html
+  output_paths:
+    svg: figures/ch06-fig04-workload-resource-decision-tree.svg
+    png: figures/ch06-fig04-workload-resource-decision-tree.png
+    alt: figures/ch06-fig04-workload-resource-decision-tree.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: flowchart
+  figure_spec:
+    anchor_id: ch06-fig04-workload-resource-decision-tree
+    diagram_type: flowchart
+    source_ascii: "                        Does the work END?\n                  \
+      \  ┌──────────┴──────────┐\n                  yes                     no\n \
+      \                  │                       │\n        Does it repeat on    \
+      \      Must it run on\n          a schedule?               EVERY node?\n   \
+      \     ┌─────┴─────┐              ┌─────┴─────┐\n      yes           no     \
+      \      yes           no\n       │             │            │             │\n\
+      \   CronJob         Job        DaemonSet   Are the Pods\n                  \
+      \                        INTERCHANGEABLE?\n                                \
+      \          ┌─────┴─────┐\n                                        yes      \
+      \     no\n                                         │             │\n       \
+      \                             Deployment    StatefulSet\n                  \
+      \                (which manages\n                                   a ReplicaSet)\n"
+    vendor_terms:
+    - Deployment
+    - StatefulSet
+    - DaemonSet
+    - Job
+    - CronJob
+    - ReplicaSet
+    complexity_hint:
+      node_count: 9
+      edge_count: 8
+      label_count: 18
+    pedagogy:
+      part_18_criteria_met:
+      - distinguishing_alternatives
+      - fixed_point
+      - vendor_taxonomy
+      learning_outcome: Pick the correct workload resource by asking about the shape
+        of the work before asking about the nature of the application
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: The root decision node 'Does the work END?', whose
+        position ahead of every other question is the figure's argument
+    accessibility:
+      alt_text_seed: 'Decision tree for choosing a Kubernetes workload resource: if
+        the work ends, ask whether it repeats on a schedule, giving CronJob for yes
+        and Job for no; if the work does not end, ask whether it must run on every
+        node, giving DaemonSet for yes, and otherwise ask whether the Pods are interchangeable,
+        giving Deployment for yes and StatefulSet for no'
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Original decision aid over documented Kubernetes workload taxonomy; no
+        CNCF logo, icon or artwork reproduced.
+- anchor_id: ch06-zenith-control-loop-instantiated
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch06-zenith-control-loop-instantiated.html
+  output_paths:
+    svg: figures/ch06-zenith-control-loop-instantiated.svg
+    png: figures/ch06-zenith-control-loop-instantiated.png
+    alt: figures/ch06-zenith-control-loop-instantiated.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: flowchart
+  figure_spec:
+    anchor_id: ch06-zenith-control-loop-instantiated
+    diagram_type: flowchart
+    source_ascii: "                    ┌───────────────────────────┐\n           \
+      \         │      DESIRED STATE        │\n                    └─────────────┬─────────────┘\n\
+      \                                  │\n                               compare\n\
+      \                                  │\n                    ┌─────────────▼─────────────┐\n\
+      \                    │      CURRENT STATE        │\n                    └─────────────┬─────────────┘\n\
+      \                                  │\n                          act on the gap\n\
+      \                                  │\n                                  └──────▶\
+      \ (and again, forever)\n\n\n   Change only what you plug into DESIRED STATE,\
+      \ and you have\n   named every controller in this chapter:\n\n        a number\
+      \ ............................  ReplicaSet\n        a template + an update policy\
+      \ .......  Deployment\n        one per matching node ...............  DaemonSet\n\
+      \        completion ..........................  Job\n        a Job existing\
+      \ at each scheduled time  CronJob\n        whatever its author decided .........\
+      \  your operator\n"
+    vendor_terms:
+    - ReplicaSet
+    - Deployment
+    - DaemonSet
+    - Job
+    - CronJob
+    complexity_hint:
+      node_count: 2
+      edge_count: 3
+      label_count: 14
+    pedagogy:
+      part_18_criteria_met:
+      - zenith
+      - spatial_structure
+      - vendor_taxonomy
+      learning_outcome: Recognize that all six workload controllers are one control
+        loop differing only in desired state, which is the precursor to Chapter 15's
+        GitOps synthesis
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: The return arrow closing the cycle, labelled 'and
+        again, forever'
+    accessibility:
+      alt_text_seed: 'A single control loop drawn once: a desired state box compares
+        down to a current state box, an act-on-the-gap step follows, and an arrow
+        returns to the desired state forever; beneath it a substitution list pairs
+        six desired states with their controllers — a number with ReplicaSet, a template
+        plus update policy with Deployment, one per matching node with DaemonSet,
+        completion with Job, a Job at each scheduled time with CronJob, and whatever
+        its author decided with your operator'
+    rendering_hints:
+      preferred_orientation: portrait
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Original synthesis diagram over documented controller semantics; no CNCF
+        logo, icon or artwork reproduced.

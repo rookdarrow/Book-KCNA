@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Additive NetworkPolicy Selectors</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;700&family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Fira+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --color-paper:  #F5EFE4;
+    --color-ink:    #0B1E3B;
+    --color-muted:  #1F4A4E;
+    --color-accent: #B58B3E;
+    --font-sans:    'Fira Sans', sans-serif;
+    --font-serif:   'Roboto Slab', serif;
+    --font-mono:    'Fira Mono', monospace;
+  }
+  body {
+    font-family: var(--font-sans);
+    background: var(--color-paper);
+    color: var(--color-ink);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1.5rem;
+  }
+  .frame { max-width: 480px; width: 100%; }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    margin-bottom: 0.5rem;
+  }
+  h1 {
+    font-family: var(--font-serif);
+    font-size: 1.75rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+    color: var(--color-ink);
+    margin-bottom: 1.5rem;
+  }
+  svg { width: 100%; height: auto; display: block; }
+</style>
+</head>
+<body>
+<div class="frame">
+  <p class="eyebrow">Concept map &middot; Kubernetes NetworkPolicy</p>
+  <h1>Additive NetworkPolicy Selectors</h1>
+
+  <svg viewBox="0 0 600 800" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch10-fig04-networkpolicy-additive-selectors-title ch10-fig04-networkpolicy-additive-selectors-desc">
+    <title id="ch10-fig04-networkpolicy-additive-selectors-title">Additive NetworkPolicy selectors forming one permitted set</title>
+    <desc id="ch10-fig04-networkpolicy-additive-selectors-desc">Concept map showing two NetworkPolicy stanzas, A and B, both selecting Pods labelled role=db, one granting ingress from app=web and the other from app=batch. Both converge on the same Pod, whose permissions combine additively into one permitted set containing app=web plus app=batch. A separate app=other box stays unconnected, because it was simply never granted, not because it was denied.</desc>
+    <defs>
+      <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"/>
+      </marker>
+      <marker id="arrow-ink" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#0B1E3B"/>
+      </marker>
+      <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#B58B3E"/>
+      </marker>
+      <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"/>
+      </marker>
+    </defs>
+
+    <rect width="100%" height="100%" fill="#F5EFE4"/>
+
+    <!-- ===== Connectors (drawn before nodes) ===== -->
+
+    <!-- Policy A -> Pod : podSelector (heavy, navy) -->
+    <path d="M156,160 V172 Q156,180 164,180 H260 Q268,180 268,188 V200"
+          fill="none" stroke="#0B1E3B" stroke-width="2.4" marker-end="url(#arrow-ink)"/>
+
+    <!-- Policy B -> Pod : podSelector (heavy, navy) -->
+    <path d="M444,160 V172 Q444,180 436,180 H340 Q332,180 332,188 V200"
+          fill="none" stroke="#0B1E3B" stroke-width="2.4" marker-end="url(#arrow-ink)"/>
+
+    <!-- Pod -> Permitted Set : peer selector (thin, teal) -->
+    <line x1="300" y1="296" x2="300" y2="336"
+          stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+    <!-- ===== Policy A ===== -->
+    <rect x="32" y="40" width="248" height="120" rx="6" fill="#F5EFE4"/>
+    <rect x="32" y="40" width="248" height="120" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+    <rect x="44" y="52" width="176" height="24" rx="2" fill="transparent" stroke="#0B1E3B" stroke-opacity="0.40" stroke-width="0.8"/>
+    <text x="132" y="68" fill="#0B1E3B" fill-opacity="0.8" font-size="14" font-family="var(--font-mono)" text-anchor="middle" letter-spacing="0.08em">NETWORKPOLICY</text>
+    <text x="44" y="96" fill="#0B1E3B" font-size="16" font-weight="500" font-family="var(--font-sans)">Policy A</text>
+    <text x="44" y="116" fill="#1F4A4E" font-size="14" font-family="var(--font-mono)">podSelector: role=db</text>
+    <text x="44" y="136" fill="#1F4A4E" font-size="14" font-family="var(--font-mono)">ingress from: app=web</text>
+
+    <!-- ===== Policy B ===== -->
+    <rect x="320" y="40" width="248" height="120" rx="6" fill="#F5EFE4"/>
+    <rect x="320" y="40" width="248" height="120" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+    <rect x="332" y="52" width="176" height="24" rx="2" fill="transparent" stroke="#0B1E3B" stroke-opacity="0.40" stroke-width="0.8"/>
+    <text x="420" y="68" fill="#0B1E3B" fill-opacity="0.8" font-size="14" font-family="var(--font-mono)" text-anchor="middle" letter-spacing="0.08em">NETWORKPOLICY</text>
+    <text x="332" y="96" fill="#0B1E3B" font-size="16" font-weight="500" font-family="var(--font-sans)">Policy B</text>
+    <text x="332" y="116" fill="#1F4A4E" font-size="14" font-family="var(--font-mono)">podSelector: role=db</text>
+    <text x="332" y="136" fill="#1F4A4E" font-size="14" font-family="var(--font-mono)">ingress from: app=batch</text>
+
+    <!-- ===== Pod ===== -->
+    <rect x="220" y="200" width="160" height="96" rx="6" fill="#F5EFE4"/>
+    <rect x="220" y="200" width="160" height="96" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+    <rect x="232" y="212" width="56" height="24" rx="2" fill="transparent" stroke="#0B1E3B" stroke-opacity="0.40" stroke-width="0.8"/>
+    <text x="260" y="228" fill="#0B1E3B" fill-opacity="0.8" font-size="14" font-family="var(--font-mono)" text-anchor="middle" letter-spacing="0.08em">POD</text>
+    <text x="300" y="256" fill="#0B1E3B" font-size="16" font-weight="500" font-family="var(--font-sans)" text-anchor="middle">Pod</text>
+    <text x="300" y="276" fill="#1F4A4E" font-size="14" font-family="var(--font-mono)" text-anchor="middle">role=db</text>
+
+    <!-- ===== Permitted Set (focal) ===== -->
+    <rect x="140" y="336" width="320" height="160" rx="8" fill="#F5EFE4"/>
+    <rect x="140" y="336" width="320" height="160" rx="8" fill="#B58B3E" fill-opacity="0.10" stroke="#B58B3E" stroke-width="1.2"/>
+    <text x="300" y="368" fill="#B58B3E" font-size="14" font-weight="500" font-family="var(--font-mono)" text-anchor="middle" letter-spacing="0.12em">PERMITTED SET</text>
+    <text x="300" y="400" fill="#0B1E3B" font-size="14" font-family="var(--font-mono)" text-anchor="middle">app=web</text>
+    <text x="300" y="424" fill="#1F4A4E" font-size="14" font-family="var(--font-mono)" text-anchor="middle">+</text>
+    <text x="300" y="448" fill="#0B1E3B" font-size="14" font-family="var(--font-mono)" text-anchor="middle">app=batch</text>
+    <text x="300" y="480" fill="#0B1E3B" font-size="16" font-style="italic" font-family="var(--font-sans)" text-anchor="middle">(one set, two grants)</text>
+
+    <!-- ===== app=other (excluded, unconnected) ===== -->
+    <rect x="180" y="536" width="240" height="80" rx="6" fill="#F5EFE4"/>
+    <rect x="180" y="536" width="240" height="80" rx="6" fill="#0B1E3B" fill-opacity="0.02" stroke="#8A8D90" stroke-width="1" stroke-dasharray="4,3"/>
+    <rect x="232" y="548" width="136" height="24" rx="2" fill="transparent" stroke="#8A8D90" stroke-width="0.8"/>
+    <text x="300" y="564" fill="#1F4A4E" font-size="14" font-family="var(--font-mono)" text-anchor="middle" letter-spacing="0.06em">NOT GRANTED</text>
+    <text x="300" y="596" fill="#0B1E3B" font-size="14" font-family="var(--font-mono)" text-anchor="middle">app=other</text>
+
+    <!-- Callout: absence, not denial -->
+    <text x="300" y="640" fill="#0B1E3B" font-size="16" font-style="italic" font-family="var(--font-sans)" text-anchor="middle">not denied &mdash;</text>
+    <text x="300" y="664" fill="#0B1E3B" font-size="16" font-style="italic" font-family="var(--font-sans)" text-anchor="middle">simply never granted</text>
+
+    <!-- ===== Legend ===== -->
+    <line x1="32" y1="696" x2="568" y2="696" stroke="#0B1E3B" stroke-opacity="0.12" stroke-width="0.8"/>
+    <text x="32" y="716" fill="#1F4A4E" font-size="14" font-weight="500" font-family="var(--font-mono)" letter-spacing="0.14em">LEGEND</text>
+
+    <line x1="32" y1="736" x2="64" y2="736" stroke="#0B1E3B" stroke-width="2.4" marker-end="url(#arrow-ink)"/>
+    <text x="76" y="740" fill="#0B1E3B" font-size="14" font-family="var(--font-mono)">podSelector &mdash; chooses the SUBJECT</text>
+
+    <line x1="32" y1="764" x2="64" y2="764" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
+    <text x="76" y="768" fill="#0B1E3B" font-size="14" font-family="var(--font-mono)">peer selector &mdash; chooses WHO MAY CONNECT</text>
+  </svg>
+</div>
+</body>
+</html>

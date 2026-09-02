@@ -1,0 +1,472 @@
+chapter: 13
+book: kcna
+generated: '2026-09-01T13:58:39+00:00'
+figures:
+- anchor_id: ch13-fig01-two-audience-split
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch13-fig01-two-audience-split.html
+  output_paths:
+    svg: figures/ch13-fig01-two-audience-split.svg
+    png: figures/ch13-fig01-two-audience-split.png
+    alt: figures/ch13-fig01-two-audience-split.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: concept_map
+  figure_spec:
+    anchor_id: ch13-fig01-two-audience-split
+    diagram_type: concept_map
+    source_ascii: "     PLATFORM SCOPE                    APPLICATION SCOPE\n    \
+      \ (this chapter)                    (Chapter 16)\n\nDid the Pod get scheduled?\
+      \        Is the process doing the right thing?\nDid the image pull?        \
+      \       Is it reading the right config?\nDid the container start?          Is\
+      \ it reaching its dependencies?\nIs the node healthy?              Is it returning\
+      \ correct results?\nDid something kill it?            Is it selected by its\
+      \ Service?\n\n     │                                         ▲\n     │     \
+      \ \"the Pod is Running and Ready,     │\n     └──────  and the behavior is still\
+      \  ──────┘\n                    wrong\"\n"
+    vendor_terms: []
+    complexity_hint:
+      node_count: 12
+      edge_count: 1
+      label_count: 13
+    pedagogy:
+      part_18_criteria_met:
+      - distinguishing_alternatives
+      - spatial_structure
+      learning_outcome: Decide whether a failure is the platform's problem or the
+        application's before spending time on either
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: the one-way handoff arrow and its 'Running and
+        Ready, and still wrong' label
+    accessibility:
+      alt_text_seed: Two columns of diagnostic questions side by side, platform scope
+        on the left and application scope on the right, joined by a single arrow that
+        runs only from left to right, labelled with the condition that the Pod is
+        Running and Ready and the behavior is still wrong
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders: []
+      clearance: own_interpretation
+      notes: Generic diagnostic questions; names API object kinds only, reproduces
+        no vendor mark, logo, or icon.
+- anchor_id: ch13-fig02-pod-failure-signature-map
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch13-fig02-pod-failure-signature-map.html
+  output_paths:
+    svg: figures/ch13-fig02-pod-failure-signature-map.svg
+    png: figures/ch13-fig02-pod-failure-signature-map.png
+    alt: figures/ch13-fig02-pod-failure-signature-map.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: flowchart
+  figure_spec:
+    anchor_id: ch13-fig02-pod-failure-signature-map
+    diagram_type: flowchart
+    source_ascii: "                Does the Pod object exist?\n                  \
+      \        │\n          ┌───────────────┴───────────────┐\n          NO      \
+      \                        YES\n          │                                │\n\
+      Admission refused it.                 What's the phase?\nRead the CREATE error,\
+      \                     │\nnot the Pod.                    ┌──────────┴──────────┐\n\
+      (Ch 12 §6)                   Pending                Running\n              \
+      \                  │                  (containers Waiting)\n               \
+      \       Not scheduled yet.                 │\n                      Read: describe\
+      \ → Events    Scheduled; can't start.\n                      from the scheduler.\
+      \        Read: container Reason\n                                          \
+      \              │\n                          ┌─────────────────────────────┼────────────────────┐\n\
+      \                 ErrImagePull /                CreateContainerConfigError \
+      \   ImageInspectError /\n                 ImagePullBackOff                 \
+      \       │                   ErrImageNeverPull\n                          │ \
+      \                   Named ConfigMap or Secret            │\n               \
+      \ Registry said no, or               doesn't exist.            Image is broken,\
+      \ or\n                was never asked properly.          (Ch 4 §4)         \
+      \        policy Never with no\n                (Ch 2 §3, §6)               \
+      \                                 local image. (Ch 2 §6)\n"
+    vendor_terms:
+    - kubectl
+    - configmap
+    - secret
+    complexity_hint:
+      node_count: 11
+      edge_count: 10
+      label_count: 16
+    pedagogy:
+      part_18_criteria_met:
+      - spatial_structure
+      - distinguishing_alternatives
+      learning_outcome: Route an unfamiliar never-started failure to the correct cause
+        family by asking two questions in order
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: the root node 'Does the Pod object exist?' and
+        its NO branch
+    accessibility:
+      alt_text_seed: A decision tree beginning with the question of whether the Pod
+        object exists; the No branch leads to admission refusal, and the Yes branch
+        splits by phase into Pending, meaning not scheduled, and Running with containers
+        waiting, which fans out into the image-pull, configuration, and image-policy
+        failure reasons
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Kubernetes container-state reason strings and object kinds, redrawn as
+        an original decision tree; no CNCF artwork reproduced.
+- anchor_id: ch13-fig03-phase-before-logs-flow
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch13-fig03-phase-before-logs-flow.html
+  output_paths:
+    svg: figures/ch13-fig03-phase-before-logs-flow.svg
+    png: figures/ch13-fig03-phase-before-logs-flow.png
+    alt: figures/ch13-fig03-phase-before-logs-flow.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: flowchart
+  figure_spec:
+    anchor_id: ch13-fig03-phase-before-logs-flow
+    diagram_type: flowchart
+    source_ascii: "  SCOPE      kubectl config current-context      Right cluster?\
+      \ Right namespace?\n    │\n    ▼\n  PHASE      kubectl get pods            \
+      \        Pending? Running? Restarts > 0?\n    │        kubectl get pod <name>\
+      \ -o wide      Which node? Which IP?\n    ▼\nCONDITIONS   kubectl describe pod\
+      \ <name>         Container state + Reason.\n    │        kubectl describe node\
+      \ <node>        Node conditions, if suspect.\n    ▼\n  EVENTS     kubectl events\
+      \ --for pod/<name>     What did the components SAY?\n    │        kubectl get\
+      \ events --sort-by=...    Chronology, when object unknown.\n    ▼\n   LOGS \
+      \     kubectl logs <name> -c <container>  Only meaningful once you know\n  \
+      \           kubectl logs <name> --previous      the container actually ran.\n"
+    vendor_terms:
+    - kubectl
+    complexity_hint:
+      node_count: 5
+      edge_count: 4
+      label_count: 15
+    pedagogy:
+      part_18_criteria_met:
+      - temporal_structure
+      - spatial_structure
+      learning_outcome: Run the triage commands in the order that narrows the problem,
+        with logs last
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: the LOGS stage in final position, with its 'only
+        meaningful once you know the container ran' caption
+    accessibility:
+      alt_text_seed: A five-stage vertical sequence — scope, phase, conditions, events,
+        logs — each stage listing its kubectl commands and the question those commands
+        answer, with logs in the final position
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: kubectl command invocations and object kinds; original layout, no CNCF
+        artwork.
+- anchor_id: ch13-fig05-oomkilled-vs-evicted
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch13-fig05-oomkilled-vs-evicted.html
+  output_paths:
+    svg: figures/ch13-fig05-oomkilled-vs-evicted.svg
+    png: figures/ch13-fig05-oomkilled-vs-evicted.png
+    alt: figures/ch13-fig05-oomkilled-vs-evicted.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: flowchart
+  figure_spec:
+    anchor_id: ch13-fig05-oomkilled-vs-evicted
+    diagram_type: flowchart
+    source_ascii: "      OOMKilled                              Evicted\n      ─────────\
+      \                              ───────\n\nContainer exceeds ITS OWN limit  \
+      \      NODE runs low on a resource\n            │                          \
+      \          │\n            ▼                                    ▼\nKernel cgroup\
+      \ enforcement kills        kubelet chooses victims by\nthat one process    \
+      \                   QoS class and terminates Pods\n            │           \
+      \                         │\n            ▼                                 \
+      \   ▼\nContainer state: Terminated            Pod phase: Failed\nReason: OOMKilled\
+      \                      Reason: Evicted\n            │                      \
+      \              │\n            ▼                                    ▼\nRestarted\
+      \ IN PLACE on the              Pod is GONE from this node.\nsame node, per restartPolicy.\
+      \          A controller creates a\nRestart count increments.              REPLACEMENT\
+      \ elsewhere.\n            │                                    │\n         \
+      \   ▼                                    ▼\nScope: ONE container           \
+      \        Scope: THE WHOLE POD\nTrigger: this Pod's own limit          Trigger:\
+      \ the node's pressure\n"
+    vendor_terms:
+    - kubelet
+    complexity_hint:
+      node_count: 10
+      edge_count: 8
+      label_count: 12
+    pedagogy:
+      part_18_criteria_met:
+      - distinguishing_alternatives
+      - spatial_structure
+      learning_outcome: Distinguish OOMKilled from Evicted by killer, scope, trigger,
+        and outcome
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: 'the final row: Scope one container versus the
+        whole Pod, Trigger own limit versus node pressure'
+    accessibility:
+      alt_text_seed: 'Two parallel vertical chains compared row by row: OOMKilled,
+        where a container exceeds its own limit and the kernel kills it and the kubelet
+        restarts it in place, against Evicted, where the node runs low on a resource
+        and the kubelet terminates the whole Pod so a controller replaces it elsewhere'
+    rendering_hints:
+      preferred_orientation: portrait
+      grayscale_critical: true
+      max_width_px: 960
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Kubernetes reason strings and kubelet behavior, redrawn as an original
+        comparison; no CNCF artwork.
+- anchor_id: ch13-fig06-diagnostic-layer-stack
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch13-fig06-diagnostic-layer-stack.html
+  output_paths:
+    svg: figures/ch13-fig06-diagnostic-layer-stack.svg
+    png: figures/ch13-fig06-diagnostic-layer-stack.png
+    alt: figures/ch13-fig06-diagnostic-layer-stack.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: component_diagram
+  figure_spec:
+    anchor_id: ch13-fig06-diagnostic-layer-stack
+    diagram_type: component_diagram
+    source_ascii: '┌──────────────────────────────────────────────┐
+
+      │  kubectl                          [terminal] │   Everything above this
+
+      ├──────────────────────────────────────────────┤   line is the cluster''s
+
+      │  kube-apiserver                     [server] │   RECORDED view of itself.
+
+      ├──────────────────────────────────────────────┤
+
+      │  kubelet                             [agent] │
+
+      ═══════════════════════════════════════════════   ◄── the API boundary
+
+      │  CRI                              [contract] │
+
+      ├──────────────────────────────────────────────┤   crictl attaches HERE,
+
+      │  containerd / CRI-O               [runtime]  │ ◄── to the runtime directly,
+
+      └──────────────────────────────────────────────┘   bypassing everything above.
+
+      '
+    vendor_terms:
+    - kubectl
+    - kube-apiserver
+    - kubelet
+    - cri
+    - containerd
+    - cri-o
+    - crictl
+    complexity_hint:
+      node_count: 5
+      edge_count: 2
+      label_count: 8
+    pedagogy:
+      part_18_criteria_met:
+      - spatial_structure
+      - distinguishing_alternatives
+      learning_outcome: Recognize when to drop below the Kubernetes API to crictl,
+        and what question that answers
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: the doubled API-boundary rule between kubelet and
+        CRI
+    accessibility:
+      alt_text_seed: A five-layer stack from kubectl at the top through kube-apiserver
+        and kubelet, then a heavy rule marking the API boundary, then CRI and the
+        containerd or CRI-O runtime at the bottom, annotated to show that everything
+        above the boundary is the cluster's recorded view and that crictl attaches
+        directly to the runtime below it
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Kubernetes and CNCF project names (containerd, CRI-O, crictl) as text
+        labels only; layering redrawn in house style, no vendor logos.
+- anchor_id: ch13-fig04-metrics-pipeline-and-metrics-server
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch13-fig04-metrics-pipeline-and-metrics-server.html
+  output_paths:
+    svg: figures/ch13-fig04-metrics-pipeline-and-metrics-server.svg
+    png: figures/ch13-fig04-metrics-pipeline-and-metrics-server.png
+    alt: figures/ch13-fig04-metrics-pipeline-and-metrics-server.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: data_flow
+  figure_spec:
+    anchor_id: ch13-fig04-metrics-pipeline-and-metrics-server
+    diagram_type: data_flow
+    source_ascii: "┌───────────┐   ┌──────────┐   ┌─────────┐\n│ container │──▶│ cAdvisor\
+      \ │──▶│ kubelet │   in the kubelet binary,\n│  runtime  │   │          │   │\
+      \         │   on EVERY node, always present\n└───────────┘   └──────────┘  \
+      \ └────┬────┘\n                                    │  /metrics/resource\n  \
+      \                                  ▼\n                       ┌ ─ ─ ─ ─ ─ ─ ─\
+      \ ─ ─ ─ ┐\n                          metrics-server        ◄── NOT INSTALLED\
+      \ BY DEFAULT.\n                       │  (cluster addon)     │      This gap\
+      \ is the whole\n                       └ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ┘      reason `kubectl\
+      \ top` fails.\n                                    │  metrics.k8s.io\n     \
+      \                               ▼\n                            ┌───────────────┐\n\
+      \                            │  API server   │\n                           \
+      \ └───┬───────┬───┘\n                                │       │\n           \
+      \             ┌───────▼──┐  ┌─▼──────────┐\n                        │   HPA\
+      \    │  │kubectl top │\n                        └──────────┘  └────────────┘\n"
+    vendor_terms:
+    - kubelet
+    - cadvisor
+    - metrics-server
+    - kube-apiserver
+    - kubectl
+    - hpa
+    complexity_hint:
+      node_count: 7
+      edge_count: 6
+      label_count: 10
+    pedagogy:
+      part_18_criteria_met:
+      - spatial_structure
+      - fixed_point
+      learning_outcome: 'Explain why kubectl top fails on a stock cluster: every stage
+        exists except the metrics-server addon'
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: the dashed metrics-server box marked NOT INSTALLED
+        BY DEFAULT
+    accessibility:
+      alt_text_seed: A metrics pipeline flowing from the container runtime through
+        cAdvisor to the kubelet, then over the slash metrics slash resource endpoint
+        to a metrics-server box drawn with a dashed border and marked not installed
+        by default, then over metrics.k8s.io to the API server, which serves both
+        the horizontal pod autoscaler and kubectl top
+    rendering_hints:
+      preferred_orientation: portrait
+      grayscale_critical: true
+      max_width_px: 900
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: CNCF component names as text labels; pipeline redrawn in house style
+        from the documented resource metrics pipeline, no CNCF artwork reproduced.
+- anchor_id: ch13-zenith-read-the-phase-first
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch13-zenith-read-the-phase-first.html
+  output_paths:
+    svg: figures/ch13-zenith-read-the-phase-first.svg
+    png: figures/ch13-zenith-read-the-phase-first.png
+    alt: figures/ch13-zenith-read-the-phase-first.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: hierarchy_tree
+  figure_spec:
+    anchor_id: ch13-zenith-read-the-phase-first
+    diagram_type: hierarchy_tree
+    source_ascii: "                     ONE KEY:  the phase\n                    \
+      \       │\n   ┌───────────────────────┼───────────────────────────────┐\n  \
+      \ │                       │                               │\nno Pod object \
+      \         Pending                    scheduled to a node\n   │             \
+      \          │                               │\n   ▼                       ▼ \
+      \                  ┌───────────┴───────────┐\nthe ADMISSION         the SCHEDULER\
+      \        containers            containers\ngate stopped it       never placed\
+      \ it      never ran             ran, then ended\n   │                      \
+      \ │                   │                       │\n   ▼                      \
+      \ ▼                   ▼                       ▼\nread the CREATE       read\
+      \ the             the KUBELET           the KUBELET or\nresponse           \
+      \   SCHEDULER's          couldn't start it     the KERNEL ended it\n(Ch 12 §6)\
+      \            events                  │                       │\n           \
+      \           (Ch 7 §2, §4)           ▼                       ▼\n            \
+      \                             ErrImagePull            CrashLoopBackOff\n   \
+      \                                      ImagePullBackOff        OOMKilled\n \
+      \                                        ImageInspectError       Evicted\n \
+      \                                        ErrImageNeverPull       probe failures\n\
+      \                                         CreateContainerConfigError\n\n   \
+      \          Nine signatures. One lookup. The key is always the phase.\n"
+    vendor_terms:
+    - kubelet
+    complexity_hint:
+      node_count: 13
+      edge_count: 12
+      label_count: 20
+    pedagogy:
+      part_18_criteria_met:
+      - zenith
+      - spatial_structure
+      - fixed_point
+      learning_outcome: Collapse nine failure signatures into a single lookup keyed
+        on the Pod phase, and name the component that owns each stage
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: 'the root node ''ONE KEY: the phase'''
+    accessibility:
+      alt_text_seed: A tree rooted in one key, the Pod phase, branching to four outcomes
+        — no Pod object stopped at admission, Pending never placed by the scheduler,
+        scheduled but containers never ran, and scheduled with containers that ran
+        and then ended — each branch naming the component that owns it before listing
+        its failure signatures, nine in total
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Kubernetes container-state and phase reason strings as text; the tree
+        structure and the component-ownership rank are original to this book.

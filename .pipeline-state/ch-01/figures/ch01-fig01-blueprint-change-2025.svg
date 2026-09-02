@@ -1,0 +1,103 @@
+<svg viewBox="0 0 560 744" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch01-fig01-blueprint-change-2025-title ch01-fig01-blueprint-change-2025-desc" width="640" height="851">
+      <title id="ch01-fig01-blueprint-change-2025-title">KCNA blueprint change: five domains to four (2025)</title>
+      <desc id="ch01-fig01-blueprint-change-2025-desc">Two-column comparison of the retired five-domain KCNA blueprint and the current four-domain blueprint, showing Kubernetes Fundamentals move from 46% to 44%, Container Orchestration from 22% to 28%, and Cloud Native Application Delivery from 8% to 16%, while Cloud Native Architecture at 16% and Cloud Native Observability at 8% merge into a single Cloud Native Architecture domain at 12%, with observability folded in as a competency rather than remaining a standalone domain.</desc>
+      <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon></marker>
+        <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#B58B3E"></polygon></marker>
+        <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon></marker>
+      </defs>
+
+      <rect width="100%" height="100%" fill="#F5EFE4"></rect>
+
+      <!-- Column headers -->
+      <text x="32" y="28" fill="#1F4A4E" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.12em">RETIRED · 5 DOMAINS</text>
+      <text x="328" y="28" fill="#0B1E3B" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.12em">CURRENT · 4 DOMAINS</text>
+      <line x1="32" y1="40" x2="232" y2="40" stroke="#8A8D90" stroke-width="0.8"></line>
+      <line x1="328" y1="40" x2="528" y2="40" stroke="#8A8D90" stroke-width="0.8"></line>
+
+      <!-- Connectors (drawn before nodes) -->
+      <line x1="232" y1="112" x2="328" y2="112" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+      <line x1="232" y1="240" x2="328" y2="240" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+      <line x1="232" y1="368" x2="328" y2="368" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+
+      <!-- Architecture (retired) -> merge dot, entering top -->
+      <path d="M232,496 H272 Q280,496 280,504 V556" fill="none" stroke="#1F4A4E" stroke-width="1.2"></path>
+      <!-- Observability (retired) -> merge dot, entering bottom -->
+      <path d="M232,624 H272 Q280,624 280,616 V564" fill="none" stroke="#1F4A4E" stroke-width="1.2"></path>
+      <!-- merge dot -> Architecture (current) -->
+      <line x1="284" y1="560" x2="328" y2="560" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+
+      <circle cx="280" cy="560" r="4" fill="#0B1E3B"></circle>
+
+      <!-- Retired column -->
+      <g>
+        <rect x="32" y="64" width="200" height="96" rx="6" fill="#F5EFE4" stroke="#1F4A4E" stroke-width="1"></rect>
+        <text x="132" y="88" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500">Kubernetes</text>
+        <text x="132" y="108" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500">Fundamentals</text>
+        <text x="132" y="140" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Sans', sans-serif" font-size="20" font-weight="500">46%</text>
+      </g>
+
+      <g>
+        <rect x="32" y="192" width="200" height="96" rx="6" fill="#F5EFE4" stroke="#1F4A4E" stroke-width="1"></rect>
+        <text x="132" y="216" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500">Container</text>
+        <text x="132" y="236" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500">Orchestration</text>
+        <text x="132" y="268" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Sans', sans-serif" font-size="20" font-weight="500">22%</text>
+      </g>
+
+      <g>
+        <rect x="32" y="320" width="200" height="96" rx="6" fill="#F5EFE4" stroke="#1F4A4E" stroke-width="1"></rect>
+        <text x="132" y="344" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500">Cloud Native</text>
+        <text x="132" y="364" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500">App Delivery</text>
+        <text x="132" y="396" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Sans', sans-serif" font-size="20" font-weight="500">8%</text>
+      </g>
+
+      <g>
+        <rect x="32" y="448" width="200" height="96" rx="6" fill="#F5EFE4" stroke="#1F4A4E" stroke-width="1"></rect>
+        <text x="132" y="472" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500">Cloud Native</text>
+        <text x="132" y="492" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500">Architecture</text>
+        <text x="132" y="524" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Sans', sans-serif" font-size="20" font-weight="500">16%</text>
+      </g>
+
+      <g>
+        <rect x="32" y="576" width="200" height="96" rx="6" fill="#F5EFE4" stroke="#1F4A4E" stroke-width="1"></rect>
+        <text x="132" y="600" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500">Cloud Native</text>
+        <text x="132" y="620" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500">Observability</text>
+        <text x="132" y="652" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Sans', sans-serif" font-size="20" font-weight="500">8%</text>
+      </g>
+
+      <!-- Current column -->
+      <g>
+        <rect x="328" y="64" width="200" height="96" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1.2"></rect>
+        <text x="428" y="88" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500">Kubernetes</text>
+        <text x="428" y="108" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500">Fundamentals</text>
+        <text x="428" y="136" text-anchor="middle" fill="#B58B3E" stroke="#0B1E3B" stroke-width="0.8" paint-order="stroke" font-family="'Fira Sans', sans-serif" font-size="24" font-weight="700">44%</text>
+        <text x="428" y="152" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.04em">(−2)</text>
+      </g>
+
+      <g>
+        <rect x="328" y="192" width="200" height="96" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1.2"></rect>
+        <text x="428" y="216" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500">Container</text>
+        <text x="428" y="236" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500">Orchestration</text>
+        <text x="428" y="264" text-anchor="middle" fill="#B58B3E" stroke="#0B1E3B" stroke-width="0.8" paint-order="stroke" font-family="'Fira Sans', sans-serif" font-size="24" font-weight="700">28%</text>
+        <text x="428" y="280" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.04em">(+6)</text>
+      </g>
+
+      <g>
+        <rect x="328" y="320" width="200" height="96" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1.2"></rect>
+        <text x="428" y="344" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500">Cloud Native</text>
+        <text x="428" y="364" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500">App Delivery</text>
+        <text x="428" y="392" text-anchor="middle" fill="#B58B3E" stroke="#0B1E3B" stroke-width="0.8" paint-order="stroke" font-family="'Fira Sans', sans-serif" font-size="24" font-weight="700">16%</text>
+        <text x="428" y="408" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.04em">(×2)</text>
+      </g>
+
+      <g>
+        <rect x="328" y="512" width="200" height="96" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1.2"></rect>
+        <text x="428" y="536" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500">Cloud Native</text>
+        <text x="428" y="556" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500">Architecture</text>
+        <text x="428" y="584" text-anchor="middle" fill="#B58B3E" stroke="#0B1E3B" stroke-width="0.8" paint-order="stroke" font-family="'Fira Sans', sans-serif" font-size="24" font-weight="700">12%</text>
+      </g>
+
+      <!-- Editorial caption -->
+      <text x="280" y="700" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="16">Observability folds into Architecture as a</text>
+      <text x="280" y="720" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="16">competency—it's no longer a standalone domain.</text>
+    </svg>

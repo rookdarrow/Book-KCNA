@@ -1,0 +1,1 @@
+Four node panels in a row labelled schedulable, cordoned, drained and schedulable, connected by transitions labelled cordon, drain and uncordon; the same three Pods A, B and C appear unchanged in the first two panels and are gone from the third, while an arriving Pod is admitted in panels one and four and turned away in panel two

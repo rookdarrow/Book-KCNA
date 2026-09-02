@@ -1,0 +1,112 @@
+<svg viewBox="0 0 660 900" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch18-fig01-monitoring-vs-observability-title ch18-fig01-monitoring-vs-observability-desc" width="680" height="928">
+      <title id="ch18-fig01-monitoring-vs-observability-title">Monitoring vs. observability: two postures, one system</title>
+      <desc id="ch18-fig01-monitoring-vs-observability-desc">Two columns above one shared system box: the monitoring column passes through three fixed indicators — CPU, memory, and 5xx — into a dashboard, while the observability column runs straight from a question that arrives at 2:10 a.m. into an open query, with no indicator layer in between.</desc>
+      <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon>
+        </marker>
+        <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#B58B3E"></polygon>
+        </marker>
+      </defs>
+
+      <rect width="100%" height="100%" fill="#F5EFE4"></rect>
+
+      <!-- Column divider (quiet guide; stops where the two paths become one system) -->
+      <line x1="330" y1="100" x2="330" y2="620" stroke="rgba(11,30,59,0.10)" stroke-width="0.8"></line>
+
+      <!-- ================= ARROWS / CONNECTORS (drawn before nodes) ================= -->
+
+      <!-- Monitoring: box1 -> branch junction -->
+      <path d="M170,200 V244" fill="none" stroke="#1F4A4E" stroke-width="1.2"></path>
+      <!-- Monitoring: branch junction -> CPU / mem / 5xx -->
+      <path d="M170,244 H78 Q70,244 70,252 V268" fill="none" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></path>
+      <path d="M170,244 V268" fill="none" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></path>
+      <path d="M170,244 H262 Q270,244 270,252 V268" fill="none" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></path>
+
+      <!-- Monitoring: CPU / mem / 5xx -> merge junction (each ends at the shared point; no duplicated trunk) -->
+      <path d="M70,316 H162 Q170,316 170,324" fill="none" stroke="#1F4A4E" stroke-width="1.2"></path>
+      <path d="M170,316 V324" fill="none" stroke="#1F4A4E" stroke-width="1.2"></path>
+      <path d="M270,316 H178 Q170,316 170,324" fill="none" stroke="#1F4A4E" stroke-width="1.2"></path>
+      <circle cx="170" cy="324" r="4" fill="#0B1E3B"></circle>
+      <!-- Monitoring: merge junction -> Dashboard (single stroke) -->
+      <path d="M170,324 V424" fill="none" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></path>
+
+      <!-- Observability: unbroken stem, box1 straight to Open Query (FOCAL) -->
+      <path d="M490,200 V424" fill="none" stroke="#B58B3E" stroke-width="1.4" marker-end="url(#arrow-accent)"></path>
+
+      <!-- Dashboard -> The Running System -->
+      <path d="M170,576 V640" fill="none" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></path>
+      <!-- Open Query -> The Running System -->
+      <path d="M490,576 V640" fill="none" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></path>
+
+      <!-- ================= COLUMN HEADERS ================= -->
+      <text x="170" y="48" fill="#0B1E3B" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.12em">MONITORING</text>
+      <text x="170" y="76" fill="#1F4A4E" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif" text-anchor="middle">known unknowns</text>
+
+      <text x="490" y="48" fill="#0B1E3B" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.12em">OBSERVABILITY</text>
+      <text x="490" y="76" fill="#1F4A4E" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif" text-anchor="middle">unknown unknowns</text>
+
+      <!-- ================= BOX 1 A: Questions chosen in advance ================= -->
+      <rect x="60" y="112" width="220" height="88" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="170" y="150" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">Questions chosen</text>
+      <text x="170" y="180" fill="#1F4A4E" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.08em">IN ADVANCE</text>
+
+      <!-- ================= BOX 1 B: Question arrives at 02:10 ================= -->
+      <rect x="380" y="112" width="220" height="88" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="490" y="150" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">Question arrives</text>
+      <text x="490" y="180" fill="#1F4A4E" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.08em">AT 02:10 AM</text>
+
+      <!-- ================= INDICATOR BOXES (fixed, secondary layer) ================= -->
+      <rect x="40" y="268" width="60" height="48" rx="4" fill="#F5EFE4"></rect>
+      <rect x="40" y="268" width="60" height="48" rx="4" fill="rgba(11,30,59,0.05)" stroke="#1F4A4E" stroke-width="0.8"></rect>
+      <text x="70" y="298" fill="#1F4A4E" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.06em">CPU</text>
+
+      <rect x="140" y="268" width="60" height="48" rx="4" fill="#F5EFE4"></rect>
+      <rect x="140" y="268" width="60" height="48" rx="4" fill="rgba(11,30,59,0.05)" stroke="#1F4A4E" stroke-width="0.8"></rect>
+      <text x="170" y="298" fill="#1F4A4E" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.06em">mem</text>
+
+      <rect x="240" y="268" width="60" height="48" rx="4" fill="#F5EFE4"></rect>
+      <rect x="240" y="268" width="60" height="48" rx="4" fill="rgba(11,30,59,0.05)" stroke="#1F4A4E" stroke-width="0.8"></rect>
+      <text x="270" y="298" fill="#1F4A4E" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.06em">5xx</text>
+
+      <!-- ================= QUOTE beside the unbroken stem ================= -->
+      <text x="505" y="256" fill="#8A8D90" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif" text-anchor="start">“why were</text>
+      <text x="505" y="276" fill="#8A8D90" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif" text-anchor="start">requests</text>
+      <text x="505" y="296" fill="#8A8D90" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif" text-anchor="start">from one</text>
+      <text x="505" y="316" fill="#8A8D90" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif" text-anchor="start">client slow</text>
+      <text x="505" y="336" fill="#8A8D90" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif" text-anchor="start">in region 2?”</text>
+
+      <!-- ================= DASHBOARD (Monitoring outcome) ================= -->
+      <rect x="60" y="424" width="220" height="152" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="170" y="464" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">Dashboard</text>
+      <text x="170" y="500" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle">answers the 4 questions</text>
+      <text x="170" y="522" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle">you picked</text>
+
+      <!-- ================= OPEN QUERY (Observability outcome, FOCAL) ================= -->
+      <rect x="380" y="424" width="220" height="152" rx="6" fill="#F5EFE4"></rect>
+      <rect x="380" y="424" width="220" height="152" rx="6" fill="#B58B3E" fill-opacity="0.10" stroke="#B58B3E" stroke-width="1.2"></rect>
+      <text x="490" y="464" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">Open Query</text>
+      <text x="490" y="500" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle">over rich telemetry</text>
+
+      <!-- ================= THE RUNNING SYSTEM (shared foundation) ================= -->
+      <rect x="40" y="640" width="580" height="88" rx="8" fill="#F5EFE4"></rect>
+      <rect x="40" y="640" width="580" height="88" rx="8" fill="rgba(11,30,59,0.05)" stroke="#0B1E3B" stroke-width="1.2"></rect>
+      <text x="330" y="690" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle" letter-spacing="0.08em">THE RUNNING SYSTEM</text>
+
+      <!-- ================= LEGEND ================= -->
+      <line x1="40" y1="784" x2="620" y2="784" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+      <text x="40" y="804" fill="#8A8D90" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" letter-spacing="0.12em">LEGEND</text>
+
+      <rect x="40" y="824" width="24" height="14" rx="3" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="72" y="835" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">Step</text>
+
+      <rect x="300" y="824" width="24" height="14" rx="3" fill="rgba(11,30,59,0.05)" stroke="#1F4A4E" stroke-width="0.8"></rect>
+      <text x="332" y="835" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">Fixed indicator</text>
+
+      <circle cx="52" cy="863" r="4" fill="#0B1E3B"></circle>
+      <text x="72" y="867" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">Merge point</text>
+
+      <line x1="300" y1="863" x2="324" y2="863" stroke="#B58B3E" stroke-width="1.4" marker-end="url(#arrow-accent)"></line>
+      <text x="332" y="867" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">Unbroken path</text>
+    </svg>

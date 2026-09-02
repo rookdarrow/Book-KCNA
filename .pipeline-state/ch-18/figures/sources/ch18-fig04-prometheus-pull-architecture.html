@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prometheus Pull Architecture</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;700&family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Fira+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --color-paper:  #F5EFE4;
+    --color-ink:    #0B1E3B;
+    --color-muted:  #1F4A4E;
+    --color-soft:   #8A8D90;
+    --color-accent: #B58B3E;
+    --font-slab: 'Roboto Slab', serif;
+    --font-sans: 'Fira Sans', sans-serif;
+    --font-mono: 'Fira Mono', ui-monospace, monospace;
+  }
+  body {
+    font-family: var(--font-sans);
+    background: var(--color-paper);
+    color: var(--color-ink);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 2rem;
+  }
+  .frame { max-width: 620px; width: 100%; }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    margin-bottom: 0.5rem;
+  }
+  h1 {
+    font-family: var(--font-slab);
+    font-size: 1.75rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+    color: var(--color-ink);
+    margin-bottom: 1.5rem;
+  }
+  svg { width: 100%; display: block; }
+</style>
+</head>
+<body>
+<div class="frame">
+  <p class="eyebrow">Data Flow &middot; Ch18 Fig04</p>
+  <h1>Prometheus Pull Architecture</h1>
+
+  <svg viewBox="0 0 640 780" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-labelledby="ch18-fig04-prometheus-pull-architecture-title ch18-fig04-prometheus-pull-architecture-desc">
+    <title id="ch18-fig04-prometheus-pull-architecture-title">Prometheus Pull Architecture</title>
+    <desc id="ch18-fig04-prometheus-pull-architecture-desc">Prometheus reaches out over HTTP to scrape service discovery, an instrumented app, an exporter, and a pushgateway; only a short batch job pushes inward through the pushgateway, while Prometheus pushes alerts to Alertmanager and serves Grafana over its HTTP API.</desc>
+
+    <defs>
+      <marker id="arr-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#B58B3E"/>
+      </marker>
+      <marker id="arr-muted" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"/>
+      </marker>
+      <marker id="arr-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"/>
+      </marker>
+    </defs>
+
+    <rect width="100%" height="100%" fill="#F5EFE4"/>
+
+    <!-- ===================== callout ===================== -->
+    <text x="616" y="24" text-anchor="end" font-family="'Fira Sans', sans-serif" font-style="italic"
+          font-size="16" fill="#0B1E3B">Every arrow into Prometheus</text>
+    <text x="616" y="44" text-anchor="end" font-family="'Fira Sans', sans-serif" font-style="italic"
+          font-size="16" fill="#0B1E3B">is Prometheus reaching out.</text>
+    <path d="M 560,52 Q 480,88 436,60" fill="none" stroke="rgba(11,30,59,0.40)" stroke-width="1" stroke-dasharray="4,3"/>
+    <circle cx="436" cy="60" r="2" fill="#0B1E3B"/>
+
+    <!-- ===================== arrows (drawn before nodes) ===================== -->
+
+    <!-- scrape: Prometheus reaches left to each target — the focal relationship -->
+    <line x1="296" y1="112" x2="256" y2="112" stroke="#B58B3E" stroke-width="1.2" marker-end="url(#arr-accent)"/>
+    <line x1="296" y1="220" x2="256" y2="220" stroke="#B58B3E" stroke-width="1.2" marker-end="url(#arr-accent)"/>
+    <line x1="296" y1="328" x2="256" y2="328" stroke="#B58B3E" stroke-width="1.2" marker-end="url(#arr-accent)"/>
+    <line x1="296" y1="436" x2="256" y2="436" stroke="#B58B3E" stroke-width="1.2" marker-end="url(#arr-accent)"/>
+
+    <!-- push: batch job -> pushgateway (the one narrow inbound path) -->
+    <line x1="140" y1="516" x2="140" y2="484" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arr-muted)"/>
+    <rect x="148" y="492" width="48" height="16" rx="2" fill="#F5EFE4"/>
+    <text x="172" y="504" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14"
+          fill="#1F4A4E">PUSH</text>
+
+    <!-- alerts: Prometheus -> Alertmanager -->
+    <line x1="360" y1="484" x2="360" y2="592" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arr-muted)"/>
+    <rect x="368" y="528" width="56" height="16" rx="2" fill="#F5EFE4"/>
+    <text x="396" y="540" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14"
+          fill="#1F4A4E">ALERTS</text>
+
+    <!-- http api: Prometheus -> Grafana -->
+    <line x1="512" y1="484" x2="512" y2="592" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arr-link)"/>
+    <rect x="520" y="528" width="80" height="16" rx="2" fill="#F5EFE4"/>
+    <text x="560" y="540" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14"
+          fill="#1F4A4E">HTTP API</text>
+
+    <!-- ===================== nodes ===================== -->
+
+    <!-- target: Service Discovery -->
+    <rect x="24" y="64" width="232" height="96" rx="6" fill="#F5EFE4"/>
+    <rect x="24" y="64" width="232" height="96" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+    <text x="140" y="100" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-weight="500"
+          font-size="16" fill="#0B1E3B">SERVICE DISCOVERY</text>
+    <text x="140" y="124" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14"
+          fill="#1F4A4E">finds scrape targets</text>
+
+    <!-- target: Instrumented App -->
+    <rect x="24" y="172" width="232" height="96" rx="6" fill="#F5EFE4"/>
+    <rect x="24" y="172" width="232" height="96" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+    <text x="140" y="208" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-weight="500"
+          font-size="16" fill="#0B1E3B">INSTRUMENTED APP</text>
+    <text x="140" y="232" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14"
+          fill="#1F4A4E">client library</text>
+
+    <!-- target: Exporter -->
+    <rect x="24" y="280" width="232" height="96" rx="6" fill="#F5EFE4"/>
+    <rect x="24" y="280" width="232" height="96" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+    <text x="140" y="316" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-weight="500"
+          font-size="16" fill="#0B1E3B">EXPORTER</text>
+    <text x="140" y="340" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14"
+          fill="#1F4A4E">wraps a 3rd-party app</text>
+
+    <!-- target: Pushgateway -->
+    <rect x="24" y="388" width="232" height="96" rx="6" fill="#F5EFE4"/>
+    <rect x="24" y="388" width="232" height="96" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+    <text x="140" y="424" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-weight="500"
+          font-size="16" fill="#0B1E3B">PUSHGATEWAY</text>
+    <text x="140" y="448" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14"
+          fill="#1F4A4E">buffers pushed metrics</text>
+
+    <!-- hub: Prometheus Server (focal) -->
+    <rect x="296" y="64" width="280" height="420" rx="6" fill="#F5EFE4"/>
+    <rect x="296" y="64" width="280" height="420" rx="6" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"/>
+    <text x="436" y="252" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-weight="500"
+          font-size="16" fill="#0B1E3B">PROMETHEUS SERVER</text>
+    <text x="436" y="276" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14"
+          fill="#1F4A4E">scrapes + stores locally</text>
+    <text x="436" y="300" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14"
+          fill="#1F4A4E">standalone, autonomous</text>
+
+    <!-- batch job (transient / optional) -->
+    <rect x="52" y="516" width="176" height="44" rx="6" fill="#F5EFE4"/>
+    <rect x="52" y="516" width="176" height="44" rx="6" fill="rgba(11,30,59,0.02)" stroke="rgba(11,30,59,0.20)"
+          stroke-width="1" stroke-dasharray="4,3"/>
+    <text x="140" y="524" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-weight="500"
+          font-size="16" fill="#0B1E3B">BATCH JOB</text>
+    <text x="140" y="548" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14"
+          fill="#8A8D90">can&#8217;t be scraped</text>
+
+    <!-- downstream: Alertmanager (external) -->
+    <rect x="288" y="592" width="144" height="96" rx="6" fill="#F5EFE4"/>
+    <rect x="288" y="592" width="144" height="96" rx="6" fill="rgba(11,30,59,0.03)" stroke="rgba(11,30,59,0.30)"
+          stroke-width="1"/>
+    <text x="360" y="628" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-weight="500"
+          font-size="16" fill="#0B1E3B">ALERTMANAGER</text>
+    <text x="360" y="652" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14"
+          fill="#1F4A4E">email/pager</text>
+
+    <!-- downstream: Grafana (external) -->
+    <rect x="440" y="592" width="144" height="96" rx="6" fill="#F5EFE4"/>
+    <rect x="440" y="592" width="144" height="96" rx="6" fill="rgba(11,30,59,0.03)" stroke="rgba(11,30,59,0.30)"
+          stroke-width="1"/>
+    <text x="512" y="620" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-weight="500"
+          font-size="16" fill="#0B1E3B">GRAFANA</text>
+    <text x="512" y="640" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14"
+          fill="#1F4A4E">dashboards</text>
+    <text x="512" y="660" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14"
+          fill="#1F4A4E">not CNCF</text>
+
+    <!-- ===================== legend ===================== -->
+    <line x1="24" y1="712" x2="616" y2="712" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+    <text x="24" y="728" font-family="'Fira Mono', monospace" font-size="14" font-weight="500"
+          letter-spacing="0.12em" fill="#8A8D90">LEGEND</text>
+
+    <line x1="24" y1="756" x2="48" y2="756" stroke="#B58B3E" stroke-width="1.2" marker-end="url(#arr-accent)"/>
+    <text x="56" y="760" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">SCRAPE &mdash; pull via HTTP</text>
+
+    <line x1="300" y1="756" x2="324" y2="756" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arr-muted)"/>
+    <text x="336" y="760" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">PUSH / SERVE &mdash; everything else</text>
+
+  </svg>
+</div>
+</body>
+</html>

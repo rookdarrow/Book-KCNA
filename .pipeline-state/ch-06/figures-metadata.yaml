@@ -1,0 +1,233 @@
+chapter: 6
+book: kcna
+generated: '2026-09-01T08:35:38+00:00'
+figures:
+- anchor_id: ch06-fig01-deployment-replicaset-pod-ownership
+  source_hash: 216cbfa288c4b1a97e76e838ed0e08ca4a86db5fcae525ab82e2661886ca00e7
+  output_hash:
+    svg: 5ab1927d1c7a010a52cbcaf76617e9c79db794d5940dea753b8d9254d1127e40
+    png: dc9484b3d081518d08eb733c9f47efe1535334ad9d50d29739c6fab9cf9aae93
+  validations:
+    label_count:
+      result: pass
+      value: 7
+      max: 7
+      reason: ''
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1360
+      - 1566
+    aspect_ratio:
+      result: pass
+      value: 1.15
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 262
+  alt_text: 'Three-tier ownership diagram: a Deployment box holding a Pod template,
+    an update strategy and replicas 3 owns a ReplicaSet box holding replicas 3 and
+    a selector, which in turn owns three identical Pod boxes; intent flows downward
+    and existence is reported upward'
+- anchor_id: ch06-fig02-rolling-update-maxsurge-maxunavailable
+  source_hash: 641b7a44e938c1f6e282f70361244b332e8d0e04b92458f69f885e662e72d7e6
+  output_hash:
+    svg: 48c9c9a8216a8aa7b6780c93c65982fc4127c8753a83deb20f842bb971fb8da4
+    png: 4b37cb6197b585464bc8195397cb1d272eb767467c6552fb1666f404155de469
+  validations:
+    label_count:
+      result: pass
+      value: 0
+      max: 7
+      reason: 'not applicable to xy_chart: axis labels are data'
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1120
+      - 1518
+    aspect_ratio:
+      result: pass
+      value: 1.36
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 388
+  alt_text: 'Count-versus-time chart for a ten-replica rolling update: a dashed ceiling
+    line at thirteen marks desired plus maxSurge, a solid line at ten marks the desired
+    count, and a dashed floor line at eight marks desired minus maxUnavailable; an
+    old Pod population declines while a new population rises, their total never crossing
+    the ceiling and the available count never falling below the floor'
+- anchor_id: ch06-fig03-recreate-vs-rolling
+  source_hash: 85d68fd8584ae76245f775d044f0e653e6e1635d088e56be1ac5b182004efb4f
+  output_hash:
+    svg: ecbd3c18d5e7c7225abb2875d3d028516020fdcc12d3854b1e9a5aaaadb48a4e
+    png: fc6c0e4f0dc41b61f07caabfdac4eddebd22b00eb94d331c892cfa875d1aad84
+  validations:
+    label_count:
+      result: pass
+      value: 0
+      max: 7
+      reason: 'not applicable to xy_chart: axis labels are data'
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1280
+      - 1706
+    aspect_ratio:
+      result: pass
+      value: 1.33
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 345
+  alt_text: 'Two stacked availability timelines: the Recreate strategy shows a solid
+    bar, then a bracketed gap labelled zero available while all old Pods are killed
+    before new ones are created, then a solid bar again; the RollingUpdate strategy
+    shows an unbroken bar whose fill shifts from old to new through an overlapping
+    middle region, never reaching zero'
+- anchor_id: ch06-fig05-statefulset-vs-deployment-identity
+  source_hash: 6d4e37ae015f7f4ac0e98e5da94d6c337c7d676d890baded528e1c86d6278d2b
+  output_hash:
+    svg: 1c6704d8403b0935611455d8d5011f2c1327b2ea45eb773adacc4dca134d6fdc
+    png: 5f4b2f3365c89ca68ffa341ccda9b0cdb04b0d580f417a7f1288cefd03914ad6
+  validations:
+    label_count:
+      result: fail
+      value: 25
+      max: 7
+      reason: 25 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1200
+      - 1680
+    aspect_ratio:
+      result: pass
+      value: 1.4
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 357
+  alt_text: 'Two-panel comparison: in the Deployment panel three hash-named Pods sit
+    side by side, one dies and is replaced by a Pod with a different name and UID,
+    with no storage shown; in the StatefulSet panel three Pods named db-0, db-1 and
+    db-2 each attach to their own volume, and when db-0 dies the replacement takes
+    the same name and reattaches to the same volume'
+- anchor_id: ch06-fig04-workload-resource-decision-tree
+  source_hash: 7ca28890634df3a70ecbd0c237b244784ea062311da0afe32a50c92894323ea7
+  output_hash:
+    svg: c652079b190042b4e76a4d72b4aae8ac11f433af5065ff4da1ce2e9a538cf83e
+    png: 9c71eaa61b88b897763b2a94c96dd6ec5f01afba782160fba19679c27da360a7
+  validations:
+    label_count:
+      result: fail
+      value: 26
+      max: 7
+      reason: 26 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1440
+      - 1390
+    aspect_ratio:
+      result: pass
+      value: 1.04
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 349
+  alt_text: 'Decision tree for choosing a Kubernetes workload resource: if the work
+    ends, ask whether it repeats on a schedule, giving CronJob for yes and Job for
+    no; if the work does not end, ask whether it must run on every node, giving DaemonSet
+    for yes, and otherwise ask whether the Pods are interchangeable, giving Deployment
+    for yes and StatefulSet for no'
+- anchor_id: ch06-zenith-control-loop-instantiated
+  source_hash: 189f8bafe9c625d932f38482300b8e10206e114bd6d16874a945a080049719d3
+  output_hash:
+    svg: 33d23869a3dea1e3a7819e4889575b402c0cf3c86628bb4b6fcf76d61844fc97
+    png: c9ca790bb89f0be84482c68e4df2615b2d321b2323ebcf6a3fb41759ad34ef24
+  validations:
+    label_count:
+      result: pass
+      value: 6
+      max: 7
+      reason: ''
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1280
+      - 1476
+    aspect_ratio:
+      result: pass
+      value: 1.15
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 481
+  alt_text: 'A single control loop drawn once: a desired state box compares down to
+    a current state box, an act-on-the-gap step follows, and an arrow returns to the
+    desired state forever; beneath it a substitution list pairs six desired states
+    with their controllers — a number with ReplicaSet, a template plus update policy
+    with Deployment, one per matching node with DaemonSet, completion with Job, a
+    Job at each scheduled time with CronJob, and whatever its author decided with
+    your operator'

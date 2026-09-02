@@ -1,0 +1,1 @@
+Decision tree for choosing a Kubernetes workload resource: if the work ends, ask whether it repeats on a schedule, giving CronJob for yes and Job for no; if the work does not end, ask whether it must run on every node, giving DaemonSet for yes, and otherwise ask whether the Pods are interchangeable, giving Deployment for yes and StatefulSet for no

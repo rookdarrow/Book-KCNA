@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recreate vs. RollingUpdate</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;700&family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Fira+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --color-paper:  #F5EFE4;
+      --color-ink:    #0B1E3B;
+      --color-muted:  #1F4A4E;
+      --color-soft:   #8A8D90;
+      --color-accent: #B58B3E;
+      --font-sans:  'Fira Sans', system-ui, sans-serif;
+      --font-serif: 'Roboto Slab', serif;
+      --font-mono:  'Fira Mono', ui-monospace, monospace;
+    }
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-paper);
+      color: var(--color-ink);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 2rem;
+    }
+    .frame { max-width: 640px; width: 100%; }
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      margin-bottom: 0.5rem;
+    }
+    h1 {
+      font-family: var(--font-serif);
+      font-size: 1.75rem;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      line-height: 1.15;
+      color: var(--color-ink);
+      margin-bottom: 0.75rem;
+    }
+    .subtitle {
+      font-family: var(--font-sans);
+      font-size: 1rem;
+      line-height: 1.55;
+      color: var(--color-muted);
+      margin-bottom: 1.5rem;
+      max-width: 54ch;
+    }
+    svg { width: 100%; display: block; }
+    .footer {
+      margin-top: 1.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(11,30,59,0.10);
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      letter-spacing: 0.06em;
+      color: var(--color-soft);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <p class="eyebrow">XY Chart · Ch. 06 Deployments</p>
+    <h1>Recreate vs. RollingUpdate</h1>
+    <p class="subtitle">Recreate buys a clean cutover by accepting a real, bounded window of zero availability. RollingUpdate never has one, at the cost of running old and new Pods at once.</p>
+
+    <svg viewBox="0 0 720 960" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch06-fig03-recreate-vs-rolling-title ch06-fig03-recreate-vs-rolling-desc">
+      <title id="ch06-fig03-recreate-vs-rolling-title">Recreate vs. RollingUpdate availability during deployment</title>
+      <desc id="ch06-fig03-recreate-vs-rolling-desc">Two stacked availability timelines. Recreate holds a solid bar, drops to a bracketed zero-available gap while all old Pods are killed before new ones are created, then returns to a solid bar. RollingUpdate holds one unbroken bar whose fill shifts from old to new through an overlapping middle region and never reaches zero.</desc>
+      <defs>
+        <marker id="arrow-fog" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#8A8D90"/>
+        </marker>
+        <pattern id="overlapHatch" width="16" height="16" patternUnits="userSpaceOnUse">
+          <rect width="8" height="16" fill="#0B1E3B"/>
+          <rect x="8" width="8" height="16" fill="#1F4A4E"/>
+        </pattern>
+        <clipPath id="rollBarClip">
+          <rect x="40" y="552" width="640" height="96" rx="4"/>
+        </clipPath>
+      </defs>
+
+      <rect width="100%" height="100%" fill="#F5EFE4"/>
+
+      <!-- ============================= PANEL A — Recreate ============================= -->
+      <text x="40" y="80" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif">Recreate</text>
+      <text x="40" y="128" fill="#8A8D90" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" letter-spacing="0.12em">AVAILABLE</text>
+
+      <!-- Focal annotation: the zero-available gap -->
+      <text x="360" y="128" fill="#B58B3E" font-size="14" font-weight="700" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.12em">ZERO AVAILABLE</text>
+      <line x1="280" y1="148" x2="440" y2="148" stroke="#B58B3E" stroke-width="1.2"/>
+      <line x1="280" y1="148" x2="280" y2="160" stroke="#B58B3E" stroke-width="1.2"/>
+      <line x1="440" y1="148" x2="440" y2="160" stroke="#B58B3E" stroke-width="1.2"/>
+
+      <!-- Availability bar: old (available) / gap (zero available) / new (available) -->
+      <rect x="40"  y="176" width="240" height="96" rx="4" fill="#0B1E3B" stroke="#0B1E3B" stroke-width="1"/>
+      <rect x="280" y="176" width="160" height="96" rx="4" fill="#F5EFE4" stroke="#B58B3E" stroke-width="1.2" stroke-dasharray="4,3"/>
+      <rect x="440" y="176" width="240" height="96" rx="4" fill="#1F4A4E" stroke="#0B1E3B" stroke-width="1"/>
+      <text x="160" y="228" fill="#F5EFE4" font-size="14" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle">OLD</text>
+      <text x="560" y="228" fill="#F5EFE4" font-size="14" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle">NEW</text>
+
+      <!-- Time axis -->
+      <line x1="40" y1="304" x2="640" y2="304" stroke="#8A8D90" stroke-width="1" marker-end="url(#arrow-fog)"/>
+      <text x="648" y="308" fill="#8A8D90" font-size="14" font-weight="400" font-family="'Fira Mono', monospace" letter-spacing="0.04em">TIME</text>
+
+      <text x="280" y="336" fill="#8A8D90" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.08em">ALL OLD KILLED</text>
+      <text x="440" y="336" fill="#8A8D90" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.08em">THEN NEW CREATED</text>
+
+      <!-- ============================= PANEL B — RollingUpdate ============================= -->
+      <text x="40" y="496" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif">RollingUpdate</text>
+      <text x="40" y="536" fill="#8A8D90" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" letter-spacing="0.12em">AVAILABLE</text>
+      <text x="360" y="536" fill="#8A8D90" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.08em">NEVER REACHES ZERO</text>
+
+      <!-- Availability bar: unbroken — old fades through an overlap band into new -->
+      <g clip-path="url(#rollBarClip)">
+        <rect x="40"  y="552" width="200" height="96" fill="#0B1E3B"/>
+        <rect x="240" y="552" width="240" height="96" fill="url(#overlapHatch)"/>
+        <rect x="480" y="552" width="200" height="96" fill="#1F4A4E"/>
+      </g>
+      <rect x="40" y="552" width="640" height="96" rx="4" fill="none" stroke="#0B1E3B" stroke-width="1.2"/>
+      <text x="140" y="604" fill="#F5EFE4" font-size="14" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle">OLD</text>
+      <text x="580" y="604" fill="#F5EFE4" font-size="14" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle">NEW</text>
+
+      <!-- Time axis -->
+      <line x1="40" y1="680" x2="640" y2="680" stroke="#8A8D90" stroke-width="1" marker-end="url(#arrow-fog)"/>
+      <text x="648" y="684" fill="#8A8D90" font-size="14" font-weight="400" font-family="'Fira Mono', monospace" letter-spacing="0.04em">TIME</text>
+
+      <text x="360" y="712" fill="#8A8D90" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.08em">OLD AND NEW OVERLAP THROUGHOUT</text>
+
+      <!-- ============================= LEGEND ============================= -->
+      <line x1="40" y1="808" x2="680" y2="808" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+      <text x="40" y="824" fill="#8A8D90" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" letter-spacing="0.12em">LEGEND</text>
+
+      <rect x="40" y="844" width="16" height="8" fill="#0B1E3B"/>
+      <text x="64" y="856" fill="#0B1E3B" font-size="14" font-family="'Fira Mono', monospace">OLD POD</text>
+
+      <rect x="200" y="844" width="16" height="8" fill="#1F4A4E"/>
+      <text x="224" y="856" fill="#0B1E3B" font-size="14" font-family="'Fira Mono', monospace">NEW POD</text>
+
+      <rect x="360" y="844" width="16" height="8" fill="url(#overlapHatch)" stroke="#8A8D90" stroke-width="0.8"/>
+      <text x="384" y="856" fill="#0B1E3B" font-size="14" font-family="'Fira Mono', monospace">OVERLAP</text>
+
+      <rect x="520" y="844" width="16" height="8" fill="#F5EFE4" stroke="#B58B3E" stroke-width="1.2" stroke-dasharray="4,3"/>
+      <text x="544" y="856" fill="#0B1E3B" font-size="14" font-family="'Fira Mono', monospace">ZERO AVAILABLE</text>
+    </svg>
+
+    <div class="footer">
+      <span>ch06-fig03-recreate-vs-rolling · xy_chart</span>
+      <span>Lodestar Ledgers</span>
+    </div>
+  </div>
+</body>
+</html>

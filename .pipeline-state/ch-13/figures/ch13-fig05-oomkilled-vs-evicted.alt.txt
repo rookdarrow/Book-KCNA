@@ -1,0 +1,1 @@
+Two parallel vertical chains compared row by row: OOMKilled, where a container exceeds its own limit and the kernel kills it and the kubelet restarts it in place, against Evicted, where the node runs low on a resource and the kubelet terminates the whole Pod so a controller replaces it elsewhere

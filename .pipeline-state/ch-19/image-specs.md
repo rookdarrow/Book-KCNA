@@ -85,7 +85,7 @@ The point of the figure is column density. A reader should be able to sweep the 
 ```yaml-figure-spec
 anchor_id: ch19-fig01-cross-domain-integration-map
 diagram_type: concept_map
-source_ascii: |
+source_ascii: |4
                 Ch:  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18
                      │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │
     STRUCTURAL TIER  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │

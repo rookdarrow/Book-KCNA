@@ -1,0 +1,137 @@
+chapter: 1
+book: kcna
+generated: '2026-09-01T23:58:54+00:00'
+figures:
+- anchor_id: ch01-fig01-blueprint-change-2025
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch01-fig01-blueprint-change-2025.html
+  output_paths:
+    svg: figures/ch01-fig01-blueprint-change-2025.svg
+    png: figures/ch01-fig01-blueprint-change-2025.png
+    alt: figures/ch01-fig01-blueprint-change-2025.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: flowchart
+  figure_spec:
+    anchor_id: ch01-fig01-blueprint-change-2025
+    diagram_type: flowchart
+    source_ascii: "RETIRED (five domains)                  CURRENT (four domains)\n\
+      ─────────────────────────               ──────────────────────────\n\nKubernetes\
+      \ Fundamentals    46%  ──────► Kubernetes Fundamentals    44%   (−2)\n\nContainer\
+      \ Orchestration    22%  ──────► Container Orchestration    28%   (+6)\n\nCloud\
+      \ Native App Delivery   8%  ──────► Cloud Native App Delivery  16%   (×2)\n\n\
+      Cloud Native Architecture  16%  ──┐\n                                  ├───►\
+      \ Cloud Native Architecture  12%\nCloud Native Observability  8%  ──┘      \
+      \  (Observability folded in\n                                            as\
+      \ a competency, not a\n     [domain no longer exists]              standalone\
+      \ domain)\n"
+    vendor_terms: []
+    complexity_hint:
+      node_count: 9
+      edge_count: 5
+      label_count: 16
+    pedagogy:
+      part_18_criteria_met:
+      - temporal_structure
+      - quantitative_relationships
+      - distinguishing_alternatives
+      - fixed_point
+      learning_outcome: State the four current KCNA domain weights and identify which
+        topics moved in the 2025 restructure, so that stale five-domain study material
+        can be recognized and discounted
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: The four current-column weight values — 44 / 28
+        / 16 / 12
+    accessibility:
+      alt_text_seed: Two-column diagram comparing the retired five-domain KCNA blueprint
+        on the left with the current four-domain blueprint on the right. Kubernetes
+        Fundamentals moves from 46 percent to 44 percent, Container Orchestration
+        from 22 to 28 percent, Cloud Native Application Delivery from 8 to 16 percent.
+        Cloud Native Architecture at 16 percent and Cloud Native Observability at
+        8 percent merge into a single Cloud Native Architecture domain at 12 percent,
+        with Observability folded in as a competency rather than remaining a standalone
+        domain.
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Domain names and published weights are factual exam-blueprint data from
+        the CNCF/Linux Foundation exam page; the comparison layout and change annotations
+        are Lodestar's own construction. No CNCF logos, marks, or reproduced page
+        layout.
+- anchor_id: ch01-fig02-book-map-parts-to-domains
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch01-fig02-book-map-parts-to-domains.html
+  output_paths:
+    svg: figures/ch01-fig02-book-map-parts-to-domains.svg
+    png: figures/ch01-fig02-book-map-parts-to-domains.png
+    alt: figures/ch01-fig02-book-map-parts-to-domains.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: concept_map
+  figure_spec:
+    anchor_id: ch01-fig02-book-map-parts-to-domains
+    diagram_type: concept_map
+    source_ascii: "PART                          CHAPTERS      EXAM DOMAIN       \
+      \                 WEIGHT\n─────────────────────────────────────────────────────────────────────────────────────\n\
+      I    Orientation              Ch 1          (none — orientation)           \
+      \       —\n\nII   Kubernetes Fundamentals  Ch 2–8        Kubernetes Fundamentals\
+      \              44%\n\nIII  Container Orchestration  Ch 9–13       Container\
+      \ Orchestration              28%\n\nIV   Application Delivery     Ch 14–16 \
+      \     Cloud Native Application Delivery    16%\n\nV    Cloud Native Architecture\
+      \ Ch 17–18     Cloud Native Architecture            12%\n\nVI   Departure  \
+      \              Ch 19–20      (synthesis + mock exam)               —\n─────────────────────────────────────────────────────────────────────────────────────\n\
+      \     Parts II–V map one-to-one onto the four exam domains.\n     Parts I and\
+      \ VI carry no exam weight — which is itself worth knowing.\n"
+    vendor_terms: []
+    complexity_hint:
+      node_count: 10
+      edge_count: 4
+      label_count: 30
+    pedagogy:
+      part_18_criteria_met:
+      - spatial_structure
+      - quantitative_relationships
+      learning_outcome: Locate any chapter of this book within the KCNA exam blueprint,
+        and read progress through the book as progress through the domains
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: The four connectors binding Parts II–V to their
+        corresponding exam domains
+    accessibility:
+      alt_text_seed: A map of the book's six Parts against the four KCNA exam domains.
+        Part one, Orientation, covers Chapter 1 and carries no exam weight. Part two,
+        Kubernetes Fundamentals, covers Chapters 2 to 8 and maps to the Kubernetes
+        Fundamentals domain at 44 percent. Part three, Container Orchestration, covers
+        Chapters 9 to 13 and maps to Container Orchestration at 28 percent. Part four,
+        Application Delivery, covers Chapters 14 to 16 and maps to Cloud Native Application
+        Delivery at 16 percent. Part five, Cloud Native Architecture, covers Chapters
+        17 to 18 and maps to Cloud Native Architecture at 12 percent. Part six, Departure,
+        covers Chapters 19 to 20 for synthesis and the mock exam, and carries no exam
+        weight. Parts two through five map one to one onto the four exam domains.
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Exam domain names and weights are factual CNCF blueprint data; the Part
+        structure, chapter allocation, and correspondence layout are Lodestar's own
+        editorial work.

@@ -1,0 +1,56 @@
+<svg viewBox="0 0 640 916" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch05-fig04-three-probes-compared-title ch05-fig04-three-probes-compared-desc" width="560" height="802">
+      <title id="ch05-fig04-three-probes-compared-title">Liveness, readiness, and startup probes compared</title>
+      <desc id="ch05-fig04-three-probes-compared-desc">A three-row comparison of Kubernetes probes: liveness asks whether the container is running and on failure the kubelet kills it without removing it from Service endpoints; readiness asks whether the container can respond and on failure the Pod IP is removed from matching Service endpoints without killing or restarting anything; startup asks whether the application has started, on failure the kubelet kills the container, and while configured it suppresses the other two probes.</desc>
+
+      <rect width="640" height="916" fill="#F5EFE4"></rect>
+
+      <!-- LIVENESS card -->
+      <rect x="24" y="24" width="592" height="264" rx="8" fill="#FFFFFF" stroke="rgba(11,30,59,0.12)" stroke-width="1"></rect>
+      <text x="40" y="52" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" letter-spacing="0.06em" fill="#0B1E3B">LIVENESS</text>
+      <line x1="40" y1="64" x2="600" y2="64" stroke="rgba(11,30,59,0.12)" stroke-width="1"></line>
+      <text font-family="'Fira Sans', sans-serif">
+        <tspan x="40" y="88" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.12em" fill="#1F4A4E">ASKS</tspan>
+        <tspan x="40" y="108" font-size="16" font-weight="400" fill="#0B1E3B">Is the container running?</tspan>
+
+        <tspan x="40" y="152" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.12em" fill="#1F4A4E">ON FAILURE</tspan>
+        <tspan x="40" y="172" font-size="16" font-weight="400" fill="#0B1E3B">kubelet </tspan><tspan font-size="16" font-weight="600" fill="#0B1E3B">KILLS</tspan><tspan font-size="16" font-weight="400" fill="#0B1E3B"> the container → restart policy applies</tspan>
+
+        <tspan x="40" y="216" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.12em" fill="#1F4A4E">DOES NOT</tspan>
+        <tspan x="40" y="236" font-size="16" font-weight="400" fill="#8A8D90">remove it from Service endpoints</tspan>
+      </text>
+
+      <!-- READINESS card (focal) -->
+      <rect x="24" y="312" width="592" height="292" rx="8" fill="#FFFFFF" stroke="rgba(11,30,59,0.12)" stroke-width="1"></rect>
+      <rect x="32" y="416" width="576" height="96" rx="6" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.4"></rect>
+      <text x="40" y="340" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" letter-spacing="0.06em" fill="#0B1E3B">READINESS</text>
+      <line x1="40" y1="352" x2="600" y2="352" stroke="rgba(11,30,59,0.12)" stroke-width="1"></line>
+      <text font-family="'Fira Sans', sans-serif">
+        <tspan x="40" y="376" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.12em" fill="#1F4A4E">ASKS</tspan>
+        <tspan x="40" y="396" font-size="16" font-weight="400" fill="#0B1E3B">Can the container respond to requests?</tspan>
+
+        <tspan x="40" y="440" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.12em" fill="#1F4A4E">ON FAILURE</tspan>
+        <tspan x="40" y="460" font-size="16" font-weight="600" fill="#B58B3E">Pod IP REMOVED from endpoints</tspan>
+        <tspan x="40" y="480" font-size="16" font-weight="400" fill="#0B1E3B">of all matching Services</tspan>
+        <tspan x="40" y="500" font-family="'Fira Mono', monospace" font-size="14" font-weight="600" letter-spacing="0.08em" fill="#B58B3E">ONLY PROBE THAT DE-REGISTERS WITHOUT RESTARTING</tspan>
+
+        <tspan x="40" y="532" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.12em" fill="#1F4A4E">DOES NOT</tspan>
+        <tspan x="40" y="552" font-size="16" font-weight="400" fill="#8A8D90">kill or restart anything —</tspan>
+        <tspan x="40" y="572" font-size="16" font-weight="400" fill="#8A8D90">the container keeps running</tspan>
+      </text>
+
+      <!-- STARTUP card -->
+      <rect x="24" y="628" width="592" height="264" rx="8" fill="#FFFFFF" stroke="rgba(11,30,59,0.12)" stroke-width="1"></rect>
+      <text x="40" y="656" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" letter-spacing="0.06em" fill="#0B1E3B">STARTUP</text>
+      <line x1="40" y1="668" x2="600" y2="668" stroke="rgba(11,30,59,0.12)" stroke-width="1"></line>
+      <text font-family="'Fira Sans', sans-serif">
+        <tspan x="40" y="692" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.12em" fill="#1F4A4E">ASKS</tspan>
+        <tspan x="40" y="712" font-size="16" font-weight="400" fill="#0B1E3B">Has the application started?</tspan>
+
+        <tspan x="40" y="756" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.12em" fill="#1F4A4E">ON FAILURE</tspan>
+        <tspan x="40" y="776" font-size="16" font-weight="400" fill="#0B1E3B">kubelet </tspan><tspan font-size="16" font-weight="600" fill="#0B1E3B">KILLS</tspan><tspan font-size="16" font-weight="400" fill="#0B1E3B"> the container → restart policy applies</tspan>
+
+        <tspan x="40" y="820" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.12em" fill="#1F4A4E">DOES NOT</tspan>
+        <tspan x="40" y="840" font-size="16" font-weight="400" fill="#8A8D90">run alongside the others —</tspan>
+        <tspan x="40" y="860" font-size="16" font-weight="400" fill="#8A8D90">it </tspan><tspan font-size="16" font-weight="600" fill="#8A8D90">SUPPRESSES</tspan><tspan font-size="16" font-weight="400" fill="#8A8D90"> them until it succeeds</tspan>
+      </text>
+    </svg>

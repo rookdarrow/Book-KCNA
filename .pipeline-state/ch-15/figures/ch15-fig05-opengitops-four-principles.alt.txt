@@ -1,0 +1,1 @@
+Four boxes in a two-by-two grid, one per OpenGitOps principle. Declarative is tagged you know this, chapter 4 section 1. Versioned and immutable is tagged NEW HERE. Pulled automatically is tagged chapter 3 section 5. Continuously reconciled is tagged chapter 3 section 6. Only the second principle is new.

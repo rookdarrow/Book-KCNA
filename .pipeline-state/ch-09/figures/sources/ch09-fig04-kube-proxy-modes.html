@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>kube-proxy: from cluster IP to Pod</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;700&family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Fira+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --paper:  #F5EFE4;
+    --ink:    #0B1E3B;
+    --muted:  #1F4A4E;
+    --accent: #B58B3E;
+    --fog:    #8A8D90;
+    --font-display: 'Roboto Slab', serif;
+    --font-sans:    'Fira Sans', sans-serif;
+    --font-mono:    'Fira Mono', monospace;
+  }
+  body {
+    font-family: var(--font-sans);
+    background: var(--paper);
+    color: var(--ink);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1.5rem;
+  }
+  .frame { max-width: 560px; width: 100%; }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+  h1 {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 2vw + 1rem, 1.9rem);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    color: var(--ink);
+    margin-bottom: 0.6rem;
+  }
+  .subtitle {
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+    max-width: 46ch;
+  }
+  svg { width: 100%; max-width: 480px; display: block; margin: 0 auto; }
+</style>
+</head>
+<body>
+<div class="frame">
+  <p class="eyebrow">Ch09 · Fig 04 · Data Flow</p>
+  <h1>Where the Cluster IP Actually Lives</h1>
+  <p class="subtitle">A Service's IP is never bound to a process &mdash; kube-proxy programs it as a forwarding rule on every node.</p>
+
+  <svg viewBox="0 0 700 872" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch09-fig04-title ch09-fig04-desc">
+    <title id="ch09-fig04-title">Kube-proxy modes: the cluster IP is a forwarding rule</title>
+    <desc id="ch09-fig04-desc">Diagram showing kube-proxy watching a Service and EndpointSlice above a worker-node boundary, then programming iptables, IPVS, nftables, or Windows-kernelspace rules that forward traffic sent to the cluster IP &mdash; drawn as an empty box with no listening process &mdash; to backend Pods on the local node and on worker-11.</desc>
+
+    <defs>
+      <marker id="arr-watch" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"/>
+      </marker>
+      <marker id="arr-flow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#0B1E3B"/>
+      </marker>
+    </defs>
+
+    <!-- background -->
+    <rect width="700" height="872" fill="#F5EFE4"/>
+
+    <!-- eyebrow -->
+    <text x="24" y="28" font-family="'Fira Mono', monospace" font-size="14" font-weight="500"
+          letter-spacing="0.12em" fill="#8A8D90">CONTROL PLANE</text>
+
+    <!-- zone: node boundary -->
+    <rect x="24" y="264" width="452" height="476" rx="8"
+          fill="rgba(11,30,59,0.02)" stroke="#8A8D90" stroke-width="0.8" stroke-dasharray="6,4"/>
+    <rect x="40" y="266" width="150" height="14" fill="#F5EFE4"/>
+    <text x="48" y="277" font-family="'Fira Mono', monospace" font-size="14" font-weight="500"
+          letter-spacing="0.12em" fill="#8A8D90">NODE: WORKER-3</text>
+
+    <!-- ============ ARROWS (before nodes) ============ -->
+
+    <!-- kube-proxy watches Service -->
+    <path d="M190,108 V120 Q190,128 182,128 H120 Q112,128 112,136 V152"
+          fill="none" stroke="#1F4A4E" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr-watch)"/>
+
+    <!-- kube-proxy watches EndpointSlice -->
+    <path d="M280,108 V112 Q280,120 288,120 H328 Q336,120 336,128 V136"
+          fill="none" stroke="#1F4A4E" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr-watch)"/>
+
+    <!-- kube-proxy programs the rules layer -->
+    <path d="M214,108 V244 Q214,252 222,252 H444 Q452,252 452,260 V424"
+          fill="none" stroke="#0B1E3B" stroke-width="1.2" marker-end="url(#arr-flow)"/>
+    <rect x="458" y="392" width="90" height="16" fill="#F5EFE4"/>
+    <text x="503" y="404" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14"
+          letter-spacing="0.04em" fill="#0B1E3B">PROGRAMS</text>
+
+    <!-- frontend Pod sends to the cluster IP -->
+    <path d="M180,340 H244" fill="none" stroke="#0B1E3B" stroke-width="1.2" marker-end="url(#arr-flow)"/>
+
+    <!-- cluster IP is intercepted into the rules layer -->
+    <path d="M344,384 V424" fill="none" stroke="#0B1E3B" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr-flow)"/>
+
+    <!-- rules layer readdresses to both backend Pods -->
+    <path d="M144,600 V624" fill="none" stroke="#0B1E3B" stroke-width="1.2" marker-end="url(#arr-flow)"/>
+    <path d="M358,600 V624" fill="none" stroke="#0B1E3B" stroke-width="1.2" marker-end="url(#arr-flow)"/>
+
+    <!-- ============ NODES ============ -->
+
+    <!-- kube-proxy -->
+    <rect x="180" y="44" width="140" height="64" rx="6" fill="rgba(11,30,59,0.03)" stroke="#0B1E3B" stroke-width="1"/>
+    <text x="250" y="74" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">kube-proxy</text>
+    <text x="250" y="94" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E">DaemonSet</text>
+
+    <!-- Service -->
+    <rect x="32" y="152" width="160" height="84" rx="6" fill="rgba(11,30,59,0.03)" stroke="#0B1E3B" stroke-width="1"/>
+    <rect x="40" y="160" width="44" height="20" rx="3" fill="transparent" stroke="rgba(11,30,59,0.4)" stroke-width="0.8"/>
+    <text x="62" y="174" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="600"
+          letter-spacing="0.06em" fill="rgba(11,30,59,0.8)">SVC</text>
+    <text x="112" y="206" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Service</text>
+    <text x="112" y="226" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E">10.96.0.42</text>
+
+    <!-- EndpointSlice -->
+    <rect x="236" y="136" width="200" height="108" rx="6" fill="rgba(11,30,59,0.03)" stroke="#0B1E3B" stroke-width="1"/>
+    <rect x="244" y="144" width="44" height="20" rx="3" fill="transparent" stroke="rgba(11,30,59,0.4)" stroke-width="0.8"/>
+    <text x="266" y="158" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="600"
+          letter-spacing="0.06em" fill="rgba(11,30,59,0.8)">EPS</text>
+    <text x="336" y="190" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">EndpointSlice</text>
+    <text x="336" y="210" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E">10.244.1.7:5432</text>
+    <text x="336" y="228" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E">10.244.4.2:5432</text>
+
+    <!-- frontend Pod -->
+    <rect x="40" y="308" width="140" height="64" rx="6" fill="rgba(11,30,59,0.03)" stroke="#0B1E3B" stroke-width="1"/>
+    <rect x="48" y="316" width="44" height="20" rx="3" fill="transparent" stroke="rgba(11,30,59,0.4)" stroke-width="0.8"/>
+    <text x="70" y="330" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="600"
+          letter-spacing="0.06em" fill="rgba(11,30,59,0.8)">POD</text>
+    <text x="110" y="358" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">frontend</text>
+
+    <!-- cluster IP: the focal, empty box -->
+    <rect x="244" y="296" width="200" height="88" rx="6" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2" stroke-dasharray="4,4"/>
+    <text x="344" y="338" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="16" font-weight="500" fill="#B58B3E">10.96.0.42</text>
+    <text x="344" y="360" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" fill="#8A8D90">(nothing is here)</text>
+
+    <!-- rules layer -->
+    <rect x="40" y="424" width="420" height="176" rx="6" fill="rgba(11,30,59,0.06)" stroke="#0B1E3B" stroke-width="1.2"/>
+    <text x="250" y="450" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500"
+          letter-spacing="0.12em" fill="#0B1E3B">RULES LAYER</text>
+    <line x1="64" y1="462" x2="436" y2="462" stroke="rgba(11,30,59,0.15)" stroke-width="0.8"/>
+    <text x="64" y="482" font-family="'Fira Mono', monospace" font-size="14" font-weight="500"
+          letter-spacing="0.12em" fill="#8A8D90">KUBE-PROXY MODE</text>
+    <text x="64" y="504" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">iptables &mdash; default</text>
+    <text x="64" y="524" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E">IPVS</text>
+    <text x="64" y="544" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E">nftables</text>
+    <text x="64" y="564" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E">kernelspace (Windows)</text>
+    <line x1="64" y1="576" x2="436" y2="576" stroke="rgba(11,30,59,0.15)" stroke-width="0.8"/>
+    <text x="250" y="592" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" fill="#8A8D90">readdressed to a live backend Pod</text>
+
+    <!-- backend Pod: local -->
+    <rect x="64" y="624" width="160" height="100" rx="6" fill="rgba(11,30,59,0.03)" stroke="#0B1E3B" stroke-width="1"/>
+    <rect x="72" y="632" width="44" height="20" rx="3" fill="transparent" stroke="rgba(11,30,59,0.4)" stroke-width="0.8"/>
+    <text x="94" y="646" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="600"
+          letter-spacing="0.06em" fill="rgba(11,30,59,0.8)">POD</text>
+    <text x="144" y="680" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">backend</text>
+    <text x="144" y="700" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E">10.244.1.7</text>
+    <text x="144" y="718" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" fill="#8A8D90">same node</text>
+
+    <!-- backend Pod: worker-11 -->
+    <rect x="264" y="624" width="188" height="100" rx="6" fill="rgba(11,30,59,0.03)" stroke="#0B1E3B" stroke-width="1"/>
+    <rect x="272" y="632" width="44" height="20" rx="3" fill="transparent" stroke="rgba(11,30,59,0.4)" stroke-width="0.8"/>
+    <text x="294" y="646" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="600"
+          letter-spacing="0.06em" fill="rgba(11,30,59,0.8)">POD</text>
+    <text x="358" y="680" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">backend</text>
+    <text x="358" y="700" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E">10.244.4.2</text>
+    <text x="358" y="718" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" fill="#8A8D90">on worker-11</text>
+
+    <!-- ============ CALLOUTS ============ -->
+
+    <path d="M448,340 Q480,330 508,326" fill="none" stroke="rgba(11,30,59,0.35)" stroke-width="1" stroke-dasharray="4,3"/>
+    <circle cx="448" cy="340" r="2" fill="#0B1E3B"/>
+    <text x="520" y="306" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="16" fill="#0B1E3B">No process.</text>
+    <text x="520" y="326" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="16" fill="#0B1E3B">No socket.</text>
+    <text x="520" y="346" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="16" fill="#0B1E3B">Nothing listens</text>
+    <text x="520" y="366" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="16" fill="#0B1E3B">at this address.</text>
+
+    <path d="M464,470 Q495,462 518,458" fill="none" stroke="rgba(11,30,59,0.35)" stroke-width="1" stroke-dasharray="4,3"/>
+    <circle cx="464" cy="470" r="2" fill="#0B1E3B"/>
+    <text x="520" y="440" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="16" fill="#0B1E3B">Traffic passes</text>
+    <text x="520" y="460" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="16" fill="#0B1E3B">THROUGH this</text>
+    <text x="520" y="480" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="16" fill="#0B1E3B">layer &mdash; never</text>
+    <text x="520" y="500" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="16" fill="#0B1E3B">delivered TO it.</text>
+
+    <!-- ============ LEGEND ============ -->
+
+    <line x1="24" y1="760" x2="676" y2="760" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+    <text x="24" y="752" font-family="'Fira Mono', monospace" font-size="14" font-weight="500"
+          letter-spacing="0.14em" fill="#8A8D90">LEGEND</text>
+
+    <line x1="24" y1="800" x2="52" y2="800" stroke="#1F4A4E" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr-watch)"/>
+    <text x="60" y="804" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">WATCHES</text>
+
+    <line x1="220" y1="800" x2="248" y2="800" stroke="#0B1E3B" stroke-width="1.2" marker-end="url(#arr-flow)"/>
+    <text x="256" y="804" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">PROGRAMS &middot; FORWARDS</text>
+
+    <rect x="24" y="822" width="20" height="16" rx="3" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2" stroke-dasharray="4,4"/>
+    <text x="52" y="834" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">CLUSTER IP &mdash; NO LISTENER</text>
+
+    <rect x="340" y="822" width="20" height="16" rx="3" fill="rgba(11,30,59,0.02)" stroke="#8A8D90" stroke-width="0.8" stroke-dasharray="6,4"/>
+    <text x="368" y="834" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">NODE BOUNDARY</text>
+
+  </svg>
+</div>
+</body>
+</html>

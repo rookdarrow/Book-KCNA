@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Four extension points, one socket shape</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;700&family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Fira+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --color-paper:   #F5EFE4;
+      --color-ink:     #0B1E3B;
+      --color-muted:   #1F4A4E;
+      --color-soft:    #8A8D90;
+      --color-accent:  #B58B3E;
+      --font-sans:     'Fira Sans', sans-serif;
+      --font-serif:    'Roboto Slab', serif;
+      --font-mono:     'Fira Mono', monospace;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-paper);
+      color: var(--color-ink);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 2rem;
+    }
+
+    .frame { max-width: 640px; width: 100%; }
+
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(1.5rem, 2.4vw + 0.75rem, 1.9rem);
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+      color: var(--color-ink);
+      margin-bottom: 0.75rem;
+    }
+
+    .subtitle {
+      font-family: var(--font-sans);
+      font-size: 1rem;
+      line-height: 1.5;
+      color: var(--color-muted);
+      max-width: 56ch;
+      margin-bottom: 1.5rem;
+    }
+
+    svg { width: 100%; display: block; }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <p class="eyebrow">K8s Architecture &middot; Ch. 17 Fig. 2</p>
+    <h1>Four extension points, one socket shape</h1>
+    <p class="subtitle">CRDs, CRI, CNI, and CSI are different plugs &mdash; but Kubernetes defines the same socket for all four, mounted at the layer of the cluster each one serves.</p>
+
+    <svg viewBox="0 0 720 1000" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch17-fig02-extension-points-map-title ch17-fig02-extension-points-map-desc">
+      <title id="ch17-fig02-extension-points-map-title">Kubernetes extension points across the cluster stack</title>
+      <desc id="ch17-fig02-extension-points-map-desc">A three-band Kubernetes stack: the API surface at the top holds CRDs for new object kinds, a control plane band sits in the middle, and the node at the bottom holds CRI for running containers, CNI for pod networking, and CSI for attaching storage. Four identical sockets on the left edge mark each extension point with its chapter reference.</desc>
+
+      <rect width="100%" height="100%" fill="#F5EFE4"/>
+
+      <!-- Outer container: the cluster -->
+      <rect x="168" y="56" width="512" height="816" rx="8" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1.2"/>
+
+      <!-- Control-plane band tint (de-emphasized: no extension point here) -->
+      <rect x="168" y="224" width="512" height="112" fill="rgba(11,30,59,0.03)"/>
+
+      <!-- Band dividers -->
+      <line x1="168" y1="224" x2="680" y2="224" stroke="rgba(11,30,59,0.12)" stroke-width="1"/>
+      <line x1="168" y1="336" x2="680" y2="336" stroke="rgba(11,30,59,0.12)" stroke-width="1"/>
+
+      <!-- Connectors: socket to cluster wall (drawn before the socket nodes) -->
+      <line x1="96" y1="140" x2="168" y2="140" stroke="#1F4A4E" stroke-width="1.5"/>
+      <line x1="96" y1="472" x2="168" y2="472" stroke="#1F4A4E" stroke-width="1.5"/>
+      <line x1="96" y1="604" x2="168" y2="604" stroke="#1F4A4E" stroke-width="1.5"/>
+      <line x1="96" y1="736" x2="168" y2="736" stroke="#1F4A4E" stroke-width="1.5"/>
+
+      <!-- Band tags -->
+      <text x="184" y="80" fill="#0B1E3B" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" letter-spacing="0.12em">THE KUBERNETES API SURFACE</text>
+      <text x="424" y="280" text-anchor="middle" dominant-baseline="middle" fill="#8A8D90" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" letter-spacing="0.12em">CONTROL PLANE</text>
+      <text x="184" y="360" fill="#0B1E3B" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" letter-spacing="0.12em">THE NODE</text>
+
+      <!-- Row: CRDs (API surface) -->
+      <text x="200" y="140" dominant-baseline="middle" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Mono', monospace">CRDs</text>
+      <text x="648" y="140" dominant-baseline="middle" text-anchor="end" fill="#1F4A4E" font-size="16" font-family="'Fira Sans', sans-serif">new object kinds</text>
+
+      <!-- Row: CRI (node) -->
+      <text x="200" y="472" dominant-baseline="middle" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Mono', monospace">CRI</text>
+      <text x="648" y="472" dominant-baseline="middle" text-anchor="end" fill="#1F4A4E" font-size="16" font-family="'Fira Sans', sans-serif">running containers</text>
+
+      <!-- Row: CNI (node) -->
+      <text x="200" y="604" dominant-baseline="middle" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Mono', monospace">CNI</text>
+      <text x="648" y="604" dominant-baseline="middle" text-anchor="end" fill="#1F4A4E" font-size="16" font-family="'Fira Sans', sans-serif">pod networking</text>
+
+      <!-- Row: CSI (node) -->
+      <text x="200" y="736" dominant-baseline="middle" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Mono', monospace">CSI</text>
+      <text x="648" y="736" dominant-baseline="middle" text-anchor="end" fill="#1F4A4E" font-size="16" font-family="'Fira Sans', sans-serif">attaching storage</text>
+
+      <!-- Sockets: the focal element, four identical instances -->
+      <!-- Socket 1: CRDs -->
+      <circle cx="72" cy="140" r="24" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"/>
+      <svg x="56" y="124" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#B58B3E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="4" y="4" width="16" height="16" rx="8"/>
+        <path d="M9 9v3"/>
+        <path d="M15 9v3"/>
+        <path d="M12 15v2"/>
+      </svg>
+      <text x="72" y="184" text-anchor="middle" fill="#8A8D90" font-size="14" font-family="'Fira Mono', monospace">Ch 6 &#167;8</text>
+
+      <!-- Socket 2: CRI -->
+      <circle cx="72" cy="472" r="24" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"/>
+      <svg x="56" y="456" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#B58B3E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="4" y="4" width="16" height="16" rx="8"/>
+        <path d="M9 9v3"/>
+        <path d="M15 9v3"/>
+        <path d="M12 15v2"/>
+      </svg>
+      <text x="72" y="516" text-anchor="middle" fill="#8A8D90" font-size="14" font-family="'Fira Mono', monospace">Ch 2 &#167;4</text>
+
+      <!-- Socket 3: CNI -->
+      <circle cx="72" cy="604" r="24" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"/>
+      <svg x="56" y="588" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#B58B3E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="4" y="4" width="16" height="16" rx="8"/>
+        <path d="M9 9v3"/>
+        <path d="M15 9v3"/>
+        <path d="M12 15v2"/>
+      </svg>
+      <text x="72" y="648" text-anchor="middle" fill="#8A8D90" font-size="14" font-family="'Fira Mono', monospace">Ch 9 &#167;1</text>
+
+      <!-- Socket 4: CSI -->
+      <circle cx="72" cy="736" r="24" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"/>
+      <svg x="56" y="720" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#B58B3E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="4" y="4" width="16" height="16" rx="8"/>
+        <path d="M9 9v3"/>
+        <path d="M15 9v3"/>
+        <path d="M12 15v2"/>
+      </svg>
+      <text x="72" y="780" text-anchor="middle" fill="#8A8D90" font-size="14" font-family="'Fira Mono', monospace">Ch 11 &#167;5</text>
+
+      <!-- Editorial callout -->
+      <text x="424" y="912" text-anchor="middle" fill="#0B1E3B" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif">Kubernetes defines the shape. Somebody else supplies the plug.</text>
+
+      <!-- Legend -->
+      <line x1="168" y1="944" x2="680" y2="944" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+      <text x="168" y="964" fill="#8A8D90" font-size="14" font-family="'Fira Mono', monospace" letter-spacing="0.12em">LEGEND</text>
+      <circle cx="304" cy="960" r="8" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"/>
+      <svg x="296" y="952" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#B58B3E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="4" y="4" width="16" height="16" rx="8"/>
+        <path d="M9 9v3"/>
+        <path d="M15 9v3"/>
+        <path d="M12 15v2"/>
+      </svg>
+      <text x="324" y="964" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace">EXTENSION POINT &mdash; CHAPTER CROSS-REFERENCE BELOW</text>
+    </svg>
+  </div>
+</body>
+</html>

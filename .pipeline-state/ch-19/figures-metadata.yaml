@@ -1,0 +1,113 @@
+chapter: 19
+book: kcna
+generated: '2026-09-01T16:19:05+00:00'
+figures:
+- anchor_id: ch19-fig01-cross-domain-integration-map
+  source_hash: f557ef7bb6619ce0a3e493db67e86325b374924c84f28aeda350086cbbcdf7d3
+  output_hash:
+    svg: 03b7e1f4878005b8a52385957571eee40ec641c33a96d1546ca225512d0c703c
+    png: 1936256691210884d21d449e540d1742830e7b644e0127c1bf4f120d4a893ac9
+  validations:
+    label_count:
+      result: fail
+      value: 44
+      max: 7
+      reason: 44 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1144
+      - 1686
+    aspect_ratio:
+      result: pass
+      value: 1.47
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 241
+  alt_text: Presence matrix of nine cross-cutting themes against chapters 2 to 18,
+    grouped into structural, interface and policy tiers; the absent-component thread
+    is highlighted and, with the control-loop and label-join threads, spans the most
+    chapters
+- anchor_id: ch19-fig02-confusion-pair-matrix
+  source_hash: c22cee8f689318f4d3a81f167092e9ca96e58711dfb6a6141bd0db04f3d4e38a
+  output_hash:
+    svg: 8ac3057378491edd16cc39f7b7cf01a020a240490b66a25e478d1e70727107f7
+    png: bc90f9eb82c26900e5fab65062b281af6aa2605c1679a9934bb99e44c5492090
+  validations:
+    label_count:
+      result: fail
+      value: 87
+      max: 7
+      reason: 87 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1280
+      - 1616
+    aspect_ratio:
+      result: pass
+      value: 1.26
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 169
+  alt_text: Two-column reference card listing twenty-three confusion pairs from the
+    book, each paired with a one-line question that separates them, banded into the
+    four exam domains
+- anchor_id: ch19-fig03-exam-day-pacing
+  source_hash: 47ade22294c254c42c1105df18065842ac153ed278654dc9771b50bf68b37afc
+  output_hash:
+    svg: dc5d8fb1816e2274a0ec968c21c4159732bc7c1e791901e573d65938cae36aca
+    png: 218a48e99b4817295f7d47be35851fce62ef018fc717dfe6704aad21025380e8
+  validations:
+    label_count:
+      result: pass
+      value: 5
+      max: 7
+      reason: ''
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1280
+      - 1684
+    aspect_ratio:
+      result: pass
+      value: 1.32
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 192
+  alt_text: Ninety-minute exam timeline split at fifty-four minutes; the longer first-pass
+    segment answers and flags every question, and the shorter reserved second-pass
+    segment revisits only flagged ones

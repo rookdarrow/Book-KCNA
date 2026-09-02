@@ -1,0 +1,1 @@
+A central Prometheus server reaches out with four scrape arrows to service discovery, an instrumented app, an exporter and a pushgateway. Only a short batch job pushes inward, into the pushgateway, which Prometheus then scrapes. Prometheus pushes alerts to Alertmanager and serves Grafana over an HTTP API.

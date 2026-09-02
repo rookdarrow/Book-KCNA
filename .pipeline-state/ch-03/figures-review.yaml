@@ -1,0 +1,72 @@
+chapter: 3
+book: kcna
+generated: '2026-09-01T06:59:34+00:00'
+figures:
+- anchor_id: ch03-fig03-deployment-eras-timeline
+  status: pending
+  render_paths:
+    svg: figures/ch03-fig03-deployment-eras-timeline.svg
+    png: figures/ch03-fig03-deployment-eras-timeline.png
+  source_path: figures/sources/ch03-fig03-deployment-eras-timeline.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch03-fig01-control-plane-and-node-components
+  status: pending
+  render_paths:
+    svg: figures/ch03-fig01-control-plane-and-node-components.svg
+    png: figures/ch03-fig01-control-plane-and-node-components.png
+  source_path: figures/sources/ch03-fig01-control-plane-and-node-components.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch03-fig04-request-path-through-apiserver
+  status: pending
+  render_paths:
+    svg: figures/ch03-fig04-request-path-through-apiserver.svg
+    png: figures/ch03-fig04-request-path-through-apiserver.png
+  source_path: figures/sources/ch03-fig04-request-path-through-apiserver.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch03-fig02-control-loop-desired-vs-current
+  status: pending
+  render_paths:
+    svg: figures/ch03-fig02-control-loop-desired-vs-current.svg
+    png: figures/ch03-fig02-control-loop-desired-vs-current.png
+  source_path: figures/sources/ch03-fig02-control-loop-desired-vs-current.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null

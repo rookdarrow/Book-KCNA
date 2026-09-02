@@ -1,0 +1,106 @@
+chapter: 4
+book: kcna
+generated: '2026-09-01T08:02:58+00:00'
+figures:
+- anchor_id: ch04-fig01-object-anatomy-spec-status
+  status: pending
+  render_paths:
+    svg: figures/ch04-fig01-object-anatomy-spec-status.svg
+    png: figures/ch04-fig01-object-anatomy-spec-status.png
+  source_path: figures/sources/ch04-fig01-object-anatomy-spec-status.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch04-fig02-apply-round-trip
+  status: pending
+  render_paths:
+    svg: figures/ch04-fig02-apply-round-trip.svg
+    png: figures/ch04-fig02-apply-round-trip.png
+  source_path: figures/sources/ch04-fig02-apply-round-trip.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch04-fig04-namespaced-vs-cluster-scoped
+  status: pending
+  render_paths:
+    svg: figures/ch04-fig04-namespaced-vs-cluster-scoped.svg
+    png: figures/ch04-fig04-namespaced-vs-cluster-scoped.png
+  source_path: figures/sources/ch04-fig04-namespaced-vs-cluster-scoped.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch04-fig05-configmap-secret-contrast
+  status: pending
+  render_paths:
+    svg: figures/ch04-fig05-configmap-secret-contrast.svg
+    png: figures/ch04-fig05-configmap-secret-contrast.png
+  source_path: figures/sources/ch04-fig05-configmap-secret-contrast.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch04-fig03-labels-selectors-join
+  status: pending
+  render_paths:
+    svg: figures/ch04-fig03-labels-selectors-join.svg
+    png: figures/ch04-fig03-labels-selectors-join.png
+  source_path: figures/sources/ch04-fig03-labels-selectors-join.html
+  validation_results:
+    label_count: pass
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch04-zenith-declaration-not-order
+  status: pending
+  render_paths:
+    svg: figures/ch04-zenith-declaration-not-order.svg
+    png: figures/ch04-zenith-declaration-not-order.png
+  source_path: figures/sources/ch04-zenith-declaration-not-order.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null

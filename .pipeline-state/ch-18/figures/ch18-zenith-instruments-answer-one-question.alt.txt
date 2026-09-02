@@ -1,0 +1,1 @@
+One question at the top asks whether the service is doing what users expect. Three boxes below point up into it: a metric answering whether, a trace answering where, and a log answering what. A baggage box beneath connects to all three, making them about the same request rather than three separate stories.

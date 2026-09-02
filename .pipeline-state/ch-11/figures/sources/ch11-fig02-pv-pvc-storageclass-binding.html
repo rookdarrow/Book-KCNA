@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>PersistentVolume, PersistentVolumeClaim, and StorageClass</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;700&family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Fira+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F5EFE4;
+    --ink: #0B1E3B;
+    --muted: #1F4A4E;
+    --soft: #8A8D90;
+    --accent: #B58B3E;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    font-family: 'Fira Sans', sans-serif;
+    color: var(--ink);
+    padding: 40px 24px;
+  }
+  .page { max-width: 620px; margin: 0 auto; }
+  .eyebrow {
+    font-family: 'Fira Mono', monospace;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 8px 0;
+  }
+  h1 {
+    font-family: 'Roboto Slab', serif;
+    font-weight: 500;
+    font-size: 1.75rem;
+    margin: 0 0 8px 0;
+    color: var(--ink);
+  }
+  .subtitle {
+    font-family: 'Fira Sans', sans-serif;
+    font-size: 16px;
+    color: var(--muted);
+    margin: 0 0 28px 0;
+    max-width: 46ch;
+  }
+  .diagram { width: 100%; }
+  svg { display: block; width: 100%; height: auto; }
+</style>
+</head>
+<body>
+<div class="page">
+  <p class="eyebrow">Chapter 11 &middot; Storage</p>
+  <h1>PersistentVolume vs. PersistentVolumeClaim</h1>
+  <p class="subtitle">Which object does a Pod actually reference &mdash; and which one never enters the picture?</p>
+
+  <div class="diagram">
+    <svg viewBox="0 0 656 840" role="img" aria-labelledby="ch11-fig02-pv-pvc-storageclass-binding-title ch11-fig02-pv-pvc-storageclass-binding-desc" xmlns="http://www.w3.org/2000/svg">
+      <title id="ch11-fig02-pv-pvc-storageclass-binding-title">PersistentVolume, PersistentVolumeClaim, and StorageClass</title>
+      <desc id="ch11-fig02-pv-pvc-storageclass-binding-desc">A supply column holding a cluster-scoped PersistentVolume and a demand column holding a namespaced PersistentVolumeClaim both feed a central binding control loop that produces an exclusive one-to-one bound pair; a Pod arrow points at the bound claim and stops there, and a disconnected StorageClass box sits to one side, not yet explained.</desc>
+
+      <defs>
+        <marker id="arrow-muted" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"/>
+        </marker>
+        <marker id="arrow-ink" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#0B1E3B"/>
+        </marker>
+        <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#B58B3E"/>
+        </marker>
+      </defs>
+
+      <rect width="656" height="840" fill="#F5EFE4"/>
+
+      <!-- ============ ARROWS (drawn before nodes) ============ -->
+
+      <!-- PV -> BINDING loop -->
+      <path d="M160,208 V260 Q160,268 168,268 H240 Q248,268 248,276 V328"
+            fill="none" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow-muted)"/>
+
+      <!-- PVC -> BINDING loop -->
+      <path d="M496,208 V260 Q496,268 488,268 H416 Q408,268 408,276 V328"
+            fill="none" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow-muted)"/>
+
+      <!-- BINDING loop -> BOUND pair (exclusive, one-to-one) -->
+      <line x1="328" y1="448" x2="328" y2="548" stroke="#0B1E3B" stroke-width="1.2" marker-end="url(#arrow-ink)"/>
+      <rect x="336" y="478" width="124" height="40" fill="#F5EFE4"/>
+      <text x="340" y="492" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" letter-spacing="0.04em">EXCLUSIVE,</text>
+      <text x="340" y="508" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" letter-spacing="0.04em">ONE-TO-ONE</text>
+
+      <!-- Pod -> BOUND pair (FOCAL: Pod references the claim, and stops there) -->
+      <line x1="152" y1="596" x2="188" y2="596" stroke="#B58B3E" stroke-width="1.2" marker-end="url(#arrow-accent)"/>
+
+      <!-- ============ COLUMN HEADERS ============ -->
+
+      <text x="160" y="32" text-anchor="middle" fill="#0B1E3B" font-size="14" font-weight="500"
+            font-family="'Fira Mono', monospace" letter-spacing="0.12em">SUPPLY</text>
+      <text x="160" y="56" text-anchor="middle" fill="#1F4A4E" font-size="14"
+            font-family="'Fira Sans', sans-serif">cluster-scoped &mdash; created by an admin</text>
+
+      <text x="496" y="32" text-anchor="middle" fill="#0B1E3B" font-size="14" font-weight="500"
+            font-family="'Fira Mono', monospace" letter-spacing="0.12em">DEMAND</text>
+      <text x="496" y="56" text-anchor="middle" fill="#1F4A4E" font-size="14"
+            font-family="'Fira Sans', sans-serif">namespaced &mdash; created by a user</text>
+
+      <!-- ============ PersistentVolume ============ -->
+      <rect x="40" y="88" width="240" height="120" rx="6" fill="rgba(11,30,59,0.04)" stroke="#0B1E3B" stroke-width="1"/>
+      <text x="160" y="120" text-anchor="middle" fill="#0B1E3B" font-size="16" font-weight="500"
+            font-family="'Fira Sans', sans-serif">PersistentVolume</text>
+      <text x="160" y="144" text-anchor="middle" fill="#1F4A4E" font-size="14"
+            font-family="'Fira Mono', monospace">pv-fast-01</text>
+      <text x="160" y="164" text-anchor="middle" fill="#1F4A4E" font-size="14"
+            font-family="'Fira Mono', monospace">50Gi &middot; RWO</text>
+      <text x="160" y="184" text-anchor="middle" fill="#1F4A4E" font-size="14"
+            font-family="'Fira Mono', monospace">NFS / EBS / Ceph / &hellip;</text>
+
+      <!-- ============ PersistentVolumeClaim ============ -->
+      <rect x="376" y="88" width="240" height="120" rx="6" fill="rgba(31,74,78,0.04)" stroke="#1F4A4E" stroke-width="1"/>
+      <text x="496" y="120" text-anchor="middle" fill="#0B1E3B" font-size="16" font-weight="500"
+            font-family="'Fira Sans', sans-serif">PersistentVolumeClaim</text>
+      <text x="496" y="144" text-anchor="middle" fill="#1F4A4E" font-size="14"
+            font-family="'Fira Mono', monospace">claim &quot;data&quot;</text>
+      <text x="496" y="164" text-anchor="middle" fill="#1F4A4E" font-size="14"
+            font-family="'Fira Mono', monospace">requests 20Gi &middot; RWO</text>
+      <text x="496" y="184" text-anchor="middle" fill="#1F4A4E" font-size="14"
+            font-family="'Fira Mono', monospace">ns: production</text>
+
+      <!-- ============ BINDING control loop ============ -->
+      <rect x="168" y="328" width="320" height="120" rx="6" fill="rgba(31,74,78,0.04)" stroke="#1F4A4E" stroke-width="1"/>
+      <text x="328" y="360" text-anchor="middle" fill="#0B1E3B" font-size="16" font-weight="500"
+            font-family="'Fira Sans', sans-serif">BINDING control loop</text>
+      <text x="328" y="384" text-anchor="middle" fill="#1F4A4E" font-size="14"
+            font-family="'Fira Mono', monospace">watches for new PVCs,</text>
+      <text x="328" y="404" text-anchor="middle" fill="#1F4A4E" font-size="14"
+            font-family="'Fira Mono', monospace">finds a matching PV,</text>
+      <text x="328" y="424" text-anchor="middle" fill="#1F4A4E" font-size="14"
+            font-family="'Fira Mono', monospace">binds them together</text>
+
+      <!-- ============ BOUND pair ============ -->
+      <rect x="188" y="548" width="280" height="96" rx="6" fill="rgba(11,30,59,0.04)" stroke="#0B1E3B" stroke-width="1"/>
+      <text x="328" y="590" text-anchor="middle" fill="#0B1E3B" font-size="16" font-weight="500"
+            font-family="'Fira Sans', sans-serif">PVC &quot;data&quot; is BOUND</text>
+      <text x="328" y="612" text-anchor="middle" fill="#1F4A4E" font-size="14"
+            font-family="'Fira Mono', monospace">to PV pv-fast-01</text>
+
+      <!-- ============ Pod ============ -->
+      <rect x="40" y="556" width="112" height="80" rx="6" fill="rgba(11,30,59,0.04)" stroke="#0B1E3B" stroke-width="1"/>
+      <text x="96" y="601" text-anchor="middle" fill="#0B1E3B" font-size="16" font-weight="500"
+            font-family="'Fira Sans', sans-serif">Pod</text>
+
+      <!-- ============ StorageClass (disconnected, deferred) ============ -->
+      <rect x="496" y="556" width="120" height="80" rx="6" fill="rgba(138,141,144,0.06)" stroke="#8A8D90" stroke-width="1" stroke-dasharray="4,4"/>
+      <text x="556" y="601" text-anchor="middle" fill="#8A8D90" font-size="16" font-weight="500"
+            font-family="'Fira Sans', sans-serif">StorageClass</text>
+      <text x="556" y="656" text-anchor="middle" fill="#8A8D90" font-size="14"
+            font-family="'Fira Sans', sans-serif" font-style="italic">not yet explained</text>
+      <text x="556" y="672" text-anchor="middle" fill="#8A8D90" font-size="14"
+            font-family="'Fira Sans', sans-serif" font-style="italic">&mdash; see &sect;3</text>
+
+      <!-- ============ Focal callout: Pod's line terminates at the claim ============ -->
+      <path d="M 44,704 Q 96,656 172,606" fill="none" stroke="#B58B3E" stroke-opacity="0.55"
+            stroke-width="1" stroke-dasharray="4,3"/>
+      <circle cx="172" cy="606" r="2.6" fill="#B58B3E"/>
+      <text x="40" y="712" fill="#B58B3E" font-size="16" font-style="italic"
+            font-family="'Fira Sans', sans-serif">the Pod&rsquo;s line terminates here,</text>
+      <text x="40" y="732" fill="#B58B3E" font-size="16" font-style="italic"
+            font-family="'Fira Sans', sans-serif">at the claim &mdash; it never reaches</text>
+      <text x="40" y="752" fill="#B58B3E" font-size="16" font-style="italic"
+            font-family="'Fira Sans', sans-serif">the PersistentVolume.</text>
+
+      <!-- ============ Legend ============ -->
+      <line x1="40" y1="792" x2="616" y2="792" stroke="#8A8D90" stroke-opacity="0.35" stroke-width="0.8"/>
+      <text x="40" y="808" fill="#0B1E3B" font-size="14" font-weight="500"
+            font-family="'Fira Mono', monospace" letter-spacing="0.12em">LEGEND</text>
+
+      <line x1="176" y1="804" x2="204" y2="804" stroke="#B58B3E" stroke-width="1.2"/>
+      <text x="212" y="808" fill="#0B1E3B" font-size="14" font-family="'Fira Sans', sans-serif">Pod references the claim</text>
+
+      <rect x="416" y="798" width="20" height="12" rx="2" fill="rgba(138,141,144,0.06)" stroke="#8A8D90" stroke-width="1" stroke-dasharray="3,3"/>
+      <text x="444" y="808" fill="#0B1E3B" font-size="14" font-family="'Fira Sans', sans-serif">StorageClass &mdash; not yet covered</text>
+
+    </svg>
+  </div>
+</div>
+</body>
+</html>

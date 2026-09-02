@@ -1,0 +1,241 @@
+chapter: 9
+book: kcna
+generated: '2026-09-01T16:28:39+00:00'
+figures:
+- anchor_id: ch09-fig01-network-model-four-rules
+  source_hash: 29976f5ffe64df06342281dbb46a70a759ccf47bb043eb3aa7b6667857ff45a0
+  output_hash:
+    svg: dad8c049326c086ac94e1304d33f49c872f3281952433ec695a3f7c09c8a54a7
+    png: e5af35d618732ba4e9f44f48c1be4447724c60e8fd25b3c4bd941817a35cfc6f
+  validations:
+    label_count:
+      result: pass
+      value: 7
+      max: 7
+      reason: ''
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1040
+      - 1386
+    aspect_ratio:
+      result: pass
+      value: 1.33
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 297
+  alt_text: Two worker nodes side by side, each containing Pods labelled with 10.244.x.x
+    addresses. One Pod contains two containers joined over localhost. Direct lines
+    connect a Pod to another Pod on the same node, to a Pod on the other node, and
+    to the local kubelet, with no intermediate device on any line.
+- anchor_id: ch09-fig02-service-types-ladder
+  source_hash: 1a949ac8da29a9b1de6ae17496c3af568e9f72f1be7f7927b5bab5f94b4b8d55
+  output_hash:
+    svg: 61b61cf5f2b3ddc4c5a1ca5c674f9e35c64fd835b4adfbd0aa5371330065db7e
+    png: 926e8a7653ce1a39f2115e02e0d47448aa47382d09fd7657daa3a82eb25a64b1
+  validations:
+    label_count:
+      result: fail
+      value: 25
+      max: 7
+      reason: 25 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1280
+      - 1684
+    aspect_ratio:
+      result: pass
+      value: 1.32
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 452
+  alt_text: 'Three concentric labelled frames: ClusterIP innermost reachable inside
+    the cluster only and the default type, NodePort around it reachable from any node
+    address and port, LoadBalancer outermost reachable from the internet via a provider-supplied
+    load balancer. Below a heavy double-ruled separator marked not on the ladder,
+    ExternalName is shown separately as a CNAME from my-svc to api.foo.bar.example
+    with no cluster IP, no endpoints and no proxying.'
+- anchor_id: ch09-fig03-service-endpointslice-selector-path
+  source_hash: 37e1ec18a6ef8224deaa83c53ccbd3464a85d05efb5bb18c52eb925a8f445ad3
+  output_hash:
+    svg: 45c7b1c26b37016140ed2912e72362c73546dc07f9a8692ba72a994779025cc9
+    png: 2df125503369666603786caac2feb4288fa5388738fdfac1ba394630154a5253
+  validations:
+    label_count:
+      result: fail
+      value: 33
+      max: 7
+      reason: 33 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1280
+      - 1654
+    aspect_ratio:
+      result: pass
+      value: 1.29
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 543
+  alt_text: A Service named database holds the selector app equals db. Four Pods are
+    listed; three carry the label app db and one carries app cache. The three matching
+    Pods send arrows toward a gate labelled Ready. Two Ready Pods pass through into
+    an EndpointSlice containing 10.244.1.7 port 5432 and 10.244.4.2 port 5432. The
+    third matching Pod, not Ready, is stopped at the gate. The cache Pod never matched
+    the selector and sends no arrow. Beneath, the EndpointSlice controller in kube-controller-manager
+    watches Services and Pods and writes the slice.
+- anchor_id: ch09-fig04-kube-proxy-modes
+  source_hash: 8d557292e6c08dc6152a27ef3c9a1750e15b747620d949af9f3bddb17e17977d
+  output_hash:
+    svg: ee0c8ff0831cb65319beed6594ad375555675d7cfe235ad8ad150049477d4673
+    png: 24f857997a7c5477dee27606a7d34a7fb9865dc14f75b49b91dcd4818c936795
+  validations:
+    label_count:
+      result: fail
+      value: 44
+      max: 7
+      reason: 44 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 960
+      - 1196
+    aspect_ratio:
+      result: pass
+      value: 1.25
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 524
+  alt_text: Above a node boundary, kube-proxy watches a Service object holding cluster
+    IP 10.96.0.42 and an EndpointSlice holding two Pod addresses with port 5432, and
+    programs rules below the boundary. Inside worker-3, a frontend Pod sends traffic
+    to 10.96.0.42, drawn as a dashed empty box marked nothing is here — no process,
+    no socket. The traffic descends through a heavy rules layer listing modes iptables
+    as default, IPVS, nftables and Windows kernelspace, then is readdressed to two
+    backend Pods, one local and one on worker-11.
+- anchor_id: ch09-fig05-dns-record-shapes
+  source_hash: 551686bf7f67885389b7b142a2021b71431120c96721dd3c7245ed82b5d7f904
+  output_hash:
+    svg: 4d3907c52c88ed5203b342af104b43762b1ebdcbb19ad7d7b29b4e0d920be7ed
+    png: 7f5fe6a9dafb9fbf2399c25fda5242d95b9fb338512bf187301dd287e5741be9
+  validations:
+    label_count:
+      result: fail
+      value: 61
+      max: 7
+      reason: 61 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1120
+      - 1470
+    aspect_ratio:
+      result: pass
+      value: 1.31
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 525
+  alt_text: A four-column grid of cluster DNS name shapes. Normal Service and headless
+    Service occupy identical rows — my-svc, my-namespace, svc, cluster.local — resolving
+    to the cluster IP and to all the Pod IPs respectively. An SRV row prefixes underscore
+    http underscore tcp onto the same four labels. A Pod-by-address row uses 172-17-0-3
+    with dots converted to dashes and the literal pod in column three instead of svc.
+    A final row uses hostname dot subdomain for a Pod's stable name. Columns two and
+    four are identical in every row.
+- anchor_id: ch09-zenith-stable-name-over-churn
+  source_hash: 8ab7b4fb8eb3237683460cef948fd7b99adc324b59bc8546f6d3be81288a5dd2
+  output_hash:
+    svg: f9a4bc9b2b521e89209f1264750886ffdce622bfc1dbeb2e1c0847797851f7ab
+    png: 37cde765039b621a20c1e30bdab43518b9014a786ffd385ebedbdf16e489c1a9
+  validations:
+    label_count:
+      result: fail
+      value: 34
+      max: 7
+      reason: 34 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1312
+      - 1344
+    aspect_ratio:
+      result: pass
+      value: 1.02
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 610
+  alt_text: 'A single unchanging banner reads database.production.svc.cluster.local
+    and cluster IP 10.96.0.42. Beneath it, four time-step boxes labelled t0 through
+    t3 each hold three Pods, drawn with different generation glyphs and different
+    address fragments; no Pod or address from t0 remains at t3. Below, a chain reads
+    query on the label app equals db, then answer as an EndpointSlice, then publish,
+    fanning out to three consumers: the rules layer from section six, the endpoint
+    list from section four, and the DNS record from section seven. The caption reads
+    three readers, one answer, one question that never changed.'

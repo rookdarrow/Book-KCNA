@@ -82,7 +82,7 @@ Two vertical columns of equal width, side by side, separated by generous whitesp
 ```yaml-figure-spec
 anchor_id: ch13-fig01-two-audience-split
 diagram_type: concept_map
-source_ascii: |
+source_ascii: |5
           PLATFORM SCOPE                    APPLICATION SCOPE
           (this chapter)                    (Chapter 16)
 
@@ -176,7 +176,7 @@ A top-down tree. The root is a question, not a state: **"Does the Pod object exi
 ```yaml-figure-spec
 anchor_id: ch13-fig02-pod-failure-signature-map
 diagram_type: flowchart
-source_ascii: |
+source_ascii: |6
                       Does the Pod object exist?
                                 │
                 ┌───────────────┴───────────────┐
@@ -271,7 +271,7 @@ CONDITIONS   kubectl describe pod <name>         Container state + Reason.
 ```yaml-figure-spec
 anchor_id: ch13-fig03-phase-before-logs-flow
 diagram_type: flowchart
-source_ascii: |
+source_ascii: |2
     SCOPE      kubectl config current-context      Right cluster? Right namespace?
       │
       ▼
@@ -366,7 +366,7 @@ Two vertical chains side by side, each with its own heading and each descending 
 ```yaml-figure-spec
 anchor_id: ch13-fig05-oomkilled-vs-evicted
 diagram_type: flowchart
-source_ascii: |
+source_ascii: |4
           OOMKilled                              Evicted
           ─────────                              ───────
 
@@ -649,7 +649,7 @@ A single root at top center reading **ONE KEY: the phase**, from which the whole
 ```yaml-figure-spec
 anchor_id: ch13-zenith-read-the-phase-first
 diagram_type: hierarchy_tree
-source_ascii: |
+source_ascii: |3
                         ONE KEY:  the phase
                               │
       ┌───────────────────────┼───────────────────────────────┐

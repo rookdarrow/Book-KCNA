@@ -271,7 +271,7 @@ copyright_clearance:
 ```yaml-figure-spec
 anchor_id: ch03-fig04-request-path-through-apiserver
 diagram_type: data_flow
-source_ascii: |
+source_ascii: |5
       kubectl          kube-scheduler       kube-controller-manager
          │                    │                        │
          │                    │                        │
@@ -362,7 +362,7 @@ Four nodes arranged around a closed cycle: `DESIRED STATE`, `CURRENT STATE`, `CO
 ```yaml-figure-spec
 anchor_id: ch03-fig02-control-loop-desired-vs-current
 diagram_type: flowchart
-source_ascii: |
+source_ascii: |4
                 ┌──────────────────┐
          ┌─────▶│  DESIRED STATE   │──────┐
          │      └──────────────────┘      │

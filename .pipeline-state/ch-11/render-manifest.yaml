@@ -1,0 +1,422 @@
+chapter: 11
+book: kcna
+generated: '2026-09-01T06:20:14+00:00'
+figures:
+- anchor_id: ch11-fig01-volume-lifetime-ladder
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch11-fig01-volume-lifetime-ladder.html
+  output_paths:
+    svg: figures/ch11-fig01-volume-lifetime-ladder.svg
+    png: figures/ch11-fig01-volume-lifetime-ladder.png
+    alt: figures/ch11-fig01-volume-lifetime-ladder.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: hierarchy_tree
+  figure_spec:
+    anchor_id: ch11-fig01-volume-lifetime-ladder
+    diagram_type: hierarchy_tree
+    source_ascii: "   ┌──────────────────────────────────────────────────────────────┐\n\
+      \   │  CLUSTER-SCOPED STORAGE                          (rung 3)    │\n   │ \
+      \ survives the Pod's deletion                                 │\n   │      \
+      \                                                        │\n   │   ┌────────────────────────────────────────────────────┐\
+      \     │\n   │   │  POD-SCOPED VOLUME                     (rung 2)    │     │\n\
+      \   │   │  survives a container restart                      │     │\n   │ \
+      \  │                                                    │     │\n   │   │  \
+      \ ┌──────────────────────────────────────────┐     │     │\n   │   │   │  CONTAINER\
+      \ WRITABLE LAYER    (rung 1)    │     │     │\n   │   │   │  survives nothing\
+      \                        │     │     │\n   │   │   └──────────────────────────────────────────┘\
+      \     │     │\n   │   │        ▲                                           │\
+      \     │\n   │   │        └── boundary: CONTAINER RESTART             │     │\n\
+      \   │   │            (data below this line is discarded)     │     │\n   │ \
+      \  └────────────────────────────────────────────────────┘     │\n   │      \
+      \      ▲                                                 │\n   │           \
+      \ └── boundary: POD CEASES TO EXIST                 │\n   │                (data\
+      \ below this line is discarded)           │\n   │                          \
+      \                                    │\n   │   nothing in a Pod's lifecycle\
+      \ crosses this outer boundary   │\n   └──────────────────────────────────────────────────────────────┘\n"
+    vendor_terms: []
+    complexity_hint:
+      node_count: 3
+      edge_count: 2
+      label_count: 9
+    pedagogy:
+      part_18_criteria_met:
+      - spatial_structure
+      - fixed_point
+      learning_outcome: Trace a file outward from the container filesystem and name
+        which of two boundaries destroys it
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: the two boundary arrows labelled CONTAINER RESTART
+        and POD CEASES TO EXIST
+    accessibility:
+      alt_text_seed: 'Three nested rectangles showing widening storage lifetimes:
+        an innermost container writable layer that survives nothing, a middle Pod-scoped
+        volume that survives a container restart, and an outermost cluster-scoped
+        storage box that survives the Pod''s deletion; two arrows mark the boundaries
+        at container restart and at Pod deletion'
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders: []
+      clearance: own_interpretation
+      notes: Generic containment concepts; no vendor marks or icons reproduced.
+- anchor_id: ch11-fig02-pv-pvc-storageclass-binding
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch11-fig02-pv-pvc-storageclass-binding.html
+  output_paths:
+    svg: figures/ch11-fig02-pv-pvc-storageclass-binding.svg
+    png: figures/ch11-fig02-pv-pvc-storageclass-binding.png
+    alt: figures/ch11-fig02-pv-pvc-storageclass-binding.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: k8s_architecture
+  figure_spec:
+    anchor_id: ch11-fig02-pv-pvc-storageclass-binding
+    diagram_type: k8s_architecture
+    source_ascii: "        SUPPLY                                   DEMAND\n   (cluster-scoped)\
+      \                            (namespaced)\n   created by an admin          \
+      \             created by a user\n\n   ┌───────────────────┐                \
+      \  ┌────────────────────┐\n   │ PersistentVolume  │                  │ PersistentVolume-\
+      \  │\n   │   pv-fast-01      │                  │   Claim  \"data\"    │\n \
+      \  │   50Gi   RWO      │                  │   requests 20Gi    │\n   │   [NFS\
+      \ / EBS /    │                  │   requests RWO     │\n   │    Ceph / …]  \
+      \    │                  │   ns: production   │\n   └─────────┬─────────┘   \
+      \               └─────────┬──────────┘\n             │                     \
+      \                 │\n             │      ┌────────────────────────┐      │\n\
+      \             └─────▶│   BINDING control loop │◀─────┘\n                   \
+      \ │  watches for new PVCs, │\n                    │  finds a matching PV,  │\n\
+      \                    │  binds them together   │\n                    └───────────┬────────────┘\n\
+      \                                │\n                       EXCLUSIVE, ONE-TO-ONE\n\
+      \                                │\n                                ▼\n    \
+      \                ┌────────────────────────┐\n   ┌──────────┐     │   PVC \"\
+      data\" is BOUND  │\n   │   Pod    │────▶│   to PV pv-fast-01     │\n   └──────────┘\
+      \     └────────────────────────┘\n        ▲\n        └── the Pod's line terminates\
+      \ HERE, at the claim.\n            It never reaches the PersistentVolume.\n\n\
+      \   ┌──────────────┐\n   │ StorageClass │  ← a third object, off to one side.\n\
+      \   └──────────────┘     Not explained yet. See §3.\n"
+    vendor_terms:
+    - persistentvolume
+    - persistentvolumeclaim
+    - storageclass
+    - pod
+    - nfs
+    - ebs
+    - ceph
+    complexity_hint:
+      node_count: 6
+      edge_count: 4
+      label_count: 13
+    pedagogy:
+      part_18_criteria_met:
+      - spatial_structure
+      - distinguishing_alternatives
+      - fixed_point
+      learning_outcome: Distinguish PersistentVolume from PersistentVolumeClaim and
+        identify which object a Pod references
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: the Pod-to-claim arrow and its callout that the
+        Pod's line terminates at the claim
+    accessibility:
+      alt_text_seed: A supply column holding a cluster-scoped PersistentVolume and
+        a demand column holding a namespaced PersistentVolumeClaim, both feeding a
+        central binding control loop that produces an exclusive one-to-one bound pair;
+        a Pod arrow points at the bound claim and stops there, and a disconnected
+        StorageClass box sits to one side
+    rendering_hints:
+      preferred_orientation: portrait
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Kubernetes API objects redrawn in Lodestar style; vendor names appear
+        as plain text only. Re-evaluate to licensed_icon_set if the renderer substitutes
+        official Kubernetes resource icons.
+- anchor_id: ch11-fig03-static-vs-dynamic-provisioning
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch11-fig03-static-vs-dynamic-provisioning.html
+  output_paths:
+    svg: figures/ch11-fig03-static-vs-dynamic-provisioning.svg
+    png: figures/ch11-fig03-static-vs-dynamic-provisioning.png
+    alt: figures/ch11-fig03-static-vs-dynamic-provisioning.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: flowchart
+  figure_spec:
+    anchor_id: ch11-fig03-static-vs-dynamic-provisioning
+    diagram_type: flowchart
+    source_ascii: "                        A PVC IS CREATED\n                    \
+      \           │\n                               ▼\n              ┌────────────────────────────────┐\n\
+      \              │ Does a matching PV already     │\n              │ exist and\
+      \ is it Available?     │\n              └───────┬────────────────┬───────┘\n\
+      \                      │ YES            │ NO\n                      ▼      \
+      \          ▼\n        ═════ STATIC ═════      ┌─────────────────────────┐\n\
+      \                                │ Does the claim name a   │\n   admin pre-created\
+      \ a PV       │ StorageClass, AND is a  │\n   carrying the real storage    │\
+      \ provisioner configured  │\n   details                      │ for that class?\
+      \         │\n              │                 └───┬─────────────────┬───┘\n \
+      \             │                     │ BOTH            │ EITHER\n           \
+      \   │                     │ TRUE            │ MISSING\n              ▼     \
+      \                ▼                 ▼\n     ┌─────────────────┐  ═══ DYNAMIC\
+      \ ═══     ┌──────────────────┐\n     │  binder matches │                   \
+      \   │  CLAIM WAITS,    │\n     │  claim ↔ PV     │  provisioner creates │  INDEFINITELY\
+      \    │\n     └────────┬────────┘  a PV for this claim │                  │\n\
+      \              │                    │          │  Pod stays in    │\n      \
+      \        │                    ▼          │  Pending.        │\n            \
+      \  │           ┌─────────────────┐ │  No error event  │\n              │   \
+      \        │  binder matches │ │  that says so.   │\n              │         \
+      \  │  claim ↔ new PV │ └──────────────────┘\n              │           └────────┬────────┘\
+      \        ▲\n              │                    │                 │\n       \
+      \       └────────┬───────────┘        an object without its\n              \
+      \         ▼                    component does nothing\n              ┌─────────────────┐\n\
+      \              │   PVC is BOUND  │\n              │  Pod can mount  │\n    \
+      \          └─────────────────┘\n"
+    vendor_terms:
+    - persistentvolume
+    - persistentvolumeclaim
+    - storageclass
+    - pod
+    complexity_hint:
+      node_count: 10
+      edge_count: 10
+      label_count: 14
+    pedagogy:
+      part_18_criteria_met:
+      - distinguishing_alternatives
+      - spatial_structure
+      - fixed_point
+      learning_outcome: Predict whether a claim binds statically, triggers dynamic
+        provisioning, or waits unbound indefinitely
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: the EITHER MISSING branch and its CLAIM WAITS,
+        INDEFINITELY terminal box
+    accessibility:
+      alt_text_seed: A flowchart starting at PVC creation, branching on whether a
+        matching PersistentVolume already exists; yes leads to static binding, no
+        leads to a second decision requiring both a named StorageClass and a configured
+        provisioner, whose true branch is dynamic provisioning and whose false branch
+        dead-ends at a claim that waits indefinitely with the Pod stuck in Pending
+    rendering_hints:
+      preferred_orientation: portrait
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Decision logic redrawn from Kubernetes documented behaviour; no vendor
+        artwork reproduced.
+- anchor_id: ch11-fig04-access-modes-and-reclaim-policies
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch11-fig04-access-modes-and-reclaim-policies.html
+  output_paths:
+    svg: figures/ch11-fig04-access-modes-and-reclaim-policies.svg
+    png: figures/ch11-fig04-access-modes-and-reclaim-policies.png
+    alt: figures/ch11-fig04-access-modes-and-reclaim-policies.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: other
+  figure_spec:
+    anchor_id: ch11-fig04-access-modes-and-reclaim-policies
+    diagram_type: other
+    source_ascii: " ┌─ WHAT YOU MAY DO ────────────┐  ┌─ WHAT HAPPENS AFTER ───────────┐\n\
+      \ │  access modes                │  │  reclaim policies              │\n │ \
+      \ UNIT = NODES (except RWOP)  │  │  when the claim is deleted     │\n │    \
+      \                          │  │                                │\n │  RWO  \
+      \ ▣ · ·   1 node, r/w   │  │           PV obj  asset  data  │\n │  ROX   ▣ ▣\
+      \ ▣   many, r/o     │  │  Retain     kept   kept   kept │\n │  RWX   ▣ ▣ ▣ \
+      \  many, r/w     │  │  Delete     gone   gone   gone │\n │  RWOP  ◉ · ·   1\
+      \ POD, r/w    │  │  ~Recycle~   —      —      —   │\n │        ↑           \
+      \          │  │   (deprecated)                 │\n │        └─ the unit changes\
+      \   │  │                                │\n │           HERE, and only     │\
+      \  │  DEFAULT for dynamically       │\n │           here               │  │\
+      \  provisioned volumes: Delete   │\n └──────────────────────────────┘  └────────────────────────────────┘\n"
+    vendor_terms: []
+    complexity_hint:
+      node_count: 9
+      edge_count: 1
+      label_count: 22
+    pedagogy:
+      part_18_criteria_met:
+      - distinguishing_alternatives
+      - fixed_point
+      learning_outcome: Read an access mode as a node count, identify RWOP as the
+        sole Pod-scoped mode, and state what each reclaim policy destroys
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: the RWOP row and the callout reading 'the unit
+        changes HERE, and only here'
+    accessibility:
+      alt_text_seed: 'Two side-by-side reference panels: the left lists four access
+        modes with the unit being nodes except for ReadWriteOncePod, which is highlighted
+        as the only Pod-scoped mode; the right tabulates three reclaim policies showing
+        Retain keeps the PV object, asset and data, Delete destroys all three, and
+        Recycle is deprecated, with a footer noting Delete is the default for dynamically
+        provisioned volumes'
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders: []
+      clearance: own_interpretation
+      notes: Enumerated API values presented as an original reference layout; no vendor
+        artwork reproduced.
+- anchor_id: ch11-fig05-statefulset-pvc-pairing
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch11-fig05-statefulset-pvc-pairing.html
+  output_paths:
+    svg: figures/ch11-fig05-statefulset-pvc-pairing.svg
+    png: figures/ch11-fig05-statefulset-pvc-pairing.png
+    alt: figures/ch11-fig05-statefulset-pvc-pairing.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: k8s_architecture
+  figure_spec:
+    anchor_id: ch11-fig05-statefulset-pvc-pairing
+    diagram_type: k8s_architecture
+    source_ascii: "   StatefulSet \"web\"  ·  volumeClaimTemplates: [ www ]  ·  replicas:\
+      \ 3\n\n     ┌─────────┐        ┌─────────┐        ┌─────────┐\n     │  web-0\
+      \  │        │  web-1  │        │  web-2  │\n     └────┬────┘        └────┬────┘\
+      \        └────┬────┘\n          │                  │                  │\n  \
+      \        ▼                  ▼                  ▼\n     ┌─────────┐        ┌─────────┐\
+      \        ┌─────────┐\n     │ PVC     │        │ PVC     │        │ PVC     │\n\
+      \     │ www-    │        │ www-    │        │ www-    │\n     │ web-0   │  \
+      \      │ web-1   │        │ web-2   │\n     └─────────┘        └─────────┘ \
+      \       └─────────┘\n\n   ── STATE 1: web-1 is RESCHEDULED to a different node\
+      \ ──────────\n\n     node-a              node-c              node-b\n     ┌─────────┐\
+      \        ┌─────────┐        ┌─────────┐\n     │  web-0  │        │  web-1  │◀──\
+      \ moved from node-b\n     └────┬────┘        └────┬────┘        └────┬────┘\n\
+      \          │                  │  the claim line   │\n          ▼           \
+      \       ▼  FOLLOWS the Pod  ▼\n     [www-web-0]        [www-web-1]        [www-web-2]\n\
+      \n   ── STATE 2: web-1 is DELETED ──────────────────────────────────\n\n   \
+      \  ┌─────────┐             ✕             ┌─────────┐\n     │  web-0  │     \
+      \   (Pod gone)         │  web-2  │\n     └────┬────┘             ╎         \
+      \    └────┬────┘\n          │                  ╎                  │\n      \
+      \    ▼                  ▼                  ▼\n     [www-web-0]        [www-web-1]\
+      \        [www-web-2]\n                        ↑ THE CLAIM REMAINS.\n       \
+      \                   Nothing cleans it up.\n"
+    vendor_terms:
+    - statefulset
+    - persistentvolumeclaim
+    - pod
+    - kubernetes
+    complexity_hint:
+      node_count: 18
+      edge_count: 9
+      label_count: 26
+    pedagogy:
+      part_18_criteria_met:
+      - spatial_structure
+      - temporal_structure
+      - fixed_point
+      learning_outcome: Explain why a StatefulSet's per-replica claim follows the
+        Pod across a reschedule and survives the Pod's deletion
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: the www-web-1 claim box that remains in STATE 2
+        after its Pod is deleted
+    accessibility:
+      alt_text_seed: Three stacked bands showing a three-replica StatefulSet named
+        web, each Pod paired one-to-one with its own PersistentVolumeClaim named www-web-0
+        through www-web-2; in the second band web-1 has moved to a different node
+        and keeps its claim, and in the third band web-1 is deleted while its claim
+        remains in place
+    rendering_hints:
+      preferred_orientation: portrait
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Kubernetes workload objects redrawn in Lodestar style. Re-evaluate to
+        licensed_icon_set if official Kubernetes resource icons are substituted for
+        the Pod and PVC boxes.
+- anchor_id: ch11-zenith-outliving-the-pod
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch11-zenith-outliving-the-pod.html
+  output_paths:
+    svg: figures/ch11-zenith-outliving-the-pod.svg
+    png: figures/ch11-zenith-outliving-the-pod.png
+    alt: figures/ch11-zenith-outliving-the-pod.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: other
+  figure_spec:
+    anchor_id: ch11-zenith-outliving-the-pod
+    diagram_type: other
+    source_ascii: "   Pod    ├──web-1──┤        ├──web-1──┤    ├──web-1──┤\n     \
+      \      (node-b)           (node-e)       (node-e)\n              ╎         \
+      \         ╎              ╎\n              ╎ claims           ╎ claims      \
+      \ ╎ claims\n              ▼                  ▼              ▼\n Storage ═══════════════════════════════════════════════════▶\n\
+      \          www-web-1 — one continuous line, never broken\n\n               \
+      \     time ──────────────────────────────────▶\n"
+    vendor_terms:
+    - pod
+    - persistentvolumeclaim
+    complexity_hint:
+      node_count: 4
+      edge_count: 3
+      label_count: 9
+    pedagogy:
+      part_18_criteria_met:
+      - temporal_structure
+      - zenith
+      learning_outcome: State that storage outlives the Pod that asked for it, because
+        a claim is a record of intent that outlives the thing acting on it
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: the unbroken storage line labelled www-web-1 running
+        the full width beneath the interrupted Pod lane
+    accessibility:
+      alt_text_seed: 'A two-lane timeline: the upper Pod lane shows three separate
+        segments each labelled web-1, on node-b then node-e then node-e, with visible
+        gaps between them; the lower Storage lane is a single unbroken line labelled
+        www-web-1 running the full width, with claim connectors dropping from each
+        Pod segment to the storage line'
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders: []
+      clearance: own_interpretation
+      notes: Original temporal illustration of the chapter's synthesis; no vendor
+        IP reproduced.

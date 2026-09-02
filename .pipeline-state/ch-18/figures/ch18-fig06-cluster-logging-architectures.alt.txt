@@ -1,0 +1,1 @@
+Three stacked panels, all feeding one logging backend on the right. In the first, three Pods write to the node filesystem and a DaemonSet agent reads it and forwards. In the second, a sidecar collector inside each Pod forwards the app's logs. In the third, the app pushes straight to the backend with no collector.

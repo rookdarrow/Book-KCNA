@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kubernetes Autoscaler Comparison</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;700&family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Fira+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --paper: #F5EFE4;
+    --ink: #0B1E3B;
+    --muted: #1F4A4E;
+    --soft: #8A8D90;
+    --accent: #B58B3E;
+    --accent-tint: rgba(181,139,62,0.10);
+    --rule: rgba(11,30,59,0.12);
+    --font-slab: 'Roboto Slab', serif;
+    --font-sans: 'Fira Sans', sans-serif;
+    --font-mono: 'Fira Mono', monospace;
+  }
+  body {
+    font-family: var(--font-sans);
+    background: var(--paper);
+    color: var(--ink);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 2rem;
+  }
+  .frame { max-width: 640px; width: 100%; }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+  h1 {
+    font-family: var(--font-slab);
+    font-size: 1.75rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+    color: var(--ink);
+    margin-bottom: 1.5rem;
+  }
+  svg { width: 100%; display: block; }
+</style>
+</head>
+<body>
+<div class="frame">
+  <p class="eyebrow">Comparison Table &middot; Diagram Design</p>
+  <h1>The Kubernetes Autoscaler Landscape</h1>
+
+  <svg viewBox="0 0 800 1060" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-labelledby="ch17-fig04-autoscaler-landscape-title ch17-fig04-autoscaler-landscape-desc">
+    <title id="ch17-fig04-autoscaler-landscape-title">Kubernetes Autoscaler Comparison: Axis vs. Trigger</title>
+    <desc id="ch17-fig04-autoscaler-landscape-desc">A four-row comparison table of autoscalers: HPA moves replica count on observed utilization and ships with Kubernetes; KEDA moves replica count on external events and schedules; VPA moves per-replica CPU and memory on observed usage and is flagged as an add-on that is not shipped; Cluster Autoscaler and Karpenter move the node pool in response to unschedulable Pods and underutilized nodes.</desc>
+
+    <rect width="100%" height="100%" fill="#F5EFE4"/>
+
+    <!-- Title block -->
+    <text x="24" y="56" fill="#1F4A4E" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" letter-spacing="0.12em">AUTOSCALER COMPARISON &middot; AXIS VS. TRIGGER</text>
+    <text x="24" y="96" fill="#0B1E3B" font-size="28" font-weight="500" font-family="'Roboto Slab', serif">Four Autoscalers, Two Questions</text>
+
+    <!-- Header banner -->
+    <rect x="24" y="140" width="752" height="48" rx="6" fill="#0B1E3B"/>
+    <text x="112" y="168" fill="#FFFFFF" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle">AUTOSCALER</text>
+    <text x="312" y="168" fill="#FFFFFF" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle">WHAT MOVES</text>
+    <text x="600" y="168" fill="#FFFFFF" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle">WHAT TRIGGERS IT</text>
+
+    <!-- Row 1: HPA -->
+    <rect x="24" y="204" width="752" height="152" rx="6" fill="#FFFFFF" stroke="rgba(11,30,59,0.12)" stroke-width="1"/>
+    <line x1="200" y1="220" x2="200" y2="340" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+    <line x1="424" y1="220" x2="424" y2="340" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+
+    <text x="40" y="240" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif">HPA</text>
+    <rect x="40" y="260" width="136" height="48" rx="4" fill="rgba(31,74,78,0.08)" stroke="#8A8D90" stroke-width="0.8"/>
+    <text x="108" y="280" fill="#0B1E3B" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" letter-spacing="0.04em" text-anchor="middle">
+      <tspan x="108" dy="0">SHIPS WITH</tspan>
+      <tspan x="108" dy="20">KUBERNETES</tspan>
+    </text>
+
+    <text x="216" y="240" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif">replica count</text>
+
+    <text x="440" y="240" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif">observed utilization</text>
+
+    <!-- Row 2: KEDA -->
+    <rect x="24" y="372" width="752" height="152" rx="6" fill="#FFFFFF" stroke="rgba(11,30,59,0.12)" stroke-width="1"/>
+    <line x1="200" y1="388" x2="200" y2="508" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+    <line x1="424" y1="388" x2="424" y2="508" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+
+    <text x="40" y="408" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif">KEDA</text>
+
+    <text x="216" y="408" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif">
+      <tspan x="216" dy="0">replica count</tspan>
+      <tspan x="216" dy="24" fill="#1F4A4E" font-size="14" font-weight="400" font-family="'Fira Mono', monospace">same axis as HPA</tspan>
+    </text>
+
+    <text x="440" y="408" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif">
+      <tspan x="440" dy="0">external EVENT</tspan>
+      <tspan x="440" dy="24" fill="#1F4A4E" font-size="14" font-weight="400" font-family="'Fira Mono', monospace">(queue depth, schedule via cron)</tspan>
+    </text>
+
+    <!-- Row 3: VPA — focal row -->
+    <rect x="24" y="540" width="752" height="152" rx="6" fill="#FFFFFF" stroke="rgba(11,30,59,0.12)" stroke-width="1"/>
+    <line x1="200" y1="556" x2="200" y2="676" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+    <line x1="424" y1="556" x2="424" y2="676" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+
+    <text x="40" y="576" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif">VPA</text>
+    <rect x="40" y="596" width="136" height="48" rx="4" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.4"/>
+    <text x="108" y="616" fill="#B58B3E" font-size="14" font-weight="700" font-family="'Fira Mono', monospace" letter-spacing="0.04em" text-anchor="middle">
+      <tspan x="108" dy="0">ADD-ON &middot;</tspan>
+      <tspan x="108" dy="20">NOT SHIPPED</tspan>
+    </text>
+
+    <text x="216" y="576" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif">
+      <tspan x="216" dy="0">per-replica</tspan>
+      <tspan x="216" dy="24">resources</tspan>
+      <tspan x="216" dy="24" fill="#1F4A4E" font-size="14" font-weight="400" font-family="'Fira Mono', monospace">(CPU, memory)</tspan>
+    </text>
+
+    <text x="440" y="576" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif">
+      <tspan x="440" dy="0">observed usage</tspan>
+      <tspan x="440" dy="24" fill="#1F4A4E" font-size="14" font-weight="400" font-family="'Fira Mono', monospace">(needs metrics-server)</tspan>
+    </text>
+
+    <!-- Row 4: Cluster Autoscaler / Karpenter -->
+    <rect x="24" y="708" width="752" height="152" rx="6" fill="#FFFFFF" stroke="rgba(11,30,59,0.12)" stroke-width="1"/>
+    <line x1="200" y1="724" x2="200" y2="844" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+    <line x1="424" y1="724" x2="424" y2="844" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+
+    <text x="40" y="744" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif">
+      <tspan x="40" dy="0">Cluster</tspan>
+      <tspan x="40" dy="24">Autoscaler</tspan>
+      <tspan x="40" dy="24">/ Karpenter</tspan>
+    </text>
+
+    <text x="216" y="744" font-family="'Fira Sans', sans-serif" font-size="16">
+      <tspan fill="#0B1E3B" font-weight="500">the </tspan><tspan fill="#0B1E3B" font-weight="600">node pool</tspan>
+    </text>
+
+    <text x="440" y="744" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif">
+      <tspan x="440" dy="0">unschedulable Pods</tspan>
+      <tspan x="440" dy="24" fill="#1F4A4E" font-size="14" font-weight="400" font-family="'Fira Mono', monospace">&#8594; provision</tspan>
+      <tspan x="440" dy="24" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif">underutilized nodes</tspan>
+      <tspan x="440" dy="24" fill="#1F4A4E" font-size="14" font-weight="400" font-family="'Fira Mono', monospace">&#8594; consolidate</tspan>
+    </text>
+
+    <!-- Footnotes -->
+    <circle cx="32" cy="896" r="4" fill="#0B1E3B"/>
+    <text x="48" y="900" fill="#0B1E3B" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif">VPA is the one that is not there by default.</text>
+
+    <circle cx="32" cy="932" r="4" fill="#1F4A4E"/>
+    <text x="48" y="936" fill="#1F4A4E" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif">
+      <tspan x="48" dy="0">KEDA shares HPA&#8217;s axis with a different trigger &mdash;</tspan>
+      <tspan x="48" dy="24">axis and trigger are two separate questions.</tspan>
+    </text>
+
+    <!-- Legend -->
+    <line x1="24" y1="1000" x2="776" y2="1000" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+    <text x="24" y="1020" fill="#1F4A4E" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" letter-spacing="0.14em">LEGEND</text>
+
+    <rect x="152" y="1008" width="16" height="12" rx="2" fill="rgba(31,74,78,0.08)" stroke="#8A8D90" stroke-width="0.8"/>
+    <text x="176" y="1020" fill="#0B1E3B" font-size="14" font-family="'Fira Mono', monospace">Ships with Kubernetes (built-in)</text>
+
+    <rect x="500" y="1008" width="16" height="12" rx="2" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.4"/>
+    <text x="524" y="1020" fill="#0B1E3B" font-size="14" font-family="'Fira Mono', monospace">Add-on &middot; not shipped by default</text>
+  </svg>
+</div>
+</body>
+</html>

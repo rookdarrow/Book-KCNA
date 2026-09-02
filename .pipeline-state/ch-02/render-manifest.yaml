@@ -1,0 +1,377 @@
+chapter: 2
+book: kcna
+generated: '2026-09-01T06:20:11+00:00'
+figures:
+- anchor_id: ch02-fig01-vm-vs-container-stack
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch02-fig01-vm-vs-container-stack.html
+  output_paths:
+    svg: figures/ch02-fig01-vm-vs-container-stack.svg
+    png: figures/ch02-fig01-vm-vs-container-stack.png
+    alt: figures/ch02-fig01-vm-vs-container-stack.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: deployment_diagram
+  figure_spec:
+    anchor_id: ch02-fig01-vm-vs-container-stack
+    diagram_type: deployment_diagram
+    source_ascii: "        VIRTUAL MACHINES                       CONTAINERS\n\n \
+      \  ┌──────┐ ┌──────┐ ┌──────┐          ┌──────┐ ┌──────┐ ┌──────┐\n   │ App\
+      \  │ │ App  │ │ App  │          │ App  │ │ App  │ │ App  │\n   ├──────┤ ├──────┤\
+      \ ├──────┤          └──┬───┘ └──┬───┘ └──┬───┘\n   │Guest │ │Guest │ │Guest\
+      \ │             │        │        │\n   │  OS  │ │  OS  │ │  OS  │         \
+      \ ┌──┴────────┴────────┴──┐\n   └──┬───┘ └──┬───┘ └──┬───┘          │   container\
+      \ runtime    │\n      │        │        │              ├────────────────────────┤\n\
+      \   ┌──┴────────┴────────┴──┐           │        host OS         │\n   │   \
+      \   hypervisor        │          ├────────────────────────┤\n   ├────────────────────────┤\
+      \          │       hardware         │\n   │        host OS         │       \
+      \   └────────────────────────┘\n   ├────────────────────────┤\n   │       hardware\
+      \         │           ONE OS · three apps\n   └────────────────────────┘\n \
+      \   THREE OS COPIES · three apps\n"
+    vendor_terms: []
+    complexity_hint:
+      node_count: 15
+      edge_count: 6
+      label_count: 19
+    pedagogy:
+      part_18_criteria_met:
+      - spatial_structure
+      - distinguishing_alternatives
+      learning_outcome: Derive every VM-versus-container difference from the single
+        fact that containers share the host kernel instead of booting a guest OS
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: the repeated Guest OS row on the VM side, and its
+        absence on the container side
+    accessibility:
+      alt_text_seed: 'Two stacks side by side. On the left, virtual machines: hardware,
+        host OS, then a hypervisor, then three columns each containing a guest OS
+        with an app above it — three operating system copies for three apps. On the
+        right, containers: hardware, host OS, then a single container runtime with
+        three apps sitting directly on it — one operating system for three apps. The
+        guest OS row present three times on the left is absent entirely on the right.'
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders: []
+      clearance: own_interpretation
+      notes: No vendor marks or logos in the figure; all labels generic. Well-known
+        prior art exists in the kubernetes.io deployment-evolution graphic (CC-BY-4.0),
+        so composition is deliberately different — two-panel VM/container comparison
+        rather than a three-era progression.
+- anchor_id: ch02-fig02-image-layers-and-digests
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch02-fig02-image-layers-and-digests.html
+  output_paths:
+    svg: figures/ch02-fig02-image-layers-and-digests.svg
+    png: figures/ch02-fig02-image-layers-and-digests.png
+    alt: figures/ch02-fig02-image-layers-and-digests.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: concept_map
+  figure_spec:
+    anchor_id: ch02-fig02-image-layers-and-digests
+    diagram_type: concept_map
+    source_ascii: "        LAYERS                                 IDENTITY\n\n   image\
+      \ A      image B                ┌──────────────────────────┐\n  ┌─────────┐\
+      \  ┌─────────┐             │   sha256:9f2c…be41       │\n  │   app   │  │  \
+      \ app   │             │   digest = content hash  │\n  ├─────────┤  ├─────────┤\
+      \             │   immutable              │\n  │ shared  │══│ shared  │     \
+      \        └──────────────────────────┘\n  │  base   │  │  base   │          \
+      \        ▲                ▲\n  └─────────┘  └─────────┘            ───────┘\
+      \         ┄┄┄┄┄┄┄┘\n                                      solid            dashed\n\
+      \   both manifests name               ┌──────┐         ┌──────┐\n   the SAME\
+      \ base layer               │ :v2  │         │ :v2  │\n   → stored once     \
+      \                └──────┘         └──────┘\n                               \
+      \       today          next week\n\n                                  a tag\
+      \ is a LABEL — it can be\n                                  moved to point at\
+      \ a different image\n"
+    vendor_terms: []
+    complexity_hint:
+      node_count: 7
+      edge_count: 3
+      label_count: 15
+    pedagogy:
+      part_18_criteria_met:
+      - spatial_structure
+      - distinguishing_alternatives
+      - fixed_point
+      learning_outcome: Distinguish a movable tag from an immutable content digest,
+        and explain why images built from a common base share that layer
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: the dashed arrow from next week's :v2 tag, resolving
+        to different content than today's
+    accessibility:
+      alt_text_seed: 'Left: two image stacks, image A and image B, each with an app
+        layer above a shared base layer, the two base layers joined to show they are
+        one stored layer named by both manifests. Right: a card showing a truncated
+        digest sha256:9f2c...be41 labelled content hash and immutable, with two identical
+        :v2 tag boxes below it — one labelled today connected by a solid arrow, one
+        labelled next week connected by a dashed arrow to a different point, showing
+        that a tag is a label that can be moved to point at a different image.'
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders: []
+      clearance: own_interpretation
+      notes: Generic layer and tag semantics; no vendor marks, no registry product
+        names, digest string is truncated placeholder rather than a real image identifier.
+- anchor_id: ch02-fig04-cri-runtime-chain
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch02-fig04-cri-runtime-chain.html
+  output_paths:
+    svg: figures/ch02-fig04-cri-runtime-chain.svg
+    png: figures/ch02-fig04-cri-runtime-chain.png
+    alt: figures/ch02-fig04-cri-runtime-chain.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: k8s_architecture
+  figure_spec:
+    anchor_id: ch02-fig04-cri-runtime-chain
+    diagram_type: k8s_architecture
+    source_ascii: "  ┌───────────┐\n  │  kubelet  │   the node agent Kubernetes ships\n\
+      \  └─────┬─────┘\n        │\n  ══════╪══════════  C R I  ═══════════════════\
+      \  interface boundary\n        │            Kubernetes DEFINES this line\n \
+      \       │            and implements nothing below it\n        ▼\n  ┌──────────────────────────┐\n\
+      \  │ ▛▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▜ │    socket:\n  │ ▌      containerd     ▐ │   \
+      \ exactly one conformant\n  │ ▌       — or —        ▐ │    CRI runtime plugs\
+      \ in here\n  │ ▌        CRI-O        ▐ │\n  │ ▙▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▟ │\n  └────────────┬─────────────┘\n\
+      \               ▼\n        ┌────────────┐       ┌──────────────────┐\n     \
+      \   │    runC    │  ──►  │ running process  │\n        └────────────┘      \
+      \ └──────────────────┘\n"
+    vendor_terms:
+    - kubelet
+    - containerd
+    - cri-o
+    - runc
+    complexity_hint:
+      node_count: 5
+      edge_count: 4
+      label_count: 9
+    pedagogy:
+      part_18_criteria_met:
+      - spatial_structure
+      - fixed_point
+      learning_outcome: Recall the kubelet to CRI to containerd-or-CRI-O to runC chain,
+        and state that Kubernetes defines the CRI without implementing anything below
+        it
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: the CRI boundary line — the socket Kubernetes defines
+        and does not implement
+    accessibility:
+      alt_text_seed: 'A vertical chain. At the top, the kubelet, the node agent Kubernetes
+        ships. A connector descends across a heavy horizontal boundary labelled CRI,
+        annotated: Kubernetes defines this line and implements nothing below it. Below
+        the boundary, a socket into which exactly one conformant CRI runtime plugs
+        — containerd or CRI-O. Below the socket, runC, which starts a running process.'
+    rendering_hints:
+      preferred_orientation: portrait
+      grayscale_critical: true
+      max_width_px: 800
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Kubernetes, containerd and CRI-O are CNCF marks and runC is a Linux Foundation/OCI
+        project; they appear as text labels only, redrawn in Lodestar style. If the
+        renderer substitutes official project logos for any of these boxes, re-evaluate
+        clearance as licensed_icon_set before release.
+- anchor_id: ch02-fig03-oci-three-specs
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch02-fig03-oci-three-specs.html
+  output_paths:
+    svg: figures/ch02-fig03-oci-three-specs.svg
+    png: figures/ch02-fig03-oci-three-specs.png
+    alt: figures/ch02-fig03-oci-three-specs.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: data_flow
+  figure_spec:
+    anchor_id: ch02-fig03-oci-three-specs
+    diagram_type: data_flow
+    source_ascii: "  ┌── image-spec ────┐  ┌── distribution-spec ─┐  ┌── runtime-spec\
+      \ ───┐\n  │ the FORMAT of    │  │ the API for MOVING   │  │ how to RUN a   \
+      \   │\n  │ the artifact     │  │ it over the wire     │  │ filesystem bundle\
+      \ │\n  └────────┬─────────┘  └──────────┬───────────┘  └─────────┬─────────┘\n\
+      \           │                       │                        │\n           ▼\
+      \                       ▼                        ▼\n   ┌──────────────┐    \
+      \     ┌────────────┐        ┌──────────────────┐\n   │  OCI Image   │ ──pull─►│\
+      \   unpack   │ ──────►│ filesystem bundle│──► run\n   └──────────────┘     \
+      \    └────────────┘        └──────────────────┘\n"
+    vendor_terms:
+    - oci-image-spec
+    - oci-distribution-spec
+    - oci-runtime-spec
+    complexity_hint:
+      node_count: 7
+      edge_count: 6
+      label_count: 11
+    pedagogy:
+      part_18_criteria_met:
+      - spatial_structure
+      - temporal_structure
+      - fixed_point
+      learning_outcome: Name the OCI's three specifications and identify which stage
+        of an image's life each one governs
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: the distribution-spec column, the specification
+        governing the registry API
+    accessibility:
+      alt_text_seed: 'Three specification boxes across the top: image-spec, the format
+        of the artifact; distribution-spec, the API for moving it over the wire; runtime-spec,
+        how to run a filesystem bundle. Each has an arrow descending to the stage
+        it governs in the flow beneath: an OCI Image is pulled, then unpacked, becoming
+        a filesystem bundle, which is then run. Kubernetes appears nowhere in the
+        figure.'
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: false
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders:
+      - oci
+      clearance: own_interpretation
+      notes: Specification names are those published by the Open Container Initiative
+        (Linux Foundation) and appear as text labels only; no OCI logo, no spec text
+        reproduced, diagram composed for this book.
+- anchor_id: ch02-fig05-imagepullpolicy-decision
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch02-fig05-imagepullpolicy-decision.html
+  output_paths:
+    svg: figures/ch02-fig05-imagepullpolicy-decision.svg
+    png: figures/ch02-fig05-imagepullpolicy-decision.png
+    alt: figures/ch02-fig05-imagepullpolicy-decision.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: flowchart
+  figure_spec:
+    anchor_id: ch02-fig05-imagepullpolicy-decision
+    diagram_type: flowchart
+    source_ascii: "                    was imagePullPolicy set explicitly?\n     \
+      \                     │                    │\n                         YES \
+      \                  NO\n                          │                    │\n  \
+      \      ┌─────────────────┴───────┐            │\n        │ Always          \
+      \        │      reference form?\n        │  → resolve to digest;   │       \
+      \     │\n        │    reuse cache if match │   ┌────────┼────────┬──────────┐\n\
+      \        │ IfNotPresent            │   │        │        │          │\n    \
+      \    │  → pull only if absent  │ @digest :latest   no tag    :other\n      \
+      \  │ Never                   │   │        │        │          │\n        │ \
+      \ → never fetch; fail if │   ▼        ▼        ▼          ▼\n        │    absent\
+      \               │ IfNot-  Always   Always    IfNot-\n        └─────────────────────────┘\
+      \ Present                    Present\n"
+    vendor_terms:
+    - imagePullPolicy
+    - kubelet
+    complexity_hint:
+      node_count: 11
+      edge_count: 10
+      label_count: 16
+    pedagogy:
+      part_18_criteria_met:
+      - distinguishing_alternatives
+      - spatial_structure
+      learning_outcome: State the three imagePullPolicy values and predict the default
+        policy from an image reference's form
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: the :latest to Always path — the default nobody
+        chooses on purpose
+    accessibility:
+      alt_text_seed: 'A decision tree. Root question: was imagePullPolicy set explicitly?
+        On the YES branch, three policies: Always, which resolves the name to a digest
+        and reuses the local cache on a match; IfNotPresent, which pulls only if the
+        image is absent; and Never, which never fetches and fails if the image is
+        absent. On the NO branch, a second question asks the reference form, fanning
+        to four outcomes: a digest defaults to IfNotPresent, the :latest tag defaults
+        to Always, no tag defaults to Always, and any other tag defaults to IfNotPresent.'
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Reproduces Kubernetes API field names and documented default behavior
+        as text labels; no logos or documentation artwork, tree composed for this
+        book.
+- anchor_id: ch02-zenith-standard-crate
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch02-zenith-standard-crate.html
+  output_paths:
+    svg: figures/ch02-zenith-standard-crate.svg
+    png: figures/ch02-zenith-standard-crate.png
+    alt: figures/ch02-zenith-standard-crate.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: other
+  figure_spec:
+    anchor_id: ch02-zenith-standard-crate
+    diagram_type: other
+    source_ascii: ''
+    vendor_terms: []
+    complexity_hint:
+      node_count: 0
+      edge_count: 0
+      label_count: 3
+    pedagogy:
+      part_18_criteria_met:
+      - zenith
+      learning_outcome: Recognize that standardizing the interface, not improving
+        the artifact, is what made containers and Kubernetes indifferent to their
+        workloads
+      fixed_point_emphasis: false
+      fixed_point_emphasis_target: ''
+    accessibility:
+      alt_text_seed: Identical standardized crates moving between carriers of visibly
+        different kinds, each carrier built once against a published specification
+        and handling any crate presented to it. No crate is opened; the contents are
+        never shown and never matter.
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: false
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders: []
+      clearance: own_interpretation
+      notes: Original commissioned illustration; no vendor IP. Not a renderable diagram
+        — routes to the human illustrator, and blocked on era-placement confirmation
+        against illustrator-brief.md.

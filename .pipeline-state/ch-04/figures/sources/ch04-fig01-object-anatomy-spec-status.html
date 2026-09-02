@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Object Anatomy: Who Authors What — ch04-fig01-object-anatomy-spec-status</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;700&family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Fira+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F5EFE4;
+    --ink: #0B1E3B;
+    --muted: #1F4A4E;
+    --soft: #8A8D90;
+    --rule: rgba(11,30,59,0.12);
+    --accent: #B58B3E;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    font-family: 'Fira Sans', sans-serif;
+    color: var(--ink);
+    display: flex;
+    justify-content: center;
+    padding: 48px 24px;
+  }
+  .sheet {
+    width: 100%;
+    max-width: 620px;
+  }
+  .eyebrow {
+    font-family: 'Fira Mono', monospace;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 12px 0;
+  }
+  h1 {
+    font-family: 'Roboto Slab', serif;
+    font-weight: 500;
+    font-size: 1.75rem;
+    line-height: 1.25;
+    color: var(--ink);
+    margin: 0 0 12px 0;
+  }
+  .subtitle {
+    font-family: 'Fira Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--muted);
+    margin: 0 0 32px 0;
+    max-width: 52ch;
+  }
+  .diagram-wrap {
+    width: 100%;
+  }
+  svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  footer {
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid var(--rule);
+    font-family: 'Fira Mono', monospace;
+    font-size: 14px;
+    color: var(--soft);
+    letter-spacing: 0.02em;
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <p class="eyebrow">Component Diagram · Ch.04 · Fig.01</p>
+  <h1>Object Anatomy: Who Authors What</h1>
+  <p class="subtitle">apiVersion, kind, metadata, and spec are the four fields you write. status is what the system writes back — and nothing crosses that line in the other direction.</p>
+
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 480 664" role="img" aria-labelledby="ch04-fig01-title ch04-fig01-desc" xmlns="http://www.w3.org/2000/svg">
+      <title id="ch04-fig01-title">Kubernetes object anatomy: the authorship boundary</title>
+      <desc id="ch04-fig01-desc">Two stacked panels split by a heavy horizontal rule labelled authorship boundary. The upper panel, headed You Author This, lists apiVersion, kind, and metadata — with nested name, uid, and optional namespace — and spec. The lower panel, headed The System Authors This, contains only status.</desc>
+      <defs>
+        <clipPath id="cd-panel1-clip">
+          <rect x="20" y="32" width="440" height="368" rx="8"/>
+        </clipPath>
+        <clipPath id="cd-panel2-clip">
+          <rect x="20" y="480" width="440" height="152" rx="8"/>
+        </clipPath>
+      </defs>
+
+      <!-- background -->
+      <rect width="480" height="664" fill="#F5EFE4"/>
+
+      <!-- ===== Panel 1: YOU AUTHOR THIS ===== -->
+      <rect x="20" y="32" width="440" height="368" rx="8" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1"/>
+      <rect x="20" y="32" width="440" height="48" fill="rgba(11,30,59,0.05)" clip-path="url(#cd-panel1-clip)"/>
+      <line x1="20" y1="80" x2="460" y2="80" stroke="rgba(11,30,59,0.12)" stroke-width="1"/>
+      <text x="36" y="64" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" letter-spacing="0.02em" fill="#0B1E3B">YOU AUTHOR THIS</text>
+
+      <!-- apiVersion -->
+      <text x="36" y="120" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">apiVersion<tspan fill="#8A8D90"> …</tspan></text>
+      <text x="228" y="120" font-family="'Fira Sans', sans-serif" font-size="14" fill="#1F4A4E">which API version</text>
+
+      <!-- kind -->
+      <text x="36" y="156" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">kind<tspan fill="#8A8D90"> …</tspan></text>
+      <text x="228" y="156" font-family="'Fira Sans', sans-serif" font-size="14" fill="#1F4A4E">what kind of object</text>
+
+      <!-- metadata: -->
+      <text x="36" y="192" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">metadata:</text>
+      <text x="228" y="192" font-family="'Fira Sans', sans-serif" font-size="14" fill="#1F4A4E">which one, specifically</text>
+
+      <!-- name (nested) -->
+      <text x="60" y="228" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">name<tspan fill="#8A8D90"> …</tspan></text>
+
+      <!-- uid (nested) -->
+      <text x="60" y="264" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">uid<tspan fill="#8A8D90"> …</tspan></text>
+
+      <!-- namespace (nested) -->
+      <text x="60" y="300" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">namespace<tspan fill="#8A8D90"> …</tspan></text>
+      <text x="228" y="300" font-family="'Fira Sans', sans-serif" font-size="14" fill="#1F4A4E">(optional)</text>
+
+      <!-- spec: -->
+      <text x="36" y="336" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">spec:</text>
+      <text x="228" y="336" font-family="'Fira Sans', sans-serif" font-size="14" fill="#1F4A4E">what it should look like</text>
+
+      <!-- spec contents (nested) -->
+      <text x="60" y="372" font-family="'Fira Mono', monospace" font-size="14" fill="#8A8D90">…</text>
+      <text x="228" y="372" font-family="'Fira Sans', sans-serif" font-size="14" fill="#1F4A4E">(more fields)</text>
+
+      <!-- ===== Authorship boundary (focal) ===== -->
+      <line x1="20" y1="436" x2="460" y2="436" stroke="#B58B3E" stroke-width="2"/>
+      <line x1="20" y1="444" x2="460" y2="444" stroke="#B58B3E" stroke-width="2"/>
+      <rect x="132" y="428" width="216" height="24" rx="2" fill="#F5EFE4"/>
+      <text x="240" y="444" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.12em" fill="#B58B3E">AUTHORSHIP BOUNDARY</text>
+
+      <!-- ===== Panel 2: THE SYSTEM AUTHORS THIS ===== -->
+      <rect x="20" y="480" width="440" height="152" rx="8" fill="#FFFFFF" stroke="#1F4A4E" stroke-width="1"/>
+      <rect x="20" y="480" width="440" height="48" fill="rgba(31,74,78,0.06)" clip-path="url(#cd-panel2-clip)"/>
+      <line x1="20" y1="528" x2="460" y2="528" stroke="rgba(11,30,59,0.12)" stroke-width="1"/>
+      <text x="36" y="512" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" letter-spacing="0.02em" fill="#1F4A4E">THE SYSTEM AUTHORS THIS</text>
+
+      <!-- status: -->
+      <text x="36" y="568" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#1F4A4E">status:</text>
+      <text x="228" y="568" font-family="'Fira Sans', sans-serif" font-size="14" fill="#1F4A4E">what is actually true</text>
+
+      <!-- status contents (nested) -->
+      <text x="60" y="604" font-family="'Fira Mono', monospace" font-size="14" fill="#8A8D90">…</text>
+      <text x="228" y="604" font-family="'Fira Sans', sans-serif" font-size="14" fill="#1F4A4E">(more fields)</text>
+    </svg>
+  </div>
+
+  <footer>ch04-fig01-object-anatomy-spec-status · Lodestar Ledgers</footer>
+</div>
+</body>
+</html>

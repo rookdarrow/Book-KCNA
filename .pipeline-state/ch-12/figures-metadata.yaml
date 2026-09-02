@@ -1,0 +1,231 @@
+chapter: 12
+book: kcna
+generated: '2026-09-01T08:39:08+00:00'
+figures:
+- anchor_id: ch12-fig01-4cs-and-lifecycle-phases
+  source_hash: d6e6adc290415be72e81972eba9f21c73b7eff78238897f9d08cfaf26852f5f7
+  output_hash:
+    svg: a55382ea0abde6ef65cfbe739f45307735785763c0e8886b5592ddbf752e4dee
+    png: 0c966b45c04a53fb778ea9a81a73dea7ed66ccc5be660a50405186462e6ed6fb
+  validations:
+    label_count:
+      result: fail
+      value: 34
+      max: 7
+      reason: 34 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1280
+      - 1860
+    aspect_ratio:
+      result: pass
+      value: 1.45
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 270
+  alt_text: 'Three-panel figure: four lifecycle phases in sequence from develop to
+    runtime with runtime branching into access, compute and storage; four nested layers
+    from Cloud outermost to Code innermost; and a table plotting five security controls
+    against both a phase and a layer'
+- anchor_id: ch12-fig03-serviceaccount-token-flow
+  source_hash: ed7a5d8eae02fb63128f4f2ac1fef9dbc40bd228ea0ae71974db127f6e6f896e
+  output_hash:
+    svg: 6ca2713041a36c40355f4eacb4b88b9fd21cd2039f91d9287025496b39902887
+    png: 9dc8f3fe104e81c5e72aa275c2a4b16d993872a7b14f690b740aab2550065d84
+  validations:
+    label_count:
+      result: fail
+      value: 31
+      max: 7
+      reason: 31 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1280
+      - 1732
+    aspect_ratio:
+      result: pass
+      value: 1.35
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 243
+  alt_text: Vertical flow from a ServiceAccount object through the TokenRequest API
+    to a Pod's projected token volume, then to gate one authentication which succeeds,
+    then to gate two authorization which is drawn empty with a note reading nothing
+    here yet
+- anchor_id: ch12-fig02-rbac-four-way-matrix
+  source_hash: 64ec7d07a1c46c1d1f797b54b702ac1bb2cc4d8bd2b20a6257d18080eab1034c
+  output_hash:
+    svg: c4d0a2b96e58b4639ec74170d29478e99725ed233d72e6849e7c33c821627483
+    png: 75831736758be8007c9112f9880a80634bc7d7876ea5267981c1b9de19a33ef3
+  validations:
+    label_count:
+      result: fail
+      value: 38
+      max: 7
+      reason: 38 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1520
+      - 2026
+    aspect_ratio:
+      result: pass
+      value: 1.33
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 375
+  alt_text: 'Three-panel derivation: namespaced resources permit either a Role or
+    a ClusterRole while cluster-scoped resources force a ClusterRole; a separate question
+    of where the grant applies selects a RoleBinding or a ClusterRoleBinding; four
+    combinations follow, of which Role plus ClusterRoleBinding does not exist; a banner
+    states that the binding determines the scope of the grant'
+- anchor_id: ch12-fig04-pod-security-standards-levels
+  source_hash: ba2337c7ff90eea9235f8149c414a27fb0d4a40853470c20db0f5f2d36b0cb85
+  output_hash:
+    svg: 5f0d947626980877ff988c7d477c751d0e67c1057415a3f298796a11b7248245
+    png: 42ebfe2172fa406ce6d6b28787dfcae536127e8bb080d997d91c6e7748c30480
+  validations:
+    label_count:
+      result: fail
+      value: 83
+      max: 7
+      reason: 83 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      note: no explicit font-size; renderer default applies
+    max_dimensions:
+      result: fail
+      value:
+      - 1800
+      - 3026
+      max:
+      - 2400
+      - 3000
+    aspect_ratio:
+      result: pass
+      value: 1.68
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 335
+  alt_text: A matrix of fourteen securityContext fields checked against the privileged,
+    baseline and restricted Pod Security levels, noted as cumulative; a list of the
+    three modes enforce, audit and warn with what each does when a check fails; and
+    the per-namespace label form with a worked example carrying all three modes at
+    two different levels
+- anchor_id: ch12-fig05-supply-chain-checkpoints
+  source_hash: b07e3c890bba8f3e3d21dc4196d145bdcb6dd87dec07752ed118d61bc137d47d
+  output_hash:
+    svg: ad9b6e21a5a4407032c282081cf3b5370f832665449924d92e19e1637e1da096
+    png: a5dbc4ca88a787a9b95881ec00276e62df56ffbb5aac51bf3899b955dcda4adf
+  validations:
+    label_count:
+      result: pass
+      value: 0
+      max: 7
+      reason: ''
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1280
+      - 1694
+    aspect_ratio:
+      result: pass
+      value: 1.32
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 392
+  alt_text: A left-to-right supply chain pipeline of build, scan, sign, record, restrict,
+    verify and run, crossed by a vertical boundary between restrict and verify that
+    separates work done outside the cluster from work done inside it; each step is
+    annotated with what it produces and with the tools that perform it, and a callout
+    notes that the artifact's digest is carried the whole length of the chain
+- anchor_id: ch12-zenith-additive-never-deny
+  source_hash: c2deb82644b6e55cbab7f5a1384d72735c4fb86572081583a6aacd874580df77
+  output_hash:
+    svg: 6aa2b2cfbb61cfa91a753f1f87de32d2f6cf53922043804aceca4ccab29f17f6
+    png: 84037d6aa57ee0d1d6578342b9101a7ebac0dab4f5d0f5c6209aa3fc9d6272d5
+  validations:
+    label_count:
+      result: fail
+      value: 22
+      max: 7
+      reason: 22 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 960
+      - 1246
+    aspect_ratio:
+      result: pass
+      value: 1.3
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 394
+  alt_text: Two structurally identical panels side by side, one labelled RBAC at the
+    API layer and one labelled NetworkPolicy at the network layer; in each, a request
+    reaches a check that either allows it or finds nothing, and finding nothing means
+    denied by absence, with a note in both panels that no deny rule exists; the caption
+    reads different layer, different object, different decade, the same shape

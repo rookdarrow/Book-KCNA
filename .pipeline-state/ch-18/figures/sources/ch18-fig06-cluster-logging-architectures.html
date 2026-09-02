@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Three Ways to Collect Cluster Logs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;700&family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Fira+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: #F5EFE4;
+    font-family: 'Fira Sans', sans-serif;
+    color: #0B1E3B;
+  }
+  .page {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 48px 24px 64px;
+  }
+  .eyebrow {
+    font-family: 'Fira Mono', monospace;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #1F4A4E;
+    margin: 0 0 12px;
+  }
+  h1 {
+    font-family: 'Roboto Slab', serif;
+    font-size: 1.75rem;
+    font-weight: 500;
+    margin: 0 0 12px;
+    color: #0B1E3B;
+  }
+  .subtitle {
+    font-family: 'Fira Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #1F4A4E;
+    margin: 0 0 32px;
+    max-width: 52ch;
+  }
+  svg { display: block; max-width: 100%; height: auto; margin: 0 auto; }
+</style>
+</head>
+<body>
+<div class="page">
+  <p class="eyebrow">Ch. 18 &middot; Observability &amp; Logging</p>
+  <h1>Three Ways to Collect Cluster Logs</h1>
+  <p class="subtitle">Same backend in all three. The difference is where collection happens &mdash; and the node-level DaemonSet agent, highlighted below, is the default because it asks nothing of the application.</p>
+
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 560 772" width="560" height="772" role="img"
+         aria-labelledby="ch18-fig06-cluster-logging-architectures-title ch18-fig06-cluster-logging-architectures-desc"
+         xmlns="http://www.w3.org/2000/svg">
+      <title id="ch18-fig06-cluster-logging-architectures-title">Three cluster-logging architectures compared</title>
+      <desc id="ch18-fig06-cluster-logging-architectures-desc">Three stacked panels show where log collection happens on a Kubernetes node: a per-node DaemonSet agent reading pod logs from the node filesystem, a sidecar collector inside each pod, and an application pushing logs directly with no collector. All three deliver to one logging backend outside the cluster.</desc>
+
+      <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"/>
+        </marker>
+        <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#B58B3E"/>
+        </marker>
+      </defs>
+
+      <rect width="560" height="772" fill="#F5EFE4"/>
+
+      <!-- Zone 1: node-level agent -->
+      <rect x="24" y="32" width="368" height="256" rx="8" fill="rgba(11,30,59,0.02)" stroke="rgba(11,30,59,0.10)" stroke-width="0.8"/>
+      <text x="48" y="60" font-family="Fira Sans" font-size="16" font-weight="600" fill="#0B1E3B">1 &middot; NODE-LEVEL AGENT<tspan x="48" dy="20" font-family="Fira Mono" font-size="14" font-weight="400" fill="#1F4A4E">the default answer</tspan><tspan x="48" dy="20" font-family="Fira Mono" font-size="14" font-weight="400" fill="#1F4A4E">3 pods write to one node log file</tspan></text>
+
+      <!-- Zone 2: sidecar in the pod -->
+      <rect x="24" y="320" width="368" height="200" rx="8" fill="rgba(11,30,59,0.02)" stroke="rgba(11,30,59,0.10)" stroke-width="0.8"/>
+      <text x="48" y="348" font-family="Fira Sans" font-size="16" font-weight="600" fill="#0B1E3B">2 &middot; SIDECAR IN THE POD<tspan x="48" dy="20" font-family="Fira Mono" font-size="14" font-weight="400" fill="#1F4A4E">one collector per pod</tspan><tspan x="48" dy="20" font-family="Fira Mono" font-size="14" font-weight="400" fill="#1F4A4E">cost multiplies with pod count</tspan></text>
+
+      <!-- Zone 3: app pushes directly -->
+      <rect x="24" y="552" width="368" height="188" rx="8" fill="rgba(11,30,59,0.02)" stroke="rgba(11,30,59,0.10)" stroke-width="0.8"/>
+      <text x="48" y="576" font-family="Fira Sans" font-size="16" font-weight="600" fill="#0B1E3B">3 &middot; APP PUSHES DIRECTLY<tspan x="48" dy="20" font-family="Fira Mono" font-size="14" font-weight="400" fill="#1F4A4E">no collector at all</tspan><tspan x="48" dy="20" font-family="Fira Mono" font-size="14" font-weight="400" fill="#1F4A4E">app must know the backend</tspan></text>
+
+      <!-- Pod containment outlines (visual only) -->
+      <rect x="48" y="408" width="320" height="88" rx="8" fill="none" stroke="rgba(11,30,59,0.20)" stroke-width="1" stroke-dasharray="4,3"/>
+      <rect x="48" y="636" width="320" height="88" rx="8" fill="none" stroke="rgba(11,30,59,0.20)" stroke-width="1" stroke-dasharray="4,3"/>
+
+      <!-- Arrows: panel 1 merge into agent -->
+      <line x1="96" y1="164" x2="96" y2="180" stroke="#1F4A4E" stroke-width="1"/>
+      <line x1="148" y1="164" x2="148" y2="180" stroke="#1F4A4E" stroke-width="1"/>
+      <line x1="200" y1="164" x2="200" y2="180" stroke="#1F4A4E" stroke-width="1"/>
+      <line x1="96" y1="180" x2="200" y2="180" stroke="#1F4A4E" stroke-width="1"/>
+      <line x1="148" y1="180" x2="148" y2="200" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"/>
+
+      <!-- Focal arrow: agent to backend -->
+      <line x1="248" y1="232" x2="416" y2="232" stroke="#B58B3E" stroke-width="1.2" marker-end="url(#arrow-accent)"/>
+      <rect x="288" y="208" width="88" height="16" rx="2" fill="#F5EFE4"/>
+      <text x="332" y="220" text-anchor="middle" font-family="Fira Mono" font-size="14" font-weight="500" letter-spacing="0.04em" fill="#B58B3E">SHIPS LOGS</text>
+
+      <!-- Arrows: panel 2 -->
+      <line x1="192" y1="452" x2="224" y2="452" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"/>
+      <line x1="352" y1="452" x2="416" y2="452" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"/>
+
+      <!-- Arrow: panel 3 -->
+      <line x1="288" y1="680" x2="416" y2="680" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"/>
+
+      <!-- Panel 1 nodes: three pods -->
+      <rect x="76" y="124" width="40" height="40" rx="6" fill="#F5EFE4"/>
+      <rect x="76" y="124" width="40" height="40" rx="6" fill="rgba(31,74,78,0.10)" stroke="#8A8D90" stroke-width="1"/>
+      <rect x="128" y="124" width="40" height="40" rx="6" fill="#F5EFE4"/>
+      <rect x="128" y="124" width="40" height="40" rx="6" fill="rgba(31,74,78,0.10)" stroke="#8A8D90" stroke-width="1"/>
+      <rect x="180" y="124" width="40" height="40" rx="6" fill="#F5EFE4"/>
+      <rect x="180" y="124" width="40" height="40" rx="6" fill="rgba(31,74,78,0.10)" stroke="#8A8D90" stroke-width="1"/>
+
+      <!-- Panel 1 focal node: agent -->
+      <rect x="48" y="200" width="200" height="64" rx="6" fill="#F5EFE4"/>
+      <rect x="48" y="200" width="200" height="64" rx="6" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"/>
+      <text x="148" y="224" text-anchor="middle" font-family="Fira Sans" font-size="16" font-weight="600" fill="#0B1E3B">Agent<tspan x="148" dy="20" font-family="Fira Mono" font-size="14" font-weight="400" fill="#1F4A4E">DaemonSet &middot; 1/node</tspan></text>
+
+      <!-- Panel 2 nodes: app + sidecar -->
+      <rect x="64" y="424" width="128" height="56" rx="6" fill="#F5EFE4"/>
+      <rect x="64" y="424" width="128" height="56" rx="6" fill="rgba(31,74,78,0.10)" stroke="#8A8D90" stroke-width="1"/>
+      <rect x="224" y="424" width="128" height="56" rx="6" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1"/>
+      <text x="288" y="444" text-anchor="middle" font-family="Fira Sans" font-size="16" font-weight="600" fill="#0B1E3B">Sidecar<tspan x="288" dy="20" font-family="Fira Mono" font-size="14" font-weight="400" fill="#1F4A4E">1 per pod</tspan></text>
+
+      <!-- Panel 3 node: app -->
+      <rect x="128" y="652" width="160" height="56" rx="6" fill="#F5EFE4"/>
+      <rect x="128" y="652" width="160" height="56" rx="6" fill="rgba(31,74,78,0.10)" stroke="#8A8D90" stroke-width="1"/>
+
+      <!-- Shared backend -->
+      <rect x="416" y="32" width="128" height="708" rx="8" fill="#F5EFE4"/>
+      <rect x="416" y="32" width="128" height="708" rx="8" fill="rgba(11,30,59,0.03)" stroke="rgba(11,30,59,0.30)" stroke-width="1"/>
+      <text x="480" y="368" text-anchor="middle" font-family="Fira Sans" font-size="16" font-weight="600" fill="#0B1E3B">Logging<tspan x="480" dy="20" font-family="Fira Sans" font-size="16" font-weight="600" fill="#0B1E3B">Backend</tspan><tspan x="480" dy="20" font-family="Fira Mono" font-size="14" font-weight="400" fill="#1F4A4E">outside k8s</tspan></text>
+    </svg>
+  </div>
+</div>
+</body>
+</html>

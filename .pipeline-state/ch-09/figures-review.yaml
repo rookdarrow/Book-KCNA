@@ -1,0 +1,106 @@
+chapter: 9
+book: kcna
+generated: '2026-09-01T16:28:39+00:00'
+figures:
+- anchor_id: ch09-fig01-network-model-four-rules
+  status: pending
+  render_paths:
+    svg: figures/ch09-fig01-network-model-four-rules.svg
+    png: figures/ch09-fig01-network-model-four-rules.png
+  source_path: figures/sources/ch09-fig01-network-model-four-rules.html
+  validation_results:
+    label_count: pass
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch09-fig02-service-types-ladder
+  status: pending
+  render_paths:
+    svg: figures/ch09-fig02-service-types-ladder.svg
+    png: figures/ch09-fig02-service-types-ladder.png
+  source_path: figures/sources/ch09-fig02-service-types-ladder.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch09-fig03-service-endpointslice-selector-path
+  status: pending
+  render_paths:
+    svg: figures/ch09-fig03-service-endpointslice-selector-path.svg
+    png: figures/ch09-fig03-service-endpointslice-selector-path.png
+  source_path: figures/sources/ch09-fig03-service-endpointslice-selector-path.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch09-fig04-kube-proxy-modes
+  status: pending
+  render_paths:
+    svg: figures/ch09-fig04-kube-proxy-modes.svg
+    png: figures/ch09-fig04-kube-proxy-modes.png
+  source_path: figures/sources/ch09-fig04-kube-proxy-modes.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch09-fig05-dns-record-shapes
+  status: pending
+  render_paths:
+    svg: figures/ch09-fig05-dns-record-shapes.svg
+    png: figures/ch09-fig05-dns-record-shapes.png
+  source_path: figures/sources/ch09-fig05-dns-record-shapes.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch09-zenith-stable-name-over-churn
+  status: pending
+  render_paths:
+    svg: figures/ch09-zenith-stable-name-over-churn.svg
+    png: figures/ch09-zenith-stable-name-over-churn.png
+  source_path: figures/sources/ch09-zenith-stable-name-over-churn.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null

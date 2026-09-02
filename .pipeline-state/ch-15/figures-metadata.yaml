@@ -1,0 +1,270 @@
+chapter: 15
+book: kcna
+generated: '2026-09-01T08:30:40+00:00'
+figures:
+- anchor_id: ch15-fig01-twelve-factor-in-kubernetes
+  source_hash: 05524718bcfb4452f9f7c06cfaf0e9da3fe47d5bdf09c96e9157821f65038da5
+  output_hash:
+    svg: 05a99f364d1e780ad6e61b038bb6b23caeed1cf24ae021ef1869c648086cc9a3
+    png: c0201ebf629c5dc0ddee92eaff96818d6632897b427afc39febaf47797a28bd9
+  validations:
+    label_count:
+      result: fail
+      value: 38
+      max: 7
+      reason: 38 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1520
+      - 2068
+    aspect_ratio:
+      result: pass
+      value: 1.36
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 314
+  alt_text: Three columns sorting the twelve factors by who satisfies each. The platform
+    gives you config, processes, concurrency, disposability and logs. The platform
+    makes backing services, build/release/run and dev-prod parity easy. Codebase,
+    dependencies, port binding and admin processes remain the application's problem.
+- anchor_id: ch15-fig02-deployment-strategies-compared
+  source_hash: c0ea5e42e0627490599a8524db482634a79dfde58c9ba9acb14e0a28a46bc5bb
+  output_hash:
+    svg: 93172944376dd747f045442c4ffcacb6f190024877cf6bb6e024f4a1b29a5e96
+    png: 94bec5d1daff5c21251351c1e571f4f231942261d624ba40e8e679d49c355062
+  validations:
+    label_count:
+      result: fail
+      value: 38
+      max: 7
+      reason: 38 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1280
+      - 1356
+    aspect_ratio:
+      result: pass
+      value: 1.06
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 439
+  alt_text: Four release strategies in two groups. The upper group, fields on a Deployment,
+    holds Recreate with a gap where neither version serves, and RollingUpdate with
+    both versions overlapping throughout. The lower group, patterns needing tooling
+    above it, holds blue/green with a single switch line and two-times capacity, and
+    canary stepping five to twenty-five to fifty to one hundred percent and needing
+    traffic splitting plus metric analysis.
+- anchor_id: ch15-fig03-cicd-push-vs-gitops-pull
+  source_hash: 5f8c319ed443261f1d8cbc726518fa2a67761d7434faf860ced243a6a7be7ef9
+  output_hash:
+    svg: d9834d64b7ec5a7be3ecdffe4ae196e9107b488180532bf710c6a02d35072433
+    png: 9b9c1c1a3c8ba745cba0ace10941dd316c5801b0488372983330962bbdb4bd7e
+  validations:
+    label_count:
+      result: fail
+      value: 21
+      max: 7
+      reason: 21 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 960
+      - 1458
+    aspect_ratio:
+      result: pass
+      value: 1.52
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 324
+  alt_text: Two mirrored panels sharing one cluster boundary. In push, a pipeline
+    outside the boundary holds the key and reaches inward to the API server. In pull,
+    a repository outside the boundary holds no key while an agent inside the boundary
+    holds the key, reaching outward to fetch from the repository and inward to the
+    API server.
+- anchor_id: ch15-fig05-opengitops-four-principles
+  source_hash: ae72959c1c1e73000385ef0d26e0c2ff3c6887117210a25fdfb8c3e2f5661391
+  output_hash:
+    svg: da1bdd23f3b67e45e596922438b37a0f32588a8424eb53b87874926d8ad8fe14
+    png: 0cbebfeb291a051c8dbd23cc4acb9f81f615dfc4a1fc68271841eb2651438355
+  validations:
+    label_count:
+      result: pass
+      value: 5
+      max: 7
+      reason: ''
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1360
+      - 1828
+    aspect_ratio:
+      result: pass
+      value: 1.34
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 305
+  alt_text: Four boxes in a two-by-two grid, one per OpenGitOps principle. Declarative
+    is tagged you know this, chapter 4 section 1. Versioned and immutable is tagged
+    NEW HERE. Pulled automatically is tagged chapter 3 section 5. Continuously reconciled
+    is tagged chapter 3 section 6. Only the second principle is new.
+- anchor_id: ch15-fig04-argocd-sync-states-and-hooks
+  source_hash: db0db4e9fe22cf061d90540f3698845f87fe859bc72f5fb4bb3094dd5a0f40e3
+  output_hash:
+    svg: f41c11ba02df21ba18a021fc8df9249591d6e1968564cbaa6d9279d4c24e82ef
+    png: 33ec315cb4f9a9abac060459ef136ea2c3acbae5a0abad7526b1b937d901d42c
+  validations:
+    label_count:
+      result: fail
+      value: 31
+      max: 7
+      reason: 31 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1200
+      - 1456
+    aspect_ratio:
+      result: pass
+      value: 1.21
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 409
+  alt_text: Two scenarios comparing target state in a Git repository against live
+    state in a cluster, with an agent between them observing both. In the first, both
+    say replicas three and the status is Synced. In the second, the repository still
+    says three but the cluster says five because someone ran kubectl scale, and the
+    status is OutOfSync; a separate sync operation applies the target state and the
+    two match again.
+- anchor_id: ch15-fig06-sync-waves-and-hook-phases
+  source_hash: 991f989fba7a4f42c0dff428348c42d72f5b4085b53fb8a68f032a321b714a59
+  output_hash:
+    svg: 4f36f361d5a139c8e1ccec4a613b7a9dbc2aabe6fe5b8f8efa2e8dfc5d2a6e20
+    png: ac94d8db56d6802c9335e1c2a3b5a61a3e8f8a1dda17e1c844283f575d298217
+  validations:
+    label_count:
+      result: fail
+      value: 27
+      max: 7
+      reason: 27 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1040
+      - 1560
+    aspect_ratio:
+      result: pass
+      value: 1.5
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 347
+  alt_text: 'Three sync phases run left to right: PreSync holding a database migration,
+    Sync, then PostSync holding a smoke test. Inside the Sync phase a vertical wave
+    axis orders three resources lowest first: wave minus one Namespace, wave zero
+    CustomResourceDefinition, wave one custom resource. Ordering precedence is phase,
+    then wave, then kind, then name.'
+- anchor_id: ch15-zenith-control-loop-pointed-at-a-repo
+  source_hash: f7aef809a20e6a4db9f75cb3facac560fba8e0d3f5308ef43bec6f718835e4bf
+  output_hash:
+    svg: 4d5ed33388089c718fe2ef5605e442c1e31595e2c473aebd749bbbdc2e06ab4e
+    png: e49745adb6d6b47c350cea8812c97563d4614a6355ee5647149c80b29f330bf6
+  validations:
+    label_count:
+      result: fail
+      value: 20
+      max: 7
+      reason: 20 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1280
+      - 1520
+    aspect_ratio:
+      result: pass
+      value: 1.19
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 391
+  alt_text: A closed control loop with no beginning and no end. Desired state, now
+    a Git repository rather than etcd and marked as the only substitution, is observed
+    by a controller; the controller acts to close the gap through the API server,
+    still the only door in; the API server changes current state, what is actually
+    true, which the controller observes in turn. And then it does it again, forever.

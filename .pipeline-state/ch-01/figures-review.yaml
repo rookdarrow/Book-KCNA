@@ -1,0 +1,38 @@
+chapter: 1
+book: kcna
+generated: '2026-09-01T23:59:01+00:00'
+figures:
+- anchor_id: ch01-fig01-blueprint-change-2025
+  status: pending
+  render_paths:
+    svg: figures/ch01-fig01-blueprint-change-2025.svg
+    png: figures/ch01-fig01-blueprint-change-2025.png
+  source_path: figures/sources/ch01-fig01-blueprint-change-2025.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch01-fig02-book-map-parts-to-domains
+  status: pending
+  render_paths:
+    svg: figures/ch01-fig02-book-map-parts-to-domains.svg
+    png: figures/ch01-fig02-book-map-parts-to-domains.png
+  source_path: figures/sources/ch01-fig02-book-map-parts-to-domains.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null

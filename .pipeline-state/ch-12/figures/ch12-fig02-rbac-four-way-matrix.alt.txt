@@ -1,0 +1,1 @@
+Three-panel derivation: namespaced resources permit either a Role or a ClusterRole while cluster-scoped resources force a ClusterRole; a separate question of where the grant applies selects a RoleBinding or a ClusterRoleBinding; four combinations follow, of which Role plus ClusterRoleBinding does not exist; a banner states that the binding determines the scope of the grant

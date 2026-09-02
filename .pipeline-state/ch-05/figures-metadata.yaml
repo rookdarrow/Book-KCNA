@@ -1,0 +1,231 @@
+chapter: 5
+book: kcna
+generated: '2026-09-01T07:27:15+00:00'
+figures:
+- anchor_id: ch05-fig01-pod-shared-network-namespace
+  source_hash: b7a97c583a12f2c8f4314bbd5e984108093a628b22d5cc0262a873297583511c
+  output_hash:
+    svg: 96bba058b9be9814a327100e351be1b75ca97eebfd979f9f984a9578fbfa3ac8
+    png: ea47475f818e9278214dc10054375b8bfd46782f70cd3c388648bd6499f99773
+  validations:
+    label_count:
+      result: fail
+      value: 14
+      max: 7
+      reason: 14 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1120
+      - 1120
+    aspect_ratio:
+      result: pass
+      value: 1.0
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 210
+  alt_text: A Node contains one Pod; the Pod carries a single IP address on its own
+    boundary and holds two containers, app and helper, which communicate over localhost
+    and both read and write a shared volume inside the Pod
+- anchor_id: ch05-fig03-init-containers-sequence
+  source_hash: c41cb19c2c484ee39b36aafc55ea278f87c40e1dd82b37bdfeddf24879b9cbd2
+  output_hash:
+    svg: 5908bca1388f7b2c252ec1ede9065eda08b234da11bef3cb4cb324a9fc8db0e5
+    png: f323d4d5efe87d56bb5a248f09dc54a242c71fe9d44f2808c2e85933f4f83364
+  validations:
+    label_count:
+      result: pass
+      value: 3
+      max: 7
+      reason: ''
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1240
+      - 1432
+    aspect_ratio:
+      result: pass
+      value: 1.15
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 254
+  alt_text: 'Two timelines: on the success path init-1 exits zero then init-2 exits
+    zero, after which app-a and app-b start together in parallel; on the failure path
+    init-2 exits non-zero, restart is governed by restartPolicy, and the app containers
+    are never started'
+- anchor_id: ch05-fig02-pod-phases-and-container-states
+  source_hash: 77eb0e64caebbada23b3ea9d18a3569bbd1dd6bcd12c20805d804c4e3ba57718
+  output_hash:
+    svg: 639b411eaba028c86c338eeeedc1f959a02808a756cf1a4e95baee1e9f3dc53d
+    png: 6ace74a70f0ae29698615b2bcb39a1b60f469354598a3e63685af76ad51b62d3
+  validations:
+    label_count:
+      result: fail
+      value: 29
+      max: 7
+      reason: 29 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1280
+      - 1712
+    aspect_ratio:
+      result: pass
+      value: 1.34
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 323
+  alt_text: A Pod box shows five phase values Pending, Running, Succeeded, Failed
+    and Unknown, and nested inside it two container boxes each show three states Waiting,
+    Running and Terminated; a second panel shows a real instant where the Pod's phase
+    is Running while its helper container's state is Waiting with reason ImagePullBackOff
+- anchor_id: ch05-fig04-three-probes-compared
+  source_hash: 94ae4cd1ae40f980e6d29f351a17ff3774e12e47117d3057b935b41ecd76fd1a
+  output_hash:
+    svg: f6e4d3346838948d225cd75637fa7d67ad5c9c4a80a7c1265e43085998e4a88d
+    png: 1c27ebcf8c6d83dc163cae9973a16bbb542d62c72e7ba2daab0ceadec9c8d17d
+  validations:
+    label_count:
+      result: pass
+      value: 3
+      max: 7
+      reason: ''
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1120
+      - 1604
+    aspect_ratio:
+      result: pass
+      value: 1.43
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 479
+  alt_text: 'A three-row comparison of Kubernetes probes: liveness asks whether the
+    container is running and on failure the kubelet kills it without removing it from
+    Service endpoints; readiness asks whether the container can respond and on failure
+    the Pod IP is removed from matching Service endpoints without killing or restarting
+    anything; startup asks whether the application has started, on failure the kubelet
+    kills the container, and while configured it suppresses the other two probes'
+- anchor_id: ch05-fig05-requests-limits-qos-classes
+  source_hash: ee4053e8cdccb4fc2c099af8c3d6de3359351df9b765ef77b6dae831034c37e1
+  output_hash:
+    svg: a5fe661a1a5b70a3434a6f851b4bbcde99f6f6e022f0ee8fe19e2ab629f5f973
+    png: 8b21432e5609abe38dbdd45bf6d38fc7c3070b03d44f3bc5f47cea8988ee7134
+  validations:
+    label_count:
+      result: fail
+      value: 19
+      max: 7
+      reason: 19 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1520
+      - 1840
+    aspect_ratio:
+      result: pass
+      value: 1.21
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 472
+  alt_text: A horizontal band for one container's use of one resource, marked at zero,
+    at the request, and at the limit; the zone up to the request is reserved and read
+    by the kube-scheduler, the zone between request and limit is allowed when the
+    node has spare capacity, and the zone past the limit is not allowed and is enforced
+    by the kubelet with the kernel; a note beneath states that CPU is throttled at
+    the limit while memory is OOM-killed reactively under node memory pressure
+- anchor_id: ch05-zenith-smallest-deployable-unit
+  source_hash: 55c8755778caac032ff5443efd2af83ccd171695baf8cf671c6fd4200853b8ea
+  output_hash:
+    svg: b0a48f9fe93c08f269bd3977ab0d0f3a53767c820baae15db5c8217418645b8c
+    png: 1ec82a3809eac4424ff9a6c69467e838f1560be084f04c02b7caff94e912860d
+  validations:
+    label_count:
+      result: pass
+      value: 4
+      max: 7
+      reason: ''
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1120
+      - 1418
+    aspect_ratio:
+      result: pass
+      value: 1.27
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 426
+  alt_text: 'A tree whose single root reads that the unit of scheduling wraps containers
+    rather than being one, branching to six equal consequences: the Pod has the IP,
+    containers reach each other on localhost, restartPolicy is Pod-level, phase is
+    Pod-level while state is per-container, identity is per-Pod, and scheduling is
+    per-Pod; a further branch from the first leaf notes that Services will select
+    Pods, not containers, in Chapter 9'

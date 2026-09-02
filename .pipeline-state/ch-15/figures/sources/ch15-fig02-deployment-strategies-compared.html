@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deployment Strategies Compared</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;700&family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Fira+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --color-paper:  #F5EFE4;
+    --color-ink:    #0B1E3B;
+    --color-muted:  #1F4A4E;
+    --color-accent: #B58B3E;
+    --font-sans:  'Fira Sans', sans-serif;
+    --font-serif: 'Roboto Slab', serif;
+    --font-mono:  'Fira Mono', ui-monospace, monospace;
+  }
+  body {
+    font-family: var(--font-sans);
+    background: var(--color-paper);
+    color: var(--color-ink);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 2rem;
+  }
+  .frame { max-width: 640px; width: 100%; }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    margin-bottom: 0.5rem;
+  }
+  h1 {
+    font-family: var(--font-serif);
+    font-size: 1.75rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    color: var(--color-ink);
+    margin-bottom: 1.5rem;
+  }
+  svg { width: 100%; height: auto; display: block; }
+</style>
+</head>
+<body>
+<div class="frame">
+  <p class="eyebrow">Deployment &middot; Ch 15</p>
+  <h1>Deployment Field Values vs. Patterns Needing Tooling</h1>
+
+  <svg viewBox="0 0 680 720" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-labelledby="ch15-fig02-deployment-strategies-compared-title ch15-fig02-deployment-strategies-compared-desc">
+    <title id="ch15-fig02-deployment-strategies-compared-title">Deployment field values vs. patterns needing tooling above the Deployment</title>
+    <desc id="ch15-fig02-deployment-strategies-compared-desc">Two stacked groups compare four release strategies: Recreate and RollingUpdate are native Deployment strategy field values requiring no extra tooling, while Blue/Green and Canary are patterns that need tooling above the Deployment, each shown as a version-serving timeline with its cost.</desc>
+
+    <defs>
+      <clipPath id="ch15fig02-enc1-clip">
+        <rect x="24" y="24" width="632" height="292" rx="8"/>
+      </clipPath>
+      <clipPath id="ch15fig02-enc2-clip">
+        <rect x="24" y="348" width="632" height="292" rx="8"/>
+      </clipPath>
+    </defs>
+
+    <rect width="100%" height="100%" fill="#F5EFE4"/>
+
+    <!-- ============ ENCLOSURE 1 — FIELDS ON A DEPLOYMENT ============ -->
+    <rect x="24" y="24" width="632" height="292" rx="8" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"/>
+    <g clip-path="url(#ch15fig02-enc1-clip)">
+      <rect x="24" y="24" width="632" height="40" fill="rgba(31,74,78,0.08)"/>
+    </g>
+    <line x1="24" y1="64" x2="656" y2="64" stroke="rgba(11,30,59,0.20)" stroke-width="1"/>
+    <text x="44" y="49" font-family="'Fira Mono', monospace" font-size="14" font-weight="500"
+          letter-spacing="0.12em" fill="#0B1E3B">FIELDS ON A DEPLOYMENT</text>
+
+    <!-- Panel A: Recreate -->
+    <text x="44" y="100" font-family="'Fira Mono', monospace" font-size="16" font-weight="500" fill="#0B1E3B">Recreate</text>
+
+    <text x="44" y="130" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">old</text>
+    <rect x="88" y="120" width="240" height="12" rx="4" fill="#F5EFE4" stroke="#8A8D90" stroke-width="0.8"/>
+    <rect x="88" y="120" width="96" height="12" rx="4" fill="#0B1E3B"/>
+
+    <text x="44" y="154" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">new</text>
+    <rect x="88" y="144" width="240" height="12" rx="4" fill="#F5EFE4" stroke="#8A8D90" stroke-width="0.8"/>
+    <rect x="232" y="144" width="96" height="12" rx="4" fill="#0B1E3B"/>
+
+    <line x1="184" y1="172" x2="232" y2="172" stroke="#1F4A4E" stroke-width="1"/>
+    <line x1="184" y1="172" x2="184" y2="176" stroke="#1F4A4E" stroke-width="1"/>
+    <line x1="232" y1="172" x2="232" y2="176" stroke="#1F4A4E" stroke-width="1"/>
+    <text x="208" y="186" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14"
+          letter-spacing="0.06em" fill="#1F4A4E">GAP</text>
+
+    <text x="44" y="210" font-family="'Fira Sans', sans-serif" font-size="14" fill="#1F4A4E">downtime; never</text>
+    <text x="44" y="228" font-family="'Fira Sans', sans-serif" font-size="14" fill="#1F4A4E">two versions</text>
+
+    <text x="44" y="252" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.10em" fill="#1F4A4E">NEEDS</text>
+    <text x="44" y="272" font-family="'Fira Sans', sans-serif" font-size="14" fill="#0B1E3B">nothing</text>
+
+    <!-- Panel B: RollingUpdate -->
+    <text x="352" y="100" font-family="'Fira Mono', monospace" font-size="16" font-weight="500" fill="#0B1E3B">RollingUpdate</text>
+
+    <text x="352" y="130" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">old</text>
+    <rect x="396" y="120" width="240" height="12" rx="4" fill="#F5EFE4" stroke="#8A8D90" stroke-width="0.8"/>
+    <rect x="396" y="120" width="96" height="12" rx="4" fill="#0B1E3B"/>
+    <rect x="492" y="120" width="48" height="12" rx="4" fill="#0B1E3B" fill-opacity="0.6"/>
+    <rect x="540" y="120" width="48" height="12" rx="4" fill="#0B1E3B" fill-opacity="0.3"/>
+
+    <text x="352" y="154" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">new</text>
+    <rect x="396" y="144" width="240" height="12" rx="4" fill="#F5EFE4" stroke="#8A8D90" stroke-width="0.8"/>
+    <rect x="444" y="144" width="48" height="12" rx="4" fill="#0B1E3B" fill-opacity="0.3"/>
+    <rect x="492" y="144" width="48" height="12" rx="4" fill="#0B1E3B" fill-opacity="0.6"/>
+    <rect x="540" y="144" width="96" height="12" rx="4" fill="#0B1E3B"/>
+
+    <text x="352" y="210" font-family="'Fira Sans', sans-serif" font-size="14" fill="#1F4A4E">no downtime; both</text>
+    <text x="352" y="228" font-family="'Fira Sans', sans-serif" font-size="14" fill="#1F4A4E">versions live at once</text>
+
+    <text x="352" y="252" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.10em" fill="#1F4A4E">NEEDS</text>
+    <text x="352" y="272" font-family="'Fira Sans', sans-serif" font-size="14" fill="#0B1E3B">nothing</text>
+
+    <!-- ============ ENCLOSURE 2 — PATTERNS NEEDING TOOLING ABOVE IT (focal) ============ -->
+    <rect x="24" y="348" width="632" height="292" rx="8" fill="#F5EFE4" stroke="#B58B3E" stroke-width="1.2"/>
+    <g clip-path="url(#ch15fig02-enc2-clip)">
+      <rect x="24" y="348" width="632" height="40" fill="rgba(181,139,62,0.14)"/>
+    </g>
+    <line x1="24" y1="388" x2="656" y2="388" stroke="#B58B3E" stroke-width="1.2"/>
+    <text x="44" y="373" font-family="'Fira Mono', monospace" font-size="14" font-weight="500"
+          letter-spacing="0.12em" fill="#0B1E3B">PATTERNS NEEDING TOOLING ABOVE IT</text>
+
+    <!-- Panel C: Blue/Green -->
+    <text x="44" y="424" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">Blue/Green</text>
+
+    <text x="44" y="454" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">blue</text>
+    <rect x="88" y="444" width="240" height="12" rx="4" fill="#F5EFE4" stroke="#8A8D90" stroke-width="0.8"/>
+    <rect x="88" y="444" width="192" height="12" rx="4" fill="#0B1E3B"/>
+
+    <text x="44" y="478" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">green</text>
+    <rect x="88" y="468" width="240" height="12" rx="4" fill="#F5EFE4" stroke="#8A8D90" stroke-width="0.8"/>
+    <rect x="280" y="468" width="48" height="12" rx="4" fill="#0B1E3B"/>
+
+    <line x1="280" y1="444" x2="280" y2="500" stroke="#0B1E3B" stroke-width="1.2"/>
+    <text x="280" y="510" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14"
+          letter-spacing="0.06em" fill="#1F4A4E">SWITCH</text>
+
+    <text x="44" y="534" font-family="'Fira Sans', sans-serif" font-size="14" fill="#1F4A4E">test before any</text>
+    <text x="44" y="552" font-family="'Fira Sans', sans-serif" font-size="14" fill="#1F4A4E">user arrives</text>
+
+    <text x="44" y="576" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.10em" fill="#1F4A4E">NEEDS</text>
+    <text x="44" y="596" font-family="'Fira Sans', sans-serif" font-size="14" fill="#0B1E3B">2x capacity</text>
+
+    <!-- Panel D: Canary -->
+    <text x="352" y="424" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">Canary</text>
+
+    <text x="352" y="454" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">old</text>
+    <rect x="396" y="444" width="240" height="12" rx="4" fill="#F5EFE4" stroke="#8A8D90" stroke-width="0.8"/>
+    <rect x="396" y="444" width="72" height="12" rx="4" fill="#0B1E3B"/>
+    <rect x="468" y="444" width="48" height="12" rx="4" fill="#0B1E3B" fill-opacity="0.6"/>
+    <rect x="516" y="444" width="48" height="12" rx="4" fill="#0B1E3B" fill-opacity="0.3"/>
+
+    <text x="352" y="478" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">new</text>
+    <rect x="396" y="468" width="240" height="12" rx="4" fill="#F5EFE4" stroke="#8A8D90" stroke-width="0.8"/>
+    <rect x="468" y="468" width="48" height="12" rx="4" fill="#0B1E3B" fill-opacity="0.3"/>
+    <rect x="516" y="468" width="48" height="12" rx="4" fill="#0B1E3B" fill-opacity="0.6"/>
+    <rect x="564" y="468" width="72" height="12" rx="4" fill="#0B1E3B"/>
+
+    <text x="492" y="510" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14"
+          letter-spacing="0.02em" fill="#0B1E3B">5% &#8594; 25% &#8594; 50% &#8594; 100%</text>
+
+    <text x="352" y="534" font-family="'Fira Sans', sans-serif" font-size="14" fill="#1F4A4E">small slice meets it</text>
+    <text x="352" y="552" font-family="'Fira Sans', sans-serif" font-size="14" fill="#1F4A4E">first; metrics decide</text>
+
+    <text x="352" y="576" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.10em" fill="#1F4A4E">NEEDS</text>
+    <text x="352" y="596" font-family="'Fira Sans', sans-serif" font-size="14" fill="#0B1E3B">traffic splitting</text>
+    <text x="352" y="614" font-family="'Fira Sans', sans-serif" font-size="14" fill="#0B1E3B">+ metric analysis</text>
+
+    <!-- ============ LEGEND ============ -->
+    <line x1="24" y1="672" x2="656" y2="672" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+    <text x="24" y="692" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.12em" fill="#1F4A4E">LEGEND</text>
+
+    <rect x="96" y="680" width="16" height="16" rx="4" fill="#0B1E3B"/>
+    <text x="120" y="692" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E">SERVING</text>
+
+    <rect x="204" y="680" width="16" height="16" rx="4" fill="#0B1E3B" fill-opacity="0.5"/>
+    <text x="228" y="692" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E">TRANSITIONING</text>
+
+    <rect x="360" y="680" width="16" height="16" rx="4" fill="#F5EFE4" stroke="#8A8D90" stroke-width="0.8"/>
+    <text x="384" y="692" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E">ABSENT</text>
+  </svg>
+</div>
+</body>
+</html>

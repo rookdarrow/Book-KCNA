@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OOMKilled vs. Evicted</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;700&family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Fira+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --color-paper:       #F5EFE4; /* cream */
+      --color-ink:         #0B1E3B; /* navy */
+      --color-muted:       #1F4A4E; /* teal */
+      --color-soft:        #8A8D90; /* fog */
+      --color-accent:      #B58B3E; /* brass */
+      --color-accent-tint: rgba(181,139,62,0.10);
+      --font-sans:  'Fira Sans', system-ui, sans-serif;
+      --font-serif: 'Roboto Slab', serif;
+      --font-mono:  'Fira Mono', ui-monospace, monospace;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-paper);
+      color: var(--color-ink);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 2rem;
+    }
+
+    .frame { max-width: 640px; width: 100%; }
+
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    h1 {
+      font-family: var(--font-serif);
+      font-size: 1.75rem;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+      color: var(--color-ink);
+      margin-bottom: 1.5rem;
+    }
+
+    svg { width: 100%; display: block; }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <p class="eyebrow">Flowchart · Ch. 13</p>
+    <h1>OOMKilled vs. Evicted</h1>
+
+    <svg viewBox="0 0 720 936" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch13-fig05-oomkilled-vs-evicted-title ch13-fig05-oomkilled-vs-evicted-desc">
+      <title id="ch13-fig05-oomkilled-vs-evicted-title">OOMKilled vs. Evicted: killer, scope, trigger, outcome</title>
+      <desc id="ch13-fig05-oomkilled-vs-evicted-desc">Two parallel chains compared row by row: OOMKilled, where a container exceeding its own limit is killed by the kernel and restarted in place by the kubelet, against Evicted, where a node running low on a resource has the kubelet terminate the whole Pod so a controller replaces it elsewhere.</desc>
+      <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"/></marker>
+        <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#B58B3E"/></marker>
+        <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"/></marker>
+      </defs>
+
+      <rect width="100%" height="100%" fill="#F5EFE4"/>
+
+      <!-- ============ ARROWS (drawn before boxes) ============ -->
+      <line x1="180" y1="216" x2="180" y2="256" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <line x1="180" y1="384" x2="180" y2="424" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <line x1="180" y1="552" x2="180" y2="592" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <line x1="180" y1="720" x2="180" y2="760" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+      <line x1="540" y1="216" x2="540" y2="256" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <line x1="540" y1="384" x2="540" y2="424" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <line x1="540" y1="552" x2="540" y2="592" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <line x1="540" y1="720" x2="540" y2="760" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+      <!-- ============ COLUMN HEADERS ============ -->
+      <text x="180" y="52" fill="#0B1E3B" font-size="20" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle">OOMKilled</text>
+      <line x1="32" y1="68" x2="328" y2="68" stroke="#8A8D90" stroke-width="1.2"/>
+
+      <text x="540" y="52" fill="#0B1E3B" font-size="20" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle">Evicted</text>
+      <line x1="392" y1="68" x2="688" y2="68" stroke="#8A8D90" stroke-width="1.2"/>
+
+      <!-- ============ ROW 1 — Trigger ============ -->
+      <rect x="32" y="88" width="296" height="128" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+      <text x="180" y="144" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">Container exceeds its own<tspan x="180" dy="24">memory limit</tspan></text>
+
+      <rect x="392" y="88" width="296" height="128" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+      <text x="540" y="156" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">Node runs low on a resource</text>
+
+      <!-- ============ ROW 2 — Killer / enforcement ============ -->
+      <rect x="32" y="256" width="296" height="128" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+      <text x="180" y="312" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">Kernel cgroup enforcement<tspan x="180" dy="24">kills that one process</tspan></text>
+
+      <rect x="392" y="256" width="296" height="128" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+      <text x="540" y="312" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">The <tspan font-family="'Fira Mono', monospace" font-size="14">kubelet</tspan> chooses victims by<tspan x="540" dy="24">QoS class, terminates Pods</tspan></text>
+
+      <!-- ============ ROW 3 — Resulting state ============ -->
+      <rect x="32" y="424" width="296" height="128" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+      <text x="180" y="480" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">Container state: <tspan font-family="'Fira Mono', monospace" font-size="14">Terminated</tspan><tspan x="180" dy="24">Reason: <tspan font-family="'Fira Mono', monospace" font-size="14">OOMKilled</tspan></tspan></text>
+
+      <rect x="392" y="424" width="296" height="128" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+      <text x="540" y="480" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">Pod phase: <tspan font-family="'Fira Mono', monospace" font-size="14">Failed</tspan><tspan x="540" dy="24">Reason: <tspan font-family="'Fira Mono', monospace" font-size="14">Evicted</tspan></tspan></text>
+
+      <!-- ============ ROW 4 — Recovery ============ -->
+      <rect x="32" y="592" width="296" height="128" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+      <text x="180" y="636" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">Restarted in place on the<tspan x="180" dy="24">same node, per <tspan font-family="'Fira Mono', monospace" font-size="14">restartPolicy</tspan></tspan><tspan x="180" dy="24">Restart count increments</tspan></text>
+
+      <rect x="392" y="592" width="296" height="128" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+      <text x="540" y="636" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">Pod is gone from this node<tspan x="540" dy="24">A controller creates a</tspan><tspan x="540" dy="24">replacement elsewhere</tspan></text>
+
+      <!-- ============ ROW 5 — Scope & trigger (FOCAL) ============ -->
+      <rect x="32" y="760" width="296" height="128" rx="6" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.4"/>
+      <text x="180" y="804" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle">Scope: one container<tspan x="180" dy="24" font-weight="500">Trigger: this Pod's</tspan><tspan x="180" dy="24" font-weight="600">own limit</tspan></text>
+
+      <rect x="392" y="760" width="296" height="128" rx="6" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.4"/>
+      <text x="540" y="804" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle">Scope: the whole Pod<tspan x="540" dy="24" font-weight="500">Trigger: the node's</tspan><tspan x="540" dy="24" font-weight="600">pressure</tspan></text>
+    </svg>
+  </div>
+</body>
+</html>

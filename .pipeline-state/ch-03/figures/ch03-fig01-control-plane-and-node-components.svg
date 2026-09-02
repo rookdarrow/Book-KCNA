@@ -1,0 +1,59 @@
+<svg viewBox="0 0 480 712" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch03-fig01-control-plane-and-node-components-title ch03-fig01-control-plane-and-node-components-desc" width="560" height="831">
+      <title id="ch03-fig01-control-plane-and-node-components-title">Kubernetes control plane and node component census</title>
+      <desc id="ch03-fig01-control-plane-and-node-components-desc">Diagram showing the Kubernetes control plane holding kube-apiserver, etcd, kube-scheduler, kube-controller-manager, and an optional cloud-controller-manager, above a worker-node region — the same pattern repeats on every node — holding kubelet, an optional kube-proxy, and a container runtime.</desc>
+
+      <rect width="480" height="712" fill="#F5EFE4"></rect>
+
+      <!-- CONTROL PLANE zone -->
+      <rect x="24" y="24" width="432" height="336" rx="8" fill="rgba(11,30,59,0.02)" stroke="rgba(11,30,59,0.10)" stroke-width="0.8"></rect>
+      <rect x="40" y="28" width="176" height="16" rx="2" fill="#F5EFE4"></rect>
+      <text x="48" y="40" fill="#8A8D90" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.12em">CONTROL PLANE</text>
+
+      <!-- kube-apiserver -->
+      <rect x="40" y="64" width="400" height="40" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="240" y="88" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500">kube-apiserver</text>
+
+      <!-- etcd -->
+      <rect x="40" y="124" width="400" height="40" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="240" y="148" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500">etcd</text>
+
+      <!-- kube-scheduler -->
+      <rect x="40" y="184" width="400" height="40" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="240" y="208" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500">kube-scheduler</text>
+
+      <!-- kube-controller-manager -->
+      <rect x="40" y="244" width="400" height="40" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="240" y="268" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500">kube-controller-manager</text>
+
+      <!-- cloud-controller-manager (focal, optional) -->
+      <rect x="40" y="304" width="400" height="40" rx="6" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2" stroke-dasharray="4,3"></rect>
+      <text x="240" y="328" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500">cloud-controller-manager</text>
+
+      <!-- NODE zone -->
+      <rect x="24" y="392" width="432" height="240" rx="8" fill="rgba(11,30,59,0.02)" stroke="rgba(11,30,59,0.10)" stroke-width="0.8"></rect>
+      <rect x="40" y="396" width="300" height="16" rx="2" fill="#F5EFE4"></rect>
+      <text x="48" y="408" fill="#8A8D90" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.12em">NODE — REPEATS PER WORKER</text>
+
+      <!-- kubelet -->
+      <rect x="40" y="432" width="400" height="40" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="240" y="456" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500">kubelet</text>
+
+      <!-- kube-proxy (focal, optional) -->
+      <rect x="40" y="492" width="400" height="40" rx="6" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2" stroke-dasharray="4,3"></rect>
+      <text x="240" y="516" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500">kube-proxy</text>
+
+      <!-- container runtime -->
+      <rect x="40" y="552" width="400" height="64" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="240" y="576" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500">Container Runtime</text>
+      <text x="240" y="600" text-anchor="middle" fill="#8A8D90" font-family="'Fira Mono', monospace" font-size="14">containerd</text>
+
+      <!-- Legend -->
+      <line x1="24" y1="656" x2="456" y2="656" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+      <text x="40" y="676" fill="#8A8D90" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.12em">LEGEND</text>
+
+      <rect x="140" y="664" width="28" height="16" rx="2" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="176" y="676" fill="#0B1E3B" font-family="'Fira Mono', monospace" font-size="14">ALWAYS PRESENT</text>
+
+      <rect x="320" y="664" width="28" height="16" rx="2" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2" stroke-dasharray="4,3"></rect>
+      <text x="356" y="676" fill="#0B1E3B" font-family="'Fira Mono', monospace" font-size="14">OPTIONAL</text>
+    </svg>

@@ -1,0 +1,72 @@
+<svg viewBox="0 0 680 900" role="img" aria-labelledby="ch02-fig04-cri-runtime-chain-title ch02-fig04-cri-runtime-chain-desc" xmlns="http://www.w3.org/2000/svg" width="696" height="922">
+        <title id="ch02-fig04-cri-runtime-chain-title">The CRI boundary: kubelet to runC</title>
+        <desc id="ch02-fig04-cri-runtime-chain-desc">A vertical chain showing the kubelet handing off across the CRI boundary, which Kubernetes defines but does not implement, to a containerd or CRI-O runtime, which in turn invokes runC to start the running process.</desc>
+        <defs>
+          <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon>
+          </marker>
+          <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#B58B3E"></polygon>
+          </marker>
+          <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon>
+          </marker>
+        </defs>
+
+        <rect width="680" height="900" fill="#F5EFE4"></rect>
+
+        <line x1="220" y1="240" x2="460" y2="240" stroke="#B58B3E" stroke-width="3"></line>
+        <line x1="220" y1="232" x2="220" y2="248" stroke="#B58B3E" stroke-width="2"></line>
+        <line x1="460" y1="232" x2="460" y2="248" stroke="#B58B3E" stroke-width="2"></line>
+
+        <line x1="340" y1="120" x2="340" y2="224" stroke="#1F4A4E" stroke-width="1.2"></line>
+        <line x1="340" y1="256" x2="340" y2="360" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+        <line x1="340" y1="480" x2="340" y2="560" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+        <line x1="340" y1="640" x2="340" y2="720" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+
+        <rect x="260" y="40" width="160" height="80" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+        <text x="340" y="68" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">kubelet</text>
+        <text x="340" y="88" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" fill="#8A8D90">the node agent</text>
+        <text x="340" y="104" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" fill="#8A8D90">Kubernetes ships</text>
+
+        <rect x="304" y="224" width="72" height="32" rx="4" fill="#F5EFE4"></rect>
+        <rect x="304" y="224" width="72" height="32" rx="4" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"></rect>
+        <text x="340" y="244" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="700" letter-spacing="0.08em" fill="#B58B3E">CRI</text>
+
+        <rect x="240" y="360" width="200" height="120" rx="6" fill="rgba(11,30,59,0.03)" stroke="rgba(11,30,59,0.30)" stroke-width="1"></rect>
+        <text x="340" y="396" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">containerd</text>
+        <text x="340" y="420" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.1em" fill="#8A8D90">OR</text>
+        <text x="340" y="444" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">CRI-O</text>
+
+        <rect x="260" y="560" width="160" height="80" rx="6" fill="rgba(11,30,59,0.03)" stroke="rgba(11,30,59,0.30)" stroke-width="1"></rect>
+        <text x="340" y="604" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">runC</text>
+
+        <rect x="240" y="720" width="200" height="80" rx="6" fill="rgba(11,30,59,0.03)" stroke="rgba(11,30,59,0.30)" stroke-width="1"></rect>
+        <text x="340" y="764" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">running process</text>
+
+        <path d="M 476 236 Q 468 240 460 240" fill="none" stroke="rgba(181,139,62,0.5)" stroke-width="1" stroke-dasharray="4,3"></path>
+        <circle cx="460" cy="240" r="2.5" fill="#B58B3E"></circle>
+        <text x="476" y="204" font-family="'Fira Sans', sans-serif" font-size="16" font-style="italic" fill="#B58B3E">Kubernetes DEFINES</text>
+        <text x="476" y="228" font-family="'Fira Sans', sans-serif" font-size="16" font-style="italic" fill="#B58B3E">this line and</text>
+        <text x="476" y="252" font-family="'Fira Sans', sans-serif" font-size="16" font-style="italic" fill="#B58B3E">implements nothing</text>
+        <text x="476" y="276" font-family="'Fira Sans', sans-serif" font-size="16" font-style="italic" fill="#B58B3E">below it</text>
+
+        <path d="M 216 408 Q 228 416 240 420" fill="none" stroke="rgba(31,74,78,0.35)" stroke-width="1" stroke-dasharray="4,3"></path>
+        <circle cx="240" cy="420" r="2.5" fill="#1F4A4E"></circle>
+        <text x="204" y="384" text-anchor="end" font-family="'Fira Sans', sans-serif" font-size="16" font-style="italic" fill="#1F4A4E">socket: exactly one</text>
+        <text x="204" y="408" text-anchor="end" font-family="'Fira Sans', sans-serif" font-size="16" font-style="italic" fill="#1F4A4E">conformant CRI</text>
+        <text x="204" y="432" text-anchor="end" font-family="'Fira Sans', sans-serif" font-size="16" font-style="italic" fill="#1F4A4E">runtime plugs in</text>
+        <text x="204" y="456" text-anchor="end" font-family="'Fira Sans', sans-serif" font-size="16" font-style="italic" fill="#1F4A4E">here</text>
+
+        <line x1="40" y1="828" x2="640" y2="828" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+        <text x="40" y="848" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.14em" fill="#8A8D90">LEGEND</text>
+
+        <rect x="40" y="864" width="16" height="16" rx="4" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+        <text x="64" y="876" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.04em" fill="#1F4A4E">KUBERNETES COMPONENT</text>
+
+        <line x1="300" y1="872" x2="316" y2="872" stroke="#B58B3E" stroke-width="3"></line>
+        <text x="324" y="876" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.04em" fill="#1F4A4E">CRI — NOT IMPLEMENTED</text>
+
+        <rect x="520" y="864" width="16" height="16" rx="4" fill="rgba(11,30,59,0.03)" stroke="rgba(11,30,59,0.30)" stroke-width="1"></rect>
+        <text x="544" y="876" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.04em" fill="#1F4A4E">EXTERNAL RUNTIME</text>
+      </svg>

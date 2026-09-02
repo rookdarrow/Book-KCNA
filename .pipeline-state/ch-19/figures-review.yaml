@@ -1,0 +1,55 @@
+chapter: 19
+book: kcna
+generated: '2026-09-01T16:19:05+00:00'
+figures:
+- anchor_id: ch19-fig01-cross-domain-integration-map
+  status: pending
+  render_paths:
+    svg: figures/ch19-fig01-cross-domain-integration-map.svg
+    png: figures/ch19-fig01-cross-domain-integration-map.png
+  source_path: figures/sources/ch19-fig01-cross-domain-integration-map.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch19-fig02-confusion-pair-matrix
+  status: pending
+  render_paths:
+    svg: figures/ch19-fig02-confusion-pair-matrix.svg
+    png: figures/ch19-fig02-confusion-pair-matrix.png
+  source_path: figures/sources/ch19-fig02-confusion-pair-matrix.html
+  validation_results:
+    label_count: fail
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null
+- anchor_id: ch19-fig03-exam-day-pacing
+  status: pending
+  render_paths:
+    svg: figures/ch19-fig03-exam-day-pacing.svg
+    png: figures/ch19-fig03-exam-day-pacing.png
+  source_path: figures/sources/ch19-fig03-exam-day-pacing.html
+  validation_results:
+    label_count: pass
+    palette_conformance: pass
+    min_font_size: pass
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
+  regenerate_hint: ''
+  review_notes: ''
+  last_applied_hash: null

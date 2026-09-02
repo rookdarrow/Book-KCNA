@@ -1,0 +1,453 @@
+chapter: 5
+book: kcna
+generated: '2026-09-01T06:20:12+00:00'
+figures:
+- anchor_id: ch05-fig01-pod-shared-network-namespace
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch05-fig01-pod-shared-network-namespace.html
+  output_paths:
+    svg: figures/ch05-fig01-pod-shared-network-namespace.svg
+    png: figures/ch05-fig01-pod-shared-network-namespace.png
+    alt: figures/ch05-fig01-pod-shared-network-namespace.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: k8s_architecture
+  figure_spec:
+    anchor_id: ch05-fig01-pod-shared-network-namespace
+    diagram_type: k8s_architecture
+    source_ascii: '┌─ Node ──────────────────────────────────────────────────┐
+
+      │                                                          │
+
+      │   ┌─ Pod ─────────────────────────────────────────┐      │
+
+      │   │  IP: 10.42.1.7   ← one address, on the Pod    │      │
+
+      │   │                                                │      │
+
+      │   │   ┌─ container: app ─┐   ┌─ container: helper┐ │      │
+
+      │   │   │                  │◄─►│                   │ │      │
+
+      │   │   │                  │   │                   │ │      │
+
+      │   │   └────────┬─────────┘   └────────┬──────────┘ │      │
+
+      │   │            │   via localhost      │            │      │
+
+      │   │            └───────┬──────────────┘            │      │
+
+      │   │                    │                            │      │
+
+      │   │            ┌───────▼────────┐                   │      │
+
+      │   │            │ shared volume  │                   │      │
+
+      │   │            └────────────────┘                   │      │
+
+      │   └────────────────────────────────────────────────┘      │
+
+      │                                                            │
+
+      └────────────────────────────────────────────────────────────┘
+
+      '
+    vendor_terms:
+    - pod
+    - node
+    - container
+    - volume
+    complexity_hint:
+      node_count: 5
+      edge_count: 3
+      label_count: 7
+    pedagogy:
+      part_18_criteria_met:
+      - spatial_structure
+      - fixed_point
+      learning_outcome: Identify that a Pod holds one cluster-wide IP shared by all
+        its containers, which reach each other over localhost
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: 'the IP: 10.42.1.7 label bound to the Pod border'
+    accessibility:
+      alt_text_seed: A Node contains one Pod; the Pod carries a single IP address
+        on its own boundary and holds two containers, app and helper, which communicate
+        over localhost and both read and write a shared volume inside the Pod
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Generic boxes redrawn in Lodestar line-art style; revise to licensed_icon_set
+        if the renderer substitutes official Kubernetes/CNCF icons
+- anchor_id: ch05-fig03-init-containers-sequence
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch05-fig03-init-containers-sequence.html
+  output_paths:
+    svg: figures/ch05-fig03-init-containers-sequence.svg
+    png: figures/ch05-fig03-init-containers-sequence.png
+    alt: figures/ch05-fig03-init-containers-sequence.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: activity
+  figure_spec:
+    anchor_id: ch05-fig03-init-containers-sequence
+    diagram_type: activity
+    source_ascii: "SUCCESS PATH\n  time ──────────────────────────────────────────────────────►\n\
+      \n  [ init-1 ]──exit 0──►[ init-2 ]──exit 0──►┌─[ app-a ]────────►\n       \
+      \                                      └─[ app-b ]────────►\n   (sequential,\
+      \ one at a time)                (parallel, together)\n\n\nFAILURE PATH\n  time\
+      \ ──────────────────────────────────────────────────────►\n\n  [ init-1 ]──exit\
+      \ 0──►[ init-2 ]──exit 1──►(restart per\n                                  \
+      \            restartPolicy)\n                            │\n               \
+      \             └──► app containers: NEVER STARTED\n"
+    vendor_terms:
+    - pod
+    - init-container
+    - container
+    complexity_hint:
+      node_count: 9
+      edge_count: 8
+      label_count: 13
+    pedagogy:
+      part_18_criteria_met:
+      - temporal_structure
+      - distinguishing_alternatives
+      learning_outcome: Predict that init containers run sequentially to completion
+        before app containers start in parallel, and that an init failure leaves app
+        containers never started
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: 'the ''app containers: NEVER STARTED'' terminal
+        on the failure path'
+    accessibility:
+      alt_text_seed: 'Two timelines: on the success path init-1 exits zero then init-2
+        exits zero, after which app-a and app-b start together in parallel; on the
+        failure path init-2 exits non-zero, restart is governed by restartPolicy,
+        and the app containers are never started'
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Concept redrawn from Kubernetes init-container ordering semantics; no
+        vendor artwork reproduced
+- anchor_id: ch05-fig02-pod-phases-and-container-states
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch05-fig02-pod-phases-and-container-states.html
+  output_paths:
+    svg: figures/ch05-fig02-pod-phases-and-container-states.svg
+    png: figures/ch05-fig02-pod-phases-and-container-states.png
+    alt: figures/ch05-fig02-pod-phases-and-container-states.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: state_machine
+  figure_spec:
+    anchor_id: ch05-fig02-pod-phases-and-container-states
+    diagram_type: state_machine
+    source_ascii: '┌─ POD ──────────────────────────────────────────────────────┐
+
+      │  status.phase:  Pending → Running → Succeeded              │
+
+      │                                   └→ Failed                │
+
+      │                  (any) → Unknown                            │
+
+      │                                                             │
+
+      │   ┌─ container: app ────────────────────────────────────┐   │
+
+      │   │  state:  Waiting → Running → Terminated             │   │
+
+      │   │          (+Reason)  (+startedAt)  (+exitCode)        │   │
+
+      │   └─────────────────────────────────────────────────────┘   │
+
+      │                                                             │
+
+      │   ┌─ container: helper ─────────────────────────────────┐   │
+
+      │   │  state:  Waiting → Running → Terminated             │   │
+
+      │   └─────────────────────────────────────────────────────┘   │
+
+      └─────────────────────────────────────────────────────────────┘
+
+
+      WORKED OVERLAY — both readings are legitimate:
+
+
+      ┌─ POD  phase: Running ──────────────────────────────────────┐
+
+      │   ┌─ app     state: Running    ─────────────────────────┐  │
+
+      │   └────────────────────────────────────────────────────-┘  │
+
+      │   ┌─ helper  state: Waiting    Reason: ImagePullBackOff ┐   │
+
+      │   └─────────────────────────────────────────────────────┘   │
+
+      └─────────────────────────────────────────────────────────────┘
+
+      '
+    vendor_terms:
+    - pod
+    - container
+    complexity_hint:
+      node_count: 17
+      edge_count: 8
+      label_count: 20
+    pedagogy:
+      part_18_criteria_met:
+      - spatial_structure
+      - distinguishing_alternatives
+      - temporal_structure
+      learning_outcome: Distinguish a Pod's phase from a container's state by scope,
+        and accept that a Pod may be Running while a container inside it is Waiting
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: 'the ''phase: Running'' label in the worked overlay
+        panel'
+    accessibility:
+      alt_text_seed: A Pod box shows five phase values Pending, Running, Succeeded,
+        Failed and Unknown, and nested inside it two container boxes each show three
+        states Waiting, Running and Terminated; a second panel shows a real instant
+        where the Pod's phase is Running while its helper container's state is Waiting
+        with reason ImagePullBackOff
+    rendering_hints:
+      preferred_orientation: portrait
+      grayscale_critical: true
+      max_width_px: 1000
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Phase and state vocabularies are factual API field values; layout and
+        nesting are our own interpretation
+- anchor_id: ch05-fig04-three-probes-compared
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch05-fig04-three-probes-compared.html
+  output_paths:
+    svg: figures/ch05-fig04-three-probes-compared.svg
+    png: figures/ch05-fig04-three-probes-compared.png
+    alt: figures/ch05-fig04-three-probes-compared.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: other
+  figure_spec:
+    anchor_id: ch05-fig04-three-probes-compared
+    diagram_type: other
+    source_ascii: "             │ ASKS                    │ ON FAILURE           │\
+      \ DOES *NOT*\n─────────────┼─────────────────────────┼──────────────────────┼──────────────────────\n\
+      \ liveness    │ Is the container        │ kubelet KILLS the    │ remove it from\n\
+      \             │ running?                │ container → restart  │ Service endpoints\n\
+      \             │                         │ policy applies       │\n─────────────┼─────────────────────────┼──────────────────────┼──────────────────────\n\
+      \ readiness   │ Can the container       │ Pod IP REMOVED from  │ kill or restart\n\
+      \             │ respond to requests?    │ endpoints of all     │ anything —\
+      \ the\n             │                         │ matching Services    │ container\
+      \ keeps running\n─────────────┼─────────────────────────┼──────────────────────┼──────────────────────\n\
+      \ startup     │ Has the application     │ kubelet KILLS the    │ run alongside\
+      \ the\n             │ started?                │ container → restart  │ others\
+      \ — it SUPPRESSES\n             │                         │ policy applies \
+      \      │ them until it succeeds\n"
+    vendor_terms:
+    - kubelet
+    - pod
+    - service
+    - endpoints
+    complexity_hint:
+      node_count: 12
+      edge_count: 0
+      label_count: 15
+    pedagogy:
+      part_18_criteria_met:
+      - distinguishing_alternatives
+      - fixed_point
+      learning_outcome: Predict the distinct consequence of each probe's failure,
+        and identify readiness as the only probe that de-registers without restarting
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: the readiness row's 'Pod IP REMOVED from endpoints'
+        cell
+    accessibility:
+      alt_text_seed: 'A three-row comparison of Kubernetes probes: liveness asks whether
+        the container is running and on failure the kubelet kills it without removing
+        it from Service endpoints; readiness asks whether the container can respond
+        and on failure the Pod IP is removed from matching Service endpoints without
+        killing or restarting anything; startup asks whether the application has started,
+        on failure the kubelet kills the container, and while configured it suppresses
+        the other two probes'
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Comparison matrix authored by Lodestar from Kubernetes pod-lifecycle
+        documentation; no vendor artwork reproduced
+- anchor_id: ch05-fig05-requests-limits-qos-classes
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch05-fig05-requests-limits-qos-classes.html
+  output_paths:
+    svg: figures/ch05-fig05-requests-limits-qos-classes.svg
+    png: figures/ch05-fig05-requests-limits-qos-classes.png
+    alt: figures/ch05-fig05-requests-limits-qos-classes.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: other
+  figure_spec:
+    anchor_id: ch05-fig05-requests-limits-qos-classes
+    diagram_type: other
+    source_ascii: "A SINGLE CONTAINER'S RESOURCE BAND\n\n  0                request\
+      \                    limit\n  ├──────────────────┤═══════════════════════════┤\
+      \ ─ ─ ─ ─ ─ ─►\n  │                  │                           │\n  │   reserved\
+      \ for   │   allowed IF the node     │  NOT ALLOWED\n  │   this container │ \
+      \  has spare capacity      │\n  │                  │                       \
+      \    │\n  └── read by ───────┘                           └── enforced by\n \
+      \     kube-SCHEDULER                                 the KUBELET\n      (chooses\
+      \ the node)                             (+ the kernel)\n\n  ENFORCEMENT DIFFERS\
+      \ BY RESOURCE:\n     cpu    → THROTTLED at the limit  (hard, immediate, you\
+      \ get slow)\n     memory → OOM-KILLED past it      (reactive, under node memory\n\
+      \                                        pressure — you get slow, then dead)\n\
+      \n  QoS CLASS: [ derived from how request and limit were filled in ]\n     \
+      \        ── see AUTHOR-REVIEW above; unsourced pending research fetch\n"
+    vendor_terms:
+    - kube-scheduler
+    - kubelet
+    - pod
+    - container
+    complexity_hint:
+      node_count: 8
+      edge_count: 4
+      label_count: 12
+    pedagogy:
+      part_18_criteria_met:
+      - quantitative_relationships
+      - distinguishing_alternatives
+      - fixed_point
+      learning_outcome: Choose between a request and a limit for a given requirement,
+        name which component acts on each, and predict that CPU limits throttle while
+        memory limits kill reactively
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: the limit tick mark and the boundary rule at it
+    accessibility:
+      alt_text_seed: A horizontal band for one container's use of one resource, marked
+        at zero, at the request, and at the limit; the zone up to the request is reserved
+        and read by the kube-scheduler, the zone between request and limit is allowed
+        when the node has spare capacity, and the zone past the limit is not allowed
+        and is enforced by the kubelet with the kernel; a note beneath states that
+        CPU is throttled at the limit while memory is OOM-killed reactively under
+        node memory pressure
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Resource-band abstraction authored by Lodestar from Kubernetes resource-management
+        documentation; no vendor artwork reproduced
+- anchor_id: ch05-zenith-smallest-deployable-unit
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch05-zenith-smallest-deployable-unit.html
+  output_paths:
+    svg: figures/ch05-zenith-smallest-deployable-unit.svg
+    png: figures/ch05-zenith-smallest-deployable-unit.png
+    alt: figures/ch05-zenith-smallest-deployable-unit.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: hierarchy_tree
+  figure_spec:
+    anchor_id: ch05-zenith-smallest-deployable-unit
+    diagram_type: hierarchy_tree
+    source_ascii: "                  ┌───────────────────────────┐\n             \
+      \     │   THE UNIT OF SCHEDULING  │\n                  │    WRAPS CONTAINERS\
+      \ —     │\n                  │    IT IS NOT ONE OF THEM  │\n               \
+      \   └─────────────┬─────────────┘\n                                │\n    ┌───────────┬───────────┬───┴───┬───────────┬───────────┐\n\
+      \    │           │           │       │           │           │\n┌───▼────┐ ┌────▼─────┐\
+      \ ┌───▼───┐ ┌─▼──────┐ ┌──▼─────┐ ┌───▼────┐\n│ THE POD│ │CONTAINERS│ │restart│\
+      \ │ PHASE  │ │IDENTITY│ │SCHEDULE│\n│ HAS THE│ │  REACH   │ │Policy │ │is Pod-\
+      \ │ │is per- │ │ is per-│\n│   IP   │ │EACH OTHER│ │is Pod-│ │ level; │ │  Pod\
+      \   │ │  Pod   │\n│        │ │ON local- │ │ level │ │STATE is│ │        │ │\
+      \        │\n│        │ │   host   │ │       │ │per-ctr │ │        │ │      \
+      \  │\n└───┬────┘ └────┬─────┘ └───┬───┘ └───┬────┘ └───┬────┘ └───┬────┘\n \
+      \   §1          §1,§2       §5        §5         §6         §8\n    │\n    └──────────────►\
+      \ SERVICES WILL SELECT PODS, NOT CONTAINERS  (→ Ch 9)\n"
+    vendor_terms:
+    - pod
+    - container
+    - service
+    - serviceaccount
+    complexity_hint:
+      node_count: 8
+      edge_count: 7
+      label_count: 14
+    pedagogy:
+      part_18_criteria_met:
+      - zenith
+      - spatial_structure
+      learning_outcome: Explain six separately-taught Pod facts as consequences of
+        one design decision — that the unit of scheduling wraps containers rather
+        than being one
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: the root box reading 'THE UNIT OF SCHEDULING WRAPS
+        CONTAINERS — IT IS NOT ONE OF THEM'
+    accessibility:
+      alt_text_seed: 'A tree whose single root reads that the unit of scheduling wraps
+        containers rather than being one, branching to six equal consequences: the
+        Pod has the IP, containers reach each other on localhost, restartPolicy is
+        Pod-level, phase is Pod-level while state is per-container, identity is per-Pod,
+        and scheduling is per-Pod; a further branch from the first leaf notes that
+        Services will select Pods, not containers, in Chapter 9'
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Synthesis diagram authored entirely by Lodestar; the argument structure
+        is our own, not reproduced from any vendor source

@@ -1,0 +1,1 @@
+A tree diagram. An arrow labelled 'from Chapter 13, platform scope discharged' enters a single box labelled 'Application scope: this book, this chapter, your problem'. Below the box, four branches fan out to four questions: is it running (section 2), is it healthy and configured (section 3), is it reachable (sections 4 then 5), and is it per-replica (section 6).

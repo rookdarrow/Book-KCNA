@@ -1,0 +1,431 @@
+chapter: 14
+book: kcna
+generated: '2026-09-01T06:20:15+00:00'
+figures:
+- anchor_id: ch14-fig01-manifest-to-package-progression
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch14-fig01-manifest-to-package-progression.html
+  output_paths:
+    svg: figures/ch14-fig01-manifest-to-package-progression.svg
+    png: figures/ch14-fig01-manifest-to-package-progression.png
+    alt: figures/ch14-fig01-manifest-to-package-progression.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: concept_map
+  figure_spec:
+    anchor_id: ch14-fig01-manifest-to-package-progression
+    diagram_type: concept_map
+    source_ascii: "  ONE CLUSTER                THREE CLUSTERS                  WHAT\
+      \ YOU WANT\n  ───────────                ──────────────                  ─────────────\n\
+      \n  manifests/                 manifests-dev/     ◄─┐          package v1.2.0\n\
+      \    deployment.yaml            deployment.yaml    │            (one copy,\n\
+      \    service.yaml               service.yaml       │             versioned)\n\
+      \    configmap.yaml             configmap.yaml     │\n                     \
+      \                             │          + dev-values\n       │            \
+      \         manifests-staging/   │          + staging-values\n       ▼       \
+      \                deployment.yaml    ├─ 95%      + prod-values\n   ┌────────┐\
+      \                  service.yaml       │  identical\n   │cluster │          \
+      \        configmap.yaml     │  and nothing              │\n   └────────┘   \
+      \                                  │  marks the 5%      ┌──────┼──────┐\n  \
+      \                           manifests-prod/      │                    ▼    \
+      \  ▼      ▼\n   Correct. Keep              deployment.yaml     │           \
+      \      ┌───┐  ┌───┐  ┌───┐\n   doing this.                service.yaml     \
+      \   │                 │dev│  │stg│  │prd│\n                              configmap.yaml\
+      \    ◄─┘                 └───┘  └───┘  └───┘\n\n                           \
+      \  ▲▲▲ THIS IS WHERE MOST TEAMS LIVE ▲▲▲\n"
+    vendor_terms: []
+    complexity_hint:
+      node_count: 12
+      edge_count: 6
+      label_count: 22
+    pedagogy:
+      part_18_criteria_met:
+      - spatial_structure
+      - distinguishing_alternatives
+      learning_outcome: Recognize that a folder of manifests cannot express environment
+        variation, and that the answer is one versioned package plus per-environment
+        values
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: The centre panel's 'THIS IS WHERE MOST TEAMS LIVE'
+        band and the 95%-identical bracket beside the three near-duplicate directories
+    accessibility:
+      alt_text_seed: 'Three-panel comparison: one manifests directory deploying to
+        one cluster, labelled correct; three near-identical directories for dev, staging
+        and production bracketed as ninety-five percent identical with nothing marking
+        the difference, labelled as where most teams live; and one versioned package
+        plus three per-environment value files fanning out to three clusters'
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders: []
+      clearance: own_interpretation
+      notes: Generic directory names, filenames and cluster boxes only; no vendor
+        mark, logo or product name appears.
+- anchor_id: ch14-fig02-helm-chart-anatomy
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch14-fig02-helm-chart-anatomy.html
+  output_paths:
+    svg: figures/ch14-fig02-helm-chart-anatomy.svg
+    png: figures/ch14-fig02-helm-chart-anatomy.png
+    alt: figures/ch14-fig02-helm-chart-anatomy.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: hierarchy_tree
+  figure_spec:
+    anchor_id: ch14-fig02-helm-chart-anatomy
+    diagram_type: hierarchy_tree
+    source_ascii: "  wordpress/\n  │\n  ├── Chart.yaml ─────────► WHO THIS CHART IS.\n\
+      \  │                         Name, version, description. Every chart\n  │  \
+      \                       must have this file.\n  │\n  ├── values.yaml ────────►\
+      \ THE KNOBS, AND THEIR DEFAULTS.\n  │                         Everything the\
+      \ installer is allowed to\n  │                         change, with a working\
+      \ value for each.\n  │\n  ├── templates/ ─────────► WHAT GETS CREATED.\n  │\
+      \                         Combined with values, generates valid\n  │       \
+      \                  Kubernetes manifests.\n  │     ├── deployment.yaml\n  │ \
+      \    ├── service.yaml\n  │     ├── NOTES.txt          (grey: usage notes printed\
+      \ on install)\n  │     └── _helpers.tpl       (grey: partials, not manifests)\n\
+      \  │\n  ├── charts/ ────────────► CHARTS THIS CHART DEPENDS ON.\n  │       \
+      \                  *** NOT A REPOSITORY. ***\n  │                         A\
+      \ directory, inside this chart, holding\n  │                         other charts.\
+      \ See §4 for repositories.\n  │\n  ├── crds/ ──────────────► DEFINITIONS THAT\
+      \ MUST EXIST FIRST.\n  │                         Not templated. Installed before\
+      \ the\n  │                         templates render. See §6 for why.\n  │\n\
+      \  ├── LICENSE                  (grey: optional)\n  └── README.md          \
+      \      (grey: optional)\n"
+    vendor_terms:
+    - helm
+    - wordpress
+    complexity_hint:
+      node_count: 12
+      edge_count: 16
+      label_count: 17
+    pedagogy:
+      part_18_criteria_met:
+      - spatial_structure
+      - vendor_taxonomy
+      - fixed_point
+      learning_outcome: Read a Helm chart's directory layout and say what each entry
+        is for, and distinguish the in-chart charts/ directory from a chart repository
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: The 'NOT A REPOSITORY.' line annotating the charts/
+        directory
+    accessibility:
+      alt_text_seed: Directory tree of a Helm chart named wordpress, with Chart.yaml,
+        values.yaml, templates, charts and crds each annotated with its purpose; the
+        charts directory is marked emphatically as not a repository but a directory
+        inside the chart holding its dependencies
+    rendering_hints:
+      preferred_orientation: portrait
+      grayscale_critical: true
+      max_width_px: 900
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Helm chart layout redrawn in Lodestar style from the project's documented
+        structure; no logos or vendor artwork. 'wordpress' appears as a directory
+        name in nominative use, following Helm's own documentation example.
+- anchor_id: ch14-fig03-release-vs-chart-vs-revision
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch14-fig03-release-vs-chart-vs-revision.html
+  output_paths:
+    svg: figures/ch14-fig03-release-vs-chart-vs-revision.svg
+    png: figures/ch14-fig03-release-vs-chart-vs-revision.png
+    alt: figures/ch14-fig03-release-vs-chart-vs-revision.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: hierarchy_tree
+  figure_spec:
+    anchor_id: ch14-fig03-release-vs-chart-vs-revision
+    diagram_type: hierarchy_tree
+    source_ascii: "                        ┌──────────────────────────────┐\n    \
+      \                    │   CHART:  wordpress 15.2.0   │\n                    \
+      \    │   (a package. on the shelf.  │\n                        │    installed\
+      \ zero times so   │\n                        │    far in this diagram.)    \
+      \ │\n                        └───────────┬──────────────────┘\n            \
+      \                        │\n              helm install ─────────┴───────── helm\
+      \ install\n                     │                              │\n         \
+      \            ▼                              ▼\n        ┌─────────────────────────┐\
+      \   ┌─────────────────────────┐\n        │ RELEASE: \"marketing\"    │   │ RELEASE:\
+      \ \"docs\"         │\n        │ namespace: marketing    │   │ namespace: docs\
+      \         │\n        │ values: 12 replicas     │   │ values: 2 replicas    \
+      \  │\n        └───────────┬─────────────┘   └─────────────────────────┘\n  \
+      \                  │                    (its own history,\n                \
+      \    │                     untouched by anything\n                    │    \
+      \                 done to \"marketing\")\n                    ▼\n    ┌───────┐\
+      \   ┌───────┐   ┌───────┐   ┌───────┐\n    │ rev 1 │──►│ rev 2 │──►│ rev 3 │──►│\
+      \ rev 4 │\n    │install│   │upgrade│   │upgrade│   │  ???  │\n    └───────┘\
+      \   └───────┘   └───────┘   └───────┘\n                                ▲\n \
+      \                               └─ helm rollback marketing 2\n             \
+      \                      returns the release to\n                            \
+      \       revision 2's state.\n"
+    vendor_terms:
+    - helm
+    - wordpress
+    complexity_hint:
+      node_count: 7
+      edge_count: 6
+      label_count: 13
+    pedagogy:
+      part_18_criteria_met:
+      - spatial_structure
+      - temporal_structure
+      - fixed_point
+      learning_outcome: Separate chart from Helm release from release revision, and
+        see that one chart installs many times with independent histories
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: The two divergent helm install arrows fanning from
+        the single chart box to two independently-named releases
+    accessibility:
+      alt_text_seed: One Helm chart at the top installs twice, producing two independent
+        releases named marketing and docs in separate namespaces with different replica
+        counts; the marketing release has a left-to-right chain of numbered revisions,
+        and a rollback arrow points back at revision two
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Helm release model redrawn in Lodestar style from project documentation;
+        no logos. 'wordpress' is a nominative chart-name example.
+- anchor_id: ch14-fig04-kustomize-base-overlay
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch14-fig04-kustomize-base-overlay.html
+  output_paths:
+    svg: figures/ch14-fig04-kustomize-base-overlay.svg
+    png: figures/ch14-fig04-kustomize-base-overlay.png
+    alt: figures/ch14-fig04-kustomize-base-overlay.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: component_diagram
+  figure_spec:
+    anchor_id: ch14-fig04-kustomize-base-overlay
+    diagram_type: component_diagram
+    source_ascii: "        overlays/staging/                                overlays/prod/\n\
+      \        ┌────────────────────┐                       ┌────────────────────┐\n\
+      \        │ kustomization.yaml │                       │ kustomization.yaml │\n\
+      \        │  resources:        │                       │  resources:        │\n\
+      \        │    - ../../base    │                       │    - ../../base    │\n\
+      \        │  namePrefix: stg-  │                       │  namePrefix: prod- │\n\
+      \        │  replicas: 2       │                       │  replicas: 12      │\n\
+      \        │  patches: [...]    │                       │  patches: [...]    │\n\
+      \        │                    │                       │                    │\n\
+      \        │  ONLY THE DELTAS   │                       │  ONLY THE DELTAS   │\n\
+      \        └─────────┬──────────┘                       └──────────┬─────────┘\n\
+      \                  │                                             │\n       \
+      \           │          base/                              │\n              \
+      \    │      ┌───────────────────────┐              │\n                  └─────►│\
+      \ kustomization.yaml    │◄─────────────┘\n                         │ deployment.yaml\
+      \       │\n                         │ service.yaml          │\n            \
+      \             │                       │\n                         │  NEVER EDITED.\
+      \        │\n                         │  NEVER COPIED.        │\n           \
+      \              │  ONE OF IT.           │\n                         └───────────┬───────────┘\n\
+      \                                     │\n                  ┌──────────────────┴──────────────────┐\n\
+      \                  ▼                                     ▼\n        kubectl\
+      \ apply -k overlays/staging     kubectl apply -k overlays/prod\n           \
+      \       │                                     │\n                  ▼       \
+      \                              ▼\n           stg- objects, 2 replicas      \
+      \      prod- objects, 12 replicas\n"
+    vendor_terms:
+    - kustomize
+    - kubectl
+    complexity_hint:
+      node_count: 7
+      edge_count: 6
+      label_count: 21
+    pedagogy:
+      part_18_criteria_met:
+      - spatial_structure
+      - distinguishing_alternatives
+      - fixed_point
+      learning_outcome: Explain that a Kustomize overlay declares only deltas against
+        a base that is neither edited nor copied, and that apply -k needs no engine
+        installed
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: The single centred base/ box carrying the lines
+        NEVER EDITED, NEVER COPIED, ONE OF IT
+    accessibility:
+      alt_text_seed: Two Kustomize overlay directories for staging and production,
+        each listing only its own deltas, both referencing a single shared base directory
+        that is never edited and never copied; applying each overlay with kubectl
+        apply -k produces prefixed objects with different replica counts
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Kustomize base/overlay arrangement redrawn in Lodestar style from project
+        documentation; no logos or vendor artwork.
+- anchor_id: ch14-fig05-templating-vs-overlay-decision
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch14-fig05-templating-vs-overlay-decision.html
+  output_paths:
+    svg: figures/ch14-fig05-templating-vs-overlay-decision.svg
+    png: figures/ch14-fig05-templating-vs-overlay-decision.png
+    alt: figures/ch14-fig05-templating-vs-overlay-decision.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: other
+  figure_spec:
+    anchor_id: ch14-fig05-templating-vs-overlay-decision
+    diagram_type: other
+    source_ascii: "  ┌────────────────────┬──────────────────────────┬──────────────────────────┐\n\
+      \  │                    │  HELM                    │  KUSTOMIZE            \
+      \   │\n  ├────────────────────┼──────────────────────────┼──────────────────────────┤\n\
+      \  │ What varies        │  values, filling holes   │  patches, applied to a\
+      \   │\n  │                    │  in templates            │  complete base  \
+      \         │\n  ├────────────────────┼──────────────────────────┼──────────────────────────┤\n\
+      \  │ The unit           │  a versioned chart       │  a directory. no version\
+      \ │\n  │                    │  (version REQUIRED)      │  (nothing requires\
+      \ one)  │\n  ├────────────────────┼──────────────────────────┼──────────────────────────┤\n\
+      \  │ Distribution       │  chart repository, or    │  none. it's your repo.\
+      \   │\n  │                    │  an OCI registry         │                 \
+      \         │\n  ├────────────────────┼──────────────────────────┼──────────────────────────┤\n\
+      \  │ Lifecycle          │  releases and revisions; │  none. apply is apply.\
+      \   │\n  │                    │  install/upgrade/rollback│  no installed-state\
+      \      │\n  │                    │  as single acts          │  record of its\
+      \ own       │\n  ├────────────────────┼──────────────────────────┼──────────────────────────┤\n\
+      \  │ Where the engine   │  a CLI you install       │  in kubectl. `apply -k`\
+      \  │\n  │ lives              │                          │  Nothing to install.\
+      \     │\n  ├────────────────────┴──────────────────────────┴──────────────────────────┤\n\
+      \  │  WHAT THE CHOICE ACTUALLY TURNS ON:                                   \
+      \   │\n  │  Distributing to strangers who won't read it  ─────────────►  HELM\
+      \       │\n  │  Adapting what you already have, for yourself ─────────────►\
+      \  KUSTOMIZE  │\n  └──────────────────────────────────────────────────────────────────────────┘\n"
+    vendor_terms:
+    - helm
+    - kustomize
+    - kubectl
+    complexity_hint:
+      node_count: 18
+      edge_count: 2
+      label_count: 20
+    pedagogy:
+      part_18_criteria_met:
+      - distinguishing_alternatives
+      - vendor_taxonomy
+      learning_outcome: Choose between Helm and Kustomize for a given situation and
+        state what the choice turns on
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: 'The full-width decision band beneath the table:
+        distributing to strangers points to Helm, adapting what you already have points
+        to Kustomize'
+    accessibility:
+      alt_text_seed: Comparison table of Helm and Kustomize across five rows — what
+        varies, the unit, distribution, lifecycle, and where the engine lives — closing
+        with a decision band stating that distributing to strangers who will not read
+        it points to Helm, while adapting what you already have for yourself points
+        to Kustomize
+    rendering_hints:
+      preferred_orientation: landscape
+      grayscale_critical: true
+      max_width_px: 1200
+    copyright_clearance:
+      rights_holders:
+      - cncf
+      clearance: own_interpretation
+      notes: Comparison authored by Lodestar from each project's documented properties;
+        product names in nominative use, no logos or vendor artwork.
+- anchor_id: ch14-zenith-package-not-template
+  tool: diagram_design
+  icon_pack: null
+  sketch_mode: false
+  source_path: figures/sources/ch14-zenith-package-not-template.html
+  output_paths:
+    svg: figures/ch14-zenith-package-not-template.svg
+    png: figures/ch14-zenith-package-not-template.png
+    alt: figures/ch14-zenith-package-not-template.alt.txt
+  validation_rules:
+    max_labels: 7
+    grayscale_legibility: required
+    palette_conformance: lodestar_brand
+    max_width_px: 1200
+    min_font_pt: 14
+  diagram_type: flowchart
+  figure_spec:
+    anchor_id: ch14-zenith-package-not-template
+    diagram_type: flowchart
+    source_ascii: "        RENDER                                          PATCH\n\
+      \        ══════                                          ═════\n\n   templates/\
+      \ + values                          base/ + overlay/\n          │          \
+      \                                  │\n     ┌────┴────┐                     \
+      \             ┌────┴────┐\n     │ fill in │                                \
+      \  │  merge  │\n     │  holes  │                                  │  deltas\
+      \ │\n     └────┬────┘                                  └────┬────┘\n       \
+      \   │                                            │\n          │        ┌──────────────────────┐\
+      \            │\n          └───────►│                      │◄───────────┘\n \
+      \                  │   ONE NAMED,         │\n                   │   VERSIONED,\
+      \         │\n                   │   INSTALLABLE UNIT   │\n                 \
+      \  │                      │\n                   └──────────┬───────────┘\n \
+      \                             │\n                              ▼\n         \
+      \               ┌──────────┐\n                        │ cluster  │\n       \
+      \                 └──────────┘\n\n        The mechanisms could not be more different.\n\
+      \        The destination is the same one.\n        The destination is the point.\n"
+    vendor_terms: []
+    complexity_hint:
+      node_count: 6
+      edge_count: 6
+      label_count: 10
+    pedagogy:
+      part_18_criteria_met:
+      - zenith
+      - distinguishing_alternatives
+      - spatial_structure
+      learning_outcome: 'Recognize that templating versus patching is an argument
+        about mechanism between two tools that already agree on the goal: one named,
+        versioned, installable unit'
+      fixed_point_emphasis: true
+      fixed_point_emphasis_target: The central box reading ONE NAMED, VERSIONED, INSTALLABLE
+        UNIT, where both paths converge
+    accessibility:
+      alt_text_seed: Two symmetric paths, one labelled render that fills in holes
+        from templates and values, one labelled patch that merges deltas from a base
+        and overlay, converging with opposing arrows on a single highlighted box reading
+        one named, versioned, installable unit, which then flows to a cluster
+    rendering_hints:
+      preferred_orientation: portrait
+      grayscale_critical: true
+      max_width_px: 1000
+    copyright_clearance:
+      rights_holders: []
+      clearance: own_interpretation
+      notes: Abstract mechanism comparison; no product names, marks or logos appear
+        in the figure.

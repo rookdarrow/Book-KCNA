@@ -37,7 +37,7 @@ figures:
       or two opposing arrows) so the diagram doesn't imply read-only access to the
       volume.
 - anchor_id: ch05-fig03-init-containers-sequence
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch05-fig03-init-containers-sequence.svg
     png: figures/ch05-fig03-init-containers-sequence.png
@@ -127,7 +127,7 @@ figures:
       comparison layout is an appropriate structure for a three-way attribute comparison
       given diagram_type 'other'.
 - anchor_id: ch05-fig05-requests-limits-qos-classes
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch05-fig05-requests-limits-qos-classes.svg
     png: figures/ch05-fig05-requests-limits-qos-classes.png

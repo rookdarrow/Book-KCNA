@@ -24,16 +24,15 @@ figures:
     verdict: concerns
     matches_intent: true
     fixed_point_visible: true
-    structure_correct: false
-    reasoning: The two scope boxes and the directional handoff read clearly and the
-      brass arrow with its italic label is the only colored line in the image, making
-      it unmistakably the focal point. However, the spec and alt_text_seed explicitly
-      call for two columns side by side with a left-to-right arrow, while the render
-      stacks the boxes top/bottom with a vertical downward arrow — a real geometric
-      deviation from the specified concept_map layout.
-    suggested_fix: Rearrange into two side-by-side columns (Platform Scope left, Application
-      Scope right) joined by a single horizontal arrow running left-to-right, matching
-      the alt_text_seed, instead of the current top/bottom stacked layout.
+    structure_correct: true
+    reasoning: The two-column layout with parallel diagnostic checklists clearly separates
+      platform vs. application scope, and the single left-to-right arrow with brass
+      color plus a distinctly thicker/boxed stroke correctly signals the one-way handoff
+      fixed point; however, the arrow's label text has a stray trailing double-quote
+      ('...still wrong"') that looks like a rendering artifact and would read as a
+      typo in a published book.
+    suggested_fix: Strip the stray trailing quotation mark from the arrow label text
+      so it reads '...the behavior is still wrong' with no dangling punctuation.
 - anchor_id: ch13-fig02-pod-failure-signature-map
   status: approved
   render_paths:

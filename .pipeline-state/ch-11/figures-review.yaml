@@ -3,7 +3,7 @@ book: kcna
 generated: '2026-09-01T07:27:10+00:00'
 figures:
 - anchor_id: ch11-fig01-volume-lifetime-ladder
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch11-fig01-volume-lifetime-ladder.svg
     png: figures/ch11-fig01-volume-lifetime-ladder.png
@@ -89,7 +89,7 @@ figures:
       PV/StorageClass/provisioner state at a glance.
     suggested_fix: ''
 - anchor_id: ch11-fig04-access-modes-and-reclaim-policies
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch11-fig04-access-modes-and-reclaim-policies.svg
     png: figures/ch11-fig04-access-modes-and-reclaim-policies.png
@@ -148,7 +148,7 @@ figures:
       a generic flowchart.
     suggested_fix: ''
 - anchor_id: ch11-zenith-outliving-the-pod
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch11-zenith-outliving-the-pod.svg
     png: figures/ch11-zenith-outliving-the-pod.png

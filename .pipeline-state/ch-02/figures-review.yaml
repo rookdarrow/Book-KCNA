@@ -57,7 +57,7 @@ figures:
       both ideas at a glance faster than prose would.
     suggested_fix: ''
 - anchor_id: ch02-fig04-cri-runtime-chain
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch02-fig04-cri-runtime-chain.svg
     png: figures/ch02-fig04-cri-runtime-chain.png
@@ -121,7 +121,7 @@ figures:
       teal data-flow color, keeping brass exclusively on the distribution-spec box
       border/fill.
 - anchor_id: ch02-fig05-imagepullpolicy-decision
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch02-fig05-imagepullpolicy-decision.svg
     png: figures/ch02-fig05-imagepullpolicy-decision.png

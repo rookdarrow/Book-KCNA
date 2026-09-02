@@ -37,7 +37,7 @@ figures:
       line) to bring the diagram under 7 total labels while keeping the brass-highlighted
       ''replicas: 3 — the count it enforces'' row.'
 - anchor_id: ch06-fig02-rolling-update-maxsurge-maxunavailable
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch06-fig02-rolling-update-maxsurge-maxunavailable.svg
     png: figures/ch06-fig02-rolling-update-maxsurge-maxunavailable.png

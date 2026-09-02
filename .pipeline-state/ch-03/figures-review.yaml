@@ -95,7 +95,7 @@ figures:
     fixed_point_visible_detail: ''
     suggested_fix: ''
 - anchor_id: ch03-fig02-control-loop-desired-vs-current
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch03-fig02-control-loop-desired-vs-current.svg
     png: figures/ch03-fig02-control-loop-desired-vs-current.png

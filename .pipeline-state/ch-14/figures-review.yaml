@@ -92,7 +92,7 @@ figures:
     fixed_point_visible_note: ''
     suggested_fix: ''
 - anchor_id: ch14-fig04-kustomize-base-overlay
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch14-fig04-kustomize-base-overlay.svg
     png: figures/ch14-fig04-kustomize-base-overlay.png
@@ -121,7 +121,7 @@ figures:
       makes the delta-only overlay concept legible at a glance.
     suggested_fix: ''
 - anchor_id: ch14-fig05-templating-vs-overlay-decision
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch14-fig05-templating-vs-overlay-decision.svg
     png: figures/ch14-fig05-templating-vs-overlay-decision.png

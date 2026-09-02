@@ -161,7 +161,7 @@ figures:
       0.
     suggested_fix: ''
 - anchor_id: ch08-zenith-consequences-not-rules
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch08-zenith-consequences-not-rules.svg
     png: figures/ch08-zenith-consequences-not-rules.png

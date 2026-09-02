@@ -3,7 +3,7 @@ book: kcna
 generated: '2026-09-01T15:39:48+00:00'
 figures:
 - anchor_id: ch18-fig01-monitoring-vs-observability
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch18-fig01-monitoring-vs-observability.svg
     png: figures/ch18-fig01-monitoring-vs-observability.png
@@ -64,7 +64,7 @@ figures:
       diagram: three peer inputs converging into a collector that exports onward.'
     suggested_fix: ''
 - anchor_id: ch18-fig04-prometheus-pull-architecture
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch18-fig04-prometheus-pull-architecture.svg
     png: figures/ch18-fig04-prometheus-pull-architecture.png
@@ -82,20 +82,19 @@ figures:
   review_notes: ''
   last_applied_hash: null
   ai_review:
-    verdict: concerns
+    verdict: looks_good
     matches_intent: true
-    fixed_point_visible: false
+    fixed_point_visible: true
     structure_correct: true
-    reasoning: 'The pull model reads clearly: Prometheus sits central with all four
-      scrape arrows drawn outbound to its targets, the single Pushgateway push path
-      is visually set apart as a dashed line from an ephemeral (dashed-border) batch
-      job node, and ALERTS/READ arrows correctly show Prometheus pushing out to Alertmanager/Grafana.
-      However the four scrape arrows are distinguished from the other outbound (ALERTS/READ)
-      arrows by brass color alone — same stroke weight, same solid style, no double
-      border or pattern — so the fixed point fails the non-color-signal requirement.'
-    suggested_fix: Give the four brass SCRAPE arrows a visibly thicker stroke (or
-      double-line treatment) than the teal ALERTS/READ arrows so the fixed-point emphasis
-      survives grayscale/colorblind viewing, not just color.
+    reasoning: 'The Prometheus server sits as a clear hub with four brass, thicker-stroke,
+      solid-arrowhead scrape arrows radiating outward to Service Discovery, Instrumented
+      App, Exporter, and Pushgateway, visually distinct from the thinner teal push/serve
+      arrows, and reinforced by an explicit callout (''every arrow into Prometheus
+      is Prometheus reaching out''). The lone inbound path is clearly isolated: a
+      dashed, Fog-toned Batch Job box pushes up into Pushgateway, which Prometheus
+      itself then scrapes, while Alertmanager/Grafana are correctly shown as outbound
+      push/serve targets in muted styling that keeps focus on the pull mechanic.'
+    suggested_fix: ''
 - anchor_id: ch18-fig03-trace-spans-across-services
   status: approved
   render_paths:
@@ -158,7 +157,7 @@ figures:
       outcome of naming the three architectures and justifying the DaemonSet default.
     suggested_fix: ''
 - anchor_id: ch18-fig05-sli-slo-golden-signals
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch18-fig05-sli-slo-golden-signals.svg
     png: figures/ch18-fig05-sli-slo-golden-signals.png
@@ -189,7 +188,7 @@ figures:
       SLI/SLO/SLA distinction at a glance.
     suggested_fix: ''
 - anchor_id: ch18-zenith-instruments-answer-one-question
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch18-zenith-instruments-answer-one-question.svg
     png: figures/ch18-zenith-instruments-answer-one-question.png

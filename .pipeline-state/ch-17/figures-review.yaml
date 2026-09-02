@@ -63,7 +63,7 @@ figures:
       or widen each step going up) so Sandbox, Incubating, and Graduated form a visual
       staircase silhouette rather than a vertically stacked column.
 - anchor_id: ch17-fig02-extension-points-map
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch17-fig02-extension-points-map.svg
     png: figures/ch17-fig02-extension-points-map.png
@@ -92,7 +92,7 @@ figures:
       reinforces the 'defines the shape vs. supplies the plug' concept well.
     suggested_fix: ''
 - anchor_id: ch17-fig03-mesh-data-vs-control-plane
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch17-fig03-mesh-data-vs-control-plane.svg
     png: figures/ch17-fig03-mesh-data-vs-control-plane.png
@@ -217,7 +217,7 @@ figures:
       plus two non-color signals.
     suggested_fix: ''
 - anchor_id: ch17-zenith-one-pluggability-story
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch17-zenith-one-pluggability-story.svg
     png: figures/ch17-zenith-one-pluggability-story.png

@@ -31,7 +31,7 @@ figures:
       caption reinforces the triage-order intent.
     suggested_fix: ''
 - anchor_id: ch16-fig05-init-sequence-debug-points
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch16-fig05-init-sequence-debug-points.svg
     png: figures/ch16-fig05-init-sequence-debug-points.png

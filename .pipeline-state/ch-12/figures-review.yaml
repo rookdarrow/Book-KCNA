@@ -130,7 +130,7 @@ figures:
       accurately describes the text-weight encoding actually used (and rename 'restricted-level
       requirement' since it also fires on baseline-only cells).
 - anchor_id: ch12-fig05-supply-chain-checkpoints
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch12-fig05-supply-chain-checkpoints.svg
     png: figures/ch12-fig05-supply-chain-checkpoints.png

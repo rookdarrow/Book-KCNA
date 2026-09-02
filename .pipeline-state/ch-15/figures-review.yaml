@@ -3,7 +3,7 @@ book: kcna
 generated: '2026-09-01T08:30:40+00:00'
 figures:
 - anchor_id: ch15-fig01-twelve-factor-in-kubernetes
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch15-fig01-twelve-factor-in-kubernetes.svg
     png: figures/ch15-fig01-twelve-factor-in-kubernetes.png
@@ -157,7 +157,7 @@ figures:
       sound and reads left-to-right/top-to-bottom correctly.'
     suggested_fix: ''
 - anchor_id: ch15-fig06-sync-waves-and-hook-phases
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch15-fig06-sync-waves-and-hook-phases.svg
     png: figures/ch15-fig06-sync-waves-and-hook-phases.png

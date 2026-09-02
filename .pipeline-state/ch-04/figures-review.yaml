@@ -119,7 +119,7 @@ figures:
       geometry matches a comparison-table diagram type.
     suggested_fix: ''
 - anchor_id: ch04-fig03-labels-selectors-join
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch04-fig03-labels-selectors-join.svg
     png: figures/ch04-fig03-labels-selectors-join.png
@@ -149,7 +149,7 @@ figures:
       be+prod→C alone).
     suggested_fix: ''
 - anchor_id: ch04-zenith-declaration-not-order
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch04-zenith-declaration-not-order.svg
     png: figures/ch04-zenith-declaration-not-order.png

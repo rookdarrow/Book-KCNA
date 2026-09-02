@@ -33,7 +33,7 @@ figures:
       arrangement is a correct data-flow topology.'
     suggested_fix: ''
 - anchor_id: ch10-fig03-gateway-api-role-split
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch10-fig03-gateway-api-role-split.svg
     png: figures/ch10-fig03-gateway-api-role-split.png

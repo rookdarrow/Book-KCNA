@@ -63,7 +63,7 @@ figures:
       plus row/column labels make the axes unambiguous at a glance.
     suggested_fix: ''
 - anchor_id: ch07-fig03-taints-tolerations-effects
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch07-fig03-taints-tolerations-effects.svg
     png: figures/ch07-fig03-taints-tolerations-effects.png

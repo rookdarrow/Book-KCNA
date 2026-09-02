@@ -3,7 +3,7 @@ book: kcna
 generated: '2026-09-01T16:28:39+00:00'
 figures:
 - anchor_id: ch09-fig01-network-model-four-rules
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch09-fig01-network-model-four-rules.svg
     png: figures/ch09-fig01-network-model-four-rules.png
@@ -150,7 +150,7 @@ figures:
       box and SRV/hostname rows add correct supporting contrast without clutter.
     suggested_fix: ''
 - anchor_id: ch09-zenith-stable-name-over-churn
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch09-zenith-stable-name-over-churn.svg
     png: figures/ch09-zenith-stable-name-over-churn.png

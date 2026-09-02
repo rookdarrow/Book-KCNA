@@ -3,7 +3,7 @@ book: kcna
 generated: '2026-09-01T07:15:37+00:00'
 figures:
 - anchor_id: ch14-fig01-manifest-to-package-progression
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch14-fig01-manifest-to-package-progression.svg
     png: figures/ch14-fig01-manifest-to-package-progression.png
@@ -19,8 +19,28 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: looks_good
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: true
+    reasoning: The three-panel progression clearly shows one manifests dir to one
+      cluster (labelled correct), three near-duplicate dirs bracketed as 95% identical
+      with 'nothing marks the 5%' called out, and one versioned package fanning out
+      to per-environment values and three clusters — a reader grasps the core argument
+      (folder-per-env doesn't scale, versioned package + values does) faster than
+      from prose.
+    fixed_point_visible_detail: The 'THIS IS WHERE MOST TEAMS LIVE' band uses brass
+      fill/border plus a bold, larger typeface distinguishing it from the neutral
+      panel headers, and the 95% IDENTICAL bracket is also brass with a bold weight,
+      satisfying both the color and non-color signal requirement.
+    structure_correct_detail: Concept-map/comparison layout with three horizontally
+      stacked panels, directional arrows from source to targets, and a bracket connecting
+      the three near-duplicate boxes is an appropriate geometric structure for this
+      compare-and-converge learning outcome.
+    suggested_fix: ''
 - anchor_id: ch14-fig02-helm-chart-anatomy
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch14-fig02-helm-chart-anatomy.svg
     png: figures/ch14-fig02-helm-chart-anatomy.png
@@ -36,8 +56,19 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: looks_good
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: true
+    reasoning: The tree correctly nests templates/'s children under it and annotates
+      every top-level entry with a plain-language purpose, so a reader can scan the
+      anatomy and grasp each file's role at a glance; the optional/secondary entries
+      (NOTES.txt, _helpers.tpl, LICENSE, README.md) are properly de-emphasized in
+      fog gray, keeping the primary hierarchy legible despite the entry count.
+    suggested_fix: ''
 - anchor_id: ch14-fig03-release-vs-chart-vs-revision
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch14-fig03-release-vs-chart-vs-revision.svg
     png: figures/ch14-fig03-release-vs-chart-vs-revision.png
@@ -53,6 +84,22 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: looks_good
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: true
+    reasoning: The chart/release/revision hierarchy is unambiguous — one CHART box
+      branches via two brass HELM INSTALL arrows into two independently labeled, independently
+      configured RELEASE boxes, and the marketing release's REV 1-4 chain with a rollback-to-REV2
+      arrow correctly shows Helm's real rollback semantics. The two divergent install
+      arrows are the only brass elements in the frame and read visibly thicker than
+      the teal revision-chain connectors, satisfying the fixed-point emphasis; the
+      docs release relies on a caption rather than its own revision chain to convey
+      independent history, and the revision chain runs top-to-bottom rather than the
+      left-to-right implied by the alt-text seed, but neither undermines legibility
+      or the core concept.
+    suggested_fix: ''
 - anchor_id: ch14-fig04-kustomize-base-overlay
   status: pending
   render_paths:
@@ -70,6 +117,22 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: concerns
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: true
+    reasoning: 'The overlay-to-base relationship is the diagram''s clear strength:
+      two overlay boxes labeled ''ONLY THE DELTAS'' both arrow into a single shared
+      base box, which then fans out to two independent apply/result pairs with differing
+      replica counts, making the base''s non-edited, non-duplicated, singular nature
+      immediately legible. However the second half of the learning outcome — that
+      ''apply -k needs no engine installed'' — has no visual representation anywhere;
+      the APPLY boxes just show the raw kubectl command with no cue contrasting it
+      against a templating engine or install step.'
+    suggested_fix: Add a short annotation on or near the APPLY boxes, e.g. 'kubectl
+      apply -k — kustomize built in, no plugin/engine to install', so the no-engine-required
+      point isn't left entirely to prose.
 - anchor_id: ch14-fig05-templating-vs-overlay-decision
   status: pending
   render_paths:
@@ -87,8 +150,23 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: concerns
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: true
+    reasoning: 'The five-row comparison table clearly sets up the criteria, and the
+      decision band''s two-condition-to-tool mapping communicates what the choice
+      turns on at a glance. The fixed-point band is correctly set off with a brass
+      border and a distinct enclosing box, but the two outcome chips are styled inconsistently:
+      the KUSTOMIZE chip has a solid brass fill while the HELM chip is just outlined,
+      which reads as unequal emphasis between two options that should carry the same
+      visual weight.'
+    suggested_fix: Make the HELM and KUSTOMIZE outcome boxes in the decision band
+      visually identical (both brass-outlined with cream fill, or both filled) so
+      neither option appears emphasized over the other.
 - anchor_id: ch14-zenith-package-not-template
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch14-zenith-package-not-template.svg
     png: figures/ch14-zenith-package-not-template.png
@@ -104,3 +182,16 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: looks_good
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: true
+    reasoning: 'The two symmetric columns (RENDER: templates/+values → fill in holes;
+      PATCH: base/+overlay → merge deltas) with opposing convergent arrows into a
+      single downstream box make the ''different mechanism, same destination'' argument
+      legible at a glance, and the flow continuing to cluster completes the story.
+      The convergence point is filled solid brass with a brass border against the
+      outline-only white/cream boxes and flat-gray input boxes elsewhere, giving it
+      both a color and a fill-pattern distinction.'
+    suggested_fix: ''

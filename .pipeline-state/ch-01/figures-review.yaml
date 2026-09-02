@@ -3,7 +3,7 @@ book: kcna
 generated: '2026-09-01T23:59:01+00:00'
 figures:
 - anchor_id: ch01-fig01-blueprint-change-2025
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch01-fig01-blueprint-change-2025.svg
     png: figures/ch01-fig01-blueprint-change-2025.png
@@ -19,8 +19,21 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: looks_good
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: true
+    reasoning: The two-column retired-vs-current layout with teal connector arrows
+      and a clear merge node for Architecture+Observability makes the 2025 restructure
+      immediately legible, and all percentages match the alt-text spec exactly (46/22/8/16/8
+      to 44/28/16/12) with delta annotations reinforcing which domains moved. The
+      four current-column weights are the only elements rendered in Brass and are
+      also bold and enlarged relative to the navy box titles, satisfying color-plus-non-color
+      emphasis for the fixed point.
+    suggested_fix: ''
 - anchor_id: ch01-fig02-book-map-parts-to-domains
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch01-fig02-book-map-parts-to-domains.svg
     png: figures/ch01-fig02-book-map-parts-to-domains.png
@@ -36,3 +49,16 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: looks_good
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: true
+    reasoning: The two-column Part-to-Domain layout with dashed/greyed-out no-weight
+      parts (I, VI) versus solid connected parts (II-V) makes the exam-blueprint mapping
+      legible at a glance, and reading top-to-bottom visibly tracks progress through
+      both the book and the domains. The four II-V connectors are the only lines in
+      the diagram, rendered in brass with bold percentage labels, so they read as
+      the fixed point without competing against any other diagonal/horizontal line
+      elements.
+    suggested_fix: ''

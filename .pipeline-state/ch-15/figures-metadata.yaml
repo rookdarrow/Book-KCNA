@@ -193,16 +193,16 @@ figures:
     status is OutOfSync; a separate sync operation applies the target state and the
     two match again.
 - anchor_id: ch15-fig06-sync-waves-and-hook-phases
-  source_hash: 991f989fba7a4f42c0dff428348c42d72f5b4085b53fb8a68f032a321b714a59
+  source_hash: 3332cfbe3e47f42f485b601231d08414668a1b36d522d3289bbbdbc9091a4e92
   output_hash:
-    svg: 4f36f361d5a139c8e1ccec4a613b7a9dbc2aabe6fe5b8f8efa2e8dfc5d2a6e20
-    png: ac94d8db56d6802c9335e1c2a3b5a61a3e8f8a1dda17e1c844283f575d298217
+    svg: 588ee038d0cadc2e49a758cb83eee2fbedae5b11d9dc0425465cbbbbf594a50a
+    png: e0079a91e55df35561f7b49573d74cbfd7eb85530e78e240a845f6f5ec30d721
   validations:
     label_count:
       result: fail
-      value: 27
+      value: 30
       max: 7
-      reason: 27 labels exceeds working-memory limit of 7
+      reason: 30 labels exceeds working-memory limit of 7
     palette_conformance:
       result: pass
     min_font_size:
@@ -213,11 +213,11 @@ figures:
     max_dimensions:
       result: pass
       value:
-      - 1040
-      - 1560
+      - 1760
+      - 1554
     aspect_ratio:
       result: pass
-      value: 1.5
+      value: 1.13
     grayscale_legibility:
       result: pass
       value: 8

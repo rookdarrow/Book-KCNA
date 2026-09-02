@@ -19,8 +19,24 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: concerns
+    matches_intent: true
+    fixed_point_visible: false
+    structure_correct: true
+    reasoning: The two-column layout with a shared 'THE RUNNING SYSTEM' base clearly
+      sells the learning outcome — 'IN ADVANCE' vs 'AT 02:10 AM' makes the timing
+      distinction immediate and the observability column correctly omits any indicator
+      layer between the question and Open Query. However, the emphasized stem (02:10
+      arrow + Open Query box) is distinguished from the rest of the diagram only by
+      hue (brass line, brass border, tan fill) — there's no thicker stroke, double
+      border, or bold text setting it apart, so the emphasis relies entirely on color
+      and would be lost for a color-blind reader or in grayscale print.
+    suggested_fix: Add a non-color signal to the 02:10-to-Open-Query stem and the
+      Open Query box — thicken that arrow's stroke and/or give Open Query a double
+      border — so the fixed point reads even without color.
 - anchor_id: ch18-fig02-otel-four-signals
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch18-fig02-otel-four-signals.svg
     png: figures/ch18-fig02-otel-four-signals.png
@@ -36,6 +52,18 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: looks_good
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: true
+    reasoning: All four signals are named and legible, and baggage's role as shared
+      context is immediately readable from its position spanning above traces/metrics/logs
+      with dashed connectors feeding down into them, matching the alt-text intent
+      almost exactly. The where/whether/what mnemonics under each signal box reinforce
+      the distinction at a glance, and the convergence into the OTel Collector then
+      backends reads as a clear pipeline.
+    suggested_fix: ''
 - anchor_id: ch18-fig04-prometheus-pull-architecture
   status: pending
   render_paths:
@@ -53,8 +81,23 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: concerns
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: true
+    reasoning: 'The pull architecture reads clearly at a glance: four brass scrape
+      arrows all originate at Prometheus and point outward, reinforced by the explicit
+      callout ''Every arrow into Prometheus is Prometheus reaching out,'' and the
+      single inbound Batch Job -> PUSH -> Pushgateway path is visually set apart with
+      a dashed box and its own arrow color, matching the learning outcome. However
+      the diagram carries 8 distinct entity labels (Service Discovery, Instrumented
+      App, Exporter, Pushgateway, Batch Job, Prometheus Server, Alertmanager, Grafana),
+      exceeding the locked <=7 working-memory cap enforced by validate_label_count.'
+    suggested_fix: Collapse Alertmanager and Grafana into a single 'downstream consumers'
+      box (or drop one scrape target) to bring the label count to <=7.
 - anchor_id: ch18-fig03-trace-spans-across-services
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch18-fig03-trace-spans-across-services.svg
     png: figures/ch18-fig03-trace-spans-across-services.png
@@ -70,8 +113,21 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: looks_good
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: true
+    reasoning: The nested indentation with tree-connector lines and proportionally-scaled
+      bars against a labeled 0-4000ms axis make span containment and time distribution
+      legible at a glance, and the closing caption text ('only the trace ID makes
+      them one story... where did the 4 seconds go') directly reinforces the trace-vs-span
+      learning outcome. Bar widths are geometrically consistent with stated durations
+      (e.g. catalog-svc's ~3700ms bar and the pricing-svc→database bar spanning nearly
+      all of it).
+    suggested_fix: ''
 - anchor_id: ch18-fig06-cluster-logging-architectures
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch18-fig06-cluster-logging-architectures.svg
     png: figures/ch18-fig06-cluster-logging-architectures.png
@@ -87,6 +143,18 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: looks_good
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: true
+    reasoning: Three stacked panels clearly contrast fan-in (3 pods to 1 agent), 1:1
+      duplication (sidecar per pod), and no-collector direct push, and panel 1 is
+      explicitly labelled 'the default answer', supporting the learning outcome at
+      a glance. The DaemonSet Agent box is the only element with a Brass fill/border
+      plus a distinctly thicker Brass connector ('SHIPS LOGS'), clearly reading as
+      the fixed point against the Teal connectors elsewhere.
+    suggested_fix: ''
 - anchor_id: ch18-fig05-sli-slo-golden-signals
   status: pending
   render_paths:
@@ -104,6 +172,19 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: concerns
+    matches_intent: true
+    fixed_point_visible: false
+    structure_correct: true
+    reasoning: The SLI→SLO→SLA progression and the golden-signals 2x2 grid with the
+      latency→saturation leading-indicator arrow both read clearly and match the learning
+      outcome. However, the MEASURES arrow (the fixed point) is distinguished from
+      the other flow arrows by brass color alone — its stroke weight matches the plain
+      navy 'leads to' arrows, so a reader skimming in grayscale or with color-vision
+      deficiency has no way to pick it out.
+    suggested_fix: Thicken the SLI-to-SLO 'measures' arrow stroke (or give it a double
+      line) so the fixed point is legible by shape as well as by brass color.
 - anchor_id: ch18-zenith-instruments-answer-one-question
   status: pending
   render_paths:
@@ -121,3 +202,18 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: concerns
+    matches_intent: true
+    fixed_point_visible: false
+    structure_correct: true
+    reasoning: 'The layout is clean and reads exactly as the alt text describes: one
+      question at top, three signal boxes (metric/trace/log) arrow-feeding into it,
+      and a base box tying all three together, which lands the whether/where/what
+      framing well. But the BAGGAGE box only gets the Brass border/fill tint as emphasis
+      — its stroke weight matches the other boxes, there''s no double border or fill
+      pattern, and its bold header text is styled identically to METRIC/TRACE/LOG''s
+      bold sub-labels, so there''s no genuine non-color signal setting it apart per
+      the fixed-point rule.'
+    suggested_fix: Give the BAGGAGE box a visibly thicker or doubled Brass border
+      (or a subtle fill pattern) so it reads as emphasized independent of color alone.

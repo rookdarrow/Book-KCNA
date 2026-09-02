@@ -2,164 +2,158 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sync waves and hook phases</title>
+<title>ch15-fig06-sync-waves-and-hook-phases</title>
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;700&family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Fira+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  :root {
-    --color-paper:  #F5EFE4;
-    --color-ink:    #0B1E3B;
-    --color-muted:  #1F4A4E;
-    --color-soft:   #8A8D90;
-    --color-accent: #B58B3E;
-    --font-sans:  'Fira Sans', sans-serif;
-    --font-slab:  'Roboto Slab', serif;
-    --font-mono:  'Fira Mono', ui-monospace, monospace;
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:#F5EFE4;
+    font-family:'Fira Sans',sans-serif;
+    color:#0B1E3B;
+    padding:48px 24px;
   }
-
-  body {
-    font-family: var(--font-sans);
-    background: var(--color-paper);
-    color: var(--color-ink);
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 3rem 2rem;
+  .page{
+    max-width:880px;
+    margin:0 auto;
   }
-
-  .frame { max-width: 560px; width: 100%; }
-
-  .eyebrow {
-    font-family: var(--font-mono);
-    font-size: 0.875rem;
-    font-weight: 500;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--color-muted);
-    margin-bottom: 0.5rem;
+  .eyebrow{
+    font-family:'Fira Mono',monospace;
+    font-size:14px;
+    font-weight:500;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:#1F4A4E;
+    margin:0 0 8px 0;
   }
-
-  h1 {
-    font-family: var(--font-slab);
-    font-size: 1.75rem;
-    font-weight: 500;
-    letter-spacing: -0.01em;
-    line-height: 1.15;
-    color: var(--color-ink);
-    margin-bottom: 0.5rem;
+  h1{
+    font-family:'Roboto Slab',serif;
+    font-weight:500;
+    font-size:1.75rem;
+    color:#0B1E3B;
+    margin:0 0 8px 0;
   }
-
-  .subtitle {
-    font-family: var(--font-sans);
-    font-size: 1rem;
-    color: var(--color-muted);
-    margin-bottom: 1.5rem;
-    line-height: 1.4;
+  .subtitle{
+    font-family:'Fira Sans',sans-serif;
+    font-size:16px;
+    color:#1F4A4E;
+    margin:0 0 32px 0;
+    max-width:640px;
   }
-
-  svg { width: 100%; max-width: 520px; height: auto; display: block; margin: 0 auto; }
+  .diagram{
+    width:100%;
+    height:auto;
+    display:block;
+  }
 </style>
 </head>
 <body>
-  <div class="frame">
-    <p class="eyebrow">Flowchart &middot; Argo CD Sync</p>
-    <h1>Sync Waves and Hook Phases</h1>
-    <p class="subtitle">PreSync and PostSync hooks gate the sync left to right; inside Sync, wave numbers set the apply order, lowest first.</p>
+<div class="page">
+  <p class="eyebrow">Chapter 15 &middot; Figure 6 &middot; Argo CD</p>
+  <h1>Sync Waves &amp; Hook Phases</h1>
+  <p class="subtitle">PreSync and PostSync gate on success; inside Sync, the wave number sets execution order.</p>
+  <svg class="diagram" viewBox="0 0 848 748" role="img" aria-labelledby="ch15-fig06-sync-waves-and-hook-phases-title ch15-fig06-sync-waves-and-hook-phases-desc" xmlns="http://www.w3.org/2000/svg">
+    <title id="ch15-fig06-sync-waves-and-hook-phases-title">Argo CD sync phases and wave ordering within Sync</title>
+    <desc id="ch15-fig06-sync-waves-and-hook-phases-desc">Three sync phases run left to right: PreSync running a database migration, Sync, then PostSync running a smoke test, each gated by an on-success arrow. Inside Sync a vertical wave axis orders three resources lowest number first: Namespace at wave minus one, CustomResourceDefinition at wave zero, and a custom resource at wave one. Ordering precedence is phase, then wave, then kind, then name.</desc>
+    <defs>
+      <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"/>
+      </marker>
+      <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#B58B3E"/>
+      </marker>
+      <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"/>
+      </marker>
+    </defs>
 
-    <svg viewBox="0 0 640 960" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="syncwaves-title syncwaves-desc">
-      <title id="syncwaves-title">Sync waves and hook phases</title>
-      <desc id="syncwaves-desc">Flowchart showing three Argo CD sync phases running in order — PreSync holding a database migration hook, Sync, then PostSync holding a smoke-test hook — with a wave axis inside Sync ordering three resources lowest-number first: wave -1 Namespace, wave 0 CustomResourceDefinition, wave 1 a custom resource instance.</desc>
+    <rect width="848" height="748" fill="#F5EFE4"/>
 
-      <defs>
-        <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-          <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"/>
-        </marker>
-        <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-          <polygon points="0 0, 8 3, 0 6" fill="#B58B3E"/>
-        </marker>
-      </defs>
+    <!-- PHASE axis annotation -->
+    <text x="16" y="44" font-family="'Fira Mono',monospace" font-size="14" font-weight="500"
+          letter-spacing="0.12em" fill="#1F4A4E">PHASE</text>
+    <line x1="88" y1="56" x2="832" y2="56" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"/>
 
-      <rect width="100%" height="100%" fill="#F5EFE4"/>
+    <!-- Phase containers (zones) -->
+    <rect x="16" y="104" width="152" height="392" rx="8" fill="#F5EFE4" stroke="rgba(11,30,59,0.25)" stroke-width="1"/>
+    <rect x="280" y="104" width="288" height="392" rx="8" fill="#F5EFE4" stroke="rgba(11,30,59,0.25)" stroke-width="1"/>
+    <rect x="680" y="104" width="152" height="392" rx="8" fill="#F5EFE4" stroke="rgba(11,30,59,0.25)" stroke-width="1"/>
 
-      <!-- Phase containers (background layer) -->
-      <rect x="40" y="32" width="560" height="192" rx="8" fill="rgba(11,30,59,0.03)" stroke="rgba(11,30,59,0.30)" stroke-width="1"/>
-      <rect x="40" y="272" width="560" height="360" rx="8" fill="rgba(11,30,59,0.03)" stroke="rgba(11,30,59,0.30)" stroke-width="1"/>
-      <rect x="40" y="680" width="560" height="192" rx="8" fill="rgba(11,30,59,0.03)" stroke="rgba(11,30,59,0.30)" stroke-width="1"/>
+    <!-- Container headers -->
+    <text x="92" y="132" text-anchor="middle" font-family="'Fira Mono',monospace" font-size="14" font-weight="500"
+          letter-spacing="0.12em" fill="#1F4A4E">PRESYNC</text>
+    <text x="424" y="132" text-anchor="middle" font-family="'Fira Mono',monospace" font-size="14" font-weight="500"
+          letter-spacing="0.12em" fill="#1F4A4E">SYNC</text>
+    <text x="756" y="132" text-anchor="middle" font-family="'Fira Mono',monospace" font-size="14" font-weight="500"
+          letter-spacing="0.12em" fill="#1F4A4E">POSTSYNC</text>
 
-      <!-- Gate arrows: PreSync -> Sync -> PostSync -->
-      <line x1="320" y1="224" x2="320" y2="272" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
-      <rect x="328" y="240" width="120" height="20" rx="2" fill="#F5EFE4"/>
-      <text x="388" y="254" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.04em">ON SUCCESS</text>
+    <!-- Gating arrows: on success -->
+    <line x1="168" y1="300" x2="280" y2="300" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"/>
+    <rect x="172" y="276" width="104" height="16" fill="#F5EFE4"/>
+    <text x="224" y="288" text-anchor="middle" font-family="'Fira Mono',monospace" font-size="14" letter-spacing="0.04em" fill="#1F4A4E">ON SUCCESS</text>
 
-      <line x1="320" y1="632" x2="320" y2="680" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
-      <rect x="328" y="648" width="120" height="20" rx="2" fill="#F5EFE4"/>
-      <text x="388" y="662" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.04em">ON SUCCESS</text>
+    <line x1="568" y1="300" x2="680" y2="300" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"/>
+    <rect x="572" y="276" width="104" height="16" fill="#F5EFE4"/>
+    <text x="624" y="288" text-anchor="middle" font-family="'Fira Mono',monospace" font-size="14" letter-spacing="0.04em" fill="#1F4A4E">ON SUCCESS</text>
 
-      <!-- Sync: WAVE axis (focal) -->
-      <line x1="184" y1="408" x2="184" y2="584" stroke="#B58B3E" stroke-width="1.4" marker-end="url(#arrow-accent)"/>
-      <circle cx="184" cy="408" r="4" fill="#B58B3E"/>
-      <circle cx="184" cy="496" r="4" fill="#B58B3E"/>
-      <circle cx="184" cy="584" r="4" fill="#B58B3E"/>
-      <line x1="184" y1="408" x2="208" y2="408" stroke="#B58B3E" stroke-width="1.2"/>
-      <line x1="184" y1="496" x2="208" y2="496" stroke="#B58B3E" stroke-width="1.2"/>
-      <line x1="184" y1="584" x2="208" y2="584" stroke="#B58B3E" stroke-width="1.2"/>
+    <!-- PreSync step -->
+    <rect x="28" y="268" width="128" height="64" rx="6" fill="rgba(11,30,59,0.04)" stroke="#0B1E3B" stroke-width="1"/>
+    <text x="92" y="292" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Database</text>
+    <text x="92" y="312" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">migration</text>
 
-      <!-- Sync: wave tags (focal) -->
-      <rect x="64" y="396" width="96" height="24" rx="2" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1"/>
-      <text x="112" y="413" fill="#B58B3E" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.04em">WAVE -1</text>
+    <!-- PostSync step -->
+    <rect x="692" y="268" width="128" height="64" rx="6" fill="rgba(11,30,59,0.04)" stroke="#0B1E3B" stroke-width="1"/>
+    <text x="756" y="304" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Smoke test</text>
 
-      <rect x="64" y="484" width="96" height="24" rx="2" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1"/>
-      <text x="112" y="501" fill="#B58B3E" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.04em">WAVE 0</text>
+    <!-- Wave axis: the focal element -->
+    <line x1="360" y1="208" x2="360" y2="448" stroke="#B58B3E" stroke-width="1.2" marker-end="url(#arrow-accent)"/>
+    <line x1="360" y1="208" x2="376" y2="208" stroke="#B58B3E" stroke-width="1"/>
+    <line x1="360" y1="328" x2="376" y2="328" stroke="#B58B3E" stroke-width="1"/>
+    <line x1="360" y1="448" x2="376" y2="448" stroke="#B58B3E" stroke-width="1"/>
 
-      <rect x="64" y="572" width="96" height="24" rx="2" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1"/>
-      <text x="112" y="589" fill="#B58B3E" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.04em">WAVE 1</text>
+    <!-- wave labels -->
+    <text x="352" y="212" text-anchor="end" font-family="'Fira Mono',monospace" font-size="14" font-weight="500" fill="#0B1E3B">wave -1</text>
+    <text x="352" y="332" text-anchor="end" font-family="'Fira Mono',monospace" font-size="14" font-weight="500" fill="#0B1E3B">wave 0</text>
+    <text x="352" y="452" text-anchor="end" font-family="'Fira Mono',monospace" font-size="14" font-weight="500" fill="#0B1E3B">wave 1</text>
 
-      <!-- Sync: resource boxes, lowest wave first -->
-      <rect x="208" y="384" width="368" height="48" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
-      <text x="392" y="414" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">Namespace</text>
+    <!-- Resource boxes: the three ordered rows, same focal group as the axis -->
+    <rect x="376" y="176" width="176" height="64" rx="6" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"/>
+    <text x="464" y="212" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Namespace</text>
 
-      <rect x="208" y="456" width="368" height="80" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
-      <text x="392" y="482" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">CRD</text>
-      <text x="392" y="502" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle">CustomResource</text>
-      <text x="392" y="520" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle">Definition</text>
+    <rect x="376" y="296" width="176" height="64" rx="6" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"/>
+    <text x="464" y="316" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">CRD</text>
+    <text x="464" y="332" text-anchor="middle" font-family="'Fira Mono',monospace" font-size="14" fill="#1F4A4E">CustomResource</text>
+    <text x="464" y="348" text-anchor="middle" font-family="'Fira Mono',monospace" font-size="14" fill="#1F4A4E">Definition</text>
 
-      <rect x="208" y="560" width="368" height="48" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
-      <text x="392" y="590" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">Custom Resource</text>
+    <rect x="376" y="416" width="176" height="64" rx="6" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"/>
+    <text x="464" y="452" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">custom resource</text>
 
-      <!-- PreSync: hook box -->
-      <rect x="200" y="112" width="240" height="64" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
-      <rect x="212" y="120" width="64" height="24" rx="2" fill="transparent" stroke="rgba(11,30,59,0.40)" stroke-width="0.8"/>
-      <text x="244" y="137" fill="rgba(11,30,59,0.80)" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.08em">HOOK</text>
-      <text x="320" y="168" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">db migration</text>
+    <!-- Captions -->
+    <text x="92" y="528" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-style="italic" font-size="16" fill="#8A8D90">Must finish</text>
+    <text x="92" y="548" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-style="italic" font-size="16" fill="#8A8D90">before anything</text>
+    <text x="92" y="568" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-style="italic" font-size="16" fill="#8A8D90">is applied</text>
 
-      <!-- PostSync: hook box -->
-      <rect x="200" y="760" width="240" height="64" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
-      <rect x="212" y="768" width="64" height="24" rx="2" fill="transparent" stroke="rgba(11,30,59,0.40)" stroke-width="0.8"/>
-      <text x="244" y="785" fill="rgba(11,30,59,0.80)" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.08em">HOOK</text>
-      <text x="320" y="816" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">smoke test</text>
+    <text x="424" y="528" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-style="italic" font-size="16" fill="#8A8D90">Within the phase,</text>
+    <text x="424" y="548" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-style="italic" font-size="16" fill="#8A8D90">lower wave numbers</text>
+    <text x="424" y="568" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-style="italic" font-size="16" fill="#8A8D90">land first (default 0;</text>
+    <text x="424" y="588" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-style="italic" font-size="16" fill="#8A8D90">negatives run before that)</text>
 
-      <!-- Titles, phase tags, captions -->
-      <text x="64" y="64" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif">PreSync</text>
-      <text x="576" y="64" fill="#8A8D90" font-size="14" font-family="'Fira Mono', monospace" text-anchor="end" letter-spacing="0.10em">PHASE 1</text>
-      <text x="64" y="88" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">must finish before anything is applied</text>
+    <text x="756" y="528" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-style="italic" font-size="16" fill="#8A8D90">Runs only if</text>
+    <text x="756" y="548" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-style="italic" font-size="16" fill="#8A8D90">everything succeeded</text>
+    <text x="756" y="568" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-style="italic" font-size="16" fill="#8A8D90">and is Healthy</text>
 
-      <text x="64" y="304" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif">Sync</text>
-      <text x="576" y="304" fill="#8A8D90" font-size="14" font-family="'Fira Mono', monospace" text-anchor="end" letter-spacing="0.10em">PHASE 2</text>
-      <text x="64" y="328" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">Within the phase, lower wave numbers land first</text>
-      <text x="64" y="346" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">(default 0; negatives run before that)</text>
-      <text x="136" y="368" fill="#B58B3E" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.12em">WAVE</text>
+    <!-- Ordering precedence -->
+    <line x1="16" y1="620" x2="832" y2="620" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+    <text x="424" y="648" text-anchor="middle" font-family="'Fira Mono',monospace" font-size="14" font-weight="500"
+          letter-spacing="0.10em" fill="#0B1E3B">ORDERING PRECEDENCE: PHASE &#8594; WAVE &#8594; KIND &#8594; NAME</text>
 
-      <text x="64" y="712" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif">PostSync</text>
-      <text x="576" y="712" fill="#8A8D90" font-size="14" font-family="'Fira Mono', monospace" text-anchor="end" letter-spacing="0.10em">PHASE 3</text>
-      <text x="64" y="736" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">runs only if everything succeeded and is Healthy</text>
-
-      <!-- Footer: ordering precedence -->
-      <line x1="40" y1="896" x2="600" y2="896" stroke="#8A8D90" stroke-width="0.8"/>
-      <text x="40" y="916" fill="#8A8D90" font-size="14" font-family="'Fira Mono', monospace" letter-spacing="0.12em">ORDERING PRECEDENCE</text>
-      <text x="40" y="940" fill="#0B1E3B" font-size="14" font-family="'Fira Mono', monospace" letter-spacing="0.04em">PHASE &#8594; WAVE &#8594; KIND &#8594; NAME</text>
-    </svg>
-  </div>
+    <!-- Legend -->
+    <line x1="16" y1="680" x2="832" y2="680" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+    <rect x="16" y="696" width="16" height="16" rx="2" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"/>
+    <text x="36" y="708" font-family="'Fira Mono',monospace" font-size="14" fill="#8A8D90">WAVE-ORDERED RESOURCE</text>
+    <line x1="280" y1="704" x2="304" y2="704" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"/>
+    <text x="312" y="708" font-family="'Fira Mono',monospace" font-size="14" fill="#8A8D90">ON-SUCCESS GATE</text>
+  </svg>
+</div>
 </body>
 </html>

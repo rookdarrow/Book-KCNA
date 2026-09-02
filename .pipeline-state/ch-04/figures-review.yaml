@@ -3,7 +3,7 @@ book: kcna
 generated: '2026-09-01T08:02:58+00:00'
 figures:
 - anchor_id: ch04-fig01-object-anatomy-spec-status
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch04-fig01-object-anatomy-spec-status.svg
     png: figures/ch04-fig01-object-anatomy-spec-status.png
@@ -19,8 +19,21 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: looks_good
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: true
+    reasoning: Two clearly stacked panels correctly separate the four top-level fields
+      (apiVersion, kind, metadata with nested name/uid/namespace, spec) that the author
+      writes from the single status field the system writes, which is exactly the
+      authorship split the learning outcome tests. The 'AUTHORSHIP BOUNDARY' divider
+      is rendered in brass with bold caps and flanking heavy rule lines, giving it
+      both the required color and a non-color emphasis signal, and the panel-stack
+      layout reads as hierarchical/structural rather than a flat list.
+    suggested_fix: ''
 - anchor_id: ch04-fig02-apply-round-trip
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch04-fig02-apply-round-trip.svg
     png: figures/ch04-fig02-apply-round-trip.png
@@ -36,8 +49,21 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: looks_good
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: true
+    reasoning: The vertical flow clearly traces manifest.yaml through apiserver/etcd
+      into a controller loop, and the return path is rendered as a distinct brass,
+      thicker-stroke orthogonal connector back into the compare step, paired with
+      an italicized brass caption ('and it watches again, forever') — satisfying color
+      plus a non-color (weight/style) signal. Structure is a clean top-to-bottom flowchart
+      with an explicit feedback loop, matching the never-terminating reconciliation
+      concept.
+    suggested_fix: ''
 - anchor_id: ch04-fig04-namespaced-vs-cluster-scoped
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch04-fig04-namespaced-vs-cluster-scoped.svg
     png: figures/ch04-fig04-namespaced-vs-cluster-scoped.png
@@ -53,8 +79,23 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: looks_good
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: true
+    reasoning: The nested containment (cluster boundary > cluster-scoped resources
+      box > two parallel namespace boxes with identical Deployment/Service/ConfigMap/Secret
+      entries) directly visualizes the scoping hierarchy, and the explicit callout
+      'Same names in both namespaces — the namespace boundary keeps them from colliding'
+      states the learning outcome outright. The four cluster-scoped resources (Node,
+      PersistentVolume, StorageClass, Namespace) sit in their own group with a solid
+      Brass border and Brass heading text against the dashed Fog cluster outline and
+      unbordered namespace items, and the legend confirms this FOCAL vs NAMESPACED
+      distinction, giving both a color and stroke-style signal.
+    suggested_fix: ''
 - anchor_id: ch04-fig05-configmap-secret-contrast
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch04-fig05-configmap-secret-contrast.svg
     png: figures/ch04-fig05-configmap-secret-contrast.png
@@ -70,6 +111,15 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: looks_good
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: true
+    reasoning: The four-row ConfigMap-vs-Secret comparison table clearly separates
+      contents, consumption, storage, and added value, and the Stored row visually
+      announces its message before a reader parses any text.
+    suggested_fix: ''
 - anchor_id: ch04-fig03-labels-selectors-join
   status: pending
   render_paths:
@@ -87,6 +137,21 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: concerns
+    matches_intent: false
+    fixed_point_visible: true
+    structure_correct: false
+    reasoning: The pod attributes and four selector results are factually correct
+      and legible, but the layout is a stacked text list (label, arrow, set notation)
+      rather than an actual concept map — there are no connector lines or overlap
+      geometry tying Pod A back to the three result rows it belongs to, so the core
+      lesson (selectors produce overlapping, non-partitioning sets) has to be inferred
+      by re-reading letters rather than seen at a glance.
+    suggested_fix: Draw connector lines (or an overlap/Venn-style grouping) from each
+      Pod card down to every selector result it belongs to, and bold/brass-highlight
+      the 'A' glyph specifically within the three result sets it appears in, so the
+      recurrence is visible without re-reading each line.
 - anchor_id: ch04-zenith-declaration-not-order
   status: pending
   render_paths:
@@ -104,3 +169,19 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: concerns
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: true
+    reasoning: The single filed-declaration box is clearly the hub, and the explicit
+      timestamps plus the closing caption effectively sell the 'independent reads,
+      not instructions' idea. However, staggering the five readers into two vertical
+      rows (with the two lower controllers appearing to hang beneath the scheduler/kubelet
+      row) visually reads as a two-level org chart at a glance, which cuts against
+      this figure's whole point that it is a declaration, not an order — a reader
+      skimming the shape before the caption could misread it as a command hierarchy.
+    suggested_fix: Lay all five reader boxes out on a single flat row (or a radial/star
+      layout) connecting to the same horizontal bus, instead of staggering two of
+      them into a lower tier, so the geometry itself reads as flat independent consultation
+      rather than subordination.

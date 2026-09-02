@@ -3,7 +3,7 @@ book: kcna
 generated: '2026-09-01T06:59:34+00:00'
 figures:
 - anchor_id: ch03-fig03-deployment-eras-timeline
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch03-fig03-deployment-eras-timeline.svg
     png: figures/ch03-fig03-deployment-eras-timeline.png
@@ -19,8 +19,20 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: looks_good
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: true
+    reasoning: The three side-by-side layer stacks correctly show one app on bare
+      metal, two VMs each with a Guest OS atop a Hypervisor/Host OS, and three apps
+      on one Shared OS, which directly visualizes the learning outcome; the bottom
+      SHARES row (brass text plus a continuous brass-bordered band spanning all three
+      columns, distinct from the navy panel borders above) clearly marks the fixed
+      point and reads across all three panels as instructed.
+    suggested_fix: ''
 - anchor_id: ch03-fig01-control-plane-and-node-components
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch03-fig01-control-plane-and-node-components.svg
     png: figures/ch03-fig01-control-plane-and-node-components.png
@@ -36,8 +48,22 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: looks_good
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: true
+    reasoning: The control-plane/node split is unmistakable as two stacked, clearly
+      labeled regions, letting a reader sort any component to the correct side at
+      a glance; the 'NODE — REPEATS PER WORKER' label substitutes for drawing two
+      node boxes and still conveys the per-worker repetition. cloud-controller-manager
+      and kube-proxy both carry brass dashed borders plus a distinct fill tint versus
+      the solid white 'always present' boxes, reinforced by a legend, satisfying the
+      dual color+non-color signal requirement. Region nesting reads as a clean hierarchy
+      appropriate for a k8s component census.
+    suggested_fix: ''
 - anchor_id: ch03-fig04-request-path-through-apiserver
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch03-fig04-request-path-through-apiserver.svg
     png: figures/ch03-fig04-request-path-through-apiserver.png
@@ -53,6 +79,20 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: looks_good
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: true
+    reasoning: 'The hub topology is immediate and unambiguous: three clients converge
+      into kube-apiserver from above, two kubelets converge into it from below, and
+      only the apiserver-to-etcd edge exists at the bottom, with zero lines connecting
+      any of the five peer components to each other — directly demonstrating the ''no
+      direct communication'' learning outcome. The apiserver box uses brass fill/border
+      plus a thicker outline and bold label, and its sole edge to etcd is colored
+      brass/gold distinctly from every other (teal) edge, satisfying both the color
+      and non-color emphasis requirements.'
+    suggested_fix: ''
 - anchor_id: ch03-fig02-control-loop-desired-vs-current
   status: pending
   render_paths:
@@ -70,3 +110,19 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: concerns
+    matches_intent: true
+    fixed_point_visible: false
+    structure_correct: true
+    reasoning: The four-box layout correctly separates the closed loop (Compare ->
+      Act to Close the Gap -> Current State -> Compare, in Brass) from the external
+      read-only feed (Desired State -> Compare, in Teal), and the caption plus legend
+      reinforce the non-terminating-loop concept well. But the Brass loop arrows and
+      the Teal feed arrow share identical stroke weight with no double-line, thicker
+      stroke, or fill-pattern differentiation, so the fixed point is distinguished
+      by color alone, which fails the non-color-signal requirement and won't hold
+      up for colorblind readers.
+    suggested_fix: Increase stroke width (e.g. ~3px vs ~1.5px) or add a double-line
+      treatment on the three Brass loop arrows so the closed cycle is distinguished
+      by both color and a non-color signal, not color alone.

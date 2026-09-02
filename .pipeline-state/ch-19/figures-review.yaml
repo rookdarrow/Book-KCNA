@@ -3,7 +3,7 @@ book: kcna
 generated: '2026-09-01T16:19:05+00:00'
 figures:
 - anchor_id: ch19-fig01-cross-domain-integration-map
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch19-fig01-cross-domain-integration-map.svg
     png: figures/ch19-fig01-cross-domain-integration-map.png
@@ -19,8 +19,22 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: looks_good
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: true
+    reasoning: The three-tier (structural/interface/policy) presence matrix with connecting
+      spines lets a reader compare thread spread across chapters 2-18 at a glance,
+      and grouping nine threads into chunks of three tempers the raw label count.
+      Column 3 (Absent component) is clearly singled out via brass color, a solid
+      vs. hollow header badge, and a full-column background tint — satisfying color
+      plus a non-color signal. The chapter x theme grid is the correct geometry for
+      showing distribution/density of recurring patterns, which a node-and-edge concept
+      map would render as unreadable clutter at this scale.
+    suggested_fix: ''
 - anchor_id: ch19-fig02-confusion-pair-matrix
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch19-fig02-confusion-pair-matrix.svg
     png: figures/ch19-fig02-confusion-pair-matrix.png
@@ -36,8 +50,22 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: looks_good
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: true
+    reasoning: The two-column, domain-banded reference card lists all 23 confusion
+      pairs against a one-line discriminating question, matching the alt-text spec
+      exactly, and the closing line ('The question is the fix...') reinforces the
+      core claim in prose. The arrow glyphs and 'DISCRIMINATOR' header are rendered
+      in Brass with italics on the question text as a secondary non-color signal,
+      making the fixed point scannable as a distinct column. Layout reads as a clean
+      lookup table banded correctly into D1-D4, appropriate for a reference-card figure
+      type.
+    suggested_fix: ''
 - anchor_id: ch19-fig03-exam-day-pacing
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch19-fig03-exam-day-pacing.svg
     png: figures/ch19-fig03-exam-day-pacing.png
@@ -53,3 +81,16 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: looks_good
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: true
+    reasoning: The vertical timeline runs 0→90 min with segment lengths proportional
+      to elapsed time (per the legend), and the two pass cards clearly state the answer-everything-and-flag
+      vs. flagged-only-revisit behaviors with their rate formulas, so the two-pass
+      pacing concept reads at a glance. The 54-minute split is the only brass element
+      on the diagram, marked by a filled brass time-dot, a thicker brass divider line,
+      and a distinct bordered pill label ('54-MIN SPLIT') that no other element has,
+      satisfying both the color and non-color emphasis requirement.
+    suggested_fix: ''

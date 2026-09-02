@@ -3,7 +3,7 @@ book: kcna
 generated: '2026-09-01T16:28:32+00:00'
 figures:
 - anchor_id: ch16-fig01-application-scope-triage
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch16-fig01-application-scope-triage.svg
     png: figures/ch16-fig01-application-scope-triage.png
@@ -19,6 +19,20 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: looks_good
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: true
+    reasoning: The root 'Application scope' box receives the Ch13 handoff arrow and
+      fans out to four ordered, correctly-labeled triage questions (Running §2, Healthy?Configured?
+      §3, Reachable? §4→§5, Per-replica? §6), with a legend line reinforcing 'top
+      to bottom eliminates ground before the next' — this directly conveys the ordered-elimination
+      learning outcome at a glance.
+    fixed_point_visible_detail: Root box uses the Brass fill/border distinct from
+      the cream/navy-bordered question boxes, with a visibly thicker border stroke
+      and a legend swatch calling it out as 'Root — application scope'.
+    suggested_fix: ''
 - anchor_id: ch16-fig05-init-sequence-debug-points
   status: pending
   render_paths:
@@ -36,8 +50,24 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: concerns
+    matches_intent: true
+    fixed_point_visible: false
+    structure_correct: true
+    reasoning: The left-to-right init sequence with aligned Init:N/M statuses, the
+      kubectl reference card, and the three paired failure-signature/cause rows clearly
+      support the learning outcome, and the flowchart geometry is correct. However,
+      the fixed point (the status row) is distinguished by brass color alone — the
+      legend depicts a pill/badge outline for 'Pod status (focal)' but no such border,
+      fill, or bold weight is actually rendered around the Init:0/3 / Init:1/3 / Init:2/3
+      / Running text in the diagram itself, so it fails the two-signal requirement.
+    suggested_fix: Render the Init:N/M and Running status labels inside an actual
+      brass-bordered or brass-filled badge/pill (matching what the legend already
+      promises) instead of plain brass-colored text, so the fixed point has a non-color
+      signal too.
 - anchor_id: ch16-fig02-ephemeral-container-debug
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch16-fig02-ephemeral-container-debug.svg
     png: figures/ch16-fig02-ephemeral-container-debug.png
@@ -53,8 +83,20 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: looks_good
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: true
+    reasoning: Each panel pairs the debug shape with its own bolded 'ASKS:' question,
+      which maps directly onto the learning outcome of choosing shapes by the question
+      they answer; panel B's gap is called out with a distinct brass dashed connector
+      plus 'ORIGINAL POD STAYS UNTOUCHED' caption, giving both color and shape distinction;
+      the three panels correctly render containment (boxes-in-Pod, Pod-in-Node) and
+      explicit non-connection as component-diagram geometry.
+    suggested_fix: ''
 - anchor_id: ch16-fig04-service-break-points
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch16-fig04-service-break-points.svg
     png: figures/ch16-fig04-service-break-points.png
@@ -70,6 +112,19 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: looks_good
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: true
+    reasoning: The vertical request path with three side-callouts at the exact break
+      points (DNS, EndpointSlice, container port) lets a reader locate a failure at
+      a glance, and the legend explicitly recaps the empty-vs-populated-list distinction
+      the learning outcome asks for. The EndpointSlice callout is the only one with
+      a solid Brass border/fill and Brass 'LIST EMPTY' text against the other two
+      callouts' dashed Fog-gray borders, giving it both a color and non-color (border
+      style) distinction.
+    suggested_fix: ''
 - anchor_id: ch16-fig03-portforward-vs-service-path
   status: pending
   render_paths:
@@ -87,8 +142,27 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: concerns
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: true
+    reasoning: The two parallel top-down paths converging on a dashed-linked shared
+      Pod, paired with the 'all 4 break points live here' vs. 'shares no step but
+      the Pod' captions, communicates the localization argument clearly and the two
+      Pod nodes are correctly the only brass-filled, brass-bordered boxes (color +
+      fill-pattern signal) distinguishing them from the white/navy step boxes. However
+      the diagram carries roughly 12-13 distinct text labels (9 node labels plus 3
+      floating annotation call-outs plus the 'SAME POD' connector label), well past
+      the locked ≤7 label working-memory cap, which risks undercutting the at-a-glance
+      clarity the axis otherwise earns.
+    suggested_fix: Fold the three floating annotation boxes (selector/endpoints, pods/portforward
+      subresource, kube-proxy rules) into node subtitles instead of separate call-out
+      boxes, and drop the 'SAME POD' text label since the dashed connector plus legend
+      entry already convey it — this should bring the distinct-label count at or under
+      7.
 - anchor_id: ch16-zenith-mine-or-the-platforms
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch16-zenith-mine-or-the-platforms.svg
     png: figures/ch16-zenith-mine-or-the-platforms.png
@@ -104,3 +178,16 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: looks_good
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: true
+    reasoning: The symmetrical two-column layout with parallel 5-step chains (platform
+      vs. application scope) converging on a shared vertical line makes the 'one method,
+      two scopes' argument legible at a glance, and it faithfully reproduces every
+      element named in the alt_text_seed. The boundary line and both convergence arrows
+      are rendered in Brass with a visibly thicker stroke than the Teal connector
+      arrows plus a distinct bowtie junction marker, so the fixed point reads clearly
+      against the rest of the diagram.
+    suggested_fix: ''

@@ -19,8 +19,25 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: concerns
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: false
+    reasoning: The factor-to-owner mapping is accurate and legible (Config/Processes/Concurrency/Disposability/Logs
+      as platform-given, Backing services/Build-release-run/Dev-prod parity as platform-eased,
+      Codebase/Dependencies/Port binding/Admin processes as still-yours), and the
+      fixed point 'STILL YOUR APPLICATION'S PROBLEM' is correctly the only element
+      carrying Brass, paired with a distinct border weight/color versus the other
+      two Navy-bordered panels. However the spec calls for three side-by-side columns
+      so a reader can scan across ownership at a glance, and the render instead stacks
+      three full-width panels vertically, which forces top-to-bottom scrolling/scanning
+      rather than the intended left-to-right comparison.
+    suggested_fix: Lay the three ownership groups out as side-by-side columns (equal
+      width, shared baseline) instead of vertically stacked full-width panels, keeping
+      the Brass emphasis on the third column header.
 - anchor_id: ch15-fig02-deployment-strategies-compared
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch15-fig02-deployment-strategies-compared.svg
     png: figures/ch15-fig02-deployment-strategies-compared.png
@@ -36,8 +53,20 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: looks_good
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: true
+    reasoning: The two-enclosure split cleanly separates the Deployment-native strategies
+      (Recreate, RollingUpdate, both 'NEEDS nothing') from the patterns requiring
+      external tooling (Blue/Green '2x capacity', Canary 'traffic splitting + metric
+      analysis'), directly delivering the learning outcome's cost contrast; the old/new
+      bar visualizations correctly encode gap-vs-overlap, switch-point, and staged
+      percentage rollout per the alt text.
+    suggested_fix: ''
 - anchor_id: ch15-fig03-cicd-push-vs-gitops-pull
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch15-fig03-cicd-push-vs-gitops-pull.svg
     png: figures/ch15-fig03-cicd-push-vs-gitops-pull.png
@@ -53,8 +82,22 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: looks_good
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: true
+    reasoning: The mirrored push/pull layout puts the key glyph outside the cluster
+      boundary on Pipeline in the top panel and inside the boundary on Agent in the
+      bottom panel, and the explicit 'the key lives OUT HERE'/'IN HERE' captions reinforce
+      the exact blast-radius takeaway the learning outcome asks for. Both key-holding
+      boxes get brass borders plus a non-color signal (Pipeline also gets a tan fill,
+      Agent's border reads slightly thicker/bolder than the plain API server/Repo
+      boxes), and the arrow directions correctly show push reaching inward while pull
+      fetches outward and writes inward.
+    suggested_fix: ''
 - anchor_id: ch15-fig05-opengitops-four-principles
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch15-fig05-opengitops-four-principles.svg
     png: figures/ch15-fig05-opengitops-four-principles.png
@@ -70,8 +113,20 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: looks_good
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: true
+    reasoning: 'The 2x2 grid clearly numbers and names all four principles with a
+      one-line definition each, and the muted ''you know this: Ch X §Y'' tags versus
+      the boxed, brass-bordered ''NEW HERE'' tag make principle 2 pop as the one new
+      idea at a glance. The grid-of-four layout matches the alt_text_seed''s own description
+      of the intended structure, so it''s appropriate even though a literal ''concept
+      map'' with connecting edges isn''t used.'
+    suggested_fix: ''
 - anchor_id: ch15-fig04-argocd-sync-states-and-hooks
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch15-fig04-argocd-sync-states-and-hooks.svg
     png: figures/ch15-fig04-argocd-sync-states-and-hooks.png
@@ -87,6 +142,18 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: looks_good
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: true
+    reasoning: 'The paired before/after scenarios make the drift concept legible at
+      a glance: identical layouts differ only in the live-state replica count and
+      status tag, and the ''someone ran kubectl scale on Friday'' annotation explicitly
+      names a benign cause of OutOfSync, directly supporting the learning outcome.
+      The reconciling SYNC step closes the loop, showing OutOfSync as transient rather
+      than terminal.'
+    suggested_fix: ''
 - anchor_id: ch15-fig06-sync-waves-and-hook-phases
   status: pending
   render_paths:
@@ -101,11 +168,30 @@ figures:
     aspect_ratio: pass
     grayscale_legibility: pass
     alt_text_present: pass
-  regenerate_hint: ''
+  regenerate_hint: Reflow the three phase containers horizontally left to right (PreSync
+    -> Sync -> PostSync) with 'on success' arrows between them, keeping the wave axis
+    vertical inside the Sync container so phase-order and wave-order read as two orthogonal
+    axes.
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: obviously_wrong
+    matches_intent: false
+    fixed_point_visible: true
+    structure_correct: false
+    reasoning: 'The spec explicitly calls for phases running left to right (learning_outcome
+      and alt_text_seed both say this), but the render stacks PreSync/Sync/PostSync
+      top-to-bottom with vertical ''ON SUCCESS'' arrows — the same orientation as
+      the wave axis inside Sync — so the two distinct ordering dimensions (phase sequence
+      vs. wave sequence) look visually identical instead of orthogonal, undermining
+      the at-a-glance point of the diagram. The wave axis itself is well done: brass
+      badges with connector line and bold borders clearly distinguish it.'
+    suggested_fix: Reflow the three phase containers horizontally left to right (PreSync
+      -> Sync -> PostSync) with 'on success' arrows between them, keeping the wave
+      axis vertical inside the Sync container so phase-order and wave-order read as
+      two orthogonal axes.
 - anchor_id: ch15-zenith-control-loop-pointed-at-a-repo
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch15-zenith-control-loop-pointed-at-a-repo.svg
     png: figures/ch15-zenith-control-loop-pointed-at-a-repo.png
@@ -121,3 +207,17 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: looks_good
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: true
+    reasoning: 'The loop clearly reads as Chapter 3''s control loop with a single
+      labeled substitution: the brass double-ruled ''Git repository'' box is explicitly
+      annotated ''(was: etcd)'', while CONTROLLER, API SERVER (''still the only door
+      in / kube-apiserver''), and CURRENT STATE carry unchanged/continuity labels,
+      directly serving the learning outcome. The Observe/Act/Changes arrows form a
+      genuine cyclical flow (Controller → API Server → Current State → Controller)
+      with Desired State as a continuously-observed external input, matching the alt-text
+      description and standard control-loop topology.'
+    suggested_fix: ''

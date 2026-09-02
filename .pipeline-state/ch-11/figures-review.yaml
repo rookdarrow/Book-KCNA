@@ -19,8 +19,27 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: concerns
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: true
+    reasoning: The three-rung nested-rectangle structure, per-rung survival captions,
+      and directional boundary arrows correctly convey which storage tier dies at
+      which event, and both boundary labels are marked in brass with a dashed-line
+      + arrow non-color signal distinguishing them from the navy rung titles. However,
+      the innermost 'Container Writable Layer' box is roughly two-thirds empty vertical
+      space, and the gaps after each boundary annotation before the next rung inflate
+      the figure's height without adding information, giving it an unbalanced, padded
+      look; counting distinct text strings (3 rung titles, 3 survival captions, 2
+      boundary labels, the repeated discard caption, and the closing italic line)
+      also lands near or over the 7-label working-memory cap.
+    suggested_fix: Shrink the Container Writable Layer box to fit its single caption,
+      tighten the gap between each boundary's dashed line and the next rung's edge,
+      and cut the duplicate '(data below this line is discarded)' caption (fold it
+      into the boundary label) to bring the label count under 7.
 - anchor_id: ch11-fig02-pv-pvc-storageclass-binding
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch11-fig02-pv-pvc-storageclass-binding.svg
     png: figures/ch11-fig02-pv-pvc-storageclass-binding.png
@@ -36,8 +55,21 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: looks_good
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: true
+    reasoning: The Supply/Demand column layout feeding into a central binding control
+      loop that yields one exclusive bound pair makes the PV-vs-PVC distinction immediate,
+      and the Pod arrow terminating at the claim (reinforced by an explicit dot marker,
+      dashed leader line, and italic callout) directly lands the learning outcome.
+      The fixed point is marked in brass with a non-color signal (leader line + annotation
+      callout, distinct dot terminus), and the disconnected dashed StorageClass box
+      correctly stays out of the binding flow per the spec.
+    suggested_fix: ''
 - anchor_id: ch11-fig03-static-vs-dynamic-provisioning
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch11-fig03-static-vs-dynamic-provisioning.svg
     png: figures/ch11-fig03-static-vs-dynamic-provisioning.png
@@ -53,6 +85,20 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: looks_good
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: true
+    reasoning: The flowchart cleanly separates the three possible claim outcomes (static
+      bind, dynamic provision, indefinite wait) through two sequential decision diamonds,
+      matching the learning outcome and the alt_text_seed's branch structure almost
+      verbatim. The 'EITHER MISSING' path and 'CLAIM WAITS, INDEFINITELY' terminal
+      are the only elements using Brass, combined with a filled/bordered box style
+      and bold text that visually breaks from the plain white process boxes, satisfying
+      both the color and non-color emphasis requirement without misusing Oxblood for
+      what is a stall condition rather than a hazard.
+    suggested_fix: ''
 - anchor_id: ch11-fig04-access-modes-and-reclaim-policies
   status: pending
   render_paths:
@@ -70,8 +116,22 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: concerns
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: false
+    reasoning: The node-count iconography (filled squares for RWO/ROX/RWX vs. a lone
+      Pod dot for RWOP) and the kept/gone/dash reclaim table both land the learning
+      outcome clearly, and the RWOP fixed point is strongly marked with brass fill,
+      a bordered box, and a dashed leader line into the italic callout. However, the
+      spec's alt_text_seed explicitly calls for two side-by-side panels, while the
+      render stacks Access Modes on top of Reclaim Policies vertically — a real structural
+      deviation from the reference-sheet layout that was specified.
+    suggested_fix: Lay the two panels out side-by-side (Access Modes left, Reclaim
+      Policies right) instead of stacked top-to-bottom, per the alt_text_seed.
 - anchor_id: ch11-fig05-statefulset-pvc-pairing
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch11-fig05-statefulset-pvc-pairing.svg
     png: figures/ch11-fig05-statefulset-pvc-pairing.png
@@ -87,6 +147,16 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: looks_good
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: true
+    reasoning: Three stacked bands walk from steady-state pairing through reschedule
+      to deletion, with plain-language annotations ('its claim follows' / 'The claim
+      remains. Nothing cleans it up.') that directly state the learning outcome; a
+      reader gets the concept faster than from prose.
+    suggested_fix: ''
 - anchor_id: ch11-zenith-outliving-the-pod
   status: pending
   render_paths:
@@ -104,3 +174,20 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: concerns
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: false
+    reasoning: The Pod-vs-PVC persistence concept comes through clearly (three rescheduled
+      Pod instances each dashed-claiming a single Brass-highlighted storage box, reinforced
+      by explicit legend text), and www-web-1 is well distinguished via Brass color
+      plus fill and bold text. But the spec calls for a horizontal two-lane timeline
+      with the storage line running 'the full width beneath the interrupted Pod lane';
+      the render instead uses a vertical time axis with Storage as a narrow column
+      beside (not beneath) the Pod stack, so the specific 'full width beneath' structure
+      was not followed.
+    suggested_fix: 'Rotate to a horizontal timeline: Pod lane on top with three web-1
+      segments and visible gaps, single unbroken www-web-1 storage bar spanning the
+      full width directly beneath it, vertical claim connectors dropping from each
+      Pod segment down to the storage bar, time flowing left-to-right.'

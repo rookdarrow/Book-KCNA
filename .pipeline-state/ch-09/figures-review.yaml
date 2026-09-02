@@ -19,8 +19,23 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: concerns
+    matches_intent: true
+    fixed_point_visible: false
+    structure_correct: true
+    reasoning: 'The topology reads correctly at a glance: two worker-node boundaries,
+      a Pod with two containers joined over ''lo'', a same-node Pod-to-Pod line, a
+      Pod-to-kubelet line, and a cross-node Pod-to-Pod line with no intermediate box,
+      which sells the no-NAT/no-proxy point well. But the cross-node edge is distinguished
+      from the other edges by Brass color alone — its stroke weight matches the plain
+      navy/fog lines with no double border, dash pattern, or bold treatment, so it
+      fails the ''color AND non-color signal'' bar for fixed-point emphasis.'
+    suggested_fix: Increase the stroke width (and/or add a subtle dash or double-line
+      treatment) on the Brass cross-node edge between Pod 10.244.1.7 and Pod 10.244.4.2
+      so it's redundantly coded, not color-only.
 - anchor_id: ch09-fig02-service-types-ladder
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch09-fig02-service-types-ladder.svg
     png: figures/ch09-fig02-service-types-ladder.png
@@ -36,8 +51,20 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: looks_good
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: true
+    reasoning: The three additive types are rendered as literally nested frames (LoadBalancer
+      containing NodePort containing ClusterIP), which reads instantly as 'each ring
+      adds to the one inside it' and is reinforced by the caption text; ExternalName
+      sits below in its own box, visually cut off from the ladder. The brass double-ruled
+      band with 'NOT ON THE LADDER' + 'SEPARATE MECHANISM' uses both Brass color and
+      a non-color double-rule signal, clearly marking the fixed point.
+    suggested_fix: ''
 - anchor_id: ch09-fig03-service-endpointslice-selector-path
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch09-fig03-service-endpointslice-selector-path.svg
     png: figures/ch09-fig03-service-endpointslice-selector-path.png
@@ -53,8 +80,25 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: looks_good
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: true
+    reasoning: 'The flow clearly separates the two-part admission rule the learning
+      outcome names: the cache Pod is excluded before ever reaching the gate (no arrow,
+      faded/dashed ''no match'' styling), while the third app:db Pod matches but is
+      stopped at the gate as ''NOT READY'', and only the two Ready matching Pods pass
+      through into the EndpointSlice with their IP:port pairs. The controller''s watch/write
+      dashed loop closes the picture without adding clutter.'
+    fixed_point_visible_detail: Gate box uses a brass border and tinted fill, and
+      the 10.244.4.9 arrow specifically ends in a distinct brass stopper-block glyph
+      at the gate face, visually different from the teal arrowheads that pass through
+      for the two Ready Pods — satisfies both the color and non-color (shape) signal
+      requirement.
+    suggested_fix: ''
 - anchor_id: ch09-fig04-kube-proxy-modes
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch09-fig04-kube-proxy-modes.svg
     png: figures/ch09-fig04-kube-proxy-modes.png
@@ -70,8 +114,22 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: looks_good
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: true
+    reasoning: The dashed empty cluster-IP box with 'nothing is here' plus the adjacent
+      'No process. No socket.' annotation directly communicates that 10.96.0.42 is
+      not a listening address, and the RULES LAYER block cleanly enumerates all four
+      kube-proxy modes with iptables bolded as default. The top-to-bottom flow (control
+      plane watch/program arrows down into node, traffic through the empty box into
+      the rules layer, then out to two backend pods) reads as a correct data-flow
+      topology.
+    fixed_point_visible_detail: n/a
+    suggested_fix: ''
 - anchor_id: ch09-fig05-dns-record-shapes
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch09-fig05-dns-record-shapes.svg
     png: figures/ch09-fig05-dns-record-shapes.png
@@ -87,6 +145,19 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: looks_good
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: true
+    reasoning: The four-column grid clearly walks through each DNS name shape, and
+      the brass-bordered frame around the paired Service (normal)/Service (headless)
+      rows — reinforced by the 'SAME NAME → DIFFERENT ANSWER' brass caption and the
+      bolded footer line — makes the fixed point (identical name, different answer)
+      unmistakable at a glance. Column-level annotations (dots→dashes, port prefix,
+      dashed 'pod' cell) correctly surface the deviations from the pattern without
+      adding clutter.
+    suggested_fix: ''
 - anchor_id: ch09-zenith-stable-name-over-churn
   status: pending
   render_paths:
@@ -104,3 +175,17 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: concerns
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: true
+    reasoning: 'The banner-to-pods-to-fanout layout clearly teaches the concept: one
+      stable name/IP sits above four churning Pod generations, and a query→answer→publish
+      chain fans out to the three named consumers (rules layer, endpoint list, DNS
+      record). The fixed point is correctly rendered in brass with a double-ruled
+      border matching the legend swatch. However, the right-edge legend text ''POD
+      GENERATION'' is clipped by the canvas boundary, a rendering defect that should
+      be fixed before publication.'
+    suggested_fix: Widen the canvas or reduce right-side padding so the legend row
+      ('POD GENERATION' + glyph key) isn't clipped at the right edge.

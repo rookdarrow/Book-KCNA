@@ -3,7 +3,7 @@ book: kcna
 generated: '2026-09-01T07:45:47+00:00'
 figures:
 - anchor_id: ch17-fig01-cloud-native-definition-characteristics
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch17-fig01-cloud-native-definition-characteristics.svg
     png: figures/ch17-fig01-cloud-native-definition-characteristics.png
@@ -19,8 +19,18 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: looks_good
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: true
+    reasoning: The root box clearly reads as the anchor concept with five child boxes
+      branching from a single spine, and the footer line ('Five properties of one
+      system — not five items on a checklist') reinforces the exact learning outcome
+      that these are properties of one system rather than a standalone checklist.
+    suggested_fix: ''
 - anchor_id: ch17-fig05-cncf-maturity-levels
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch17-fig05-cncf-maturity-levels.svg
     png: figures/ch17-fig05-cncf-maturity-levels.png
@@ -36,6 +46,18 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: looks_good
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: true
+    reasoning: The three boxes are right-aligned and narrow progressively as they
+      ascend (Sandbox widest/lowest to Graduated narrowest/highest), producing a genuine
+      staircase silhouette with up-arrows reinforcing directionality, and each step's
+      caption states what that level asserts. Archived is correctly rendered as a
+      separate dashed 'terminal state' box below the staircase rather than a fourth
+      rung, with a connecting note clarifying it's not part of the ladder.
+    suggested_fix: ''
 - anchor_id: ch17-fig02-extension-points-map
   status: pending
   render_paths:
@@ -53,6 +75,21 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: concerns
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: true
+    reasoning: The three-band stack (API surface / control plane / node) correctly
+      places CRDs at the API layer and CRI/CNI/CSI at the node layer, and the caption
+      plus four identical brass socket glyphs land the 'same shape, different plug'
+      analogy well. But the legend line 'EXTENSION POINT — CHAPTER CROSS-REFERENCE
+      BELOW' is clipped at the right edge of the canvas, and the diagram carries well
+      over the ≤7-label working-memory budget once band titles, item names, descriptions,
+      and chapter refs are all counted.
+    suggested_fix: Widen the canvas (or wrap/shorten the legend text) so it doesn't
+      clip at the right edge, and trim label count by dropping the per-band section
+      titles or the plain-language descriptions to get back under the 7-label ceiling.
 - anchor_id: ch17-fig03-mesh-data-vs-control-plane
   status: pending
   render_paths:
@@ -70,8 +107,26 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: concerns
+    matches_intent: true
+    fixed_point_visible: false
+    structure_correct: true
+    reasoning: The three-layer separation (isolated cluster control plane, mesh control
+      plane with arrows down, sidecar vs ambient data-plane columns) clearly teaches
+      the distinction and the legend/caption reinforce that both columns are one data
+      plane. However, the Envoy fixed-point ([E] sidecars and the waypoint box) is
+      distinguished from non-Envoy elements by brass border color alone — same stroke
+      weight and fill as every other box, with no thicker stroke, double border, fill
+      pattern, or bold to back it up. There's also a text collision in the ambient
+      column where 'waypoint' runs directly into 'per-NS · L7 (Envoy)' with no separating
+      space.
+    suggested_fix: Give Envoy-labeled boxes ([E] sidecars, waypoint) a visibly thicker
+      or double border (not just brass color) versus the ztunnel/pod boxes, and add
+      spacing/line-break between the 'waypoint' label and its 'per-NS · L7 (Envoy)'
+      annotation so they don't collide.
 - anchor_id: ch17-fig07-scale-to-zero-and-the-knative-service
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch17-fig07-scale-to-zero-and-the-knative-service.svg
     png: figures/ch17-fig07-scale-to-zero-and-the-knative-service.png
@@ -87,8 +142,21 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: looks_good
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: true
+    reasoning: The closed-loop flowchart clearly shows the Knative Service cycling
+      through Idle (0 replicas) to Request Arrives (0→N) to Serving (N) to Traffic
+      Stops (N→0) and back, with Pod boxes containing a container at every populated
+      state plus an explicit caption reinforcing that containers/Pods are real and
+      only the lifecycle is 'serverless' — this directly conveys the learning outcome.
+      The container rectangles are distinguished with a brass-colored, visibly thicker
+      stroke than the surrounding navy/teal boxes, satisfying color + non-color emphasis.
+    suggested_fix: ''
 - anchor_id: ch17-fig04-autoscaler-landscape
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch17-fig04-autoscaler-landscape.svg
     png: figures/ch17-fig04-autoscaler-landscape.png
@@ -104,8 +172,19 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: looks_good
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: true
+    reasoning: The four-row table cleanly separates axis (WHAT MOVES) from trigger
+      (WHAT TRIGGERS IT) for each autoscaler, and the footnote bullets explicitly
+      restate both learning-outcome points (VPA is unshipped; KEDA shares HPA's axis
+      but not its trigger), so a reader grasps the concept faster than from prose.
+    fixed_point_visible_detail: ''
+    suggested_fix: ''
 - anchor_id: ch17-fig06-cncf-and-k8s-governance
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch17-fig06-cncf-and-k8s-governance.svg
     png: figures/ch17-fig06-cncf-and-k8s-governance.png
@@ -121,6 +200,20 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: looks_good
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: true
+    reasoning: The two-column layout with a clear vertical divider, matching header
+      treatment (org name + subtitle), and the explicit footer line ('TAGs are CNCF-wide.
+      SIGs are Kubernetes-internal.') directly reinforce the learning outcome of keeping
+      the two governance hierarchies distinct. The COMMITTEES box is the only element
+      using brass, combined with a tinted fill, a heavier border, and bold '✗ NOT
+      OPEN MEMBERSHIP' text, so the fixed point reads instantly. Both sides show a
+      believable top-down governance hierarchy (including the CNCF feedback loop from
+      End User TAB back to TOC), consistent with hierarchy_tree.
+    suggested_fix: ''
 - anchor_id: ch17-zenith-one-pluggability-story
   status: pending
   render_paths:
@@ -138,3 +231,17 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: concerns
+    matches_intent: true
+    fixed_point_visible: false
+    structure_correct: false
+    reasoning: The two-box relation reads clearly and the evidence list lands the
+      'four instances, not four decisions' point, but the socket arrow is colored
+      brass with no accompanying non-color signal (it's the same thin weight as every
+      other line, not thicker/double/bold), so it doesn't visually pop as the fixed
+      point. Also the alt_text_seed specifies a left/right two-halves layout, but
+      the render is a top-bottom stack (THE SHAPE over THE EVIDENCE).
+    suggested_fix: Regenerate with the socket arrow rendered 2-3x the box-border stroke
+      weight (or doubled line) in brass, and lay the diagram out as two side-by-side
+      halves — shape on the left, evidence list on the right — per the alt text.

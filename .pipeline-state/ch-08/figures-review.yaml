@@ -3,7 +3,7 @@ book: kcna
 generated: '2026-09-01T07:29:27+00:00'
 figures:
 - anchor_id: ch08-fig01-kubectl-verb-resource-grammar
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch08-fig01-kubectl-verb-resource-grammar.svg
     png: figures/ch08-fig01-kubectl-verb-resource-grammar.png
@@ -19,8 +19,19 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: looks_good
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: true
+    reasoning: The five-column grammar table cleanly maps five real kubectl commands
+      onto command/TYPE/NAME/flags slots with empty-slot dashes, and the reader can
+      decompose any command at a glance; the case-sensitivity contrast is the clear
+      takeaway thanks to the upward arrows and bold brass callouts under TYPE and
+      NAME.
+    suggested_fix: ''
 - anchor_id: ch08-fig02-three-api-gates
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch08-fig02-three-api-gates.svg
     png: figures/ch08-fig02-three-api-gates.png
@@ -36,6 +47,16 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: looks_good
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: true
+    reasoning: The vertical Gate 1→2→3 sequence with REJECT branches at each stage
+      clearly conveys ordered progression through Authentication, Authorization, Admission,
+      and only Gate 3 carries the dashed REWRITTEN loop back into the forward path,
+      correctly isolating admission as the sole request-modifying gate.
+    suggested_fix: ''
 - anchor_id: ch08-fig05-quota-vs-limitrange
   status: pending
   render_paths:
@@ -53,8 +74,23 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: concerns
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: false
+    reasoning: The scope/failure-mode contrast reads clearly (namespace-aggregate
+      cap rejecting a pod vs. per-object bounds defaulting one in), and the namespace
+      boundary is correctly picked out in Brass with a dotted-stroke non-color signal
+      against its explicit absence below. But the spec's alt_text_seed and fixed_point_emphasis_target
+      both describe a left/right side-by-side comparison, while the render stacks
+      ResourceQuota on top and LimitRange below, so the geometric arrangement doesn't
+      match the specified structure and the seeded alt text would misdescribe the
+      image.
+    suggested_fix: Lay out the two panels side by side (ResourceQuota left, LimitRange
+      right) instead of stacked top/bottom, per the spec's alt_text_seed.
 - anchor_id: ch08-fig04-node-lifecycle-cordon-drain
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch08-fig04-node-lifecycle-cordon-drain.svg
     png: figures/ch08-fig04-node-lifecycle-cordon-drain.png
@@ -70,8 +106,21 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: looks_good
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: true
+    reasoning: The four-state progression (Schedulable → Cordoned → Drained → Schedulable)
+      with kubectl-labeled transitions and an explicit legend for admitted/turned-away/unchanged
+      pods lets a reader predict pod behavior at each step at a glance. Pods A, B,
+      C sit inside a brass-bordered group box in both the Schedulable and Cordoned
+      panels only, pairing brass color with a distinct enclosing border as the non-color
+      signal, and the drained/refilled panels correctly show the pods gone and a fresh
+      pod being admitted.
+    suggested_fix: ''
 - anchor_id: ch08-fig03-version-skew-window
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch08-fig03-version-skew-window.svg
     png: figures/ch08-fig03-version-skew-window.png
@@ -87,6 +136,20 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: looks_good
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: true
+    reasoning: 'The horizontal range chart reads at a glance: a double reference line
+      at 0 marks kube-apiserver, bars for kubelet/kube-proxy correctly reach back
+      three versions, the three manager/scheduler components reach back one, and every
+      bar stops at the line except kubectl, which alone crosses it into +1 — exactly
+      the version-skew relationships and directions the learning outcome asks for.
+      The kubectl bar is distinguished by both Brass fill/stroke and a bold Brass
+      label (non-color signal), satisfying the fixed-point requirement, and the legend
+      reinforces the encoding without adding ambiguity.'
+    suggested_fix: ''
 - anchor_id: ch08-zenith-consequences-not-rules
   status: pending
   render_paths:
@@ -104,3 +167,19 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: concerns
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: true
+    reasoning: The fan-in/fan-out hub layout clearly sells the 'one door' concept
+      — four write paths converge on the API server, which alone fans out to the four
+      downstream controllers plus etcd, and the caption reinforces it. However the
+      diagram carries roughly 12 distinct labels (4 admin actions, the API server
+      + its ONE DOOR tag, 4 controllers each with a chapter tag, etcd, plus two column
+      headers), well over the locked ≤7 working-memory limit (skill v5.7 Part 18.10),
+      so it will likely fail validate_label_count even though it reads fine visually.
+    suggested_fix: 'Collapse the two column headers into a single caption/subtitle
+      and merge the four right-side controller boxes into one grouped box (e.g. ''downstream
+      consumers: scheduler / node controller / workload controllers / control loop'')
+      to bring the label count to ≤7.'

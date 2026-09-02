@@ -3,7 +3,7 @@ book: kcna
 generated: '2026-09-01T06:35:31+00:00'
 figures:
 - anchor_id: ch02-fig01-vm-vs-container-stack
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch02-fig01-vm-vs-container-stack.svg
     png: figures/ch02-fig01-vm-vs-container-stack.png
@@ -19,8 +19,19 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: looks_good
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: true
+    reasoning: The stacked layout directly shows three Guest OS boxes on the VM side
+      versus three dashed empty placeholders on the container side, with the caption
+      'The only row that changes' explicitly naming the derivation the learning_outcome
+      asks for. Structure matches a deployment/stack diagram (hardware -> host OS
+      -> hypervisor/runtime -> apps) and reads clearly at a glance.
+    suggested_fix: ''
 - anchor_id: ch02-fig02-image-layers-and-digests
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch02-fig02-image-layers-and-digests.svg
     png: figures/ch02-fig02-image-layers-and-digests.png
@@ -36,6 +47,18 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: looks_good
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: true
+    reasoning: The LAYERS panel clearly shows two image stacks sharing one base layer
+      via the double-line join and explicit caption, and the IDENTITY panel contrasts
+      an immutable digest card against a movable :v2 tag with a solid vs. dashed arrow
+      — together these directly teach the tag/digest distinction and shared-base-layer
+      rationale at a glance.
+    fixed_point_visible_detail: n/a
+    suggested_fix: ''
 - anchor_id: ch02-fig04-cri-runtime-chain
   status: pending
   render_paths:
@@ -53,6 +76,20 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: concerns
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: true
+    reasoning: The vertical chain (kubelet → CRI boundary → containerd/CRI-O socket
+      → runC → running process) is clear and the CRI boundary is well emphasized with
+      brass color, a thick tick-marked boundary line, and an explicit 'Kubernetes
+      DEFINES this line and implements nothing below it' callout that directly states
+      the learning outcome. However, the legend row at the bottom is clipped at the
+      right edge, cutting off 'EXTERNAL RUNTIME' to 'EXTERNAL RUNTIM' — a visible
+      defect for a published figure.
+    suggested_fix: Widen the canvas or shorten/wrap the legend label so 'EXTERNAL
+      RUNTIME' isn't clipped at the right edge.
 - anchor_id: ch02-fig03-oci-three-specs
   status: pending
   render_paths:
@@ -70,6 +107,19 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: concerns
+    matches_intent: true
+    fixed_point_visible: true
+    structure_correct: false
+    reasoning: 'The three-spec-to-stage mapping is clear and well-labeled — distribution-spec
+      is correctly emphasized in Brass with a filled box (vs. the two outline-only
+      boxes) and a brass dashed governs-line pointing precisely at the PULL transition.
+      However the flow chain is incomplete: after ''filesystem bundle'' the RUN arrow
+      just trails off into empty space with no terminal node, making the diagram look
+      cut off rather than showing what a ''run'' produces.'
+    suggested_fix: Add a terminal node (e.g. 'running container') below the RUN arrow
+      so the flow ends at a labeled box instead of a dangling arrowhead.
 - anchor_id: ch02-fig05-imagepullpolicy-decision
   status: pending
   render_paths:
@@ -87,8 +137,20 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: concerns
+    matches_intent: true
+    fixed_point_visible: false
+    structure_correct: true
+    reasoning: The tree correctly maps all three explicit policies and all four reference-form
+      defaults, giving a fast, accurate read of the learning outcome. But the :latest->Always
+      fixed point is distinguished only by brass fill/border/arrow color (all color
+      signals) with no accompanying non-color cue like a thicker stroke, double border,
+      or pattern, so it risks disappearing in grayscale print reproduction.
+    suggested_fix: Give the :latest->Always outcome box a visibly thicker or double
+      border (not just brass fill) so the fixed point survives grayscale/print rendering.
 - anchor_id: ch02-zenith-standard-crate
-  status: pending
+  status: approved
   render_paths:
     svg: figures/ch02-zenith-standard-crate.svg
     png: figures/ch02-zenith-standard-crate.png
@@ -104,3 +166,14 @@ figures:
   regenerate_hint: ''
   review_notes: ''
   last_applied_hash: null
+  ai_review:
+    verdict: looks_good
+    matches_intent: true
+    fixed_point_visible: n/a
+    structure_correct: true
+    reasoning: One 'Published Specification' box branches via dashed arrows to three
+      visibly distinct carriers (ship, rail, truck), each paired with an identical,
+      unopened crate icon — this reads at a glance as 'same interface, any carrier,
+      contents never matter,' which is exactly the learning outcome. The hub-and-spoke
+      layout is legible and label count stays well under 7.
+    suggested_fix: ''

@@ -464,6 +464,9 @@ Here are the twelve:
 Twelve numbered rules is a poor thing to memorize and a good thing to sort. The useful question is not "what is factor VII" but **who solves this**: the platform, or you.
 
 <!-- FIGURE: ch15-fig01-twelve-factor-in-kubernetes -->
+![Three columns sorting the twelve factors by who satisfies each. The platform gives you config, processes, concurrency, disposability and logs. The platform makes backing services, build/release/run and dev-prod parity easy. Codebase, dependencies, port binding and admin processes remain the application's problem.](figures/ch15-fig01-twelve-factor-in-kubernetes.svg)
+
+<!-- ASCII-FALLBACK
 ```
    THE PLATFORM GIVES        THE PLATFORM MAKES       STILL YOUR APPLICATION'S
    YOU THIS                  THIS EASY                PROBLEM
@@ -478,6 +481,7 @@ Twelve numbered rules is a poor thing to memorize and a good thing to sort. The 
    Deployments, SIGTERM,     namespaces per env       Dockerfile, your
    stdout collection                                  code
 ```
+-->
 
 **Figure 15.1 — The twelve factors, sorted by who solves them.** The three columns are the argument: twelve unrelated-looking rules resolve into things the platform already does for you, things it removes the friction from, and things that remain entirely yours. The middle column is where most of the disappointment lives — Kubernetes makes dev/prod parity *achievable*, not automatic.
 
@@ -576,6 +580,9 @@ The cost is infrastructure. Canary needs something that can split traffic by pro
 That last clause is the practical answer to "which one." A queue worker has no inbound traffic to split. Canary is not a better blue/green; it is a different tool that needs a request path to work on *[cross-bearing: see Ch 10 §3 — the object is not the implementation]* *[cross-bearing: see Ch 17 §5 — a network that knows what it's carrying]*.
 
 <!-- FIGURE: ch15-fig02-deployment-strategies-compared -->
+![Four release strategies in two groups. The upper group, fields on a Deployment, holds Recreate with a gap where neither version serves, and RollingUpdate with both versions overlapping throughout. The lower group, patterns needing tooling above it, holds blue/green with a single switch line and two-times capacity, and canary stepping five to twenty-five to fifty to one hundred percent and needing traffic splitting plus metric analysis.](figures/ch15-fig02-deployment-strategies-compared.svg)
+
+<!-- ASCII-FALLBACK
 ```
   ┌─ FIELDS ON A DEPLOYMENT ──────────────────────────────────────┐
   │                                                               │
@@ -602,6 +609,7 @@ That last clause is the practical answer to "which one." A queue worker has no i
 
   filled = that row's version is serving traffic;  empty = it is not
 ```
+-->
 
 **Figure 15.2 — Four ways to replace what's running.** The two enclosures carry the point: the top pair are values you set on a Deployment, and the bottom pair are patterns something else has to implement for you. The footer rows are the actual decision criteria — what each strategy demands before you can use it at all.
 
@@ -701,6 +709,9 @@ Now the question this section exists for. An artifact has been built. Something 
 **Pull.** An agent runs *inside* the cluster. It holds credentials *to a repository*. It reaches outward, fetches the desired state, and applies it locally. Nothing outside the cluster holds cluster credentials, because nothing outside the cluster needs them.
 
 <!-- FIGURE: ch15-fig03-cicd-push-vs-gitops-pull -->
+![Two mirrored panels sharing one cluster boundary. In push, a pipeline outside the boundary holds the key and reaches inward to the API server. In pull, a repository outside the boundary holds no key while an agent inside the boundary holds the key, reaching outward to fetch from the repository and inward to the API server.](figures/ch15-fig03-cicd-push-vs-gitops-pull.svg)
+
+<!-- ASCII-FALLBACK
 ```
   PUSH
                     ┌ ─ ─ ─ cluster boundary ─ ─ ─ ─ ─ ─ ─ ─ ─ ┐
@@ -723,6 +734,7 @@ Now the question this section exists for. An artifact has been built. Something 
                     └ ─ ─ ─ │ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ┘
                     the key lives IN HERE
 ```
+-->
 
 **Figure 15.3 — Push and pull, mirrored.** The cluster boundary is the same line in both panels and the arrow is the only thing that reverses. Watch the key: in push it sits outside the boundary, in a system the cluster does not control. In pull it sits inside, in a Pod the cluster does control. Everything else in this section is a consequence of that one difference.
 
@@ -766,6 +778,9 @@ There is one thing the corpus does say in this neighborhood, and it is worth hav
 [source: opengitops-principles-v1-2026-08-31]
 
 <!-- FIGURE: ch15-fig05-opengitops-four-principles -->
+![Four boxes in a two-by-two grid, one per OpenGitOps principle. Declarative is tagged you know this, chapter 4 section 1. Versioned and immutable is tagged NEW HERE. Pulled automatically is tagged chapter 3 section 5. Continuously reconciled is tagged chapter 3 section 6. Only the second principle is new.](figures/ch15-fig05-opengitops-four-principles.svg)
+
+<!-- ASCII-FALLBACK
 ```
   ┌────────────────────────────┐  ┌────────────────────────────┐
   │ 1  DECLARATIVE             │  │ 2  VERSIONED & IMMUTABLE   │
@@ -787,6 +802,7 @@ There is one thing the corpus does say in this neighborhood, and it is worth hav
   │        Ch 3 §5             │  │        Ch 3 §6             │
   └────────────────────────────┘  └────────────────────────────┘
 ```
+-->
 
 **Figure 15.4 — The four principles, and where you already met three of them.** The markers in each block are the figure's real content. Only principle 2 is new to you. The rest is Chapter 4's declarative model and Chapter 3's watch-and-reconcile architecture, restated with the desired state living somewhere else. Hold that thought; §7 collects on it.
 
@@ -903,6 +919,9 @@ Argo CD's glossary keeps these on separate lines for exactly this reason. **Sync
 Return to the Logbook Entry in §3. Friday afternoon, one field, thirty seconds, invisible for six weeks. Under a GitOps agent, that edit produces an `OutOfSync` status within one reconciliation interval. Not an alert, not a page, not a failure. A status field, changed, saying *these two things no longer agree*. The mechanism that catches the story is not an alarm. It is a comparison that never stops running.
 
 <!-- FIGURE: ch15-fig04-argocd-sync-states-and-hooks -->
+![Two scenarios comparing target state in a Git repository against live state in a cluster, with an agent between them observing both. In the first, both say replicas three and the status is Synced. In the second, the repository still says three but the cluster says five because someone ran kubectl scale, and the status is OutOfSync; a separate sync operation applies the target state and the two match again.](figures/ch15-fig04-argocd-sync-states-and-hooks.svg)
+
+<!-- ASCII-FALLBACK
 ```
       TARGET STATE                 AGENT                LIVE STATE
       (Git repository)          (controller)             (cluster)
@@ -932,6 +951,7 @@ Return to the Logbook Entry in §3. Friday afternoon, one field, thirty seconds,
                             │  (operation) │  → live matches again
                             └──────────────┘
 ```
+-->
 
 **Figure 15.5 — The comparison, and the two answers it produces.** The lower panel shows the cause readers do not expect: nothing failed, no deploy went wrong, a person changed the cluster. `OutOfSync` reports the disagreement. Sync is the separate operation that closes it — and, by default, a separate *decision*.
 
@@ -1111,6 +1131,9 @@ Resources carry an integer that determines their order within a phase, and Argo 
 The ordering algorithm, in order of precedence, begins: *"1. The phase 2. The wave they are in (lower values first)"*, with two further deterministic tie-breaks after those [source: argocd-sync-phases-and-waves-2026-08-31]. Phase first, then wave. Everything you can control is in those two lines.
 
 <!-- FIGURE: ch15-fig06-sync-waves-and-hook-phases -->
+![Three sync phases run left to right: PreSync holding a database migration, Sync, then PostSync holding a smoke test. Inside the Sync phase a vertical wave axis orders three resources lowest first: wave minus one Namespace, wave zero CustomResourceDefinition, wave one custom resource. Ordering precedence is phase, then wave, then kind, then name.](figures/ch15-fig06-sync-waves-and-hook-phases.svg)
+
+<!-- ASCII-FALLBACK
 ```
    PHASE ──────────────────────────────────────────────────────────►
 
@@ -1136,6 +1159,7 @@ The ordering algorithm, in order of precedence, begins: *"1. The phase 2. The wa
 
    ordering precedence:  phase → wave → (deterministic tie-breaks)
 ```
+-->
 
 **Figure 15.6 — Two orderings, nested.** The horizontal axis is the phase; the vertical axis inside `Sync` is the wave. The example is the ordering problem this section opened with: a namespace must exist before the CustomResourceDefinition, which must exist before any custom resource that uses it.
 
@@ -1288,6 +1312,9 @@ In Chapter 3, the desired state was in etcd, reached through the API server.
 Now move it. Take the desired state out of etcd and put it in a Git repository.
 
 <!-- FIGURE: ch15-zenith-control-loop-pointed-at-a-repo -->
+![A closed control loop with no beginning and no end. Desired state, now a Git repository rather than etcd and marked as the only substitution, is observed by a controller; the controller acts to close the gap through the API server, still the only door in; the API server changes current state, what is actually true, which the controller observes in turn. And then it does it again, forever.](figures/ch15-zenith-control-loop-pointed-at-a-repo.svg)
+
+<!-- ASCII-FALLBACK
 ```
                         ┌─────────────────┐
                         │  DESIRED STATE  │
@@ -1317,6 +1344,7 @@ Now move it. Take the desired state out of etcd and put it in a Git repository.
 
               and then it does it again. forever.
 ```
+-->
 
 **Figure 15.7 — The control loop, pointed at a repository.** Lay this beside Chapter 3's control-loop figure and the point is that it is the same loop. The controller sits in the same place, the API server is still the only door in, and the arrows run in the same directions. One box changed contents.
 

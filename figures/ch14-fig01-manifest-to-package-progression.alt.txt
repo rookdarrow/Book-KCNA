@@ -1,0 +1,1 @@
+Three-panel comparison: one manifests directory deploying to one cluster, labelled correct; three near-identical directories for dev, staging and production bracketed as ninety-five percent identical with nothing marking the difference, labelled as where most teams live; and one versioned package plus three per-environment value files fanning out to three clusters

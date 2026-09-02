@@ -1,0 +1,113 @@
+<svg viewBox="0 0 640 800" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="cncf-k8s-gov-title cncf-k8s-gov-desc" width="640" height="800">
+      <title id="cncf-k8s-gov-title">CNCF and Kubernetes governance, side by side</title>
+      <desc id="cncf-k8s-gov-desc">Two org charts divided by a hairline: on the CNCF side, the Governing Board sets scope for the TOC, which aligns five TAGs and also receives input from an End User TAB; on the Kubernetes side, the Steering Committee charters three committees marked as not open to community membership, positioned alongside separate, unconnected boxes for SIGs and Working Groups.</desc>
+      <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon>
+        </marker>
+      </defs>
+
+      <rect width="100%" height="100%" fill="#F5EFE4"></rect>
+
+      <!-- ===== Column headers ===== -->
+      <text x="160" y="60" text-anchor="middle" fill="#0B1E3B" font-family="Fira Sans" font-size="16" font-weight="600">
+        <tspan x="160" dy="0">CNCF</tspan>
+        <tspan x="160" dy="20" font-family="Fira Mono" font-size="14" font-weight="500" letter-spacing="0.08em" fill="#8A8D90">THE FOUNDATION</tspan>
+      </text>
+      <text x="480" y="60" text-anchor="middle" fill="#0B1E3B" font-family="Fira Sans" font-size="16" font-weight="600">
+        <tspan x="480" dy="0">KUBERNETES</tspan>
+        <tspan x="480" dy="20" font-family="Fira Mono" font-size="14" font-weight="500" letter-spacing="0.08em" fill="#8A8D90">ONE CNCF PROJECT</tspan>
+      </text>
+
+      <!-- ===== Divider ===== -->
+      <line x1="320" y1="96" x2="320" y2="692" stroke="#8A8D90" stroke-width="1"></line>
+
+      <!-- ===== Arrows (drawn before boxes) ===== -->
+      <!-- Governing Board -> TOC -->
+      <line x1="160" y1="228" x2="160" y2="268" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+      <!-- TOC -> TAGs -->
+      <line x1="160" y1="380" x2="160" y2="420" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+      <!-- Steering Committee -> Committees -->
+      <line x1="480" y1="228" x2="480" y2="268" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+      <!-- End User TAB -> TOC, routed around TAGs via the left margin -->
+      <path d="M 44,628 H 28 Q 20,628 20,620 V 332 Q 20,324 28,324 H 44" fill="none" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></path>
+
+      <!-- ===== CNCF column nodes ===== -->
+      <!-- Governing Board -->
+      <rect x="44" y="116" width="232" height="112" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="160" y="144" text-anchor="middle" font-family="Fira Sans">
+        <tspan x="160" dy="0" font-size="16" font-weight="600" fill="#0B1E3B">GOVERNING BOARD</tspan>
+        <tspan x="160" dy="20" font-size="14" fill="#1F4A4E">Marketing, business</tspan>
+        <tspan x="160" dy="20" font-size="14" fill="#1F4A4E">oversight &amp; budget.</tspan>
+        <tspan x="160" dy="20" font-size="14" fill="#1F4A4E">Sets the TOC’s scope.</tspan>
+      </text>
+
+      <!-- TOC -->
+      <rect x="44" y="268" width="232" height="112" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="160" y="296" text-anchor="middle" font-family="Fira Sans">
+        <tspan x="160" dy="0" font-size="16" font-weight="600" fill="#0B1E3B">TOC</tspan>
+        <tspan x="160" dy="20" font-size="14" fill="#1F4A4E">Technical vision.</tspan>
+        <tspan x="160" dy="20" font-size="14" fill="#1F4A4E">Approves in-scope</tspan>
+        <tspan x="160" dy="20" font-size="14" fill="#1F4A4E">projects; aligns TAGs.</tspan>
+      </text>
+
+      <!-- TAGs -->
+      <rect x="44" y="420" width="232" height="112" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="160" y="448" text-anchor="middle" font-family="Fira Sans">
+        <tspan x="160" dy="0" font-size="16" font-weight="600" fill="#0B1E3B">TAGs</tspan>
+        <tspan x="160" dy="20" font-size="14" fill="#1F4A4E">5 groups, restructured</tspan>
+        <tspan x="160" dy="20" font-size="14" fill="#1F4A4E">2025. Bridge projects</tspan>
+        <tspan x="160" dy="20" font-size="14" fill="#1F4A4E">and the TOC.</tspan>
+      </text>
+
+      <!-- End User TAB -->
+      <rect x="44" y="580" width="232" height="96" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="160" y="608" text-anchor="middle" font-family="Fira Sans">
+        <tspan x="160" dy="0" font-size="16" font-weight="600" fill="#0B1E3B">END USER TAB</tspan>
+        <tspan x="160" dy="20" font-size="14" fill="#1F4A4E">Voice of end users;</tspan>
+        <tspan x="160" dy="20" font-size="14" fill="#1F4A4E">feeds the TOC directly.</tspan>
+      </text>
+
+      <!-- ===== Kubernetes column nodes ===== -->
+      <!-- Steering Committee -->
+      <rect x="364" y="116" width="232" height="112" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="480" y="144" text-anchor="middle" font-family="Fira Sans">
+        <tspan x="480" dy="0" font-size="16" font-weight="600" fill="#0B1E3B">STEERING COMMITTEE</tspan>
+        <tspan x="480" dy="20" font-size="14" fill="#1F4A4E">Overall project</tspan>
+        <tspan x="480" dy="20" font-size="14" fill="#1F4A4E">governance; charters</tspan>
+        <tspan x="480" dy="20" font-size="14" fill="#1F4A4E">the committees below.</tspan>
+      </text>
+
+      <!-- Committees (focal) -->
+      <rect x="364" y="268" width="232" height="136" rx="6" fill="#B58B3E" fill-opacity="0.10" stroke="#B58B3E" stroke-width="1.2"></rect>
+      <text x="480" y="296" text-anchor="middle" font-family="Fira Sans">
+        <tspan x="480" dy="0" font-size="16" font-weight="600" fill="#0B1E3B">COMMITTEES</tspan>
+        <tspan x="480" dy="20" font-size="14" fill="#1F4A4E">Code of Conduct ·</tspan>
+        <tspan x="480" dy="20" font-size="14" fill="#1F4A4E">Security Response ·</tspan>
+        <tspan x="480" dy="20" font-size="14" fill="#1F4A4E">Steering</tspan>
+        <tspan x="480" dy="24" font-size="14" font-weight="600" letter-spacing="0.02em" fill="#B58B3E">✗ NOT OPEN MEMBERSHIP</tspan>
+      </text>
+
+      <!-- SIGs -->
+      <rect x="364" y="444" width="232" height="96" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="480" y="472" text-anchor="middle" font-family="Fira Sans">
+        <tspan x="480" dy="0" font-size="16" font-weight="600" fill="#0B1E3B">SIGs</tspan>
+        <tspan x="480" dy="20" font-size="14" fill="#1F4A4E">Durable, topic-scoped.</tspan>
+        <tspan x="480" dy="20" font-size="14" fill="#1F4A4E">~24 of them.</tspan>
+      </text>
+
+      <!-- Working Groups -->
+      <rect x="364" y="580" width="232" height="96" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="480" y="608" text-anchor="middle" font-family="Fira Sans">
+        <tspan x="480" dy="0" font-size="16" font-weight="600" fill="#0B1E3B">WORKING GROUPS</tspan>
+        <tspan x="480" dy="20" font-size="14" fill="#1F4A4E">Time-bounded,</tspan>
+        <tspan x="480" dy="20" font-size="14" fill="#1F4A4E">cross-SIG collaboration.</tspan>
+      </text>
+
+      <!-- ===== Closing caption ===== -->
+      <line x1="40" y1="716" x2="600" y2="716" stroke="rgba(11,30,59,0.14)" stroke-width="0.8"></line>
+      <text x="320" y="744" text-anchor="middle" font-family="Fira Sans" font-style="italic">
+        <tspan x="320" dy="0" font-size="16" fill="#0B1E3B">TAGs are CNCF-wide. SIGs are Kubernetes-internal.</tspan>
+        <tspan x="320" dy="24" font-size="16" fill="#0B1E3B">Different organizations, different scopes.</tspan>
+      </text>
+    </svg>

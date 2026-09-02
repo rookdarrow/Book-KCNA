@@ -1,0 +1,60 @@
+<svg viewBox="0 0 660 760" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch06fig01-title ch06fig01-desc" width="680" height="784">
+    <title id="ch06fig01-title">Deployment, ReplicaSet, and Pod ownership chain</title>
+    <desc id="ch06fig01-desc">Diagram showing a Deployment holding a Pod template, update strategy, and a replicas count of 3, which owns a ReplicaSet holding its own replicas count of 3 and a selector, which in turn owns three identical Pod boxes; intent flows downward and existence is reported back upward.</desc>
+
+    <defs>
+      <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon>
+      </marker>
+    </defs>
+
+    <rect width="100%" height="100%" fill="#F5EFE4"></rect>
+
+    <!-- Connectors (drawn before nodes) -->
+    <path d="M 330 224 L 330 304" fill="none" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"></path>
+    <path d="M 330 444 L 330 492" fill="none" stroke="#1F4A4E" stroke-width="1"></path>
+    <path d="M 150 492 L 510 492" fill="none" stroke="#1F4A4E" stroke-width="1"></path>
+    <path d="M 150 492 L 150 540" fill="none" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"></path>
+    <path d="M 330 492 L 330 540" fill="none" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"></path>
+    <path d="M 510 492 L 510 540" fill="none" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"></path>
+
+    <!-- Connector label: Deployment -> ReplicaSet -->
+    <rect x="340" y="252" width="216" height="20" fill="#F5EFE4"></rect>
+    <text x="348" y="268" text-anchor="start" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.02em" fill="#1F4A4E">owns · sets the count on</text>
+
+    <!-- Deployment (root) -->
+    <rect x="80" y="48" width="500" height="176" rx="6" fill="#F5EFE4"></rect>
+    <rect x="80" y="48" width="500" height="176" rx="6" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1"></rect>
+    <text x="100" y="80" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">Deployment <tspan font-family="'Fira Mono', monospace" font-weight="400" font-size="14">"web"</tspan>
+      <tspan x="100" dy="36" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">Pod template</tspan><tspan font-family="'Fira Sans', sans-serif" font-size="14" fill="#1F4A4E"> — what a replacement is</tspan>
+      <tspan x="100" dy="28" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">strategy</tspan><tspan font-family="'Fira Sans', sans-serif" font-size="14" fill="#1F4A4E"> — how replacements are made</tspan>
+      <tspan x="100" dy="28" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">replicas: 3</tspan><tspan font-family="'Fira Sans', sans-serif" font-size="14" fill="#1F4A4E"> — the count you write</tspan>
+    </text>
+
+    <!-- ReplicaSet -->
+    <rect x="80" y="304" width="500" height="140" rx="6" fill="#F5EFE4"></rect>
+    <rect x="80" y="304" width="500" height="140" rx="6" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1"></rect>
+    <!-- Focal highlight: the count the ReplicaSet enforces -->
+    <rect x="96" y="356" width="468" height="20" rx="4" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1"></rect>
+    <text x="100" y="336" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">ReplicaSet <tspan font-family="'Fira Mono', monospace" font-weight="400" font-size="14">"web-7d4b9c6f8"</tspan>
+      <tspan x="100" dy="36" font-family="'Fira Mono', monospace" font-size="14" font-weight="600" fill="#B58B3E">replicas: 3</tspan><tspan font-family="'Fira Sans', sans-serif" font-size="14" fill="#B58B3E"> — the count it enforces</tspan>
+      <tspan x="100" dy="28" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">selector</tspan><tspan font-family="'Fira Sans', sans-serif" font-size="14" fill="#1F4A4E"> — how it finds its Pods</tspan>
+    </text>
+
+    <!-- Pods (three identical, owned by the ReplicaSet) -->
+    <rect x="80" y="540" width="140" height="88" rx="6" fill="#F5EFE4"></rect>
+    <rect x="80" y="540" width="140" height="88" rx="6" fill="rgba(11,30,59,0.05)" stroke="#1F4A4E" stroke-width="0.8"></rect>
+    <text x="150" y="588" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">Pod</text>
+
+    <rect x="260" y="540" width="140" height="88" rx="6" fill="#F5EFE4"></rect>
+    <rect x="260" y="540" width="140" height="88" rx="6" fill="rgba(11,30,59,0.05)" stroke="#1F4A4E" stroke-width="0.8"></rect>
+    <text x="330" y="588" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">Pod</text>
+
+    <rect x="440" y="540" width="140" height="88" rx="6" fill="#F5EFE4"></rect>
+    <rect x="440" y="540" width="140" height="88" rx="6" fill="rgba(11,30,59,0.05)" stroke="#1F4A4E" stroke-width="0.8"></rect>
+    <text x="510" y="588" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">Pod</text>
+
+    <!-- Caption -->
+    <line x1="80" y1="668" x2="580" y2="668" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+    <text x="330" y="696" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-style="italic" fill="#8A8D90">intent flows <tspan font-style="normal" font-weight="600" fill="#0B1E3B">DOWN</tspan> · existence is reported back <tspan font-style="normal" font-weight="600" fill="#0B1E3B">UP</tspan></text>
+  </svg>

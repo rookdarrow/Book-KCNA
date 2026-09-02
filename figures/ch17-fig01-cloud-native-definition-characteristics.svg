@@ -1,0 +1,48 @@
+<svg viewBox="0 0 600 720" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch17-fig01-title ch17-fig01-desc" width="560" height="672">
+      <title id="ch17-fig01-title">Cloud native characteristics of a loosely coupled system</title>
+      <desc id="ch17-fig01-desc">Tree diagram showing a root box for loosely coupled systems branching into five characteristics — secure, resilient, manageable, sustainable, and observable — each with a short explanatory gloss.</desc>
+
+      <rect width="100%" height="100%" fill="#F5EFE4"></rect>
+
+      <!-- Connectors: trunk drops from root, jogs left to a spine, spine branches right into each child -->
+      <path d="M 308,120 V 128 Q 308,136 300,136 H 64 Q 56,136 56,144 V 600" fill="none" stroke="#1F4A4E" stroke-width="1"></path>
+      <path d="M 56,184 H 104" fill="none" stroke="#1F4A4E" stroke-width="1"></path>
+      <path d="M 56,288 H 104" fill="none" stroke="#1F4A4E" stroke-width="1"></path>
+      <path d="M 56,392 H 104" fill="none" stroke="#1F4A4E" stroke-width="1"></path>
+      <path d="M 56,496 H 104" fill="none" stroke="#1F4A4E" stroke-width="1"></path>
+      <path d="M 56,600 H 104" fill="none" stroke="#1F4A4E" stroke-width="1"></path>
+
+      <!-- Root node: LOOSELY COUPLED SYSTEMS (focal, brass accent) -->
+      <rect x="128" y="40" width="360" height="80" rx="6" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"></rect>
+      <text x="308" y="68" fill="#0B1E3B" font-size="16" font-weight="700" font-family="'Fira Sans', sans-serif" text-anchor="middle" letter-spacing="0.02em">LOOSELY COUPLED SYSTEMS</text>
+      <text x="308" y="92" fill="#1F4A4E" font-size="14" font-style="italic" font-family="'Fira Sans', sans-serif" text-anchor="middle">that interoperate in a manner that is:</text>
+
+      <!-- Child: SECURE -->
+      <rect x="104" y="144" width="456" height="80" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="332" y="172" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle" letter-spacing="0.04em">SECURE</text>
+      <text x="332" y="196" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif" text-anchor="middle">verified at every boundary, not just at the edge</text>
+
+      <!-- Child: RESILIENT -->
+      <rect x="104" y="248" width="456" height="80" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="332" y="276" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle" letter-spacing="0.04em">RESILIENT</text>
+      <text x="332" y="300" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif" text-anchor="middle">survives the loss of any one part</text>
+
+      <!-- Child: MANAGEABLE -->
+      <rect x="104" y="352" width="456" height="80" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="332" y="380" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle" letter-spacing="0.04em">MANAGEABLE</text>
+      <text x="332" y="404" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif" text-anchor="middle">changeable without rebuilding it</text>
+
+      <!-- Child: SUSTAINABLE -->
+      <rect x="104" y="456" width="456" height="80" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="332" y="484" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle" letter-spacing="0.04em">SUSTAINABLE</text>
+      <text x="332" y="508" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif" text-anchor="middle">affordable to keep running, in people and in power</text>
+
+      <!-- Child: OBSERVABLE -->
+      <rect x="104" y="560" width="456" height="80" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="332" y="588" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle" letter-spacing="0.04em">OBSERVABLE</text>
+      <text x="332" y="612" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif" text-anchor="middle">you can ask it what it is doing, and it will answer</text>
+
+      <!-- Footer caption -->
+      <line x1="40" y1="664" x2="560" y2="664" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+      <text x="300" y="688" fill="#8A8D90" font-size="14" font-style="italic" font-family="'Fira Sans', sans-serif" text-anchor="middle">Five properties of one system — not five items on a checklist.</text>
+    </svg>

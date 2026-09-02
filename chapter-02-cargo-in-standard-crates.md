@@ -289,6 +289,9 @@ The sharpening is not a stylistic preference; the mechanism only parses one way.
 Now the single most useful move you can make with this material: stop memorizing the comparison table and derive it instead. Every difference between a container and a VM that anybody cites comes out of that one architectural choice.
 
 <!-- FIGURE: ch02-fig01-vm-vs-container-stack -->
+![Two stacks side by side. On the left, virtual machines: hardware, host OS, then a hypervisor, then three columns each containing a guest OS with an app above it — three operating system copies for three apps. On the right, containers: hardware, host OS, then a single container runtime with three apps sitting directly on it — one operating system for three apps. The guest OS row present three times on the left is absent entirely on the right.](figures/ch02-fig01-vm-vs-container-stack.svg)
+
+<!-- ASCII-FALLBACK
 ```
         VIRTUAL MACHINES                       CONTAINERS
 
@@ -308,6 +311,7 @@ Now the single most useful move you can make with this material: stop memorizing
    └────────────────────────┘
     THREE OS COPIES · three apps
 ```
+-->
 
 **Figure 2-1.** The duplication on the left is the entire story. Notice what to look for: the guest-OS row repeats once per workload on the VM side and does not appear at all on the container side. Start-up time, image size, and how many workloads fit on a host are all downstream of that one row.
 
@@ -356,6 +360,9 @@ Three consequences follow from that structure, and all three matter downstream.
 <!-- AUTHOR-REVIEW — G29, layers. The research manifest records G29 as CLOSED and this subsection is written to the depth that closure supports, but the closing snapshots are the ones Stage 2 could not write (see the pipeline note in §1). Currently on disk, `oci-overview` supplies only the phrase "filesystem layer serialization" — enough for the existence of layers and a manifest, not for stack order, sharing, or rebuild cost. Harvest and tag: A4 (layer = "a changeset that describes a container's filesystem"), A5 ("one or more layers are applied on top of each other"), A6 ("The array MUST have the base layer at index 0" and subsequent layers "MUST follow in stack order") for the ordering claim; A9 (docker-docs-image-layers: the format "allows layers to be reused between images", which "reduce[s] the amount of storage and bandwidth required to distribute the images") for the sharing claim AND for Soundings Q4's answer key, which the manifest notes it supplies verbatim; A10 ("once a layer changes, all downstream layers need to be rebuilt") for the rebuild-cost claim. DO NOT act on the earlier proposal to narrow this subsection or to rename ch02-fig02 — the manifest resolves Open Question #2 to option (a), keep the anchor and keep both halves of the figure. Layers are load-bearing for the digest concept in §3 and for the Chapter 12 supply-chain material. -->
 
 <!-- FIGURE: ch02-fig02-image-layers-and-digests -->
+![Left: two image stacks, image A and image B, each with an app layer above a shared base layer, the two base layers joined to show they are one stored layer named by both manifests. Right: a card showing a truncated digest sha256:9f2c...be41 labelled content hash and immutable, with two identical :v2 tag boxes below it — one labelled today connected by a solid arrow, one labelled next week connected by a dashed arrow to a different point, showing that a tag is a label that can be moved to point at a different image.](figures/ch02-fig02-image-layers-and-digests.svg)
+
+<!-- ASCII-FALLBACK
 ```
         LAYERS                                 IDENTITY
 
@@ -375,6 +382,7 @@ Three consequences follow from that structure, and all three matter downstream.
                                   a tag is a LABEL — it can be
                                   moved to point at a different image
 ```
+-->
 
 **Figure 2-2.** Two ideas in one frame, because §3 depends on the right half. What to notice: the dashed arrow. The tag `:v2` is attached to the image, not part of it, and an attachment can be re-attached.
 
@@ -553,6 +561,9 @@ Kubernetes' extension points include, under infrastructure extensions, the "cont
 And beneath the CRI runtime there is one more hop. Docker donated its container runtime, **runC**, to the Open Container Initiative to serve as the cornerstone of that effort [source: oci-overview-2026-08-23], and an OCI runtime's job is defined by the runtime specification: it runs a filesystem bundle that has been unpacked on disk [source: oci-overview-2026-08-23]. That is the lowest hop, the one where a process actually starts.
 
 <!-- FIGURE: ch02-fig04-cri-runtime-chain -->
+![A vertical chain. At the top, the kubelet, the node agent Kubernetes ships. A connector descends across a heavy horizontal boundary labelled CRI, annotated: Kubernetes defines this line and implements nothing below it. Below the boundary, a socket into which exactly one conformant CRI runtime plugs — containerd or CRI-O. Below the socket, runC, which starts a running process.](figures/ch02-fig04-cri-runtime-chain.svg)
+
+<!-- ASCII-FALLBACK
 ```
   ┌───────────┐
   │  kubelet  │   the node agent Kubernetes ships
@@ -574,6 +585,7 @@ And beneath the CRI runtime there is one more hop. Docker donated its container 
         │    runC    │  ──►  │ running process  │
         └────────────┘       └──────────────────┘
 ```
+-->
 
 **Figure 2-3.** What to notice is the socket, not the boxes. containerd and CRI-O are not two parallel paths through the system; they are two things that fit the same opening. Swap one for the other and the kubelet above does not change.
 
@@ -755,6 +767,9 @@ This is the fiddliest material in the chapter, and in the author's judgment the 
 That block is the whole exam surface for this section, stated flat. Now the two things worth saying about it.
 
 <!-- FIGURE: ch02-fig05-imagepullpolicy-decision -->
+![A decision tree. Root question: was imagePullPolicy set explicitly? On the YES branch, three policies: Always, which resolves the name to a digest and reuses the local cache on a match; IfNotPresent, which pulls only if the image is absent; and Never, which never fetches and fails if the image is absent. On the NO branch, a second question asks the reference form, fanning to four outcomes: a digest defaults to IfNotPresent, the :latest tag defaults to Always, no tag defaults to Always, and any other tag defaults to IfNotPresent.](figures/ch02-fig05-imagepullpolicy-decision.svg)
+
+<!-- ASCII-FALLBACK
 ```
                     was imagePullPolicy set explicitly?
                           │                    │
@@ -771,6 +786,7 @@ That block is the whole exam surface for this section, stated flat. Now the two 
         │    absent               │ IfNot-  Always   Always    IfNot-
         └─────────────────────────┘ Present                    Present
 ```
+-->
 
 **Figure 2-5.** What to notice, and it isn't the branches: the right-hand side of this tree is reached by *not making a decision*. The reference form you chose for identity reasons quietly chose your pull behavior too.
 

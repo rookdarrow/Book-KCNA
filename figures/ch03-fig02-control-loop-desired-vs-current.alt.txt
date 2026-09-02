@@ -1,0 +1,1 @@
+A closed four-step cycle with no beginning or end: compare reads desired state and current state, acting to close the gap changes current state, and comparison begins again; captioned no start, no end, no exit condition

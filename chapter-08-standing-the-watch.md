@@ -327,6 +327,9 @@ Here is the shape. Every `kubectl` invocation takes the form `kubectl [command] 
 Put five commands you have already run through those same four slots, and the shape appears retroactively.
 
 <!-- FIGURE: ch08-fig01-kubectl-verb-resource-grammar -->
+![A five-column table aligning five kubectl commands on the slots kubectl, command, TYPE, NAME and flags; some cells are empty because those commands omit those slots; two arrows below point up at the TYPE column labelled case-insensitive and the NAME column labelled case-sensitive](figures/ch08-fig01-kubectl-verb-resource-grammar.svg)
+
+<!-- ASCII-FALLBACK
 ```
   kubectl   [command]        [TYPE]        [NAME]      [flags]
             ─────────        ──────        ──────      ───────
@@ -342,6 +345,7 @@ Put five commands you have already run through those same four slots, and the sh
                     singular = plural    node-7 ≠ Node-7
                     = abbreviated
 ```
+-->
 
 **Figure 8.1 —** Five commands you already know, aligned on the same four slots. What to notice is the empty columns: `kubectl get pods` omits NAME and flags, and gets every Pod as a result. What to notice second is the asymmetry at the bottom, which is the examinable half of this section.
 
@@ -438,6 +442,9 @@ And here is the property that makes them a genuinely different kind of thing rat
 > ★ **Fixed Point:** Authentication, then authorization, then admission. Authentication asks **who**. Authorization asks **may you**. Admission asks **should this, exactly as written, be allowed to happen** — and it is the only one of the three that can change your request instead of refusing it [source: k8s-docs-controlling-access-2026-08-24].
 
 <!-- FIGURE: ch08-fig02-three-api-gates -->
+![Three boxes in a row labelled Authentication, Authorization and Admission, with a request arrow entering on the left and persistence to etcd on the right; each box has a downward arrow to a REJECT outcome, and the Admission box has an additional arrow labelled REWRITTEN that loops back into the forward path](figures/ch08-fig02-three-api-gates.svg)
+
+<!-- ASCII-FALLBACK
 ```
                 gate 1              gate 2              gate 3
            ┌──────────────┐   ┌──────────────┐   ┌──────────────┐
@@ -447,6 +454,7 @@ And here is the property that makes them a genuinely different kind of thing rat
                   ▼                  ▼             ▼       │              │
                REJECT             REJECT        REJECT     └── REWRITTEN ─┘
 ```
+-->
 
 **Figure 8.2 —** What to notice is the fourth arrow. Gates one and two have one way out other than forward: refusal. Gate three has two. It can refuse, or it can alter the request and let the altered version continue. The three questions, in order, are: *who are you*, *may you do this*, and *should this, as written, be allowed*.
 
@@ -655,6 +663,9 @@ Read the middle clause of that first sentence again. It is doing more work than 
 > ★ **Fixed Point:** `cordon` stops arrivals and touches nothing already aboard. `drain` clears what is aboard. `uncordon` reopens. Three commands, three jobs — and **the maintenance sequence needs the first two.**
 
 <!-- FIGURE: ch08-fig04-node-lifecycle-cordon-drain -->
+![Four node panels in a row labelled schedulable, cordoned, drained and schedulable, connected by transitions labelled cordon, drain and uncordon; the same three Pods A, B and C appear unchanged in the first two panels and are gone from the third, while an arriving Pod is admitted in panels one and four and turned away in panel two](figures/ch08-fig04-node-lifecycle-cordon-drain.svg)
+
+<!-- ASCII-FALLBACK
 ```
    SCHEDULABLE            CORDONED             DRAINED           SCHEDULABLE
   ┌────────────┐        ┌────────────┐      ┌────────────┐      ┌────────────┐
@@ -668,6 +679,7 @@ Read the middle clause of that first sentence again. It is doing more work than 
         A, B and C are UNCHANGED between panel 1 and panel 2.
         They are still running. That is what cordon does and does not do.
 ```
+-->
 
 **Figure 8.4 —** What to notice is what does *not* change between the first two panels. The three Pods aboard the cordoned node are still running, still serving, still entirely unaffected. Only the arriving Pod's fate differs. The node does not empty until `drain`.
 
@@ -881,6 +893,9 @@ Now put the two facts beside each other, because neither is memorable alone and 
 > *(All five rules and both worked examples: [source: k8s-version-skew-policy-2026-08-23].)*
 
 <!-- FIGURE: ch08-fig03-version-skew-window -->
+![A horizontal range chart on a relative axis from minus three to plus one minor versions, with the API server's version marked by a double line at zero; bars for kubelet and kube-proxy reach back three versions, bars for the controller manager, scheduler and cloud controller manager reach back one, and all five stop at the double line, while the kubectl bar alone extends one version past it](figures/ch08-fig03-version-skew-window.svg)
+
+<!-- ASCII-FALLBACK
 ```
                   older ◄───────── kube-apiserver ─────────► newer
                     -3      -2      -1       0       +1
@@ -895,6 +910,7 @@ Now put the two facts beside each other, because neither is memorable alone and 
                                              ║
                                     ▲ the only bar that crosses
 ```
+-->
 
 **Figure 8.5 —** The double line at 0 is the API server's minor version. For every component but one it is a wall: bars extend to the left and stop dead. `kubectl` is the single bar that crosses to the right. The HA kube-apiserver rule is deliberately absent — it is a mutual bound *between* API servers, not a bound relative to one, so it has no bar to draw. The axis is relative; the rules do not change when the version numbers do.
 
@@ -1064,6 +1080,9 @@ The scheduler then does what the scheduler always does: it checks taints, not no
 > ☀️ **Zenith:** One door, and behind it controllers you have already met. Everything in this chapter is a write to the first, reconciled by the second.
 
 <!-- FIGURE: ch08-zenith-consequences-not-rules -->
+![Four administrative actions on the left — kubectl cordon, applying a quota, applying a deployment, and kubelet self-registration — all converge on a single central box labelled the API server, one door; four arrows leave it to the scheduler from chapter seven, the node controller from chapters four and eight, the workload controllers from chapter six, and the control loop from chapter three, with a single arrow running down from the box to etcd](figures/ch08-zenith-consequences-not-rules.svg)
+
+<!-- ASCII-FALLBACK
 ```
   administrative acts                                 controllers you
   (§1, §3, §4)                    ┌───────────┐       already met
@@ -1078,6 +1097,7 @@ The scheduler then does what the scheduler always does: it checks taints, not no
                                         ▼
                                       etcd
 ```
+-->
 
 **Figure 8.6 —** What to notice is the chapter number beside each controller. This is Chapter 3's architecture diagram, unchanged, except that you have now put your own hands on the left-hand side of it, and every mechanism on the right-hand side is one you were taught somewhere in Part II. What to notice second is that no arrow on the left reaches a controller directly. There are no side channels.
 

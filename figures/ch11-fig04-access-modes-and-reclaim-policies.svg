@@ -1,0 +1,108 @@
+<svg viewBox="0 0 960 600" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch11-fig04-title ch11-fig04-desc" width="1100" height="688">
+    <title id="ch11-fig04-title">PV Access Modes and Reclaim Policies</title>
+    <desc id="ch11-fig04-desc">Two side-by-side reference panels: access modes measured in nodes except ReadWriteOncePod, which is Pod-scoped, and reclaim policies showing Retain keeps the PV object, asset, and data, Delete destroys all three, and Recycle is deprecated, noting Delete is the default for dynamically provisioned volumes.</desc>
+
+    <rect width="960" height="600" fill="#F5EFE4"></rect>
+
+    <!-- ============ LEFT PANEL: ACCESS MODES ============ -->
+    <rect x="40" y="40" width="420" height="480" rx="8" fill="#F5EFE4" stroke="#8A8D90" stroke-width="1"></rect>
+
+    <text x="64" y="76" fill="#1F4A4E" font-size="14" font-weight="500" letter-spacing="0.14em" font-family="Fira Mono, monospace">WHAT YOU MAY DO</text>
+    <text x="64" y="108" fill="#0B1E3B" font-size="20" font-weight="600" font-family="Fira Sans, sans-serif">Access Modes</text>
+    <text x="64" y="136" fill="#8A8D90" font-size="14" font-family="Fira Mono, monospace">unit = nodes (except RWOP)</text>
+    <line x1="64" y1="152" x2="436" y2="152" stroke="#8A8D90" stroke-width="1"></line>
+
+    <!-- Row: RWO -->
+    <rect x="152" y="188" width="16" height="16" rx="2" fill="#0B1E3B" stroke="#0B1E3B" stroke-width="0.8"></rect>
+    <rect x="176" y="188" width="16" height="16" rx="2" fill="#F5EFE4" stroke="#8A8D90" stroke-width="1"></rect>
+    <rect x="200" y="188" width="16" height="16" rx="2" fill="#F5EFE4" stroke="#8A8D90" stroke-width="1"></rect>
+    <text x="64" y="201" fill="#0B1E3B" font-size="16" font-weight="600" font-family="Fira Mono, monospace">RWO</text>
+    <text x="240" y="201" fill="#0B1E3B" font-size="16" font-family="Fira Sans, sans-serif">1 node · read-write</text>
+    <line x1="64" y1="232" x2="436" y2="232" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+
+    <!-- Row: ROX -->
+    <rect x="152" y="260" width="16" height="16" rx="2" fill="#0B1E3B" stroke="#0B1E3B" stroke-width="0.8"></rect>
+    <rect x="176" y="260" width="16" height="16" rx="2" fill="#0B1E3B" stroke="#0B1E3B" stroke-width="0.8"></rect>
+    <rect x="200" y="260" width="16" height="16" rx="2" fill="#0B1E3B" stroke="#0B1E3B" stroke-width="0.8"></rect>
+    <text x="64" y="273" fill="#0B1E3B" font-size="16" font-weight="600" font-family="Fira Mono, monospace">ROX</text>
+    <text x="240" y="273" fill="#0B1E3B" font-size="16" font-family="Fira Sans, sans-serif">many nodes · read-only</text>
+    <line x1="64" y1="304" x2="436" y2="304" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+
+    <!-- Row: RWX -->
+    <rect x="152" y="332" width="16" height="16" rx="2" fill="#0B1E3B" stroke="#0B1E3B" stroke-width="0.8"></rect>
+    <rect x="176" y="332" width="16" height="16" rx="2" fill="#0B1E3B" stroke="#0B1E3B" stroke-width="0.8"></rect>
+    <rect x="200" y="332" width="16" height="16" rx="2" fill="#0B1E3B" stroke="#0B1E3B" stroke-width="0.8"></rect>
+    <text x="64" y="345" fill="#0B1E3B" font-size="16" font-weight="600" font-family="Fira Mono, monospace">RWX</text>
+    <text x="240" y="345" fill="#0B1E3B" font-size="16" font-family="Fira Sans, sans-serif">many nodes · read-write</text>
+    <line x1="64" y1="376" x2="436" y2="376" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+
+    <!-- Row: RWOP — FOCAL -->
+    <rect x="48" y="380" width="404" height="64" rx="6" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"></rect>
+    <circle cx="160" cy="412" r="8" fill="#B58B3E" stroke="#B58B3E" stroke-width="0.8"></circle>
+    <circle cx="184" cy="412" r="8" fill="#F5EFE4" stroke="#8A8D90" stroke-width="1"></circle>
+    <circle cx="208" cy="412" r="8" fill="#F5EFE4" stroke="#8A8D90" stroke-width="1"></circle>
+    <text x="64" y="417" fill="#B58B3E" font-size="16" font-weight="700" font-family="Fira Mono, monospace">RWOP</text>
+    <text x="240" y="417" font-size="16" font-family="Fira Sans, sans-serif">
+      <tspan fill="#0B1E3B">1 </tspan><tspan fill="#B58B3E" font-weight="700">POD</tspan><tspan fill="#0B1E3B"> · read-write</tspan>
+    </text>
+
+    <!-- Callout leader -->
+    <path d="M 160 422 Q 120 452 64 460" fill="none" stroke="rgba(181,139,62,0.50)" stroke-width="1" stroke-dasharray="4,3"></path>
+    <circle cx="160" cy="422" r="2.5" fill="#B58B3E"></circle>
+    <text x="64" y="480" fill="#B58B3E" font-size="16" font-style="italic" font-family="Fira Sans, sans-serif">the unit changes HERE,</text>
+    <text x="64" y="504" fill="#B58B3E" font-size="16" font-style="italic" font-family="Fira Sans, sans-serif">and only here</text>
+
+    <!-- ============ RIGHT PANEL: RECLAIM POLICIES ============ -->
+    <rect x="500" y="40" width="420" height="480" rx="8" fill="#F5EFE4" stroke="#8A8D90" stroke-width="1"></rect>
+
+    <text x="524" y="76" fill="#1F4A4E" font-size="14" font-weight="500" letter-spacing="0.14em" font-family="Fira Mono, monospace">WHAT HAPPENS AFTER</text>
+    <text x="524" y="108" fill="#0B1E3B" font-size="20" font-weight="600" font-family="Fira Sans, sans-serif">Reclaim Policies</text>
+    <text x="524" y="136" fill="#8A8D90" font-size="14" font-family="Fira Mono, monospace">when the claim is deleted</text>
+    <line x1="524" y1="152" x2="896" y2="152" stroke="#8A8D90" stroke-width="1"></line>
+
+    <!-- Column headers -->
+    <text x="672" y="180" fill="#8A8D90" font-size="14" letter-spacing="0.10em" text-anchor="middle" font-family="Fira Mono, monospace">PV OBJ</text>
+    <text x="744" y="180" fill="#8A8D90" font-size="14" letter-spacing="0.10em" text-anchor="middle" font-family="Fira Mono, monospace">ASSET</text>
+    <text x="816" y="180" fill="#8A8D90" font-size="14" letter-spacing="0.10em" text-anchor="middle" font-family="Fira Mono, monospace">DATA</text>
+    <line x1="524" y1="192" x2="896" y2="192" stroke="#8A8D90" stroke-width="1"></line>
+
+    <!-- Row: Retain -->
+    <text x="524" y="229" fill="#0B1E3B" font-size="16" font-weight="600" font-family="Fira Sans, sans-serif">Retain</text>
+    <text x="672" y="229" fill="#0B1E3B" font-size="16" text-anchor="middle" font-family="Fira Sans, sans-serif">kept</text>
+    <text x="744" y="229" fill="#0B1E3B" font-size="16" text-anchor="middle" font-family="Fira Sans, sans-serif">kept</text>
+    <text x="816" y="229" fill="#0B1E3B" font-size="16" text-anchor="middle" font-family="Fira Sans, sans-serif">kept</text>
+    <line x1="524" y1="256" x2="896" y2="256" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+
+    <!-- Row: Delete -->
+    <text x="524" y="293" fill="#0B1E3B" font-size="16" font-weight="600" font-family="Fira Sans, sans-serif">Delete</text>
+    <text x="672" y="293" fill="#0B1E3B" font-size="16" font-weight="600" text-anchor="middle" font-family="Fira Sans, sans-serif">gone</text>
+    <text x="744" y="293" fill="#0B1E3B" font-size="16" font-weight="600" text-anchor="middle" font-family="Fira Sans, sans-serif">gone</text>
+    <text x="816" y="293" fill="#0B1E3B" font-size="16" font-weight="600" text-anchor="middle" font-family="Fira Sans, sans-serif">gone</text>
+    <line x1="524" y1="320" x2="896" y2="320" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+
+    <!-- Row: Recycle, deprecated -->
+    <text x="524" y="349" fill="#8A8D90" font-size="16" style="text-decoration: line-through;" font-family="Fira Sans, sans-serif">Recycle</text>
+    <text x="524" y="369" fill="#8A8D90" font-size="14" font-family="Fira Mono, monospace">(deprecated)</text>
+    <text x="672" y="349" fill="#8A8D90" font-size="16" text-anchor="middle" font-family="Fira Sans, sans-serif">—</text>
+    <text x="744" y="349" fill="#8A8D90" font-size="16" text-anchor="middle" font-family="Fira Sans, sans-serif">—</text>
+    <text x="816" y="349" fill="#8A8D90" font-size="16" text-anchor="middle" font-family="Fira Sans, sans-serif">—</text>
+    <line x1="524" y1="400" x2="896" y2="400" stroke="#8A8D90" stroke-width="1"></line>
+
+    <!-- Footer: default policy -->
+    <text x="524" y="432" fill="#1F4A4E" font-size="14" font-weight="500" letter-spacing="0.10em" font-family="Fira Mono, monospace">DEFAULT FOR DYNAMIC PROVISIONING</text>
+    <text x="524" y="464" fill="#0B1E3B" font-size="20" font-weight="600" font-family="Fira Sans, sans-serif">Delete</text>
+
+    <!-- ============ LEGEND ============ -->
+    <line x1="40" y1="536" x2="920" y2="536" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+    <text x="40" y="564" fill="#8A8D90" font-size="14" letter-spacing="0.14em" font-family="Fira Mono, monospace">LEGEND</text>
+
+    <rect x="148" y="548" width="16" height="16" rx="2" fill="#0B1E3B" stroke="#0B1E3B" stroke-width="0.8"></rect>
+    <text x="176" y="561" fill="#1F4A4E" font-size="14" font-family="Fira Mono, monospace">NODE = COUNTED UNIT</text>
+
+    <rect x="412" y="548" width="16" height="16" rx="2" fill="#F5EFE4" stroke="#8A8D90" stroke-width="1"></rect>
+    <text x="440" y="561" fill="#1F4A4E" font-size="14" font-family="Fira Mono, monospace">UNCOUNTED</text>
+
+    <circle cx="628" cy="556" r="8" fill="#B58B3E" stroke="#B58B3E" stroke-width="0.8"></circle>
+    <text x="648" y="561" fill="#1F4A4E" font-size="14" font-family="Fira Mono, monospace">POD = COUNTED UNIT (RWOP)</text>
+
+  </svg>

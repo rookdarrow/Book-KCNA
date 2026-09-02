@@ -401,6 +401,9 @@ You know where the *configuration* goes: ConfigMaps and Secrets, kept outside th
 Now you have two directories that are 95% identical, and the 5% is not marked. Six weeks later somebody fixes a readiness probe in staging and does not fix it in production, because nothing told them there was a second copy. This is drift, and it is not a discipline problem: it is what happens when two files are supposed to stay in sync and nothing in the system knows that they are.
 
 <!-- FIGURE: ch14-fig01-manifest-to-package-progression -->
+![Three-panel comparison: one manifests directory deploying to one cluster, labelled correct; three near-identical directories for dev, staging and production bracketed as ninety-five percent identical with nothing marking the difference, labelled as where most teams live; and one versioned package plus three per-environment value files fanning out to three clusters](figures/ch14-fig01-manifest-to-package-progression.svg)
+
+<!-- ASCII-FALLBACK
 ```
   ONE CLUSTER                THREE CLUSTERS                  WHAT YOU WANT
   ───────────                ──────────────                  ─────────────
@@ -422,6 +425,7 @@ Now you have two directories that are 95% identical, and the 5% is not marked. S
 
                              ▲▲▲ THIS IS WHERE MOST TEAMS LIVE ▲▲▲
 ```
+-->
 
 ### Failure two: apply ordering
 
@@ -480,6 +484,9 @@ Note what that definition contains and what it does not. It says *collection of 
 The directory name is the name of the chart, without version information: a chart describing WordPress lives in a `wordpress/` directory [source: helm-charts-2026-08-31].
 
 <!-- FIGURE: ch14-fig02-helm-chart-anatomy -->
+![Directory tree of a Helm chart named wordpress, with Chart.yaml, values.yaml, templates, charts and crds each annotated with its purpose; the charts directory is marked emphatically as not a repository but a directory inside the chart holding its dependencies](figures/ch14-fig02-helm-chart-anatomy.svg)
+
+<!-- ASCII-FALLBACK
 ```
   wordpress/
   │
@@ -511,6 +518,7 @@ The directory name is the name of the chart, without version information: a char
   ├── LICENSE                  (gray: optional)
   └── README.md                (gray: optional)
 ```
+-->
 
 Take the five annotated entries one at a time, and notice that the useful question about each is not *what is it* but *what is it for*.
 
@@ -625,6 +633,9 @@ Installing a chart creates a new release object [source: helm-using-helm-2026-08
 Upgrades are not wholesale replacements. `helm upgrade` will only update things that have changed since the last release [source: helm-using-helm-2026-08-31]. The unchanged objects stay as they are.
 
 <!-- FIGURE: ch14-fig03-release-vs-chart-vs-revision -->
+![One Helm chart at the top installs twice, producing two independent releases named marketing and docs in separate namespaces with different replica counts; the marketing release has a left-to-right chain of numbered revisions, and a rollback arrow points back at revision two](figures/ch14-fig03-release-vs-chart-vs-revision.svg)
+
+<!-- ASCII-FALLBACK
 ```
                         ┌──────────────────────────────┐
                         │   CHART:  wordpress 15.2.0   │
@@ -654,6 +665,7 @@ Upgrades are not wholesale replacements. `helm upgrade` will only update things 
                                    returns the release to
                                    revision 2's state.
 ```
+-->
 
 <!-- OPEN, but no longer reader-facing as an unexplained gap (2026-08-31 integration gate):
      the corpus still does not settle whether `helm rollback` writes a NEW numbered revision
@@ -859,6 +871,9 @@ That last clause is the claim, and it is the one to hold onto: **without forking
 A fixed reference, and a declared offset from it. Navigators have been doing arithmetic of that shape for a very long time; only the notation is new.
 
 <!-- FIGURE: ch14-fig04-kustomize-base-overlay -->
+![Two Kustomize overlay directories for staging and production, each listing only its own deltas, both referencing a single shared base directory that is never edited and never copied; applying each overlay with kubectl apply -k produces prefixed objects with different replica counts](figures/ch14-fig04-kustomize-base-overlay.svg)
+
+<!-- ASCII-FALLBACK
 ```
         overlays/staging/                                overlays/prod/
         ┌────────────────────┐                       ┌────────────────────┐
@@ -890,6 +905,7 @@ A fixed reference, and a declared offset from it. Navigators have been doing ari
                   ▼                                     ▼
            stg- objects, 2 replicas            prod- objects, 12 replicas
 ```
+-->
 
 The kustomization file is itself a YAML specification of a Kubernetes Resource Model object called a *Kustomization*, and a kustomization describes how to generate or transform other objects [source: kubectl-book-kustomization-fields-2026-08-31]. That framing is worth noticing: the customization instructions are themselves an object of a declared kind, not a script.
 
@@ -950,6 +966,9 @@ Which is why, when you go looking for an operator, a controller, an Ingress cont
 If you are **adapting**, you want Kustomize. There is nobody to distribute to: the manifests are yours, they live in your repository, and the people changing them can read them. In that setting a template engine is overhead, making your artifacts un-readable-as-manifests to buy you a distribution capability you are not using. Kustomize's proposition is that your manifests stay ordinary manifests and the differences live in small overlay files that say only what differs.
 
 <!-- FIGURE: ch14-fig05-templating-vs-overlay-decision -->
+![Comparison table of Helm and Kustomize across five rows — what varies, the unit, distribution, lifecycle, and where the engine lives — closing with a decision band stating that distributing to strangers who will not read it points to Helm, while adapting what you already have for yourself points to Kustomize](figures/ch14-fig05-templating-vs-overlay-decision.svg)
+
+<!-- ASCII-FALLBACK
 ```
   ┌────────────────────┬──────────────────────────┬──────────────────────────┐
   │                    │  HELM                    │  KUSTOMIZE               │
@@ -975,6 +994,7 @@ If you are **adapting**, you want Kustomize. There is nobody to distribute to: t
   │  Adapting what you already have, for yourself ─────────────►  KUSTOMIZE  │
   └──────────────────────────────────────────────────────────────────────────┘
 ```
+-->
 
 And the two combine. The commonest production shape is: take somebody's chart for the third-party components, use Kustomize for your own applications, and, if you need to adjust a chart's rendered output in a way its values do not expose, let Kustomize inflate the chart and patch the result [source: kubectl-book-kustomization-fields-2026-08-31]. This is not a compromise position. It is what "package" and "adapt" look like when both are happening in the same repository, which is most of the time.
 
@@ -1107,6 +1127,9 @@ They agree about everything that matters. Both exist to take a directory of loos
 Which means the argument the ecosystem spends so much energy on — templating versus not-templating, engine versus no-engine, Go templates versus patches — is an argument about *how*, conducted between two tools that had already agreed on *what*. And the *what* is the part that changes how you work.
 
 <!-- FIGURE: ch14-zenith-package-not-template -->
+![Two symmetric paths, one labelled render that fills in holes from templates and values, one labelled patch that merges deltas from a base and overlay, converging with opposing arrows on a single highlighted box reading one named, versioned, installable unit, which then flows to a cluster](figures/ch14-zenith-package-not-template.svg)
+
+<!-- ASCII-FALLBACK
 ```
         RENDER                                          PATCH
         ══════                                          ═════
@@ -1135,6 +1158,7 @@ Which means the argument the ecosystem spends so much energy on — templating v
         The destination is the same one.
         The destination is the point.
 ```
+-->
 
 That is what the subtitle meant. *A chart is not a release*: the package and the installation are different things, and collapsing them costs you the ability to say what is running where. *Templates are not the point*: they are one way of absorbing variation, and a tool exists that absorbs variation without them and solves the same problem anyway.
 

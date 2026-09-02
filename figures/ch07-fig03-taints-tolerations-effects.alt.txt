@@ -1,0 +1,1 @@
+A node carrying a taint repels three Pods: two arriving and one already resident. A table below shows that NoSchedule and PreferNoSchedule leave the resident Pod unaffected, while NoExecute evicts it.

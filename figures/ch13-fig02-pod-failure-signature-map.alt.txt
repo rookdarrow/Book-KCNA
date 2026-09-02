@@ -1,0 +1,1 @@
+A decision tree beginning with the question of whether the Pod object exists; the No branch leads to admission refusal, and the Yes branch splits by phase into Pending, meaning not scheduled, and Running with containers waiting, which fans out into the image-pull, configuration, and image-policy failure reasons

@@ -406,6 +406,9 @@ The mechanics are simple. The semantics are what get tested.
 <!-- RESOLVED 2026-08-24: figure numbering follows the arc outline's prescribed slugs, not document order (precedent: Ch 2 shipped the same property). Keep as-is. -->
 
 <!-- FIGURE: ch05-fig03-init-containers-sequence -->
+![Two timelines: on the success path init-1 exits zero then init-2 exits zero, after which app-a and app-b start together in parallel; on the failure path init-2 exits non-zero, restart is governed by restartPolicy, and the app containers are never started](figures/ch05-fig03-init-containers-sequence.svg)
+
+<!-- ASCII-FALLBACK
 ```
 SUCCESS PATH
   time ──────────────────────────────────────────────────────►
@@ -423,6 +426,7 @@ FAILURE PATH
                             │
                             └──► app containers: NEVER STARTED
 ```
+-->
 
 Two things in that figure carry the whole section. The init containers are strictly **sequential**: one at a time, each waiting for the previous one's successful exit. The app containers are **parallel**: they all start together once the init sequence completes. That contrast is the fact. One at a time down the gangway, then everyone aboard at once.
 
@@ -591,6 +595,9 @@ Notice how much more each container state tells you than a phase does. A phase i
 > **Dead Reckoning:** A Pod has exactly one **phase**, which is one of: Pending, Running, Succeeded, Failed, Unknown. Each container in that Pod separately has a **state**, which is one of: Waiting, Running, Terminated. Phase is a Pod-level field in `status`; state is per-container [source: k8s-docs-pod-lifecycle-2026-08-23] [source: k8s-docs-objects-2026-08-23]. A Pod with three containers has one phase and three states. These are different fields with different vocabularies at different scopes. They are not interchangeable.
 
 <!-- FIGURE: ch05-fig02-pod-phases-and-container-states -->
+![A Pod box shows five phase values Pending, Running, Succeeded, Failed and Unknown, and nested inside it two container boxes each show three states Waiting, Running and Terminated; a second panel shows a real instant where the Pod's phase is Running while its helper container's state is Waiting with reason ImagePullBackOff](figures/ch05-fig02-pod-phases-and-container-states.svg)
+
+<!-- ASCII-FALLBACK
 ```
 ┌─ POD ──────────────────────────────────────────────────────┐
 │  status.phase:  Pending → Running → Succeeded              │
@@ -616,6 +623,7 @@ WORKED OVERLAY — both readings are legitimate:
 │   └─────────────────────────────────────────────────────┘  │
 └─────────────────────────────────────────────────────────────┘
 ```
+-->
 
 <!-- AUTHOR-REVIEW: the worked overlay previously showed `Reason: ImagePullBackOff` against `phase: Running`, which CONTRADICTS the cached definition of Running ("all of the containers have been created") — a container blocked on an image pull has not been created, and the draft's own table further down maps that exact scenario to `Pending`. Fixed here by swapping to a POST-creation waiting reason. The natural label is `CrashLoopBackOff` (a container that started, failed, and is serving its backoff delay), but that status-reason string appears in NO cached snapshot — a genuine research gap, distinct from the five unmaterialized snapshots. The neutral placeholder `<restart backoff>` is used instead. Once a source for container status reasons is fetched, replace the placeholder with `CrashLoopBackOff` here and in the prose two subsections below, and tag both. -->
 
@@ -820,6 +828,9 @@ Readiness stands a container down from the watch. Liveness relieves it of duty a
 **`startupProbe` — has the application within the container started?** While a startup probe is configured and has not yet succeeded, **all other probes are disabled** [source: k8s-docs-pod-lifecycle-2026-08-23]. If the startup probe itself fails, the kubelet kills the container and applies the restart policy [source: k8s-docs-pod-lifecycle-2026-08-23].
 
 <!-- FIGURE: ch05-fig04-three-probes-compared -->
+![A three-row comparison of Kubernetes probes: liveness asks whether the container is running and on failure the kubelet kills it without removing it from Service endpoints; readiness asks whether the container can respond and on failure the Pod IP is removed from matching Service endpoints without killing or restarting anything; startup asks whether the application has started, on failure the kubelet kills the container, and while configured it suppresses the other two probes](figures/ch05-fig04-three-probes-compared.svg)
+
+<!-- ASCII-FALLBACK
 ```
              │ ASKS                    │ ON FAILURE           │ DOES *NOT*
 ─────────────┼─────────────────────────┼──────────────────────┼──────────────────────
@@ -835,6 +846,7 @@ Readiness stands a container down from the watch. Liveness relieves it of duty a
              │ started?                │ container → restart  │ others — it SUPPRESSES
              │                         │ policy applies       │ them until it succeeds
 ```
+-->
 
 The third column is the one doing the teaching. Two probes kill and don't de-register; one de-registers and doesn't kill. Get that asymmetry and the rest is detail.
 
@@ -936,6 +948,9 @@ There is a fourth movement to this arithmetic, and it is the one the exam names.
 Keep the mechanisms separate in your head, because a distractor will happily blur them: CPU overuse is throttled and memory overuse is OOM-killed, per container, as above — while the QoS class governs *eviction under node pressure*, a Pod-level decision. Same inputs, different machinery.
 
 <!-- FIGURE: ch05-fig05-requests-limits-qos-classes -->
+![A horizontal band for one container's use of one resource, marked at zero, at the request, and at the limit; the zone up to the request is reserved and read by the kube-scheduler, the zone between request and limit is allowed when the node has spare capacity, and the zone past the limit is not allowed and is enforced by the kubelet with the kernel; a note beneath states that CPU is throttled at the limit while memory is OOM-killed reactively under node memory pressure](figures/ch05-fig05-requests-limits-qos-classes.svg)
+
+<!-- ASCII-FALLBACK
 ```
 A SINGLE CONTAINER'S RESOURCE BAND
 
@@ -961,6 +976,7 @@ A SINGLE CONTAINER'S RESOURCE BAND
   BestEffort     no requests and no limits anywhere in the Pod
                 research snapshot, do not fill in from memory
 ```
+-->
 
 > ★ **Fixed Point:** **Requests are what the scheduler reads** to place the Pod. **Limits are what the kubelet enforces** on the running container. **CPU limits throttle; memory limits kill** — and the memory kill is reactive, arriving when the kernel detects pressure rather than the instant you cross the line.
 
@@ -1057,6 +1073,9 @@ Everything in this chapter is a consequence of one decision: **the unit of sched
 A hull is not cargo. The vessel is the thing that gets a berth, an address, and a name on the manifest; the crates in the hold get none of those, and they go wherever the hull goes. That's it. That's the whole design. Walk back through what you've just learned and watch each fact turn into a consequence of that single choice:
 
 <!-- FIGURE: ch05-zenith-smallest-deployable-unit -->
+![A tree whose single root reads that the unit of scheduling wraps containers rather than being one, branching to six equal consequences: the Pod has the IP, containers reach each other on localhost, restartPolicy is Pod-level, phase is Pod-level while state is per-container, identity is per-Pod, and scheduling is per-Pod; a further branch from the first leaf notes that Services will select Pods, not containers, in Chapter 9](figures/ch05-zenith-smallest-deployable-unit.svg)
+
+<!-- ASCII-FALLBACK
 ```
                     ┌───────────────────────────┐
                     │   THE UNIT OF SCHEDULING  │
@@ -1077,6 +1096,7 @@ A hull is not cargo. The vessel is the thing that gets a berth, an address, and 
       │
       └──────────────► SERVICES WILL SELECT PODS, NOT CONTAINERS  (→ Ch 9)
 ```
+-->
 
 <!-- RESOLVED 2026-08-24: chNN-zenith-<slug> is the arc outline's prescribed Zenith anchor form, with shipped precedent (ch02-zenith-standard-crate). Not malformed; keep. -->
 

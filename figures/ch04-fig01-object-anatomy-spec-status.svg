@@ -1,0 +1,71 @@
+<svg viewBox="0 0 480 664" role="img" aria-labelledby="ch04-fig01-title ch04-fig01-desc" xmlns="http://www.w3.org/2000/svg" width="620" height="858">
+      <title id="ch04-fig01-title">Kubernetes object anatomy: the authorship boundary</title>
+      <desc id="ch04-fig01-desc">Two stacked panels split by a heavy horizontal rule labelled authorship boundary. The upper panel, headed You Author This, lists apiVersion, kind, and metadata — with nested name, uid, and optional namespace — and spec. The lower panel, headed The System Authors This, contains only status.</desc>
+      <defs>
+        <clipPath id="cd-panel1-clip">
+          <rect x="20" y="32" width="440" height="368" rx="8"></rect>
+        </clipPath>
+        <clipPath id="cd-panel2-clip">
+          <rect x="20" y="480" width="440" height="152" rx="8"></rect>
+        </clipPath>
+      </defs>
+
+      <!-- background -->
+      <rect width="480" height="664" fill="#F5EFE4"></rect>
+
+      <!-- ===== Panel 1: YOU AUTHOR THIS ===== -->
+      <rect x="20" y="32" width="440" height="368" rx="8" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1"></rect>
+      <rect x="20" y="32" width="440" height="48" fill="rgba(11,30,59,0.05)" clip-path="url(#cd-panel1-clip)"></rect>
+      <line x1="20" y1="80" x2="460" y2="80" stroke="rgba(11,30,59,0.12)" stroke-width="1"></line>
+      <text x="36" y="64" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" letter-spacing="0.02em" fill="#0B1E3B">YOU AUTHOR THIS</text>
+
+      <!-- apiVersion -->
+      <text x="36" y="120" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">apiVersion<tspan fill="#8A8D90"> …</tspan></text>
+      <text x="228" y="120" font-family="'Fira Sans', sans-serif" font-size="14" fill="#1F4A4E">which API version</text>
+
+      <!-- kind -->
+      <text x="36" y="156" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">kind<tspan fill="#8A8D90"> …</tspan></text>
+      <text x="228" y="156" font-family="'Fira Sans', sans-serif" font-size="14" fill="#1F4A4E">what kind of object</text>
+
+      <!-- metadata: -->
+      <text x="36" y="192" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">metadata:</text>
+      <text x="228" y="192" font-family="'Fira Sans', sans-serif" font-size="14" fill="#1F4A4E">which one, specifically</text>
+
+      <!-- name (nested) -->
+      <text x="60" y="228" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">name<tspan fill="#8A8D90"> …</tspan></text>
+
+      <!-- uid (nested) -->
+      <text x="60" y="264" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">uid<tspan fill="#8A8D90"> …</tspan></text>
+
+      <!-- namespace (nested) -->
+      <text x="60" y="300" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">namespace<tspan fill="#8A8D90"> …</tspan></text>
+      <text x="228" y="300" font-family="'Fira Sans', sans-serif" font-size="14" fill="#1F4A4E">(optional)</text>
+
+      <!-- spec: -->
+      <text x="36" y="336" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">spec:</text>
+      <text x="228" y="336" font-family="'Fira Sans', sans-serif" font-size="14" fill="#1F4A4E">what it should look like</text>
+
+      <!-- spec contents (nested) -->
+      <text x="60" y="372" font-family="'Fira Mono', monospace" font-size="14" fill="#8A8D90">…</text>
+      <text x="228" y="372" font-family="'Fira Sans', sans-serif" font-size="14" fill="#1F4A4E">(more fields)</text>
+
+      <!-- ===== Authorship boundary (focal) ===== -->
+      <line x1="20" y1="436" x2="460" y2="436" stroke="#B58B3E" stroke-width="2"></line>
+      <line x1="20" y1="444" x2="460" y2="444" stroke="#B58B3E" stroke-width="2"></line>
+      <rect x="132" y="428" width="216" height="24" rx="2" fill="#F5EFE4"></rect>
+      <text x="240" y="444" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.12em" fill="#B58B3E">AUTHORSHIP BOUNDARY</text>
+
+      <!-- ===== Panel 2: THE SYSTEM AUTHORS THIS ===== -->
+      <rect x="20" y="480" width="440" height="152" rx="8" fill="#FFFFFF" stroke="#1F4A4E" stroke-width="1"></rect>
+      <rect x="20" y="480" width="440" height="48" fill="rgba(31,74,78,0.06)" clip-path="url(#cd-panel2-clip)"></rect>
+      <line x1="20" y1="528" x2="460" y2="528" stroke="rgba(11,30,59,0.12)" stroke-width="1"></line>
+      <text x="36" y="512" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" letter-spacing="0.02em" fill="#1F4A4E">THE SYSTEM AUTHORS THIS</text>
+
+      <!-- status: -->
+      <text x="36" y="568" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#1F4A4E">status:</text>
+      <text x="228" y="568" font-family="'Fira Sans', sans-serif" font-size="14" fill="#1F4A4E">what is actually true</text>
+
+      <!-- status contents (nested) -->
+      <text x="60" y="604" font-family="'Fira Mono', monospace" font-size="14" fill="#8A8D90">…</text>
+      <text x="228" y="604" font-family="'Fira Sans', sans-serif" font-size="14" fill="#1F4A4E">(more fields)</text>
+    </svg>

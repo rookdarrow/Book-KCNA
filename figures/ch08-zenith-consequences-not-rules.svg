@@ -1,0 +1,84 @@
+<svg viewBox="0 0 680 740" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch08-one-door-title ch08-one-door-desc" width="680" height="740">
+      <title id="ch08-one-door-title">Every write passes through one door: the API server</title>
+      <desc id="ch08-one-door-desc">Four administrative actions — cordoning a node, applying a resource quota, applying a deployment, and a kubelet's self-registration — all converge on the API server, the one door for every cluster write; the API server fans out to the downstream consumers already met (kube-scheduler, the node controller, workload controllers, and the control loop) and persists state to etcd.</desc>
+      <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon>
+        </marker>
+      </defs>
+
+      <rect width="100%" height="100%" fill="#F5EFE4"></rect>
+
+      <!-- Connectors (drawn before nodes) -->
+      <!-- Inputs: four administrative acts converge on the hub's left edge -->
+      <line x1="360" y1="80" x2="440" y2="80" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"></line>
+      <line x1="360" y1="180" x2="440" y2="180" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"></line>
+      <line x1="360" y1="280" x2="440" y2="280" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"></line>
+      <line x1="360" y1="380" x2="440" y2="380" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"></line>
+
+      <!-- Output: hub -> grouped downstream consumers (elbow, routes clear of every other box) -->
+      <path d="M 460,420 V 432 Q 460,440 452,440 H 208 Q 200,440 200,448 V 468" fill="none" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"></path>
+
+      <!-- Output: hub -> etcd (straight, single door to durable state) -->
+      <line x1="540" y1="420" x2="540" y2="484" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"></line>
+
+      <!-- Node: Source 1 -->
+      <rect x="40" y="40" width="320" height="80" rx="6" fill="#F5EFE4"></rect>
+      <rect x="40" y="40" width="320" height="80" rx="6" fill="rgba(31,74,78,0.10)" stroke="#8A8D90" stroke-width="1"></rect>
+      <text x="200" y="76" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle">Cordon a node</text>
+      <text x="200" y="96" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle">kubectl cordon</text>
+
+      <!-- Node: Source 2 -->
+      <rect x="40" y="140" width="320" height="80" rx="6" fill="#F5EFE4"></rect>
+      <rect x="40" y="140" width="320" height="80" rx="6" fill="rgba(31,74,78,0.10)" stroke="#8A8D90" stroke-width="1"></rect>
+      <text x="200" y="176" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle">Apply a quota</text>
+      <text x="200" y="196" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle">kubectl apply -f quota.yaml</text>
+
+      <!-- Node: Source 3 -->
+      <rect x="40" y="240" width="320" height="80" rx="6" fill="#F5EFE4"></rect>
+      <rect x="40" y="240" width="320" height="80" rx="6" fill="rgba(31,74,78,0.10)" stroke="#8A8D90" stroke-width="1"></rect>
+      <text x="200" y="276" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle">Apply a deployment</text>
+      <text x="200" y="296" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle">kubectl apply -f deploy.yaml</text>
+
+      <!-- Node: Source 4 -->
+      <rect x="40" y="340" width="320" height="80" rx="6" fill="#F5EFE4"></rect>
+      <rect x="40" y="340" width="320" height="80" rx="6" fill="rgba(31,74,78,0.10)" stroke="#8A8D90" stroke-width="1"></rect>
+      <text x="200" y="376" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle">Kubelet joins the cluster</text>
+      <text x="200" y="396" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle">kubelet self-registration</text>
+
+      <!-- Node: Hub (focal) — the API server, one door -->
+      <rect x="440" y="40" width="200" height="380" rx="6" fill="#F5EFE4"></rect>
+      <rect x="440" y="40" width="200" height="380" rx="6" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"></rect>
+      <text x="540" y="172" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle">The API Server</text>
+      <text x="540" y="196" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle">kube-apiserver</text>
+      <rect x="468" y="212" width="144" height="32" rx="4" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"></rect>
+      <text x="540" y="232" fill="#0B1E3B" font-size="14" font-weight="700" font-family="'Fira Sans', sans-serif" text-anchor="middle" letter-spacing="0.08em">ONE DOOR</text>
+
+      <!-- Node: Downstream consumers (grouped) -->
+      <rect x="40" y="468" width="320" height="144" rx="6" fill="#F5EFE4"></rect>
+      <rect x="40" y="468" width="320" height="144" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="56" y="496" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="start">Downstream consumers</text>
+      <text x="56" y="520" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="start">kube-scheduler — Ch 7</text>
+      <text x="56" y="544" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="start">node controller — Ch 4/8</text>
+      <text x="56" y="568" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="start">workload controllers — Ch 6</text>
+      <text x="56" y="592" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="start">control loop — Ch 3</text>
+
+      <!-- Node: etcd (store) -->
+      <rect x="440" y="484" width="200" height="96" rx="6" fill="#F5EFE4"></rect>
+      <rect x="440" y="484" width="200" height="96" rx="6" fill="rgba(11,30,59,0.05)" stroke="#1F4A4E" stroke-width="1"></rect>
+      <text x="540" y="524" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle">etcd</text>
+      <text x="540" y="548" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle">distributed key-value store</text>
+
+      <!-- Legend strip -->
+      <line x1="40" y1="660" x2="640" y2="660" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+      <text x="40" y="680" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" letter-spacing="0.12em">LEGEND</text>
+
+      <rect x="40" y="700" width="20" height="16" rx="2" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"></rect>
+      <text x="68" y="712" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">Focal — one door</text>
+
+      <rect x="260" y="700" width="20" height="16" rx="2" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="288" y="712" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">Grouped consumers</text>
+
+      <rect x="480" y="700" width="20" height="16" rx="2" fill="rgba(11,30,59,0.05)" stroke="#1F4A4E" stroke-width="1"></rect>
+      <text x="508" y="712" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">Durable store</text>
+    </svg>

@@ -1,0 +1,1 @@
+Three boxes in a row labelled Authentication, Authorization and Admission, with a request arrow entering on the left and persistence to etcd on the right; each box has a downward arrow to a REJECT outcome, and the Admission box has an additional arrow labelled REWRITTEN that loops back into the forward path

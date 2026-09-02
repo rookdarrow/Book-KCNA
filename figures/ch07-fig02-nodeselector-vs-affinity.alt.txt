@@ -1,0 +1,1 @@
+A two-by-three matrix. Columns are nodeSelector, required node affinity, preferred node affinity, increasing in expressiveness. Rows are hard and soft. Only three cells are filled, and only the bottom-right preferred-affinity cell is soft.

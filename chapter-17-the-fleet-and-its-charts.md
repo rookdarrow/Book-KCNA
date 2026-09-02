@@ -472,6 +472,9 @@ The definition does four distinct things, and pulling them apart makes it far ea
 Five characteristics, attached to loosely coupled systems. Not five characteristics floating free. The loose coupling is the spine, and the five are what a loosely coupled system has to manage to be worth having. Each one is a real requirement with teeth:
 
 <!-- FIGURE: ch17-fig01-cloud-native-definition-characteristics -->
+![A single root box labelled LOOSELY COUPLED SYSTEMS branches down to five characteristics: secure, resilient, manageable, sustainable, and observable, each with a short explanatory gloss beneath it](figures/ch17-fig01-cloud-native-definition-characteristics.svg)
+
+<!-- ASCII-FALLBACK
 ```
                   LOOSELY COUPLED SYSTEMS
                   that interoperate in a manner that is:
@@ -487,6 +490,7 @@ Five characteristics, attached to loosely coupled systems. Not five characterist
  at the                              and in       answer
  edge                                power
 ```
+-->
 
 *The five characteristics of a cloud native system, hung on the loose coupling that makes them necessary. The list is short enough to memorize and worth memorizing; the annotations are what each one costs you if you skip it.*
 
@@ -529,6 +533,9 @@ Read those three descriptions as claims about *evidence*, not about quality. A S
 There is a fourth word you will meet if you browse cncf.io, and it is not a rung. **Archived**, "inactive or low activity projects that are no longer supported" [source: cncf-toc-project-lifecycle-process-2026-08-31], is where projects land when nobody is maintaining them any more. Projects do not climb to it. The three-rung progression is correct as a progression, and Archived is the exit.
 
 <!-- FIGURE: ch17-fig05-cncf-maturity-levels -->
+![An ascending three-step staircase labelled Sandbox at the bottom, Incubating in the middle, and Graduated at the top, each step captioned with what that level asserts, with a separate detached note explaining that Archived is not a rung](figures/ch17-fig05-cncf-maturity-levels.svg)
+
+<!-- ASCII-FALLBACK
 ```
                                     +--------------------+
                                     |     GRADUATED      |
@@ -552,6 +559,7 @@ There is a fourth word you will meet if you browse cncf.io, and it is not a rung
     ( ARCHIVED is not a rung. It is where projects go when
       they stop. See below. )
 ```
+-->
 
 *The ladder, annotated with what each level asserts. No project names appear on this figure deliberately — the roster changes, and a figure is the hardest thing in a book to update.*
 
@@ -795,6 +803,9 @@ Chapter 6: Kubernetes needs object types it did not anticipate. It does not add 
 This section puts those four side by side. It does not redefine any of them; each was taught in full where you met it, and if any of the four is fuzzy, the pointer above is where to go rather than the paragraph below.
 
 <!-- FIGURE: ch17-fig02-extension-points-map -->
+![A three-band Kubernetes stack: the API surface at the top holding CRDs for new object kinds, a control plane band in the middle, and the node at the bottom holding CRI for running containers, CNI for pod networking, and CSI for attaching storage; four identical sockets on the left edge mark each extension point with its chapter reference](figures/ch17-fig02-extension-points-map.svg)
+
+<!-- ASCII-FALLBACK
 ```
             +==================================================+
             |          THE KUBERNETES API SURFACE              |
@@ -819,6 +830,7 @@ This section puts those four side by side. It does not redefine any of them; eac
             (o) = a socket. Kubernetes defines the shape.
                   Somebody else supplies the plug.
 ```
+-->
 
 *The book's four pluggable interfaces, each marked at the layer it serves and the chapter that taught it. Four sockets, four chapters, one shape.*
 
@@ -926,6 +938,9 @@ This is the most dangerous piece of vocabulary in the chapter, and it is dangero
 > [source: istio-service-mesh-2026-08-23]
 
 <!-- FIGURE: ch17-fig03-mesh-data-vs-control-plane -->
+![Three separate layers: the cluster's control plane drawn apart at the top with no connection to anything, the mesh's control plane below it sending arrows down to the mesh's data plane, and the data plane split into a sidecar column with an Envoy proxy inside each Pod and an ambient column where Pods hold only the app and proxying happens in a per-node ztunnel and an optional per-namespace Envoy waypoint](figures/ch17-fig03-mesh-data-vs-control-plane.svg)
+
+<!-- ASCII-FALLBACK
 ```
    ############################################################
    #  THE CLUSTER'S CONTROL PLANE            ( Ch 3 §2 )      #
@@ -964,6 +979,7 @@ This is the most dangerous piece of vocabulary in the chapter, and it is dangero
      [E] = Envoy.  Both columns are the SAME data plane,
            arranged two ways -- not two products.
 ```
+-->
 
 *The separation is the argument. Two mesh planes, and the cluster's control plane drawn deliberately apart from both.*
 
@@ -1216,6 +1232,9 @@ And the headline behavior:
 Zero. Not one idle replica riding at anchor, burning memory in case somebody shows up. None.
 
 <!-- FIGURE: ch17-fig07-scale-to-zero-and-the-knative-service -->
+![A closed cycle: an idle Knative Service at zero replicas with nothing running, a request arriving and the Knative Pod Autoscaler scaling from zero to N with a container visible inside a Pod, a serving state with several such Pods, then traffic stopping and the autoscaler scaling back down to zero replicas](figures/ch17-fig07-scale-to-zero-and-the-knative-service.svg)
+
+<!-- ASCII-FALLBACK
 ```
    IDLE                REQUEST ARRIVES         SERVING
    ----                ---------------         -------
@@ -1246,6 +1265,7 @@ Zero. Not one idle replica riding at anchor, burning memory in case somebody sho
    The containers and Pods are real at every populated step.
    "Serverless" describes the LIFECYCLE, not their absence.
 ```
+-->
 
 *A request arrives at an idle Knative Service; replicas go from zero to N; traffic stops; replicas return to zero. Containers in Pods are visible at both ends of the cycle — deliberately, because that is the section's Fixed Point.*
 
@@ -1328,6 +1348,9 @@ The section is titled "Four Things That Scale," and an attentive reader will alr
 That is not a flaw in the taxonomy. It is the most useful thing in the section.
 
 <!-- FIGURE: ch17-fig04-autoscaler-landscape -->
+![A four-row comparison table of autoscalers: HPA moves replica count on observed utilization and ships with Kubernetes; KEDA moves replica count on external events and schedules; VPA moves per-replica CPU and memory on observed usage and is flagged as an add-on that is not shipped; Cluster Autoscaler and Karpenter move the node pool in response to unschedulable Pods and underutilized nodes](figures/ch17-fig04-autoscaler-landscape.svg)
+
+<!-- ASCII-FALLBACK
 ```
    +-------------------+------------------+---------------------+
    | AUTOSCALER        | WHAT MOVES       | WHAT TRIGGERS IT    |
@@ -1353,6 +1376,7 @@ That is not a flaw in the taxonomy. It is the most useful thing in the section.
    [*] KEDA shares HPA's axis with a different trigger.
        Axis and trigger are two separate questions.
 ```
+-->
 
 *Four autoscalers, three axes. The two marked cells carry most of this section's exam value.*
 
@@ -1436,6 +1460,9 @@ And then Committees.
 There are exactly **three** Committees: **Code of Conduct**, **Security Response**, and **Steering** [source: k8s-sig-list-and-groups-2026-08-31]. Steering is one of them, and it also holds overall project governance; it is Steering that charters the other two [source: k8s-community-governance-2026-08-23].
 
 <!-- FIGURE: ch17-fig06-cncf-and-k8s-governance -->
+![Two org charts side by side separated by a divider. On the CNCF side, the Governing Board sets the scope for the TOC, which aligns the five TAGs, with an End User TAB feeding the TOC. On the Kubernetes side, the Steering Committee charters three committees marked as not having open membership, alongside separate boxes for durable topic-scoped SIGs and time-bounded cross-SIG Working Groups](figures/ch17-fig06-cncf-and-k8s-governance.svg)
+
+<!-- ASCII-FALLBACK
 ```
    ==================== CNCF ====================    ====== KUBERNETES ======
    ( the foundation -- 227+ projects )              ( ONE of those projects )
@@ -1471,6 +1498,7 @@ There are exactly **three** Committees: **Code of Conduct**, **Security Response
    TAGs are CNCF-wide.  SIGs are Kubernetes-internal.
    Different organizations, different scopes.
 ```
+-->
 
 *Two governance structures side by side. The pairing is the point — most of the confusion in this material comes from meeting them separately.*
 
@@ -1681,6 +1709,9 @@ Here is what you were actually looking at.
 Kubernetes is not a system that happens to be extensible in four places. It is a system built on the premise that **it should not be the one implementing the parts that vary**.
 
 <!-- FIGURE: ch17-zenith-one-pluggability-story -->
+![Two halves: on the left, a box reading Kubernetes defines what must be true connected by one arrow labelled the socket to a box reading somebody else supplies the thing; on the right, a plain list of CRI, CNI, CSI and CRDs with their chapter references, captioned four instances, not four decisions](figures/ch17-zenith-one-pluggability-story.svg)
+
+<!-- ASCII-FALLBACK
 ```
               THE SHAPE                    THE EVIDENCE
               ---------                    ------------
@@ -1701,6 +1732,7 @@ Kubernetes is not a system that happens to be extensible in four places. It is a
      ^ the four sockets of ch17-fig02, collapsed into
        the single relation they were always instances of
 ```
+-->
 
 *The same vocabulary as the extension-points map, one altitude higher — and altitude, to a navigator, is not a metaphor for importance. It is the angle you take on a fixed body to learn where you actually are.*
 

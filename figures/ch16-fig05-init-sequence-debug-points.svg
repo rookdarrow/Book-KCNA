@@ -1,0 +1,100 @@
+<svg viewBox="0 0 640 720" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch16fig05-title ch16fig05-desc" width="640" height="720">
+      <title id="ch16fig05-title">Init Container Sequence — Debug Points</title>
+      <desc id="ch16fig05-desc">Flowchart of a Pod's init container sequence — init-1 through init-3, then the app containers — each aligned above a Pod status badge reading Init:0/3, Init:1/3, Init:2/3, and Running, followed by the kubectl commands for reading init container logs and three failure signatures matched to their causes.</desc>
+      <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon></marker>
+        <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#B58B3E"></polygon></marker>
+        <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon></marker>
+      </defs>
+
+      <rect width="100%" height="100%" fill="#F5EFE4"></rect>
+
+      <!-- Section eyebrow -->
+      <text x="40" y="36" fill="#8A8D90" font-size="14" font-family="'Fira Mono', monospace" letter-spacing="0.12em">POD STARTUP — INIT CONTAINER SEQUENCE</text>
+
+      <!-- Arrows (drawn before boxes) -->
+      <line x1="168" y1="104" x2="184" y2="104" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+      <line x1="312" y1="104" x2="328" y2="104" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+      <line x1="456" y1="104" x2="472" y2="104" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+
+      <line x1="104" y1="148" x2="104" y2="172" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+      <line x1="248" y1="148" x2="248" y2="172" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+      <line x1="392" y1="148" x2="392" y2="172" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+      <line x1="536" y1="148" x2="536" y2="172" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+
+      <!-- Container boxes -->
+      <rect x="40" y="64" width="128" height="80" rx="8" fill="rgba(11,30,59,0.04)" stroke="#0B1E3B" stroke-width="1"></rect>
+      <rect x="48" y="72" width="56" height="24" rx="2" fill="transparent" stroke="rgba(11,30,59,0.40)" stroke-width="0.8"></rect>
+      <text x="76" y="88" fill="rgba(11,30,59,0.75)" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.06em">INIT</text>
+      <text x="104" y="124" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">init-1</text>
+
+      <rect x="184" y="64" width="128" height="80" rx="8" fill="rgba(11,30,59,0.04)" stroke="#0B1E3B" stroke-width="1"></rect>
+      <rect x="192" y="72" width="56" height="24" rx="2" fill="transparent" stroke="rgba(11,30,59,0.40)" stroke-width="0.8"></rect>
+      <text x="220" y="88" fill="rgba(11,30,59,0.75)" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.06em">INIT</text>
+      <text x="248" y="124" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">init-2</text>
+
+      <rect x="328" y="64" width="128" height="80" rx="8" fill="rgba(11,30,59,0.04)" stroke="#0B1E3B" stroke-width="1"></rect>
+      <rect x="336" y="72" width="56" height="24" rx="2" fill="transparent" stroke="rgba(11,30,59,0.40)" stroke-width="0.8"></rect>
+      <text x="364" y="88" fill="rgba(11,30,59,0.75)" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.06em">INIT</text>
+      <text x="392" y="124" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">init-3</text>
+
+      <rect x="472" y="64" width="128" height="80" rx="8" fill="rgba(11,30,59,0.04)" stroke="#0B1E3B" stroke-width="1"></rect>
+      <rect x="480" y="72" width="56" height="24" rx="2" fill="transparent" stroke="rgba(11,30,59,0.40)" stroke-width="0.8"></rect>
+      <text x="508" y="88" fill="rgba(11,30,59,0.75)" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.06em">APP</text>
+      <text x="536" y="116" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">app</text>
+      <text x="536" y="136" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">containers</text>
+
+      <!-- Focal element: Pod status badges, real brass-bordered pills aligned beneath their container -->
+      <rect x="40" y="176" width="128" height="32" rx="16" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"></rect>
+      <text x="104" y="196" fill="#0B1E3B" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="middle">Init:0/3</text>
+
+      <rect x="184" y="176" width="128" height="32" rx="16" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"></rect>
+      <text x="248" y="196" fill="#0B1E3B" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="middle">Init:1/3</text>
+
+      <rect x="328" y="176" width="128" height="32" rx="16" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"></rect>
+      <text x="392" y="196" fill="#0B1E3B" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="middle">Init:2/3</text>
+
+      <rect x="472" y="176" width="128" height="32" rx="16" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"></rect>
+      <text x="536" y="196" fill="#0B1E3B" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="middle">Running</text>
+
+      <!-- Divider -->
+      <line x1="40" y1="248" x2="600" y2="248" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+
+      <!-- Debug commands -->
+      <text x="40" y="276" fill="#8A8D90" font-size="14" font-family="'Fira Mono', monospace" letter-spacing="0.12em">DEBUG COMMANDS</text>
+
+      <text x="40" y="308" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" letter-spacing="0.04em">READ WITH</text>
+      <text x="152" y="308" fill="#0B1E3B" font-size="14" font-family="'Fira Mono', monospace">kubectl logs &lt;pod&gt; -c &lt;init-name&gt;</text>
+
+      <text x="40" y="340" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" letter-spacing="0.04em">ALSO READ</text>
+      <text x="152" y="340" fill="#0B1E3B" font-size="14" font-family="'Fira Mono', monospace">kubectl describe pod &lt;pod&gt;</text>
+      <text x="152" y="364" fill="#8A8D90" font-size="14" font-family="'Fira Sans', sans-serif">(exit codes, order, state)</text>
+
+      <!-- Divider -->
+      <line x1="40" y1="404" x2="600" y2="404" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+
+      <!-- Failure signatures -> causes -->
+      <text x="40" y="432" fill="#8A8D90" font-size="14" font-family="'Fira Mono', monospace" letter-spacing="0.12em">FAILURE SIGNATURES</text>
+
+      <text x="40" y="464" fill="#0B1E3B" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" letter-spacing="0.04em">STUCK, NO ERROR</text>
+      <text x="40" y="488" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">→ ordering deadlock — what is it waiting for?</text>
+
+      <text x="40" y="520" fill="#0B1E3B" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" letter-spacing="0.04em">FAILS ONLY ON RESTART</text>
+      <text x="40" y="544" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">→ non-idempotent — it assumed a clean slate</text>
+
+      <text x="40" y="576" fill="#0B1E3B" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" letter-spacing="0.04em">EXITS NON-ZERO, LOUDLY</text>
+      <text x="40" y="600" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">→ config error — read the message, it's telling you</text>
+
+      <!-- Divider + legend -->
+      <line x1="40" y1="640" x2="600" y2="640" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+      <text x="40" y="668" fill="#8A8D90" font-size="14" font-family="'Fira Mono', monospace" letter-spacing="0.14em">LEGEND</text>
+
+      <rect x="40" y="684" width="28" height="16" rx="4" fill="rgba(11,30,59,0.04)" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="76" y="696" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">Init / app container</text>
+
+      <rect x="248" y="684" width="28" height="16" rx="8" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"></rect>
+      <text x="284" y="696" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">Pod status</text>
+
+      <line x1="428" y1="692" x2="456" y2="692" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+      <text x="464" y="696" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">Startup order</text>
+    </svg>

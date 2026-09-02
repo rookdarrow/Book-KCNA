@@ -1,0 +1,97 @@
+<svg class="diagram" viewBox="0 0 848 748" role="img" aria-labelledby="ch15-fig06-sync-waves-and-hook-phases-title ch15-fig06-sync-waves-and-hook-phases-desc" xmlns="http://www.w3.org/2000/svg" width="880" height="777">
+    <title id="ch15-fig06-sync-waves-and-hook-phases-title">Argo CD sync phases and wave ordering within Sync</title>
+    <desc id="ch15-fig06-sync-waves-and-hook-phases-desc">Three sync phases run left to right: PreSync running a database migration, Sync, then PostSync running a smoke test, each gated by an on-success arrow. Inside Sync a vertical wave axis orders three resources lowest number first: Namespace at wave minus one, CustomResourceDefinition at wave zero, and a custom resource at wave one. Ordering precedence is phase, then wave, then kind, then name.</desc>
+    <defs>
+      <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon>
+      </marker>
+      <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#B58B3E"></polygon>
+      </marker>
+      <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon>
+      </marker>
+    </defs>
+
+    <rect width="848" height="748" fill="#F5EFE4"></rect>
+
+    <!-- PHASE axis annotation -->
+    <text x="16" y="44" font-family="'Fira Mono',monospace" font-size="14" font-weight="500" letter-spacing="0.12em" fill="#1F4A4E">PHASE</text>
+    <line x1="88" y1="56" x2="832" y2="56" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"></line>
+
+    <!-- Phase containers (zones) -->
+    <rect x="16" y="104" width="152" height="392" rx="8" fill="#F5EFE4" stroke="rgba(11,30,59,0.25)" stroke-width="1"></rect>
+    <rect x="280" y="104" width="288" height="392" rx="8" fill="#F5EFE4" stroke="rgba(11,30,59,0.25)" stroke-width="1"></rect>
+    <rect x="680" y="104" width="152" height="392" rx="8" fill="#F5EFE4" stroke="rgba(11,30,59,0.25)" stroke-width="1"></rect>
+
+    <!-- Container headers -->
+    <text x="92" y="132" text-anchor="middle" font-family="'Fira Mono',monospace" font-size="14" font-weight="500" letter-spacing="0.12em" fill="#1F4A4E">PRESYNC</text>
+    <text x="424" y="132" text-anchor="middle" font-family="'Fira Mono',monospace" font-size="14" font-weight="500" letter-spacing="0.12em" fill="#1F4A4E">SYNC</text>
+    <text x="756" y="132" text-anchor="middle" font-family="'Fira Mono',monospace" font-size="14" font-weight="500" letter-spacing="0.12em" fill="#1F4A4E">POSTSYNC</text>
+
+    <!-- Gating arrows: on success -->
+    <line x1="168" y1="300" x2="280" y2="300" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"></line>
+    <rect x="172" y="276" width="104" height="16" fill="#F5EFE4"></rect>
+    <text x="224" y="288" text-anchor="middle" font-family="'Fira Mono',monospace" font-size="14" letter-spacing="0.04em" fill="#1F4A4E">ON SUCCESS</text>
+
+    <line x1="568" y1="300" x2="680" y2="300" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"></line>
+    <rect x="572" y="276" width="104" height="16" fill="#F5EFE4"></rect>
+    <text x="624" y="288" text-anchor="middle" font-family="'Fira Mono',monospace" font-size="14" letter-spacing="0.04em" fill="#1F4A4E">ON SUCCESS</text>
+
+    <!-- PreSync step -->
+    <rect x="28" y="268" width="128" height="64" rx="6" fill="rgba(11,30,59,0.04)" stroke="#0B1E3B" stroke-width="1"></rect>
+    <text x="92" y="292" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Database</text>
+    <text x="92" y="312" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">migration</text>
+
+    <!-- PostSync step -->
+    <rect x="692" y="268" width="128" height="64" rx="6" fill="rgba(11,30,59,0.04)" stroke="#0B1E3B" stroke-width="1"></rect>
+    <text x="756" y="304" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Smoke test</text>
+
+    <!-- Wave axis: the focal element -->
+    <line x1="360" y1="208" x2="360" y2="448" stroke="#B58B3E" stroke-width="1.2" marker-end="url(#arrow-accent)"></line>
+    <line x1="360" y1="208" x2="376" y2="208" stroke="#B58B3E" stroke-width="1"></line>
+    <line x1="360" y1="328" x2="376" y2="328" stroke="#B58B3E" stroke-width="1"></line>
+    <line x1="360" y1="448" x2="376" y2="448" stroke="#B58B3E" stroke-width="1"></line>
+
+    <!-- wave labels -->
+    <text x="352" y="212" text-anchor="end" font-family="'Fira Mono',monospace" font-size="14" font-weight="500" fill="#0B1E3B">wave -1</text>
+    <text x="352" y="332" text-anchor="end" font-family="'Fira Mono',monospace" font-size="14" font-weight="500" fill="#0B1E3B">wave 0</text>
+    <text x="352" y="452" text-anchor="end" font-family="'Fira Mono',monospace" font-size="14" font-weight="500" fill="#0B1E3B">wave 1</text>
+
+    <!-- Resource boxes: the three ordered rows, same focal group as the axis -->
+    <rect x="376" y="176" width="176" height="64" rx="6" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"></rect>
+    <text x="464" y="212" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Namespace</text>
+
+    <rect x="376" y="296" width="176" height="64" rx="6" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"></rect>
+    <text x="464" y="316" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">CRD</text>
+    <text x="464" y="332" text-anchor="middle" font-family="'Fira Mono',monospace" font-size="14" fill="#1F4A4E">CustomResource</text>
+    <text x="464" y="348" text-anchor="middle" font-family="'Fira Mono',monospace" font-size="14" fill="#1F4A4E">Definition</text>
+
+    <rect x="376" y="416" width="176" height="64" rx="6" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"></rect>
+    <text x="464" y="452" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">custom resource</text>
+
+    <!-- Captions -->
+    <text x="92" y="528" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-style="italic" font-size="16" fill="#8A8D90">Must finish</text>
+    <text x="92" y="548" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-style="italic" font-size="16" fill="#8A8D90">before anything</text>
+    <text x="92" y="568" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-style="italic" font-size="16" fill="#8A8D90">is applied</text>
+
+    <text x="424" y="528" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-style="italic" font-size="16" fill="#8A8D90">Within the phase,</text>
+    <text x="424" y="548" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-style="italic" font-size="16" fill="#8A8D90">lower wave numbers</text>
+    <text x="424" y="568" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-style="italic" font-size="16" fill="#8A8D90">land first (default 0;</text>
+    <text x="424" y="588" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-style="italic" font-size="16" fill="#8A8D90">negatives run before that)</text>
+
+    <text x="756" y="528" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-style="italic" font-size="16" fill="#8A8D90">Runs only if</text>
+    <text x="756" y="548" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-style="italic" font-size="16" fill="#8A8D90">everything succeeded</text>
+    <text x="756" y="568" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-style="italic" font-size="16" fill="#8A8D90">and is Healthy</text>
+
+    <!-- Ordering precedence -->
+    <line x1="16" y1="620" x2="832" y2="620" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+    <text x="424" y="648" text-anchor="middle" font-family="'Fira Mono',monospace" font-size="14" font-weight="500" letter-spacing="0.10em" fill="#0B1E3B">ORDERING PRECEDENCE: PHASE → WAVE → KIND → NAME</text>
+
+    <!-- Legend -->
+    <line x1="16" y1="680" x2="832" y2="680" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+    <rect x="16" y="696" width="16" height="16" rx="2" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"></rect>
+    <text x="36" y="708" font-family="'Fira Mono',monospace" font-size="14" fill="#8A8D90">WAVE-ORDERED RESOURCE</text>
+    <line x1="280" y1="704" x2="304" y2="704" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"></line>
+    <text x="312" y="708" font-family="'Fira Mono',monospace" font-size="14" fill="#8A8D90">ON-SUCCESS GATE</text>
+  </svg>

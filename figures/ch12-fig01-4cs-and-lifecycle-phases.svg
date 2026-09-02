@@ -1,0 +1,134 @@
+<svg viewBox="0 0 680 988" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch12-fig01-title ch12-fig01-desc" width="640" height="930">
+    <title id="ch12-fig01-title">4Cs and lifecycle phases of Kubernetes security controls</title>
+    <desc id="ch12-fig01-desc">Three-panel figure: four lifecycle phases in sequence from develop to runtime with runtime branching into access, compute and storage; four nested layers from Cloud outermost to Code innermost; and a table plotting five security controls against both a phase and a layer.</desc>
+
+    <defs>
+      <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon>
+      </marker>
+      <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#B58B3E"></polygon>
+      </marker>
+      <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon>
+      </marker>
+    </defs>
+
+    <rect width="100%" height="100%" fill="#F5EFE4"></rect>
+
+    <!-- ============ PANEL 1 — THE PHASES ============ -->
+    <text x="32" y="48" font-family="'Fira Mono', monospace" font-size="14" font-weight="600" letter-spacing="0.12em" fill="#0B1E3B">THE PHASES</text>
+    <text x="32" y="68" font-family="'Fira Sans', sans-serif" font-size="14" fill="#1F4A4E">when a control acts</text>
+    <line x1="32" y1="80" x2="648" y2="80" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+
+    <!-- connectors first -->
+    <line x1="236" y1="116" x2="260" y2="116" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"></line>
+    <line x1="420" y1="116" x2="444" y2="116" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"></line>
+    <path d="M524,136 L524,148 Q524,156 516,156 L348,156 Q340,156 340,164 L340,176" fill="none" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"></path>
+    <line x1="340" y1="216" x2="340" y2="236" stroke="#1F4A4E" stroke-width="1"></line>
+    <line x1="156" y1="236" x2="524" y2="236" stroke="#1F4A4E" stroke-width="1"></line>
+    <line x1="156" y1="236" x2="156" y2="256" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"></line>
+    <line x1="340" y1="236" x2="340" y2="256" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"></line>
+    <line x1="524" y1="236" x2="524" y2="256" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"></line>
+
+    <!-- row A -->
+    <g>
+      <rect x="76" y="96" width="160" height="40" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="156" y="120" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">DEVELOP</text>
+    </g>
+    <g>
+      <rect x="260" y="96" width="160" height="40" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="340" y="120" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">DISTRIBUTE</text>
+    </g>
+    <g>
+      <rect x="444" y="96" width="160" height="40" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="524" y="120" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">DEPLOY</text>
+    </g>
+
+    <!-- row B -->
+    <g>
+      <rect x="260" y="176" width="160" height="40" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="340" y="200" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">RUNTIME</text>
+    </g>
+
+    <!-- row C -->
+    <g>
+      <rect x="76" y="256" width="160" height="40" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="156" y="280" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">ACCESS</text>
+    </g>
+    <g>
+      <rect x="260" y="256" width="160" height="40" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="340" y="280" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">COMPUTE</text>
+    </g>
+    <g>
+      <rect x="444" y="256" width="160" height="40" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="524" y="280" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">STORAGE</text>
+    </g>
+
+    <!-- ============ PANEL 2 — THE LAYERS ============ -->
+    <text x="32" y="352" font-family="'Fira Mono', monospace" font-size="14" font-weight="600" letter-spacing="0.12em" fill="#0B1E3B">THE LAYERS</text>
+    <text x="32" y="372" font-family="'Fira Sans', sans-serif" font-size="14" fill="#1F4A4E">where a control acts</text>
+    <line x1="32" y1="388" x2="648" y2="388" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+
+    <rect x="32" y="400" width="616" height="224" rx="8" fill="rgba(11,30,59,0.02)" stroke="rgba(31,74,78,0.35)" stroke-width="1"></rect>
+    <rect x="60" y="424" width="560" height="176" rx="8" fill="rgba(11,30,59,0.035)" stroke="rgba(31,74,78,0.7)" stroke-width="1"></rect>
+    <rect x="88" y="448" width="504" height="128" rx="8" fill="rgba(11,30,59,0.05)" stroke="rgba(11,30,59,0.8)" stroke-width="1"></rect>
+    <rect x="116" y="472" width="448" height="80" rx="8" fill="rgba(11,30,59,0.07)" stroke="#0B1E3B" stroke-width="1.2"></rect>
+
+    <rect x="44" y="392" width="76" height="16" fill="#F5EFE4"></rect>
+    <text x="48" y="404" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.1em" fill="#1F4A4E">CLOUD</text>
+    <rect x="72" y="416" width="88" height="16" fill="#F5EFE4"></rect>
+    <text x="76" y="428" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.1em" fill="#1F4A4E">CLUSTER</text>
+    <rect x="100" y="440" width="104" height="16" fill="#F5EFE4"></rect>
+    <text x="104" y="452" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.1em" fill="#0B1E3B">CONTAINER</text>
+    <rect x="128" y="464" width="68" height="16" fill="#F5EFE4"></rect>
+    <text x="132" y="476" font-family="'Fira Mono', monospace" font-size="14" font-weight="600" letter-spacing="0.1em" fill="#0B1E3B">CODE</text>
+
+    <!-- ============ PANEL 3 — FIVE CONTROLS, PLOTTED ON BOTH ============ -->
+    <text x="32" y="664" font-family="'Fira Mono', monospace" font-size="14" font-weight="600" letter-spacing="0.12em" fill="#0B1E3B">FIVE CONTROLS, PLOTTED ON BOTH</text>
+    <line x1="32" y1="680" x2="648" y2="680" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+
+    <!-- table structure -->
+    <rect x="32" y="696" width="616" height="260" fill="none" stroke="#0B1E3B" stroke-width="1"></rect>
+    <line x1="252" y1="696" x2="252" y2="956" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+    <line x1="452" y1="696" x2="452" y2="956" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+    <line x1="32" y1="736" x2="648" y2="736" stroke="#0B1E3B" stroke-width="1"></line>
+    <line x1="32" y1="780" x2="648" y2="780" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+    <line x1="32" y1="824" x2="648" y2="824" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+    <line x1="32" y1="868" x2="648" y2="868" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+    <line x1="32" y1="912" x2="648" y2="912" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+
+    <!-- header row -->
+    <text x="48" y="721" font-family="'Fira Mono', monospace" font-size="14" font-weight="600" letter-spacing="0.1em" fill="#0B1E3B">CONTROL</text>
+
+    <rect x="260" y="704" width="72" height="24" rx="4" fill="rgba(181,139,62,0.12)" stroke="#B58B3E" stroke-width="1.2"></rect>
+    <text x="296" y="721" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="600" letter-spacing="0.1em" fill="#0B1E3B">PHASE</text>
+
+    <rect x="460" y="704" width="72" height="24" rx="4" fill="rgba(181,139,62,0.12)" stroke="#B58B3E" stroke-width="1.2"></rect>
+    <text x="496" y="721" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="600" letter-spacing="0.1em" fill="#0B1E3B">LAYER</text>
+
+    <!-- row 1: RBAC -->
+    <text x="48" y="763" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">RBAC</text>
+    <text x="268" y="763" font-family="'Fira Sans', sans-serif" font-size="16" fill="#0B1E3B">runtime / access</text>
+    <text x="468" y="763" font-family="'Fira Sans', sans-serif" font-size="16" fill="#0B1E3B">Cluster</text>
+
+    <!-- row 2: ServiceAccount -->
+    <text x="48" y="807" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">ServiceAccount</text>
+    <text x="268" y="807" font-family="'Fira Sans', sans-serif" font-size="16" fill="#0B1E3B">runtime / access</text>
+    <text x="468" y="807" font-family="'Fira Sans', sans-serif" font-size="16" fill="#0B1E3B">Cluster</text>
+
+    <!-- row 3: securityContext -->
+    <text x="48" y="851" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">securityContext</text>
+    <text x="268" y="851" font-family="'Fira Sans', sans-serif" font-size="16" fill="#0B1E3B">runtime / compute</text>
+    <text x="468" y="851" font-family="'Fira Sans', sans-serif" font-size="16" fill="#0B1E3B">Container</text>
+
+    <!-- row 4: encryption at rest -->
+    <text x="48" y="895" font-family="'Fira Sans', sans-serif" font-size="16" fill="#0B1E3B">encryption at rest</text>
+    <text x="268" y="895" font-family="'Fira Sans', sans-serif" font-size="16" fill="#0B1E3B">runtime / storage</text>
+    <text x="468" y="895" font-family="'Fira Sans', sans-serif" font-size="16" fill="#0B1E3B">Cloud → Cluster</text>
+
+    <!-- row 5: image signing -->
+    <text x="48" y="939" font-family="'Fira Sans', sans-serif" font-size="16" fill="#0B1E3B">image signing</text>
+    <text x="268" y="939" font-family="'Fira Sans', sans-serif" font-size="16" fill="#0B1E3B">distribute</text>
+    <text x="468" y="939" font-family="'Fira Sans', sans-serif" font-size="16" fill="#0B1E3B">Container</text>
+  </svg>

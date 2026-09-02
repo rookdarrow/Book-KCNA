@@ -1,0 +1,1 @@
+Two symmetric paths, one labelled render that fills in holes from templates and values, one labelled patch that merges deltas from a base and overlay, converging with opposing arrows on a single highlighted box reading one named, versioned, installable unit, which then flows to a cluster

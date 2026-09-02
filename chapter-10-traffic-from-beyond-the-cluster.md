@@ -506,6 +506,9 @@ Compare the two manifests side by side. They put the same number of Services beh
 > ★ **Fixed Point:** **Simple fanout** splits by *path* at one host. **Name-based virtual hosting** splits by *host* at one address. Both put many Services behind one IP; they differ only in what the rule reads.
 
 <!-- FIGURE: ch10-fig02-ingress-fanout-and-name-based-hosts -->
+![Two stacked panels comparing Ingress routing. In the upper panel, two HTTP requests share the host shop.example.com but differ by path; a single IP address 203.0.113.10 feeds a box labelled 'reads: path' that forks to a catalog Service and a checkout Service. In the lower panel, two requests share the path slash but differ by host; the same IP address feeds a box labelled 'reads: host' that forks to a shop Service and a blog Service. The matched fragment of each request is underlined.](figures/ch10-fig02-ingress-fanout-and-name-based-hosts.svg)
+
+<!-- ASCII-FALLBACK
 ```
                     SIMPLE FANOUT — split by PATH
 
@@ -539,6 +542,7 @@ Compare the two manifests side by side. They put the same number of Services beh
    Same address in both. Same number of Services in both.
    ▲▲▲ marks the part of the request the rule matched on.
 ```
+-->
 
 **TLS.** You can secure an Ingress by specifying a **Secret that contains a TLS private key and certificate** [source: k8s-docs-ingress-depth-2026-08-24]. The Ingress resource supports a single TLS port, 443, and **assumes TLS termination at the ingress point — traffic to the Service and its Pods is in cleartext** [source: k8s-docs-ingress-depth-2026-08-24]. The TLS Secret must contain keys named `tls.crt` and `tls.key` [source: k8s-docs-ingress-depth-2026-08-24], and the documentation's example Secret is of type `kubernetes.io/tls`, the Secret type Chapter 4 cataloged *[cross-bearing: see Ch 4 §4 — Secret types, including `kubernetes.io/tls`]*.
 
@@ -844,6 +848,9 @@ Now the resource model reads as a consequence rather than a list. Gateway API ha
 ### The mapping, which is the whole design
 
 <!-- FIGURE: ch10-fig03-gateway-api-role-split -->
+![Three stacked ownership bands. The top band, infrastructure provider, contains a GatewayClass box. The middle band, cluster operator, contains a Gateway box joined upward to GatewayClass by an edge labelled 'exactly 1'. The bottom band, application developer, contains three HTTPRoute boxes joined upward to the Gateway by edges labelled 'many, parentRefs'. A caption notes the bands are ownership boundaries, not runtime layers.](figures/ch10-fig03-gateway-api-role-split.svg)
+
+<!-- ASCII-FALLBACK
 ```
   ┌───────────────────────────────────────────────────────────┐
   │  INFRASTRUCTURE PROVIDER                                  │
@@ -869,6 +876,7 @@ Now the resource model reads as a consequence rather than a list. Gateway API ha
 
   Bands are ownership boundaries, not runtime layers.
 ```
+-->
 
 The infrastructure provider supplies the GatewayClass. The cluster operator creates the Gateway. The application developer writes the HTTPRoute. Each concern gets its own resource, so each role can hold its own without needing edit rights on anyone else's.
 
@@ -1122,6 +1130,9 @@ There is **no deny rule.** None. The API has no syntax for one. Two policies sel
 > ★ **Fixed Point:** **Policies are additive and never conflict. There is no deny rule** [source: k8s-docs-network-policies-depth-2026-08-24]. Two policies produce the union of what they permit. Removing access means removing the grant, not adding a denial.
 
 <!-- FIGURE: ch10-fig04-networkpolicy-additive-selectors -->
+![Two NetworkPolicy stanzas, A and B, both selecting Pods labelled role equals db, one permitting ingress from app equals web and the other from app equals batch. Heavy edges run from both stanzas to a single Pod box, and a single arrow runs from that Pod to a rounded blob labelled permitted set containing app equals web plus app equals batch, glossed as one set with two grants. A fourth box labelled app equals other sits unconnected, annotated as not denied but simply never granted.](figures/ch10-fig04-networkpolicy-additive-selectors.svg)
+
+<!-- ASCII-FALLBACK
 ```
    POLICY A                                          PERMITTED SET
    podSelector: role=db  ─────┐                    ╭───────────────╮
@@ -1143,6 +1154,7 @@ There is **no deny rule.** None. The API has no syntax for one. Two policies sel
                                                        simply never
                                                        granted.
 ```
+-->
 
 Note what is *not* in that figure: any mark of denial. No barrier, no crossed-out arrow, no red X. The excluded Pod is excluded by the **absence of a grant**, which is a different thing from being blocked, and drawing it as blocking would contradict the Fixed Point above.
 
@@ -1374,6 +1386,9 @@ You did not need the book to tell you this, incidentally. Soundings question 6 a
 > It also works on objects this book never mentions, which is the actual return on this chapter.
 
 <!-- FIGURE: ch10-zenith-nothing-without-a-controller -->
+![Four side-by-side panels, each with three rows. The top row names a valid object: a LoadBalancer Service, a Service with an empty selector, an Ingress with host and path rules, and a NetworkPolicy with a pod selector. The middle row of each panel shows a dashed, ghosted box naming an absent component — provider, matching Pods, Ingress controller, network plugin — each marked none. The bottom row reads nothing in all four panels; the fourth panel adds the words and nothing tells you. A caption reads: an object without its component does nothing.](figures/ch10-zenith-nothing-without-a-controller.svg)
+
+<!-- ASCII-FALLBACK
 ```
   ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐
   │   Service   │  │   Service   │  │   Ingress   │  │NetworkPolicy│
@@ -1393,6 +1408,7 @@ You did not need the book to tell you this, incidentally. Soundings question 6 a
 
            An object without its component does nothing.
 ```
+-->
 
 Look at the fourth panel one more time. Three of these announce themselves. One does not.
 

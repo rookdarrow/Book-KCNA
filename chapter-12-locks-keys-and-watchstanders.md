@@ -523,6 +523,9 @@ Image signing sits in the **distribute** phase: it happens after the build, befo
 The whole thing at once, then, with a few controls plotted on both.
 
 <!-- FIGURE: ch12-fig01-4cs-and-lifecycle-phases -->
+![Three-panel figure: four lifecycle phases in sequence from develop to runtime with runtime branching into access, compute and storage; four nested layers from Cloud outermost to Code innermost; and a table plotting five security controls against both a phase and a layer](figures/ch12-fig01-4cs-and-lifecycle-phases.svg)
+
+<!-- ASCII-FALLBACK
 ```
    THE PHASES — when a control acts
    ─────────────────────────────────────────────────────────────────
@@ -559,6 +562,7 @@ The whole thing at once, then, with a few controls plotted on both.
    encryption at rest         runtime / storage    Cloud → Cluster
    image signing              distribute           Container
 ```
+-->
 
 Do not try to hold twelve controls on this map yet. Hold the *shape*: four phases in sequence, four layers nested, and the runtime phase split three ways. The sections that follow fill it in.
 
@@ -629,6 +633,9 @@ You have already seen the delivery mechanism. When Chapter 11 walked the volume 
 The whole flow, then, and note what is deliberately missing from it.
 
 <!-- FIGURE: ch12-fig03-serviceaccount-token-flow -->
+![Vertical flow from a ServiceAccount object through the TokenRequest API to a Pod's projected token volume, then to gate one authentication which succeeds, then to gate two authorization which is drawn empty with a note reading nothing here yet](figures/ch12-fig03-serviceaccount-token-flow.svg)
+
+<!-- ASCII-FALLBACK
 ```
    ┌──────────────────────┐
    │  ServiceAccount      │      a namespaced object in the API server
@@ -664,6 +671,7 @@ The whole flow, then, and note what is deliberately missing from it.
    │                      │      │  see §3.                │
    └──────────────────────┘      └─────────────────────────┘
 ```
+-->
 
 The emptiness on the right is the Fixed Point drawn. The identity is complete. The token is valid. Authentication succeeds. And the account can do nothing, because nothing has been said about permissions yet.
 
@@ -736,6 +744,9 @@ Start from there and ask two independent questions.
 Those two questions are independent, which is why there are four objects rather than two. And the combination that surprises people, a ClusterRole bound by a RoleBinding, falls out immediately: you wrote the rules in a ClusterRole because you wanted them reusable, or because you needed cluster-scoped resources; you bound them with a RoleBinding because you wanted the grant to land in one namespace.
 
 <!-- FIGURE: ch12-fig02-rbac-four-way-matrix -->
+![Three-panel derivation: namespaced resources permit either a Role or a ClusterRole while cluster-scoped resources force a ClusterRole; a separate question of where the grant applies selects a RoleBinding or a ClusterRoleBinding; four combinations follow, of which Role plus ClusterRoleBinding does not exist; a banner states that the binding determines the scope of the grant](figures/ch12-fig02-rbac-four-way-matrix.svg)
+
+<!-- ASCII-FALLBACK
 ```
    THE BOUNDARY YOU ALREADY HAVE  (Ch 4 §3)
    ─────────────────────────────────────────
@@ -786,6 +797,7 @@ Those two questions are independent, which is why there are four objects rather 
    │  ▶  THE BINDING DETERMINES THE SCOPE OF THE GRANT.            │
    └───────────────────────────────────────────────────────────────┘
 ```
+-->
 
 If you cover the bottom of that figure, you should be able to rebuild it from the top. That is the test of whether you have the derivation or just the table.
 
@@ -1449,6 +1461,9 @@ Chapter 2 raised this twice and deferred both times. It called reproducible laye
 There is a way to organize this material as a roster of projects, and it is the wrong way. There are five or six well-known tools here and they are not alternatives to each other; they occupy different positions in a sequence. So we will walk the sequence and name the tools where they sit.
 
 <!-- FIGURE: ch12-fig05-supply-chain-checkpoints -->
+![A left-to-right supply chain pipeline of build, scan, sign, record, restrict, verify and run, crossed by a vertical boundary between restrict and verify that separates work done outside the cluster from work done inside it; each step is annotated with what it produces and with the tools that perform it, and a callout notes that the artifact's digest is carried the whole length of the chain](figures/ch12-fig05-supply-chain-checkpoints.svg)
+
+<!-- ASCII-FALLBACK
 ```
    OUTSIDE THE CLUSTER                              │   INSIDE
    ═════════════════════════════════════════════════╪═══════════
@@ -1476,6 +1491,7 @@ There is a way to organize this material as a roster of projects, and it is the 
        under somebody else's control, possibly months ago.
        VERIFY is the first checkpoint the cluster performs itself.
 ```
+-->
 
 That vertical line is the point of the figure. Every step but one happens outside the cluster, in a build system you may not administer, at a time that is not now. Admission is the cluster's gangway: the one place it gets to inspect the cargo before it comes aboard. Which is why §8 follows this section rather than preceding it.
 
@@ -1747,6 +1763,9 @@ Nothing new here. This section introduces no object, no field, and no tool. It m
 Those are two systems with essentially nothing in common. Different layers, different objects, different implementers, different problems, different decades. Chapter 10 told you NetworkPolicy allows and never denies, and told you to hold on to the phrasing about **subtraction**. Chapter 11 told you the permission system in this chapter would have no way to say no. Section 3 confirmed it.
 
 <!-- FIGURE: ch12-zenith-additive-never-deny -->
+![Two structurally identical panels side by side, one labelled RBAC at the API layer and one labelled NetworkPolicy at the network layer; in each, a request reaches a check that either allows it or finds nothing, and finding nothing means denied by absence, with a note in both panels that no deny rule exists; the caption reads different layer, different object, different decade, the same shape](figures/ch12-zenith-additive-never-deny.svg)
+
+<!-- ASCII-FALLBACK
 ```
    ┌─────────────────────────────┐   ┌─────────────────────────────┐
    │  RBAC                       │   │  NETWORKPOLICY              │
@@ -1779,6 +1798,7 @@ Those are two systems with essentially nothing in common. Different layers, diff
               different layer.  different object.  different decade.
                             the same shape.
 ```
+-->
 
 ### The claim, and its status
 

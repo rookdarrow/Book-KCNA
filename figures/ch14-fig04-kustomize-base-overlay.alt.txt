@@ -1,0 +1,1 @@
+Two Kustomize overlay directories for staging and production, each listing only its own deltas, both referencing a single shared base directory that is never edited and never copied; applying each overlay with kubectl apply -k produces prefixed objects with different replica counts

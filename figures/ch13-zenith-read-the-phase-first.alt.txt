@@ -1,0 +1,1 @@
+A tree rooted in one key, the Pod phase, branching to four outcomes — no Pod object stopped at admission, Pending never placed by the scheduler, scheduled but containers never ran, and scheduled with containers that ran and then ended — each branch naming the component that owns it before listing its failure signatures, nine in total

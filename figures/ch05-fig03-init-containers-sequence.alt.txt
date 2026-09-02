@@ -1,0 +1,1 @@
+Two timelines: on the success path init-1 exits zero then init-2 exits zero, after which app-a and app-b start together in parallel; on the failure path init-2 exits non-zero, restart is governed by restartPolicy, and the app containers are never started

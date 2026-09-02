@@ -1,0 +1,179 @@
+<svg viewBox="0 0 728 1072" role="img" aria-labelledby="ch19-fig01-cross-domain-integration-map-title ch19-fig01-cross-domain-integration-map-desc" xmlns="http://www.w3.org/2000/svg" width="572" height="843">
+      <title id="ch19-fig01-cross-domain-integration-map-title">Nine cross-cutting threads across chapters 2–18</title>
+      <desc id="ch19-fig01-cross-domain-integration-map-desc">Presence matrix of nine cross-cutting themes against chapters 2 to 18, grouped into structural, interface, and policy tiers; the absent-component thread is highlighted and, together with the control-loop and label-join threads, spans the most chapters.</desc>
+
+      <!-- paper -->
+      <rect x="0" y="0" width="728" height="1072" fill="#F5EFE4"></rect>
+
+      <!-- focal column tint band (thread 3 · absent component) -->
+      <rect x="264" y="136" width="48" height="608" rx="8" fill="rgba(181,139,62,0.10)"></rect>
+
+      <!-- tier column-group dividers -->
+      <line x1="320" y1="32" x2="320" y2="744" stroke="rgba(11,30,59,0.12)" stroke-width="1"></line>
+      <line x1="512" y1="32" x2="512" y2="744" stroke="rgba(11,30,59,0.12)" stroke-width="1"></line>
+
+      <!-- header framing hairlines -->
+      <line x1="136" y1="68" x2="696" y2="68" stroke="rgba(11,30,59,0.12)" stroke-width="0.75"></line>
+      <line x1="32" y1="136" x2="696" y2="136" stroke="#8A8D90" stroke-width="1"></line>
+      <line x1="32" y1="744" x2="696" y2="744" stroke="#8A8D90" stroke-width="1"></line>
+
+      <!-- tier group labels -->
+      <text x="224" y="53" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.06em" fill="#1F4A4E">STRUCTURAL</text>
+      <text x="416" y="53" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.06em" fill="#1F4A4E">INTERFACE</text>
+      <text x="608" y="53" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.06em" fill="#1F4A4E">POLICY</text>
+
+      <!-- "CHAPTER" header for the row-label column -->
+      <text x="112" y="103" text-anchor="end" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.1em" text-transform="uppercase" fill="#1F4A4E">CHAPTER</text>
+
+      <!-- column badges (thread numbers 1–9) -->
+      <circle cx="160" cy="98" r="16" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1.2"></circle>
+      <text x="160" y="104" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">1</text>
+
+      <circle cx="224" cy="98" r="16" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1.2"></circle>
+      <text x="224" y="104" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">2</text>
+
+      <circle cx="288" cy="98" r="16" fill="#B58B3E" stroke="#B58B3E" stroke-width="1.2"></circle>
+      <text x="288" y="104" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#F5EFE4">3</text>
+
+      <circle cx="352" cy="98" r="16" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1.2"></circle>
+      <text x="352" y="104" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">4</text>
+
+      <circle cx="416" cy="98" r="16" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1.2"></circle>
+      <text x="416" y="104" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">5</text>
+
+      <circle cx="480" cy="98" r="16" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1.2"></circle>
+      <text x="480" y="104" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">6</text>
+
+      <circle cx="544" cy="98" r="16" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1.2"></circle>
+      <text x="544" y="104" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">7</text>
+
+      <circle cx="608" cy="98" r="16" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1.2"></circle>
+      <text x="608" y="104" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">8</text>
+
+      <circle cx="672" cy="98" r="16" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1.2"></circle>
+      <text x="672" y="104" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">9</text>
+
+      <!-- spine lines (first-to-last chapter of each thread), drawn under the dots -->
+      <line x1="160" y1="188" x2="160" y2="692" stroke="rgba(11,30,59,0.25)" stroke-width="1.5"></line>
+      <line x1="224" y1="224" x2="224" y2="512" stroke="rgba(11,30,59,0.25)" stroke-width="1.5"></line>
+      <line x1="288" y1="188" x2="288" y2="656" stroke="#B58B3E" stroke-width="2"></line>
+      <line x1="352" y1="224" x2="352" y2="620" stroke="rgba(11,30,59,0.25)" stroke-width="1.5"></line>
+      <line x1="416" y1="224" x2="416" y2="620" stroke="rgba(11,30,59,0.25)" stroke-width="1.5"></line>
+      <line x1="480" y1="152" x2="480" y2="692" stroke="rgba(11,30,59,0.25)" stroke-width="1.5"></line>
+      <line x1="544" y1="260" x2="544" y2="620" stroke="rgba(11,30,59,0.25)" stroke-width="1.5"></line>
+      <line x1="608" y1="260" x2="608" y2="728" stroke="rgba(11,30,59,0.25)" stroke-width="1.5"></line>
+      <line x1="672" y1="440" x2="672" y2="512" stroke="rgba(11,30,59,0.25)" stroke-width="1.5"></line>
+
+      <!-- chapter row numerals -->
+      <text x="112" y="158" text-anchor="end" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">2</text>
+      <text x="112" y="194" text-anchor="end" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">3</text>
+      <text x="112" y="230" text-anchor="end" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">4</text>
+      <text x="112" y="266" text-anchor="end" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">5</text>
+      <text x="112" y="302" text-anchor="end" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">6</text>
+      <text x="112" y="338" text-anchor="end" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">7</text>
+      <text x="112" y="374" text-anchor="end" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">8</text>
+      <text x="112" y="410" text-anchor="end" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">9</text>
+      <text x="112" y="446" text-anchor="end" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">10</text>
+      <text x="112" y="482" text-anchor="end" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">11</text>
+      <text x="112" y="518" text-anchor="end" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">12</text>
+      <text x="112" y="554" text-anchor="end" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">13</text>
+      <text x="112" y="590" text-anchor="end" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">14</text>
+      <text x="112" y="626" text-anchor="end" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">15</text>
+      <text x="112" y="662" text-anchor="end" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">16</text>
+      <text x="112" y="698" text-anchor="end" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">17</text>
+      <text x="112" y="734" text-anchor="end" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">18</text>
+
+      <!-- presence dots: thread 1 (control loop) — ch 3, 6, 11, 15, 17 -->
+      <circle cx="160" cy="188" r="6" fill="#0B1E3B"></circle>
+      <circle cx="160" cy="296" r="6" fill="#0B1E3B"></circle>
+      <circle cx="160" cy="476" r="6" fill="#0B1E3B"></circle>
+      <circle cx="160" cy="620" r="6" fill="#0B1E3B"></circle>
+      <circle cx="160" cy="692" r="6" fill="#0B1E3B"></circle>
+
+      <!-- thread 2 (scope boundary) — ch 4, 8, 12 -->
+      <circle cx="224" cy="224" r="6" fill="#0B1E3B"></circle>
+      <circle cx="224" cy="368" r="6" fill="#0B1E3B"></circle>
+      <circle cx="224" cy="512" r="6" fill="#0B1E3B"></circle>
+
+      <!-- thread 3 (absent component · FOCAL) — ch 3, 6, 9, 10, 12, 15, 16 -->
+      <circle cx="288" cy="188" r="6" fill="#B58B3E"></circle>
+      <circle cx="288" cy="296" r="6" fill="#B58B3E"></circle>
+      <circle cx="288" cy="404" r="6" fill="#B58B3E"></circle>
+      <circle cx="288" cy="440" r="6" fill="#B58B3E"></circle>
+      <circle cx="288" cy="512" r="6" fill="#B58B3E"></circle>
+      <circle cx="288" cy="620" r="6" fill="#B58B3E"></circle>
+      <circle cx="288" cy="656" r="6" fill="#B58B3E"></circle>
+
+      <!-- thread 4 (declarative) — ch 4, 6, 14, 15 -->
+      <circle cx="352" cy="224" r="6" fill="#0B1E3B"></circle>
+      <circle cx="352" cy="296" r="6" fill="#0B1E3B"></circle>
+      <circle cx="352" cy="584" r="6" fill="#0B1E3B"></circle>
+      <circle cx="352" cy="620" r="6" fill="#0B1E3B"></circle>
+
+      <!-- thread 5 (label join) — ch 4, 6, 7, 9, 10, 12, 15 -->
+      <circle cx="416" cy="224" r="6" fill="#0B1E3B"></circle>
+      <circle cx="416" cy="296" r="6" fill="#0B1E3B"></circle>
+      <circle cx="416" cy="332" r="6" fill="#0B1E3B"></circle>
+      <circle cx="416" cy="404" r="6" fill="#0B1E3B"></circle>
+      <circle cx="416" cy="440" r="6" fill="#0B1E3B"></circle>
+      <circle cx="416" cy="512" r="6" fill="#0B1E3B"></circle>
+      <circle cx="416" cy="620" r="6" fill="#0B1E3B"></circle>
+
+      <!-- thread 6 (pluggability) — ch 2, 6, 9, 11, 17 -->
+      <circle cx="480" cy="152" r="6" fill="#0B1E3B"></circle>
+      <circle cx="480" cy="296" r="6" fill="#0B1E3B"></circle>
+      <circle cx="480" cy="404" r="6" fill="#0B1E3B"></circle>
+      <circle cx="480" cy="476" r="6" fill="#0B1E3B"></circle>
+      <circle cx="480" cy="692" r="6" fill="#0B1E3B"></circle>
+
+      <!-- thread 7 (identity) — ch 5, 12, 15 -->
+      <circle cx="544" cy="260" r="6" fill="#0B1E3B"></circle>
+      <circle cx="544" cy="512" r="6" fill="#0B1E3B"></circle>
+      <circle cx="544" cy="620" r="6" fill="#0B1E3B"></circle>
+
+      <!-- thread 8 (requests/limits) — ch 5, 7, 13, 17, 18 -->
+      <circle cx="608" cy="260" r="6" fill="#0B1E3B"></circle>
+      <circle cx="608" cy="332" r="6" fill="#0B1E3B"></circle>
+      <circle cx="608" cy="548" r="6" fill="#0B1E3B"></circle>
+      <circle cx="608" cy="692" r="6" fill="#0B1E3B"></circle>
+      <circle cx="608" cy="728" r="6" fill="#0B1E3B"></circle>
+
+      <!-- thread 9 (additive/allow) — ch 10, 12 -->
+      <circle cx="672" cy="440" r="6" fill="#0B1E3B"></circle>
+      <circle cx="672" cy="512" r="6" fill="#0B1E3B"></circle>
+
+      <!-- legend -->
+      <line x1="32" y1="772" x2="696" y2="772" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+      <text x="32" y="796" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.14em" text-transform="uppercase" fill="#1F4A4E">Legend</text>
+
+      <!-- structural tier legend row -->
+      <text x="32" y="828" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.06em" fill="#1F4A4E">STRUCTURAL TIER</text>
+      <circle cx="38" cy="855" r="6" fill="#0B1E3B"></circle>
+      <text x="52" y="860" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">1 · Control loop</text>
+      <circle cx="259" cy="855" r="6" fill="#0B1E3B"></circle>
+      <text x="273" y="860" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">2 · Scope boundary</text>
+      <circle cx="480" cy="855" r="6" fill="#B58B3E"></circle>
+      <text x="494" y="860" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#B58B3E">3 · Absent component*</text>
+
+      <!-- interface tier legend row -->
+      <text x="32" y="900" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.06em" fill="#1F4A4E">INTERFACE TIER</text>
+      <circle cx="38" cy="927" r="6" fill="#0B1E3B"></circle>
+      <text x="52" y="932" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">4 · Declarative</text>
+      <circle cx="259" cy="927" r="6" fill="#0B1E3B"></circle>
+      <text x="273" y="932" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">5 · Label join</text>
+      <circle cx="480" cy="927" r="6" fill="#0B1E3B"></circle>
+      <text x="494" y="932" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">6 · Pluggability</text>
+
+      <!-- policy tier legend row -->
+      <text x="32" y="972" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.06em" fill="#1F4A4E">POLICY TIER</text>
+      <circle cx="38" cy="999" r="6" fill="#0B1E3B"></circle>
+      <text x="52" y="1004" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">7 · Identity</text>
+      <circle cx="259" cy="999" r="6" fill="#0B1E3B"></circle>
+      <text x="273" y="1004" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">8 · Requests/limits</text>
+      <circle cx="480" cy="999" r="6" fill="#0B1E3B"></circle>
+      <text x="494" y="1004" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">9 · Additive/allow</text>
+
+      <!-- footnote tying the focal column to the learning outcome -->
+      <text x="32" y="1044" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="16" fill="#B58B3E">* Absent component is this chapter's stated Fixed Point.</text>
+
+    </svg>

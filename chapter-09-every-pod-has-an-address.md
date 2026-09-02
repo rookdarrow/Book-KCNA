@@ -342,6 +342,9 @@ Kubernetes networking is specified as a small set of requirements. Not a mechani
 **Rule 4.** **Agents on a node** — system daemons, the kubelet — can communicate with all Pods on that node [source: k8s-docs-network-model-2026-08-23].
 
 <!-- FIGURE: ch09-fig01-network-model-four-rules -->
+![Two worker nodes side by side, each containing Pods labelled with 10.244.x.x addresses. One Pod contains two containers joined over localhost. Direct lines connect a Pod to another Pod on the same node, to a Pod on the other node, and to the local kubelet, with no intermediate device on any line.](figures/ch09-fig01-network-model-four-rules.svg)
+
+<!-- ASCII-FALLBACK
 ```
         node: worker-3                         node: worker-11
    ┌──────────────────────────┐          ┌──────────────────────────┐
@@ -367,6 +370,7 @@ Kubernetes networking is specified as a small set of requirements. Not a mechani
 
    Every line above is a direct connection. Nothing sits between the Pods.
 ```
+-->
 
 Rule 3 deserves a paragraph rather than a line. Pause on it if you answered Soundings question 6.
 
@@ -471,6 +475,9 @@ There are four Service types. Three of them are layers of the same mechanism. On
 **LoadBalancer** exposes the Service externally using an external load balancer [source: k8s-docs-service-2026-08-23]. It is the outermost rung, the one that puts an address in *front* of the cluster rather than inside it.
 
 <!-- FIGURE: ch09-fig02-service-types-ladder -->
+![Three concentric labelled frames: ClusterIP innermost reachable inside the cluster only and the default type, NodePort around it reachable from any node address and port, LoadBalancer outermost reachable from the internet via a provider-supplied load balancer. Below a heavy double-ruled separator marked not on the ladder, ExternalName is shown separately as a CNAME from my-svc to api.foo.bar.example with no cluster IP, no endpoints and no proxying.](figures/ch09-fig02-service-types-ladder.svg)
+
+<!-- ASCII-FALLBACK
 ```
    ┌─ LoadBalancer ─────────────────────────────────────────┐
    │  reachable from: the internet                          │
@@ -501,6 +508,7 @@ There are four Service types. Three of them are layers of the same mechanism. On
         my-svc ──── CNAME ────► api.foo.bar.example
         no cluster IP · no endpoints · no proxying of any kind
 ```
+-->
 
 ★ **Fixed Point:** The ladder types are **additive**. NodePort and LoadBalancer are both supersets of ClusterIP [source: k8s-docs-service-ports-2026-08-24], and the case the documentation spells out is the one to memorize: **a NodePort Service also has a cluster IP — Kubernetes sets one up, exactly as if you had requested `type: ClusterIP`** [source: k8s-docs-service-2026-08-23]. Asking for a higher rung never removes the rungs below it.
 
@@ -690,6 +698,9 @@ A Service has a selector. The selector is a query. Somebody has to run the query
 **Four.** Anything that needs to know a Service's current backends reads the **EndpointSlices**, not the selector. The selector is the question. The EndpointSlice is the written-down answer.
 
 <!-- FIGURE: ch09-fig03-service-endpointslice-selector-path -->
+![A Service named database holds the selector app equals db. Four Pods are listed; three carry the label app db and one carries app cache. The three matching Pods send arrows toward a gate labelled Ready. Two Ready Pods pass through into an EndpointSlice containing 10.244.1.7 port 5432 and 10.244.4.2 port 5432. The third matching Pod, not Ready, is stopped at the gate. The cache Pod never matched the selector and sends no arrow. Beneath, the EndpointSlice controller in kube-controller-manager watches Services and Pods and writes the slice.](figures/ch09-fig03-service-endpointslice-selector-path.svg)
+
+<!-- ASCII-FALLBACK
 ```
   Service: database                                    EndpointSlice
   ┌────────────────────┐                              ┌──────────────────┐
@@ -718,6 +729,7 @@ A Service has a selector. The selector is a query. Somebody has to run the query
             │ (in kube-controller-manager) │     writes the slice
             └──────────────────────────────┘
 ```
+-->
 
 ### Selection is not ownership
 
@@ -939,6 +951,9 @@ Here is the consequence that reframes everything before it.
 **Nothing is listening on a cluster IP.** No process is bound to it. There is no host at that address, no socket, no server. It exists only as a rule, replicated on every node, that says: *packets addressed here go to one of those addresses instead.* That is not a separate fact to memorise. It follows directly from what the documentation says kube-proxy does, which is **capture traffic to the Service's `clusterIP` and port, and redirect that traffic to one of the Service's endpoints** [source: k8s-docs-virtual-ips-kube-proxy-2026-08-23]. Capture and redirect. Nothing in that sentence binds a socket.
 
 <!-- FIGURE: ch09-fig04-kube-proxy-modes -->
+![Above a node boundary, kube-proxy watches a Service object holding cluster IP 10.96.0.42 and an EndpointSlice holding two Pod addresses with port 5432, and programs rules below the boundary. Inside worker-3, a frontend Pod sends traffic to 10.96.0.42, drawn as a dashed empty box marked nothing is here — no process, no socket. The traffic descends through a heavy rules layer listing modes iptables as default, IPVS, nftables and Windows kernelspace, then is readdressed to two backend Pods, one local and one on worker-11.](figures/ch09-fig04-kube-proxy-modes.svg)
+
+<!-- ASCII-FALLBACK
 ```
                        ┌──────────────┐    ┌──────────────────┐
         kube-proxy ───►│   Service    │    │  EndpointSlice   │
@@ -967,6 +982,7 @@ Here is the consequence that reframes everything before it.
                  │ 10.244.1.7 │   │ 10.244.4.2  (on worker-11)          │
                  └────────────┘   └─────────────────────────────────────┘
 ```
+-->
 
 This is also why §3's ExternalName exclusion makes sense from the other side. An ExternalName Service has **no address to intercept** — it produces a CNAME and nothing else — so there is nothing for kube-proxy to program. The exclusion isn't a special case; it falls straight out of what kube-proxy does.
 
@@ -1073,6 +1089,9 @@ And the one that finishes the StatefulSet story: the Pod spec has optional **`ho
 Note the shape, because it is the same shape by which an individual StatefulSet member is individually addressable. §5 told you a StatefulSet requires a headless Service to be responsible for the network identity of its Pods; a stable per-member name of this shape, surviving rescheduling, is what "network identity" cashes out to. *[cross-bearing: see Ch 6 §6 — StatefulSet Pod naming]*
 
 <!-- FIGURE: ch09-fig05-dns-record-shapes -->
+![A four-column grid of cluster DNS name shapes. Normal Service and headless Service occupy identical rows — my-svc, my-namespace, svc, cluster.local — resolving to the cluster IP and to all the Pod IPs respectively. An SRV row prefixes underscore http underscore tcp onto the same four labels. A Pod-by-address row uses 172-17-0-3 with dots converted to dashes and the literal pod in column three instead of svc. A final row uses hostname dot subdomain for a Pod's stable name. Columns two and four are identical in every row.](figures/ch09-fig05-dns-record-shapes.svg)
+
+<!-- ASCII-FALLBACK
 ```
                     ┌───────────────┬──────────────┬───────┬─────────────────┐
                     │       1       │      2       │   3   │        4        │
@@ -1095,6 +1114,7 @@ Note the shape, because it is the same shape by which an individual StatefulSet 
   Column 3 is `svc` for everything except the Pod-by-address record.
   The top two rows are the SAME NAME. Only the answer differs.
 ```
+-->
 
 > **Dead Reckoning:** The five record shapes, stated flat.
 >
@@ -1206,6 +1226,9 @@ Walk it back through, in the chapter's own order.
 **From §1.** And underneath all of it, none of the actual packet-moving is Kubernetes' work at all. Kubernetes defines the network model; a CNI plugin implements it [source: k8s-docs-extending-kubernetes-2026-08-23] — which is the second instance of an arrangement you first met in Chapter 2, where CRI does the same thing for container runtimes. *[cross-bearing: see Ch 2 §4 — CRI as the first pluggable interface]*
 
 <!-- FIGURE: ch09-zenith-stable-name-over-churn -->
+![A single unchanging banner reads database.production.svc.cluster.local and cluster IP 10.96.0.42. Beneath it, four time-step boxes labelled t0 through t3 each hold three Pods, drawn with different generation glyphs and different address fragments; no Pod or address from t0 remains at t3. Below, a chain reads query on the label app equals db, then answer as an EndpointSlice, then publish, fanning out to three consumers: the rules layer from section six, the endpoint list from section four, and the DNS record from section seven. The caption reads three readers, one answer, one question that never changed.](figures/ch09-zenith-stable-name-over-churn.svg)
+
+<!-- ASCII-FALLBACK
 ```
    ╔═══════════════════════════════════════════════════════════════════════╗
    ║        database.production.svc.cluster.local   ·   10.96.0.42         ║
@@ -1231,6 +1254,7 @@ Walk it back through, in the chapter's own order.
               ┗━━━━━━━━━━━━┛           └──────────────┘           └────────────────┘
                 three readers · one answer · one question that never changed
 ```
+-->
 
 ☀️ **Zenith:** A Service is a **label query with a name**. The virtual IP, the endpoint list, and the DNS record are three control loops publishing that one query's current answer in three different formats. The Pods were never the stable thing. **The question was.**
 

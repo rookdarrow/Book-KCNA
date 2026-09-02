@@ -408,6 +408,9 @@ A **known unknown** is a question you have thought of but do not yet have the an
 OpenTelemetry's own framing says the same thing from the other side: observability "lets you understand a system from the outside by letting you ask questions about that system without knowing its inner workings," which is what lets you "troubleshoot and handle novel problems, that is, 'unknown unknowns'" [source: opentelemetry-observability-primer-2026-08-23]. It also helps you answer the question "Why is this happening?" — as opposed to *whether* it is happening, which a dashboard can already tell you.
 
 <!-- FIGURE: ch18-fig01-monitoring-vs-observability -->
+![Two columns above one shared system box. The monitoring column passes through three fixed indicators labelled CPU, memory and 5xx into a dashboard. The observability column runs straight from a question that arrives at 2:10 a.m. into an open query, with no indicator layer in between.](figures/ch18-fig01-monitoring-vs-observability.svg)
+
+<!-- ASCII-FALLBACK
 ```
               THE SAME SYSTEM, TWO POSTURES
 
@@ -440,6 +443,7 @@ OpenTelemetry's own framing says the same thing from the other side: observabili
   Both read the same system. The difference is upstream:
   one has a fixed question set, one does not.
 ```
+-->
 
 Note what that figure is *not*. It is not "Prometheus versus OpenTelemetry." Those are both tools, and both of them serve both postures. A Prometheus deployment with rich, well-labeled metrics and an ad-hoc query language is doing observability work; a pile of OpenTelemetry traces nobody can query is not. The posture is upstream of the tool.
 
@@ -529,6 +533,9 @@ The **OpenTelemetry Collector** is "a vendor-agnostic implementation of how to r
 Read that second quote slowly, because it contains the architectural idea this whole chapter keeps re-encountering. One set of signals goes *in*. Multiple, swappable backends receive them going *out*. The thing that produces telemetry and the thing that stores it are separate, and either can be replaced without the other noticing.
 
 <!-- FIGURE: ch18-fig02-otel-four-signals -->
+![A wide baggage band spans the top, connected by dashed lines to three boxes below it labelled traces, metrics and logs, which answer where, whether and what. The three converge into an OpenTelemetry Collector that receives, processes and exports to one or more backends.](figures/ch18-fig02-otel-four-signals.svg)
+
+<!-- ASCII-FALLBACK
 ```
               F O U R   S I G N A L S
 
@@ -558,6 +565,7 @@ Read that second quote slowly, because it contains the architectural idea this w
                           ▼
                  one or more backends
 ```
+-->
 
 The Collector is deployable "as an agent or collector with support for traces, metrics, and logs" from a single codebase [source: opentelemetry-collector-2026-08-31]: one implementation, several shapes, several signal types.
 
@@ -743,6 +751,9 @@ The reason is straightforward once you see it: a job that runs for eleven second
 > 🪝 **Snag:** "This service would rather push its metrics" is not a Pushgateway use case. Neither is "this job is tied to one specific machine" — the source explicitly scopes the Pushgateway to *service-level* batch jobs, which are the ones **not** semantically tied to a particular instance [source: prometheus-pushgateway-practices-2026-08-31]. Distractors are built from exactly these two plausible-sounding scenarios.
 
 <!-- FIGURE: ch18-fig04-prometheus-pull-architecture -->
+![A central Prometheus server reaches out with four scrape arrows to service discovery, an instrumented app, an exporter and a pushgateway. Only a short batch job pushes inward, into the pushgateway, which Prometheus then scrapes. Prometheus pushes alerts to Alertmanager and serves Grafana over an HTTP API.](figures/ch18-fig04-prometheus-pull-architecture.svg)
+
+<!-- ASCII-FALLBACK
 ```
                     ARROWS OUT, NOT IN
 
@@ -785,6 +796,7 @@ The reason is straightforward once you see it: a job that runs for eleven second
 
    Every arrow into Prometheus is Prometheus reaching out.
 ```
+-->
 
 ### The pieces
 
@@ -891,6 +903,9 @@ And the join between them, which is the exam's actual target:
 Note "one or more." A single-service request produces a trace with exactly one span in it. A trace is not defined by being multi-service. It is defined by being *the whole request*.
 
 <!-- FIGURE: ch18-fig03-trace-spans-across-services -->
+![A trace waterfall on a four-second time axis. A root span for the API gateway spans the full width; nested beneath it are auth-svc at 120 milliseconds with user-store at 85 milliseconds inside it, and catalog-svc at 3700 milliseconds containing a cache call of 8 milliseconds and a pricing service database call of 3650 milliseconds, which accounts for almost all of the elapsed time.](figures/ch18-fig03-trace-spans-across-services.svg)
+
+<!-- ASCII-FALLBACK
 ```
    ONE TRACE = the whole request path.  ONE SPAN = one unit of work.
    trace ID: 4bf92f...  (crosses every boundary below)
@@ -925,6 +940,7 @@ Note "one or more." A single-service request produces a trace with exactly one s
    Only the trace ID makes them one story — and only then does
    "where did the 4 seconds go?" have an answer.
 ```
+-->
 
 Look at what that figure gives you that seven log files cannot: **nesting** and **duration**. You can see that pricing-svc's database call accounts for nearly the entire four seconds, and you can see it *without* comparing timestamps across seven files and hoping the clocks agree. The structure is the answer.
 
@@ -1078,6 +1094,9 @@ That last one is the reason the whole architecture exists. Every other limit is 
 The Kubernetes documentation describes three approaches to getting logs off a node and into a backend [source: k8s-docs-logging-architecture-2026-08-23].
 
 <!-- FIGURE: ch18-fig06-cluster-logging-architectures -->
+![Three stacked panels, all feeding one logging backend on the right. In the first, three Pods write to the node filesystem and a DaemonSet agent reads it and forwards. In the second, a sidecar collector inside each Pod forwards the app's logs. In the third, the app pushes straight to the backend with no collector.](figures/ch18-fig06-cluster-logging-architectures.svg)
+
+<!-- ASCII-FALLBACK
 ```
    THREE WAYS TO COLLECT.  Same backend in all three;
    the difference is WHERE collection happens.
@@ -1120,6 +1139,7 @@ The Kubernetes documentation describes three approaches to getting logs off a no
    │   no collector at all        │   about the backend
    └──────────────────────────────┘
 ```
+-->
 
 **1. A node-level logging agent** that runs on every node, typically as a DaemonSet [source: k8s-docs-logging-architecture-2026-08-23], reading the container log files the runtime already writes and forwarding them to a backend. This is the default answer, and the reason is structural: the logs are already on the node's filesystem, for every container the node runs, whether or not the application cooperated. One agent covers everything.
 
@@ -1200,6 +1220,9 @@ If you can instrument only four things on a user-facing system, these are the fo
 **Saturation** — "how 'full' your service is. A measure of your system fraction, emphasizing the resources that are most constrained." And the operational warning: "many systems degrade in performance before they achieve 100% utilization, so having a utilization target is essential" [source: sre-book-four-golden-signals-2026-08-23].
 
 <!-- FIGURE: ch18-fig05-sli-slo-golden-signals -->
+![On the left, an internal frame holds an SLI, measured from the user's perspective, feeding an SLO target; below a labelled boundary, an external frame holds an SLA contract with consequences. On the right, a two-by-two grid of latency, traffic, errors and saturation, with an arrow from latency to saturation marking latency increases as a leading indicator of saturation.](figures/ch18-fig05-sli-slo-golden-signals.svg)
+
+<!-- ASCII-FALLBACK
 ```
   MEASUREMENT → COMMITMENT → CONTRACT     THE FOUR GOLDEN SIGNALS
 
@@ -1235,6 +1258,7 @@ If you can instrument only four things on a user-facing system, these are the fo
   │   = it's an SLO, not an SLA │
   └─────────────────────────────┘
 ```
+-->
 
 > 🪢 **Mnemonic:** **L-T-E-S.** Latency, Traffic, Errors, Saturation. Or read the figure as a sentence: *how long, how much, how broken, how full.*
 
@@ -1339,6 +1363,9 @@ Ask it of a **metric** and you get *whether*: a number over time, aggregated, th
 That is the payoff of the fourth signal, and it is why dropping it from the list is worse than a memory slip. Without something carrying context across the boundary, you have three readings of three different things. With it, you have one question examined at three resolutions.
 
 <!-- FIGURE: ch18-zenith-instruments-answer-one-question -->
+![One question at the top asks whether the service is doing what users expect. Three boxes below point up into it: a metric answering whether, a trace answering where, and a log answering what. A baggage box beneath connects to all three, making them about the same request rather than three separate stories.](figures/ch18-zenith-instruments-answer-one-question.svg)
+
+<!-- ASCII-FALLBACK
 ```
                     ┌───────────────────────────┐
                     │   "Is the service doing   │
@@ -1370,6 +1397,7 @@ That is the payoff of the fourth signal, and it is why dropping it from the list
 
            Not four topics. One question, four resolutions.
 ```
+-->
 
 ### The other thing that kept happening
 

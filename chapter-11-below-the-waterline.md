@@ -382,6 +382,9 @@ But rung two has a boundary of its own. **When a Pod ceases to exist, Kubernetes
 Rung three is what is left when you ask for storage whose lifetime is not tied to any Pod at all. **Kubernetes does not destroy persistent volumes** [source: k8s-docs-volumes-2026-08-23]. That is the entire distinction, and it is the hold the epigraph was describing: aboard before this watch, aboard after. §2 onward is about how you get one.
 
 <!-- FIGURE: ch11-fig01-volume-lifetime-ladder -->
+![Three nested rectangles showing widening storage lifetimes: an innermost container writable layer that survives nothing, a middle Pod-scoped volume that survives a container restart, and an outermost cluster-scoped storage box that survives the Pod's deletion; two arrows mark the boundaries at container restart and at Pod deletion](figures/ch11-fig01-volume-lifetime-ladder.svg)
+
+<!-- ASCII-FALLBACK
 ```
    ┌──────────────────────────────────────────────────────────────┐
    │  CLUSTER-SCOPED STORAGE                          (rung 3)    │
@@ -406,6 +409,7 @@ Rung three is what is left when you ask for storage whose lifetime is not tied t
    │   nothing in a Pod's lifecycle crosses this outer boundary   │
    └──────────────────────────────────────────────────────────────┘
 ```
+-->
 
 > ★ **Fixed Point**
 >
@@ -516,6 +520,9 @@ That leaves the routing detail this whole section exists to fix.
 > The Pod's line terminates at the PVC. It never touches the PV. That single routing fact is what lets a developer write a manifest that works on a cluster backed by EBS and on a cluster backed by Ceph without changing a character.
 
 <!-- FIGURE: ch11-fig02-pv-pvc-storageclass-binding -->
+![A supply column holding a cluster-scoped PersistentVolume and a demand column holding a namespaced PersistentVolumeClaim, both feeding a central binding control loop that produces an exclusive one-to-one bound pair; a Pod arrow points at the bound claim and stops there, and a disconnected StorageClass box sits to one side](figures/ch11-fig02-pv-pvc-storageclass-binding.svg)
+
+<!-- ASCII-FALLBACK
 ```
         SUPPLY                                   DEMAND
    (cluster-scoped)                            (namespaced)
@@ -551,6 +558,7 @@ That leaves the routing detail this whole section exists to fix.
    │ StorageClass │  ← a third object, off to one side.
    └──────────────┘     Not explained yet. See §3.
 ```
+-->
 
 ### Binding
 
@@ -733,6 +741,9 @@ The `provisioner` field is the one that makes the class do anything: *each Stora
 ### Two ways a volume comes to exist
 
 <!-- FIGURE: ch11-fig03-static-vs-dynamic-provisioning -->
+![A flowchart starting at PVC creation, branching on whether a matching PersistentVolume already exists; yes leads to static binding, no leads to a second decision requiring both a named StorageClass and a configured provisioner, whose true branch is dynamic provisioning and whose false branch dead-ends at a claim that waits indefinitely with the Pod stuck in Pending](figures/ch11-fig03-static-vs-dynamic-provisioning.svg)
+
+<!-- ASCII-FALLBACK
 ```
                         A PVC IS CREATED
                                │
@@ -770,6 +781,7 @@ The `provisioner` field is the one that makes the class do anything: *each Stora
               │  Pod can mount  │
               └─────────────────┘
 ```
+-->
 
 **Static provisioning** is the §2 model, named. *A cluster administrator creates a number of PVs. They carry the details of the real storage, which is available for use by cluster users* [source: k8s-docs-persistent-volumes-2026-08-23]. Supply exists first; demand arrives later and matches against it.
 
@@ -873,6 +885,9 @@ And here is the sentence that generates the single most common storage mistake i
 > The existence of a fourth mode devoted entirely to the Pod/node distinction is itself the evidence that the distinction is hard to hold. Kubernetes shipped a whole access mode because people kept assuming RWO already meant it.
 
 <!-- FIGURE: ch11-fig04-access-modes-and-reclaim-policies -->
+![Two side-by-side reference panels: the left lists four access modes with the unit being nodes except for ReadWriteOncePod, which is highlighted as the only Pod-scoped mode; the right tabulates three reclaim policies showing Retain keeps the PV object, asset and data, Delete destroys all three, and Recycle is deprecated, with a footer noting Delete is the default for dynamically provisioned volumes](figures/ch11-fig04-access-modes-and-reclaim-policies.svg)
+
+<!-- ASCII-FALLBACK
 ```
  ┌─ WHAT YOU MAY DO ────────────┐  ┌─ WHAT HAPPENS AFTER ───────────┐
  │  access modes                │  │  reclaim policies              │
@@ -888,6 +903,7 @@ And here is the sentence that generates the single most common storage mistake i
  │           here               │  │  provisioned volumes: Delete   │
  └──────────────────────────────┘  └────────────────────────────────┘
 ```
+-->
 
 Two more facts about access modes that are easy to state and easy to forget:
 
@@ -1174,6 +1190,9 @@ Not one claim for the set. One claim *per Pod*, minted from the template as each
 Where those claims get their storage is §3, arriving as a consequence rather than as a rule: *the storage for a given Pod must either be provisioned by a PersistentVolume Provisioner based on the requested storage class, or pre-provisioned by an admin* [source: k8s-docs-statefulset-2026-08-24]. Dynamic or static. The two paths from §3, with nothing special added for StatefulSets.
 
 <!-- FIGURE: ch11-fig05-statefulset-pvc-pairing -->
+![Three stacked bands showing a three-replica StatefulSet named web, each Pod paired one-to-one with its own PersistentVolumeClaim named www-web-0 through www-web-2; in the second band web-1 has moved to a different node and keeps its claim, and in the third band web-1 is deleted while its claim remains in place](figures/ch11-fig05-statefulset-pvc-pairing.svg)
+
+<!-- ASCII-FALLBACK
 ```
    StatefulSet "web"  ·  volumeClaimTemplates: [ www ]  ·  replicas: 3
 
@@ -1209,6 +1228,7 @@ Where those claims get their storage is §3, arriving as a consequence rather th
                         ↑ THE CLAIM REMAINS.
                           Nothing cleans it up.
 ```
+-->
 
 ### The reschedule, which is the under-weighted half
 
@@ -1368,6 +1388,9 @@ Go back to the epigraph. *The cargo does not belong to the crew. It was aboard b
 > Ten chapters of Kubernetes, and it is one idea wearing different clothes.
 
 <!-- FIGURE: ch11-zenith-outliving-the-pod -->
+![A two-lane timeline: the upper Pod lane shows three separate segments each labelled web-1, on node-b then node-e then node-e, with visible gaps between them; the lower Storage lane is a single unbroken line labelled www-web-1 running the full width, with claim connectors dropping from each Pod segment to the storage line](figures/ch11-zenith-outliving-the-pod.svg)
+
+<!-- ASCII-FALLBACK
 ```
    Pod    ├──web-1──┤        ├──web-1──┤    ├──web-1──┤
            (node-b)           (node-e)       (node-e)
@@ -1379,6 +1402,7 @@ Go back to the epigraph. *The cargo does not belong to the crew. It was aboard b
 
                     time ──────────────────────────────────▶
 ```
+-->
 
 ---
 

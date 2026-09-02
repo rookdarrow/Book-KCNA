@@ -1,0 +1,98 @@
+<svg viewBox="0 0 720 800" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch07-berth-title ch07-berth-desc" width="640" height="712">
+    <title id="ch07-berth-title">Filter, Score, Bind: how the scheduler picks a node</title>
+    <desc id="ch07-berth-desc">Seven filter mechanisms feed the FILTER stage and five score mechanisms feed the SCORE stage of the filter-score-bind pipeline, which ends at a chosen node. A separate arrow from spec.nodeName bypasses all three stages and reaches the node directly.</desc>
+    <defs>
+      <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon>
+      </marker>
+      <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#B58B3E"></polygon>
+      </marker>
+    </defs>
+
+    <rect width="100%" height="100%" fill="#F5EFE4"></rect>
+
+    <!-- ================= ARROWS (drawn before boxes) ================= -->
+
+    <!-- FILTERS panel -> FILTER stage -->
+    <path d="M 196 264 L 196 284 Q 196 292 204 292 L 352 292 Q 360 292 360 300 L 360 308" fill="none" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></path>
+
+    <!-- SCORES panel -> SCORE stage -->
+    <path d="M 528 216 L 528 388 Q 528 396 520 396 L 408 396 Q 400 396 400 404 L 400 420" fill="none" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></path>
+
+    <!-- FILTER -> SCORE -->
+    <path d="M 360 372 L 360 420" fill="none" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></path>
+
+    <!-- SCORE -> BIND -->
+    <path d="M 360 484 L 360 532" fill="none" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></path>
+
+    <!-- BIND -> a node -->
+    <path d="M 360 596 L 360 644" fill="none" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></path>
+
+    <!-- spec.nodeName -> a node : the focal bypass, runs past all three stages -->
+    <path d="M 64 372 L 64 668 Q 64 676 72 676 L 260 676" fill="none" stroke="#B58B3E" stroke-width="1.6" marker-end="url(#arrow-accent)"></path>
+
+    <!-- bypass arrow label, beside the long vertical run -->
+    <rect x="72" y="512" width="64" height="12" rx="2" fill="#F5EFE4"></rect>
+    <text x="104" y="521" fill="#B58B3E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.04em">BYPASS</text>
+
+    <!-- ================= FILTERS panel ================= -->
+    <rect x="40" y="40" width="312" height="224" rx="8" fill="#F5EFE4" stroke="#1F4A4E" stroke-width="1"></rect>
+    <text x="56" y="68" fill="#0B1E3B" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" letter-spacing="0.12em">FILTERS — REMOVE NODES</text>
+    <line x1="56" y1="80" x2="336" y2="80" stroke="rgba(11,30,59,0.12)" stroke-width="1"></line>
+    <text x="56" y="104" fill="#0B1E3B" font-size="14" font-family="'Fira Mono', monospace">requests vs allocatable</text>
+    <text x="56" y="128" fill="#0B1E3B" font-size="14" font-family="'Fira Mono', monospace">nodeSelector</text>
+    <text x="56" y="152" fill="#0B1E3B" font-size="14" font-family="'Fira Mono', monospace">required node affinity</text>
+    <text x="56" y="176" fill="#0B1E3B" font-size="14" font-family="'Fira Mono', monospace">untolerated NoSchedule</text>
+    <text x="56" y="200" fill="#0B1E3B" font-size="14" font-family="'Fira Mono', monospace">untolerated NoExecute</text>
+    <text x="56" y="224" fill="#0B1E3B" font-size="14" font-family="'Fira Mono', monospace">required inter-Pod rules</text>
+    <text x="56" y="248" fill="#0B1E3B" font-size="14" font-family="'Fira Mono', monospace">DoNotSchedule spread</text>
+
+    <!-- ================= SCORES panel ================= -->
+    <rect x="376" y="40" width="304" height="176" rx="8" fill="#F5EFE4" stroke="#1F4A4E" stroke-width="1"></rect>
+    <text x="392" y="68" fill="#0B1E3B" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" letter-spacing="0.12em">SCORES — RANK WHAT REMAINS</text>
+    <line x1="392" y1="80" x2="664" y2="80" stroke="rgba(11,30,59,0.12)" stroke-width="1"></line>
+    <text x="392" y="104" fill="#0B1E3B" font-size="14" font-family="'Fira Mono', monospace">preferred node affinity</text>
+    <text x="392" y="128" fill="#0B1E3B" font-size="14" font-family="'Fira Mono', monospace">PreferNoSchedule</text>
+    <text x="392" y="152" fill="#0B1E3B" font-size="14" font-family="'Fira Mono', monospace">preferred inter-Pod rules</text>
+    <text x="392" y="176" fill="#0B1E3B" font-size="14" font-family="'Fira Mono', monospace">ScheduleAnyway spread</text>
+    <text x="392" y="200" fill="#0B1E3B" font-size="14" font-family="'Fira Mono', monospace">other scoring plugins</text>
+
+    <!-- ================= spec.nodeName (focal) ================= -->
+    <rect x="40" y="308" width="160" height="64" rx="6" fill="#B58B3E" fill-opacity="0.10" stroke="#B58B3E" stroke-width="1.2"></rect>
+    <text x="120" y="345" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="middle">spec.nodeName</text>
+
+    <!-- editorial callout beneath spec.nodeName, clear of the bypass line -->
+    <text x="88" y="400" fill="#1F4A4E" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif">
+      <tspan x="88" dy="0">neither a filter</tspan>
+      <tspan x="88" dy="20">nor a score —</tspan>
+      <tspan x="88" dy="20">it deletes</tspan>
+      <tspan x="88" dy="20">the choice</tspan>
+    </text>
+
+    <!-- ================= FILTER stage ================= -->
+    <rect x="260" y="308" width="200" height="64" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+    <text x="360" y="346" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">1. FILTER</text>
+
+    <!-- ================= SCORE stage ================= -->
+    <rect x="260" y="420" width="200" height="64" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+    <text x="360" y="458" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">2. SCORE</text>
+
+    <!-- ================= BIND stage ================= -->
+    <rect x="260" y="532" width="200" height="64" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+    <text x="360" y="570" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">3. BIND</text>
+
+    <!-- ================= a node ================= -->
+    <rect x="260" y="644" width="200" height="64" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1.2"></rect>
+    <text x="360" y="682" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle">a node</text>
+
+    <!-- ================= legend ================= -->
+    <line x1="40" y1="732" x2="680" y2="732" stroke="rgba(11,30,59,0.12)" stroke-width="1"></line>
+    <text x="40" y="756" fill="#8A8D90" font-size="14" font-family="'Fira Mono', monospace" letter-spacing="0.12em">LEGEND</text>
+
+    <line x1="140" y1="752" x2="176" y2="752" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+    <text x="184" y="756" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">pipeline flow</text>
+
+    <line x1="380" y1="752" x2="416" y2="752" stroke="#B58B3E" stroke-width="1.6" marker-end="url(#arrow-accent)"></line>
+    <text x="424" y="756" fill="#B58B3E" font-size="14" font-family="'Fira Sans', sans-serif">spec.nodeName bypass</text>
+  </svg>

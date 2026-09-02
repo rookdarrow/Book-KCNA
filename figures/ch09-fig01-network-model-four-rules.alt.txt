@@ -1,0 +1,1 @@
+Two worker nodes side by side, each containing Pods labelled with 10.244.x.x addresses. One Pod contains two containers joined over localhost. Direct lines connect a Pod to another Pod on the same node, to a Pod on the other node, and to the local kubelet, with no intermediate device on any line.

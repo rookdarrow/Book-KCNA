@@ -1,0 +1,82 @@
+<svg viewBox="0 0 760 760" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch02-fig01-vm-vs-container-stack-title ch02-fig01-vm-vs-container-stack-desc" width="756" height="756">
+      <title id="ch02-fig01-vm-vs-container-stack-title">VMs vs. containers — where the guest OS layer goes away</title>
+      <desc id="ch02-fig01-vm-vs-container-stack-desc">Two deployment stacks on the same hardware and host OS: on the left, three apps each require their own guest OS under a hypervisor; on the right, the same three apps share one container runtime directly, with no guest OS layer at all.</desc>
+
+      <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon>
+        </marker>
+        <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#B58B3E"></polygon>
+        </marker>
+        <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon>
+        </marker>
+      </defs>
+
+      <rect width="760" height="760" fill="#F5EFE4"></rect>
+
+      <text x="196" y="40" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="700" letter-spacing="0.06em">VIRTUAL MACHINES</text>
+      <text x="564" y="40" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="700" letter-spacing="0.06em">CONTAINERS</text>
+
+      <rect x="416" y="140" width="88" height="72" rx="6" fill="none" stroke="#B58B3E" stroke-width="1.2" stroke-dasharray="4,4"></rect>
+      <rect x="520" y="140" width="88" height="72" rx="6" fill="none" stroke="#B58B3E" stroke-width="1.2" stroke-dasharray="4,4"></rect>
+      <rect x="624" y="140" width="88" height="72" rx="6" fill="none" stroke="#B58B3E" stroke-width="1.2" stroke-dasharray="4,4"></rect>
+
+      <line x1="92" y1="212" x2="92" y2="286" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+      <line x1="196" y1="212" x2="196" y2="286" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+      <line x1="300" y1="212" x2="300" y2="286" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+      <line x1="460" y1="140" x2="460" y2="286" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+      <line x1="564" y1="140" x2="564" y2="286" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+      <line x1="668" y1="140" x2="668" y2="286" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+
+      <rect x="48" y="68" width="88" height="72" rx="6" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1"></rect>
+      <rect x="152" y="68" width="88" height="72" rx="6" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1"></rect>
+      <rect x="256" y="68" width="88" height="72" rx="6" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="92" y="109" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600">App</text>
+      <text x="196" y="109" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600">App</text>
+      <text x="300" y="109" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600">App</text>
+
+      <rect x="416" y="68" width="88" height="72" rx="6" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1"></rect>
+      <rect x="520" y="68" width="88" height="72" rx="6" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1"></rect>
+      <rect x="624" y="68" width="88" height="72" rx="6" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="460" y="109" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600">App</text>
+      <text x="564" y="109" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600">App</text>
+      <text x="668" y="109" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600">App</text>
+
+      <rect x="48" y="140" width="88" height="72" rx="6" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"></rect>
+      <rect x="152" y="140" width="88" height="72" rx="6" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"></rect>
+      <rect x="256" y="140" width="88" height="72" rx="6" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"></rect>
+      <text x="92" y="170" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600">Guest</text>
+      <text x="92" y="190" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600">OS</text>
+      <text x="196" y="170" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600">Guest</text>
+      <text x="196" y="190" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600">OS</text>
+      <text x="300" y="170" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600">Guest</text>
+      <text x="300" y="190" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600">OS</text>
+
+      <rect x="32" y="288" width="328" height="252" rx="8" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1"></rect>
+      <line x1="32" y1="372" x2="360" y2="372" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+      <line x1="32" y1="456" x2="360" y2="456" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+      <text x="196" y="336" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600">hypervisor</text>
+      <text x="196" y="420" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600">host OS</text>
+      <text x="196" y="504" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600">hardware</text>
+
+      <rect x="400" y="288" width="328" height="252" rx="8" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1"></rect>
+      <line x1="400" y1="372" x2="728" y2="372" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+      <line x1="400" y1="456" x2="728" y2="456" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+      <text x="564" y="336" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600">container runtime</text>
+      <text x="564" y="420" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600">host OS</text>
+      <text x="564" y="504" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600">hardware</text>
+
+      <text x="196" y="582" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.04em">THREE OS COPIES · three apps</text>
+      <text x="564" y="582" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.04em">ONE OS · three apps</text>
+
+      <text x="380" y="624" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="16">The only row that changes: Guest OS — three times on the left, none on the right.</text>
+
+      <line x1="32" y1="664" x2="728" y2="664" stroke="#8A8D90" stroke-width="0.8"></line>
+      <text x="32" y="680" fill="#8A8D90" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.12em">LEGEND</text>
+      <rect x="140" y="692" width="24" height="16" rx="3" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"></rect>
+      <text x="172" y="704" fill="#0B1E3B" font-family="'Fira Mono', monospace" font-size="14">guest OS — required (VM)</text>
+      <rect x="430" y="692" width="24" height="16" rx="3" fill="none" stroke="#B58B3E" stroke-width="1.2" stroke-dasharray="4,4"></rect>
+      <text x="462" y="704" fill="#0B1E3B" font-family="'Fira Mono', monospace" font-size="14">no guest OS (container)</text>
+    </svg>

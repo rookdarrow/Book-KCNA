@@ -1,0 +1,1 @@
+Hub diagram with kube-apiserver at the center; kubectl, kube-scheduler, kube-controller-manager, and two kubelets each connect only to the API server, and the API server alone connects to etcd, with no direct links between any of the surrounding components

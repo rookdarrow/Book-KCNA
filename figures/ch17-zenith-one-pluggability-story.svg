@@ -1,0 +1,46 @@
+<svg viewBox="0 0 592 720" width="620" height="755" role="img" aria-labelledby="ch17-zenith-one-pluggability-story-title ch17-zenith-one-pluggability-story-desc" xmlns="http://www.w3.org/2000/svg">
+      <title id="ch17-zenith-one-pluggability-story-title">Kubernetes Pluggability: One Shape, Four Sockets</title>
+      <desc id="ch17-zenith-one-pluggability-story-desc">Concept map showing Kubernetes defining what must be true, connected by an arrow labeled the socket to somebody else supplying the thing, alongside CRI, CNI, CSI, and CRDs listed as four instances of that one relation, not four separate decisions.</desc>
+      <defs>
+        <marker id="arrow-accent-lg" markerWidth="14" markerHeight="12" refX="12" refY="6" orient="auto">
+          <polygon points="0 0, 14 6, 0 12" fill="#B58B3E"></polygon>
+        </marker>
+      </defs>
+
+      <!-- paper -->
+      <rect x="0" y="0" width="592" height="720" fill="#F5EFE4"></rect>
+
+      <!-- column eyebrows -->
+      <text x="48" y="72" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.12em" fill="#8A8D90">THE SHAPE</text>
+      <text x="320" y="72" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.12em" fill="#8A8D90">THE EVIDENCE</text>
+
+      <!-- header hairlines -->
+      <line x1="48" y1="88" x2="272" y2="88" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+      <line x1="320" y1="88" x2="544" y2="88" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+
+      <!-- vertical divider between the two halves -->
+      <line x1="296" y1="88" x2="296" y2="620" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+
+      <!-- the socket: arrow drawn before its boxes -->
+      <line x1="160" y1="248" x2="160" y2="468" stroke="#B58B3E" stroke-width="3" marker-end="url(#arrow-accent-lg)"></line>
+
+      <!-- box 1: Kubernetes defines what must be true -->
+      <rect x="48" y="120" width="224" height="128" rx="6" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="160" y="172" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Kubernetes defines<tspan x="160" dy="32" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">WHAT MUST BE TRUE</tspan></text>
+
+      <!-- the socket label -->
+      <rect x="172" y="344" width="120" height="24" fill="#F5EFE4"></rect>
+      <text x="232" y="361" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="400" letter-spacing="0.02em" fill="#B58B3E">(THE SOCKET)</text>
+
+      <!-- box 2: somebody else supplies the thing -->
+      <rect x="48" y="468" width="224" height="128" rx="6" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="160" y="520" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Somebody else<tspan x="160" dy="32" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">SUPPLIES THE THING</tspan></text>
+
+      <!-- the evidence: one list, four instances -->
+      <text x="320" y="140" font-family="'Fira Mono', monospace" font-size="16" font-weight="500" fill="#0B1E3B">CRI<tspan x="544" y="140" text-anchor="end" font-family="'Fira Mono', monospace" font-size="14" font-weight="400" fill="#8A8D90">(Ch 2 §4)</tspan><tspan x="320" y="204" font-family="'Fira Mono', monospace" font-size="16" font-weight="500" fill="#0B1E3B">CNI</tspan><tspan x="544" y="204" text-anchor="end" font-family="'Fira Mono', monospace" font-size="14" font-weight="400" fill="#8A8D90">(Ch 9 §1)</tspan><tspan x="320" y="268" font-family="'Fira Mono', monospace" font-size="16" font-weight="500" fill="#0B1E3B">CSI</tspan><tspan x="544" y="268" text-anchor="end" font-family="'Fira Mono', monospace" font-size="14" font-weight="400" fill="#8A8D90">(Ch 11 §5)</tspan><tspan x="320" y="332" font-family="'Fira Mono', monospace" font-size="16" font-weight="500" fill="#0B1E3B">CRDs</tspan><tspan x="544" y="332" text-anchor="end" font-family="'Fira Mono', monospace" font-size="14" font-weight="400" fill="#8A8D90">(Ch 6 §8)</tspan><tspan x="320" y="400" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">Four instances.</tspan><tspan x="320" y="428" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">Not four decisions.</tspan></text>
+
+      <line x1="320" y1="360" x2="544" y2="360" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+
+      <!-- editorial aside -->
+      <text x="320" y="484" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="16" font-weight="400" fill="#1F4A4E">One decision, made four<tspan x="320" dy="28" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="16" font-weight="400" fill="#1F4A4E">times because it was</tspan><tspan x="320" dy="28" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="16" font-weight="400" fill="#1F4A4E">right four times.</tspan></text>
+    </svg>

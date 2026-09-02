@@ -1,0 +1,1 @@
+Directory tree of a Helm chart named wordpress, with Chart.yaml, values.yaml, templates, charts and crds each annotated with its purpose; the charts directory is marked emphatically as not a repository but a directory inside the chart holding its dependencies

@@ -1,0 +1,73 @@
+<svg viewBox="0 0 600 720" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="pod-outliving-title pod-outliving-desc" width="560" height="672">
+      <title id="pod-outliving-title">Storage Outlives the Pod</title>
+      <desc id="pod-outliving-desc">A two-lane timeline: the upper Pod lane shows three separate segments each labelled web-1, on node-b then node-e then node-e, with visible gaps between them; the lower Storage lane is a single unbroken line labelled www-web-1 running the full width, with claim connectors dropping from each Pod segment to the storage line.</desc>
+
+      <defs>
+        <marker id="arrow-muted" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon>
+        </marker>
+        <marker id="arrow-soft" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#8A8D90"></polygon>
+        </marker>
+      </defs>
+
+      <rect width="600" height="720" fill="#F5EFE4"></rect>
+
+      <!-- Header -->
+      <text x="40" y="48" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.12em" fill="#8A8D90">PERSISTENTVOLUMECLAIM · CH.11</text>
+      <text x="40" y="84" font-family="'Roboto Slab', serif" font-size="28" font-weight="500" fill="#0B1E3B">Storage Outlives the Pod</text>
+      <text x="40" y="112" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="400" fill="#1F4A4E">A claim outlives the Pod that made it.</text>
+
+      <!-- Pod lane label -->
+      <text x="108" y="180" text-anchor="end" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.12em" fill="#8A8D90">POD</text>
+
+      <!-- Pod segment 1 -->
+      <rect x="120" y="160" width="120" height="28" rx="4" fill="rgba(11,30,59,0.04)" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="180" y="180" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">web-1</text>
+      <text x="180" y="204" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#8A8D90">(node-b)</text>
+
+      <!-- Pod segment 2 -->
+      <rect x="292" y="160" width="120" height="28" rx="4" fill="rgba(11,30,59,0.04)" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="352" y="180" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">web-1</text>
+      <text x="352" y="204" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#8A8D90">(node-e)</text>
+
+      <!-- Pod segment 3 -->
+      <rect x="440" y="160" width="120" height="28" rx="4" fill="rgba(11,30,59,0.04)" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="500" y="180" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">web-1</text>
+      <text x="500" y="204" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#8A8D90">(node-e)</text>
+
+      <!-- Claim connectors: Pod segment -> Storage line -->
+      <line x1="180" y1="192" x2="180" y2="416" stroke="#1F4A4E" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#arrow-muted)"></line>
+      <line x1="352" y1="192" x2="352" y2="416" stroke="#1F4A4E" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#arrow-muted)"></line>
+      <line x1="500" y1="192" x2="500" y2="416" stroke="#1F4A4E" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#arrow-muted)"></line>
+
+      <rect x="360" y="292" width="60" height="16" rx="2" fill="#F5EFE4"></rect>
+      <text x="364" y="304" text-anchor="start" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E" letter-spacing="0.04em">claims</text>
+
+      <!-- Storage lane label -->
+      <text x="108" y="440" text-anchor="end" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.12em" fill="#8A8D90">STORAGE</text>
+
+      <!-- Storage line: one continuous bar, full width -->
+      <rect x="120" y="420" width="440" height="32" rx="4" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"></rect>
+      <text x="340" y="440" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="16" font-weight="500" fill="#0B1E3B">www-web-1</text>
+
+      <!-- Time axis -->
+      <text x="120" y="480" text-anchor="start" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.12em" fill="#8A8D90">TIME</text>
+      <line x1="120" y1="488" x2="556" y2="488" stroke="#8A8D90" stroke-width="1" marker-end="url(#arrow-soft)"></line>
+
+      <!-- Editorial callout -->
+      <text x="340" y="536" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="16" fill="#1F4A4E">www-web-1 — one continuous line, never broken.</text>
+
+      <!-- Legend -->
+      <line x1="40" y1="608" x2="560" y2="608" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+      <text x="40" y="628" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.12em" fill="#8A8D90">LEGEND</text>
+
+      <rect x="40" y="644" width="16" height="16" rx="4" fill="rgba(11,30,59,0.04)" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="64" y="656" font-family="'Fira Sans', sans-serif" font-size="14" fill="#0B1E3B">Pod — bounded</text>
+
+      <rect x="252" y="644" width="16" height="16" rx="4" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"></rect>
+      <text x="276" y="656" font-family="'Fira Sans', sans-serif" font-size="14" fill="#0B1E3B">Storage — persists</text>
+
+      <line x1="420" y1="652" x2="440" y2="652" stroke="#1F4A4E" stroke-width="1.2" stroke-dasharray="4,3"></line>
+      <text x="452" y="656" font-family="'Fira Sans', sans-serif" font-size="14" fill="#0B1E3B">Claims</text>
+    </svg>

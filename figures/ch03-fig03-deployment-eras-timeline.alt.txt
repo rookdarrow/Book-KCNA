@@ -1,0 +1,1 @@
+Three side-by-side layer stacks comparing traditional, virtualized, and container deployment; traditional runs one app on an OS on hardware, virtualized adds a hypervisor and a guest OS per virtual machine, and containers place three apps directly on one shared operating system

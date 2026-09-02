@@ -1,0 +1,1 @@
+A flowchart starting at PVC creation, branching on whether a matching PersistentVolume already exists; yes leads to static binding, no leads to a second decision requiring both a named StorageClass and a configured provisioner, whose true branch is dynamic provisioning and whose false branch dead-ends at a claim that waits indefinitely with the Pod stuck in Pending

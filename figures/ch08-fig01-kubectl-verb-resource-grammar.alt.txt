@@ -1,0 +1,1 @@
+A five-column table aligning five kubectl commands on the slots kubectl, command, TYPE, NAME and flags; some cells are empty because those commands omit those slots; two arrows below point up at the TYPE column labelled case-insensitive and the NAME column labelled case-sensitive

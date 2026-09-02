@@ -1,0 +1,111 @@
+<svg viewBox="0 0 720 816" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch14fig04-title ch14fig04-desc" width="640" height="726">
+    <title id="ch14fig04-title">Two Kustomize overlays applying deltas against one base</title>
+    <desc id="ch14fig04-desc">Two Kustomize overlay directories, for staging and production, each declare only their own deltas against a single shared base directory that is never edited or copied; kubectl apply -k renders each overlay into prefixed objects with different replica counts, with no extra engine to install.</desc>
+    <defs>
+      <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon>
+      </marker>
+      <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#B58B3E"></polygon>
+      </marker>
+      <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon>
+      </marker>
+    </defs>
+
+    <rect width="100%" height="100%" fill="#F5EFE4"></rect>
+
+    <!-- ===== Arrows (drawn before nodes) ===== -->
+    <!-- overlay-staging -> base -->
+    <path d="M200,224 V248 Q200,256 208,256 H224 Q232,256 232,264 V288" fill="none" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></path>
+    <!-- overlay-prod -> base -->
+    <path d="M520,224 V248 Q520,256 512,256 H496 Q488,256 488,264 V288" fill="none" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></path>
+    <!-- base -> apply-staging -->
+    <path d="M232,464 V488 Q232,496 224,496 H208 Q200,496 200,504 V528" fill="none" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></path>
+    <!-- base -> apply-prod -->
+    <path d="M488,464 V488 Q488,496 496,496 H512 Q520,496 520,504 V528" fill="none" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></path>
+    <!-- apply-staging -> output-staging -->
+    <path d="M200,644 V708" fill="none" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></path>
+    <!-- apply-prod -> output-prod -->
+    <path d="M520,644 V708" fill="none" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></path>
+
+    <!-- ===== Node 1: overlays/staging ===== -->
+    <rect x="60" y="48" width="280" height="176" rx="6" fill="#F5EFE4"></rect>
+    <rect x="60" y="48" width="280" height="176" rx="6" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1"></rect>
+    <text x="76" font-family="'Fira Mono', monospace" text-anchor="start">
+      <tspan x="76" y="76" font-size="16" font-weight="500" fill="#1F4A4E">overlays/staging/</tspan>
+      <tspan x="76" y="96" font-size="14" font-weight="500" fill="#0B1E3B">kustomization.yaml</tspan>
+      <tspan x="76" y="116" font-size="14" font-weight="400" fill="#1F4A4E">resources: [../../base]</tspan>
+      <tspan x="76" y="136" font-size="14" font-weight="400" fill="#1F4A4E">namePrefix: stg-</tspan>
+      <tspan x="76" y="156" font-size="14" font-weight="400" fill="#1F4A4E">replicas: 2</tspan>
+      <tspan x="76" y="176" font-size="14" font-weight="400" fill="#1F4A4E">patches: [...]</tspan>
+      <tspan x="76" y="204" font-size="14" font-style="italic" font-family="'Fira Sans', sans-serif" letter-spacing="0.04em" fill="#8A8D90">ONLY THE DELTAS</tspan>
+    </text>
+    <line x1="76" y1="188" x2="324" y2="188" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+
+    <!-- ===== Node 2: overlays/prod ===== -->
+    <rect x="380" y="48" width="280" height="176" rx="6" fill="#F5EFE4"></rect>
+    <rect x="380" y="48" width="280" height="176" rx="6" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1"></rect>
+    <text x="396" font-family="'Fira Mono', monospace" text-anchor="start">
+      <tspan x="396" y="76" font-size="16" font-weight="500" fill="#1F4A4E">overlays/prod/</tspan>
+      <tspan x="396" y="96" font-size="14" font-weight="500" fill="#0B1E3B">kustomization.yaml</tspan>
+      <tspan x="396" y="116" font-size="14" font-weight="400" fill="#1F4A4E">resources: [../../base]</tspan>
+      <tspan x="396" y="136" font-size="14" font-weight="400" fill="#1F4A4E">namePrefix: prod-</tspan>
+      <tspan x="396" y="156" font-size="14" font-weight="400" fill="#1F4A4E">replicas: 12</tspan>
+      <tspan x="396" y="176" font-size="14" font-weight="400" fill="#1F4A4E">patches: [...]</tspan>
+      <tspan x="396" y="204" font-size="14" font-style="italic" font-family="'Fira Sans', sans-serif" letter-spacing="0.04em" fill="#8A8D90">ONLY THE DELTAS</tspan>
+    </text>
+    <line x1="396" y1="188" x2="644" y2="188" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+
+    <!-- ===== Node 3: base/ (focal) ===== -->
+    <rect x="200" y="288" width="320" height="176" rx="6" fill="#F5EFE4"></rect>
+    <rect x="200" y="288" width="320" height="176" rx="6" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"></rect>
+    <text x="360" font-family="'Fira Mono', monospace" text-anchor="middle">
+      <tspan x="360" y="316" font-size="16" font-weight="500" fill="#0B1E3B">base/</tspan>
+      <tspan x="360" y="336" font-size="14" font-weight="400" fill="#0B1E3B">kustomization.yaml</tspan>
+      <tspan x="360" y="356" font-size="14" font-weight="400" fill="#0B1E3B">deployment.yaml</tspan>
+      <tspan x="360" y="376" font-size="14" font-weight="400" fill="#0B1E3B">service.yaml</tspan>
+      <tspan x="360" y="404" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif" letter-spacing="0.02em" fill="#0B1E3B">NEVER EDITED.</tspan>
+      <tspan x="360" y="424" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif" letter-spacing="0.02em" fill="#0B1E3B">NEVER COPIED.</tspan>
+      <tspan x="360" y="444" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif" letter-spacing="0.02em" fill="#0B1E3B">ONE OF IT.</tspan>
+    </text>
+    <line x1="216" y1="388" x2="504" y2="388" stroke="rgba(181,139,62,0.35)" stroke-width="0.8"></line>
+
+    <!-- ===== Node 4: apply -k overlays/staging ===== -->
+    <rect x="60" y="528" width="280" height="116" rx="6" fill="#F5EFE4"></rect>
+    <rect x="60" y="528" width="280" height="116" rx="6" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1"></rect>
+    <text x="200" font-family="'Fira Mono', monospace" text-anchor="middle">
+      <tspan x="200" y="556" font-size="16" font-weight="500" fill="#0B1E3B">kubectl apply -k</tspan>
+      <tspan x="200" y="576" font-size="14" font-weight="400" fill="#1F4A4E">overlays/staging</tspan>
+      <tspan x="200" y="604" font-size="14" font-style="italic" font-family="'Fira Sans', sans-serif" fill="#1F4A4E">kustomize built in —</tspan>
+      <tspan x="200" y="624" font-size="14" font-style="italic" font-family="'Fira Sans', sans-serif" fill="#1F4A4E">no engine to install</tspan>
+    </text>
+    <line x1="76" y1="588" x2="324" y2="588" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+
+    <!-- ===== Node 5: apply -k overlays/prod ===== -->
+    <rect x="380" y="528" width="280" height="116" rx="6" fill="#F5EFE4"></rect>
+    <rect x="380" y="528" width="280" height="116" rx="6" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1"></rect>
+    <text x="520" font-family="'Fira Mono', monospace" text-anchor="middle">
+      <tspan x="520" y="556" font-size="16" font-weight="500" fill="#0B1E3B">kubectl apply -k</tspan>
+      <tspan x="520" y="576" font-size="14" font-weight="400" fill="#1F4A4E">overlays/prod</tspan>
+      <tspan x="520" y="604" font-size="14" font-style="italic" font-family="'Fira Sans', sans-serif" fill="#1F4A4E">kustomize built in —</tspan>
+      <tspan x="520" y="624" font-size="14" font-style="italic" font-family="'Fira Sans', sans-serif" fill="#1F4A4E">no engine to install</tspan>
+    </text>
+    <line x1="396" y1="588" x2="644" y2="588" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+
+    <!-- ===== Node 6: stg- objects ===== -->
+    <rect x="60" y="708" width="280" height="68" rx="6" fill="#F5EFE4"></rect>
+    <rect x="60" y="708" width="280" height="68" rx="6" fill="rgba(11,30,59,0.05)" stroke="#1F4A4E" stroke-width="1"></rect>
+    <text x="200" font-family="'Fira Mono', monospace" text-anchor="middle">
+      <tspan x="200" y="736" font-size="16" font-weight="500" fill="#0B1E3B">stg- objects</tspan>
+      <tspan x="200" y="756" font-size="14" font-weight="400" fill="#1F4A4E">2 replicas</tspan>
+    </text>
+
+    <!-- ===== Node 7: prod- objects ===== -->
+    <rect x="380" y="708" width="280" height="68" rx="6" fill="#F5EFE4"></rect>
+    <rect x="380" y="708" width="280" height="68" rx="6" fill="rgba(11,30,59,0.05)" stroke="#1F4A4E" stroke-width="1"></rect>
+    <text x="520" font-family="'Fira Mono', monospace" text-anchor="middle">
+      <tspan x="520" y="736" font-size="16" font-weight="500" fill="#0B1E3B">prod- objects</tspan>
+      <tspan x="520" y="756" font-size="14" font-weight="400" fill="#1F4A4E">12 replicas</tspan>
+    </text>
+  </svg>

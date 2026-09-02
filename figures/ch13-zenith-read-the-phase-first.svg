@@ -1,0 +1,56 @@
+<svg viewBox="0 0 720 1000" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch13-phase-lookup-title ch13-phase-lookup-desc" width="640" height="889">
+      <title id="ch13-phase-lookup-title">Pod failure lookup, keyed on the phase</title>
+      <desc id="ch13-phase-lookup-desc">A tree rooted in one key, the Pod phase, branching to four outcomes: no Pod object stopped at admission, Pending never placed by the scheduler, scheduled but containers never ran, and scheduled with containers that ran and then ended -- each branch naming the component that owns it, from the admission gate through the scheduler to the kubelet and the kernel, before listing its failure signatures, nine in total.</desc>
+      <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon></marker>
+        <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#B58B3E"></polygon></marker>
+        <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon></marker>
+      </defs>
+
+      <rect width="100%" height="100%" fill="#F5EFE4"></rect>
+
+      <!-- connectors, drawn before nodes -->
+      <path d="M360,104 V116 Q360,124 352,124 H160" fill="none" stroke="#1F4A4E" stroke-width="1"></path>
+      <line x1="160" y1="124" x2="160" y2="448" stroke="#1F4A4E" stroke-width="1"></line>
+      <line x1="160" y1="196" x2="200" y2="196" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"></line>
+      <line x1="160" y1="340" x2="200" y2="340" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"></line>
+      <line x1="160" y1="448" x2="200" y2="448" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"></line>
+
+      <path d="M320,472 V480 Q320,488 312,488 H260" fill="none" stroke="#1F4A4E" stroke-width="1"></path>
+      <line x1="260" y1="488" x2="260" y2="804" stroke="#1F4A4E" stroke-width="1"></line>
+      <line x1="260" y1="596" x2="300" y2="596" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"></line>
+      <line x1="260" y1="804" x2="300" y2="804" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"></line>
+
+      <!-- root: ONE KEY -->
+      <rect x="240" y="40" width="240" height="64" rx="6" fill="#F5EFE4"></rect>
+      <rect x="240" y="40" width="240" height="64" rx="6" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"></rect>
+      <text x="360" y="76" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="700" fill="#0B1E3B">ONE KEY: the phase</text>
+
+      <!-- N1: no Pod object -->
+      <rect x="200" y="136" width="344" height="120" rx="6" fill="#F5EFE4"></rect>
+      <rect x="200" y="136" width="344" height="120" rx="6" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="216" y="164" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="700" fill="#0B1E3B">no Pod object<tspan x="216" dy="24" font-weight="500">the <tspan font-weight="700">ADMISSION</tspan> gate stopped it</tspan><tspan x="216" dy="28" font-family="'Fira Mono', monospace" font-size="14" font-weight="400" fill="#1F4A4E">→ read the CREATE response</tspan><tspan x="216" dy="20" font-family="'Fira Mono', monospace" font-size="14" font-weight="400" fill="#1F4A4E">(Ch 12 §6)</tspan></text>
+
+      <!-- N2: Pending -->
+      <rect x="200" y="280" width="344" height="120" rx="6" fill="#F5EFE4"></rect>
+      <rect x="200" y="280" width="344" height="120" rx="6" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="216" y="308" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="700" fill="#0B1E3B">Pending<tspan x="216" dy="24" font-weight="500">the <tspan font-weight="700">SCHEDULER</tspan> never placed it</tspan><tspan x="216" dy="28" font-family="'Fira Mono', monospace" font-size="14" font-weight="400" fill="#1F4A4E">→ read the SCHEDULER's events</tspan><tspan x="216" dy="20" font-family="'Fira Mono', monospace" font-size="14" font-weight="400" fill="#1F4A4E">(Ch 7 §2, §4)</tspan></text>
+
+      <!-- N3: scheduled to a node -->
+      <rect x="200" y="424" width="240" height="48" rx="6" fill="#F5EFE4"></rect>
+      <rect x="200" y="424" width="240" height="48" rx="6" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="320" y="452" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="700" fill="#0B1E3B">scheduled to a node</text>
+
+      <!-- N4: containers never ran -->
+      <rect x="300" y="504" width="344" height="184" rx="6" fill="#F5EFE4"></rect>
+      <rect x="300" y="504" width="344" height="184" rx="6" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="316" y="532" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="700" fill="#0B1E3B">containers never ran<tspan x="316" dy="24" font-weight="500">the <tspan font-weight="700">KUBELET</tspan> couldn't start it</tspan><tspan x="316" dy="28" font-family="'Fira Mono', monospace" font-size="14" font-weight="500"><tspan fill="#8A8D90">· </tspan><tspan fill="#0B1E3B">ErrImagePull</tspan></tspan><tspan x="316" dy="20" font-family="'Fira Mono', monospace" font-size="14" font-weight="500"><tspan fill="#8A8D90">· </tspan><tspan fill="#0B1E3B">ImagePullBackOff</tspan></tspan><tspan x="316" dy="20" font-family="'Fira Mono', monospace" font-size="14" font-weight="500"><tspan fill="#8A8D90">· </tspan><tspan fill="#0B1E3B">ImageInspectError</tspan></tspan><tspan x="316" dy="20" font-family="'Fira Mono', monospace" font-size="14" font-weight="500"><tspan fill="#8A8D90">· </tspan><tspan fill="#0B1E3B">ErrImageNeverPull</tspan></tspan><tspan x="316" dy="20" font-family="'Fira Mono', monospace" font-size="14" font-weight="500"><tspan fill="#8A8D90">· </tspan><tspan fill="#0B1E3B">CreateContainerConfigError</tspan></tspan></text>
+
+      <!-- N5: containers ran, then ended -->
+      <rect x="300" y="712" width="344" height="184" rx="6" fill="#F5EFE4"></rect>
+      <rect x="300" y="712" width="344" height="184" rx="6" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="316" y="740" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="700" fill="#0B1E3B">containers ran, then ended<tspan x="316" dy="24" font-weight="500">the <tspan font-weight="700">KUBELET</tspan> or the</tspan><tspan x="316" dy="20" font-weight="500"><tspan font-weight="700">KERNEL</tspan> ended it</tspan><tspan x="316" dy="28" font-family="'Fira Mono', monospace" font-size="14" font-weight="500"><tspan fill="#8A8D90">· </tspan><tspan fill="#0B1E3B">CrashLoopBackOff</tspan></tspan><tspan x="316" dy="20" font-family="'Fira Mono', monospace" font-size="14" font-weight="500"><tspan fill="#8A8D90">· </tspan><tspan fill="#0B1E3B">OOMKilled</tspan></tspan><tspan x="316" dy="20" font-family="'Fira Mono', monospace" font-size="14" font-weight="500"><tspan fill="#8A8D90">· </tspan><tspan fill="#0B1E3B">Evicted</tspan></tspan><tspan x="316" dy="20" font-family="'Fira Mono', monospace" font-size="14" font-weight="500"><tspan fill="#8A8D90">· </tspan><tspan fill="#0B1E3B">probe failures</tspan></tspan></text>
+
+      <!-- caption -->
+      <text x="360" y="944" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="16" font-weight="400" fill="#1F4A4E">Nine signatures. One lookup. The key is always the phase.</text>
+    </svg>

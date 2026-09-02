@@ -1,0 +1,122 @@
+<svg viewBox="0 0 840 1120" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="rbac4way-title rbac4way-desc" width="760" height="1014">
+    <title id="rbac4way-title">RBAC object derivation: Role, ClusterRole, and bindings</title>
+    <desc id="rbac4way-desc">Three-panel derivation: namespaced resources permit either a Role or a ClusterRole while cluster-scoped resources force a ClusterRole; a separate question of where the grant applies selects a RoleBinding or a ClusterRoleBinding; four combinations follow, of which Role plus ClusterRoleBinding does not exist; a banner states that the binding determines the scope of the grant.</desc>
+    <defs>
+      <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon>
+      </marker>
+      <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#B58B3E"></polygon>
+      </marker>
+      <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon>
+      </marker>
+    </defs>
+
+    <rect width="100%" height="100%" fill="#F5EFE4"></rect>
+
+    <!-- ================= PANEL 1 ================= -->
+    <text x="48" y="52" fill="#0B1E3B" font-size="14" font-weight="700" font-family="'Fira Mono', monospace" letter-spacing="0.06em">THE BOUNDARY YOU ALREADY HAVE <tspan fill="#8A8D90" font-weight="400">(CH 4 §3)</tspan></text>
+    <line x1="48" y1="64" x2="792" y2="64" stroke="rgba(11,30,59,0.15)" stroke-width="1"></line>
+
+    <!-- Panel 1 arrows (behind boxes) -->
+    <line x1="224" y1="184" x2="224" y2="236" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+    <line x1="616" y1="184" x2="616" y2="236" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+
+    <!-- Column 1: NAMESPACED -->
+    <text x="224" y="92" text-anchor="middle" fill="#0B1E3B" font-size="14" font-weight="700" font-family="'Fira Mono', monospace" letter-spacing="0.1em">NAMESPACED</text>
+    <text x="224" y="112" text-anchor="middle" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">lives inside a namespace</text>
+    <text x="224" y="132" text-anchor="middle" fill="#8A8D90" font-size="14" font-family="'Fira Mono', monospace">Pod, Service, Secret,</text>
+    <text x="224" y="152" text-anchor="middle" fill="#8A8D90" font-size="14" font-family="'Fira Mono', monospace">Deployment, ConfigMap</text>
+    <text x="224" y="172" text-anchor="middle" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">a Role's scope has room for it</text>
+
+    <!-- Column 2: CLUSTER-SCOPED -->
+    <text x="616" y="92" text-anchor="middle" fill="#0B1E3B" font-size="14" font-weight="700" font-family="'Fira Mono', monospace" letter-spacing="0.1em">CLUSTER-SCOPED</text>
+    <text x="616" y="112" text-anchor="middle" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">lives in NO namespace</text>
+    <text x="616" y="132" text-anchor="middle" fill="#8A8D90" font-size="14" font-family="'Fira Mono', monospace">Node, PersistentVolume,</text>
+    <text x="616" y="152" text-anchor="middle" fill="#8A8D90" font-size="14" font-family="'Fira Mono', monospace">StorageClass, Namespace</text>
+    <text x="616" y="172" text-anchor="middle" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">a Role has nowhere to put it</text>
+
+    <!-- Outcome box 1: Role or ClusterRole -->
+    <rect x="48" y="236" width="352" height="64" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+    <text x="224" y="264" text-anchor="middle" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Mono', monospace">Role or ClusterRole</text>
+    <text x="224" y="286" text-anchor="middle" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">(either works)</text>
+
+    <!-- Outcome box 2: ClusterRole FORCED -->
+    <rect x="440" y="236" width="352" height="64" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+    <text x="616" y="264" text-anchor="middle" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Mono', monospace">ClusterRole</text>
+    <text x="616" y="286" text-anchor="middle" fill="#1F4A4E" font-size="14" font-weight="700" font-family="'Fira Mono', monospace" letter-spacing="0.08em">FORCED</text>
+
+    <!-- ================= PANEL 2 ================= -->
+    <text x="48" y="340" fill="#0B1E3B" font-size="14" font-weight="700" font-family="'Fira Mono', monospace" letter-spacing="0.06em">THE SECOND, INDEPENDENT QUESTION</text>
+    <line x1="48" y1="352" x2="792" y2="352" stroke="rgba(11,30,59,0.15)" stroke-width="1"></line>
+
+    <!-- Branch connectors (behind shapes) -->
+    <path d="M320,412 L232,412 Q224,412 224,420 L224,508" fill="none" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></path>
+    <path d="M520,412 L608,412 Q616,412 616,420 L616,508" fill="none" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></path>
+
+    <!-- Branch labels -->
+    <rect x="195" y="392" width="130" height="14" fill="#F5EFE4"></rect>
+    <text x="260" y="403" text-anchor="middle" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" letter-spacing="0.04em">ONE NAMESPACE</text>
+    <rect x="521" y="392" width="148" height="14" fill="#F5EFE4"></rect>
+    <text x="595" y="403" text-anchor="middle" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" letter-spacing="0.04em">EVERY NAMESPACE</text>
+
+    <!-- Decision diamond -->
+    <polygon points="420,368 520,412 420,456 320,412" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></polygon>
+    <text x="420" y="404" text-anchor="middle" fill="#0B1E3B" font-size="14" font-weight="600" font-family="'Fira Sans', sans-serif">where should</text>
+    <text x="420" y="420" text-anchor="middle" fill="#0B1E3B" font-size="14" font-weight="600" font-family="'Fira Sans', sans-serif">the grant apply?</text>
+
+    <!-- Outcome box: RoleBinding -->
+    <rect x="48" y="508" width="352" height="56" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+    <text x="224" y="542" text-anchor="middle" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Mono', monospace">RoleBinding</text>
+
+    <!-- Outcome box: ClusterRoleBinding -->
+    <rect x="440" y="508" width="352" height="56" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+    <text x="616" y="542" text-anchor="middle" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Mono', monospace">ClusterRoleBinding</text>
+
+    <!-- ================= PANEL 3 ================= -->
+    <text x="48" y="604" fill="#0B1E3B" font-size="14" font-weight="700" font-family="'Fira Mono', monospace" letter-spacing="0.06em">THE FOUR COMBINATIONS FALL OUT</text>
+    <line x1="48" y1="616" x2="792" y2="616" stroke="rgba(11,30,59,0.15)" stroke-width="1"></line>
+
+    <!-- Row 1 -->
+    <text x="64" y="676" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Mono', monospace">Role + RoleBinding</text>
+    <text x="400" y="676" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">those rules, in that namespace</text>
+    <line x1="48" y1="700" x2="792" y2="700" stroke="rgba(11,30,59,0.10)" stroke-width="0.8"></line>
+
+    <!-- Row 2 -->
+    <text x="64" y="736" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Mono', monospace">ClusterRole + RoleBinding</text>
+    <text x="400" y="736" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">those rules, in that ONE namespace</text>
+    <line x1="48" y1="760" x2="792" y2="760" stroke="rgba(11,30,59,0.10)" stroke-width="0.8"></line>
+
+    <!-- Row 3 -->
+    <text x="64" y="796" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Mono', monospace">ClusterRole + ClusterRoleBinding</text>
+    <text x="400" y="796" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">those rules, everywhere</text>
+    <line x1="48" y1="820" x2="792" y2="820" stroke="rgba(11,30,59,0.10)" stroke-width="0.8"></line>
+
+    <!-- Row 4: impossible combination -->
+    <rect x="48" y="820" width="744" height="88" rx="6" fill="rgba(11,30,59,0.02)" stroke="rgba(11,30,59,0.20)" stroke-width="1" stroke-dasharray="4,3"></rect>
+    <text x="64" y="852" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Mono', monospace" text-decoration="line-through">Role + ClusterRoleBinding</text>
+    <text x="64" y="874" fill="#0B1E3B" font-size="14" font-weight="700" font-family="'Fira Mono', monospace" letter-spacing="0.06em">✗ DOES NOT EXIST</text>
+    <text x="400" y="852" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">A Role's rules are namespace-local;</text>
+    <text x="400" y="870" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">there is nothing cluster-wide to grant.</text>
+
+    <!-- So-what arrow into the banner (single accent connector) -->
+    <line x1="420" y1="908" x2="420" y2="940" stroke="#B58B3E" stroke-width="1.4" marker-end="url(#arrow-accent)"></line>
+
+    <!-- ================= BANNER (focal) ================= -->
+    <rect x="48" y="940" width="744" height="72" rx="8" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"></rect>
+    <text x="420" y="984" text-anchor="middle" fill="#0B1E3B" font-size="20" font-weight="600" font-family="'Fira Sans', sans-serif" letter-spacing="0.01em">THE BINDING DETERMINES THE SCOPE OF THE GRANT.</text>
+
+    <!-- ================= LEGEND ================= -->
+    <line x1="48" y1="1032" x2="792" y2="1032" stroke="rgba(11,30,59,0.10)" stroke-width="0.8"></line>
+    <text x="48" y="1052" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" letter-spacing="0.14em">LEGEND</text>
+
+    <rect x="48" y="1064" width="24" height="14" rx="4" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+    <text x="80" y="1075" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">Object or binding</text>
+
+    <rect x="310" y="1064" width="24" height="14" rx="4" fill="rgba(11,30,59,0.02)" stroke="rgba(11,30,59,0.20)" stroke-width="1" stroke-dasharray="4,3"></rect>
+    <text x="342" y="1075" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">Not a valid combination</text>
+
+    <rect x="590" y="1064" width="24" height="14" rx="4" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"></rect>
+    <text x="622" y="1075" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">Key takeaway</text>
+  </svg>

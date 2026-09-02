@@ -1,0 +1,188 @@
+<svg viewBox="0 0 880 832" role="img" aria-labelledby="ch11-fig05-statefulset-pvc-pairing-title ch11-fig05-statefulset-pvc-pairing-desc" xmlns="http://www.w3.org/2000/svg" width="880" height="832">
+      <title id="ch11-fig05-statefulset-pvc-pairing-title">StatefulSet PVC Pairing Survives Reschedule and Deletion</title>
+      <desc id="ch11-fig05-statefulset-pvc-pairing-desc">Three stacked panels show StatefulSet web's three replicas each paired one-to-one with a PersistentVolumeClaim; when web-1 is rescheduled to a new node its claim follows, and when web-1's Pod is deleted its claim www-web-1 remains bound and unclaimed.</desc>
+
+      <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon>
+        </marker>
+        <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#B58B3E"></polygon>
+        </marker>
+        <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon>
+        </marker>
+      </defs>
+
+      <rect width="880" height="832" fill="#F5EFE4"></rect>
+
+      <!-- StatefulSet identity banner -->
+      <text x="440" y="44" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">StatefulSet <tspan font-family="'Fira Mono', monospace" font-weight="400">web</tspan><tspan font-family="'Fira Mono', monospace" font-weight="400" fill="#1F4A4E" font-size="14"> · volumeClaimTemplates: [www] · replicas: 3</tspan></text>
+
+      <!-- ============ ZONE 1 — STEADY STATE ============ -->
+      <rect x="24" y="72" width="608" height="216" rx="8" fill="rgba(11,30,59,0.02)" stroke="rgba(11,30,59,0.20)" stroke-width="0.8" stroke-dasharray="4,4"></rect>
+      <rect x="24" y="76" width="304" height="20" fill="#F5EFE4"></rect>
+      <text x="32" y="88" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.10em" fill="#8A8D90">STEADY STATE · EACH REPLICA OWNS ONE CLAIM</text>
+
+      <!-- connectors zone 1 (drawn before boxes) -->
+      <line x1="136" y1="168" x2="136" y2="208" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"></line>
+      <line x1="328" y1="168" x2="328" y2="208" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"></line>
+      <line x1="520" y1="168" x2="520" y2="208" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"></line>
+
+      <!-- pods zone 1 -->
+      <g>
+        <rect x="56" y="112" width="160" height="56" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+        <rect x="64" y="120" width="40" height="20" rx="2" fill="transparent" stroke="rgba(11,30,59,0.40)" stroke-width="0.8"></rect>
+        <text x="84" y="132" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.06em" fill="rgba(11,30,59,0.75)">POD</text>
+        <text x="136" y="156" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">web-0</text>
+      </g>
+      <g>
+        <rect x="248" y="112" width="160" height="56" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+        <rect x="256" y="120" width="40" height="20" rx="2" fill="transparent" stroke="rgba(11,30,59,0.40)" stroke-width="0.8"></rect>
+        <text x="276" y="132" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.06em" fill="rgba(11,30,59,0.75)">POD</text>
+        <text x="328" y="156" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">web-1</text>
+      </g>
+      <g>
+        <rect x="440" y="112" width="160" height="56" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+        <rect x="448" y="120" width="40" height="20" rx="2" fill="transparent" stroke="rgba(11,30,59,0.40)" stroke-width="0.8"></rect>
+        <text x="468" y="132" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.06em" fill="rgba(11,30,59,0.75)">POD</text>
+        <text x="520" y="156" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">web-2</text>
+      </g>
+
+      <!-- PVCs zone 1 -->
+      <g>
+        <rect x="56" y="208" width="160" height="56" rx="6" fill="rgba(11,30,59,0.05)" stroke="#1F4A4E" stroke-width="1"></rect>
+        <rect x="64" y="216" width="40" height="20" rx="2" fill="transparent" stroke="rgba(31,74,78,0.45)" stroke-width="0.8"></rect>
+        <text x="84" y="228" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.06em" fill="rgba(31,74,78,0.85)">PVC</text>
+        <text x="136" y="252" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">www-web-0</text>
+      </g>
+      <g>
+        <rect x="248" y="208" width="160" height="56" rx="6" fill="rgba(11,30,59,0.05)" stroke="#1F4A4E" stroke-width="1"></rect>
+        <rect x="256" y="216" width="40" height="20" rx="2" fill="transparent" stroke="rgba(31,74,78,0.45)" stroke-width="0.8"></rect>
+        <text x="276" y="228" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.06em" fill="rgba(31,74,78,0.85)">PVC</text>
+        <text x="328" y="252" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">www-web-1</text>
+      </g>
+      <g>
+        <rect x="440" y="208" width="160" height="56" rx="6" fill="rgba(11,30,59,0.05)" stroke="#1F4A4E" stroke-width="1"></rect>
+        <rect x="448" y="216" width="40" height="20" rx="2" fill="transparent" stroke="rgba(31,74,78,0.45)" stroke-width="0.8"></rect>
+        <text x="468" y="228" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.06em" fill="rgba(31,74,78,0.85)">PVC</text>
+        <text x="520" y="252" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">www-web-2</text>
+      </g>
+
+      <!-- ============ ZONE 2 — STATE 1: RESCHEDULED ============ -->
+      <rect x="24" y="312" width="608" height="208" rx="8" fill="rgba(11,30,59,0.02)" stroke="rgba(11,30,59,0.20)" stroke-width="0.8" stroke-dasharray="4,4"></rect>
+      <rect x="24" y="316" width="292" height="20" fill="#F5EFE4"></rect>
+      <text x="32" y="328" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.10em" fill="#8A8D90">STATE 1 · WEB-1 RESCHEDULED</text>
+
+      <!-- node placement labels -->
+      <text x="136" y="352" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#8A8D90">node-a</text>
+      <text x="328" y="352" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#8A8D90">node-c</text>
+      <text x="520" y="352" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#8A8D90">node-b</text>
+
+      <!-- connectors zone 2 -->
+      <line x1="136" y1="424" x2="136" y2="464" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"></line>
+      <line x1="328" y1="424" x2="328" y2="464" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"></line>
+      <line x1="520" y1="424" x2="520" y2="464" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"></line>
+
+      <!-- pods zone 2 -->
+      <g>
+        <rect x="56" y="368" width="160" height="56" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+        <rect x="64" y="376" width="40" height="20" rx="2" fill="transparent" stroke="rgba(11,30,59,0.40)" stroke-width="0.8"></rect>
+        <text x="84" y="388" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.06em" fill="rgba(11,30,59,0.75)">POD</text>
+        <text x="136" y="412" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">web-0</text>
+      </g>
+      <g>
+        <rect x="248" y="368" width="160" height="56" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+        <rect x="256" y="376" width="40" height="20" rx="2" fill="transparent" stroke="rgba(11,30,59,0.40)" stroke-width="0.8"></rect>
+        <text x="276" y="388" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.06em" fill="rgba(11,30,59,0.75)">POD</text>
+        <text x="328" y="412" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">web-1</text>
+      </g>
+      <g>
+        <rect x="440" y="368" width="160" height="56" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+        <rect x="448" y="376" width="40" height="20" rx="2" fill="transparent" stroke="rgba(11,30,59,0.40)" stroke-width="0.8"></rect>
+        <text x="468" y="388" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.06em" fill="rgba(11,30,59,0.75)">POD</text>
+        <text x="520" y="412" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">web-2</text>
+      </g>
+
+      <!-- claim chips zone 2 -->
+      <rect x="56" y="464" width="160" height="32" rx="4" fill="rgba(11,30,59,0.05)" stroke="#1F4A4E" stroke-width="1"></rect>
+      <text x="136" y="484" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">[www-web-0]</text>
+      <rect x="248" y="464" width="160" height="32" rx="4" fill="rgba(11,30,59,0.05)" stroke="#1F4A4E" stroke-width="1"></rect>
+      <text x="328" y="484" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">[www-web-1]</text>
+      <rect x="440" y="464" width="160" height="32" rx="4" fill="rgba(11,30,59,0.05)" stroke="#1F4A4E" stroke-width="1"></rect>
+      <text x="520" y="484" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">[www-web-2]</text>
+
+      <!-- ============ ZONE 3 — STATE 2: DELETED ============ -->
+      <rect x="24" y="544" width="608" height="192" rx="8" fill="rgba(11,30,59,0.02)" stroke="rgba(11,30,59,0.20)" stroke-width="0.8" stroke-dasharray="4,4"></rect>
+      <rect x="24" y="548" width="268" height="20" fill="#F5EFE4"></rect>
+      <text x="32" y="560" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.10em" fill="#8A8D90">STATE 2 · WEB-1 DELETED</text>
+
+      <!-- connectors zone 3 -->
+      <line x1="136" y1="640" x2="136" y2="680" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"></line>
+      <line x1="328" y1="640" x2="328" y2="680" stroke="#B58B3E" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#arrow-accent)"></line>
+      <line x1="520" y1="640" x2="520" y2="680" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"></line>
+
+      <!-- pods zone 3 -->
+      <g>
+        <rect x="56" y="584" width="160" height="56" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+        <rect x="64" y="592" width="40" height="20" rx="2" fill="transparent" stroke="rgba(11,30,59,0.40)" stroke-width="0.8"></rect>
+        <text x="84" y="604" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.06em" fill="rgba(11,30,59,0.75)">POD</text>
+        <text x="136" y="628" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">web-0</text>
+      </g>
+      <g>
+        <rect x="248" y="584" width="160" height="56" rx="6" fill="rgba(11,30,59,0.02)" stroke="rgba(11,30,59,0.30)" stroke-width="1" stroke-dasharray="4,3"></rect>
+        <text x="328" y="608" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="20" fill="#8A8D90">✕</text>
+        <text x="328" y="628" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#8A8D90">web-1 deleted</text>
+      </g>
+      <g>
+        <rect x="440" y="584" width="160" height="56" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+        <rect x="448" y="592" width="40" height="20" rx="2" fill="transparent" stroke="rgba(11,30,59,0.40)" stroke-width="0.8"></rect>
+        <text x="468" y="604" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.06em" fill="rgba(11,30,59,0.75)">POD</text>
+        <text x="520" y="628" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">web-2</text>
+      </g>
+
+      <!-- claim chips zone 3 -->
+      <rect x="56" y="680" width="160" height="32" rx="4" fill="rgba(11,30,59,0.05)" stroke="#1F4A4E" stroke-width="1"></rect>
+      <text x="136" y="700" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">[www-web-0]</text>
+
+      <rect x="248" y="680" width="160" height="32" rx="4" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"></rect>
+      <text x="328" y="700" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">[www-web-1]</text>
+
+      <rect x="440" y="680" width="160" height="32" rx="4" fill="rgba(11,30,59,0.05)" stroke="#1F4A4E" stroke-width="1"></rect>
+      <text x="520" y="700" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">[www-web-2]</text>
+
+      <!-- ============ MARGIN CALLOUTS ============ -->
+      <!-- Callout 1: reschedule note (tertiary) -->
+      <path d="M 664,392 Q 540,376 408,396" fill="none" stroke="rgba(31,74,78,0.40)" stroke-width="1" stroke-dasharray="4,3"></path>
+      <circle cx="408" cy="396" r="2" fill="#1F4A4E"></circle>
+      <text x="672" y="392" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="16" fill="#1F4A4E">
+        <tspan x="672" dy="0">web-1 moves from</tspan>
+        <tspan x="672" dy="20">node-b to node-c —</tspan>
+        <tspan x="672" dy="20">its claim follows.</tspan>
+      </text>
+
+      <!-- Callout 2: claim persists (focal) -->
+      <path d="M 664,684 Q 540,700 408,696" fill="none" stroke="rgba(181,139,62,0.50)" stroke-width="1" stroke-dasharray="4,3"></path>
+      <circle cx="408" cy="696" r="2.5" fill="#B58B3E"></circle>
+      <text x="672" y="680" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="16" fill="#B58B3E">
+        <tspan x="672" dy="0">The claim remains.</tspan>
+        <tspan x="672" dy="20">Nothing cleans it up.</tspan>
+      </text>
+
+      <!-- ============ LEGEND ============ -->
+      <line x1="24" y1="760" x2="856" y2="760" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+      <text x="24" y="776" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.14em" fill="#1F4A4E">LEGEND</text>
+
+      <rect x="24" y="788" width="20" height="20" rx="3" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="52" y="804" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">Pod running</text>
+
+      <rect x="224" y="788" width="20" height="20" rx="3" fill="rgba(11,30,59,0.02)" stroke="rgba(11,30,59,0.30)" stroke-width="1" stroke-dasharray="4,3"></rect>
+      <text x="252" y="804" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">Pod deleted</text>
+
+      <rect x="444" y="788" width="20" height="20" rx="3" fill="rgba(11,30,59,0.05)" stroke="#1F4A4E" stroke-width="1"></rect>
+      <text x="472" y="804" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">Claim, bound</text>
+
+      <rect x="664" y="788" width="20" height="20" rx="3" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"></rect>
+      <text x="692" y="804" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">Claim, Pod gone</text>
+
+    </svg>

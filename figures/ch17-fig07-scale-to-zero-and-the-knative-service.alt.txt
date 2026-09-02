@@ -1,0 +1,1 @@
+A closed cycle: an idle Knative Service at zero replicas with nothing running, a request arriving and the Knative Pod Autoscaler scaling from zero to N with a container visible inside a Pod, a serving state with several such Pods, then traffic stopping and the autoscaler scaling back down to zero replicas

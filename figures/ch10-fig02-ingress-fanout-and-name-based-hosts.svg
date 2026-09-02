@@ -1,0 +1,115 @@
+<svg viewBox="0 0 880 952" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch10-fig02-title ch10-fig02-desc" width="640" height="693">
+      <title id="ch10-fig02-title">Ingress fanout by path vs. name-based virtual hosting</title>
+      <desc id="ch10-fig02-desc">Two stacked panels compare Ingress routing: the upper panel reads the request path to route one client address to catalog and checkout Services, while the lower panel reads the Host header to route two hostnames to shop and blog Services, with the matched fragment underlined in each case.</desc>
+      <defs>
+        <marker id="arr-muted" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon></marker>
+        <marker id="arr-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#B58B3E"></polygon></marker>
+        <marker id="arr-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon></marker>
+      </defs>
+
+      <rect width="880" height="952" fill="#F5EFE4"></rect>
+
+      <!-- ============ PANEL 1: SIMPLE FANOUT — SPLIT BY PATH ============ -->
+
+      <text x="440" y="36" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="16" font-weight="500" letter-spacing="0.08em" fill="#0B1E3B">SIMPLE FANOUT — THE INGRESS RULE READS THE PATH</text>
+
+      <!-- Arrows (drawn before nodes) -->
+      <path d="M252,168 H258 Q266,168 266,176 V208 Q266,216 274,216 H280" fill="none" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arr-muted)"></path>
+      <path d="M252,296 H258 Q266,296 266,288 V256 Q266,248 274,248 H280" fill="none" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arr-muted)"></path>
+      <path d="M424,232 H444" fill="none" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arr-muted)"></path>
+      <path d="M572,216 H684 Q692,216 692,208 V176 Q692,168 700,168 H708" fill="none" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arr-muted)"></path>
+      <path d="M572,248 H684 Q692,248 692,256 V288 Q692,296 700,296 H708" fill="none" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arr-muted)"></path>
+
+      <!-- Fan-out labels -->
+      <rect x="580" y="188" width="96" height="20" rx="2" fill="#F5EFE4"></rect>
+      <text x="628" y="204" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.02em" fill="#1F4A4E">/CATALOG</text>
+      <rect x="580" y="220" width="96" height="20" rx="2" fill="#F5EFE4"></rect>
+      <text x="628" y="236" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.02em" fill="#1F4A4E">/CHECKOUT</text>
+
+      <!-- Request card 1 -->
+      <rect x="20" y="124" width="232" height="88" rx="6" fill="#F5EFE4"></rect>
+      <rect x="20" y="124" width="232" height="88" rx="6" fill="rgba(31,74,78,0.10)" stroke="#8A8D90" stroke-width="1"></rect>
+      <text x="36" y="156" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B" xml:space="preserve"><tspan x="36" textLength="33.6" lengthAdjust="spacingAndGlyphs">GET </tspan><tspan x="69.6" textLength="67.2" lengthAdjust="spacingAndGlyphs">/catalog</tspan><tspan x="136.8" textLength="75.6" lengthAdjust="spacingAndGlyphs"> HTTP/1.1</tspan></text>
+      <line x1="69.6" y1="164" x2="136.8" y2="164" stroke="#B58B3E" stroke-width="2" stroke-linecap="round"></line>
+      <text x="36" y="180" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">Host: shop.example.com</text>
+
+      <!-- Request card 2 -->
+      <rect x="20" y="252" width="232" height="88" rx="6" fill="#F5EFE4"></rect>
+      <rect x="20" y="252" width="232" height="88" rx="6" fill="rgba(31,74,78,0.10)" stroke="#8A8D90" stroke-width="1"></rect>
+      <text x="36" y="284" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B" xml:space="preserve"><tspan x="36" textLength="33.6" lengthAdjust="spacingAndGlyphs">GET </tspan><tspan x="69.6" textLength="75.6" lengthAdjust="spacingAndGlyphs">/checkout</tspan><tspan x="145.2" textLength="75.6" lengthAdjust="spacingAndGlyphs"> HTTP/1.1</tspan></text>
+      <line x1="69.6" y1="292" x2="145.2" y2="292" stroke="#B58B3E" stroke-width="2" stroke-linecap="round"></line>
+      <text x="36" y="308" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">Host: shop.example.com</text>
+
+      <!-- IP node (external) -->
+      <rect x="280" y="200" width="144" height="64" rx="6" fill="#F5EFE4"></rect>
+      <rect x="280" y="200" width="144" height="64" rx="6" fill="rgba(11,30,59,0.03)" stroke="rgba(11,30,59,0.30)" stroke-width="1"></rect>
+      <text x="352" y="236" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">203.0.113.10</text>
+
+      <!-- Decision node (focal) -->
+      <rect x="444" y="200" width="128" height="64" rx="6" fill="#F5EFE4"></rect>
+      <rect x="444" y="200" width="128" height="64" rx="6" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"></rect>
+      <text x="508" y="240" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">reads: path</text>
+
+      <!-- Service boxes -->
+      <rect x="708" y="132" width="160" height="72" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="788" y="172" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" font-weight="500" fill="#0B1E3B">catalog Service</text>
+
+      <rect x="708" y="260" width="160" height="72" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="788" y="300" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" font-weight="500" fill="#0B1E3B">checkout Service</text>
+
+      <!-- Panel divider -->
+      <line x1="20" y1="428" x2="868" y2="428" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+
+      <!-- ============ PANEL 2: NAME-BASED VIRTUAL HOSTING — SPLIT BY HOST ============ -->
+
+      <text x="440" y="460" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="16" font-weight="500" letter-spacing="0.08em" fill="#0B1E3B">NAME-BASED VIRTUAL HOSTING — THE INGRESS RULE READS THE HOST</text>
+
+      <!-- Arrows -->
+      <path d="M252,592 H258 Q266,592 266,600 V632 Q266,640 274,640 H280" fill="none" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arr-muted)"></path>
+      <path d="M252,720 H258 Q266,720 266,712 V680 Q266,672 274,672 H280" fill="none" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arr-muted)"></path>
+      <path d="M424,656 H444" fill="none" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arr-muted)"></path>
+      <path d="M572,640 H684 Q692,640 692,632 V600 Q692,592 700,592 H708" fill="none" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arr-muted)"></path>
+      <path d="M572,672 H684 Q692,672 692,680 V712 Q692,720 700,720 H708" fill="none" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arr-muted)"></path>
+
+      <!-- Fan-out labels -->
+      <rect x="580" y="612" width="96" height="20" rx="2" fill="#F5EFE4"></rect>
+      <text x="628" y="628" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.02em" fill="#1F4A4E">SHOP…</text>
+      <rect x="580" y="644" width="96" height="20" rx="2" fill="#F5EFE4"></rect>
+      <text x="628" y="660" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.02em" fill="#1F4A4E">BLOG…</text>
+
+      <!-- Request card 1 -->
+      <rect x="20" y="548" width="232" height="88" rx="6" fill="#F5EFE4"></rect>
+      <rect x="20" y="548" width="232" height="88" rx="6" fill="rgba(31,74,78,0.10)" stroke="#8A8D90" stroke-width="1"></rect>
+      <text x="36" y="580" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">GET / HTTP/1.1</text>
+      <text x="36" y="604" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B" xml:space="preserve"><tspan x="36" textLength="50.4" lengthAdjust="spacingAndGlyphs">Host: </tspan><tspan x="86.4" textLength="142.8" lengthAdjust="spacingAndGlyphs">shop.example.com</tspan></text>
+      <line x1="86.4" y1="612" x2="229.2" y2="612" stroke="#B58B3E" stroke-width="2" stroke-linecap="round"></line>
+
+      <!-- Request card 2 -->
+      <rect x="20" y="676" width="232" height="88" rx="6" fill="#F5EFE4"></rect>
+      <rect x="20" y="676" width="232" height="88" rx="6" fill="rgba(31,74,78,0.10)" stroke="#8A8D90" stroke-width="1"></rect>
+      <text x="36" y="708" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">GET / HTTP/1.1</text>
+      <text x="36" y="732" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B" xml:space="preserve"><tspan x="36" textLength="50.4" lengthAdjust="spacingAndGlyphs">Host: </tspan><tspan x="86.4" textLength="134.4" lengthAdjust="spacingAndGlyphs">blog.example.com</tspan></text>
+      <line x1="86.4" y1="740" x2="220.8" y2="740" stroke="#B58B3E" stroke-width="2" stroke-linecap="round"></line>
+
+      <!-- IP node -->
+      <rect x="280" y="624" width="144" height="64" rx="6" fill="#F5EFE4"></rect>
+      <rect x="280" y="624" width="144" height="64" rx="6" fill="rgba(11,30,59,0.03)" stroke="rgba(11,30,59,0.30)" stroke-width="1"></rect>
+      <text x="352" y="660" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">203.0.113.10</text>
+
+      <!-- Decision node (focal) -->
+      <rect x="444" y="624" width="128" height="64" rx="6" fill="#F5EFE4"></rect>
+      <rect x="444" y="624" width="128" height="64" rx="6" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"></rect>
+      <text x="508" y="664" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">reads: host</text>
+
+      <!-- Service boxes -->
+      <rect x="708" y="556" width="160" height="72" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="788" y="596" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" font-weight="500" fill="#0B1E3B">shop Service</text>
+
+      <rect x="708" y="684" width="160" height="72" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="788" y="724" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" font-weight="500" fill="#0B1E3B">blog Service</text>
+
+      <!-- ============ CAPTION ============ -->
+      <line x1="20" y1="832" x2="868" y2="832" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+      <text x="440" y="880" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="16" fill="#0B1E3B">Same client address, same number of Services, in both panels.</text>
+      <text x="440" y="908" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="16" fill="#0B1E3B">Only the underline — the fragment the Ingress rule reads — differs.</text>
+    </svg>

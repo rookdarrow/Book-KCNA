@@ -1,0 +1,49 @@
+<svg viewBox="0 0 656 712" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch07-fig02-nodeselector-vs-affinity-title ch07-fig02-nodeselector-vs-affinity-desc" width="480" height="521">
+      <title id="ch07-fig02-nodeselector-vs-affinity-title">nodeSelector vs. node affinity: hard vs. soft rules</title>
+      <desc id="ch07-fig02-nodeselector-vs-affinity-desc">A two-by-three matrix comparing node-placement mechanisms: columns are nodeSelector, required node affinity, and preferred node affinity, increasing in expressiveness left to right, and rows are hard and soft; only three cells are filled, and only the bottom-right preferred-affinity cell is soft.</desc>
+      <defs>
+        <marker id="arrow-axis" markerWidth="10" markerHeight="8" refX="8" refY="4" orient="auto">
+          <polygon points="0 0, 10 4, 0 8" fill="#1F4A4E"></polygon>
+        </marker>
+      </defs>
+
+      <rect width="100%" height="100%" fill="#F5EFE4"></rect>
+
+      <!-- Axis annotation -->
+      <line x1="144" y1="72" x2="616" y2="72" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow-axis)"></line>
+
+      <!-- Header / footer hairlines -->
+      <line x1="144" y1="148" x2="632" y2="148" stroke="#0B1E3B" stroke-opacity="0.12" stroke-width="0.8"></line>
+      <line x1="24" y1="608" x2="632" y2="608" stroke="#0B1E3B" stroke-opacity="0.12" stroke-width="0.8"></line>
+
+      <!-- Row 1 (HARD) cells -->
+      <rect x="144" y="176" width="152" height="200" rx="6" fill="#FFFFFF" stroke="#0B1E3B" stroke-opacity="0.15" stroke-width="1"></rect>
+      <rect x="312" y="176" width="152" height="200" rx="6" fill="#FFFFFF" stroke="#0B1E3B" stroke-opacity="0.15" stroke-width="1"></rect>
+      <rect x="480" y="176" width="152" height="200" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-opacity="0.12" stroke-width="0.8"></rect>
+
+      <!-- Row 2 (SOFT) cells -->
+      <rect x="144" y="408" width="152" height="160" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-opacity="0.12" stroke-width="0.8"></rect>
+      <rect x="312" y="408" width="152" height="160" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-opacity="0.12" stroke-width="0.8"></rect>
+      <rect x="480" y="408" width="152" height="160" rx="6" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.4"></rect>
+
+      <!-- Axis label + column headers -->
+      <text x="144" y="60" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.12em" fill="#1F4A4E">EXPRESSIVENESS<tspan x="220" y="128" font-family="'Fira Mono', monospace" font-size="16" font-weight="500" letter-spacing="normal" fill="#0B1E3B" text-anchor="middle">nodeSelector</tspan><tspan x="388" y="116" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" letter-spacing="normal" fill="#0B1E3B" text-anchor="middle">required node</tspan><tspan x="388" y="138" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" letter-spacing="normal" fill="#0B1E3B" text-anchor="middle">affinity</tspan><tspan x="556" y="116" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" letter-spacing="normal" fill="#0B1E3B" text-anchor="middle">preferred node</tspan><tspan x="556" y="138" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" letter-spacing="normal" fill="#0B1E3B" text-anchor="middle">affinity</tspan></text>
+
+      <!-- Row labels -->
+      <text x="36" y="204" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">HARD<tspan x="36" y="226" font-family="'Fira Sans', sans-serif" font-size="14" font-weight="400" fill="#8A8D90">the rule</tspan><tspan x="36" y="244" font-family="'Fira Sans', sans-serif" font-size="14" font-weight="400" fill="#8A8D90">must be met</tspan><tspan x="36" y="436" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">SOFT</tspan><tspan x="36" y="458" font-family="'Fira Sans', sans-serif" font-size="14" font-weight="400" fill="#8A8D90">the rule</tspan><tspan x="36" y="476" font-family="'Fira Sans', sans-serif" font-size="14" font-weight="400" fill="#8A8D90">is a wish</tspan></text>
+
+      <!-- HARD x nodeSelector -->
+      <text x="156" y="216" font-family="'Fira Sans', sans-serif" font-size="14" font-weight="500" fill="#0B1E3B">exact matches,<tspan x="156" y="236" font-family="'Fira Sans', sans-serif" font-size="14" font-weight="500" fill="#0B1E3B">all of them</tspan><tspan x="156" y="262" font-family="'Fira Mono', monospace" font-size="14" font-weight="400" fill="#1F4A4E">(implicit AND)</tspan><tspan x="156" y="292" font-family="'Fira Sans', sans-serif" font-size="14" font-weight="400" fill="#8A8D90">no match →</tspan><tspan x="156" y="312" font-family="'Fira Sans', sans-serif" font-size="14" font-weight="400" fill="#8A8D90">no placement</tspan></text>
+
+      <!-- HARD x required node affinity -->
+      <text x="324" y="216" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">In, NotIn,<tspan x="324" y="234" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">Exists,</tspan><tspan x="324" y="252" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">DoesNotExist,</tspan><tspan x="324" y="270" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">Gt, Lt</tspan><tspan x="324" y="300" font-family="'Fira Sans', sans-serif" font-size="14" font-weight="400" fill="#8A8D90">no match →</tspan><tspan x="324" y="320" font-family="'Fira Sans', sans-serif" font-size="14" font-weight="400" fill="#8A8D90">no placement</tspan></text>
+
+      <!-- Empty cells: HARD x preferred, SOFT x nodeSelector, SOFT x required -->
+      <text x="556" y="289" font-family="'Fira Sans', sans-serif" font-size="20" font-weight="400" fill="#8A8D90" text-anchor="middle">—<tspan x="220" y="501" font-family="'Fira Sans', sans-serif" font-size="20" font-weight="400" fill="#8A8D90" text-anchor="middle">—</tspan><tspan x="388" y="501" font-family="'Fira Sans', sans-serif" font-size="20" font-weight="400" fill="#8A8D90" text-anchor="middle">—</tspan></text>
+
+      <!-- FOCAL: SOFT x preferred node affinity -->
+      <text x="492" y="460" font-family="'Fira Sans', sans-serif" font-size="14" font-weight="600" fill="#B58B3E">same operators<tspan x="492" y="490" font-family="'Fira Sans', sans-serif" font-size="14" font-weight="400" fill="#B58B3E" fill-opacity="0.85">no match →</tspan><tspan x="492" y="510" font-family="'Fira Sans', sans-serif" font-size="14" font-weight="400" fill="#B58B3E" fill-opacity="0.85">placed anyway</tspan></text>
+
+      <!-- Closing synthesis -->
+      <text x="328" y="640" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="16" font-weight="400" fill="#0B1E3B" text-anchor="middle">Hardness and expressiveness are independent.<tspan x="328" y="664" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="16" font-weight="400" fill="#0B1E3B" text-anchor="middle">Only one of the six cells is soft.</tspan></text>
+    </svg>

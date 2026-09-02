@@ -1,0 +1,1 @@
+One Helm chart at the top installs twice, producing two independent releases named marketing and docs in separate namespaces with different replica counts; the marketing release has a left-to-right chain of numbered revisions, and a rollback arrow points back at revision two

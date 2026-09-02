@@ -1,0 +1,64 @@
+<svg viewBox="0 0 640 760" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch17-fig02-title ch17-fig02-desc" width="520" height="618">
+      <title id="ch17-fig02-title">Kubernetes Extension Points</title>
+      <desc id="ch17-fig02-desc">A three-band Kubernetes stack: the API surface at the top holding CRDs for new object kinds, a control plane band in the middle, and the node at the bottom holding CRI for running containers, CNI for pod networking, and CSI for attaching storage; four identical sockets on the left edge mark each extension point with its chapter reference.</desc>
+
+      <rect width="100%" height="100%" fill="#F5EFE4"></rect>
+
+      <!-- Stack container: three bands, one continuous box, hairline dividers -->
+      <rect x="140" y="32" width="420" height="528" rx="8" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1"></rect>
+      <line x1="140" y1="176" x2="560" y2="176" stroke="#8A8D90" stroke-width="1" opacity="0.5"></line>
+      <line x1="140" y1="240" x2="560" y2="240" stroke="#8A8D90" stroke-width="1" opacity="0.5"></line>
+
+      <!-- ============ BAND A: API SURFACE ============ -->
+      <text x="156" y="56" fill="#1F4A4E" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" letter-spacing="0.12em">API SURFACE</text>
+
+      <!-- socket + connector: CRDs -->
+      <line x1="92" y1="110" x2="140" y2="110" stroke="#0B1E3B" stroke-width="1.5" opacity="0.35"></line>
+      <circle cx="76" cy="110" r="16" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.5"></circle>
+      <circle cx="76" cy="110" r="5" fill="#B58B3E"></circle>
+
+      <text x="156" y="100" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif">CRDs</text>
+      <text x="156" y="120" fill="#8A8D90" font-size="14" font-family="'Fira Mono', monospace">Ch 6 §8</text>
+
+      <!-- ============ BAND B: CONTROL PLANE ============ -->
+      <text x="156" y="212" fill="#1F4A4E" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" letter-spacing="0.12em">CONTROL PLANE</text>
+
+      <!-- ============ BAND C: THE NODE ============ -->
+      <text x="156" y="264" fill="#1F4A4E" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" letter-spacing="0.12em">THE NODE</text>
+
+      <!-- socket + connector: CRI -->
+      <line x1="92" y1="318" x2="140" y2="318" stroke="#0B1E3B" stroke-width="1.5" opacity="0.35"></line>
+      <circle cx="76" cy="318" r="16" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.5"></circle>
+      <circle cx="76" cy="318" r="5" fill="#B58B3E"></circle>
+
+      <text x="156" y="308" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif">CRI</text>
+      <text x="156" y="328" fill="#8A8D90" font-size="14" font-family="'Fira Mono', monospace">Ch 2 §4</text>
+
+      <!-- socket + connector: CNI -->
+      <line x1="92" y1="406" x2="140" y2="406" stroke="#0B1E3B" stroke-width="1.5" opacity="0.35"></line>
+      <circle cx="76" cy="406" r="16" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.5"></circle>
+      <circle cx="76" cy="406" r="5" fill="#B58B3E"></circle>
+
+      <text x="156" y="396" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif">CNI</text>
+      <text x="156" y="416" fill="#8A8D90" font-size="14" font-family="'Fira Mono', monospace">Ch 9 §1</text>
+
+      <!-- socket + connector: CSI -->
+      <line x1="92" y1="494" x2="140" y2="494" stroke="#0B1E3B" stroke-width="1.5" opacity="0.35"></line>
+      <circle cx="76" cy="494" r="16" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.5"></circle>
+      <circle cx="76" cy="494" r="5" fill="#B58B3E"></circle>
+
+      <text x="156" y="484" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif">CSI</text>
+      <text x="156" y="504" fill="#8A8D90" font-size="14" font-family="'Fira Mono', monospace">Ch 11 §5</text>
+
+      <!-- ============ Editorial callout ============ -->
+      <text x="350" y="616" fill="#0B1E3B" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif" text-anchor="middle">Kubernetes defines the shape.</text>
+      <text x="350" y="640" fill="#0B1E3B" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif" text-anchor="middle">Somebody else supplies the plug.</text>
+
+      <!-- ============ Legend ============ -->
+      <line x1="140" y1="672" x2="560" y2="672" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+      <text x="140" y="692" fill="#8A8D90" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" letter-spacing="0.14em">LEGEND</text>
+
+      <circle cx="160" cy="712" r="8" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.5"></circle>
+      <circle cx="160" cy="712" r="2.5" fill="#B58B3E"></circle>
+      <text x="180" y="716" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace">SOCKET = AN EXTENSION POINT</text>
+    </svg>

@@ -1,0 +1,1 @@
+Cluster component census: a control plane region holding kube-apiserver, etcd, kube-scheduler, kube-controller-manager and a dashed optional cloud-controller-manager, above two node regions each holding kubelet, a dashed optional kube-proxy, and a container runtime

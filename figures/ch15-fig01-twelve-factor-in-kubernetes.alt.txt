@@ -1,0 +1,1 @@
+Three columns sorting the twelve factors by who satisfies each. The platform gives you config, processes, concurrency, disposability and logs. The platform makes backing services, build/release/run and dev-prod parity easy. Codebase, dependencies, port binding and admin processes remain the application's problem.

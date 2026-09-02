@@ -1,0 +1,128 @@
+<svg viewBox="0 0 600 800" role="img" aria-labelledby="ch01-fig02-book-map-parts-to-domains-title ch01-fig02-book-map-parts-to-domains-desc" xmlns="http://www.w3.org/2000/svg" width="640" height="854">
+      <title id="ch01-fig02-book-map-parts-to-domains-title">Book Parts I–VI mapped to the four KCNA exam domains</title>
+      <desc id="ch01-fig02-book-map-parts-to-domains-desc">Concept map showing how the book's six Parts align to the four weighted KCNA exam domains, with Parts I and VI standing outside the exam blueprint.</desc>
+      <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon>
+        </marker>
+        <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#B58B3E"></polygon>
+        </marker>
+        <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon>
+        </marker>
+      </defs>
+
+      <rect width="600" height="800" fill="#F5EFE4"></rect>
+
+      <!-- header -->
+      <text x="144" y="48" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.12em" fill="#1F4A4E">PART</text>
+      <text x="456" y="48" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.12em" fill="#1F4A4E">EXAM DOMAIN</text>
+      <line x1="24" y1="72" x2="576" y2="72" stroke="rgba(11,30,59,0.12)" stroke-width="1"></line>
+
+      <!-- ============ CONNECTORS (drawn before boxes) ============ -->
+      <!-- Row 2: Part II -> Kubernetes Fundamentals -->
+      <line x1="264" y1="248" x2="336" y2="248" stroke="#B58B3E" stroke-width="1.2" marker-end="url(#arrow-accent)"></line>
+      <!-- Row 3: Part III -> Container Orchestration -->
+      <line x1="264" y1="360" x2="336" y2="360" stroke="#B58B3E" stroke-width="1.2" marker-end="url(#arrow-accent)"></line>
+      <!-- Row 4: Part IV -> Cloud Native Application Delivery -->
+      <line x1="264" y1="472" x2="336" y2="472" stroke="#B58B3E" stroke-width="1.2" marker-end="url(#arrow-accent)"></line>
+      <!-- Row 5: Part V -> Cloud Native Architecture -->
+      <line x1="264" y1="584" x2="336" y2="584" stroke="#B58B3E" stroke-width="1.2" marker-end="url(#arrow-accent)"></line>
+
+      <!-- ============ ROW 1 : Part I / no domain ============ -->
+      <rect x="24" y="88" width="240" height="96" rx="6" fill="rgba(11,30,59,0.02)" stroke="rgba(11,30,59,0.20)" stroke-width="1" stroke-dasharray="4,3"></rect>
+      <rect x="40" y="100" width="32" height="16" rx="2" fill="none" stroke="rgba(11,30,59,0.40)" stroke-width="0.8"></rect>
+      <text x="56" y="112" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.04em" fill="rgba(11,30,59,0.80)">I</text>
+      <text x="40" y="144" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Orientation</text>
+      <text x="40" y="168" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E">Ch 1</text>
+
+      <rect x="336" y="88" width="240" height="96" rx="6" fill="rgba(11,30,59,0.02)" stroke="rgba(11,30,59,0.20)" stroke-width="1" stroke-dasharray="4,3"></rect>
+      <text x="352" y="132" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="rgba(11,30,59,0.45)">No exam domain</text>
+      <text x="352" y="156" font-family="'Fira Mono', monospace" font-size="14" fill="#8A8D90">orientation only</text>
+
+      <!-- ============ ROW 2 : Part II / Kubernetes Fundamentals — 44% ============ -->
+      <rect x="24" y="200" width="240" height="96" rx="6" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1"></rect>
+      <rect x="40" y="212" width="32" height="16" rx="2" fill="none" stroke="rgba(11,30,59,0.40)" stroke-width="0.8"></rect>
+      <text x="56" y="224" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.04em" fill="rgba(11,30,59,0.80)">II</text>
+      <text x="40" y="252" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Kubernetes</text>
+      <text x="40" y="268" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Fundamentals</text>
+      <text x="40" y="288" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E">Ch 2–8</text>
+
+      <rect x="336" y="200" width="240" height="96" rx="6" fill="rgba(11,30,59,0.05)" stroke="#1F4A4E" stroke-width="1"></rect>
+      <text x="456" y="244" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Kubernetes</text>
+      <text x="456" y="264" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Fundamentals</text>
+
+      <rect x="280" y="224" width="40" height="16" rx="2" fill="#F5EFE4"></rect>
+      <text x="300" y="236" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.04em" fill="#B58B3E">44%</text>
+
+      <!-- ============ ROW 3 : Part III / Container Orchestration — 28% ============ -->
+      <rect x="24" y="312" width="240" height="96" rx="6" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1"></rect>
+      <rect x="40" y="324" width="32" height="16" rx="2" fill="none" stroke="rgba(11,30,59,0.40)" stroke-width="0.8"></rect>
+      <text x="56" y="336" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.04em" fill="rgba(11,30,59,0.80)">III</text>
+      <text x="40" y="364" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Container</text>
+      <text x="40" y="380" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Orchestration</text>
+      <text x="40" y="400" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E">Ch 9–13</text>
+
+      <rect x="336" y="312" width="240" height="96" rx="6" fill="rgba(11,30,59,0.05)" stroke="#1F4A4E" stroke-width="1"></rect>
+      <text x="456" y="356" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Container</text>
+      <text x="456" y="376" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Orchestration</text>
+
+      <rect x="280" y="336" width="40" height="16" rx="2" fill="#F5EFE4"></rect>
+      <text x="300" y="348" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.04em" fill="#B58B3E">28%</text>
+
+      <!-- ============ ROW 4 : Part IV / Cloud Native Application Delivery — 16% ============ -->
+      <rect x="24" y="424" width="240" height="96" rx="6" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1"></rect>
+      <rect x="40" y="436" width="32" height="16" rx="2" fill="none" stroke="rgba(11,30,59,0.40)" stroke-width="0.8"></rect>
+      <text x="56" y="448" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.04em" fill="rgba(11,30,59,0.80)">IV</text>
+      <text x="40" y="480" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Application Delivery</text>
+      <text x="40" y="504" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E">Ch 14–16</text>
+
+      <rect x="336" y="424" width="240" height="96" rx="6" fill="rgba(11,30,59,0.05)" stroke="#1F4A4E" stroke-width="1"></rect>
+      <text x="456" y="468" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Cloud Native</text>
+      <text x="456" y="488" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Application Delivery</text>
+
+      <rect x="280" y="448" width="40" height="16" rx="2" fill="#F5EFE4"></rect>
+      <text x="300" y="460" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.04em" fill="#B58B3E">16%</text>
+
+      <!-- ============ ROW 5 : Part V / Cloud Native Architecture — 12% ============ -->
+      <rect x="24" y="536" width="240" height="96" rx="6" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1"></rect>
+      <rect x="40" y="548" width="32" height="16" rx="2" fill="none" stroke="rgba(11,30,59,0.40)" stroke-width="0.8"></rect>
+      <text x="56" y="560" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.04em" fill="rgba(11,30,59,0.80)">V</text>
+      <text x="40" y="588" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Cloud Native</text>
+      <text x="40" y="604" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Architecture</text>
+      <text x="40" y="624" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E">Ch 17–18</text>
+
+      <rect x="336" y="536" width="240" height="96" rx="6" fill="rgba(11,30,59,0.05)" stroke="#1F4A4E" stroke-width="1"></rect>
+      <text x="456" y="580" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Cloud Native</text>
+      <text x="456" y="600" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Architecture</text>
+
+      <rect x="280" y="560" width="40" height="16" rx="2" fill="#F5EFE4"></rect>
+      <text x="300" y="572" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.04em" fill="#B58B3E">12%</text>
+
+      <!-- ============ ROW 6 : Part VI / no domain ============ -->
+      <rect x="24" y="648" width="240" height="96" rx="6" fill="rgba(11,30,59,0.02)" stroke="rgba(11,30,59,0.20)" stroke-width="1" stroke-dasharray="4,3"></rect>
+      <rect x="40" y="660" width="32" height="16" rx="2" fill="none" stroke="rgba(11,30,59,0.40)" stroke-width="0.8"></rect>
+      <text x="56" y="672" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.04em" fill="rgba(11,30,59,0.80)">VI</text>
+      <text x="40" y="704" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Departure</text>
+      <text x="40" y="728" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E">Ch 19–20</text>
+
+      <rect x="336" y="648" width="240" height="96" rx="6" fill="rgba(11,30,59,0.02)" stroke="rgba(11,30,59,0.20)" stroke-width="1" stroke-dasharray="4,3"></rect>
+      <text x="352" y="692" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="rgba(11,30,59,0.45)">No exam domain</text>
+      <text x="352" y="716" font-family="'Fira Mono', monospace" font-size="14" fill="#8A8D90">synthesis + mock exam</text>
+
+      <!-- ============ LEGEND ============ -->
+      <line x1="24" y1="764" x2="576" y2="764" stroke="rgba(11,30,59,0.12)" stroke-width="1"></line>
+
+      <rect x="24" y="768" width="16" height="16" rx="2" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="48" y="780" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">BOOK PART</text>
+
+      <rect x="140" y="768" width="16" height="16" rx="2" fill="rgba(11,30,59,0.02)" stroke="rgba(11,30,59,0.20)" stroke-width="1" stroke-dasharray="4,3"></rect>
+      <text x="164" y="780" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">NO EXAM WEIGHT</text>
+
+      <rect x="296" y="768" width="16" height="16" rx="2" fill="rgba(11,30,59,0.05)" stroke="#1F4A4E" stroke-width="1"></rect>
+      <text x="320" y="780" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">EXAM DOMAIN</text>
+
+      <line x1="424" y1="776" x2="452" y2="776" stroke="#B58B3E" stroke-width="1.5" marker-end="url(#arrow-accent)"></line>
+      <text x="460" y="780" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">EXAM WEIGHT</text>
+    </svg>

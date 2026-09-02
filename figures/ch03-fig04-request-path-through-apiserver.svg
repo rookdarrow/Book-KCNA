@@ -1,0 +1,87 @@
+<svg viewBox="0 0 480 640" role="img" aria-labelledby="reqpath-title reqpath-desc" xmlns="http://www.w3.org/2000/svg" width="420" height="560">
+        <title id="reqpath-title">Hub topology centered on the Kubernetes API server</title>
+        <desc id="reqpath-desc">Hub diagram with kube-apiserver at the center; kubectl, kube-scheduler, kube-controller-manager, and two kubelets each connect only to the API server, and the API server alone connects to etcd, with no direct links between any of the surrounding components.</desc>
+
+        <defs>
+          <marker id="arr-muted" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon>
+          </marker>
+          <marker id="arr-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#B58B3E"></polygon>
+          </marker>
+          <marker id="arr-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon>
+          </marker>
+        </defs>
+
+        <rect width="480" height="640" fill="#F5EFE4"></rect>
+
+        <!-- ===== arrows (drawn before nodes) ===== -->
+        <!-- kube-scheduler -> kube-apiserver (straight, shared x) -->
+        <path d="M240,120 L240,240" stroke="#1F4A4E" stroke-width="1" fill="none" marker-end="url(#arr-muted)"></path>
+        <!-- kubectl -> kube-apiserver -->
+        <path d="M100,120 L100,172 Q100,180 108,180 L184,180 Q192,180 192,188 L192,240" stroke="#1F4A4E" stroke-width="1" fill="none" marker-end="url(#arr-muted)"></path>
+        <!-- kube-controller-manager -> kube-apiserver -->
+        <path d="M380,120 L380,172 Q380,180 372,180 L296,180 Q288,180 288,188 L288,240" stroke="#1F4A4E" stroke-width="1" fill="none" marker-end="url(#arr-muted)"></path>
+        <!-- kubelet (node A) -> kube-apiserver -->
+        <path d="M100,440 L100,388 Q100,380 108,380 L184,380 Q192,380 192,372 L192,320" stroke="#1F4A4E" stroke-width="1" fill="none" marker-end="url(#arr-muted)"></path>
+        <!-- kubelet (node B) -> kube-apiserver -->
+        <path d="M380,440 L380,388 Q380,380 372,380 L296,380 Q288,380 288,372 L288,320" stroke="#1F4A4E" stroke-width="1" fill="none" marker-end="url(#arr-muted)"></path>
+        <!-- FOCAL: kube-apiserver -> etcd (straight, shared x) -->
+        <path d="M240,320 L240,440" stroke="#B58B3E" stroke-width="1.2" fill="none" marker-end="url(#arr-accent)"></path>
+
+        <!-- ===== nodes ===== -->
+
+        <!-- kubectl -->
+        <rect x="40" y="40" width="120" height="80" rx="6" fill="#F5EFE4"></rect>
+        <rect x="40" y="40" width="120" height="80" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+        <text x="100" y="84" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">kubectl</text>
+
+        <!-- kube-scheduler -->
+        <rect x="180" y="40" width="120" height="80" rx="6" fill="#F5EFE4"></rect>
+        <rect x="180" y="40" width="120" height="80" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+        <text x="240" y="72" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">kube-</text>
+        <text x="240" y="92" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">scheduler</text>
+
+        <!-- kube-controller-manager -->
+        <rect x="320" y="40" width="120" height="80" rx="6" fill="#F5EFE4"></rect>
+        <rect x="320" y="40" width="120" height="80" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+        <text x="380" y="64" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">kube-</text>
+        <text x="380" y="84" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">controller-</text>
+        <text x="380" y="104" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">manager</text>
+
+        <!-- FOCAL: kube-apiserver -->
+        <rect x="140" y="240" width="200" height="80" rx="6" fill="#F5EFE4"></rect>
+        <rect x="140" y="240" width="200" height="80" rx="6" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"></rect>
+        <text x="240" y="284" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">kube-apiserver</text>
+
+        <!-- kubelet (node A) -->
+        <rect x="40" y="440" width="120" height="80" rx="6" fill="#F5EFE4"></rect>
+        <rect x="40" y="440" width="120" height="80" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+        <text x="100" y="472" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">kubelet</text>
+        <text x="100" y="496" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#8A8D90">(node A)</text>
+
+        <!-- etcd (data store) -->
+        <rect x="180" y="440" width="120" height="80" rx="6" fill="#F5EFE4"></rect>
+        <rect x="180" y="440" width="120" height="80" rx="6" fill="rgba(11,30,59,0.05)" stroke="#1F4A4E" stroke-width="1"></rect>
+        <text x="240" y="484" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">etcd</text>
+
+        <!-- kubelet (node B) -->
+        <rect x="320" y="440" width="120" height="80" rx="6" fill="#F5EFE4"></rect>
+        <rect x="320" y="440" width="120" height="80" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+        <text x="380" y="472" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">kubelet</text>
+        <text x="380" y="496" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#8A8D90">(node B)</text>
+
+        <!-- ===== legend ===== -->
+        <line x1="40" y1="560" x2="440" y2="560" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+        <text x="40" y="580" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.12em" fill="#8A8D90">LEGEND</text>
+
+        <rect x="40" y="596" width="16" height="16" rx="3" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"></rect>
+        <text x="64" y="608" font-family="'Fira Mono', monospace" font-size="14" fill="#8A8D90">FOCAL HUB</text>
+
+        <rect x="196" y="596" width="16" height="16" rx="3" fill="rgba(11,30,59,0.05)" stroke="#1F4A4E" stroke-width="1"></rect>
+        <text x="220" y="608" font-family="'Fira Mono', monospace" font-size="14" fill="#8A8D90">DATA STORE</text>
+
+        <rect x="340" y="596" width="16" height="16" rx="3" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+        <text x="364" y="608" font-family="'Fira Mono', monospace" font-size="14" fill="#8A8D90">CLIENT</text>
+      </svg>

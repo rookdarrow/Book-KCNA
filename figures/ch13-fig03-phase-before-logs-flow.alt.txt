@@ -1,0 +1,1 @@
+A five-stage vertical sequence — scope, phase, conditions, events, logs — each stage listing its kubectl commands and the question those commands answer, with logs in the final position

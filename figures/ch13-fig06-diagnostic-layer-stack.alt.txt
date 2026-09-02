@@ -1,0 +1,1 @@
+A five-layer stack from kubectl at the top through kube-apiserver and kubelet, then a heavy rule marking the API boundary, then CRI and the containerd or CRI-O runtime at the bottom, annotated to show that everything above the boundary is the cluster's recorded view and that crictl attaches directly to the runtime below it

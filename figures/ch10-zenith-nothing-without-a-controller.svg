@@ -1,0 +1,45 @@
+<svg viewBox="0 0 560 712" role="img" aria-labelledby="nothing-without-controller-title nothing-without-controller-desc" xmlns="http://www.w3.org/2000/svg" width="592" height="753">
+      <title id="nothing-without-controller-title">Four Kubernetes objects, each missing its controller</title>
+      <desc id="nothing-without-controller-desc">Four panels compare a LoadBalancer Service, an empty-selector Service, an Ingress, and a NetworkPolicy, each a valid object beside its absent controller or matching component, all producing silent inaction, with the NetworkPolicy panel noting that nothing signals the failure.</desc>
+
+      <rect width="560" height="712" fill="#F5EFE4"></rect>
+
+      <!-- Panel 1: Service (LoadBalancer) -->
+      <rect x="32" y="32" width="236" height="264" rx="8" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1"></rect>
+      <line x1="32" y1="128" x2="268" y2="128" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+      <line x1="32" y1="212" x2="268" y2="212" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+      <rect x="48" y="140" width="204" height="56" rx="6" fill="rgba(11,30,59,0.02)" stroke="rgba(11,30,59,0.20)" stroke-width="1" stroke-dasharray="4,3"></rect>
+      <text x="150" y="60" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Service<tspan x="150" y="84" font-family="'Fira Mono', monospace" font-size="14" font-weight="400" fill="#1F4A4E">type: LoadBalancer</tspan><tspan x="150" y="108" font-family="'Fira Sans', sans-serif" font-size="14" font-weight="600" fill="#1F4A4E">✓ valid</tspan><tspan x="150" y="160" font-family="'Fira Sans', sans-serif" font-size="14" font-weight="500" fill="#8A8D90">provider</tspan><tspan x="150" y="182" font-family="'Fira Mono', monospace" font-size="14" font-style="italic" fill="#8A8D90">(none)</tspan><tspan x="150" y="260" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">nothing</tspan></text>
+
+      <!-- Panel 2: Service (empty selector) -->
+      <rect x="292" y="32" width="236" height="264" rx="8" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1"></rect>
+      <line x1="292" y1="128" x2="528" y2="128" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+      <line x1="292" y1="212" x2="528" y2="212" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+      <rect x="308" y="140" width="204" height="56" rx="6" fill="rgba(11,30,59,0.02)" stroke="rgba(11,30,59,0.20)" stroke-width="1" stroke-dasharray="4,3"></rect>
+      <text x="410" y="60" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Service<tspan x="410" y="84" font-family="'Fira Mono', monospace" font-size="14" font-weight="400" fill="#1F4A4E">selector: {}</tspan><tspan x="410" y="108" font-family="'Fira Sans', sans-serif" font-size="14" font-weight="600" fill="#1F4A4E">✓ valid</tspan><tspan x="410" y="160" font-family="'Fira Sans', sans-serif" font-size="14" font-weight="500" fill="#8A8D90">matching Pods</tspan><tspan x="410" y="182" font-family="'Fira Mono', monospace" font-size="14" font-style="italic" fill="#8A8D90">(none)</tspan><tspan x="410" y="260" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">nothing</tspan></text>
+
+      <!-- Panel 3: Ingress -->
+      <rect x="32" y="320" width="236" height="264" rx="8" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1"></rect>
+      <line x1="32" y1="416" x2="268" y2="416" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+      <line x1="32" y1="500" x2="268" y2="500" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+      <rect x="48" y="428" width="204" height="56" rx="6" fill="rgba(11,30,59,0.02)" stroke="rgba(11,30,59,0.20)" stroke-width="1" stroke-dasharray="4,3"></rect>
+      <text x="150" y="348" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Ingress<tspan x="150" y="372" font-family="'Fira Mono', monospace" font-size="14" font-weight="400" fill="#1F4A4E">host + path rules</tspan><tspan x="150" y="396" font-family="'Fira Sans', sans-serif" font-size="14" font-weight="600" fill="#1F4A4E">✓ valid</tspan><tspan x="150" y="448" font-family="'Fira Sans', sans-serif" font-size="14" font-weight="500" fill="#8A8D90">Ingress controller</tspan><tspan x="150" y="470" font-family="'Fira Mono', monospace" font-size="14" font-style="italic" fill="#8A8D90">(none)</tspan><tspan x="150" y="548" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">nothing</tspan></text>
+
+      <!-- Panel 4: NetworkPolicy (focal) -->
+      <rect x="292" y="320" width="236" height="264" rx="8" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1"></rect>
+      <line x1="292" y1="416" x2="528" y2="416" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+      <line x1="292" y1="500" x2="528" y2="500" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+      <rect x="308" y="428" width="204" height="56" rx="6" fill="rgba(11,30,59,0.02)" stroke="rgba(11,30,59,0.20)" stroke-width="1" stroke-dasharray="4,3"></rect>
+      <rect x="300" y="504" width="220" height="76" rx="6" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"></rect>
+      <text x="410" y="348" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">NetworkPolicy<tspan x="410" y="372" font-family="'Fira Mono', monospace" font-size="14" font-weight="400" fill="#1F4A4E">podSelector</tspan><tspan x="410" y="396" font-family="'Fira Sans', sans-serif" font-size="14" font-weight="600" fill="#1F4A4E">✓ valid</tspan><tspan x="410" y="448" font-family="'Fira Sans', sans-serif" font-size="14" font-weight="500" fill="#8A8D90">network plugin</tspan><tspan x="410" y="470" font-family="'Fira Mono', monospace" font-size="14" font-style="italic" fill="#8A8D90">(none)</tspan><tspan x="410" y="524" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">nothing</tspan><tspan x="410" y="546" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#B58B3E">…and nothing</tspan><tspan x="410" y="568" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#B58B3E">tells you</tspan></text>
+
+      <!-- Caption -->
+      <text x="280" y="628" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="16" font-weight="400" fill="#0B1E3B">An object without its component does nothing.</text>
+
+      <!-- Legend -->
+      <line x1="32" y1="656" x2="528" y2="656" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+      <rect x="100" y="668" width="16" height="16" rx="4" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1"></rect>
+      <rect x="250" y="668" width="16" height="16" rx="4" fill="rgba(11,30,59,0.02)" stroke="rgba(11,30,59,0.20)" stroke-width="1" stroke-dasharray="3,2"></rect>
+      <rect x="400" y="668" width="16" height="16" rx="4" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"></rect>
+      <text x="124" y="680" text-anchor="start" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.08em" fill="#0B1E3B">VALID<tspan x="274" y="680" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.08em" fill="#0B1E3B">ABSENT</tspan><tspan x="424" y="680" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.08em" fill="#B58B3E">SILENT</tspan></text>
+    </svg>

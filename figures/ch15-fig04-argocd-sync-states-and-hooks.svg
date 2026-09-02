@@ -1,0 +1,97 @@
+<svg viewBox="0 0 600 728" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch15-fig04-title ch15-fig04-desc" width="600" height="728">
+    <title id="ch15-fig04-title">Argo CD target state vs live state: Synced vs OutOfSync</title>
+    <desc id="ch15-fig04-desc">Two scenarios compare a Git-defined target state against cluster live state through a controller: matching replica counts yield Synced, while a live replica count changed outside Git by kubectl scale yields OutOfSync until a sync operation reapplies the target state.</desc>
+    <defs>
+      <marker id="arr-muted" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon></marker>
+      <marker id="arr-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#B58B3E"></polygon></marker>
+      <marker id="arr-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon></marker>
+    </defs>
+
+    <rect width="100%" height="100%" fill="#F5EFE4"></rect>
+
+    <!-- ===== Header: column identity ===== -->
+    <text x="100" y="32" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="600" letter-spacing="0.08em" fill="#0B1E3B">TARGET STATE</text>
+    <text x="100" y="52" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.06em" fill="#1F4A4E">(GIT REPOSITORY)</text>
+
+    <text x="300" y="32" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="600" letter-spacing="0.08em" fill="#0B1E3B">AGENT</text>
+    <text x="300" y="52" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.06em" fill="#1F4A4E">(CONTROLLER)</text>
+
+    <text x="500" y="32" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="600" letter-spacing="0.08em" fill="#0B1E3B">LIVE STATE</text>
+    <text x="500" y="52" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.06em" fill="#1F4A4E">(CLUSTER)</text>
+
+    <line x1="20" y1="68" x2="580" y2="68" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+
+    <!-- ===== Scenario 1: Synced ===== -->
+    <line x1="180" y1="132" x2="240" y2="132" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arr-muted)"></line>
+    <line x1="420" y1="132" x2="360" y2="132" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arr-muted)"></line>
+    <line x1="300" y1="180" x2="300" y2="196" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arr-muted)"></line>
+
+    <rect x="20" y="84" width="160" height="96" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+    <text x="100" y="124" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="16" font-weight="500" fill="#0B1E3B">deployment.yml</text>
+    <text x="100" y="148" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E">replicas: 3</text>
+
+    <rect x="244" y="84" width="112" height="96" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+    <text x="300" y="136" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">compare</text>
+
+    <rect x="420" y="84" width="160" height="96" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+    <text x="500" y="124" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">Deployment</text>
+    <text x="500" y="148" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E">replicas: 3</text>
+
+    <rect x="244" y="200" width="112" height="28" rx="4" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+    <text x="300" y="220" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="16" font-weight="600" fill="#0B1E3B">Synced</text>
+    <text x="300" y="248" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="14" fill="#1F4A4E">the two agree</text>
+
+    <line x1="20" y1="272" x2="580" y2="272" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+
+    <!-- ===== Scenario 2: OutOfSync ===== -->
+    <line x1="180" y1="340" x2="240" y2="340" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arr-muted)"></line>
+    <line x1="420" y1="340" x2="360" y2="340" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arr-muted)"></line>
+    <line x1="300" y1="388" x2="300" y2="404" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arr-muted)"></line>
+    <line x1="300" y1="436" x2="300" y2="496" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arr-muted)"></line>
+
+    <rect x="20" y="292" width="160" height="96" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+    <text x="100" y="332" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="16" font-weight="500" fill="#0B1E3B">deployment.yml</text>
+    <text x="100" y="356" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E">replicas: 3</text>
+
+    <rect x="244" y="292" width="112" height="96" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+    <text x="300" y="344" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">compare</text>
+
+    <rect x="420" y="292" width="160" height="96" rx="6" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"></rect>
+    <text x="500" y="332" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">Deployment</text>
+    <text x="500" y="356" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="700" fill="#B58B3E">replicas: 5</text>
+
+    <rect x="244" y="408" width="112" height="28" rx="4" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"></rect>
+    <text x="300" y="428" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="16" font-weight="700" fill="#B58B3E">OutOfSync</text>
+    <text x="300" y="456" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="14" fill="#1F4A4E">the two do not agree</text>
+
+    <path d="M500,416 Q508,400 500,388" fill="none" stroke="rgba(31,74,78,0.35)" stroke-width="1" stroke-dasharray="4,3"></path>
+    <circle cx="500" cy="388" r="2" fill="#1F4A4E"></circle>
+    <text x="500" y="428" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="14" fill="#1F4A4E">someone ran kubectl scale</text>
+    <text x="500" y="448" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="14" fill="#1F4A4E">on Friday</text>
+
+    <rect x="204" y="500" width="192" height="88" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+    <text x="300" y="536" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="700" letter-spacing="0.04em" fill="#0B1E3B">SYNC</text>
+    <text x="300" y="560" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E">(operation)</text>
+
+    <path d="M408,536 Q400,540 396,544" fill="none" stroke="rgba(31,74,78,0.35)" stroke-width="1" stroke-dasharray="4,3"></path>
+    <circle cx="396" cy="544" r="2" fill="#1F4A4E"></circle>
+    <text x="412" y="528" text-anchor="start" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="14" fill="#1F4A4E">apply target state</text>
+    <text x="412" y="548" text-anchor="start" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="14" fill="#1F4A4E">live matches again</text>
+
+    <!-- ===== Legend ===== -->
+    <line x1="20" y1="616" x2="580" y2="616" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+    <text x="20" y="636" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.14em" fill="#1F4A4E">LEGEND</text>
+
+    <rect x="20" y="652" width="16" height="16" rx="2" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+    <text x="44" y="664" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E">STATUS TAG — Synced / OutOfSync</text>
+
+    <rect x="320" y="652" width="16" height="16" rx="2" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"></rect>
+    <text x="344" y="664" font-family="'Fira Sans', sans-serif" font-size="14" fill="#0B1E3B">FOCAL — target ≠ live</text>
+
+    <line x1="20" y1="696" x2="44" y2="696" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arr-muted)"></line>
+    <text x="52" y="700" font-family="'Fira Sans', sans-serif" font-size="14" fill="#1F4A4E">COMPARE — control loop check</text>
+
+    <path d="M320,696 L344,696" fill="none" stroke="#1F4A4E" stroke-width="1" stroke-dasharray="4,3"></path>
+    <circle cx="344" cy="696" r="2" fill="#1F4A4E"></circle>
+    <text x="352" y="700" font-family="'Fira Sans', sans-serif" font-size="14" fill="#1F4A4E">EXTERNAL — bypasses GitOps</text>
+  </svg>

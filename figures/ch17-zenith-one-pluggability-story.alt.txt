@@ -1,0 +1,1 @@
+Two halves: on the left, a box reading Kubernetes defines what must be true connected by one arrow labelled the socket to a box reading somebody else supplies the thing; on the right, a plain list of CRI, CNI, CSI and CRDs with their chapter references, captioned four instances, not four decisions

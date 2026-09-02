@@ -248,6 +248,9 @@ And here is what they replaced. The retired blueprint had five domains: Kubernet
 <!-- AUTHOR-REVIEW: Contested provenance for the five retired weights (46/22/16/8/8), and for everything derived from them below — ch01-fig01's left column, the −2/+6/×2 annotations, the "under-serve Application Delivery by roughly half" test, the 🪝 Snag on 16→12, and the Logbook Entry's premise. The fact-accuracy audit verified these against the cached snapshot lf-kcna-program-changes-2026-08-23, where they appear verbatim. The curriculum-alignment audit reports that snapshot is stale — that the research stage found the retired percentages were never on the LF page, cached a correction, and could not write it to sources/. Both cannot be right. Resolve by (a) retrieving the retired curriculum PDF from cncf/curriculum/old-versions/ and caching it as cncf-kcna-curriculum-retired-2026-08-23.md, or (b) if that fails, cutting all five percentages and respec'ing ch01-fig01 as a one-sided "what moved" diagram. The structural claim — five domains became four, observability folded into Architecture — is independently sourced and survives either way. Do NOT source the weights from the CNCF-hosted Medium repost; that is a syndicated guest post, the exact diffusion mechanism §2 teaches readers to catch. -->
 
 <!-- FIGURE: ch01-fig01-blueprint-change-2025 -->
+![Two-column diagram comparing the retired five-domain KCNA blueprint on the left with the current four-domain blueprint on the right. Kubernetes Fundamentals moves from 46 percent to 44 percent, Container Orchestration from 22 to 28 percent, Cloud Native Application Delivery from 8 to 16 percent. Cloud Native Architecture at 16 percent and Cloud Native Observability at 8 percent merge into a single Cloud Native Architecture domain at 12 percent, with Observability folded in as a competency rather than remaining a standalone domain.](figures/ch01-fig01-blueprint-change-2025.svg)
+
+<!-- ASCII-FALLBACK
 ```
      RETIRED (five domains)                  CURRENT (four domains)
      ─────────────────────────               ──────────────────────────
@@ -264,6 +267,7 @@ And here is what they replaced. The retired blueprint had five domains: Kubernet
                                                  as a competency, not a
           [domain no longer exists]              standalone domain)
 ```
+-->
 
 *The 2025 KCNA blueprint restructure. Two movements matter most: Application Delivery doubled, and Observability stopped being a domain of its own.*
 
@@ -390,6 +394,9 @@ So Chapter 1 leaves you with the question rather than the answer. Hold it open. 
 The instrument panel. Six Parts, twenty chapters.
 
 <!-- FIGURE: ch01-fig02-book-map-parts-to-domains -->
+![A map of the book's six Parts against the four KCNA exam domains. Part one, Orientation, covers Chapter 1 and carries no exam weight. Part two, Kubernetes Fundamentals, covers Chapters 2 to 8 and maps to the Kubernetes Fundamentals domain at 44 percent. Part three, Container Orchestration, covers Chapters 9 to 13 and maps to Container Orchestration at 28 percent. Part four, Application Delivery, covers Chapters 14 to 16 and maps to Cloud Native Application Delivery at 16 percent. Part five, Cloud Native Architecture, covers Chapters 17 to 18 and maps to Cloud Native Architecture at 12 percent. Part six, Departure, covers Chapters 19 to 20 for synthesis and the mock exam, and carries no exam weight. Parts two through five map one to one onto the four exam domains.](figures/ch01-fig02-book-map-parts-to-domains.svg)
+
+<!-- ASCII-FALLBACK
 ```
   PART                              CHAPTERS    EXAM DOMAIN                         WEIGHT
   ──────────────────────────────────────────────────────────────────────────────────────────
@@ -400,6 +407,7 @@ The instrument panel. Six Parts, twenty chapters.
   V    The Wider Sea                Ch 17–18    Cloud Native Architecture             12%
   VI   Making Port                  Ch 19–20    (synthesis + mock exam)                —
 ```
+-->
 
 *Where you are in the book is where you are in the blueprint. Parts II through V correspond one-to-one with the four domains.*
 

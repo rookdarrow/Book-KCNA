@@ -1,0 +1,1 @@
+A vertical flow from manifest.yaml through kubectl apply into kube-apiserver, which writes the record to etcd. A controller watches the API server, compares spec against status, acts when they differ, and reality changes so status is updated; an arrow returns to the compare step, forming a loop that never ends.

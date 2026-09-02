@@ -272,6 +272,9 @@ That last sentence is the documentation's, and it says *operating system*. The s
 <!-- AUTHOR-REVIEW: book-level status — handled here; no further edits elsewhere. Cached wording is "share the Operating System (OS) among the applications" (k8s-docs-overview-2026-08-23). Ch 2 §1 (chapter-02:281–285) adjudicates BOTH registers as correct — quote "operating system" when citing; hold "kernel" as the practitioner sharpening — and this chapter follows it above. Ch 1 §Soundings A1 uses the kernel register Ch 2 blesses, so the chapters agree in substance; its answer now labels the sharpening as the book's own (resolved 2026-08-24). Practice Q2 in this chapter is keyed to the snapshot's wording, not the gloss. -->
 
 <!-- FIGURE: ch03-fig03-deployment-eras-timeline -->
+![Three side-by-side layer stacks comparing traditional, virtualized, and container deployment; traditional runs one app on an OS on hardware, virtualized adds a hypervisor and a guest OS per virtual machine, and containers place three apps directly on one shared operating system](figures/ch03-fig03-deployment-eras-timeline.svg)
+
+<!-- ASCII-FALLBACK
 ```
    TRADITIONAL              VIRTUALIZED                CONTAINER
    ───────────              ───────────                ─────────
@@ -291,6 +294,7 @@ That last sentence is the documentation's, and it says *operating system*. The s
                           shares: hardware
                           (own OS per VM)
 ```
+-->
 *What changes across the eras is not the application. It's what the application shares with everything else on the machine. Read the bottom row.*
 
 This chapter isn't re-teaching the container/VM architecture; Chapter 2 did that in detail. What matters here is the *consequence*. Once your unit of deployment is small, fast, and portable, you stop having a handful of servers with one application each and start having hundreds of interchangeable processes scattered across a pool of machines. That is a fundamentally different management problem, and it's the problem Kubernetes was built for.
@@ -360,6 +364,9 @@ A Kubernetes cluster consists of a control plane plus a set of worker machines, 
 So: two kinds of machine, two sets of software. That answers Soundings question 3, and it's the first thing to fix in your head, because every component name you're about to learn hangs off it.
 
 <!-- FIGURE: ch03-fig01-control-plane-and-node-components -->
+![Cluster component census: a control plane region holding kube-apiserver, etcd, kube-scheduler, kube-controller-manager and a dashed optional cloud-controller-manager, above two node regions each holding kubelet, a dashed optional kube-proxy, and a container runtime](figures/ch03-fig01-control-plane-and-node-components.svg)
+
+<!-- ASCII-FALLBACK
 ```
 ┌─── CONTROL PLANE ────────────────────────────────────────────┐
 │                                                              │
@@ -385,6 +392,7 @@ So: two kinds of machine, two sets of software. That answers Soundings question 
   ┌───┐ solid border = always present
   ╭╌╌╌╮ dashed border = OPTIONAL (see §4)
 ```
+-->
 *The whole census on one page. Two regions, eight components, two of them dashed. The dashes are worth as many exam points as the names.*
 
 Now the five components of the control plane. The control plane's components make global decisions about the cluster — scheduling, for example — as well as detecting and responding to cluster events, such as starting up a new Pod when a controller's declared replica count is unsatisfied [source: k8s-docs-cluster-architecture-2026-08-23]. A Pod, for now, is the unit Kubernetes schedules and runs — Chapter 5 is its whole subject.
@@ -616,6 +624,9 @@ Go back to one phrase from §2: **the API server is the front end for the Kubern
 Put those together and a shape appears. Not a chain of command. A chart table: one surface everyone works from, and no orders issued across it.
 
 <!-- FIGURE: ch03-fig04-request-path-through-apiserver -->
+![Hub diagram with kube-apiserver at the center; kubectl, kube-scheduler, kube-controller-manager, and two kubelets each connect only to the API server, and the API server alone connects to etcd, with no direct links between any of the surrounding components](figures/ch03-fig04-request-path-through-apiserver.svg)
+
+<!-- ASCII-FALLBACK
 ```
     kubectl          kube-scheduler       kube-controller-manager
        │                    │                        │
@@ -632,6 +643,7 @@ Put those together and a shape appears. Not a chain of command. A chart table: o
    kubelet            │   etcd   │               kubelet
    (node A)           └──────────┘               (node B)
 ```
+-->
 *The state path. Every arrow terminates at the API server, and the API server is the one component with an edge to etcd. Now look for the arrow that isn't drawn: there is none between any two of the surrounding components.*
 
 <!-- AUTHOR-REVIEW: the prior draft carried a BLOCKING note here asking Stage 2 to fetch kubernetes.io/docs/concepts/architecture/control-plane-node-communication/. Stage 2 DID fetch it (research-manifest A1); the note was stale and has been removed. Two real qualifications survive the fetch and are now reflected in the prose above and below: (1) "only the API server talks to etcd" is sourced as a RECOMMENDATION — A3's wording is "ideally only the API server should have access to it" — not as an invariant, so the text no longer states it absolutely; (2) A1 documents outbound API-server→kubelet paths (logs, attach, port-forward) that this figure does not draw, so the figure and §5 are now explicitly scoped to the state/API path. Do not restore the absolute phrasing. -->
@@ -760,6 +772,9 @@ Sit with how ordinary that is. A thermostat doesn't execute a heating plan. It d
 **In Kubernetes, controllers are control loops that watch the state of your cluster, then make or request changes where needed. Each controller tries to move the current cluster state closer to the desired state** [source: k8s-docs-controllers-2026-08-23].
 
 <!-- FIGURE: ch03-fig02-control-loop-desired-vs-current -->
+![A closed four-step cycle with no beginning or end: compare reads desired state and current state, acting to close the gap changes current state, and comparison begins again; captioned no start, no end, no exit condition](figures/ch03-fig02-control-loop-desired-vs-current.svg)
+
+<!-- ASCII-FALLBACK
 ```
                         ┌─────────────────┐
                         │  DESIRED STATE  │
@@ -789,6 +804,7 @@ Sit with how ordinary that is. A thermostat doesn't execute a heating plan. It d
 
         no start.  no end.  no exit condition.
 ```
+-->
 *Notice there is no entry arrow and no terminus. A loop drawn with a beginning teaches the wrong thing: this one was already running before your request arrived and will still be running after it's satisfied.*
 
 <!-- FIGURE PAIR (do not redraw in isolation): this figure and `ch15-zenith-control-loop-pointed-at-a-repo` are a matched pair on one chassis.

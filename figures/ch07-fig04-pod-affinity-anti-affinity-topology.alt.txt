@@ -1,0 +1,1 @@
+Two panels showing the same six-node, two-zone cluster. With topologyKey set to hostname, all six nodes host a web Pod. With topologyKey set to zone, only one node per zone does — six placements become two.

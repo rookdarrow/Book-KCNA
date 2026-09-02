@@ -1,0 +1,1 @@
+Seven filter mechanisms feed the FILTER stage and five score mechanisms feed the SCORE stage of the filter-score-bind pipeline, which ends at a chosen node. A separate arrow from spec.nodeName bypasses all three stages and reaches the node directly.

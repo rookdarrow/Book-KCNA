@@ -1,0 +1,1 @@
+Two columns above one shared system box. The monitoring column passes through three fixed indicators labelled CPU, memory and 5xx into a dashboard. The observability column runs straight from a question that arrives at 2:10 a.m. into an open query, with no indicator layer in between.

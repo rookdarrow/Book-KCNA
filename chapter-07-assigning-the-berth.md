@@ -552,6 +552,9 @@ You already knew this. You retrieved it in Soundings question 4 and Chapter 5 ta
 ### The gradient
 
 <!-- FIGURE: ch07-fig02-nodeselector-vs-affinity -->
+![A two-by-three matrix. Columns are nodeSelector, required node affinity, preferred node affinity, increasing in expressiveness. Rows are hard and soft. Only three cells are filled, and only the bottom-right preferred-affinity cell is soft.](figures/ch07-fig02-nodeselector-vs-affinity.svg)
+
+<!-- ASCII-FALLBACK
 ```
                     EXPRESSIVENESS  ────────────────────────────────▶
 
@@ -574,6 +577,7 @@ You already knew this. You retrieved it in Soundings question 4 and Chapter 5 ta
 
     Hardness and expressiveness are independent. Only ONE of the six cells is soft.
 ```
+-->
 
 That figure is worth thirty seconds. The common misreading is that node affinity is simply "more powerful `nodeSelector`," a single upgrade path. It isn't. **`nodeSelector` and `required` node affinity fail identically**: no matching node, no placement, Pod sits in `Pending`. What affinity adds is a second, independent axis. Choosing between the three cells is choosing how much you want to *say*, and separately, how badly you want it *obeyed*.
 
@@ -629,6 +633,9 @@ Learn these by **when they act**: whether the refusal is posted at the approach,
 **`NoExecute`** — the only effect that touches Pods already on the node. Pods that do not tolerate the taint are **evicted immediately**. Pods that tolerate the taint without specifying `tolerationSeconds` remain bound forever. Pods that tolerate the taint *with* a specified `tolerationSeconds` remain bound for that long, after which the node lifecycle controller evicts them [source: k8s-docs-taints-tolerations-2026-08-23].
 
 <!-- FIGURE: ch07-fig03-taints-tolerations-effects -->
+![A node carrying a taint repels three Pods: two arriving and one already resident. A table below shows that NoSchedule and PreferNoSchedule leave the resident Pod unaffected, while NoExecute evicts it.](figures/ch07-fig03-taints-tolerations-effects.svg)
+
+<!-- ASCII-FALLBACK
 ```
         ┌────────────────────────────────────────────────┐
         │  NODE                                          │
@@ -653,6 +660,7 @@ Learn these by **when they act**: whether the refusal is posted at the approach,
 
    "may be placed" — never "is placed." The other filters and scores still run.
 ```
+-->
 
 Pod C is the whole point of the figure. Two of the three rows leave it completely alone. Only one row reaches out and touches something that was already moored.
 
@@ -826,6 +834,9 @@ The domain is not always "the node." You express the topology domain using a **`
 So the same rule, over the same cluster, means different things depending on which label you name.
 
 <!-- FIGURE: ch07-fig04-pod-affinity-anti-affinity-topology -->
+![Two panels showing the same six-node, two-zone cluster. With topologyKey set to hostname, all six nodes host a web Pod. With topologyKey set to zone, only one node per zone does — six placements become two.](figures/ch07-fig04-pod-affinity-anti-affinity-topology.svg)
+
+<!-- ASCII-FALLBACK
 ```
    SAME CLUSTER. SAME RULE: "no two Pods labeled app=web in one domain."
    THE ONLY DIFFERENCE IS THE topologyKey.
@@ -846,6 +857,7 @@ So the same rule, over the same cluster, means different things depending on whi
 
    One label key changed. The rule's meaning changed with it.
 ```
+-->
 
 Same cluster, same six nodes, same two zones, same rule text. Change one label key and the rule goes from "spread across machines" to "spread across failure zones," which is dramatically stricter, and, if you only have two zones, dramatically more likely to leave Pods `Pending`.
 
@@ -1013,6 +1025,9 @@ They are not.
 > **Every mechanism in this chapter plugs into one of exactly two slots in §1's pipeline. It either removes nodes from consideration — a filter — or it changes the ranking of the nodes that survived — a score. Six vocabularies. Two slots. That's the chapter.**
 
 <!-- FIGURE: ch07-zenith-berth-assignment -->
+![Seven filter mechanisms feed the FILTER stage and five score mechanisms feed the SCORE stage of the filter-score-bind pipeline, which ends at a chosen node. A separate arrow from spec.nodeName bypasses all three stages and reaches the node directly.](figures/ch07-zenith-berth-assignment.svg)
+
+<!-- ASCII-FALLBACK
 ```
   FILTERS — remove nodes                     SCORES — rank what remains
   ┌────────────────────────────────┐         ┌────────────────────────────────┐
@@ -1035,6 +1050,7 @@ They are not.
   spec.nodeName ────────────────────────────────────────▶│  a node   │
   neither a filter nor a score — it deletes the choice   └───────────┘
 ```
+-->
 
 <!-- AUTHOR-REVIEW: the fact-accuracy stage flagged that no cached snapshot assigns any individual mechanism to a named scheduler stage. §7's synthesis — hard rules filter, soft rules score — is the chapter's organizing frame and follows from the documented behaviors (an untolerated NoSchedule taint means the node will not accept the Pod; PreferNoSchedule means the control plane will only try to avoid it). The two-column figure above and the answer keys for Practice Q10 and Q13 state the assignment mechanism-by-mechanism, which the corpus supports by inference rather than by a source sentence. Both answer keys have been re-phrased to derive the assignment from the documented behavior rather than to assert a stage registration. The fetch that would source it directly is kubernetes.io/docs/reference/scheduling/config/, which enumerates each plugin against its extension points (TaintToleration appears at both Filter and Score; InterPodAffinity at PreFilter, Filter and Score). This is the single highest-value snapshot this chapter is still missing — recommend fetching before the book-level pass. -->
 

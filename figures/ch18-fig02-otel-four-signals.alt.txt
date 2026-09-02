@@ -1,0 +1,1 @@
+A wide baggage band spans the top, connected by dashed lines to three boxes below it labelled traces, metrics and logs, which answer where, whether and what. The three converge into an OpenTelemetry Collector that receives, processes and exports to one or more backends.

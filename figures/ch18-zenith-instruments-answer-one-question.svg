@@ -1,0 +1,90 @@
+<svg viewBox="0 0 640 800" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="zenith-instruments-title zenith-instruments-desc" width="640" height="800">
+    <title id="zenith-instruments-title">Metric, trace, and log resolving one observability question</title>
+    <desc id="zenith-instruments-desc">One question at the top asks whether the service is doing what users expect. Three boxes below point up into it: a metric answering whether, a trace answering where, and a log answering what. A baggage box beneath connects to all three, making them about the same request rather than three separate stories.</desc>
+    <defs>
+      <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon>
+      </marker>
+    </defs>
+
+    <rect width="100%" height="100%" fill="#F5EFE4"></rect>
+
+    <!-- ===== connectors: drawn before boxes ===== -->
+
+    <!-- top fan: three instruments merge into a bus; one line rises into the question and carries the arrowhead -->
+    <path d="M136,240 L136,184" fill="none" stroke="#1F4A4E" stroke-width="1"></path>
+    <path d="M320,240 L320,184" fill="none" stroke="#1F4A4E" stroke-width="1"></path>
+    <path d="M504,240 L504,184" fill="none" stroke="#1F4A4E" stroke-width="1"></path>
+    <path d="M136,184 L504,184" fill="none" stroke="#1F4A4E" stroke-width="1"></path>
+    <path d="M320,184 L320,128" fill="none" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"></path>
+
+    <!-- bottom fan: baggage joins all three instruments -- association, not flow, so no arrowheads -->
+    <path d="M136,408 L136,464" fill="none" stroke="#B58B3E" stroke-width="1.2"></path>
+    <path d="M320,408 L320,464" fill="none" stroke="#B58B3E" stroke-width="1.2"></path>
+    <path d="M504,408 L504,464" fill="none" stroke="#B58B3E" stroke-width="1.2"></path>
+    <path d="M136,464 L504,464" fill="none" stroke="#B58B3E" stroke-width="1.2"></path>
+    <path d="M320,464 L320,520" fill="none" stroke="#B58B3E" stroke-width="1.2"></path>
+
+    <!-- ===== question box ===== -->
+    <rect x="120" y="24" width="400" height="104" rx="8" fill="#F5EFE4"></rect>
+    <rect x="120" y="24" width="400" height="104" rx="8" fill="rgba(11,30,59,0.03)" stroke="#0B1E3B" stroke-width="1"></rect>
+    <text x="320" y="44" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.12em">THE QUESTION</text>
+    <text x="320" y="64" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16">“Is the service doing</text>
+    <text x="320" y="88" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16">what users expect</text>
+    <text x="320" y="112" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16">it to be doing?”</text>
+
+    <!-- ===== instrument box: METRIC ===== -->
+    <rect x="56" y="240" width="160" height="168" rx="6" fill="#F5EFE4"></rect>
+    <rect x="56" y="240" width="160" height="168" rx="6" fill="rgba(11,30,59,0.03)" stroke="#0B1E3B" stroke-width="1"></rect>
+    <text x="136" y="272" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600">METRIC</text>
+    <line x1="72" y1="284" x2="200" y2="284" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+    <text x="136" y="304" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.1em">WHETHER</text>
+    <text x="136" y="336" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="14">error rate</text>
+    <text x="136" y="356" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="14">crossed 2%</text>
+    <text x="136" y="376" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="14">at 02:07</text>
+
+    <!-- ===== instrument box: TRACE ===== -->
+    <rect x="240" y="240" width="160" height="168" rx="6" fill="#F5EFE4"></rect>
+    <rect x="240" y="240" width="160" height="168" rx="6" fill="rgba(11,30,59,0.03)" stroke="#0B1E3B" stroke-width="1"></rect>
+    <text x="320" y="272" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600">TRACE</text>
+    <line x1="256" y1="284" x2="384" y2="284" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+    <text x="320" y="304" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.1em">WHERE</text>
+    <text x="320" y="336" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="14">3.65s of 4s</text>
+    <text x="320" y="356" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="14">in pricing-svc’s</text>
+    <text x="320" y="376" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="14">query</text>
+
+    <!-- ===== instrument box: LOG ===== -->
+    <rect x="424" y="240" width="160" height="168" rx="6" fill="#F5EFE4"></rect>
+    <rect x="424" y="240" width="160" height="168" rx="6" fill="rgba(11,30,59,0.03)" stroke="#0B1E3B" stroke-width="1"></rect>
+    <text x="504" y="272" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600">LOG</text>
+    <line x1="440" y1="284" x2="568" y2="284" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+    <text x="504" y="304" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.1em">WHAT</text>
+    <text x="504" y="336" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="14">the line the</text>
+    <text x="504" y="356" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="14">code actually</text>
+    <text x="504" y="376" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="14">emitted</text>
+
+    <!-- ===== baggage box (focal) -- doubled brass border carries the emphasis, not color alone ===== -->
+    <rect x="120" y="520" width="400" height="120" rx="8" fill="#F5EFE4"></rect>
+    <rect x="120" y="520" width="400" height="120" rx="8" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"></rect>
+    <rect x="124" y="524" width="392" height="112" rx="6" fill="none" stroke="#B58B3E" stroke-width="0.8"></rect>
+    <text x="320" y="552" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600">BAGGAGE</text>
+    <line x1="136" y1="564" x2="504" y2="564" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+    <text x="320" y="584" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="14">what makes all three about</text>
+    <text x="320" y="604" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14">
+      <tspan fill="#0B1E3B" font-weight="700">THE SAME REQUEST</tspan><tspan fill="#0B1E3B"> — rather than</tspan>
+    </text>
+    <text x="320" y="624" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="14">three separate stories</text>
+
+    <!-- ===== caption ===== -->
+    <text x="320" y="688" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="16">Not four topics. One question, four resolutions.</text>
+
+    <!-- ===== legend ===== -->
+    <line x1="40" y1="720" x2="600" y2="720" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+    <text x="40" y="740" fill="#1F4A4E" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.14em">LEGEND</text>
+
+    <line x1="170" y1="736" x2="200" y2="736" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"></line>
+    <text x="210" y="740" fill="#1F4A4E" font-family="'Fira Mono', monospace" font-size="14">RESOLVES THE QUESTION</text>
+
+    <line x1="430" y1="736" x2="460" y2="736" stroke="#B58B3E" stroke-width="1.2"></line>
+    <text x="470" y="740" fill="#1F4A4E" font-family="'Fira Mono', monospace" font-size="14">JOINED BY BAGGAGE</text>
+  </svg>

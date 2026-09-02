@@ -1,0 +1,1 @@
+Three stacked bands showing a three-replica StatefulSet named web, each Pod paired one-to-one with its own PersistentVolumeClaim named www-web-0 through www-web-2; in the second band web-1 has moved to a different node and keeps its claim, and in the third band web-1 is deleted while its claim remains in place

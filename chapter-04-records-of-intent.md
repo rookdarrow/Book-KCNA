@@ -376,6 +376,9 @@ A **UID** is a system-generated string, and it is not reusable at all. Every obj
 Here is what one object looks like, laid out. Note the boundary running through the middle of it, because that boundary is the second half of this section.
 
 <!-- FIGURE: ch04-fig01-object-anatomy-spec-status -->
+![Two stacked panels split by a heavy horizontal line labelled authorship boundary. The upper panel, headed YOU AUTHOR THIS, lists apiVersion, kind, metadata with nested name, uid and optional namespace, and spec. The lower panel, headed THE SYSTEM AUTHORS THIS, contains only status.](figures/ch04-fig01-object-anatomy-spec-status.svg)
+
+<!-- ASCII-FALLBACK
 ```
         ┌──────────────────────────────────────────────────────┐
         │  YOU AUTHOR THIS                                     │
@@ -397,6 +400,7 @@ Here is what one object looks like, laid out. Note the boundary running through 
         │    ...                                               │
         └──────────────────────────────────────────────────────┘
 ```
+-->
 
 *Figure: the anatomy of a Kubernetes object. The line through the middle is not decoration; it is the distinction the rest of this section is about. Four fields above it are yours. The field below it is not.*
 
@@ -425,6 +429,9 @@ That is the most reused sentence in this book. Chapter 5 reads it against a Pod'
 Put the pieces together. You have a file. You have a verb. You have a component that receives it, a store that keeps it, and a loop that reads it. Here is the round trip.
 
 <!-- FIGURE: ch04-fig02-apply-round-trip -->
+![A vertical flow from manifest.yaml through kubectl apply into kube-apiserver, which writes the record to etcd. A controller watches the API server, compares spec against status, acts when they differ, and reality changes so status is updated; an arrow returns to the compare step, forming a loop that never ends.](figures/ch04-fig02-apply-round-trip.svg)
+
+<!-- ASCII-FALLBACK
 ```
      manifest.yaml
           │
@@ -445,6 +452,7 @@ Put the pieces together. You have a file. You have a verb. You have a component 
            └────────────────────────────────┘
                     and it watches again, forever
 ```
+-->
 
 *Figure: one declaration, in sequence, over time. The loop at the bottom never terminates. That is not a diagram convention; it is the actual behavior. Compare this to Chapter 3's request-path figure, which showed which components talk to the API server; this one shows what happens to a single object after they do.*
 
@@ -540,6 +548,9 @@ Now the part that carries real exam weight, and that pays dividends eight chapte
 Namespace-based scoping is applicable **only for namespaced objects** (Deployments, Services, and so on) and **not for cluster-wide objects**, such as StorageClasses, Nodes, and PersistentVolumes. Most Kubernetes resources are in some namespace. However, namespace resources are not themselves in a namespace, and low-level resources such as nodes and persistent volumes are not in any namespace [source: k8s-docs-namespaces-2026-08-23]. *[cross-bearing: see Ch 11 — PersistentVolumes and StorageClasses]*
 
 <!-- FIGURE: ch04-fig04-namespaced-vs-cluster-scoped -->
+![A cluster boundary containing Node, PersistentVolume, StorageClass and Namespace in its outer region, and two side-by-side namespace boxes, team-a and team-b, each holding an identical set of four objects: a Deployment and Service both named database, a ConfigMap named settings, and a Secret named creds.](figures/ch04-fig04-namespaced-vs-cluster-scoped.svg)
+
+<!-- ASCII-FALLBACK
 ```
  ╔══════════════════════════════════════════════════════════════════╗
  ║  CLUSTER SCOPE                                                   ║
@@ -557,6 +568,7 @@ Namespace-based scoping is applicable **only for namespaced objects** (Deploymen
  ║   └────────────────────────────┘  └────────────────────────────┘ ║
  ╚══════════════════════════════════════════════════════════════════╝
 ```
+-->
 
 *Figure: two namespaces inside one cluster. The identical names in both boxes are legal and unremarkable; that is what "unique within, not across" means. The four resource types in the outer region are not inside either box, and cannot be put inside one.*
 
@@ -679,6 +691,9 @@ Three rows need a sentence each.
 ### Side by side
 
 <!-- FIGURE: ch04-fig05-configmap-secret-contrast -->
+![A four-row comparison of ConfigMap and Secret covering intended contents, how a Pod consumes them, how they are stored, and what each adds. The storage row reads unencrypted in etcd for both, with by default noted on the Secret side.](figures/ch04-fig05-configmap-secret-contrast.svg)
+
+<!-- ASCII-FALLBACK
 ```
                         ConfigMap                    Secret
  ─────────────────────────────────────────────────────────────────────────
@@ -700,6 +715,7 @@ Three rows need a sentence each.
                                                      place to attach
                                                      encryption at rest
 ```
+-->
 
 *Figure: the two objects differ in intent and in treatment, not in cryptography. The third row is identical on both sides, and that is the row people get wrong.* [source: k8s-docs-configmap-2026-08-23] [source: k8s-docs-secret-2026-08-23] [source: k8s-docs-volumes-2026-08-23]
 
@@ -805,6 +821,9 @@ The API supports two types.
 **Set-based** selectors use `in`, `notin`, and `exists` (plus its negation). For example, `environment in (production, qa)`, `tier notin (frontend, backend)`, `partition` (meaning: has the key at all), and `!partition` (meaning: does not have the key). Set-based requirements are **more expressive** than equality-based ones, and multiple requirements are **ANDed** together with commas [source: k8s-docs-labels-selectors-2026-08-23].
 
 <!-- FIGURE: ch04-fig03-labels-selectors-join -->
+![Four Pod cards labelled A through D, each carrying a tier and an env label. Below them, four selectors resolve to sets: tier equals fe gives A and B; env equals prod gives A and C; env in prod or qa also gives A and C; tier equals be and env equals prod gives C alone. Pod A appears in three sets and Pod D in none.](figures/ch04-fig03-labels-selectors-join.svg)
+
+<!-- ASCII-FALLBACK
 ```
   OBJECTS, each carrying labels
 
@@ -821,6 +840,7 @@ The API supports two types.
     env in (prod, qa)        ──►   { A ,     C }
     tier = be , env = prod   ──►   {         C }
 ```
+-->
 
 *Figure: sets, not a taxonomy. Pod A belongs to two selected sets at once and Pod D to none of them, and that overlap is the entire reason this mechanism is useful. If the four Pods had partitioned cleanly into four boxes you would be looking at a folder structure, not a selector.*
 
@@ -952,6 +972,9 @@ And yet things happen. Here is why:
 > The Kubernetes control plane continually and actively manages every object's actual state to match the desired state you supplied [source: k8s-docs-objects-2026-08-23].
 
 <!-- FIGURE: ch04-zenith-declaration-not-order -->
+![A single box labelled THE FILED DECLARATION, what should be true, connected to five separate readers below it: a scheduler, a controller, a kubelet, and two more controllers, each annotated as consulting the record at a different time — 09:00, 09:04, 09:04, 11:20 and 03:17. Text beneath reads: no hand receives an instruction; every hand reads the record, observes the world, and closes the gap.](figures/ch04-zenith-declaration-not-order.svg)
+
+<!-- ASCII-FALLBACK
 ```
                     ┌─────────────────────────────┐
                     │    THE FILED DECLARATION    │
@@ -969,6 +992,7 @@ And yet things happen. Here is why:
      No hand receives an instruction.
      Every hand reads the record, observes the world, and closes the gap.
 ```
+-->
 
 *Figure: the record outranks the moment it was written. Nothing in this figure is a command being passed down a chain; every arrow is a reading.*
 

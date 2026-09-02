@@ -375,6 +375,9 @@ Everything after this section is one of four questions, asked in an order chosen
 **Is it configured?** — Which appears twice, deliberately. Read on.
 
 <!-- FIGURE: ch16-fig01-application-scope-triage -->
+![A tree diagram. An arrow labelled 'from Chapter 13, platform scope discharged' enters a single box labelled 'Application scope: this book, this chapter, your problem'. Below the box, four branches fan out to four questions: is it running (section 2), is it healthy and configured (section 3), is it reachable (sections 4 then 5), and is it per-replica (section 6).](figures/ch16-fig01-application-scope-triage.svg)
+
+<!-- ASCII-FALLBACK
 ```
         FROM CH 13 — platform scope discharged
                         │
@@ -390,6 +393,7 @@ Everything after this section is one of four questions, asked in an order chosen
    (§2)     CONFIGURED?     (§4 → §5)        (§6)
               (§3)
 ```
+-->
 
 The mapping to sections is direct, with one wrinkle:
 
@@ -465,6 +469,9 @@ That last point is worth dwelling on, because it is the good news in this sectio
 <!-- AUTHOR-REVIEW (revision stage — recorded research gap, manifest Gaps item 3): the *Debug Init Containers* page covers ONLY status-reading and log access. Its own `scope_note` states it "does NOT cover init-container ordering deadlocks, idempotency/re-run hazards, or ConfigMap/Secret mount failures at init." Of the three failure modes above: **idempotency IS sourced** (`k8s-docs-init-containers-2026-08-24`, re-run semantics, cited). **The ordering deadlock is authored synthesis** — it is a sound deduction from three separately sourced facts (init containers block app-container start; a Pod is not Ready until init succeeds; readiness gates endpoint membership), and the prose above now presents it as a consequence of the sequencing rules rather than as documented behavior. **Config-errors-at-init is authorial and the weaker of the two** — `k8s-docs-determine-reason-pod-failure-2026-08-31` carries `config-errors-visible-at-init` in its concept tags but its transcribed body is termination-message material. Either source it properly or mark it as practitioner analysis before print. It reaches graded text at Practice Q17. -->
 
 <!-- FIGURE: ch16-fig05-init-sequence-debug-points -->
+![A left-to-right sequence of three init containers followed by the app containers. Beneath each, the Pod status it produces: Init:0/3 under the first init container, Init:1/3 under the second, Init:2/3 under the third, and Running under the app containers. Below, the commands for reading init container logs, and three failure signatures paired with their causes: stuck with no error means an ordering deadlock, failing only on restart means non-idempotency, and exiting non-zero means a configuration error.](figures/ch16-fig05-init-sequence-debug-points.svg)
+
+<!-- ASCII-FALLBACK
 ```
   init-1 ──────▶ init-2 ──────▶ init-3 ──────▶ app containers
     │              │              │                  │
@@ -479,6 +486,7 @@ That last point is worth dwelling on, because it is the good news in this sectio
  FAILS ONLY ON RESTART ... non-idempotent — it assumed a clean slate
  EXITS NON-ZERO, LOUDLY .. config error — read the message, it's telling you
 ```
+-->
 
 There is one more diagnostic surface here worth knowing. A container can write to a **termination message** file at `/dev/termination-log`, and Kubernetes surfaces the contents in the Pod's status [source: k8s-docs-determine-reason-pod-failure-2026-08-31]. The docs describe the purpose plainly: *"Termination messages provide a way for containers to write information about fatal events to a location where it can be easily retrieved and surfaced by tools like dashboards and monitoring software."* [source: k8s-docs-determine-reason-pod-failure-2026-08-31] For an init container that fails in a way that logs don't capture well, writing a one-line reason to the termination log makes the failure legible from `kubectl describe` alone.
 
@@ -633,6 +641,9 @@ Which makes it an argument for the boundary rather than an exception to it. The 
 The shape to remember, rather than the list: a profile is a preset for how much privilege the debug container asks for, and asking for more than the namespace allows is what triggers the admission refusal in the Hazard above. The `restricted` profile exists as the low-privilege end of that range, which is the end you want in a namespace enforcing the restricted standard.
 
 <!-- FIGURE: ch16-fig02-ephemeral-container-debug -->
+![Three panels comparing kubectl debug's shapes. Panel A: an ephemeral debug container added inside an unchanged Pod alongside a distroless app container, annotated as unable to be removed; it asks what the running process sees now. Panel B: two unconnected Pods side by side, the original still running and crashing on startup, and a separate copy with its entrypoint replaced; it asks what would happen if something changed. Panel C, shown as platform scope: a debug Pod on a Node with the host filesystem mounted; it asks whether the machine itself is the problem.](figures/ch16-fig02-ephemeral-container-debug.svg)
+
+<!-- ASCII-FALLBACK
 ```
   (A) EPHEMERAL CONTAINER — into the running Pod
       ┌─────────── Pod (unchanged) ───────────┐
@@ -653,6 +664,7 @@ The shape to remember, rather than the list: a profile is a preset for how much 
       └────────────────────────────────────────┘
       ASKS: "is the machine itself the problem?"   (see Ch 13 §5)
 ```
+-->
 
 Three shapes, three questions. They are not interchangeable, and choosing the wrong one is how you spend twenty minutes in a copy of a Pod investigating a problem that only exists in the original.
 
@@ -797,6 +809,9 @@ So: a selector that matches nothing leaves the slice with no endpoints at all. R
 Here is where the section has to be careful, because four things can break a request to a Service and only two of them are about whether anything is selected.
 
 <!-- FIGURE: ch16-fig04-service-break-points -->
+![A request path runs left to right from client, to DNS name, to Service, to EndpointSlice, to Pod, to container port. Three callouts drop from it. From the DNS name: break four, the name does not resolve to this Service. From the EndpointSlice: breaks one and two, the list is empty, caused either by a selector mismatch or by Pods not being Ready. From the container port: break three, port does not equal targetPort, and here the list is populated. A legend notes that upstream breaks empty the list, the downstream break leaves it populated while the request still fails, and break four means this Service was never reached.](figures/ch16-fig04-service-break-points.svg)
+
+<!-- ASCII-FALLBACK
 ```
   client ──▶ DNS name ──▶ Service ──▶ EndpointSlice ──▶ Pod ──▶ container port
                │                          │                        │
@@ -819,6 +834,7 @@ Here is where the section has to be careful, because four things can break a req
   DOWNSTREAM of readiness .... break 3 → ENDPOINTS READY, request still fails
   BESIDE the whole path ...... break 4 → you never reached this Service at all
 ```
+-->
 
 **Break 1 — selector/label mismatch.** The Service's `spec.selector` and the Pod template's `metadata.labels` are written in two different places, frequently in two different files, and they drift. Someone renames `app: web` to `app: web-frontend` in the Deployment and does not touch the Service. Everything applies cleanly. Nothing errors. The slice goes empty and stays that way.
 
@@ -1221,6 +1237,9 @@ Chapter 13 taught you to read the phase first, and the phase's last and most val
 Same move. Different altitude.
 
 <!-- FIGURE: ch16-zenith-mine-or-the-platforms -->
+![A symmetrical diagram divided by a heavy vertical line. On the left, platform scope from Chapter 13: phase, then conditions, then events, then logs, then node. On the right, application scope from Chapter 16: is it running, is it healthy, is it reachable, is it configured, and which replica. Below each column, a long arrow points inward toward the centre line, each labelled narrowing. At the centre, the caption reads: the boundary, this line is the method.](figures/ch16-zenith-mine-or-the-platforms.svg)
+
+<!-- ASCII-FALLBACK
 ```
    PLATFORM SCOPE                    │                 APPLICATION SCOPE
    (Ch 13)                           │                 (Ch 16)
@@ -1234,6 +1253,7 @@ Same move. Different altitude.
                             THE BOUNDARY
                     ( this line is the method )
 ```
+-->
 
 <!-- AUTHOR-REVIEW: this anchor does not match the contract's `ch{NN}-fig{MM}-{slug}` pattern — it carries no `fig{MM}` segment. Preserved verbatim because it is the join key into image-specs. If renamed (suggested: `ch16-fig06-mine-or-the-platforms`), the draft anchor and the image-specs entry must change in the same commit or the join breaks. Author's call. Note also that document order runs fig01 → fig05 → fig02 → fig04 → fig03 → zenith; no numbers are missing or duplicated, but any consumer assuming anchor number equals document position will mis-order them. -->
 

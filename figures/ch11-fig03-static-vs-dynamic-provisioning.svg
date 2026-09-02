@@ -1,0 +1,134 @@
+<svg viewBox="0 0 1000 1180" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch11-fig03-title ch11-fig03-desc" width="900" height="1062">
+      <title id="ch11-fig03-title">Static vs. dynamic PersistentVolume provisioning</title>
+      <desc id="ch11-fig03-desc">A flowchart starting at PVC creation, branching on whether a matching PersistentVolume already exists; yes leads to static binding, no leads to a second decision requiring both a named StorageClass and a configured provisioner, whose true branch is dynamic provisioning and whose false branch dead-ends at a claim that waits indefinitely with the Pod stuck in Pending.</desc>
+      <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon></marker>
+        <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#B58B3E"></polygon></marker>
+        <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon></marker>
+      </defs>
+
+      <rect width="100%" height="100%" fill="#F5EFE4"></rect>
+
+      <!-- ============ ARROWS (drawn before nodes) ============ -->
+
+      <!-- Start -> Decision1 -->
+      <line x1="420" y1="120" x2="420" y2="140" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+
+      <!-- Decision1 -> Static (YES) -->
+      <line x1="252" y1="260" x2="252" y2="340" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+      <rect x="260" y="290" width="40" height="20" rx="2" fill="#F5EFE4"></rect>
+      <text x="280" y="304" fill="#1F4A4E" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.06em">YES</text>
+
+      <!-- Decision1 -> Decision2 (NO) -->
+      <line x1="588" y1="260" x2="588" y2="348" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+      <rect x="596" y="294" width="36" height="20" rx="2" fill="#F5EFE4"></rect>
+      <text x="614" y="308" fill="#1F4A4E" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.06em">NO</text>
+
+      <!-- Decision2 -> Dyn1 (BOTH TRUE) -->
+      <line x1="588" y1="612" x2="588" y2="672" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+      <rect x="596" y="628" width="92" height="20" rx="2" fill="#F5EFE4"></rect>
+      <text x="642" y="642" fill="#1F4A4E" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.05em">BOTH TRUE</text>
+
+      <!-- Dyn1 -> Dyn2 -->
+      <line x1="588" y1="768" x2="588" y2="808" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+
+      <!-- Decision2 -> Focal (EITHER MISSING): lead-out + elbow, accent-colored (the trap branch) -->
+      <path d="M 756 480 H 816 Q 824 480 824 488 V 584" fill="none" stroke="#B58B3E" stroke-width="1.4"></path>
+      <line x1="824" y1="584" x2="824" y2="592" stroke="#B58B3E" stroke-width="1.4" marker-end="url(#arrow-accent)"></line>
+      <rect x="832" y="522" width="128" height="20" rx="2" fill="#F5EFE4"></rect>
+      <text x="896" y="536" fill="#B58B3E" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.04em">EITHER MISSING</text>
+
+      <!-- Static path down to merge -->
+      <path d="M 252 436 V 960 Q 252 968 260 968 H 420" fill="none" stroke="#1F4A4E" stroke-width="1.2"></path>
+
+      <!-- Dynamic path down to merge -->
+      <path d="M 588 904 V 960 Q 588 968 580 968 H 420" fill="none" stroke="#1F4A4E" stroke-width="1.2"></path>
+
+      <!-- Merge -> End -->
+      <line x1="420" y1="968" x2="420" y2="992" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+
+      <!-- ============ ANNOTATIONS (editorial asides) ============ -->
+
+      <path d="M 214 592 Q 234 596 252 600" fill="none" stroke="rgba(11,30,59,0.35)" stroke-width="1" stroke-dasharray="4,3"></path>
+      <circle cx="252" cy="600" r="2" fill="#0B1E3B"></circle>
+      <text x="212" y="544" fill="#0B1E3B" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif" text-anchor="end">Admin pre-created</text>
+      <text x="212" y="564" fill="#0B1E3B" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif" text-anchor="end">a PV carrying the</text>
+      <text x="212" y="584" fill="#0B1E3B" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif" text-anchor="end">real storage details</text>
+
+      <path d="M 824 796 Q 828 760 824 728" fill="none" stroke="rgba(181,139,62,0.55)" stroke-width="1" stroke-dasharray="4,3"></path>
+      <circle cx="824" cy="728" r="2" fill="#B58B3E"></circle>
+      <text x="824" y="804" fill="#0B1E3B" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif" text-anchor="middle">An object without its</text>
+      <text x="824" y="824" fill="#0B1E3B" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif" text-anchor="middle">component does nothing.</text>
+
+      <!-- ============ NODES ============ -->
+
+      <!-- Start oval -->
+      <rect x="300" y="56" width="240" height="64" rx="32" fill="rgba(11,30,59,0.03)" stroke="rgba(11,30,59,0.30)" stroke-width="1"></rect>
+      <text x="420" y="94" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle" letter-spacing="0.03em">A PVC IS CREATED</text>
+
+      <!-- Decision1 -->
+      <polygon points="420,140 588,260 420,380 252,260" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></polygon>
+      <text x="420" y="252" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">Does a matching PV already</text>
+      <text x="420" y="272" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">exist and is it Available?</text>
+
+      <!-- Static node -->
+      <rect x="152" y="340" width="200" height="96" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <rect x="164" y="352" width="64" height="20" rx="2" fill="transparent" stroke="rgba(11,30,59,0.40)" stroke-width="0.8"></rect>
+      <text x="196" y="366" fill="rgba(11,30,59,0.75)" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.08em">STATIC</text>
+      <text x="252" y="400" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">Binder matches</text>
+      <text x="252" y="420" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">claim ↔ PV</text>
+
+      <!-- Decision2 -->
+      <polygon points="588,348 756,480 588,612 420,480" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></polygon>
+      <text x="588" y="450" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">Does the claim name a</text>
+      <text x="588" y="470" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">StorageClass, AND is a</text>
+      <text x="588" y="490" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">provisioner configured</text>
+      <text x="588" y="510" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">for that class?</text>
+
+      <!-- Dyn1 node -->
+      <rect x="468" y="672" width="240" height="96" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <rect x="480" y="684" width="88" height="20" rx="2" fill="transparent" stroke="rgba(11,30,59,0.40)" stroke-width="0.8"></rect>
+      <text x="524" y="698" fill="rgba(11,30,59,0.75)" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.08em">DYNAMIC</text>
+      <text x="588" y="732" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">Provisioner creates a</text>
+      <text x="588" y="752" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">PV for this claim</text>
+
+      <!-- Dyn2 node -->
+      <rect x="468" y="808" width="240" height="96" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="588" y="852" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">Binder matches claim</text>
+      <text x="588" y="872" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">↔ new PV</text>
+
+      <!-- Focal terminal: CLAIM WAITS, INDEFINITELY -->
+      <rect x="700" y="592" width="248" height="136" rx="8" fill="rgba(181,139,62,0.14)" stroke="#B58B3E" stroke-width="1.4"></rect>
+      <text x="824" y="628" fill="#0B1E3B" font-size="18" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle" letter-spacing="0.02em">CLAIM WAITS,</text>
+      <text x="824" y="652" fill="#0B1E3B" font-size="18" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle" letter-spacing="0.02em">INDEFINITELY</text>
+      <text x="824" y="680" fill="#0B1E3B" font-size="14" font-family="'Fira Sans', sans-serif" text-anchor="middle">Pod stays in Pending.</text>
+      <text x="824" y="700" fill="#0B1E3B" font-size="14" font-family="'Fira Sans', sans-serif" text-anchor="middle">No error event that</text>
+      <text x="824" y="720" fill="#0B1E3B" font-size="14" font-family="'Fira Sans', sans-serif" text-anchor="middle">says so.</text>
+
+      <!-- Merge dot -->
+      <circle cx="420" cy="968" r="4" fill="#0B1E3B"></circle>
+
+      <!-- End oval -->
+      <rect x="300" y="992" width="240" height="64" rx="32" fill="rgba(11,30,59,0.03)" stroke="rgba(11,30,59,0.30)" stroke-width="1"></rect>
+      <text x="420" y="1018" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle" letter-spacing="0.03em">PVC IS BOUND</text>
+      <text x="420" y="1038" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle">Pod can mount</text>
+
+      <!-- ============ LEGEND ============ -->
+      <line x1="40" y1="1072" x2="960" y2="1072" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+      <text x="40" y="1092" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" letter-spacing="0.12em">LEGEND · SHAPE CARRIES TYPE</text>
+
+      <rect x="40" y="1108" width="28" height="24" rx="12" fill="rgba(11,30,59,0.03)" stroke="rgba(11,30,59,0.30)" stroke-width="1"></rect>
+      <text x="80" y="1124" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">Start / end</text>
+
+      <rect x="224" y="1108" width="28" height="24" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="264" y="1124" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">Step</text>
+
+      <polygon points="422,1108 436,1120 422,1132 408,1120" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></polygon>
+      <text x="448" y="1124" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">Decision</text>
+
+      <circle cx="606" cy="1120" r="4" fill="#0B1E3B"></circle>
+      <text x="624" y="1124" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">Branches rejoin</text>
+
+      <rect x="776" y="1108" width="28" height="24" rx="6" fill="rgba(181,139,62,0.14)" stroke="#B58B3E" stroke-width="1.4"></rect>
+      <text x="816" y="1124" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">Never binds, no error</text>
+    </svg>

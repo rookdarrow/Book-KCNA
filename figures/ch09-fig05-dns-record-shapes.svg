@@ -1,0 +1,123 @@
+<svg viewBox="0 0 600 788" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch09-fig05-title ch09-fig05-desc" width="560" height="736">
+      <title id="ch09-fig05-title">Kubernetes cluster DNS name shapes</title>
+      <desc id="ch09-fig05-desc">A grid of five Kubernetes DNS name shapes -- Service (normal), Service (headless), SRV, Pod by address, and Pod by hostname and subdomain -- each built from up to four name components plus what it resolves to. The normal and headless Service rows share an identical name in columns one through four and differ only in their answer.</desc>
+
+      <rect width="600" height="788" fill="#F5EFE4"></rect>
+
+      <!-- header row: column ruler -->
+      <text x="44" y="32" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.12em" fill="#8A8D90">NAME COMPONENTS</text>
+      <text x="556" y="32" text-anchor="end" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.12em" fill="#8A8D90">RESOLVES TO</text>
+
+      <rect x="116" y="44" width="24" height="24" rx="4" fill="#FFFFFF" stroke="#8A8D90" stroke-width="0.8"></rect>
+      <text x="128" y="60" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">1</text>
+      <rect x="274" y="44" width="24" height="24" rx="4" fill="#FFFFFF" stroke="#8A8D90" stroke-width="0.8"></rect>
+      <text x="286" y="60" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">2</text>
+      <rect x="376" y="44" width="24" height="24" rx="4" fill="#FFFFFF" stroke="#8A8D90" stroke-width="0.8"></rect>
+      <text x="388" y="60" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">3</text>
+      <rect x="482" y="44" width="24" height="24" rx="4" fill="#FFFFFF" stroke="#8A8D90" stroke-width="0.8"></rect>
+      <text x="494" y="60" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">4</text>
+
+      <text x="44" y="88" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.08em" fill="#B58B3E">SAME NAME → DIFFERENT ANSWER</text>
+
+      <!-- focal grouping: rows 1-2 share columns 1-4 -->
+      <rect x="36" y="124" width="528" height="136" rx="8" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.4"></rect>
+
+      <!-- Row 1: Service (normal) -->
+      <text x="44" y="115" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Service (normal)</text>
+      <text x="556" y="115" text-anchor="end" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E">→ the cluster IP</text>
+
+      <rect x="44" y="132" width="168" height="36" rx="4" fill="#FFFFFF" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></rect>
+      <text x="128" y="154" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">my-svc</text>
+      <rect x="228" y="132" width="116" height="36" rx="4" fill="#FFFFFF" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></rect>
+      <text x="286" y="154" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">my-namespace</text>
+      <rect x="360" y="132" width="56" height="36" rx="4" fill="#FFFFFF" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></rect>
+      <text x="388" y="154" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">svc</text>
+      <rect x="432" y="132" width="124" height="36" rx="4" fill="#FFFFFF" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></rect>
+      <text x="494" y="154" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">cluster.local</text>
+      <text x="220" y="156" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="18" fill="#8A8D90">·</text>
+      <text x="352" y="156" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="18" fill="#8A8D90">·</text>
+      <text x="424" y="156" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="18" fill="#8A8D90">·</text>
+
+      <!-- Row 2: Service (headless) -->
+      <text x="44" y="199" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Service (headless)</text>
+      <text x="556" y="199" text-anchor="end" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E">→ ALL the Pod IPs</text>
+
+      <rect x="44" y="216" width="168" height="36" rx="4" fill="#FFFFFF" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></rect>
+      <text x="128" y="238" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">my-svc</text>
+      <rect x="228" y="216" width="116" height="36" rx="4" fill="#FFFFFF" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></rect>
+      <text x="286" y="238" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">my-namespace</text>
+      <rect x="360" y="216" width="56" height="36" rx="4" fill="#FFFFFF" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></rect>
+      <text x="388" y="238" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">svc</text>
+      <rect x="432" y="216" width="124" height="36" rx="4" fill="#FFFFFF" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></rect>
+      <text x="494" y="238" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">cluster.local</text>
+      <text x="220" y="240" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="18" fill="#8A8D90">·</text>
+      <text x="352" y="240" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="18" fill="#8A8D90">·</text>
+      <text x="424" y="240" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="18" fill="#8A8D90">·</text>
+
+      <!-- Row 3: SRV (named port) -->
+      <text x="44" y="291" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">SRV (named port)</text>
+      <text x="556" y="291" text-anchor="end" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E">→ the named port</text>
+
+      <rect x="44" y="308" width="168" height="36" rx="4" fill="#FFFFFF" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></rect>
+      <text x="128" y="330" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">_http._tcp.my-svc</text>
+      <rect x="228" y="308" width="116" height="36" rx="4" fill="#FFFFFF" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></rect>
+      <text x="286" y="330" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">my-namespace</text>
+      <rect x="360" y="308" width="56" height="36" rx="4" fill="#FFFFFF" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></rect>
+      <text x="388" y="330" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">svc</text>
+      <rect x="432" y="308" width="124" height="36" rx="4" fill="#FFFFFF" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></rect>
+      <text x="494" y="330" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">cluster.local</text>
+      <text x="220" y="332" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="18" fill="#8A8D90">·</text>
+      <text x="352" y="332" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="18" fill="#8A8D90">·</text>
+      <text x="424" y="332" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="18" fill="#8A8D90">·</text>
+      <text x="128" y="362" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#8A8D90">port prefix</text>
+
+      <!-- Row 4: Pod (by address) -->
+      <text x="44" y="411" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Pod (by address)</text>
+      <text x="556" y="411" text-anchor="end" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E">→ that Pod</text>
+
+      <rect x="44" y="428" width="168" height="36" rx="4" fill="#FFFFFF" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></rect>
+      <text x="128" y="450" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">172-17-0-3</text>
+      <rect x="228" y="428" width="116" height="36" rx="4" fill="#FFFFFF" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></rect>
+      <text x="286" y="450" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">my-namespace</text>
+      <rect x="360" y="428" width="56" height="36" rx="4" fill="#FFFFFF" stroke="#8A8D90" stroke-width="1" stroke-dasharray="4,3"></rect>
+      <text x="388" y="450" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">pod</text>
+      <rect x="432" y="428" width="124" height="36" rx="4" fill="#FFFFFF" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></rect>
+      <text x="494" y="450" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">cluster.local</text>
+      <text x="220" y="452" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="18" fill="#8A8D90">·</text>
+      <text x="352" y="452" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="18" fill="#8A8D90">·</text>
+      <text x="424" y="452" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="18" fill="#8A8D90">·</text>
+      <text x="128" y="482" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#8A8D90">dots → dashes</text>
+
+      <!-- Row 5: Pod (hostname + subdomain) -->
+      <text x="44" y="531" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Pod (hostname + subdomain)</text>
+      <text x="556" y="531" text-anchor="end" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E">→ that Pod, by a</text>
+      <text x="556" y="549" text-anchor="end" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E">stable name</text>
+
+      <rect x="44" y="564" width="168" height="36" rx="4" fill="#FFFFFF" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></rect>
+      <text x="128" y="586" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">hostname.subdomain</text>
+      <rect x="228" y="564" width="116" height="36" rx="4" fill="#FFFFFF" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></rect>
+      <text x="286" y="586" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">namespace</text>
+      <rect x="360" y="564" width="56" height="36" rx="4" fill="#FFFFFF" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></rect>
+      <text x="388" y="586" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">svc</text>
+      <rect x="432" y="564" width="124" height="36" rx="4" fill="#FFFFFF" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></rect>
+      <text x="494" y="586" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">cluster.local</text>
+      <text x="220" y="588" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="18" fill="#8A8D90">·</text>
+      <text x="352" y="588" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="18" fill="#8A8D90">·</text>
+      <text x="424" y="588" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="18" fill="#8A8D90">·</text>
+
+      <!-- Footnotes -->
+      <line x1="44" y1="624" x2="556" y2="624" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+      <text x="44" y="648" font-family="'Fira Sans', sans-serif" font-size="16" fill="#0B1E3B">Columns 2 and 4 are identical in every row.</text>
+      <text x="44" y="670" font-family="'Fira Sans', sans-serif" font-size="16" fill="#0B1E3B">Column 3 is svc, except Pod-by-address: pod.</text>
+      <text x="44" y="692" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">Rows one and two share one name — the answer differs.</text>
+
+      <!-- Legend -->
+      <line x1="44" y1="700" x2="556" y2="700" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+      <text x="44" y="720" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.14em" fill="#8A8D90">LEGEND</text>
+
+      <rect x="44" y="728" width="14" height="12" rx="2" fill="#FFFFFF" stroke="#8A8D90" stroke-width="1" stroke-dasharray="4,3"></rect>
+      <text x="64" y="737" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E">dashed border — breaks the svc pattern</text>
+
+      <rect x="44" y="752" width="14" height="12" rx="2" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1"></rect>
+      <text x="64" y="761" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E">accent frame — same name, different answer</text>
+    </svg>

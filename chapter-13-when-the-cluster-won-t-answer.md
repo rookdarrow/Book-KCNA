@@ -422,6 +422,9 @@ This is the largest failure family, and the one where the method pays off hardes
 Every failure in this section shares one property: **no container ever executed.** Nothing ran, so nothing logged, so no amount of log-reading will help you. What separates them is *how far into the start-up sequence the platform got before it stopped*.
 
 <!-- FIGURE: ch13-fig02-pod-failure-signature-map -->
+![A decision tree beginning with the question of whether the Pod object exists; the No branch leads to admission refusal, and the Yes branch splits by phase into Pending, meaning not scheduled, and Running with containers waiting, which fans out into the image-pull, configuration, and image-policy failure reasons](figures/ch13-fig02-pod-failure-signature-map.svg)
+
+<!-- ASCII-FALLBACK
 ```
                     Does the Pod object exist?
                               │
@@ -445,6 +448,7 @@ Every failure in this section shares one property: **no container ever executed.
                     was never asked properly.          (Ch 4 §4)                 policy Never with no
                     (Ch 2 §3, §6)                                                local image. (Ch 2 §6)
 ```
+-->
 
 *The first question is not "what's the error" — it is "is there a Pod at all." That branch alone eliminates an entire category of confusion.*
 
@@ -679,6 +683,9 @@ One constraint on all of this: the kubelet keeps a bounded amount. "By default, 
 *[cross-bearing: see Ch 5 §2 — multi-container Pods]*
 
 <!-- FIGURE: ch13-fig03-phase-before-logs-flow -->
+![A five-stage vertical sequence — scope, phase, conditions, events, logs — each stage listing its kubectl commands and the question those commands answer, with logs in the final position](figures/ch13-fig03-phase-before-logs-flow.svg)
+
+<!-- ASCII-FALLBACK
 ```
   SCOPE      kubectl config current-context      Right cluster? Right namespace?
     │
@@ -695,6 +702,7 @@ CONDITIONS   kubectl describe pod <name>         Container state + Reason.
    LOGS      kubectl logs <name> -c <container>  Only meaningful once you know
              kubectl logs <name> --previous      the container actually ran.
 ```
+-->
 
 *Each step narrows the next one. Skipping to the bottom does not save time — it produces output you cannot interpret, because interpretation depends on everything above it.*
 
@@ -866,6 +874,9 @@ Also recall that `restartPolicy` is what makes a loop possible at all. The defau
 Both mean "something ended your workload over memory." Everything else about them is different, and this is the discrimination most worth being able to make cold.
 
 <!-- FIGURE: ch13-fig05-oomkilled-vs-evicted -->
+![Two parallel vertical chains compared row by row: OOMKilled, where a container exceeds its own limit and the kernel kills it and the kubelet restarts it in place, against Evicted, where the node runs low on a resource and the kubelet terminates the whole Pod so a controller replaces it elsewhere](figures/ch13-fig05-oomkilled-vs-evicted.svg)
+
+<!-- ASCII-FALLBACK
 ```
         OOMKilled                              Evicted
         ─────────                              ───────
@@ -889,6 +900,7 @@ Both mean "something ended your workload over memory." Everything else about the
   Scope: ONE container                   Scope: THE WHOLE POD
   Trigger: this Pod's own limit          Trigger: the node's pressure
 ```
+-->
 
 *Different trigger, different scope, different outcome. Three axes, and they disagree on all three.*
 
@@ -1044,6 +1056,9 @@ Every command in this chapter so far has gone through the API server. That is by
 Which raises a question. What do you do when the failure is *in* that path? If the kubelet cannot register a container with the API server, then from `kubectl`'s point of view the container does not exist. You will look at an empty result and conclude nothing is running, while a container may be running perfectly well on the node in front of you.
 
 <!-- FIGURE: ch13-fig06-diagnostic-layer-stack -->
+![A five-layer stack from kubectl at the top through kube-apiserver and kubelet, then a heavy rule marking the API boundary, then CRI and the containerd or CRI-O runtime at the bottom, annotated to show that everything above the boundary is the cluster's recorded view and that crictl attaches directly to the runtime below it](figures/ch13-fig06-diagnostic-layer-stack.svg)
+
+<!-- ASCII-FALLBACK
 ```
    ┌──────────────────────────────────────────────┐
    │  kubectl                          [terminal] │   Everything above this
@@ -1057,6 +1072,7 @@ Which raises a question. What do you do when the failure is *in* that path? If t
    │  containerd / CRI-O               [runtime]  │ ◄── to the runtime directly,
    └──────────────────────────────────────────────┘   bypassing everything above.
 ```
+-->
 
 *`crictl` is not a better `kubectl`. It answers a different question: "what does the runtime on this machine think is happening," as opposed to "what does the cluster believe."*
 
@@ -1285,6 +1301,9 @@ You have met this exact shape before. Chapter 3 gave you the sentence and Chapte
 ### What the pipeline actually is
 
 <!-- FIGURE: ch13-fig04-metrics-pipeline-and-metrics-server -->
+![A metrics pipeline flowing from the container runtime through cAdvisor to the kubelet, then over the slash metrics slash resource endpoint to a metrics-server box drawn with a dashed border and marked not installed by default, then over metrics.k8s.io to the API server, which serves both the horizontal pod autoscaler and kubectl top](figures/ch13-fig04-metrics-pipeline-and-metrics-server.svg)
+
+<!-- ASCII-FALLBACK
 ```
   ┌───────────┐   ┌──────────┐   ┌─────────┐
   │ container │──▶│ cAdvisor │──▶│ kubelet │   in the kubelet binary,
@@ -1306,6 +1325,7 @@ You have met this exact shape before. Chapter 3 gave you the sentence and Chapte
                           │   HPA    │  │kubectl top │
                           └──────────┘  └────────────┘
 ```
+-->
 
 *The dashed box is the whole lesson. Everything solid is already running on your cluster right now. The measurements exist; nothing is publishing them.*
 
@@ -1477,6 +1497,9 @@ Nine strings. That is what a glossary would have given you, and if that is what 
 But that is not the shape of what you learned.
 
 <!-- FIGURE: ch13-zenith-read-the-phase-first -->
+![A tree rooted in one key, the Pod phase, branching to four outcomes — no Pod object stopped at admission, Pending never placed by the scheduler, scheduled but containers never ran, and scheduled with containers that ran and then ended — each branch naming the component that owns it before listing its failure signatures, nine in total](figures/ch13-zenith-read-the-phase-first.svg)
+
+<!-- ASCII-FALLBACK
 ```
                       ONE KEY:  the phase
                             │
@@ -1501,6 +1524,7 @@ But that is not the shape of what you learned.
 
               Nine signatures. One lookup. The key is always the phase.
 ```
+-->
 
 *Not nine facts on a flat list. One axis, and a position on it.*
 

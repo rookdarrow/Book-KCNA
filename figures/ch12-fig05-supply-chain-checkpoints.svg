@@ -1,0 +1,121 @@
+<svg viewBox="0 0 840 544" role="img" aria-labelledby="ch12fig05-title ch12fig05-desc" xmlns="http://www.w3.org/2000/svg" width="832" height="539">
+      <title id="ch12fig05-title">Container image supply chain checkpoints</title>
+      <desc id="ch12fig05-desc">A left-to-right supply chain pipeline of build, scan, sign, record, restrict, verify and run, crossed by a vertical boundary between restrict and verify that separates work done outside the cluster from work done inside it; each step is annotated with what it produces and with the tools that perform it, and a callout notes that the artifact's digest is carried the whole length of the chain.</desc>
+      <defs>
+        <marker id="arr-muted" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon>
+        </marker>
+      </defs>
+
+      <!-- background -->
+      <rect x="0" y="0" width="840" height="544" fill="#F5EFE4"></rect>
+
+      <!-- zone rule + boundary -->
+      <line x1="28" y1="36" x2="812" y2="36" stroke="#0B1E3B" stroke-opacity="0.25" stroke-width="1.2"></line>
+      <line x1="588" y1="36" x2="588" y2="388" stroke="#B58B3E" stroke-width="2.4" stroke-dasharray="4,4"></line>
+
+      <!-- zone labels -->
+      <text x="308" y="20" text-anchor="middle" font-family="'Fira Mono',monospace" font-size="14" font-weight="500" letter-spacing="0.08em" fill="#8A8D90">OUTSIDE THE CLUSTER</text>
+      <text x="700" y="20" text-anchor="middle" font-family="'Fira Mono',monospace" font-size="14" font-weight="500" letter-spacing="0.08em" fill="#8A8D90">INSIDE</text>
+
+      <!-- callout connector (drawn before its destination node) -->
+      <line x1="308" y1="128" x2="308" y2="146" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arr-muted)"></line>
+
+      <!-- horizontal pipeline arrows (drawn before node boxes) -->
+      <line x1="132" y1="168" x2="146" y2="168" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arr-muted)"></line>
+      <line x1="244" y1="168" x2="258" y2="168" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arr-muted)"></line>
+      <line x1="356" y1="168" x2="370" y2="168" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arr-muted)"></line>
+      <line x1="468" y1="168" x2="482" y2="168" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arr-muted)"></line>
+      <line x1="580" y1="168" x2="594" y2="168" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arr-muted)"></line>
+      <line x1="692" y1="168" x2="706" y2="168" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arr-muted)"></line>
+
+      <!-- down arrows: node to "produces" text -->
+      <line x1="84" y1="188" x2="84" y2="206" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arr-muted)"></line>
+      <line x1="196" y1="188" x2="196" y2="206" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arr-muted)"></line>
+      <line x1="308" y1="188" x2="308" y2="206" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arr-muted)"></line>
+      <line x1="420" y1="188" x2="420" y2="206" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arr-muted)"></line>
+      <line x1="532" y1="188" x2="532" y2="206" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arr-muted)"></line>
+      <line x1="644" y1="188" x2="644" y2="206" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arr-muted)"></line>
+
+      <!-- callout box: artifact identity carried the whole chain -->
+      <rect x="36" y="48" width="432" height="80" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-opacity="0.30" stroke-width="1"></rect>
+      <text x="252" y="72" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-style="italic" font-size="16" fill="#0B1E3B" fill-opacity="0.85">The artifact's identity —</text>
+      <text x="252" y="94" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-style="italic" font-size="16" fill="#0B1E3B" fill-opacity="0.85">the same digest — is carried</text>
+      <text x="252" y="116" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-style="italic" font-size="16" fill="#0B1E3B" fill-opacity="0.85">the whole length of the chain.</text>
+
+      <!-- pipeline nodes -->
+      <!-- BUILD -->
+      <rect x="36" y="148" width="96" height="40" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="84" y="173" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-weight="600" font-size="16" fill="#0B1E3B">BUILD</text>
+      <!-- SCAN -->
+      <rect x="148" y="148" width="96" height="40" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="196" y="173" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-weight="600" font-size="16" fill="#0B1E3B">SCAN</text>
+      <!-- SIGN -->
+      <rect x="260" y="148" width="96" height="40" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="308" y="173" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-weight="600" font-size="16" fill="#0B1E3B">SIGN</text>
+      <!-- RECORD -->
+      <rect x="372" y="148" width="96" height="40" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="420" y="173" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-weight="600" font-size="16" fill="#0B1E3B">RECORD</text>
+      <!-- RESTRICT -->
+      <rect x="484" y="148" width="96" height="40" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="532" y="173" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-weight="600" font-size="16" fill="#0B1E3B">RESTRICT</text>
+      <!-- VERIFY (focal) -->
+      <rect x="596" y="148" width="96" height="40" rx="6" fill="#B58B3E" fill-opacity="0.10" stroke="#B58B3E" stroke-width="1.6"></rect>
+      <text x="644" y="173" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-weight="600" font-size="16" fill="#0B1E3B">VERIFY</text>
+      <!-- RUN -->
+      <rect x="708" y="148" width="96" height="40" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="756" y="173" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-weight="600" font-size="16" fill="#0B1E3B">RUN</text>
+
+      <!-- "produces" annotations -->
+      <text x="84" y="226" text-anchor="middle" font-family="'Fira Mono',monospace" font-size="14" fill="#0B1E3B">image + digest</text>
+      <text x="84" y="244" text-anchor="middle" font-family="'Fira Mono',monospace" font-size="14" fill="#0B1E3B">+ SBOM</text>
+
+      <text x="196" y="226" text-anchor="middle" font-family="'Fira Mono',monospace" font-size="14" fill="#0B1E3B">known CVEs</text>
+
+      <text x="308" y="226" text-anchor="middle" font-family="'Fira Mono',monospace" font-size="14" fill="#0B1E3B">binds</text>
+      <text x="308" y="244" text-anchor="middle" font-family="'Fira Mono',monospace" font-size="14" fill="#0B1E3B">to the</text>
+      <text x="308" y="262" text-anchor="middle" font-family="'Fira Mono',monospace" font-size="14" fill="#0B1E3B">DIGEST</text>
+
+      <text x="420" y="226" text-anchor="middle" font-family="'Fira Mono',monospace" font-size="14" fill="#0B1E3B">append-</text>
+      <text x="420" y="244" text-anchor="middle" font-family="'Fira Mono',monospace" font-size="14" fill="#0B1E3B">only log</text>
+
+      <text x="532" y="226" text-anchor="middle" font-family="'Fira Mono',monospace" font-size="14" fill="#0B1E3B">private</text>
+      <text x="532" y="244" text-anchor="middle" font-family="'Fira Mono',monospace" font-size="14" fill="#0B1E3B">registry</text>
+
+      <text x="644" y="226" text-anchor="middle" font-family="'Fira Mono',monospace" font-size="14" fill="#0B1E3B">admission</text>
+      <text x="644" y="244" text-anchor="middle" font-family="'Fira Mono',monospace" font-size="14" fill="#0B1E3B">controller</text>
+
+      <!-- tool annotations -->
+      <text x="196" y="318" text-anchor="middle" font-family="'Fira Mono',monospace" font-size="14" fill="#8A8D90">Trivy, Harbor</text>
+      <text x="196" y="336" text-anchor="middle" font-family="'Fira Mono',monospace" font-size="14" fill="#8A8D90">scanners</text>
+
+      <text x="308" y="318" text-anchor="middle" font-family="'Fira Mono',monospace" font-size="14" fill="#8A8D90">Cosign</text>
+      <text x="308" y="336" text-anchor="middle" font-family="'Fira Mono',monospace" font-size="14" fill="#8A8D90">Notation</text>
+      <text x="308" y="354" text-anchor="middle" font-family="'Fira Mono',monospace" font-size="14" fill="#8A8D90">Fulcio</text>
+
+      <text x="420" y="318" text-anchor="middle" font-family="'Fira Mono',monospace" font-size="14" fill="#8A8D90">Rekor</text>
+
+      <text x="532" y="318" text-anchor="middle" font-family="'Fira Mono',monospace" font-size="14" fill="#8A8D90">Harbor</text>
+      <text x="532" y="336" text-anchor="middle" font-family="'Fira Mono',monospace" font-size="14" fill="#8A8D90">imagePull-</text>
+      <text x="532" y="354" text-anchor="middle" font-family="'Fira Mono',monospace" font-size="14" fill="#8A8D90">Secrets</text>
+
+      <text x="644" y="318" text-anchor="middle" font-family="'Fira Mono',monospace" font-size="14" fill="#8A8D90">Kyverno</text>
+      <text x="644" y="336" text-anchor="middle" font-family="'Fira Mono',monospace" font-size="14" fill="#8A8D90">Gatekeeper</text>
+      <text x="644" y="354" text-anchor="middle" font-family="'Fira Mono',monospace" font-size="14" fill="#8A8D90">Policy</text>
+      <text x="644" y="372" text-anchor="middle" font-family="'Fira Mono',monospace" font-size="14" fill="#8A8D90">Controller</text>
+
+      <!-- legend -->
+      <line x1="28" y1="404" x2="812" y2="404" stroke="#0B1E3B" stroke-opacity="0.12" stroke-width="0.8"></line>
+      <text x="28" y="428" font-family="'Fira Mono',monospace" font-size="14" font-weight="500" letter-spacing="0.10em" fill="#8A8D90">LEGEND</text>
+
+      <line x1="140" y1="424" x2="176" y2="424" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arr-muted)"></line>
+      <text x="184" y="428" font-family="'Fira Mono',monospace" font-size="14" fill="#8A8D90">STEP PRODUCES OUTPUT</text>
+
+      <line x1="480" y1="424" x2="516" y2="424" stroke="#B58B3E" stroke-width="2.4" stroke-dasharray="4,4"></line>
+      <text x="524" y="428" font-family="'Fira Mono',monospace" font-size="14" fill="#8A8D90">CLUSTER TRUST BOUNDARY</text>
+
+      <!-- caption -->
+      <text x="420" y="472" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-style="italic" font-size="16" fill="#0B1E3B" fill-opacity="0.80">Everything left of the line happened somewhere else,</text>
+      <text x="420" y="492" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-style="italic" font-size="16" fill="#0B1E3B" fill-opacity="0.80">under somebody else's control, possibly months ago.</text>
+      <text x="420" y="512" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-style="italic" font-size="16" fill="#0B1E3B" fill-opacity="0.80">VERIFY is the first checkpoint the cluster performs itself.</text>
+    </svg>

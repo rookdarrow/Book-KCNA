@@ -200,6 +200,9 @@ So we cut the other way now. A coastline surveyed on a north–south run and the
 Read this section with one question running: **when I meet this pattern in a question stem, will I recognize it?**
 
 <!-- FIGURE: ch19-fig01-cross-domain-integration-map -->
+![Presence matrix of nine cross-cutting themes against chapters 2 to 18, grouped into structural, interface and policy tiers; the absent-component thread is highlighted and, with the control-loop and label-join threads, spans the most chapters](figures/ch19-fig01-cross-domain-integration-map.svg)
+
+<!-- ASCII-FALLBACK
 ```
               Ch:   2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18
 
@@ -218,6 +221,7 @@ Read this section with one question running: **when I meet this pattern in a que
 8 requests/limits   ·  ·  ·  ●  ·  ●  ·  ·  ·  ·  ·  ●  ·  ·  ·  ●  ●
 9 additive/allow    ·  ·  ·  ·  ·  ·  ·  ·  ●  ·  ●  ·  ·  ·  ·  ·  ·
 ```
+-->
 
 The three tiers are a reading aid, not doctrine. **Structural** threads describe how the cluster is built. **Interface** threads describe how its parts are joined and extended. **Policy** threads describe what is permitted. Density is the thing to notice: threads 1, 3 and 5 touch the most chapters, and they are correspondingly the most likely to appear in a question whose stem never names them.
 
@@ -394,6 +398,9 @@ Work these actively. Cover the right column, read the pair, say the discriminato
 The card below is a *selection*: the highest-value pairs, sized to be drilled in one pass. The tables underneath it carry the full set.
 
 <!-- FIGURE: ch19-fig02-confusion-pair-matrix -->
+![Two-column reference card listing twenty-three confusion pairs from the book, each paired with a one-line question that separates them, banded into the four exam domains](figures/ch19-fig02-confusion-pair-matrix.svg)
+
+<!-- ASCII-FALLBACK
 ```
    PAIR                          →  DISCRIMINATOR (the question to ask)
    ───────────────────────────────────────────────────────────────────
@@ -424,6 +431,7 @@ The card below is a *selection*: the highest-value pairs, sized to be drilled in
    D4  SLI / SLO / SLA             → "Measure, target, or consequence?"
    D4  TOC / Governing Board       → "Technical, or business?"
 ```
+-->
 
 <!-- AUTHOR-REVIEW — research gaps, consolidated. A cluster of rows below states Kubernetes semantics that no snapshot in this chapter's 31-file corpus covers. None is likely to be wrong; all are unverifiable as the corpus stands, and several are load-bearing (they carry checkpoint questions, Practice items, or Exam Alert entries). One targeted research pass closes the whole list. In priority order, by what depends on them:
 
@@ -664,6 +672,9 @@ They have different fixes, which is why they are worth separating.
 **Re-litigating settled answers.** You keep returning to questions you already answered confidently. Fix: the reserve is for the ones you marked. If you did not mark it, you do not revisit it.
 
 <!-- FIGURE: ch19-fig03-exam-day-pacing -->
+![Ninety-minute exam timeline split at fifty-four minutes; the longer first-pass segment answers and flags every question, and the shorter reserved second-pass segment revisits only flagged ones](figures/ch19-fig03-exam-day-pacing.svg)
+
+<!-- ASCII-FALLBACK
 ```
   0                              54 min                        90 min
   ├───────────── FIRST PASS ───────┼────── RESERVE ──────────────┤
@@ -680,6 +691,7 @@ They have different fixes, which is why they are worth separating.
      and divide — do not memorize                    time on the clock
      a seconds-per-question number
 ```
+-->
 
 **One more thing about the environment**, because it costs points every year: the exam is closed-book. "Candidates are NOT PERMITTED to access tools, resources or external sites when taking the Linux Foundation Multiple Choice OR SkillCred Exams" [source: lf-certification-resources-allowed-2026-08-31]. If you have read CKA preparation advice about having kubernetes.io open in a browser tab, that allowance is real, but only for the *performance-based* exams, which permit browsing the Kubernetes documentation during the exam [source: lf-certification-resources-allowed-2026-08-31]. It does not transfer to KCNA. Nothing is open. Plan accordingly.
 

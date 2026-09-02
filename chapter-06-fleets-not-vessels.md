@@ -318,6 +318,9 @@ The workload resource you will reach for most often — and the one the document
 There are three layers between you and a running container, not two. You create a Deployment; the Deployment creates a **ReplicaSet**; the ReplicaSet creates Pods in the background [source: k8s-docs-deployment-2026-08-23]. Usually you define a Deployment and let it manage ReplicaSets automatically. The documentation's own recommendation is that you may never need to manipulate a ReplicaSet object directly [source: k8s-docs-replicaset-2026-08-24].
 
 <!-- FIGURE: ch06-fig01-deployment-replicaset-pod-ownership -->
+![Three-tier ownership diagram: a Deployment box holding a Pod template, an update strategy and replicas 3 owns a ReplicaSet box holding replicas 3 and a selector, which in turn owns three identical Pod boxes; intent flows downward and existence is reported upward](figures/ch06-fig01-deployment-replicaset-pod-ownership.svg)
+
+<!-- ASCII-FALLBACK
 ```
         ┌──────────────────────────────────────────────────┐
         │  Deployment  "web"                               │
@@ -342,6 +345,7 @@ There are three layers between you and a running container, not two. You create 
 
      intent flows DOWN  ·  existence is reported back UP
 ```
+-->
 
 **Figure 6.1 — the ownership chain.** Notice what lives where. The Deployment is the layer that knows what a Pod should look like and how to replace one; the ReplicaSet is the layer that keeps a specific number of a specific kind alive. When §4 has two ReplicaSets running at once, this division is the reason it works.
 
@@ -594,6 +598,9 @@ Notice the asymmetry in the rounding, because it is not arbitrary. Surge rounds 
 <!-- AUTHOR-REVIEW: the worked-arithmetic block above was a fenced ASCII block in draft-v1 and tripped the structural linter's figure-anchor check (it is a calculation, not a diagram, and is fully subsumed by ch06-fig02 which renders the same two numbers as lines on a chart). It is now typeset as a table, which needs no anchor. If the author would rather have it rendered as a figure, it needs an anchor (`ch06-fig07-rolling-update-arithmetic`) and a matching image-specs entry; the two rounding rows must stay adjacent either way so the asymmetry is visible at a glance. -->
 
 <!-- FIGURE: ch06-fig02-rolling-update-maxsurge-maxunavailable -->
+![Count-versus-time chart for a ten-replica rolling update: a dashed ceiling line at thirteen marks desired plus maxSurge, a solid line at ten marks the desired count, and a dashed floor line at eight marks desired minus maxUnavailable; an old Pod population declines while a new population rises, their total never crossing the ceiling and the available count never falling below the floor](figures/ch06-fig02-rolling-update-maxsurge-maxunavailable.svg)
+
+<!-- ASCII-FALLBACK
 ```
   count
         │
@@ -609,6 +616,7 @@ Notice the asymmetry in the rounding, because it is not arbitrary. Surge rounds 
       old + new  never rises above the CEILING
       available  never falls below the FLOOR
 ```
+-->
 
 **Figure 6.2 — the two bounds are opposite in kind.** `maxSurge` is a ceiling on how many Pods exist. `maxUnavailable` is a floor on how many are usable. They are not two settings of the same knob.
 
@@ -619,6 +627,9 @@ Notice the asymmetry in the rounding, because it is not arbitrary. Surge rounds 
 The other strategy is the contrast that makes the first one legible. With `Recreate`, all existing Pods are killed before new ones are created [source: k8s-docs-deployment-2026-08-23].
 
 <!-- FIGURE: ch06-fig03-recreate-vs-rolling -->
+![Two stacked availability timelines: the Recreate strategy shows a solid bar, then a bracketed gap labelled zero available while all old Pods are killed before new ones are created, then a solid bar again; the RollingUpdate strategy shows an unbroken bar whose fill shifts from old to new through an overlapping middle region, never reaching zero](figures/ch06-fig03-recreate-vs-rolling.svg)
+
+<!-- ASCII-FALLBACK
 ```
   Recreate
     available  ██████████                    ██████████
@@ -633,6 +644,7 @@ The other strategy is the contrast that makes the first one legible. With `Recre
                ────────────────────────────────────────▶ time
                    old and new overlap throughout
 ```
+-->
 
 **Figure 6.3 — the gap is the whole point.** `Recreate` has a window in which nothing is serving. That window is not a bug; it is the thing you chose.
 
@@ -918,6 +930,9 @@ One caution that is worth its space because it bites in production: a CronJob cr
 Six resources. Four questions. Get the questions in the right order and the three most common wrong turns disappear.
 
 <!-- FIGURE: ch06-fig04-workload-resource-decision-tree -->
+![Decision tree for choosing a Kubernetes workload resource: if the work ends, ask whether it repeats on a schedule, giving CronJob for yes and Job for no; if the work does not end, ask whether it must run on every node, giving DaemonSet for yes, and otherwise ask whether the Pods are interchangeable, giving Deployment for yes and StatefulSet for no](figures/ch06-fig04-workload-resource-decision-tree.svg)
+
+<!-- ASCII-FALLBACK
 ```
                         Does the work END?
                     ┌──────────┴──────────┐
@@ -937,6 +952,7 @@ Six resources. Four questions. Get the questions in the right order and the thre
                                   (which manages
                                    a ReplicaSet)
 ```
+-->
 
 **Figure 6.5 — ask about the work before you ask about the application.** The first question is about the shape of the work, not the nature of the software. That ordering is deliberate, and the next block explains why.
 
@@ -1105,6 +1121,9 @@ Nothing new here. Just one thing seen properly.
 Take Chapter 3's control loop, the one you retrieved in Soundings question 7 and filled in for a ReplicaSet in ☆ Taking Your Bearings #1, and plug this chapter's controllers into it one at a time.
 
 <!-- FIGURE: ch06-zenith-control-loop-instantiated -->
+![A single control loop drawn once: a desired state box compares down to a current state box, an act-on-the-gap step follows, and an arrow returns to the desired state forever; beneath it a substitution list pairs six desired states with their controllers — a number with ReplicaSet, a template plus update policy with Deployment, one per matching node with DaemonSet, completion with Job, a Job at each scheduled time with CronJob, and whatever its author decided with your operator](figures/ch06-zenith-control-loop-instantiated.svg)
+
+<!-- ASCII-FALLBACK
 ```
                     ┌───────────────────────────┐
                     │      DESIRED STATE        │
@@ -1131,6 +1150,7 @@ Take Chapter 3's control loop, the one you retrieved in Soundings question 7 and
         a Job existing at each scheduled time  CronJob
         whatever its author decided .........  your operator
 ```
+-->
 
 **Figure 6.6 — one loop, six desired states.** The loop is drawn once. That is the argument.
 

@@ -1,0 +1,142 @@
+<svg viewBox="0 0 760 1040" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch02fig05-title ch02fig05-desc" width="900" height="1232">
+      <title id="ch02fig05-title">imagePullPolicy: explicit value vs. inferred default</title>
+      <desc id="ch02fig05-desc">Decision tree: if imagePullPolicy is set explicitly, the three values Always, IfNotPresent, and Never behave as documented; if it is left unset, the kubelet infers a default from the image reference's form — a digest defaults to IfNotPresent, an untagged reference or one tagged :latest defaults to Always, and any other tag defaults to IfNotPresent.</desc>
+
+      <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon>
+        </marker>
+        <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#B58B3E"></polygon>
+        </marker>
+        <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon>
+        </marker>
+      </defs>
+
+      <rect width="100%" height="100%" fill="#F5EFE4"></rect>
+
+      <!-- ===================== ARROWS (drawn before nodes) ===================== -->
+
+      <!-- D1 YES -> B1 -->
+      <line x1="348" y1="140" x2="400" y2="140" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+      <rect x="356" y="116" width="36" height="16" rx="2" fill="#F5EFE4"></rect>
+      <text x="374" y="127" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.08em">YES</text>
+
+      <!-- D1 NO -> Q1 -->
+      <line x1="220" y1="204" x2="220" y2="296" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+      <rect x="228" y="242" width="32" height="16" rx="2" fill="#F5EFE4"></rect>
+      <text x="244" y="254" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.08em">NO</text>
+
+      <!-- Q1 YES -> OA -->
+      <line x1="348" y1="360" x2="400" y2="360" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+      <rect x="356" y="336" width="36" height="16" rx="2" fill="#F5EFE4"></rect>
+      <text x="374" y="347" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.08em">YES</text>
+
+      <!-- Q1 NO -> Q2 -->
+      <line x1="220" y1="424" x2="220" y2="472" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+      <rect x="228" y="440" width="32" height="16" rx="2" fill="#F5EFE4"></rect>
+      <text x="244" y="452" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.08em">NO</text>
+
+      <!-- Q2 YES -> OB -->
+      <line x1="348" y1="536" x2="400" y2="536" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+      <rect x="356" y="512" width="36" height="16" rx="2" fill="#F5EFE4"></rect>
+      <text x="374" y="523" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.08em">YES</text>
+
+      <!-- Q2 NO -> Q3 -->
+      <line x1="220" y1="600" x2="220" y2="648" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+      <rect x="228" y="616" width="32" height="16" rx="2" fill="#F5EFE4"></rect>
+      <text x="244" y="628" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.08em">NO</text>
+
+      <!-- Q3 YES -> OC (FOCAL: the trap) -->
+      <line x1="348" y1="712" x2="400" y2="712" stroke="#B58B3E" stroke-width="1.6" marker-end="url(#arrow-accent)"></line>
+      <rect x="356" y="688" width="36" height="16" rx="2" fill="#F5EFE4"></rect>
+      <text x="374" y="699" fill="#B58B3E" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.08em">YES</text>
+
+      <!-- Q3 NO -> OD -->
+      <line x1="220" y1="776" x2="220" y2="816" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+      <rect x="228" y="788" width="32" height="16" rx="2" fill="#F5EFE4"></rect>
+      <text x="244" y="800" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.08em">NO</text>
+
+      <!-- ===================== DECISION DIAMONDS ===================== -->
+
+      <!-- D1: was imagePullPolicy set explicitly? -->
+      <polygon points="220,76 348,140 220,204 92,140" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></polygon>
+      <text x="220" y="134" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle">Was imagePullPolicy</text>
+      <text x="220" y="152" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle">set explicitly?</text>
+
+      <!-- Q1: reference includes a digest? -->
+      <polygon points="220,296 348,360 220,424 92,360" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></polygon>
+      <text x="220" y="354" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle">Reference includes</text>
+      <text x="220" y="372" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle">a digest?</text>
+
+      <!-- Q2: no tag given at all? -->
+      <polygon points="220,472 348,536 220,600 92,536" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></polygon>
+      <text x="220" y="530" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle">No tag given</text>
+      <text x="220" y="548" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle">at all?</text>
+
+      <!-- Q3: tag is :latest? -->
+      <polygon points="220,648 348,712 220,776 92,712" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></polygon>
+      <text x="220" y="718" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle">Tag is :latest?</text>
+
+      <!-- ===================== B1: explicit-value card ===================== -->
+      <rect x="400" y="60" width="320" height="240" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="420" y="92" fill="#1F4A4E" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" letter-spacing="0.12em">IF SET EXPLICITLY</text>
+      <line x1="420" y1="104" x2="700" y2="104" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+
+      <text x="420" y="124" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif">Always</text>
+      <text x="420" y="142" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">resolves to digest, reuses cache</text>
+      <line x1="420" y1="158" x2="700" y2="158" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+
+      <text x="420" y="178" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif">IfNotPresent</text>
+      <text x="420" y="196" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">pulls only if the image is absent</text>
+      <line x1="420" y1="212" x2="700" y2="212" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+
+      <text x="420" y="232" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif">Never</text>
+      <text x="420" y="250" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">never fetches, fails if absent</text>
+
+      <!-- ===================== OUTCOME OVALS ===================== -->
+
+      <!-- OA: @digest -> IfNotPresent -->
+      <rect x="400" y="324" width="176" height="72" rx="36" fill="rgba(11,30,59,0.03)" stroke="rgba(11,30,59,0.30)" stroke-width="1"></rect>
+      <text x="488" y="352" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle">IfNotPresent</text>
+      <text x="488" y="370" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle">@digest</text>
+
+      <!-- OB: no tag -> Always -->
+      <rect x="400" y="500" width="176" height="72" rx="36" fill="rgba(11,30,59,0.03)" stroke="rgba(11,30,59,0.30)" stroke-width="1"></rect>
+      <text x="488" y="528" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle">Always</text>
+      <text x="488" y="546" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle">no tag</text>
+
+      <!-- OC: :latest -> Always (FOCAL, double border) -->
+      <rect x="400" y="676" width="176" height="72" rx="36" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.5"></rect>
+      <rect x="405" y="681" width="166" height="62" rx="31" fill="none" stroke="#B58B3E" stroke-width="1.5"></rect>
+      <text x="488" y="704" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle">Always</text>
+      <text x="488" y="722" fill="#1F4A4E" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="middle">:latest</text>
+
+      <!-- OD: :other tag -> IfNotPresent -->
+      <rect x="132" y="816" width="176" height="72" rx="36" fill="rgba(11,30,59,0.03)" stroke="rgba(11,30,59,0.30)" stroke-width="1"></rect>
+      <text x="220" y="844" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle">IfNotPresent</text>
+      <text x="220" y="862" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle">:other tag</text>
+
+      <!-- ===================== CALLOUT (focal annotation) ===================== -->
+      <text x="720" y="648" fill="#B58B3E" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif" text-anchor="end">the default nobody chooses on purpose</text>
+      <path d="M 690 656 Q 560 660 500 674" fill="none" stroke="rgba(181,139,62,0.50)" stroke-width="1" stroke-dasharray="4,3"></path>
+      <circle cx="500" cy="674" r="2" fill="#B58B3E"></circle>
+
+      <!-- ===================== LEGEND ===================== -->
+      <line x1="40" y1="928" x2="720" y2="928" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+      <text x="40" y="944" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" letter-spacing="0.12em">LEGEND</text>
+
+      <polygon points="52,966 64,960 76,966 64,972" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></polygon>
+      <text x="86" y="970" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">Decision</text>
+
+      <rect x="196" y="960" width="28" height="14" rx="7" fill="rgba(11,30,59,0.03)" stroke="rgba(11,30,59,0.30)" stroke-width="1"></rect>
+      <text x="234" y="970" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">Outcome</text>
+
+      <rect x="356" y="960" width="28" height="14" rx="7" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.4"></rect>
+      <rect x="359" y="963" width="22" height="8" rx="4" fill="none" stroke="#B58B3E" stroke-width="1"></rect>
+      <text x="394" y="970" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">Unchosen default</text>
+
+      <line x1="566" y1="967" x2="594" y2="967" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+      <text x="602" y="970" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">Branch</text>
+    </svg>

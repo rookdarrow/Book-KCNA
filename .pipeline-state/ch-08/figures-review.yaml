@@ -24,11 +24,13 @@ figures:
     matches_intent: true
     fixed_point_visible: true
     structure_correct: true
-    reasoning: The five-column grammar table cleanly maps five real kubectl commands
-      onto command/TYPE/NAME/flags slots with empty-slot dashes, and the reader can
-      decompose any command at a glance; the case-sensitivity contrast is the clear
-      takeaway thanks to the upward arrows and bold brass callouts under TYPE and
-      NAME.
+    reasoning: The five-column table cleanly maps each example command onto the kubectl/[command]/[TYPE]/[NAME]/[flags]
+      grammar, with empty-slot cells rendered as de-emphasized dashes so readers see
+      at a glance which slots are optional per verb. The TYPE and NAME columns get
+      a tinted background band plus upward arrows anchoring to bold brass-colored
+      'case-INsensitive' / 'case-SENSITIVE' captions with concrete pod/Node-7 examples,
+      satisfying the fixed-point requirement with both color and non-color (arrow
+      + bold + column shading) signals.
     suggested_fix: ''
 - anchor_id: ch08-fig02-three-api-gates
   status: approved
@@ -48,23 +50,28 @@ figures:
   review_notes: ''
   last_applied_hash: null
   ai_review:
-    verdict: looks_good
+    verdict: concerns
     matches_intent: true
     fixed_point_visible: true
     structure_correct: true
-    reasoning: The vertical Gate 1→2→3 sequence with REJECT branches at each stage
-      clearly conveys ordered progression through Authentication, Authorization, Admission,
-      and only Gate 3 carries the dashed REWRITTEN loop back into the forward path,
-      correctly isolating admission as the sole request-modifying gate.
-    suggested_fix: ''
+    reasoning: The vertical gate sequence with a REJECT branch off each stage and
+      a REWRITTEN loop only off Admission communicates the learning outcome clearly
+      and correctly singles out Admission as the mutating gate, with the Brass dashed
+      REWRITTEN path (color + line-style non-color signal) rejoining cleanly above
+      'Persisted to etcd'. However the render carries 10 distinct text labels (REQUEST,
+      GATE 1, Authentication, REJECT, GATE 2, Authorization, GATE 3, Admission, REWRITTEN,
+      Persisted to etcd), exceeding the locked ≤7 working-memory ceiling, mainly because
+      each gate has both a 'GATE N' badge and a separate name label.
+    suggested_fix: Merge each gate's badge and name into a single label (e.g. 'GATE
+      1 · Authentication') to cut the distinct-label count from 10 to 7.
 - anchor_id: ch08-fig05-quota-vs-limitrange
-  status: regenerate
+  status: pending
   render_paths:
     svg: figures/ch08-fig05-quota-vs-limitrange.svg
     png: figures/ch08-fig05-quota-vs-limitrange.png
   source_path: figures/sources/ch08-fig05-quota-vs-limitrange.html
   validation_results:
-    label_count: fail
+    label_count: pass
     palette_conformance: pass
     min_font_size: pass
     max_dimensions: pass
@@ -79,17 +86,18 @@ figures:
     verdict: concerns
     matches_intent: true
     fixed_point_visible: true
-    structure_correct: false
-    reasoning: The scope/failure-mode contrast reads clearly (namespace-aggregate
-      cap rejecting a pod vs. per-object bounds defaulting one in), and the namespace
-      boundary is correctly picked out in Brass with a dotted-stroke non-color signal
-      against its explicit absence below. But the spec's alt_text_seed and fixed_point_emphasis_target
-      both describe a left/right side-by-side comparison, while the render stacks
-      ResourceQuota on top and LimitRange below, so the geometric arrangement doesn't
-      match the specified structure and the seeded alt text would misdescribe the
-      image.
-    suggested_fix: Lay out the two panels side by side (ResourceQuota left, LimitRange
-      right) instead of stacked top/bottom, per the spec's alt_text_seed.
+    structure_correct: true
+    reasoning: 'The two-panel layout, dashed brass namespace border on the left (absent
+      on the right), the four-pod grid, and the ''AT CAP'' bar all correctly communicate
+      the quota-vs-scope distinction. However, both fifth-pod arrival boxes at the
+      bottom render as empty dashed placeholders with no content — the left should
+      show a visibly rejected/blocked pod (e.g. oxblood mark or X) and the right should
+      show the LimitRange defaults actually filled in (e.g. ''min: 100m / max: 500m''),
+      which is the specific mechanism the learning outcome hinges on for the LimitRange
+      half.'
+    suggested_fix: 'Fill the two arrival-pod placeholder boxes with real content:
+      an oxblood rejection glyph/X plus ''quota exceeded'' on the left, and pod spec
+      text showing auto-filled min/max default values on the right.'
 - anchor_id: ch08-fig04-node-lifecycle-cordon-drain
   status: approved
   render_paths:
@@ -112,13 +120,13 @@ figures:
     matches_intent: true
     fixed_point_visible: true
     structure_correct: true
-    reasoning: The four-state progression (Schedulable → Cordoned → Drained → Schedulable)
-      with kubectl-labeled transitions and an explicit legend for admitted/turned-away/unchanged
-      pods lets a reader predict pod behavior at each step at a glance. Pods A, B,
-      C sit inside a brass-bordered group box in both the Schedulable and Cordoned
-      panels only, pairing brass color with a distinct enclosing border as the non-color
-      signal, and the drained/refilled panels correctly show the pods gone and a fresh
-      pod being admitted.
+    reasoning: The four-state sequence (Schedulable → Cordoned → Drained → Schedulable)
+      with kubectl transition labels and explicit admitted/blocked new-pod arrows
+      clearly teaches the cordon/drain/uncordon lifecycle, reinforced by the callout
+      text stating cordon blocks new pods without eviction. Pods A, B, C are rendered
+      identically in the Schedulable and Cordoned panels and are grouped inside a
+      brass-bordered container (color + distinct nested-border signal) that matches
+      the legend's 'pods unchanged' swatch, satisfying the fixed-point requirement.
     suggested_fix: ''
 - anchor_id: ch08-fig03-version-skew-window
   status: approved
@@ -142,17 +150,18 @@ figures:
     matches_intent: true
     fixed_point_visible: true
     structure_correct: true
-    reasoning: 'The horizontal range chart reads at a glance: a double reference line
-      at 0 marks kube-apiserver, bars for kubelet/kube-proxy correctly reach back
-      three versions, the three manager/scheduler components reach back one, and every
-      bar stops at the line except kubectl, which alone crosses it into +1 — exactly
-      the version-skew relationships and directions the learning outcome asks for.
-      The kubectl bar is distinguished by both Brass fill/stroke and a bold Brass
-      label (non-color signal), satisfying the fixed-point requirement, and the legend
-      reinforces the encoding without adding ambiguity.'
+    reasoning: 'The horizontal range chart clearly shows each component''s version-skew
+      tolerance relative to kube-apiserver (double line at 0): kubelet/kube-proxy
+      reach back 3, controller-manager/scheduler/cloud-controller-manager reach back
+      1, and kubectl alone spans -1 to +1, crossing the reference line — this directly
+      conveys which components may disagree, by how much, and in which direction.'
+    fixed_point_visible_detail: kubectl bar uses Brass fill/border/endpoints versus
+      Teal/gray for all other bars, and is additionally distinguished structurally
+      by being the only bar that crosses the double reference line to the right of
+      0.
     suggested_fix: ''
 - anchor_id: ch08-zenith-consequences-not-rules
-  status: regenerate
+  status: pending
   render_paths:
     svg: figures/ch08-zenith-consequences-not-rules.svg
     png: figures/ch08-zenith-consequences-not-rules.png
@@ -172,18 +181,15 @@ figures:
   review_notes: ''
   last_applied_hash: null
   ai_review:
-    verdict: concerns
+    verdict: looks_good
     matches_intent: true
     fixed_point_visible: true
     structure_correct: true
-    reasoning: The fan-in/fan-out hub layout clearly sells the 'one door' concept
-      — four write paths converge on the API server, which alone fans out to the four
-      downstream controllers plus etcd, and the caption reinforces it. However the
-      diagram carries roughly 12 distinct labels (4 admin actions, the API server
-      + its ONE DOOR tag, 4 controllers each with a chapter tag, etcd, plus two column
-      headers), well over the locked ≤7 working-memory limit (skill v5.7 Part 18.10),
-      so it will likely fail validate_label_count even though it reads fine visually.
-    suggested_fix: 'Collapse the two column headers into a single caption/subtitle
-      and merge the four right-side controller boxes into one grouped box (e.g. ''downstream
-      consumers: scheduler / node controller / workload controllers / control loop'')
-      to bring the label count to ≤7.'
+    reasoning: Four administrative actions converge with clean arrows on the API Server
+      box, which carries both the brass border and an explicit 'ONE DOOR' badge —
+      an unambiguous fixed point. The design collapses the four downstream consumers
+      into one grouped list box (with chapter callbacks) plus a separate etcd arrow
+      rather than four discrete arrows as the alt-text literally describes, but this
+      stays within the 7-label cap and still reads as 'one door, then reconciled by
+      controllers you've already met,' which is the actual learning outcome.
+    suggested_fix: ''

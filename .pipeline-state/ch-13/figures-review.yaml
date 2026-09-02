@@ -24,16 +24,16 @@ figures:
     verdict: concerns
     matches_intent: true
     fixed_point_visible: true
-    structure_correct: true
-    reasoning: The two-column platform-vs-application layout with parallel diagnostic
-      checklists reads clearly at a glance and supports the learning outcome; the
-      handoff arrow and label are correctly rendered in Brass with a distinct connector
-      shape/italic label as the non-color signal. However, the fixed-point label itself
-      has a stray, unmatched closing quotation mark ('...still wrong"') with no opening
-      quote, which is a visible copy defect on the single most important text in the
-      figure.
-    suggested_fix: Fix the source text/escaping for the fixed_point_emphasis_target
-      label so it renders as a clean phrase without a dangling quote character.
+    structure_correct: false
+    reasoning: The two scope boxes and the directional handoff read clearly and the
+      brass arrow with its italic label is the only colored line in the image, making
+      it unmistakably the focal point. However, the spec and alt_text_seed explicitly
+      call for two columns side by side with a left-to-right arrow, while the render
+      stacks the boxes top/bottom with a vertical downward arrow — a real geometric
+      deviation from the specified concept_map layout.
+    suggested_fix: Rearrange into two side-by-side columns (Platform Scope left, Application
+      Scope right) joined by a single horizontal arrow running left-to-right, matching
+      the alt_text_seed, instead of the current top/bottom stacked layout.
 - anchor_id: ch13-fig02-pod-failure-signature-map
   status: approved
   render_paths:
@@ -56,15 +56,14 @@ figures:
     matches_intent: true
     fixed_point_visible: true
     structure_correct: true
-    reasoning: 'The tree visually walks the two-question routing logic in the stated
-      order — pod existence first, then phase — with the RUNNING branch cleanly fanning
-      into the three container-waiting reasons, so a reader can trace the diagnostic
-      path faster than reading prose. The root diamond and its NO-branch destination
-      are the only two nodes rendered with solid Brass fill (vs. outlined white for
-      every other node), reinforced by the legend explicitly keying filled-tan to
-      ''Start here — check this first,'' giving both color and a fill-pattern signal.
-      Geometry matches a decision tree: diamonds for the two questions, rectangles
-      for diagnostic/terminal steps, correct branch fan-out.'
+    reasoning: 'The two-question routing is immediately legible: a single top diamond
+      feeds a single second diamond, each branch cleanly labeled (NO/YES, PENDING/RUNNING),
+      letting a reader trace the exact two-question path the learning outcome describes.
+      The root diamond and its NO branch (arrow, label, and destination box) are all
+      rendered in solid brass fill against the otherwise navy-on-white/cream palette,
+      giving both a color and fill-pattern distinction from the second (white) diamond.
+      The layout reads as a proper top-down decision tree, including the correct fan-out
+      from the RUNNING/Waiting node into three sibling failure-reason boxes.'
     suggested_fix: ''
 - anchor_id: ch13-fig03-phase-before-logs-flow
   status: approved
@@ -88,12 +87,12 @@ figures:
     matches_intent: true
     fixed_point_visible: true
     structure_correct: true
-    reasoning: The five stages are laid out as a strict top-to-bottom sequence (01-05)
-      with directional arrows, and each box pairs the exact kubectl command with the
-      question it answers, which directly supports the 'narrow before you check logs'
-      learning outcome. The LOGS stage is clearly singled out via the brass border/arrow/number
-      plus an italicized caption explaining why it comes last, satisfying the fixed-point
-      requirement with color plus a non-color signal.
+    reasoning: The vertical five-stage sequence with numbered steps, arrows, and paired
+      command/question text makes the triage order immediately legible, and the LOGS
+      stage is clearly marked as the terminal, conditional step via its brass border,
+      brass arrow-in, brass step number, and italicized caveat caption. The linear
+      top-to-bottom flow with directional arrows correctly reads as a flowchart/sequence
+      rather than a hierarchy or network.
     suggested_fix: ''
 - anchor_id: ch13-fig05-oomkilled-vs-evicted
   status: approved
@@ -117,12 +116,11 @@ figures:
     matches_intent: true
     fixed_point_visible: true
     structure_correct: true
-    reasoning: The two parallel vertical chains align row-by-row (trigger, killer/mechanism,
-      resulting state, outcome, scope/trigger summary), letting a reader compare OOMKilled
-      vs Evicted at a glance faster than prose would allow. The final row is clearly
-      distinguished with a brass fill plus a visibly thicker brass border compared
-      to the thin-outlined white boxes above, correctly emphasizing the scope/trigger
-      contrast named as the fixed point.
+    reasoning: Two clean parallel vertical chains with matched rows cover killer,
+      scope, trigger, and outcome side by side, letting a reader diff OOMKilled vs
+      Evicted at a glance; the final row is visually pulled out with a brass fill
+      plus a distinct thicker brass border against the white/navy-bordered rows above
+      it, satisfying color+non-color emphasis for the scope/trigger fixed point.
     suggested_fix: ''
 - anchor_id: ch13-fig06-diagnostic-layer-stack
   status: approved
@@ -146,12 +144,11 @@ figures:
     matches_intent: true
     fixed_point_visible: true
     structure_correct: true
-    reasoning: The five-layer vertical stack (kubectl → kube-apiserver → kubelet →
-      CRI → containerd/CRI-O) plus the explicit bypass arrow and 'why it matters'
-      caption make the crictl-vs-API tradeoff legible at a glance, faster than prose
-      would convey it. The API-boundary rule between kubelet and CRI is rendered as
-      a doubled brass-colored line with an arrow-flagged 'API BOUNDARY' label, satisfying
-      both the color and non-color emphasis requirement.
+    reasoning: The five-layer stack (kubectl > kube-apiserver > kubelet > CRI > containerd/CRI-O)
+      is ordered correctly, the doubled brass rule with 'API BOUNDARY' label sits
+      exactly between kubelet and CRI, and the brass bypass arrow from crictl straight
+      down to the runtime layer plus the 'WHY IT MATTERS' caption make the bypass
+      concept legible at a glance rather than requiring prose.
     suggested_fix: ''
 - anchor_id: ch13-fig04-metrics-pipeline-and-metrics-server
   status: approved
@@ -175,12 +172,11 @@ figures:
     matches_intent: true
     fixed_point_visible: true
     structure_correct: true
-    reasoning: The linear pipeline (container runtime -> cAdvisor -> kubelet -> metrics-server
-      -> API server -> HPA/kubectl top) makes it immediately legible that every stage
-      exists except metrics-server, directly supporting the learning outcome. The
-      fixed point uses both a brass dashed border/fill and an explicit brass annotation
-      callout, doubly distinguishing it from the solid white 'ships by default' boxes,
-      and a legend reinforces the convention.
+    reasoning: The linear pipeline (runtime → cAdvisor → kubelet → metrics-server
+      → API server → HPA/kubectl top) with a legend distinguishing 'ships by default'
+      from 'not installed by default' makes the failure point immediately legible
+      at a glance, faster than reading prose about the metrics chain.
+    fixed_point_visible_note: ''
     suggested_fix: ''
 - anchor_id: ch13-zenith-read-the-phase-first
   status: approved
@@ -200,15 +196,17 @@ figures:
   review_notes: ''
   last_applied_hash: null
   ai_review:
-    verdict: looks_good
+    verdict: concerns
     matches_intent: true
-    fixed_point_visible: true
+    fixed_point_visible: false
     structure_correct: true
-    reasoning: 'The tree cleanly collapses the nine failure signatures under four
-      phase-keyed branches, each explicitly naming the owning component (ADMISSION,
-      SCHEDULER, KUBELET, KUBELET or KERNEL), which directly serves the stated learning
-      outcome as an at-a-glance lookup. The root ''ONE KEY: the phase'' node is distinguished
-      by both Brass color and a non-color signal (thicker rounded-corner border vs.
-      the sharp-cornered boxes elsewhere), and the branching geometry reads as a genuine
-      hierarchy rather than a flat list.'
-    suggested_fix: ''
+    reasoning: 'The tree correctly collapses all nine failure signatures under phase-keyed
+      branches (admission/scheduler/kubelet/kubelet-or-kernel), matching the hierarchy_tree
+      structure and learning outcome well. However, the root ''ONE KEY: the phase''
+      node is distinguished only by brass border/fill color — every other box already
+      uses bold headers, so there''s no accompanying non-color signal (thicker stroke,
+      double border, or fill pattern) to separate the fixed point per the emphasis
+      rule.'
+    suggested_fix: 'Give the root ''ONE KEY: the phase'' node a visibly thicker stroke
+      or double border in addition to the brass color so the fixed point reads through
+      a non-color channel too.'

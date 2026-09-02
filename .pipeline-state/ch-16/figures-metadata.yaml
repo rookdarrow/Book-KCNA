@@ -41,16 +41,16 @@ figures:
     (section 2), is it healthy and configured (section 3), is it reachable (sections
     4 then 5), and is it per-replica (section 6).'
 - anchor_id: ch16-fig05-init-sequence-debug-points
-  source_hash: 41b8d68407b22b2f2fddd2bd29c894f9b91bbb1b8029fddc954b7ebf44bfa0a5
+  source_hash: 742b5ec39bbcfb539ac7c8a1b6621f91c11924a266fbfb5a9546d6395d29fb79
   output_hash:
-    svg: 6b59863b6862c3cf737209ac17c5418e4f5075a904fbc802b59592fdfb22d667
-    png: 9dea1cca41120365944bc559769654d77412e10c93685f8a684c3f2555f7a584
+    svg: cc70f7dddc9f88198d910cc84591c5db578560a25f7c29f898607ea527b64d67
+    png: 587a12d2768801ed41aa4d683f3b90ba7f9d75776b346d3fa0752660a95e53d1
   validations:
     label_count:
       result: fail
-      value: 29
+      value: 31
       max: 7
-      reason: 29 labels exceeds working-memory limit of 7
+      reason: 31 labels exceeds working-memory limit of 7
     palette_conformance:
       result: pass
     min_font_size:
@@ -61,11 +61,11 @@ figures:
     max_dimensions:
       result: pass
       value:
-      - 1120
-      - 1120
+      - 1280
+      - 1440
     aspect_ratio:
       result: pass
-      value: 1.0
+      value: 1.12
     grayscale_legibility:
       result: pass
       value: 8
@@ -162,16 +162,16 @@ figures:
     upstream breaks empty the list, the downstream break leaves it populated while
     the request still fails, and break four means this Service was never reached.'
 - anchor_id: ch16-fig03-portforward-vs-service-path
-  source_hash: cb4fd314c4083f46004beeb48c6b737e45cb15c9ad2da9135f50a41d984d8415
+  source_hash: 6d186094b01c38af1f1098ec7b8b8bb92fd404c7ddedb56b7c252ca68d4eb304
   output_hash:
-    svg: 518d44cfd2a5409c47c3609295da7f7c71f4db97f896171e476b21485bcd719c
-    png: f071301d7c0338601d4a800110901ab1874141d8d31ab12b6af85c3f52f0680c
+    svg: f195d233088fe88bd94abb008ef05405ccd6f909f7c3bf1a45b6313a0a041d95
+    png: ee954b262434e7c1995ae604cbdfacabacbb9055199ccc4d136ea488e6106d06
   validations:
     label_count:
       result: fail
-      value: 30
+      value: 29
       max: 7
-      reason: 30 labels exceeds working-memory limit of 7
+      reason: 29 labels exceeds working-memory limit of 7
     palette_conformance:
       result: pass
     min_font_size:
@@ -182,11 +182,11 @@ figures:
     max_dimensions:
       result: pass
       value:
-      - 960
-      - 1294
+      - 1280
+      - 1782
     aspect_ratio:
       result: pass
-      value: 1.35
+      value: 1.39
     grayscale_legibility:
       result: pass
       value: 8

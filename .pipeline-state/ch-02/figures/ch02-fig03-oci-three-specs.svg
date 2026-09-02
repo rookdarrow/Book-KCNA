@@ -1,13 +1,10 @@
-<svg viewBox="0 0 680 700" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="oci-three-specs-title oci-three-specs-desc" width="680" height="700">
-    <title id="oci-three-specs-title">OCI's three specifications and what each one governs</title>
-    <desc id="oci-three-specs-desc">Three specification boxes -- image-spec governing the image artifact's format, distribution-spec governing the pull across the registry API, and runtime-spec governing how the unpacked filesystem bundle is run -- each connect by a dashed line to the stage of an image's lifecycle they govern, shown below as a solid chain: an OCI Image is pulled, unpacked into a filesystem bundle, then run.</desc>
+<svg viewBox="0 0 600 744" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch02-fig03-oci-three-specs-title ch02-fig03-oci-three-specs-desc" width="560" height="695">
+    <title id="ch02-fig03-oci-three-specs-title">OCI's three specifications across an image's life</title>
+    <desc id="ch02-fig03-oci-three-specs-desc">Three specification boxes -- image-spec, distribution-spec, and runtime-spec -- each connect down to the stage they govern in a vertical flow: an OCI Image is pulled, unpacked into a filesystem bundle, and run to produce a running container.</desc>
 
     <defs>
-      <marker id="arr-ink" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-        <polygon points="0 0, 8 3, 0 6" fill="#0B1E3B"></polygon>
-      </marker>
-      <marker id="arr-soft" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-        <polygon points="0 0, 8 3, 0 6" fill="#8A8D90"></polygon>
+      <marker id="arr-muted" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon>
       </marker>
       <marker id="arr-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
         <polygon points="0 0, 8 3, 0 6" fill="#B58B3E"></polygon>
@@ -16,70 +13,79 @@
 
     <rect width="100%" height="100%" fill="#F5EFE4"></rect>
 
-    <!-- ============ GOVERNANCE ARROWS (dashed -- spec governs stage), drawn before boxes ============ -->
-    <!-- image-spec -> OCI Image (left edge) -->
-    <path d="M124 116 L124 216 Q124 224 132 224 L224 224 Q232 224 232 232" fill="none" stroke="#8A8D90" stroke-width="1" stroke-dasharray="4,4" marker-end="url(#arr-soft)"></path>
+    <!-- ============ ARROWS (drawn before boxes) ============ -->
 
-    <!-- distribution-spec -> PULL label (focal, accent) -->
-    <path d="M340 116 L340 140 Q340 148 348 148 L460 148 Q468 148 468 156 L468 292 Q468 300 460 300 L412 300" fill="none" stroke="#B58B3E" stroke-width="1.2" stroke-dasharray="4,4" marker-end="url(#arr-accent)"></path>
+    <!-- Governs: image-spec -> OCI Image (top edge) -->
+    <path d="M108,120 L108,132 Q108,140 116,140 L192,140 Q200,140 200,148 L200,152" fill="none" stroke="#1F4A4E" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr-muted)"></path>
 
-    <!-- runtime-spec -> RUN label -->
-    <path d="M556 116 L556 540 Q556 548 548 548 L412 548" fill="none" stroke="#8A8D90" stroke-width="1" stroke-dasharray="4,4" marker-end="url(#arr-soft)"></path>
+    <!-- Governs: distribution-spec -> unpack (top edge), routed clear of the OCI Image box -->
+    <path d="M300,120 L300,132 Q300,140 308,140 L452,140 Q460,140 460,148 L460,262 Q460,270 452,270 L348,270 Q340,270 340,278 L340,288" fill="none" stroke="#1F4A4E" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr-muted)"></path>
 
-    <!-- ============ LIFECYCLE CHAIN (solid, vertical) ============ -->
-    <line x1="340" y1="268" x2="340" y2="332" stroke="#0B1E3B" stroke-width="1" marker-end="url(#arr-ink)"></line>
-    <line x1="340" y1="404" x2="340" y2="444" stroke="#0B1E3B" stroke-width="1" marker-end="url(#arr-ink)"></line>
-    <line x1="340" y1="516" x2="340" y2="580" stroke="#0B1E3B" stroke-width="1" marker-end="url(#arr-ink)"></line>
+    <!-- Governs: runtime-spec -> running container (top edge), routed clear of unpack + filesystem bundle -->
+    <path d="M492,120 L492,502 Q492,510 484,510 L348,510 Q340,510 340,518 L340,544" fill="none" stroke="#1F4A4E" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr-muted)"></path>
 
-    <!-- flow arrow labels -- offset 8px beside the line, never on top of it -->
-    <rect x="348" y="288" width="64" height="24" rx="3" fill="#F5EFE4"></rect>
-    <text x="380" y="304" fill="#0B1E3B" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.04em">PULL</text>
+    <!-- Flow: OCI Image to unpack, PULL (focal) -->
+    <path d="M300,224 L300,288" fill="none" stroke="#B58B3E" stroke-width="1.2" marker-end="url(#arr-accent)"></path>
+    <rect x="307" y="246" width="44" height="18" rx="2" fill="#F5EFE4"></rect>
+    <text x="329" y="259" fill="#B58B3E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.04em">PULL</text>
 
-    <rect x="348" y="536" width="64" height="24" rx="3" fill="#F5EFE4"></rect>
-    <text x="380" y="552" fill="#0B1E3B" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.04em">RUN</text>
+    <!-- Flow: unpack -> filesystem bundle -->
+    <path d="M300,360 L300,408" fill="none" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arr-muted)"></path>
 
-    <!-- ============ SPEC BOXES (row 1) ============ -->
+    <!-- Flow: filesystem bundle -> running container (the runtime-spec "run" transition) -->
+    <path d="M300,480 L300,544" fill="none" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arr-muted)"></path>
+
+    <!-- ============ SPEC ROW ============ -->
+
     <!-- image-spec -->
-    <rect x="24" y="20" width="200" height="96" rx="6" fill="#F5EFE4"></rect>
-    <rect x="24" y="20" width="200" height="96" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
-    <text x="124" y="56" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle">image-spec</text>
-    <text x="124" y="80" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif" text-anchor="middle">the FORMAT of</text>
-    <text x="124" y="100" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif" text-anchor="middle">the artifact</text>
+    <rect x="24" y="24" width="168" height="96" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+    <text x="108" y="50" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">image-spec</text>
+    <text x="108" y="72" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif" text-anchor="middle">the <tspan font-weight="700" fill="#0B1E3B">FORMAT</tspan> of</text>
+    <text x="108" y="90" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif" text-anchor="middle">the artifact</text>
 
-    <!-- distribution-spec -- FOCAL: governs the registry API -->
-    <rect x="240" y="20" width="200" height="96" rx="6" fill="#F5EFE4"></rect>
-    <rect x="240" y="20" width="200" height="96" rx="6" fill="#B58B3E" fill-opacity="0.10" stroke="#B58B3E" stroke-width="1.2"></rect>
-    <text x="340" y="56" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle">distribution-spec</text>
-    <text x="340" y="80" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif" text-anchor="middle">the API for MOVING</text>
-    <text x="340" y="100" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif" text-anchor="middle">it over the wire</text>
+    <!-- distribution-spec (FOCAL) -->
+    <rect x="216" y="24" width="168" height="96" rx="6" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"></rect>
+    <text x="300" y="50" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">distribution-</text>
+    <text x="300" y="68" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">spec</text>
+    <text x="300" y="90" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif" text-anchor="middle">the API for <tspan font-weight="700" fill="#0B1E3B">MOVING</tspan></text>
+    <text x="300" y="108" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif" text-anchor="middle">it over the wire</text>
 
     <!-- runtime-spec -->
-    <rect x="456" y="20" width="200" height="96" rx="6" fill="#F5EFE4"></rect>
-    <rect x="456" y="20" width="200" height="96" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
-    <text x="556" y="56" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle">runtime-spec</text>
-    <text x="556" y="80" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif" text-anchor="middle">how to RUN a</text>
-    <text x="556" y="100" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif" text-anchor="middle">filesystem bundle</text>
+    <rect x="408" y="24" width="168" height="96" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+    <text x="492" y="50" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">runtime-spec</text>
+    <text x="492" y="72" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif" text-anchor="middle">how to <tspan font-weight="700" fill="#0B1E3B">RUN</tspan> a</text>
+    <text x="492" y="90" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif" text-anchor="middle">filesystem bundle</text>
 
-    <!-- ============ LIFECYCLE NODES (vertical chain) ============ -->
-    <rect x="232" y="196" width="216" height="72" rx="6" fill="#F5EFE4"></rect>
-    <rect x="232" y="196" width="216" height="72" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
-    <text x="340" y="236" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle">OCI Image</text>
+    <!-- ============ FLOW COLUMN ============ -->
 
-    <rect x="232" y="332" width="216" height="72" rx="6" fill="#F5EFE4"></rect>
-    <rect x="232" y="332" width="216" height="72" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
-    <text x="340" y="372" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle">unpack</text>
+    <!-- OCI Image -->
+    <rect x="160" y="152" width="280" height="72" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+    <text x="300" y="194" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">OCI Image</text>
 
-    <rect x="232" y="444" width="216" height="72" rx="6" fill="#F5EFE4"></rect>
-    <rect x="232" y="444" width="216" height="72" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
-    <text x="340" y="484" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle">filesystem bundle</text>
+    <!-- unpack -->
+    <rect x="160" y="288" width="280" height="72" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+    <text x="300" y="330" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">unpack</text>
 
-    <!-- ============ LEGEND (bottom strip) ============ -->
-    <line x1="24" y1="616" x2="656" y2="616" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
-    <text x="24" y="640" fill="#1F4A4E" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" letter-spacing="0.12em">LEGEND</text>
+    <!-- filesystem bundle -->
+    <rect x="160" y="408" width="280" height="72" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+    <text x="300" y="450" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">filesystem bundle</text>
 
-    <line x1="140" y1="636" x2="172" y2="636" stroke="#8A8D90" stroke-width="1" stroke-dasharray="4,4" marker-end="url(#arr-soft)"></line>
-    <text x="180" y="640" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace">GOVERNS</text>
+    <!-- running container (terminal node) -->
+    <rect x="160" y="544" width="280" height="72" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
+    <text x="300" y="586" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">running container</text>
 
-    <line x1="320" y1="636" x2="352" y2="636" stroke="#0B1E3B" stroke-width="1" marker-end="url(#arr-ink)"></line>
-    <text x="360" y="640" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace">FLOW</text>
+    <!-- ============ LEGEND ============ -->
+
+    <line x1="24" y1="656" x2="576" y2="656" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+    <text x="24" y="676" fill="#1F4A4E" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" letter-spacing="0.12em">LEGEND</text>
+
+    <rect x="24" y="688" width="20" height="14" rx="3" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"></rect>
+    <text x="52" y="700" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace">FOCAL — REGISTRY API</text>
+
+    <path d="M230,697 L262,697" stroke="#1F4A4E" stroke-width="1" stroke-dasharray="4,3"></path>
+    <text x="270" y="700" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace">GOVERNS</text>
+
+    <path d="M420,697 L452,697" stroke="#1F4A4E" stroke-width="1"></path>
+    <text x="460" y="700" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace">DATA FLOW</text>
+
   </svg>

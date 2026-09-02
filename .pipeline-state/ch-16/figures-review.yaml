@@ -24,17 +24,14 @@ figures:
     matches_intent: true
     fixed_point_visible: true
     structure_correct: true
-    reasoning: The root 'Application scope' box receives the Ch13 handoff arrow and
-      fans out to four ordered, correctly-labeled triage questions (Running §2, Healthy?Configured?
-      §3, Reachable? §4→§5, Per-replica? §6), with a legend line reinforcing 'top
-      to bottom eliminates ground before the next' — this directly conveys the ordered-elimination
-      learning outcome at a glance.
-    fixed_point_visible_detail: Root box uses the Brass fill/border distinct from
-      the cream/navy-bordered question boxes, with a visibly thicker border stroke
-      and a legend swatch calling it out as 'Root — application scope'.
+    reasoning: The root 'Application scope' box with the incoming Ch13 handoff arrow,
+      and four question nodes fanning out in the exact order specified (Running, Healthy/Configured,
+      Reachable, Per-replica) with correct section refs, closely match the learning
+      outcome and alt-text seed; the 'top to bottom, each question eliminates ground'
+      caption reinforces the triage-order intent.
     suggested_fix: ''
 - anchor_id: ch16-fig05-init-sequence-debug-points
-  status: regenerate
+  status: pending
   render_paths:
     svg: figures/ch16-fig05-init-sequence-debug-points.svg
     png: figures/ch16-fig05-init-sequence-debug-points.png
@@ -54,21 +51,18 @@ figures:
   review_notes: ''
   last_applied_hash: null
   ai_review:
-    verdict: concerns
+    verdict: looks_good
     matches_intent: true
-    fixed_point_visible: false
+    fixed_point_visible: true
     structure_correct: true
-    reasoning: The left-to-right init sequence with aligned Init:N/M statuses, the
-      kubectl reference card, and the three paired failure-signature/cause rows clearly
-      support the learning outcome, and the flowchart geometry is correct. However,
-      the fixed point (the status row) is distinguished by brass color alone — the
-      legend depicts a pill/badge outline for 'Pod status (focal)' but no such border,
-      fill, or bold weight is actually rendered around the Init:0/3 / Init:1/3 / Init:2/3
-      / Running text in the diagram itself, so it fails the two-signal requirement.
-    suggested_fix: Render the Init:N/M and Running status labels inside an actual
-      brass-bordered or brass-filled badge/pill (matching what the legend already
-      promises) instead of plain brass-colored text, so the fixed point has a non-color
-      signal too.
+    reasoning: The left-to-right init-1 → init-2 → init-3 → app containers sequence
+      with Init:0/3, Init:1/3, Init:2/3, Running pills aligned directly beneath each
+      box makes the Init:N/M reading skill immediately graspable, and the three failure-signature/cause
+      pairs below map cleanly onto the learning outcome. The status pills use a distinct
+      Brass outline plus a pill shape and bold text versus the container boxes' navy
+      rounded-rect outline, giving the fixed-point emphasis both a color and non-color
+      signal.
+    suggested_fix: ''
 - anchor_id: ch16-fig02-ephemeral-container-debug
   status: approved
   render_paths:
@@ -91,12 +85,12 @@ figures:
     matches_intent: true
     fixed_point_visible: true
     structure_correct: true
-    reasoning: Each panel pairs the debug shape with its own bolded 'ASKS:' question,
-      which maps directly onto the learning outcome of choosing shapes by the question
-      they answer; panel B's gap is called out with a distinct brass dashed connector
-      plus 'ORIGINAL POD STAYS UNTOUCHED' caption, giving both color and shape distinction;
-      the three panels correctly render containment (boxes-in-Pod, Pod-in-Node) and
-      explicit non-connection as component-diagram geometry.
+    reasoning: Each of the three panels states the specific question that debug shape
+      answers ('what does the running process see right now?', 'what would happen
+      if I changed something?', 'is the machine itself the problem?'), which directly
+      teaches the decision criterion from the learning outcome, and panel B's original
+      vs. copy comparison makes the --copy-to non-mutation clear. Containment is correctly
+      nested (Node > Pod > container) matching K8s topology.
     suggested_fix: ''
 - anchor_id: ch16-fig04-service-break-points
   status: approved
@@ -120,16 +114,17 @@ figures:
     matches_intent: true
     fixed_point_visible: true
     structure_correct: true
-    reasoning: The vertical request path with three side-callouts at the exact break
-      points (DNS, EndpointSlice, container port) lets a reader locate a failure at
-      a glance, and the legend explicitly recaps the empty-vs-populated-list distinction
-      the learning outcome asks for. The EndpointSlice callout is the only one with
-      a solid Brass border/fill and Brass 'LIST EMPTY' text against the other two
-      callouts' dashed Fog-gray borders, giving it both a color and non-color (border
-      style) distinction.
+    reasoning: The left-to-right request path (client -> DNS name -> Service -> EndpointSlice
+      -> Pod -> container port) is clear and linear, matching the data_flow type,
+      and each callout box lands beside the correct node with a legend that correctly
+      frames upstream/downstream/beside semantics relative to the endpoint list.
+    fixed_point_visible_detail: The BREAK 1+2 / LIST EMPTY callout is the only one
+      filled with Brass and has a solid Brass border plus a solid (not dashed) Brass
+      connector line to EndpointSlice, both non-color signals distinguishing it from
+      the two dashed, unfilled Fog-bordered callouts.
     suggested_fix: ''
 - anchor_id: ch16-fig03-portforward-vs-service-path
-  status: regenerate
+  status: pending
   render_paths:
     svg: figures/ch16-fig03-portforward-vs-service-path.svg
     png: figures/ch16-fig03-portforward-vs-service-path.png
@@ -154,20 +149,18 @@ figures:
     matches_intent: true
     fixed_point_visible: true
     structure_correct: true
-    reasoning: The two parallel top-down paths converging on a dashed-linked shared
-      Pod, paired with the 'all 4 break points live here' vs. 'shares no step but
-      the Pod' captions, communicates the localization argument clearly and the two
-      Pod nodes are correctly the only brass-filled, brass-bordered boxes (color +
-      fill-pattern signal) distinguishing them from the white/navy step boxes. However
-      the diagram carries roughly 12-13 distinct text labels (9 node labels plus 3
-      floating annotation call-outs plus the 'SAME POD' connector label), well past
-      the locked ≤7 label working-memory cap, which risks undercutting the at-a-glance
-      clarity the axis otherwise earns.
-    suggested_fix: Fold the three floating annotation boxes (selector/endpoints, pods/portforward
-      subresource, kube-proxy rules) into node subtitles instead of separate call-out
-      boxes, and drop the 'SAME POD' text label since the dashed connector plus legend
-      entry already convey it — this should bring the distinct-label count at or under
-      7.
+    reasoning: The two-column layout cleanly shows the Service path (client-DNS-Service-proxy-Pod)
+      and the port-forward path (kubectl-API server-kubelet-Pod) converging only at
+      the Pod, with a dashed 'same pod, diff. port' connector making the shared-step
+      argument for fault localization immediately legible. However the diagram carries
+      9 node boxes with 8 distinct titles (client, DNS, Service, service proxy, Pod,
+      kubectl, API server, kubelet) plus 11 subtitle annotations, exceeding the locked
+      ≤7-label working-memory ceiling and adding more text than the learning outcome
+      strictly needs.
+    suggested_fix: Drop or merge low-value subtitle annotations (e.g. fold 'sends
+      the request'/'resolves the name'/'streams connection' into a caption instead
+      of per-node) to bring the diagram under the 7-label ceiling while keeping the
+      two Pod nodes as the sole brass-highlighted shared step.
 - anchor_id: ch16-zenith-mine-or-the-platforms
   status: approved
   render_paths:
@@ -190,11 +183,10 @@ figures:
     matches_intent: true
     fixed_point_visible: true
     structure_correct: true
-    reasoning: The symmetrical two-column layout with parallel 5-step chains (platform
-      vs. application scope) converging on a shared vertical line makes the 'one method,
-      two scopes' argument legible at a glance, and it faithfully reproduces every
-      element named in the alt_text_seed. The boundary line and both convergence arrows
-      are rendered in Brass with a visibly thicker stroke than the Teal connector
-      arrows plus a distinct bowtie junction marker, so the fixed point reads clearly
-      against the rest of the diagram.
+    reasoning: The symmetrical two-column layout visually equates platform-scope (phase→conditions→events→logs→node)
+      and application-scope (running?→healthy?→reachable?→configured?→which replica?)
+      narrowing chains, and both 'NARROWING' arrows converge on a single boundary
+      reinforced by 'THE BOUNDARY / this line is the method' caption, which directly
+      communicates that these are one method meeting at an ownership boundary rather
+      than two subjects.
     suggested_fix: ''

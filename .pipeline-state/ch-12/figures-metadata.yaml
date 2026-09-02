@@ -115,32 +115,31 @@ figures:
     combinations follow, of which Role plus ClusterRoleBinding does not exist; a banner
     states that the binding determines the scope of the grant'
 - anchor_id: ch12-fig04-pod-security-standards-levels
-  source_hash: ba2337c7ff90eea9235f8149c414a27fb0d4a40853470c20db0f5f2d36b0cb85
+  source_hash: 2e03933be7ad24165548ab44e8b6773082a244eacda26d4831b8c434fb1ac60e
   output_hash:
-    svg: 5f0d947626980877ff988c7d477c751d0e67c1057415a3f298796a11b7248245
-    png: 42ebfe2172fa406ce6d6b28787dfcae536127e8bb080d997d91c6e7748c30480
+    svg: bdd7d2819c9e09ecd8540d3ae47fa6fc9cf97920b565c3a113ee92f36148415f
+    png: 85ffdd1b9ae10e70dc1056abde2dc30aaee84882ab3bd8fb1839aba284114975
   validations:
     label_count:
       result: fail
-      value: 83
+      value: 86
       max: 7
-      reason: 83 labels exceeds working-memory limit of 7
+      reason: 86 labels exceeds working-memory limit of 7
     palette_conformance:
       result: pass
     min_font_size:
       result: pass
-      note: no explicit font-size; renderer default applies
+      value: 14.0
+      min: 14
+      reason: ''
     max_dimensions:
-      result: fail
+      result: pass
       value:
-      - 1800
-      - 3026
-      max:
-      - 2400
-      - 3000
+      - 1280
+      - 2510
     aspect_ratio:
       result: pass
-      value: 1.68
+      value: 1.96
     grayscale_legibility:
       result: pass
       value: 8
@@ -154,16 +153,16 @@ figures:
     the per-namespace label form with a worked example carrying all three modes at
     two different levels
 - anchor_id: ch12-fig05-supply-chain-checkpoints
-  source_hash: b07e3c890bba8f3e3d21dc4196d145bdcb6dd87dec07752ed118d61bc137d47d
+  source_hash: cc11d4ace892d93e350e055c67b647e8de6c9d9583ed10cc49e3adb6bb8c8521
   output_hash:
-    svg: ad9b6e21a5a4407032c282081cf3b5370f832665449924d92e19e1637e1da096
-    png: a5dbc4ca88a787a9b95881ec00276e62df56ffbb5aac51bf3899b955dcda4adf
+    svg: 68f97d9c44377d3de03e3bb7a5acf2bf0e488ae4e8146f4a5fe196b3cb88b1da
+    png: 861ba4386e00591ecca8bd77190707b5585c63019473f39daf3ab130b8764e56
   validations:
     label_count:
-      result: pass
-      value: 0
+      result: fail
+      value: 43
       max: 7
-      reason: ''
+      reason: 43 labels exceeds working-memory limit of 7
     palette_conformance:
       result: pass
     min_font_size:
@@ -174,11 +173,11 @@ figures:
     max_dimensions:
       result: pass
       value:
-      - 1280
-      - 1694
+      - 1664
+      - 1078
     aspect_ratio:
       result: pass
-      value: 1.32
+      value: 1.54
     grayscale_legibility:
       result: pass
       value: 8

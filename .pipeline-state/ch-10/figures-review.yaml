@@ -24,17 +24,16 @@ figures:
     matches_intent: true
     fixed_point_visible: true
     structure_correct: true
-    reasoning: 'The two-panel layout holds everything constant (client IP, request
-      count, service count) except the underlined fragment and the decision-box label,
-      which makes the path-vs-host distinction legible at a glance and the footer
-      caption reinforces the exact learning outcome. The fixed point is doubly marked:
-      the matched fragment is underlined in Brass and the ''reads: path''/''reads:
-      host'' boxes carry a Brass border plus bold text, both distinguished from the
-      Teal/Navy borders used elsewhere. The left-to-right request-to-decision-to-fork
-      arrangement in each panel is a clean, correctly structured data-flow diagram.'
+    reasoning: 'The two-panel layout isolates the single variable that matters (path
+      vs. host) by holding the client IP, service count, and layout identical between
+      panels, so the concept reads at a glance; the brass-bordered bold ''reads: path''/''reads:
+      host'' boxes plus the brass underlines beneath /catalog, /checkout, shop.example.com,
+      and blog.example.com clearly mark the fixed point with both color and non-color
+      (bold, underline, distinct border) signals; the request-to-IP-to-decision-to-fork
+      arrangement is a correct data-flow topology.'
     suggested_fix: ''
 - anchor_id: ch10-fig03-gateway-api-role-split
-  status: regenerate
+  status: pending
   render_paths:
     svg: figures/ch10-fig03-gateway-api-role-split.svg
     png: figures/ch10-fig03-gateway-api-role-split.png
@@ -53,22 +52,19 @@ figures:
   review_notes: ''
   last_applied_hash: null
   ai_review:
-    verdict: concerns
+    verdict: looks_good
     matches_intent: true
-    fixed_point_visible: false
+    fixed_point_visible: true
     structure_correct: true
-    reasoning: 'The three-band hierarchy is clean and legible, correctly nests GatewayClass/Gateway/HTTPRoute
-      under their owning roles, and the caption reinforces the ownership-vs-runtime
-      distinction from the alt text. However, the two cardinality edges/labels rely
-      on brass color alone — stroke weight matches the rest of the diagram''s lines
-      and the uppercase letter-spacing on ''EXACTLY 1''/''MANY (parentRefs)'' is the
-      same typographic treatment used for the (navy) band headers, so there''s no
-      second, color-independent signal marking them as the fixed point. Also worth
-      noting: the diagram carries 8 distinct labels (3 bands + GatewayClass + Gateway
-      + HTTPRoute + 2 cardinality labels), one over the ≤7 working-memory cap.'
-    suggested_fix: Give the 'exactly 1' and 'many (parentRefs)' edges a visibly thicker
-      brass stroke (or a double-line/dash pattern) than the diagram's other connectors
-      so the fixed point reads without relying on color alone.
+    reasoning: The three-band hierarchy (Infrastructure Provider / Cluster Operator
+      / Application Developer) with GatewayClass, Gateway, and three HTTPRoute boxes
+      joined by upward-pointing edges reads at a glance and matches the alt-text spec
+      almost verbatim, including the clarifying caption. The 'exactly 1' and 'many
+      (parentRefs)' cardinality edges and arrowheads are rendered in Brass against
+      otherwise navy/cream elements, with heavier stroke weight and larger triangular
+      arrowheads as a non-color signal, so the fixed point is clearly distinguished
+      from the rest of the diagram.
+    suggested_fix: ''
 - anchor_id: ch10-fig04-networkpolicy-additive-selectors
   status: approved
   render_paths:
@@ -91,14 +87,13 @@ figures:
     matches_intent: true
     fixed_point_visible: true
     structure_correct: true
-    reasoning: The convergence of Policy A and Policy B onto a single Pod, followed
-      by one arrow into the brass-filled 'permitted set' blob annotated '(one set,
-      two grants)', directly visualizes additive/union selector semantics, and the
-      separate dashed, fog-colored 'not granted' box with 'not denied — simply never
-      granted' cleanly conveys the second half of the learning outcome. The permitted-set
-      blob is distinguished by both brass color and a solid fill unique among all
-      boxes in the diagram (all others are white or dashed-outline), giving a non-color
-      redundant cue.
+    reasoning: The converging arrows from Policy A and Policy B into one Pod, followed
+      by a single downstream union box glossed '(one set, two grants)', directly visualizes
+      additive selector semantics, and the separate dashed 'app=other / not denied
+      — simply never granted' box reinforces exclusion-as-absence exactly as the learning
+      outcome requires. The permitted-set blob is the only element with a Brass border/fill
+      and bold caps label, distinguishing it via both color and a fill/weight change
+      from the white navy-bordered boxes and the dashed Fog 'not granted' box.
     suggested_fix: ''
 - anchor_id: ch10-zenith-nothing-without-a-controller
   status: approved
@@ -122,11 +117,8 @@ figures:
     matches_intent: true
     fixed_point_visible: true
     structure_correct: true
-    reasoning: The four side-by-side panels each show a valid object, a ghosted/dashed
-      'absent component' row marked (none), and a bottom outcome row of 'nothing'
-      — this reads instantly as the same failure pattern recurring across four unrelated
-      Kubernetes objects, matching the alt_text_seed's described layout exactly. Panel
-      four's outcome box is the only one with a filled border, and both its border
-      and text are rendered in Brass against the other panels' plain unboxed text,
-      giving the fixed point two distinct signals (color + boxed/bordered treatment).
+    reasoning: The 2x2 grid of parallel three-row panels makes the repeated 'object
+      without its component' pattern easy to scan and compare across all four Kubernetes
+      objects, and the fourth panel's silent-failure outcome is the one visual departure
+      from the otherwise identical layout, which strongly supports the learning outcome.
     suggested_fix: ''

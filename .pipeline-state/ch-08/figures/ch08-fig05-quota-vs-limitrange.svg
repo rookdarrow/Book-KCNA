@@ -1,90 +1,67 @@
-<svg viewBox="0 0 700 840" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch08-fig05-quota-vs-limitrange-title ch08-fig05-quota-vs-limitrange-desc" width="560" height="672">
-    <title id="ch08-fig05-quota-vs-limitrange-title">ResourceQuota vs. LimitRange enforcement compared</title>
-    <desc id="ch08-fig05-quota-vs-limitrange-desc">Side-by-side comparison: a namespace boundary encloses four Pods under a quota bar shown at cap and blocks a fifth arriving Pod, while a panel with no boundary shows four Pods each bounded by individual minimum and maximum limits and admits a fifth Pod that declares nothing by filling in default values.</desc>
+<svg viewBox="0 0 640 688" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch08-fig05-quota-vs-limitrange-title ch08-fig05-quota-vs-limitrange-desc" width="640" height="688">
+    <title id="ch08-fig05-quota-vs-limitrange-title">ResourceQuota versus LimitRange, compared by scope</title>
+    <desc id="ch08-fig05-quota-vs-limitrange-desc">Side-by-side comparison: a ResourceQuota namespace boundary holds four Pods at their aggregate cap and rejects a fifth, while an unenclosed LimitRange applies its own minimum and maximum bounds to each Pod individually and fills in defaults for a fifth Pod that declares nothing.</desc>
     <defs>
-      <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#0B1E3B"></polygon></marker>
-      <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#B58B3E"></polygon></marker>
-      <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon></marker>
+      <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon>
+      </marker>
+      <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#B58B3E"></polygon>
+      </marker>
+      <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon>
+      </marker>
     </defs>
 
-    <rect width="700" height="840" fill="#F5EFE4"></rect>
+    <rect width="100%" height="100%" fill="#F5EFE4"></rect>
 
-    <!-- ============ PANEL A — RESOURCEQUOTA ============ -->
-    <text x="350" y="36" class="panel-heading" text-anchor="middle">ResourceQuota</text>
+    <!-- Panel titles -->
+    <text x="168" y="128" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="20" font-weight="600">ResourceQuota</text>
+    <text x="472" y="128" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="20" font-weight="600">LimitRange</text>
 
-    <!-- namespace boundary — FOCAL element -->
-    <rect x="64" y="56" width="572" height="208" rx="8" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1" stroke-dasharray="4,4"></rect>
-    <rect x="80" y="60" width="232" height="20" rx="2" fill="#F5EFE4"></rect>
-    <text x="196" y="74" class="zone-label" text-anchor="middle">namespace: team-atlas</text>
+    <!-- Left: namespace boundary (focal element) -->
+    <rect x="32" y="168" width="272" height="280" rx="8" fill="rgba(181,139,62,0.05)" stroke="rgba(181,139,62,0.50)" stroke-width="1.2" stroke-dasharray="4,4"></rect>
+    <rect x="36" y="180" width="264" height="20" rx="2" fill="#F5EFE4"></rect>
+    <text x="168" y="196" text-anchor="middle" fill="#8A8D90" font-family="'Fira Mono', monospace" font-size="14">namespace: team-atlas — 4 pods</text>
 
-    <!-- rejected 5th pod: connector drawn before the node it feeds -->
-    <path d="M 348,320 V 266" fill="none" stroke="#0B1E3B" stroke-width="1.2" stroke-dasharray="4,3"></path>
-    <line x1="338" y1="266" x2="358" y2="266" stroke="#0B1E3B" stroke-width="2"></line>
+    <!-- Left: 4 pods (admitted, uniform) -->
+    <rect x="52" y="236" width="104" height="56" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+    <rect x="180" y="236" width="104" height="56" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+    <rect x="52" y="312" width="104" height="56" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+    <rect x="180" y="312" width="104" height="56" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
 
-    <!-- pod cohort (4 identical Pods, shown as one node + count badge) -->
-    <rect x="248" y="96" width="200" height="88" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
-    <rect x="256" y="104" width="40" height="16" rx="2" fill="none" stroke="rgba(11,30,59,0.4)" stroke-width="0.8"></rect>
-    <text x="276" y="115" class="tag-text" text-anchor="middle">×4</text>
-    <text x="348" y="146" class="node-name" text-anchor="middle">Pod</text>
+    <!-- Left: namespace total bar, AT CAP -->
+    <rect x="52" y="400" width="232" height="28" rx="4" fill="#1F4A4E" stroke="#0B1E3B" stroke-width="1"></rect>
+    <text x="168" y="416" text-anchor="middle" fill="#F5EFE4" font-family="'Fira Sans', sans-serif" font-size="14" font-weight="600" letter-spacing="0.06em">AT CAP</text>
 
-    <!-- namespace total quota bar -->
-    <text x="348" y="208" class="bar-caption" text-anchor="middle">namespace total</text>
-    <rect x="248" y="216" width="200" height="32" rx="4" fill="#F5EFE4" stroke="#1F4A4E" stroke-width="1"></rect>
-    <rect x="248" y="216" width="200" height="32" rx="4" fill="#1F4A4E"></rect>
-    <text x="348" y="237" class="bar-label" text-anchor="middle">AT CAP</text>
+    <!-- Right: no boundary — caption states the absence -->
+    <text x="472" y="196" text-anchor="middle" fill="#8A8D90" font-family="'Fira Mono', monospace" font-size="14">(no namespace boundary)<tspan x="472" y="216" fill="#0B1E3B" font-weight="500">each pod: min ≤ x ≤ max</tspan></text>
 
-    <!-- outcome -->
-    <text x="368" y="284" class="status" text-anchor="start">REJECTED</text>
-    <text x="368" y="302" class="status-caption" text-anchor="start">namespace total reached</text>
+    <!-- Right: 4 pods (unenclosed, each individually bounded) -->
+    <rect x="356" y="236" width="104" height="56" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+    <rect x="484" y="236" width="104" height="56" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+    <rect x="356" y="312" width="104" height="56" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+    <rect x="484" y="312" width="104" height="56" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
 
-    <!-- the arriving 5th pod -->
-    <rect x="260" y="320" width="176" height="64" rx="6" fill="rgba(11,30,59,0.02)" stroke="rgba(11,30,59,0.20)" stroke-width="1" stroke-dasharray="4,3"></rect>
-    <rect x="268" y="328" width="40" height="16" rx="2" fill="none" stroke="rgba(11,30,59,0.4)" stroke-width="0.8"></rect>
-    <text x="288" y="339" class="tag-text" text-anchor="middle">5th</text>
-    <text x="348" y="358" class="node-name" text-anchor="middle">Pod</text>
+    <!-- Right: per-pod bound bracket (graphic, not text) on each of the 4 pods -->
+    <path d="M 104,248 h8 M 108,248 v32 M 104,280 h8" fill="none" stroke="#1F4A4E" stroke-width="1.2"></path>
+    <path d="M 232,248 h8 M 236,248 v32 M 232,280 h8" fill="none" stroke="#1F4A4E" stroke-width="1.2"></path>
+    <path d="M 104,324 h8 M 108,324 v32 M 104,356 h8" fill="none" stroke="#1F4A4E" stroke-width="1.2"></path>
+    <path d="M 232,324 h8 M 236,324 v32 M 232,356 h8" fill="none" stroke="#1F4A4E" stroke-width="1.2"></path>
+    <path d="M 408,248 h8 M 412,248 v32 M 408,280 h8" fill="none" stroke="#1F4A4E" stroke-width="1.2"></path>
+    <path d="M 536,248 h8 M 540,248 v32 M 536,280 h8" fill="none" stroke="#1F4A4E" stroke-width="1.2"></path>
+    <path d="M 408,324 h8 M 412,324 v32 M 408,356 h8" fill="none" stroke="#1F4A4E" stroke-width="1.2"></path>
+    <path d="M 536,324 h8 M 540,324 v32 M 536,356 h8" fill="none" stroke="#1F4A4E" stroke-width="1.2"></path>
 
-    <line x1="40" y1="408" x2="660" y2="408" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+    <!-- Arrows: a 5th Pod arrives, from below, into each panel -->
+    <line x1="168" y1="496" x2="168" y2="448" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+    <line x1="472" y1="496" x2="472" y2="368" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
 
-    <!-- ============ PANEL B — LIMITRANGE ============ -->
-    <text x="350" y="440" class="panel-heading" text-anchor="middle">LimitRange</text>
-    <text x="350" y="464" class="absence-caption" text-anchor="middle">(no namespace boundary)</text>
+    <!-- Arriving 5th Pod, both panels (dashed = not yet admitted) -->
+    <rect x="116" y="496" width="104" height="56" rx="6" fill="rgba(11,30,59,0.03)" stroke="rgba(11,30,59,0.25)" stroke-width="1" stroke-dasharray="4,3"></rect>
+    <rect x="420" y="496" width="104" height="56" rx="6" fill="rgba(11,30,59,0.03)" stroke="rgba(11,30,59,0.25)" stroke-width="1" stroke-dasharray="4,3"></rect>
 
-    <!-- accepted 5th pod: connector drawn before the node it feeds -->
-    <path d="M 348,664 V 608" fill="none" stroke="#0B1E3B" stroke-width="1.2" marker-end="url(#arrow)"></path>
-
-    <!-- pod cohort (4 identical Pods, shown as one node + count badge) -->
-    <rect x="248" y="496" width="200" height="112" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
-    <rect x="256" y="504" width="40" height="16" rx="2" fill="none" stroke="rgba(11,30,59,0.4)" stroke-width="0.8"></rect>
-    <text x="276" y="515" class="tag-text" text-anchor="middle">×4</text>
-    <text x="348" y="542" class="node-name" text-anchor="middle">Pod</text>
-    <text x="348" y="566" class="sublabel" text-anchor="middle">min ≤</text>
-    <text x="348" y="586" class="sublabel" text-anchor="middle">≤ max</text>
-
-    <!-- outcome -->
-    <text x="368" y="628" class="status" text-anchor="start">ACCEPTED</text>
-    <text x="368" y="646" class="status-caption" text-anchor="start">defaults filled in</text>
-
-    <!-- the arriving 5th pod -->
-    <rect x="260" y="664" width="176" height="80" rx="6" fill="rgba(31,74,78,0.10)" stroke="#8A8D90" stroke-width="1"></rect>
-    <rect x="268" y="672" width="40" height="16" rx="2" fill="none" stroke="rgba(11,30,59,0.4)" stroke-width="0.8"></rect>
-    <text x="288" y="683" class="tag-text" text-anchor="middle">5th</text>
-    <text x="348" y="714" class="node-name" text-anchor="middle">Pod</text>
-    <text x="348" y="732" class="sublabel-soft" text-anchor="middle">(no request set)</text>
-
-    <!-- ============ LEGEND ============ -->
-    <line x1="40" y1="768" x2="660" y2="768" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
-    <text x="64" y="784" class="legend-heading" text-anchor="start">Legend</text>
-
-    <rect x="64" y="796" width="16" height="16" rx="2" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1" stroke-dasharray="3,3"></rect>
-    <text x="88" y="808" class="legend-text" text-anchor="start">boundary</text>
-
-    <rect x="214" y="796" width="16" height="16" rx="2" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
-    <text x="240" y="808" class="legend-text" text-anchor="start">pod ×4</text>
-
-    <line x1="364" y1="804" x2="380" y2="804" stroke="#0B1E3B" stroke-width="1.2" stroke-dasharray="4,3"></line>
-    <line x1="380" y1="798" x2="380" y2="810" stroke="#0B1E3B" stroke-width="2"></line>
-    <text x="392" y="808" class="legend-text" text-anchor="start">rejected</text>
-
-    <line x1="500" y1="804" x2="516" y2="804" stroke="#0B1E3B" stroke-width="1.2" marker-end="url(#arrow)"></line>
-    <text x="524" y="808" class="legend-text" text-anchor="start">accepted</text>
+    <!-- Outcomes -->
+    <text x="168" y="584" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="700" letter-spacing="0.04em">REJECTED<tspan x="168" y="608" fill="#8A8D90" font-style="italic" font-weight="400" letter-spacing="normal">the namespace total is reached</tspan></text>
+    <text x="472" y="584" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="700" letter-spacing="0.04em">ACCEPTED<tspan x="472" y="608" fill="#8A8D90" font-style="italic" font-weight="400" letter-spacing="normal">declares nothing,</tspan><tspan x="472" y="632" fill="#8A8D90" font-style="italic" font-weight="400" letter-spacing="normal">defaults filled in</tspan></text>
   </svg>

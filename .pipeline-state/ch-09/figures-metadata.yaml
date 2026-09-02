@@ -3,16 +3,16 @@ book: kcna
 generated: '2026-09-01T16:28:39+00:00'
 figures:
 - anchor_id: ch09-fig01-network-model-four-rules
-  source_hash: 29976f5ffe64df06342281dbb46a70a759ccf47bb043eb3aa7b6667857ff45a0
+  source_hash: c1ffa95ff6d5fe314aa301052ae5b76ffbd525bd1d463205a558d28903cae48f
   output_hash:
-    svg: dad8c049326c086ac94e1304d33f49c872f3281952433ec695a3f7c09c8a54a7
-    png: e5af35d618732ba4e9f44f48c1be4447724c60e8fd25b3c4bd941817a35cfc6f
+    svg: 60ea3d8fb7baa803d000630889faafe7ce2a76fb44cae068dd25c2ba067174fa
+    png: 7fe1313b87e26db84a48d0c66f7f4dba948ee78bb8977f862024834cbcefb481
   validations:
     label_count:
-      result: pass
-      value: 7
+      result: fail
+      value: 22
       max: 7
-      reason: ''
+      reason: 22 labels exceeds working-memory limit of 7
     palette_conformance:
       result: pass
     min_font_size:
@@ -23,11 +23,11 @@ figures:
     max_dimensions:
       result: pass
       value:
-      - 1040
-      - 1386
+      - 1520
+      - 1692
     aspect_ratio:
       result: pass
-      value: 1.33
+      value: 1.11
     grayscale_legibility:
       result: pass
       value: 8
@@ -199,31 +199,30 @@ figures:
     A final row uses hostname dot subdomain for a Pod's stable name. Columns two and
     four are identical in every row.
 - anchor_id: ch09-zenith-stable-name-over-churn
-  source_hash: 8ab7b4fb8eb3237683460cef948fd7b99adc324b59bc8546f6d3be81288a5dd2
+  source_hash: 028330042660c6ba1073029927f14ca42f573204c9e81b4751470b11a6ff1430
   output_hash:
-    svg: f9a4bc9b2b521e89209f1264750886ffdce622bfc1dbeb2e1c0847797851f7ab
-    png: 37cde765039b621a20c1e30bdab43518b9014a786ffd385ebedbdf16e489c1a9
+    svg: 428f1b6b36f435b51489508bfe32c3b0146b763e233f24b2c43db140673a2742
+    png: 7d00575273532c0d1755a2f7f389b66f9475c97f86e69765a1721af2fd882cb3
   validations:
     label_count:
       result: fail
-      value: 34
+      reason: SVG unparseable
+      value: 0
       max: 7
-      reason: 34 labels exceeds working-memory limit of 7
     palette_conformance:
-      result: pass
+      result: fail
+      reason: SVG unparseable
     min_font_size:
-      result: pass
-      value: 14.0
-      min: 14
-      reason: ''
+      result: fail
+      reason: SVG unparseable
     max_dimensions:
       result: pass
       value:
-      - 1312
-      - 1344
+      - 1640
+      - 1658
     aspect_ratio:
       result: pass
-      value: 1.02
+      value: 1.01
     grayscale_legibility:
       result: pass
       value: 8

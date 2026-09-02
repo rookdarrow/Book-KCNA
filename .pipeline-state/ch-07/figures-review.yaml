@@ -23,17 +23,18 @@ figures:
   ai_review:
     verdict: concerns
     matches_intent: true
-    fixed_point_visible: false
+    fixed_point_visible: true
     structure_correct: true
-    reasoning: The three-stage pipeline is clear and the kubelet panel is explicitly
-      separated with a dashed rule and the caption 'kubelet starts containers — not
-      the scheduler,' which directly nails the learning outcome. However the fixed-point
-      arrow (kube-scheduler → kube-apiserver) is distinguished from the other flow
-      arrows by brass color alone; its stroke weight and label styling match the plain
-      teal connector arrows elsewhere, so there's no second, non-color signal — a
-      colorblind reader or a grayscale print pass would lose the emphasis entirely.
-    suggested_fix: Thicken the kube-scheduler→kube-apiserver arrow stroke (or add
-      a double line / bold outline) so the fixed point reads even without color.
+    reasoning: The FILTER→SCORE→BIND pipeline reads clearly top-to-bottom, and the
+      dashed divider plus the separate kubelet panel effectively teaches that the
+      kubelet, not the scheduler, starts containers. The fixed-point arrow (kube-scheduler
+      → kube-apiserver) is correctly brass-colored, thicker than the other arrows,
+      and labeled ASSIGNS, matching the legend. However, in the SCORE stage the highlight
+      box drawn around the winning node-c row is mis-sized and its bottom border cuts
+      straight through the 'node-e / 68' row beneath it, making node-e look struck-through/eliminated
+      even though all three filtered nodes are still valid score candidates.
+    suggested_fix: Fix the SCORE-stage winner highlight box sizing so its border sits
+      fully within the node-c row and does not overlap the node-e row below it.
 - anchor_id: ch07-fig02-nodeselector-vs-affinity
   status: approved
   render_paths:
@@ -56,10 +57,10 @@ figures:
     matches_intent: true
     fixed_point_visible: true
     structure_correct: true
-    reasoning: The 2x3 grid cleanly separates hardness (rows) from expressiveness
-      (columns via the labeled arrow), fills exactly three cells in a pattern that
-      visually proves the two axes are independent, and the caption reinforces the
-      point in words.
+    reasoning: The 2x3 matrix clearly shows only three cells filled with the empty
+      cells marked by an em-dash, immediately conveying that hardness and expressiveness
+      are independent axes rather than a linear upgrade, and the expressiveness arrow
+      plus row/column labels make the axes unambiguous at a glance.
     suggested_fix: ''
 - anchor_id: ch07-fig03-taints-tolerations-effects
   status: pending
@@ -82,23 +83,19 @@ figures:
   review_notes: ''
   last_applied_hash: null
   ai_review:
-    verdict: concerns
+    verdict: looks_good
     matches_intent: true
     fixed_point_visible: true
-    structure_correct: false
-    reasoning: 'The effects matrix below is accurate and does the real teaching work
-      (NoSchedule/PreferNoSchedule leave Pod C ''unaffected'', NoExecute alone shows
-      ''EVICTED''), and the EVICTED cell is clearly distinguished with brass color
-      plus a bordered/contrasting fill against the gray neighbor cells. But the top
-      diagram''s arrows contradict the node''s own ''repels'' label: Pod A and Pod
-      B''s arrows point upward INTO the node (reading as pods successfully reaching
-      it), while only Pod C''s arrow points outward from node to pod — so two-thirds
-      of the arrows show the opposite of repulsion, undermining at-a-glance correctness
-      of the diagram portion.'
-    suggested_fix: Make all three arrows point outward from the node toward each Pod
-      (consistent with 'repels'), and differentiate arriving-vs-resident semantics
-      with a separate visual cue (e.g., dashed vs solid line, or a small 'blocked'
-      vs 'evicted' glyph) rather than reversing arrow direction.
+    structure_correct: true
+    reasoning: The top diagram cleanly shows the node repelling two arriving Pods
+      and one resident Pod with distinct line styles (solid=arriving, dashed=resident),
+      and the effect x outcome table below lets a reader scan any effect row and instantly
+      compare arriving vs. resident consequences, which directly serves the learning
+      outcome. All three effect rows contain the correct semantics (NoSchedule/PreferNoSchedule
+      leave the resident Pod unaffected, NoExecute evicts it), and palette usage is
+      compliant (brass reserved for the fixed point, no stray oxblood).
+    fixed_point_visible_detail: ''
+    suggested_fix: ''
 - anchor_id: ch07-fig04-pod-affinity-anti-affinity-topology
   status: approved
   render_paths:
@@ -121,12 +118,14 @@ figures:
     matches_intent: true
     fixed_point_visible: true
     structure_correct: true
-    reasoning: The stacked before/after panels use identical zone/node geometry and
-      the same rule sentence up top, so the only variable a reader can see change
-      is the topologyKey line — directly illustrating that an unchanged rule means
-      something different under hostname vs. zone, and the '6 domains -> 2 domains'
-      captions make the stricter-spread consequence explicit at a glance.
-    fixed_point_visible_detail: ''
+    reasoning: 'The two-panel before/after layout makes the topologyKey effect immediate:
+      identical 6-node/2-zone cluster, same anti-affinity rule, but hostname-scoped
+      placement fills all 6 nodes while zone-scoped placement caps at 2 — reinforced
+      by the ''6 domains → up to 6'' vs ''2 domains → at most 2'' captions and the
+      closing line. Structure (zones as containers holding node boxes) reads clearly
+      as cluster topology, though the panels stack vertically rather than side-by-side
+      as the spec''s fixed-point description implies — a minor deviation that doesn''t
+      hurt comprehension.'
     suggested_fix: ''
 - anchor_id: ch07-zenith-berth-assignment
   status: approved
@@ -150,8 +149,9 @@ figures:
     matches_intent: true
     fixed_point_visible: true
     structure_correct: true
-    reasoning: The two labeled boxes cleanly sort all seven filter and five score
-      mechanisms, each feeding its correct pipeline stage (FILTER/SCORE), while spec.nodeName
-      sits visually apart with explicit annotation text confirming it is neither —
-      the classification task is legible at a glance without reading prose.
+    reasoning: The two-column FILTERS/SCORES classification directly teaches the sort-every-mechanism
+      learning outcome, and spec.nodeName is pulled out as a visually separate box
+      with an explicit 'neither a filter nor a score — it deletes the choice' annotation,
+      making its distinct nature unmistakable. The bypass arrow correctly runs past
+      FILTER/SCORE/BIND straight into 'a node', exactly as specified.
     suggested_fix: ''

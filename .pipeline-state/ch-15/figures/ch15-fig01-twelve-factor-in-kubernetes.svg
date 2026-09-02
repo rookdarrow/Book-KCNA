@@ -1,113 +1,85 @@
-<svg viewBox="0 0 720 980" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch15-fig01-twelve-factor-in-kubernetes-title ch15-fig01-twelve-factor-in-kubernetes-desc" width="760" height="1035">
-      <title id="ch15-fig01-twelve-factor-in-kubernetes-title">Twelve-Factor App sorted by who satisfies each factor in Kubernetes</title>
-      <desc id="ch15-fig01-twelve-factor-in-kubernetes-desc">Three stacked groups sorting the twelve factors by who satisfies each: the platform gives you config, processes, concurrency, disposability and logs; the platform makes backing services, build/release/run and dev-prod parity easy; codebase, dependencies, port binding and admin processes remain the application's problem.</desc>
+<svg viewBox="0 0 760 680" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch15-fig01-twelve-factor-in-kubernetes-title ch15-fig01-twelve-factor-in-kubernetes-desc" width="900" height="806">
+      <title id="ch15-fig01-twelve-factor-in-kubernetes-title">Twelve-factor app responsibilities across three owners</title>
+      <desc id="ch15-fig01-twelve-factor-in-kubernetes-desc">Three columns sort the twelve factors by who satisfies each: the platform gives you config, processes, concurrency, disposability and logs; the platform makes backing services, build/release/run and dev/prod parity easy; and codebase, dependencies, port binding and admin processes remain the application's problem.</desc>
 
-      <rect width="720" height="980" fill="#F5EFE4"></rect>
+      <rect width="100%" height="100%" fill="#F5EFE4"></rect>
 
-      <!-- ============ BAND 1: THE PLATFORM GIVES YOU THIS ============ -->
-      <rect x="40" y="40" width="640" height="284" rx="8" fill="#0B1E3B0D" stroke="#0B1E3B" stroke-width="0.8"></rect>
+      <!-- ============ COLUMN 1: THE PLATFORM GIVES YOU THIS (x=56, w=200) ============ -->
+      <g>
+        <rect x="56" y="24" width="200" height="632" rx="8" fill="rgba(11,30,59,0.03)" stroke="rgba(11,30,59,0.30)" stroke-width="1"></rect>
 
-      <text x="64" y="76" font-family="'Fira Sans', sans-serif" font-weight="600" font-size="20" fill="#0B1E3B">THE PLATFORM GIVES YOU THIS</text>
-      <line x1="64" y1="92" x2="656" y2="92" stroke="#0B1E3B" stroke-opacity="0.20" stroke-width="1"></line>
+        <text x="156" y="84" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-weight="700" font-size="20" letter-spacing="0.01em" fill="#0B1E3B">THE PLATFORM</text>
+        <text x="156" y="112" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-weight="700" font-size="20" letter-spacing="0.01em" fill="#0B1E3B">GIVES YOU THIS</text>
 
-      <!-- col1: III, VI, VIII -->
-      <rect x="64" y="108" width="36" height="20" rx="2" fill="transparent" stroke="#1F4A4E" stroke-width="0.8"></rect>
-      <text x="82" y="122" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E" text-anchor="middle">III</text>
-      <text x="108" y="123" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Config</text>
+        <line x1="72" y1="164" x2="240" y2="164" stroke="rgba(11,30,59,0.16)" stroke-width="1"></line>
 
-      <rect x="64" y="136" width="36" height="20" rx="2" fill="transparent" stroke="#1F4A4E" stroke-width="0.8"></rect>
-      <text x="82" y="150" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E" text-anchor="middle">VI</text>
-      <text x="108" y="151" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Processes</text>
+        <text x="72" y="196" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#1F4A4E">III</text>
+        <text x="72" y="216" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Config</text>
 
-      <rect x="64" y="164" width="36" height="20" rx="2" fill="transparent" stroke="#1F4A4E" stroke-width="0.8"></rect>
-      <text x="82" y="178" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E" text-anchor="middle">VIII</text>
-      <text x="108" y="179" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Concurrency</text>
+        <text x="72" y="252" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#1F4A4E">VI</text>
+        <text x="72" y="272" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Processes</text>
 
-      <!-- col2: IX, XI -->
-      <rect x="372" y="108" width="36" height="20" rx="2" fill="transparent" stroke="#1F4A4E" stroke-width="0.8"></rect>
-      <text x="390" y="122" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E" text-anchor="middle">IX</text>
-      <text x="416" y="123" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Disposability</text>
+        <text x="72" y="308" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#1F4A4E">VIII</text>
+        <text x="72" y="328" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Concurrency</text>
 
-      <rect x="372" y="136" width="36" height="20" rx="2" fill="transparent" stroke="#1F4A4E" stroke-width="0.8"></rect>
-      <text x="390" y="150" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E" text-anchor="middle">XI</text>
-      <text x="416" y="151" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Logs</text>
+        <text x="72" y="364" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#1F4A4E">IX</text>
+        <text x="72" y="384" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Disposability</text>
 
-      <line x1="64" y1="216" x2="656" y2="216" stroke="#8A8D90" stroke-opacity="0.30" stroke-width="0.8" stroke-dasharray="2,3"></line>
+        <text x="72" y="420" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#1F4A4E">XI</text>
+        <text x="72" y="440" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Logs</text>
 
-      <rect x="64" y="232" width="88" height="24" rx="2" fill="#0B1E3B0D" stroke="#0B1E3B" stroke-opacity="0.30" stroke-width="0.8"></rect>
-      <text x="108" y="248" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B" text-anchor="middle">configmap</text>
+        <text x="72" y="552" font-family="'Fira Mono', monospace" font-size="14" fill="#8A8D90">ConfigMaps, Secrets,</text>
+        <text x="72" y="576" font-family="'Fira Mono', monospace" font-size="14" fill="#8A8D90">Deployments, SIGTERM,</text>
+        <text x="72" y="600" font-family="'Fira Mono', monospace" font-size="14" fill="#8A8D90">stdout collection</text>
+      </g>
 
-      <rect x="160" y="232" width="72" height="24" rx="2" fill="#0B1E3B0D" stroke="#0B1E3B" stroke-opacity="0.30" stroke-width="0.8"></rect>
-      <text x="196" y="248" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B" text-anchor="middle">secret</text>
+      <!-- ============ COLUMN 2: THE PLATFORM MAKES THIS EASY (x=280, w=200) ============ -->
+      <g>
+        <rect x="280" y="24" width="200" height="632" rx="8" fill="rgba(11,30,59,0.03)" stroke="rgba(11,30,59,0.30)" stroke-width="1"></rect>
 
-      <rect x="240" y="232" width="96" height="24" rx="2" fill="#0B1E3B0D" stroke="#0B1E3B" stroke-opacity="0.30" stroke-width="0.8"></rect>
-      <text x="288" y="248" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B" text-anchor="middle">deployment</text>
+        <text x="380" y="84" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-weight="700" font-size="20" letter-spacing="0.01em" fill="#0B1E3B">THE PLATFORM</text>
+        <text x="380" y="112" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-weight="700" font-size="20" letter-spacing="0.01em" fill="#0B1E3B">MAKES THIS EASY</text>
 
-      <text x="64" y="284" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="16" fill="#1F4A4E">SIGTERM handling and log collection, wired in by the platform.</text>
+        <line x1="296" y1="164" x2="464" y2="164" stroke="rgba(11,30,59,0.16)" stroke-width="1"></line>
 
-      <!-- ============ BAND 2: THE PLATFORM MAKES THIS EASY ============ -->
-      <rect x="40" y="356" width="640" height="248" rx="8" fill="#0B1E3B0D" stroke="#0B1E3B" stroke-width="0.8"></rect>
+        <text x="296" y="196" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#1F4A4E">IV</text>
+        <text x="296" y="216" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Backing services</text>
 
-      <text x="64" y="392" font-family="'Fira Sans', sans-serif" font-weight="600" font-size="20" fill="#0B1E3B">THE PLATFORM MAKES THIS EASY</text>
-      <line x1="64" y1="408" x2="656" y2="408" stroke="#0B1E3B" stroke-opacity="0.20" stroke-width="1"></line>
+        <text x="296" y="252" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#1F4A4E">V</text>
+        <text x="296" y="272" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Build/release/run</text>
 
-      <!-- col1: IV, V -->
-      <rect x="64" y="424" width="36" height="20" rx="2" fill="transparent" stroke="#1F4A4E" stroke-width="0.8"></rect>
-      <text x="82" y="438" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E" text-anchor="middle">IV</text>
-      <text x="108" y="439" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Backing services</text>
+        <text x="296" y="308" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#1F4A4E">X</text>
+        <text x="296" y="328" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Dev/prod parity</text>
 
-      <rect x="64" y="452" width="36" height="20" rx="2" fill="transparent" stroke="#1F4A4E" stroke-width="0.8"></rect>
-      <text x="82" y="466" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E" text-anchor="middle">V</text>
-      <text x="108" y="467" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Build/release/run</text>
+        <text x="296" y="576" font-family="'Fira Mono', monospace" font-size="14" fill="#8A8D90">Services, image tags,</text>
+        <text x="296" y="600" font-family="'Fira Mono', monospace" font-size="14" fill="#8A8D90">namespaces per env</text>
+      </g>
 
-      <!-- col2: X -->
-      <rect x="372" y="424" width="36" height="20" rx="2" fill="transparent" stroke="#1F4A4E" stroke-width="0.8"></rect>
-      <text x="390" y="438" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E" text-anchor="middle">X</text>
-      <text x="416" y="439" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Dev/prod parity</text>
+      <!-- ============ COLUMN 3: STILL YOUR APPLICATION'S PROBLEM (focal, x=504, w=200) ============ -->
+      <g>
+        <rect x="504" y="24" width="200" height="632" rx="8" fill="rgba(11,30,59,0.03)" stroke="rgba(11,30,59,0.30)" stroke-width="1"></rect>
 
-      <line x1="64" y1="496" x2="656" y2="496" stroke="#8A8D90" stroke-opacity="0.30" stroke-width="0.8" stroke-dasharray="2,3"></line>
+        <rect x="516" y="36" width="176" height="104" rx="6" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"></rect>
 
-      <rect x="64" y="512" width="192" height="24" rx="2" fill="#0B1E3B0D" stroke="#0B1E3B" stroke-opacity="0.30" stroke-width="0.8"></rect>
-      <text x="160" y="528" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B" text-anchor="middle">kubernetes-service</text>
+        <text x="604" y="64" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-weight="700" font-size="20" letter-spacing="0.01em" fill="#0B1E3B">STILL YOUR</text>
+        <text x="604" y="92" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-weight="700" font-size="20" letter-spacing="0.01em" fill="#0B1E3B">APPLICATION'S</text>
+        <text x="604" y="120" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-weight="700" font-size="20" letter-spacing="0.01em" fill="#0B1E3B">PROBLEM</text>
 
-      <text x="64" y="564" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="16" fill="#1F4A4E">Image tags and per-environment namespaces keep things honest.</text>
+        <line x1="520" y1="164" x2="688" y2="164" stroke="rgba(11,30,59,0.16)" stroke-width="1"></line>
 
-      <!-- ============ BAND 3 (FOCAL): STILL YOUR APPLICATION'S PROBLEM ============ -->
-      <rect x="40" y="636" width="640" height="236" rx="8" fill="#B58B3E1A" stroke="#B58B3E" stroke-width="1.2"></rect>
+        <text x="520" y="196" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#1F4A4E">I</text>
+        <text x="520" y="216" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Codebase</text>
 
-      <text x="64" y="672" font-family="'Fira Sans', sans-serif" font-weight="600" font-size="20" fill="#B58B3E">STILL YOUR APPLICATION’S PROBLEM</text>
-      <line x1="64" y1="688" x2="656" y2="688" stroke="#B58B3E" stroke-opacity="0.35" stroke-width="1"></line>
+        <text x="520" y="252" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#1F4A4E">II</text>
+        <text x="520" y="272" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Dependencies</text>
 
-      <!-- col1: I, II -->
-      <rect x="64" y="704" width="36" height="20" rx="2" fill="transparent" stroke="#0B1E3B" stroke-width="0.8"></rect>
-      <text x="82" y="718" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B" text-anchor="middle">I</text>
-      <text x="108" y="719" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Codebase</text>
+        <text x="520" y="308" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#1F4A4E">VII</text>
+        <text x="520" y="328" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Port binding</text>
 
-      <rect x="64" y="732" width="36" height="20" rx="2" fill="transparent" stroke="#0B1E3B" stroke-width="0.8"></rect>
-      <text x="82" y="746" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B" text-anchor="middle">II</text>
-      <text x="108" y="747" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Dependencies</text>
+        <text x="520" y="364" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#1F4A4E">XII</text>
+        <text x="520" y="384" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Admin processes</text>
 
-      <!-- col2: VII, XII -->
-      <rect x="372" y="704" width="36" height="20" rx="2" fill="transparent" stroke="#0B1E3B" stroke-width="0.8"></rect>
-      <text x="390" y="718" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B" text-anchor="middle">VII</text>
-      <text x="416" y="719" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Port binding</text>
-
-      <rect x="372" y="732" width="36" height="20" rx="2" fill="transparent" stroke="#0B1E3B" stroke-width="0.8"></rect>
-      <text x="390" y="746" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B" text-anchor="middle">XII</text>
-      <text x="416" y="747" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Admin processes</text>
-
-      <line x1="64" y1="776" x2="656" y2="776" stroke="#B58B3E" stroke-opacity="0.35" stroke-width="0.8" stroke-dasharray="2,3"></line>
-
-      <text x="64" y="808" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Your repo, your Dockerfile, your code.</text>
-      <text x="64" y="832" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="16" fill="#1F4A4E">No ConfigMap or Service can fix this from outside your code.</text>
-
-      <!-- ============ LEGEND ============ -->
-      <line x1="40" y1="908" x2="680" y2="908" stroke="#8A8D90" stroke-opacity="0.30" stroke-width="0.8"></line>
-      <text x="40" y="924" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.14em" fill="#1F4A4E">LEGEND</text>
-
-      <rect x="40" y="940" width="36" height="20" rx="2" fill="transparent" stroke="#1F4A4E" stroke-width="0.8"></rect>
-      <text x="88" y="955" font-family="'Fira Sans', sans-serif" font-size="16" fill="#1F4A4E">Factor number (I–XII)</text>
-
-      <rect x="352" y="940" width="88" height="24" rx="2" fill="#0B1E3B0D" stroke="#0B1E3B" stroke-opacity="0.30" stroke-width="0.8"></rect>
-      <text x="452" y="957" font-family="'Fira Sans', sans-serif" font-size="16" fill="#1F4A4E">Kubernetes object</text>
+        <text x="520" y="576" font-family="'Fira Mono', monospace" font-size="14" fill="#8A8D90">Your repo, your</text>
+        <text x="520" y="600" font-family="'Fira Mono', monospace" font-size="14" fill="#8A8D90">Dockerfile, your code</text>
+      </g>
     </svg>

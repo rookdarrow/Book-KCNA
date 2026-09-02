@@ -1,119 +1,140 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>One Record, Five Independent Readers — Concept Map</title>
-<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;700&family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Fira+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  :root {
-    --color-paper:  #F5EFE4;
-    --color-ink:    #0B1E3B;
-    --color-muted:  #1F4A4E;
-    --color-soft:   #8A8D90;
-    --color-accent: #B58B3E;
-    --font-slab: 'Roboto Slab', serif;
-    --font-sans: 'Fira Sans', sans-serif;
-    --font-mono: 'Fira Mono', monospace;
-  }
-  body {
-    font-family: var(--font-sans);
-    background: var(--color-paper);
-    color: var(--color-ink);
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 3rem 1.5rem;
-  }
-  .frame { max-width: 600px; width: 100%; }
-  .eyebrow {
-    font-family: var(--font-mono);
-    font-size: 0.875rem;
-    font-weight: 500;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--color-muted);
-    margin-bottom: 0.5rem;
-  }
-  h1 {
-    font-family: var(--font-slab);
-    font-size: 1.75rem;
-    font-weight: 500;
-    letter-spacing: -0.01em;
-    line-height: 1.2;
-    color: var(--color-ink);
-    margin-bottom: 1.5rem;
-  }
-  svg { width: 100%; max-width: 520px; display: block; margin: 0 auto; }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Filed Declaration Is a Reference, Not an Order</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;700&family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Fira+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --color-paper:   #F5EFE4;
+      --color-ink:     #0B1E3B;
+      --color-muted:   #1F4A4E;
+      --color-accent:  #B58B3E;
+      --font-sans:     'Fira Sans', sans-serif;
+      --font-serif:    'Roboto Slab', serif;
+      --font-mono:     'Fira Mono', ui-monospace, monospace;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-paper);
+      color: var(--color-ink);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 2rem;
+    }
+
+    .frame { max-width: 760px; width: 100%; }
+
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(1.4rem, 2vw + 0.75rem, 1.75rem);
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+      color: var(--color-ink);
+      margin-bottom: 1.5rem;
+    }
+
+    svg { width: 100%; display: block; }
+  </style>
 </head>
 <body>
   <div class="frame">
-    <p class="eyebrow">Concept Map · Ch. 04</p>
-    <h1>One Record, Five Independent Readers</h1>
+    <p class="eyebrow">Concept map &middot; Ch. 4 &mdash; The Reconciliation Loop</p>
+    <h1>The Filed Declaration Is a Reference, Not an Order</h1>
 
-    <svg viewBox="0 0 560 600" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="declaration-not-order-title declaration-not-order-desc">
-      <title id="declaration-not-order-title">One filed declaration read by five independent components</title>
-      <desc id="declaration-not-order-desc">Concept map showing one filed declaration read independently by a scheduler, three controllers, and a kubelet at five different times, with no instruction passed directly between them.</desc>
+    <svg viewBox="0 0 744 840" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="declaration-loop-title declaration-loop-desc">
+      <title id="declaration-loop-title">The Filed Declaration Is a Reference, Not an Order</title>
+      <desc id="declaration-loop-desc">Concept map showing one filed declaration consulted independently by five components: a scheduler, three separate controllers, and a kubelet, each at its own unrelated time, none of them receiving a command.</desc>
+      <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"/></marker>
+        <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#B58B3E"/></marker>
+        <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"/></marker>
+      </defs>
 
       <rect width="100%" height="100%" fill="#F5EFE4"/>
 
       <!-- Connectors (drawn before nodes) -->
-      <path d="M 280 104 L 280 240" fill="none" stroke="#1F4A4E" stroke-width="1"/>
-      <path d="M 120 144 L 440 144" fill="none" stroke="#1F4A4E" stroke-width="1"/>
-      <path d="M 120 144 L 120 240" fill="none" stroke="#1F4A4E" stroke-width="1"/>
-      <path d="M 440 144 L 440 240" fill="none" stroke="#1F4A4E" stroke-width="1"/>
-      <path d="M 200 144 L 200 336" fill="none" stroke="#1F4A4E" stroke-width="1"/>
-      <path d="M 360 144 L 360 336" fill="none" stroke="#1F4A4E" stroke-width="1"/>
+      <line x1="372" y1="128" x2="372" y2="240" stroke="#1F4A4E" stroke-width="1"/>
 
-      <!-- Shared relationship label, beside the trunk -->
-      <text x="292" y="128" fill="#8A8D90" font-size="14" font-family="'Fira Mono', monospace" letter-spacing="0.10em" text-anchor="start">CONSULTED AT</text>
+      <rect x="384" y="176" width="96" height="20" rx="2" fill="#F5EFE4"/>
+      <text x="432" y="192" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.04em">CONSULTED</text>
 
-      <!-- Per-reader timestamps, beside each drop -->
-      <text x="128" y="196" fill="#8A8D90" font-size="14" font-family="'Fira Mono', monospace" text-anchor="start">09:00</text>
-      <text x="288" y="196" fill="#8A8D90" font-size="14" font-family="'Fira Mono', monospace" text-anchor="start">09:04</text>
-      <text x="448" y="196" fill="#8A8D90" font-size="14" font-family="'Fira Mono', monospace" text-anchor="start">09:04</text>
-      <text x="208" y="196" fill="#8A8D90" font-size="14" font-family="'Fira Mono', monospace" text-anchor="start">11:20</text>
-      <text x="368" y="196" fill="#8A8D90" font-size="14" font-family="'Fira Mono', monospace" text-anchor="start">03:17</text>
+      <line x1="92" y1="240" x2="652" y2="240" stroke="#1F4A4E" stroke-width="1"/>
 
-      <!-- Root: THE FILED DECLARATION (focal) -->
-      <rect x="120" y="40" width="320" height="64" rx="6" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"/>
-      <text x="280" y="68" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">THE FILED DECLARATION</text>
-      <text x="280" y="90" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle">(what should be true)</text>
+      <line x1="92" y1="240" x2="92" y2="304" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"/>
+      <line x1="232" y1="240" x2="232" y2="304" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"/>
+      <line x1="372" y1="240" x2="372" y2="304" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"/>
+      <line x1="512" y1="240" x2="512" y2="304" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"/>
+      <line x1="652" y1="240" x2="652" y2="304" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"/>
 
-      <!-- Row A: scheduler, controller, kubelet -->
-      <rect x="50" y="240" width="140" height="56" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"/>
-      <text x="120" y="274" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">a scheduler</text>
+      <!-- Node: the filed declaration (focal) -->
+      <rect x="212" y="56" width="320" height="72" rx="6" fill="#F5EFE4"/>
+      <rect x="212" y="56" width="320" height="72" rx="6" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1"/>
+      <text x="372" y="92" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">THE FILED DECLARATION</text>
+      <text x="372" y="116" fill="#1F4A4E" font-size="14" font-style="italic" font-family="'Fira Sans', sans-serif" text-anchor="middle">(what should be true)</text>
 
-      <rect x="210" y="240" width="140" height="56" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"/>
-      <text x="280" y="274" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">a controller</text>
+      <!-- Node: scheduler -->
+      <rect x="32" y="304" width="120" height="72" rx="6" fill="#F5EFE4"/>
+      <rect x="32" y="304" width="120" height="72" rx="6" fill="rgba(11,30,59,0.04)" stroke="#0B1E3B" stroke-width="1"/>
+      <text x="92" y="336" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">Scheduler</text>
+      <text x="92" y="360" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle">09:00</text>
 
-      <rect x="370" y="240" width="140" height="56" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"/>
-      <text x="440" y="274" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">a kubelet</text>
+      <!-- Node: controller (1) -->
+      <rect x="172" y="304" width="120" height="72" rx="6" fill="#F5EFE4"/>
+      <rect x="172" y="304" width="120" height="72" rx="6" fill="rgba(11,30,59,0.04)" stroke="#0B1E3B" stroke-width="1"/>
+      <text x="232" y="336" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">Controller</text>
+      <text x="232" y="360" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle">09:04</text>
 
-      <!-- Row B: two more controllers -->
-      <rect x="130" y="336" width="140" height="56" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"/>
-      <text x="200" y="370" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">a controller</text>
+      <!-- Node: kubelet -->
+      <rect x="312" y="304" width="120" height="72" rx="6" fill="#F5EFE4"/>
+      <rect x="312" y="304" width="120" height="72" rx="6" fill="rgba(11,30,59,0.04)" stroke="#0B1E3B" stroke-width="1"/>
+      <text x="372" y="336" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">Kubelet</text>
+      <text x="372" y="360" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle">09:04</text>
 
-      <rect x="290" y="336" width="140" height="56" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"/>
-      <text x="360" y="370" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">a controller</text>
+      <!-- Node: controller (2) -->
+      <rect x="452" y="304" width="120" height="72" rx="6" fill="#F5EFE4"/>
+      <rect x="452" y="304" width="120" height="72" rx="6" fill="rgba(11,30,59,0.04)" stroke="#0B1E3B" stroke-width="1"/>
+      <text x="512" y="336" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">Controller</text>
+      <text x="512" y="360" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle">11:20</text>
 
-      <!-- Editorial close -->
-      <text x="280" y="432" fill="#0B1E3B" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif" text-anchor="middle">No hand receives an instruction.</text>
-      <text x="280" y="456" fill="#0B1E3B" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif" text-anchor="middle">Every hand reads the record, observes the world,</text>
-      <text x="280" y="480" fill="#0B1E3B" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif" text-anchor="middle">and closes the gap.</text>
+      <!-- Node: controller (3) -->
+      <rect x="592" y="304" width="120" height="72" rx="6" fill="#F5EFE4"/>
+      <rect x="592" y="304" width="120" height="72" rx="6" fill="rgba(11,30,59,0.04)" stroke="#0B1E3B" stroke-width="1"/>
+      <text x="652" y="336" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">Controller</text>
+      <text x="652" y="360" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle">03:17</text>
+
+      <!-- Editorial caption -->
+      <text x="372" y="544" fill="#0B1E3B" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif" text-anchor="middle">No hand receives an instruction.</text>
+      <text x="372" y="572" fill="#1F4A4E" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif" text-anchor="middle">Every hand reads the record, observes the world, and closes the gap.</text>
 
       <!-- Legend -->
-      <line x1="50" y1="512" x2="510" y2="512" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
-      <text x="50" y="528" fill="#8A8D90" font-size="14" font-family="'Fira Mono', monospace" letter-spacing="0.10em">LEGEND</text>
+      <line x1="32" y1="728" x2="712" y2="728" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+      <text x="32" y="744" fill="#1F4A4E" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" letter-spacing="0.12em">LEGEND</text>
 
-      <rect x="50" y="544" width="16" height="12" rx="2" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1"/>
-      <text x="74" y="554" fill="#0B1E3B" font-size="14" font-family="'Fira Sans', sans-serif" text-anchor="start">Filed declaration</text>
+      <rect x="32" y="760" width="16" height="16" rx="2" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1"/>
+      <text x="56" y="772" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">Reference (focal)</text>
 
-      <rect x="300" y="544" width="16" height="12" rx="2" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"/>
-      <text x="324" y="554" fill="#0B1E3B" font-size="14" font-family="'Fira Sans', sans-serif" text-anchor="start">Independent reader</text>
+      <rect x="248" y="760" width="16" height="16" rx="2" fill="rgba(11,30,59,0.04)" stroke="#0B1E3B" stroke-width="1"/>
+      <text x="272" y="772" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">Independent reader</text>
+
+      <line x1="460" y1="768" x2="492" y2="768" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"/>
+      <text x="500" y="772" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">Read, own schedule</text>
     </svg>
   </div>
 </body>

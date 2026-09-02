@@ -3,16 +3,16 @@ book: kcna
 generated: '2026-09-01T07:27:10+00:00'
 figures:
 - anchor_id: ch11-fig01-volume-lifetime-ladder
-  source_hash: e6e61421e62e17ed595b72441481f105ebd657af57123c415c39f9fec1c761d3
+  source_hash: 8dabc989deeb33ebb6f4e45e998f6404a398d83f9712d294b776952224b0e9ba
   output_hash:
-    svg: 3191c0bcdf1e930050f77ddf50f16d800e85a44779d7059e9d6dc4da62024d59
-    png: 444e6a1d3f55bf66e628d572ff2c749af611cfe7fcfa017b563fc7c5ba0f05b2
+    svg: e9d1b587be4130e35fa83e83901bbe10360227f274b6452613dcc4b94b66d77f
+    png: 48c82be6fbc99905123e290a5f736b2550803b5a00edf174c686ce503ce15493
   validations:
     label_count:
       result: fail
-      value: 11
+      value: 13
       max: 7
-      reason: 11 labels exceeds working-memory limit of 7
+      reason: 13 labels exceeds working-memory limit of 7
     palette_conformance:
       result: pass
     min_font_size:
@@ -23,11 +23,11 @@ figures:
     max_dimensions:
       result: pass
       value:
-      - 1520
-      - 2026
+      - 880
+      - 1136
     aspect_ratio:
       result: pass
-      value: 1.33
+      value: 1.29
     grayscale_legibility:
       result: pass
       value: 8
@@ -117,16 +117,16 @@ figures:
     true branch is dynamic provisioning and whose false branch dead-ends at a claim
     that waits indefinitely with the Pod stuck in Pending
 - anchor_id: ch11-fig04-access-modes-and-reclaim-policies
-  source_hash: 63f0a9577778f98103bfdde1d3d76fbbb893d227c31420c321216c110671707e
+  source_hash: b294c305e7dd234645642d07c623bf2f8974e9bc4da1742ba84eed553e780263
   output_hash:
-    svg: 7ac70586f284024942936a917a94aa59d19216747bc071950511436bf9c48e22
-    png: fa9c8c4cabad629f64de55f4c0f6fb818e9571c437f4354f2ec930c6d0dd287b
+    svg: 1f64eab3e500efb8965923f855267ba4192cbc4e51d4d6bd08175786f01dafb6
+    png: 2da0616fdc18446ab67b0a8aeef2d4b4295f457f4832e4cb86591807842fa654
   validations:
     label_count:
-      result: pass
-      value: 1
+      result: fail
+      value: 37
       max: 7
-      reason: ''
+      reason: 37 labels exceeds working-memory limit of 7
     palette_conformance:
       result: pass
     min_font_size:
@@ -137,11 +137,11 @@ figures:
     max_dimensions:
       result: pass
       value:
-      - 1120
-      - 1722
+      - 2200
+      - 1376
     aspect_ratio:
       result: pass
-      value: 1.54
+      value: 1.6
     grayscale_legibility:
       result: pass
       value: 8
@@ -193,16 +193,16 @@ figures:
     www-web-2; in the second band web-1 has moved to a different node and keeps its
     claim, and in the third band web-1 is deleted while its claim remains in place
 - anchor_id: ch11-zenith-outliving-the-pod
-  source_hash: 51e8e56e5673834ddbfd9f3fdba8daf433a015d066c25ad490f66644e89f6301
+  source_hash: fe277af5ac57e634c5bed7cf5ea566d169a8de53ce68bae38bcafca5e0ca53b4
   output_hash:
-    svg: cf2216e483780de476eff94f77187c128319ca5b9e3df7685521b8709752b481
-    png: f90918108730de459cc76450a5550ff49cd6c0cd681c37af4b0d325134e56cfc
+    svg: 56e5f73ca59dd5799fe10fa709d1d33f260ca62eacb0f6776cc0053bb6b2a8a3
+    png: 0b774390e758736dc53fe2a61ee5c12e88055ee716315b37a2abfad6029e9798
   validations:
     label_count:
       result: fail
-      value: 25
+      value: 19
       max: 7
-      reason: 25 labels exceeds working-memory limit of 7
+      reason: 19 labels exceeds working-memory limit of 7
     palette_conformance:
       result: pass
     min_font_size:
@@ -213,11 +213,11 @@ figures:
     max_dimensions:
       result: pass
       value:
-      - 1520
-      - 1814
+      - 1120
+      - 1344
     aspect_ratio:
       result: pass
-      value: 1.19
+      value: 1.2
     grayscale_legibility:
       result: pass
       value: 8

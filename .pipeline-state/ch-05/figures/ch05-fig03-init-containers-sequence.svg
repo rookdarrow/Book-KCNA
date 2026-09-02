@@ -1,76 +1,117 @@
-<svg viewBox="0 0 520 600" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch05-fig03-init-containers-sequence-title ch05-fig03-init-containers-sequence-desc" width="620" height="716">
-      <title id="ch05-fig03-init-containers-sequence-title">Init container sequencing: success vs. failure at startup</title>
-      <desc id="ch05-fig03-init-containers-sequence-desc">Two timelines: on the success path init-1 exits zero then init-2 exits zero, after which app-a and app-b start together in parallel; on the failure path init-2 exits non-zero, restart is governed by restartPolicy, and the app containers are never started.</desc>
+<svg viewBox="0 0 632 848" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="init-seq-title init-seq-desc" width="560" height="752">
+      <title id="init-seq-title">Init container startup: sequential init, parallel apps</title>
+      <desc id="init-seq-desc">Two timelines: on the success path init-1 exits zero then init-2 exits zero, after which app-a and app-b start together in parallel; on the failure path init-2 exits non-zero, restart is governed by restartPolicy, and the app containers are never started.</desc>
       <defs>
-        <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-          <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon>
-        </marker>
-        <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-          <polygon points="0 0, 8 3, 0 6" fill="#B58B3E"></polygon>
-        </marker>
+        <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon></marker>
+        <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#B58B3E"></polygon></marker>
       </defs>
 
       <rect width="100%" height="100%" fill="#F5EFE4"></rect>
 
-      <!-- init-1 -> init-2 -->
-      <line x1="240" y1="104" x2="240" y2="144" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"></line>
+      <!-- ============ ARROWS (drawn before nodes) ============ -->
 
-      <!-- init-2 -> fork -->
-      <line x1="240" y1="200" x2="240" y2="228" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"></line>
+      <!-- Success: init-1 -> init-2 -->
+      <line x1="316" y1="128" x2="316" y2="152" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+      <rect x="330" y="132" width="60" height="18" rx="2" fill="#F5EFE4"></rect>
+      <text x="336" y="145" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="start" letter-spacing="0.04em">EXIT 0</text>
 
-      <!-- fork right vertex -> success (exit 0) -->
-      <line x1="296" y1="276" x2="376" y2="276" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"></line>
-      <rect x="296" y="248" width="72" height="20" rx="2" fill="#F5EFE4"></rect>
-      <text x="332" y="264" fill="#0B1E3B" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.04em">EXIT 0</text>
+      <!-- Success: init-2 -> fork bar -->
+      <line x1="316" y1="200" x2="316" y2="228" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+      <rect x="330" y="206" width="60" height="18" rx="2" fill="#F5EFE4"></rect>
+      <text x="336" y="219" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="start" letter-spacing="0.04em">EXIT 0</text>
 
-      <!-- fork bottom vertex -> junction (exit 1) -->
-      <line x1="240" y1="324" x2="240" y2="372" stroke="#1F4A4E" stroke-width="1"></line>
-      <rect x="160" y="336" width="72" height="20" rx="2" fill="#F5EFE4"></rect>
-      <text x="196" y="352" fill="#0B1E3B" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.04em">EXIT 1</text>
+      <!-- Success: fork bar -> app-a / app-b -->
+      <line x1="206" y1="236" x2="206" y2="284" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+      <line x1="426" y1="236" x2="426" y2="284" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
 
-      <!-- junction -> restart note -->
-      <line x1="240" y1="372" x2="376" y2="372" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"></line>
+      <!-- Failure: init-1 -> init-2 -->
+      <line x1="316" y1="504" x2="316" y2="528" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+      <rect x="330" y="508" width="60" height="18" rx="2" fill="#F5EFE4"></rect>
+      <text x="336" y="521" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="start" letter-spacing="0.04em">EXIT 0</text>
 
-      <!-- junction -> terminal (accent path leads to the focal element) -->
-      <line x1="240" y1="372" x2="240" y2="424" stroke="#B58B3E" stroke-width="1.2" marker-end="url(#arrow-accent)"></line>
+      <!-- Failure: init-2 -> RESTART -->
+      <line x1="316" y1="576" x2="316" y2="608" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+      <rect x="330" y="584" width="60" height="18" rx="2" fill="#F5EFE4"></rect>
+      <text x="336" y="597" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="start" letter-spacing="0.04em">EXIT 1</text>
 
-      <!-- junction marker -->
-      <circle cx="240" cy="372" r="4" fill="#0B1E3B"></circle>
+      <!-- Failure: RESTART loop-back to init-2 -->
+      <path d="M416,632 L468,632 A8,8 0 0 0 476,624 L476,560 A8,8 0 0 0 468,552 L416,552" fill="none" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></path>
+      <rect x="486" y="584" width="56" height="18" rx="2" fill="#F5EFE4"></rect>
+      <text x="492" y="597" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="start" letter-spacing="0.04em">RETRY</text>
 
-      <!-- init-1 -->
-      <rect x="160" y="48" width="160" height="56" rx="6" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1"></rect>
-      <text x="240" y="72" text-anchor="middle" font-family="'Fira Sans', sans-serif">
-        <tspan x="240" dy="0" fill="#0B1E3B" font-size="16" font-weight="600">init-1</tspan>
-        <tspan x="240" dy="20" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" font-weight="400" letter-spacing="0.02em">exit 0</tspan>
-      </text>
+      <!-- Failure: RESTART -> NEVER STARTED (2nd, terminal-leading accent) -->
+      <line x1="316" y1="656" x2="316" y2="684" stroke="#B58B3E" stroke-width="1.4" marker-end="url(#arrow-accent)"></line>
 
-      <!-- init-2 -->
-      <rect x="160" y="144" width="160" height="56" rx="6" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1"></rect>
-      <text x="240" y="178" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle">init-2</text>
+      <!-- ============ SECTION LABELS ============ -->
 
-      <!-- fork -->
-      <polygon points="240,228 296,276 240,324 184,276" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1"></polygon>
+      <text x="40" y="44" fill="#0B1E3B" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" letter-spacing="0.12em">SUCCESS PATH</text>
+      <text x="316" y="64" fill="#8A8D90" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.08em">SEQUENTIAL · ONE AT A TIME</text>
+      <text x="316" y="352" fill="#8A8D90" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.08em">PARALLEL · TOGETHER</text>
 
-      <!-- success: app-a + app-b start together -->
-      <rect x="376" y="236" width="120" height="80" rx="40" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1"></rect>
-      <text x="436" y="270" text-anchor="middle" font-family="'Fira Sans', sans-serif">
-        <tspan x="436" dy="0" fill="#0B1E3B" font-size="14" font-weight="600">app-a, app-b</tspan>
-        <tspan x="436" dy="20" fill="#1F4A4E" font-size="14" font-weight="400">start together</tspan>
-      </text>
+      <line x1="40" y1="392" x2="592" y2="392" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
 
-      <!-- restart note (secondary / dashed) -->
-      <rect x="376" y="340" width="120" height="64" rx="6" fill="#FFFFFF" stroke="#1F4A4E" stroke-width="1" stroke-dasharray="4,3"></rect>
-      <text x="436" y="366" text-anchor="middle" font-family="'Fira Mono', monospace">
-        <tspan x="436" dy="0" fill="#1F4A4E" font-size="14" font-weight="500" letter-spacing="0.06em">RESTART</tspan>
-        <tspan x="436" dy="18" fill="#8A8D90" font-size="14" font-weight="400" letter-spacing="0.02em">per restartPolicy</tspan>
-      </text>
+      <text x="40" y="416" fill="#0B1E3B" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" letter-spacing="0.12em">FAILURE PATH</text>
+      <text x="40" y="434" fill="#8A8D90" font-size="14" font-style="italic" font-family="'Fira Sans', sans-serif">diverges from the success path at init-2’s exit code</text>
 
-      <!-- terminal (focal): app containers never started -->
-      <rect x="80" y="424" width="320" height="72" rx="36" fill="#F5EFE4"></rect>
-      <rect x="80" y="424" width="320" height="72" rx="36" fill="#B58B3E" fill-opacity="0.10" stroke="#B58B3E" stroke-width="1.2"></rect>
-      <text x="240" y="456" text-anchor="middle" font-family="'Fira Sans', sans-serif">
-        <tspan x="240" dy="0" fill="#0B1E3B" font-size="16" font-weight="500">app containers</tspan>
-        <tspan x="240" dy="24" fill="#0B1E3B" font-size="16" font-weight="700" letter-spacing="0.02em">NEVER STARTED</tspan>
-      </text>
+      <!-- ============ NODES ============ -->
 
+      <!-- init-1 (success) -->
+      <rect x="216" y="80" width="200" height="48" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="316" y="102" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle">init-1</text>
+      <text x="316" y="118" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle">init-container</text>
+
+      <!-- init-2 (success) -->
+      <rect x="216" y="152" width="200" height="48" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="316" y="174" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle">init-2</text>
+      <text x="316" y="190" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle">init-container</text>
+
+      <!-- fork bar -->
+      <rect x="206" y="228" width="220" height="8" rx="2" fill="#0B1E3B"></rect>
+
+      <!-- app-a -->
+      <rect x="116" y="284" width="180" height="48" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="206" y="306" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle">app-a</text>
+      <text x="206" y="322" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle">container</text>
+
+      <!-- app-b -->
+      <rect x="336" y="284" width="180" height="48" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="426" y="306" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle">app-b</text>
+      <text x="426" y="322" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle">container</text>
+
+      <!-- init-1 (failure) -->
+      <rect x="216" y="456" width="200" height="48" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="316" y="478" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle">init-1</text>
+      <text x="316" y="494" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle">init-container</text>
+
+      <!-- init-2 (failure) -->
+      <rect x="216" y="528" width="200" height="48" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="316" y="550" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle">init-2</text>
+      <text x="316" y="566" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle">init-container</text>
+
+      <!-- RESTART -->
+      <rect x="216" y="608" width="200" height="48" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="316" y="630" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle">RESTART</text>
+      <text x="316" y="646" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle">restartPolicy</text>
+
+      <!-- NEVER STARTED (focal) -->
+      <rect x="116" y="684" width="400" height="56" rx="28" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.4"></rect>
+      <text x="316" y="708" fill="#0B1E3B" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.1em">APP CONTAINERS</text>
+      <text x="316" y="728" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle">NEVER STARTED</text>
+
+      <!-- ============ LEGEND ============ -->
+
+      <line x1="40" y1="760" x2="592" y2="760" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+      <text x="40" y="776" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" letter-spacing="0.14em">LEGEND</text>
+
+      <rect x="40" y="788" width="24" height="12" rx="4" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="72" y="798" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">Step (container)</text>
+
+      <rect x="316" y="791" width="24" height="6" rx="2" fill="#0B1E3B"></rect>
+      <text x="348" y="798" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">Fork · parallel start</text>
+
+      <line x1="40" y1="818" x2="64" y2="818" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+      <text x="72" y="822" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">Retry loop</text>
+
+      <rect x="316" y="812" width="24" height="12" rx="6" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"></rect>
+      <text x="348" y="822" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">Terminal state · focal</text>
     </svg>

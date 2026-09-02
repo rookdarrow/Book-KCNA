@@ -24,15 +24,12 @@ figures:
     matches_intent: true
     fixed_point_visible: true
     structure_correct: true
-    reasoning: 'The three-panel layout cleanly separates the phase axis (sequential
-      flow with runtime branching into access/compute/storage) from the layer axis
-      (properly nested Cloud>Cluster>Container>Code), then the table plots five real
-      Kubernetes controls against both simultaneously, directly serving the ''two
-      independent coordinates'' learning outcome at a glance. The PHASE and LAYER
-      table headers carry matched brass-bordered pill outlines distinct from the plain
-      CONTROL header, giving color plus a shape/border signal exactly where the emphasis
-      target specifies. Geometry is correct for each diagram type: linear flow with
-      branch, concentric nesting, and a data grid.'
+    reasoning: The three panels cleanly separate the two axes (a branching lifecycle
+      sequence for phase, concentric nested boxes for layer) then a table plots five
+      real controls against both, which directly demonstrates the 'two independent
+      coordinates' learning outcome. The PHASE and LAYER table headers are visually
+      matched via brass-bordered pill badges, distinguishing them from the plain CONTROL
+      header as a paired axis callout.
     suggested_fix: ''
 - anchor_id: ch12-fig03-serviceaccount-token-flow
   status: approved
@@ -56,13 +53,13 @@ figures:
     matches_intent: true
     fixed_point_visible: true
     structure_correct: true
-    reasoning: The vertical sequence cleanly narrates identity (ServiceAccount) becoming
-      a token, reaching a Pod, and passing a successful Gate 1 authentication check
-      before arriving at a visually distinct, deliberately empty Gate 2 authorization
-      box with its 'nothing here yet. see §3.' callout — this directly delivers the
-      intended identity-vs-permission distinction at a glance. Structure is an appropriate
-      linear top-to-bottom flowchart for a sequential process with only 5 node labels,
-      well under the 7-label cap.
+    reasoning: The vertical chain (ServiceAccount → TokenRequest API → Pod token volume
+      → Gate 1 Authentication with a checkmark pass → Gate 2 Authorization left visibly
+      empty) reads clearly at a glance and directly supports the learning outcome
+      of separating identity/authentication from authorization. Gate 2 is distinguished
+      by Brass fill/border plus a visibly thicker stroke than the other boxes, reinforced
+      by the 'nothing here yet. see §3.' callout and a legend entry explicitly labeling
+      that treatment 'Focal (gap).'
     suggested_fix: ''
 - anchor_id: ch12-fig02-rbac-four-way-matrix
   status: approved
@@ -86,17 +83,15 @@ figures:
     matches_intent: true
     fixed_point_visible: true
     structure_correct: true
-    reasoning: The three sequential panels (namespaced/cluster-scoped -> Role/ClusterRole,
-      independent scope question -> RoleBinding/ClusterRoleBinding, then the four
-      combinations with the invalid Role+ClusterRoleBinding struck through) walk the
-      reader through the derivation logic rather than presenting a memorized matrix,
-      directly serving the learning outcome. The closing banner is set apart with
-      a brass-bordered box, bold caps text, and an incoming brass arrow, giving it
-      both color and non-color emphasis. The decision-diamond plus directional arrows
-      read as a proper flowchart/derivation structure.
+    reasoning: The three-tier flow (namespaced/cluster-scoped boundary → independent
+      scope-of-grant question → four resulting combinations with the invalid one struck
+      out and dashed) walks the reader through the derivation rather than presenting
+      a static matrix to memorize, matching the learning outcome well. The closing
+      banner is set apart with a brass border, bold cream-filled box, and larger bold
+      type, satisfying color plus a non-color signal.
     suggested_fix: ''
 - anchor_id: ch12-fig04-pod-security-standards-levels
-  status: regenerate
+  status: pending
   render_paths:
     svg: figures/ch12-fig04-pod-security-standards-levels.svg
     png: figures/ch12-fig04-pod-security-standards-levels.png
@@ -105,7 +100,7 @@ figures:
     label_count: fail
     palette_conformance: pass
     min_font_size: pass
-    max_dimensions: fail
+    max_dimensions: pass
     aspect_ratio: pass
     grayscale_legibility: pass
     alt_text_present: pass
@@ -117,27 +112,31 @@ figures:
   ai_review:
     verdict: concerns
     matches_intent: true
-    fixed_point_visible: false
+    fixed_point_visible: true
     structure_correct: true
-    reasoning: The matrix-plus-mode-list-plus-label-example layout genuinely supports
-      the admit/warn/reject prediction task, and the three-part structure (checks
-      / consequences / syntax) fits an 'other' reference diagram. But the named fixed
-      point—the 'what gets checked' / 'what happens when a check fails' subtitles—is
-      distinguished by Brass color alone with no accompanying non-color signal (no
-      bold, underline, or box), and Brass also leaks into decorative uses elsewhere
-      (the legend swatch, the migration-note triangle), diluting its fixed-point-only
-      role.
-    suggested_fix: Bold (or box/underline) the two axis subtitles so the level-vs-mode
-      contrast survives grayscale, and restrict Brass to those two phrases only, recoloring
-      the legend swatch and triangle marker to Fog or Navy.
+    reasoning: The field x level matrix, mode list, and worked namespace-label example
+      together let a reader trace 'field violates restricted' -> 'namespace label
+      says enforce:restricted' -> 'Pod rejected,' which directly serves the learning
+      outcome; the two subtitles 'what gets checked' and 'what happens when a check
+      fails' are both set in brass with an underline, correctly pairing the level
+      axis against the mode axis. However, the bottom 'COLOR KEY' legend describes
+      a dot-based encoding (grey/'no rule', dark/'restricted-level requirement', black/'forbidden')
+      that doesn't visibly correspond to anything in the table, which instead encodes
+      state via text weight/color and an 'X' glyph -- and 'restricted-level requirement'
+      is also used to bold baseline-column cells (e.g. hostPort's 'restricted', capabilities.add's
+      'known list'), so the label misrepresents which level actually owns that requirement.
+    suggested_fix: Either wire the color-key dots to an actual visual signal present
+      on the matrix cells, or drop the dot legend and replace it with a caption that
+      accurately describes the text-weight encoding actually used (and rename 'restricted-level
+      requirement' since it also fires on baseline-only cells).
 - anchor_id: ch12-fig05-supply-chain-checkpoints
-  status: regenerate
+  status: pending
   render_paths:
     svg: figures/ch12-fig05-supply-chain-checkpoints.svg
     png: figures/ch12-fig05-supply-chain-checkpoints.png
   source_path: figures/sources/ch12-fig05-supply-chain-checkpoints.html
   validation_results:
-    label_count: pass
+    label_count: fail
     palette_conformance: pass
     min_font_size: pass
     max_dimensions: pass
@@ -150,20 +149,17 @@ figures:
   review_notes: ''
   last_applied_hash: null
   ai_review:
-    verdict: concerns
+    verdict: looks_good
     matches_intent: true
     fixed_point_visible: true
-    structure_correct: false
-    reasoning: The seven numbered steps, their outputs/tools, and the admission-boundary
-      callout clearly teach the learning outcome, and VERIFY is well distinguished
-      with brass fill plus a thicker border. But the spec (and its alt_text_seed)
-      calls for a left-to-right pipeline crossed by a vertical boundary between RESTRICT
-      and VERIFY; the render is a top-to-bottom stack crossed by a horizontal boundary,
-      so the geometry is a 90-degree rotation of the specified layout and the alt
-      text will no longer match the image.
-    suggested_fix: Regenerate as a horizontal left-to-right pipeline (BUILD through
-      RUN running left to right) with a vertical dashed boundary between RESTRICT
-      and VERIFY, keeping VERIFY's brass emphasis.
+    structure_correct: true
+    reasoning: The seven-step left-to-right chain (Build→Scan→Sign→Record→Restrict→Verify→Run)
+      with per-step outputs and tooling directly teaches the trace-and-name-checkpoints
+      learning outcome, and the closing caption explicitly states the exact insight
+      ('VERIFY is the first checkpoint the cluster performs itself'), reinforcing
+      rather than just illustrating it. The digest-continuity callout at top ties
+      the chain together as one artifact identity.
+    suggested_fix: ''
 - anchor_id: ch12-zenith-additive-never-deny
   status: approved
   render_paths:
@@ -186,10 +182,13 @@ figures:
     matches_intent: true
     fixed_point_visible: true
     structure_correct: true
-    reasoning: The two structurally mirrored flowchart panels (RBAC/API layer vs NetworkPolicy/network
-      layer) walk the same identity-check-to-outcome path with matching node shapes
-      and positions, and the caption explicitly names the convergence, so the isomorphism
-      reads at a glance. ABSENCE is rendered in brass with a bolder weight and a distinctly
-      thicker/double-toned border on its pill in both panels, making it the clear
-      fixed point without over-using the brand color elsewhere.
+    reasoning: The two panels are pixel-for-pixel structurally identical (same node
+      shapes, spacing, and flow) while swapping only vocabulary (identity/Pod, API
+      request/connection, grant?/allow rule?), which visually proves the 'same shape'
+      claim before the reader even reads the caption; the allow-vs-nothing branching
+      converging into a single 'denied by ABSENCE' outcome with a 'no deny rule exists'
+      note directly illustrates additive-only policy with no explicit deny rule.
+    fixed_point_visible_detail: ABSENCE is rendered in brass in both panels, bold,
+      inside a brass-bordered container distinct from the navy borders used elsewhere
+      — color plus two non-color signals.
     suggested_fix: ''

@@ -3,10 +3,10 @@ book: kcna
 generated: '2026-09-01T08:30:40+00:00'
 figures:
 - anchor_id: ch15-fig01-twelve-factor-in-kubernetes
-  source_hash: 05524718bcfb4452f9f7c06cfaf0e9da3fe47d5bdf09c96e9157821f65038da5
+  source_hash: b8c9b557caf982e7ab6c0763489fa43a1d8342ee1d8a1aaf6f05fa707e879db0
   output_hash:
-    svg: 05a99f364d1e780ad6e61b038bb6b23caeed1cf24ae021ef1869c648086cc9a3
-    png: c0201ebf629c5dc0ddee92eaff96818d6632897b427afc39febaf47797a28bd9
+    svg: f8149eaa17bab0d83c88b6da9fb7aaaffcd1443ba612d0d9fc2758cc55a4de0e
+    png: 73b9aa95bdc7ac393ea19d818efc782ca5e58dc7150e44513b92462cff321469
   validations:
     label_count:
       result: fail
@@ -23,11 +23,11 @@ figures:
     max_dimensions:
       result: pass
       value:
-      - 1520
-      - 2068
+      - 1800
+      - 1610
     aspect_ratio:
       result: pass
-      value: 1.36
+      value: 1.12
     grayscale_legibility:
       result: pass
       value: 8

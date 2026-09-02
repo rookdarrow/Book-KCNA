@@ -24,10 +24,11 @@ figures:
     matches_intent: true
     fixed_point_visible: true
     structure_correct: true
-    reasoning: The root box clearly reads as the anchor concept with five child boxes
-      branching from a single spine, and the footer line ('Five properties of one
-      system — not five items on a checklist') reinforces the exact learning outcome
-      that these are properties of one system rather than a standalone checklist.
+    reasoning: The root 'LOOSELY COUPLED SYSTEMS' box is clearly the parent of the
+      five characteristic boxes via a bracket-style tree connector, and the footer
+      caption ('Five properties of one system — not five items on a checklist') reinforces
+      the exact learning outcome that these are properties of one system rather than
+      a standalone list.
     suggested_fix: ''
 - anchor_id: ch17-fig05-cncf-maturity-levels
   status: approved
@@ -47,19 +48,22 @@ figures:
   review_notes: ''
   last_applied_hash: null
   ai_review:
-    verdict: looks_good
+    verdict: concerns
     matches_intent: true
     fixed_point_visible: true
-    structure_correct: true
-    reasoning: The three boxes are right-aligned and narrow progressively as they
-      ascend (Sandbox widest/lowest to Graduated narrowest/highest), producing a genuine
-      staircase silhouette with up-arrows reinforcing directionality, and each step's
-      caption states what that level asserts. Archived is correctly rendered as a
-      separate dashed 'terminal state' box below the staircase rather than a fourth
-      rung, with a connecting note clarifying it's not part of the ladder.
-    suggested_fix: ''
+    structure_correct: false
+    reasoning: The three levels are correctly labeled, ordered bottom-to-top with
+      directional arrows, and Archived is properly rendered as a separate dashed terminal-state
+      box tied back to Sandbox via a detached note — this reads clearly and supports
+      the learning outcome. However, the spec calls for an ascending staircase (steps
+      of increasing width/offset conveying a climb), and the render is instead a straight
+      vertical column of same-width, same-aligned boxes stacked with arrows — a generic
+      flowchart, not a staircase.
+    suggested_fix: Offset each level box horizontally (e.g., stagger left-to-right
+      or widen each step going up) so Sandbox, Incubating, and Graduated form a visual
+      staircase silhouette rather than a vertically stacked column.
 - anchor_id: ch17-fig02-extension-points-map
-  status: regenerate
+  status: pending
   render_paths:
     svg: figures/ch17-fig02-extension-points-map.svg
     png: figures/ch17-fig02-extension-points-map.png
@@ -78,30 +82,25 @@ figures:
   review_notes: ''
   last_applied_hash: null
   ai_review:
-    verdict: concerns
+    verdict: looks_good
     matches_intent: true
     fixed_point_visible: true
     structure_correct: true
-    reasoning: The three-band stack (API surface / control plane / node) correctly
-      places CRDs at the API layer and CRI/CNI/CSI at the node layer, and the caption
-      plus four identical brass socket glyphs land the 'same shape, different plug'
-      analogy well. But the legend line 'EXTENSION POINT — CHAPTER CROSS-REFERENCE
-      BELOW' is clipped at the right edge of the canvas, and the diagram carries well
-      over the ≤7-label working-memory budget once band titles, item names, descriptions,
-      and chapter refs are all counted.
-    suggested_fix: Widen the canvas (or wrap/shorten the legend text) so it doesn't
-      clip at the right edge, and trim label count by dropping the per-band section
-      titles or the plain-language descriptions to get back under the 7-label ceiling.
+    reasoning: The layered card cleanly separates API surface / control plane / node
+      and places CRDs, CRI, CNI, CSI at their correct layers, with the empty control-plane
+      band honestly showing it has no extension point among these four; the tagline
+      reinforces the 'defines the shape vs. supplies the plug' concept well.
+    suggested_fix: ''
 - anchor_id: ch17-fig03-mesh-data-vs-control-plane
-  status: regenerate
+  status: pending
   render_paths:
     svg: figures/ch17-fig03-mesh-data-vs-control-plane.svg
     png: figures/ch17-fig03-mesh-data-vs-control-plane.png
   source_path: figures/sources/ch17-fig03-mesh-data-vs-control-plane.html
   validation_results:
     label_count: fail
-    palette_conformance: pass
-    min_font_size: pass
+    palette_conformance: fail
+    min_font_size: fail
     max_dimensions: pass
     aspect_ratio: pass
     grayscale_legibility: pass
@@ -113,23 +112,19 @@ figures:
   review_notes: ''
   last_applied_hash: null
   ai_review:
-    verdict: concerns
+    verdict: looks_good
     matches_intent: true
-    fixed_point_visible: false
+    fixed_point_visible: true
     structure_correct: true
-    reasoning: The three-layer separation (isolated cluster control plane, mesh control
-      plane with arrows down, sidecar vs ambient data-plane columns) clearly teaches
-      the distinction and the legend/caption reinforce that both columns are one data
-      plane. However, the Envoy fixed-point ([E] sidecars and the waypoint box) is
-      distinguished from non-Envoy elements by brass border color alone — same stroke
-      weight and fill as every other box, with no thicker stroke, double border, fill
-      pattern, or bold to back it up. There's also a text collision in the ambient
-      column where 'waypoint' runs directly into 'per-NS · L7 (Envoy)' with no separating
-      space.
-    suggested_fix: Give Envoy-labeled boxes ([E] sidecars, waypoint) a visibly thicker
-      or double border (not just brass color) versus the ztunnel/pod boxes, and add
-      spacing/line-break between the 'waypoint' label and its 'per-NS · L7 (Envoy)'
-      annotation so they don't collide.
+    reasoning: The three-layer separation is explicit and well-labeled ('a different
+      thing entirely', disconnected cluster control-plane box, arrows only from mesh
+      control plane down to the data plane), and the closing caption directly states
+      the core lesson that sidecar and ambient are the same data plane in two arrangements.
+      All three Envoy instances (both [E] sidecars and the waypoint) share an identical
+      brass double-border treatment while ztunnel is deliberately left plain, and
+      the legend reinforces that distinction, so the fixed point reads correctly and
+      unambiguously.
+    suggested_fix: ''
 - anchor_id: ch17-fig07-scale-to-zero-and-the-knative-service
   status: approved
   render_paths:
@@ -152,13 +147,13 @@ figures:
     matches_intent: true
     fixed_point_visible: true
     structure_correct: true
-    reasoning: The closed-loop flowchart clearly shows the Knative Service cycling
-      through Idle (0 replicas) to Request Arrives (0→N) to Serving (N) to Traffic
-      Stops (N→0) and back, with Pod boxes containing a container at every populated
-      state plus an explicit caption reinforcing that containers/Pods are real and
-      only the lifecycle is 'serverless' — this directly conveys the learning outcome.
-      The container rectangles are distinguished with a brass-colored, visibly thicker
-      stroke than the surrounding navy/teal boxes, satisfying color + non-color emphasis.
+    reasoning: The four-state cycle (Idle at 0 replicas -> Request Arrives 0->N ->
+      Serving N -> Traffic Stops N->0, looping back to Idle) with a satellite Pod
+      box at each populated stage makes the request-driven, scale-to-zero lifecycle
+      legible at a glance, and the caption explicitly reinforces the 'lifecycle, not
+      absence' point from the learning outcome. Structure is a proper closed-loop
+      flowchart matching the alt-text's 'closed cycle' description, with Pod boxes
+      correctly shown as satellites containing a nested container rectangle.
     suggested_fix: ''
 - anchor_id: ch17-fig04-autoscaler-landscape
   status: approved
@@ -182,11 +177,14 @@ figures:
     matches_intent: true
     fixed_point_visible: true
     structure_correct: true
-    reasoning: The four-row table cleanly separates axis (WHAT MOVES) from trigger
-      (WHAT TRIGGERS IT) for each autoscaler, and the footnote bullets explicitly
-      restate both learning-outcome points (VPA is unshipped; KEDA shares HPA's axis
-      but not its trigger), so a reader grasps the concept faster than from prose.
-    fixed_point_visible_detail: ''
+    reasoning: The four-row table cleanly separates 'what moves' from 'what triggers
+      it' for each autoscaler, and the two annotation bullets explicitly restate the
+      learning outcome (VPA is the odd one out; axis and trigger are separate questions),
+      so a reader gets the concept faster than from prose. The VPA row's 'ADD-ON ·
+      NOT SHIPPED' flag is rendered in Brass with a visibly heavier border than HPA's
+      Fog-toned 'SHIPS WITH KUBERNETES' flag, giving it both a color and a stroke-weight
+      signal. Structure is a proper four-row comparison table matching the diagram's
+      comparison intent.
     suggested_fix: ''
 - anchor_id: ch17-fig06-cncf-and-k8s-governance
   status: approved
@@ -210,23 +208,22 @@ figures:
     matches_intent: true
     fixed_point_visible: true
     structure_correct: true
-    reasoning: The two-column layout with a clear vertical divider, matching header
-      treatment (org name + subtitle), and the explicit footer line ('TAGs are CNCF-wide.
-      SIGs are Kubernetes-internal.') directly reinforce the learning outcome of keeping
-      the two governance hierarchies distinct. The COMMITTEES box is the only element
-      using brass, combined with a tinted fill, a heavier border, and bold '✗ NOT
-      OPEN MEMBERSHIP' text, so the fixed point reads instantly. Both sides show a
-      believable top-down governance hierarchy (including the CNCF feedback loop from
-      End User TAB back to TOC), consistent with hierarchy_tree.
+    reasoning: The two-column layout cleanly separates CNCF's chain (Governing Board
+      -> TOC -> TAGs, with End User TAB feeding back into TOC) from Kubernetes' chain
+      (Steering Committee -> Committees, with SIGs and Working Groups as separate
+      un-chained boxes), and the footer caption reinforces the TAG-vs-SIG distinction
+      the learning outcome asks for. The COMMITTEES box is clearly singled out with
+      a brass fill, brass border, and bold brass '✗ NOT OPEN MEMBERSHIP' text — color
+      plus two non-color signals.
     suggested_fix: ''
 - anchor_id: ch17-zenith-one-pluggability-story
-  status: regenerate
+  status: pending
   render_paths:
     svg: figures/ch17-zenith-one-pluggability-story.svg
     png: figures/ch17-zenith-one-pluggability-story.png
   source_path: figures/sources/ch17-zenith-one-pluggability-story.html
   validation_results:
-    label_count: fail
+    label_count: pass
     palette_conformance: pass
     min_font_size: pass
     max_dimensions: pass
@@ -239,16 +236,13 @@ figures:
   review_notes: ''
   last_applied_hash: null
   ai_review:
-    verdict: concerns
+    verdict: looks_good
     matches_intent: true
-    fixed_point_visible: false
-    structure_correct: false
-    reasoning: The two-box relation reads clearly and the evidence list lands the
-      'four instances, not four decisions' point, but the socket arrow is colored
-      brass with no accompanying non-color signal (it's the same thin weight as every
-      other line, not thicker/double/bold), so it doesn't visually pop as the fixed
-      point. Also the alt_text_seed specifies a left/right two-halves layout, but
-      the render is a top-bottom stack (THE SHAPE over THE EVIDENCE).
-    suggested_fix: Regenerate with the socket arrow rendered 2-3x the box-border stroke
-      weight (or doubled line) in brass, and lay the diagram out as two side-by-side
-      halves — shape on the left, evidence list on the right — per the alt text.
+    fixed_point_visible: true
+    structure_correct: true
+    reasoning: The two-column split cleanly separates the abstract shape (box→socket→box)
+      from the concrete evidence (CRI/CNI/CSI/CRDs with chapter refs), and the explicit
+      caption 'Four instances. Not four decisions.' directly states the learning outcome
+      rather than leaving it implicit. Layout matches the alt_text_seed's described
+      arrangement exactly.
+    suggested_fix: ''

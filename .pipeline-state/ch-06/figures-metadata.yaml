@@ -40,10 +40,10 @@ figures:
     a selector, which in turn owns three identical Pod boxes; intent flows downward
     and existence is reported upward'
 - anchor_id: ch06-fig02-rolling-update-maxsurge-maxunavailable
-  source_hash: 641b7a44e938c1f6e282f70361244b332e8d0e04b92458f69f885e662e72d7e6
+  source_hash: b2ca1c20e7f80e0a6db73b55485e3b531d8b88bd90467ecbe984c046155adb3a
   output_hash:
-    svg: 48c9c9a8216a8aa7b6780c93c65982fc4127c8753a83deb20f842bb971fb8da4
-    png: 4b37cb6197b585464bc8195397cb1d272eb767467c6552fb1666f404155de469
+    svg: 20cdc63ae48cd7701e35f48f3e4fec3c9e0f7e097576200c027558d8c813492b
+    png: fa753a2c79a92a55c0dd0a1a5c030bce249f6fe0b5b7080d37f5b85318e350ed
   validations:
     label_count:
       result: pass
@@ -60,8 +60,8 @@ figures:
     max_dimensions:
       result: pass
       value:
-      - 1120
-      - 1518
+      - 1240
+      - 1682
     aspect_ratio:
       result: pass
       value: 1.36
@@ -116,16 +116,16 @@ figures:
     shows an unbroken bar whose fill shifts from old to new through an overlapping
     middle region, never reaching zero'
 - anchor_id: ch06-fig05-statefulset-vs-deployment-identity
-  source_hash: 6d4e37ae015f7f4ac0e98e5da94d6c337c7d676d890baded528e1c86d6278d2b
+  source_hash: 7127a2d0570e7f5d0530838bd5b7f9a6d05841e131cb530680bcb9149dfae9f3
   output_hash:
-    svg: 1c6704d8403b0935611455d8d5011f2c1327b2ea45eb773adacc4dca134d6fdc
-    png: 5f4b2f3365c89ca68ffa341ccda9b0cdb04b0d580f417a7f1288cefd03914ad6
+    svg: c01afd396a7b23772c4e67329dee180ca1533a0675db0bf61f28513bba33d9ff
+    png: 1f279b12e5252ee99fe3f5a2a5b50f648bc371f7509cef5602ba7500fedfc914
   validations:
     label_count:
       result: fail
-      value: 25
+      value: 28
       max: 7
-      reason: 25 labels exceeds working-memory limit of 7
+      reason: 28 labels exceeds working-memory limit of 7
     palette_conformance:
       result: pass
     min_font_size:
@@ -136,11 +136,11 @@ figures:
     max_dimensions:
       result: pass
       value:
-      - 1200
-      - 1680
+      - 1240
+      - 1590
     aspect_ratio:
       result: pass
-      value: 1.4
+      value: 1.28
     grayscale_legibility:
       result: pass
       value: 8

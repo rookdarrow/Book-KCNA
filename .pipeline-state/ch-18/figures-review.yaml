@@ -3,7 +3,7 @@ book: kcna
 generated: '2026-09-01T15:39:48+00:00'
 figures:
 - anchor_id: ch18-fig01-monitoring-vs-observability
-  status: regenerate
+  status: pending
   render_paths:
     svg: figures/ch18-fig01-monitoring-vs-observability.svg
     png: figures/ch18-fig01-monitoring-vs-observability.png
@@ -22,21 +22,19 @@ figures:
   review_notes: ''
   last_applied_hash: null
   ai_review:
-    verdict: concerns
+    verdict: looks_good
     matches_intent: true
-    fixed_point_visible: false
+    fixed_point_visible: true
     structure_correct: true
-    reasoning: The two-column layout with a shared 'THE RUNNING SYSTEM' base clearly
-      sells the learning outcome — 'IN ADVANCE' vs 'AT 02:10 AM' makes the timing
-      distinction immediate and the observability column correctly omits any indicator
-      layer between the question and Open Query. However, the emphasized stem (02:10
-      arrow + Open Query box) is distinguished from the rest of the diagram only by
-      hue (brass line, brass border, tan fill) — there's no thicker stroke, double
-      border, or bold text setting it apart, so the emphasis relies entirely on color
-      and would be lost for a color-blind reader or in grayscale print.
-    suggested_fix: Add a non-color signal to the 02:10-to-Open-Query stem and the
-      Open Query box — thicken that arrow's stroke and/or give Open Query a double
-      border — so the fixed point reads even without color.
+    reasoning: 'The two-column layout cleanly maps the learning outcome: monitoring
+      routes through a three-indicator gate (CPU/mem/5xx) before reaching a dashboard,
+      while observability flows directly from the 02:10 AM question to an open query,
+      and the caption states the ''fixed question set vs. not'' distinction explicitly.
+      The right-column stem from question to OPEN QUERY is rendered in brass with
+      a visibly thicker stroke and carries into a brass-bordered OPEN QUERY box, matching
+      the legend''s fixed-point marker, while DASHBOARD stays neutral — correctly
+      showing no indicator layer interrupts that path.'
+    suggested_fix: ''
 - anchor_id: ch18-fig02-otel-four-signals
   status: approved
   render_paths:
@@ -59,15 +57,14 @@ figures:
     matches_intent: true
     fixed_point_visible: true
     structure_correct: true
-    reasoning: All four signals are named and legible, and baggage's role as shared
-      context is immediately readable from its position spanning above traces/metrics/logs
-      with dashed connectors feeding down into them, matching the alt-text intent
-      almost exactly. The where/whether/what mnemonics under each signal box reinforce
-      the distinction at a glance, and the convergence into the OTel Collector then
-      backends reads as a clear pipeline.
+    reasoning: 'The baggage band''s explicit ''Context carried BETWEEN traces, metrics
+      & logs'' label plus its three dashed downward connectors make the baggage-as-cross-cutting-context
+      relationship immediately legible, and the WHERE/WHETHER/WHAT tags let a reader
+      distinguish the three signals at a glance. Structure reads as a correct component/pipeline
+      diagram: three peer inputs converging into a collector that exports onward.'
     suggested_fix: ''
 - anchor_id: ch18-fig04-prometheus-pull-architecture
-  status: regenerate
+  status: pending
   render_paths:
     svg: figures/ch18-fig04-prometheus-pull-architecture.svg
     png: figures/ch18-fig04-prometheus-pull-architecture.png
@@ -87,18 +84,18 @@ figures:
   ai_review:
     verdict: concerns
     matches_intent: true
-    fixed_point_visible: true
+    fixed_point_visible: false
     structure_correct: true
-    reasoning: 'The pull architecture reads clearly at a glance: four brass scrape
-      arrows all originate at Prometheus and point outward, reinforced by the explicit
-      callout ''Every arrow into Prometheus is Prometheus reaching out,'' and the
-      single inbound Batch Job -> PUSH -> Pushgateway path is visually set apart with
-      a dashed box and its own arrow color, matching the learning outcome. However
-      the diagram carries 8 distinct entity labels (Service Discovery, Instrumented
-      App, Exporter, Pushgateway, Batch Job, Prometheus Server, Alertmanager, Grafana),
-      exceeding the locked <=7 working-memory cap enforced by validate_label_count.'
-    suggested_fix: Collapse Alertmanager and Grafana into a single 'downstream consumers'
-      box (or drop one scrape target) to bring the label count to <=7.
+    reasoning: 'The pull model reads clearly: Prometheus sits central with all four
+      scrape arrows drawn outbound to its targets, the single Pushgateway push path
+      is visually set apart as a dashed line from an ephemeral (dashed-border) batch
+      job node, and ALERTS/READ arrows correctly show Prometheus pushing out to Alertmanager/Grafana.
+      However the four scrape arrows are distinguished from the other outbound (ALERTS/READ)
+      arrows by brass color alone — same stroke weight, same solid style, no double
+      border or pattern — so the fixed point fails the non-color-signal requirement.'
+    suggested_fix: Give the four brass SCRAPE arrows a visibly thicker stroke (or
+      double-line treatment) than the teal ALERTS/READ arrows so the fixed-point emphasis
+      survives grayscale/colorblind viewing, not just color.
 - anchor_id: ch18-fig03-trace-spans-across-services
   status: approved
   render_paths:
@@ -117,18 +114,21 @@ figures:
   review_notes: ''
   last_applied_hash: null
   ai_review:
-    verdict: looks_good
+    verdict: concerns
     matches_intent: true
     fixed_point_visible: true
-    structure_correct: true
-    reasoning: The nested indentation with tree-connector lines and proportionally-scaled
-      bars against a labeled 0-4000ms axis make span containment and time distribution
-      legible at a glance, and the closing caption text ('only the trace ID makes
-      them one story... where did the 4 seconds go') directly reinforces the trace-vs-span
-      learning outcome. Bar widths are geometrically consistent with stated durations
-      (e.g. catalog-svc's ~3700ms bar and the pricing-svc→database bar spanning nearly
-      all of it).
-    suggested_fix: ''
+    structure_correct: false
+    reasoning: The trace-ID banner, nested indentation, and the wide catalog-svc/pricing-svc
+      bars correctly convey that the DB call dominates the 4s window, and the fixed
+      point is well distinguished with brass fill plus a bolder outlined border matching
+      the legend's 'Focal' key. However, the three shortest spans (auth-svc 120ms,
+      user-store 85ms, cache 8ms) don't render as horizontal duration bars at all
+      — they show as small vertical capsule glyphs unconnected to the time axis and
+      undocumented in the legend, which breaks the waterfall metaphor for half the
+      spans and would confuse a reader trying to read their timing.
+    suggested_fix: Ensure short-duration spans render as thin horizontal bars positioned/sized
+      on the time axis (with a minimum visible width) instead of collapsing into vertical
+      capsule glyphs when duration is small.
 - anchor_id: ch18-fig06-cluster-logging-architectures
   status: approved
   render_paths:
@@ -151,15 +151,14 @@ figures:
     matches_intent: true
     fixed_point_visible: true
     structure_correct: true
-    reasoning: Three stacked panels clearly contrast fan-in (3 pods to 1 agent), 1:1
-      duplication (sidecar per pod), and no-collector direct push, and panel 1 is
-      explicitly labelled 'the default answer', supporting the learning outcome at
-      a glance. The DaemonSet Agent box is the only element with a Brass fill/border
-      plus a distinctly thicker Brass connector ('SHIPS LOGS'), clearly reading as
-      the fixed point against the Teal connectors elsewhere.
+    reasoning: Three clearly labeled, stacked panels each show a distinct topology
+      (pods→agent, pod-with-sidecar, pod-direct) all converging on one shared 'Logging
+      Backend' column, and the trade-off subtext ('the default answer' vs 'cost multiplies
+      with pod count' vs 'app must know the backend') directly supports the learning
+      outcome of naming the three architectures and justifying the DaemonSet default.
     suggested_fix: ''
 - anchor_id: ch18-fig05-sli-slo-golden-signals
-  status: regenerate
+  status: pending
   render_paths:
     svg: figures/ch18-fig05-sli-slo-golden-signals.svg
     png: figures/ch18-fig05-sli-slo-golden-signals.png
@@ -177,28 +176,28 @@ figures:
   review_notes: ''
   last_applied_hash: null
   ai_review:
-    verdict: concerns
+    verdict: looks_good
     matches_intent: true
-    fixed_point_visible: false
+    fixed_point_visible: true
     structure_correct: true
-    reasoning: The SLI→SLO→SLA progression and the golden-signals 2x2 grid with the
-      latency→saturation leading-indicator arrow both read clearly and match the learning
-      outcome. However, the MEASURES arrow (the fixed point) is distinguished from
-      the other flow arrows by brass color alone — its stroke weight matches the plain
-      navy 'leads to' arrows, so a reader skimming in grayscale or with color-vision
-      deficiency has no way to pick it out.
-    suggested_fix: Thicken the SLI-to-SLO 'measures' arrow stroke (or give it a double
-      line) so the fixed point is legible by shape as well as by brass color.
+    reasoning: The diagram clearly stages SLI (measured) into SLO (target) inside
+      an INTERNAL frame, crosses a labelled BOUNDARY into an EXTERNAL frame holding
+      SLA (contract with consequences), and separately renders a clean 2x2 grid of
+      the four golden signals with an explicit LATENCY to SATURATION arrow captioned
+      'leading indicator' — this matches the learning outcome and alt-text seed closely.
+      The header breadcrumb (MEASUREMENT to COMMITMENT to CONTRACT) reinforces the
+      SLI/SLO/SLA distinction at a glance.
+    suggested_fix: ''
 - anchor_id: ch18-zenith-instruments-answer-one-question
-  status: regenerate
+  status: pending
   render_paths:
     svg: figures/ch18-zenith-instruments-answer-one-question.svg
     png: figures/ch18-zenith-instruments-answer-one-question.png
   source_path: figures/sources/ch18-zenith-instruments-answer-one-question.html
   validation_results:
     label_count: fail
-    palette_conformance: pass
-    min_font_size: pass
+    palette_conformance: fail
+    min_font_size: fail
     max_dimensions: pass
     aspect_ratio: pass
     grayscale_legibility: pass
@@ -208,17 +207,12 @@ figures:
   review_notes: ''
   last_applied_hash: null
   ai_review:
-    verdict: concerns
+    verdict: looks_good
     matches_intent: true
-    fixed_point_visible: false
+    fixed_point_visible: true
     structure_correct: true
-    reasoning: 'The layout is clean and reads exactly as the alt text describes: one
-      question at top, three signal boxes (metric/trace/log) arrow-feeding into it,
-      and a base box tying all three together, which lands the whether/where/what
-      framing well. But the BAGGAGE box only gets the Brass border/fill tint as emphasis
-      — its stroke weight matches the other boxes, there''s no double border or fill
-      pattern, and its bold header text is styled identically to METRIC/TRACE/LOG''s
-      bold sub-labels, so there''s no genuine non-color signal setting it apart per
-      the fixed-point rule.'
-    suggested_fix: Give the BAGGAGE box a visibly thicker or doubled Brass border
-      (or a subtle fill pattern) so it reads as emphasized independent of color alone.
+    reasoning: The layout cleanly shows METRIC/TRACE/LOG resolving upward into THE
+      QUESTION (teal arrow, per legend) while all three connect downward into BAGGAGE
+      via brass lines, and the caption 'Not four topics. One question, four resolutions.'
+      reinforces the exact learning outcome at a glance.
+    suggested_fix: ''

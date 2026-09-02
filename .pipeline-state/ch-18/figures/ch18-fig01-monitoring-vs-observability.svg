@@ -1,112 +1,119 @@
-<svg viewBox="0 0 660 900" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch18-fig01-monitoring-vs-observability-title ch18-fig01-monitoring-vs-observability-desc" width="680" height="928">
-      <title id="ch18-fig01-monitoring-vs-observability-title">Monitoring vs. observability: two postures, one system</title>
-      <desc id="ch18-fig01-monitoring-vs-observability-desc">Two columns above one shared system box: the monitoring column passes through three fixed indicators — CPU, memory, and 5xx — into a dashboard, while the observability column runs straight from a question that arrives at 2:10 a.m. into an open query, with no indicator layer in between.</desc>
+<svg viewBox="0 0 640 700" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch18-fig01-title ch18-fig01-desc" width="560" height="613">
+      <title id="ch18-fig01-title">Monitoring vs. observability: two postures, one system</title>
+      <desc id="ch18-fig01-desc">Two columns above one shared system box: the monitoring column passes through three fixed indicators—CPU, memory, and 5xx—into a dashboard, while the observability column runs straight from a question arriving at 2:10 a.m. into an open query, with no indicator layer in between.</desc>
       <defs>
         <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
           <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon>
         </marker>
-        <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-          <polygon points="0 0, 8 3, 0 6" fill="#B58B3E"></polygon>
+        <marker id="arrow-accent" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto">
+          <polygon points="0 0, 9 3.5, 0 7" fill="#B58B3E"></polygon>
+        </marker>
+        <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon>
         </marker>
       </defs>
 
-      <rect width="100%" height="100%" fill="#F5EFE4"></rect>
+      <rect width="640" height="700" fill="#F5EFE4"></rect>
 
-      <!-- Column divider (quiet guide; stops where the two paths become one system) -->
-      <line x1="330" y1="100" x2="330" y2="620" stroke="rgba(11,30,59,0.10)" stroke-width="0.8"></line>
+      <!-- ===================== COLUMN HEADERS ===================== -->
+      <text x="152" y="40" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans'" font-size="16" font-weight="600">MONITORING</text>
+      <text x="152" y="60" text-anchor="middle" fill="#8A8D90" font-family="'Fira Mono'" font-size="14" letter-spacing="0.04em">known unknowns</text>
+      <text x="488" y="40" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans'" font-size="16" font-weight="600">OBSERVABILITY</text>
+      <text x="488" y="60" text-anchor="middle" fill="#8A8D90" font-family="'Fira Mono'" font-size="14" letter-spacing="0.04em">unknown unknowns</text>
 
-      <!-- ================= ARROWS / CONNECTORS (drawn before nodes) ================= -->
+      <!-- ===================== ARROWS (drawn before boxes) ===================== -->
 
-      <!-- Monitoring: box1 -> branch junction -->
-      <path d="M170,200 V244" fill="none" stroke="#1F4A4E" stroke-width="1.2"></path>
-      <!-- Monitoring: branch junction -> CPU / mem / 5xx -->
-      <path d="M170,244 H78 Q70,244 70,252 V268" fill="none" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></path>
-      <path d="M170,244 V268" fill="none" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></path>
-      <path d="M170,244 H262 Q270,244 270,252 V268" fill="none" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></path>
+      <!-- Left: top box -> branch bar -->
+      <line x1="152" y1="152" x2="152" y2="184" stroke="#1F4A4E" stroke-width="1"></line>
+      <line x1="76" y1="184" x2="228" y2="184" stroke="#1F4A4E" stroke-width="1"></line>
+      <line x1="76" y1="184" x2="76" y2="208" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"></line>
+      <line x1="152" y1="184" x2="152" y2="208" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"></line>
+      <line x1="228" y1="184" x2="228" y2="208" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"></line>
 
-      <!-- Monitoring: CPU / mem / 5xx -> merge junction (each ends at the shared point; no duplicated trunk) -->
-      <path d="M70,316 H162 Q170,316 170,324" fill="none" stroke="#1F4A4E" stroke-width="1.2"></path>
-      <path d="M170,316 V324" fill="none" stroke="#1F4A4E" stroke-width="1.2"></path>
-      <path d="M270,316 H178 Q170,316 170,324" fill="none" stroke="#1F4A4E" stroke-width="1.2"></path>
-      <circle cx="170" cy="324" r="4" fill="#0B1E3B"></circle>
-      <!-- Monitoring: merge junction -> Dashboard (single stroke) -->
-      <path d="M170,324 V424" fill="none" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></path>
+      <!-- Left: CPU / mem / 5xx -> merge bar -> DASHBOARD -->
+      <line x1="76" y1="256" x2="76" y2="288" stroke="#1F4A4E" stroke-width="1"></line>
+      <line x1="152" y1="256" x2="152" y2="288" stroke="#1F4A4E" stroke-width="1"></line>
+      <line x1="228" y1="256" x2="228" y2="288" stroke="#1F4A4E" stroke-width="1"></line>
+      <line x1="76" y1="288" x2="228" y2="288" stroke="#1F4A4E" stroke-width="1"></line>
+      <line x1="152" y1="288" x2="152" y2="320" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"></line>
 
-      <!-- Observability: unbroken stem, box1 straight to Open Query (FOCAL) -->
-      <path d="M490,200 V424" fill="none" stroke="#B58B3E" stroke-width="1.4" marker-end="url(#arrow-accent)"></path>
+      <!-- Fixed-indicator layer tag + leader, pointing at the trio the observability column skips -->
+      <line x1="264" y1="232" x2="272" y2="232" stroke="#8A8D90" stroke-width="1" stroke-dasharray="3,2"></line>
+      <text x="320" y="228" text-anchor="middle" fill="#8A8D90" font-family="'Fira Mono'" font-size="14" letter-spacing="0.08em">FIXED</text>
+      <text x="320" y="248" text-anchor="middle" fill="#8A8D90" font-family="'Fira Mono'" font-size="14" letter-spacing="0.08em">INDICATORS</text>
 
-      <!-- Dashboard -> The Running System -->
-      <path d="M170,576 V640" fill="none" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></path>
-      <!-- Open Query -> The Running System -->
-      <path d="M490,576 V640" fill="none" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></path>
+      <!-- Right: FOCAL — unbroken stem, question straight to OPEN QUERY, no indicator layer between -->
+      <line x1="488" y1="152" x2="488" y2="320" stroke="#B58B3E" stroke-width="2.4" marker-end="url(#arrow-accent)"></line>
 
-      <!-- ================= COLUMN HEADERS ================= -->
-      <text x="170" y="48" fill="#0B1E3B" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.12em">MONITORING</text>
-      <text x="170" y="76" fill="#1F4A4E" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif" text-anchor="middle">known unknowns</text>
+      <!-- Annotation: the question quote, italic aside beside the focal stem -->
+      <line x1="488" y1="232" x2="500" y2="232" stroke="#8A8D90" stroke-width="1" stroke-dasharray="4,3"></line>
+      <circle cx="488" cy="232" r="2" fill="#0B1E3B"></circle>
+      <text x="504" y="184" fill="#0B1E3B" font-style="italic" font-family="'Fira Sans'" font-size="16">“why were</text>
+      <text x="504" y="204" fill="#0B1E3B" font-style="italic" font-family="'Fira Sans'" font-size="16">requests</text>
+      <text x="504" y="224" fill="#0B1E3B" font-style="italic" font-family="'Fira Sans'" font-size="16">from one</text>
+      <text x="504" y="244" fill="#0B1E3B" font-style="italic" font-family="'Fira Sans'" font-size="16">client</text>
+      <text x="504" y="264" fill="#0B1E3B" font-style="italic" font-family="'Fira Sans'" font-size="16">slow in</text>
+      <text x="504" y="284" fill="#0B1E3B" font-style="italic" font-family="'Fira Sans'" font-size="16">region 2?”</text>
 
-      <text x="490" y="48" fill="#0B1E3B" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.12em">OBSERVABILITY</text>
-      <text x="490" y="76" fill="#1F4A4E" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif" text-anchor="middle">unknown unknowns</text>
+      <!-- Bottom: DASHBOARD / OPEN QUERY both feed the shared system, same treatment -->
+      <line x1="152" y1="416" x2="152" y2="464" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"></line>
+      <line x1="488" y1="416" x2="488" y2="464" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"></line>
 
-      <!-- ================= BOX 1 A: Questions chosen in advance ================= -->
-      <rect x="60" y="112" width="220" height="88" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
-      <text x="170" y="150" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">Questions chosen</text>
-      <text x="170" y="180" fill="#1F4A4E" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.08em">IN ADVANCE</text>
+      <!-- ===================== JUNCTION DOTS ===================== -->
+      <circle cx="152" cy="184" r="4" fill="#0B1E3B"></circle>
+      <circle cx="152" cy="288" r="4" fill="#0B1E3B"></circle>
 
-      <!-- ================= BOX 1 B: Question arrives at 02:10 ================= -->
-      <rect x="380" y="112" width="220" height="88" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
-      <text x="490" y="150" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">Question arrives</text>
-      <text x="490" y="180" fill="#1F4A4E" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.08em">AT 02:10 AM</text>
+      <!-- ===================== NODES ===================== -->
 
-      <!-- ================= INDICATOR BOXES (fixed, secondary layer) ================= -->
-      <rect x="40" y="268" width="60" height="48" rx="4" fill="#F5EFE4"></rect>
-      <rect x="40" y="268" width="60" height="48" rx="4" fill="rgba(11,30,59,0.05)" stroke="#1F4A4E" stroke-width="0.8"></rect>
-      <text x="70" y="298" fill="#1F4A4E" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.06em">CPU</text>
+      <!-- Top box: questions chosen IN ADVANCE (monitoring) -->
+      <rect x="32" y="88" width="240" height="64" rx="6" fill="#ffffff" stroke="#1F4A4E" stroke-width="1"></rect>
+      <text x="152" y="114" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans'" font-size="16" font-weight="600">questions chosen</text>
+      <text x="152" y="136" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Mono'" font-size="14" letter-spacing="0.06em">IN ADVANCE</text>
 
-      <rect x="140" y="268" width="60" height="48" rx="4" fill="#F5EFE4"></rect>
-      <rect x="140" y="268" width="60" height="48" rx="4" fill="rgba(11,30,59,0.05)" stroke="#1F4A4E" stroke-width="0.8"></rect>
-      <text x="170" y="298" fill="#1F4A4E" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.06em">mem</text>
+      <!-- Top box: question arrives AT 02:10 AM (observability) -->
+      <rect x="368" y="88" width="240" height="64" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="488" y="114" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans'" font-size="16" font-weight="600">question arrives</text>
+      <text x="488" y="136" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Mono'" font-size="14" letter-spacing="0.06em">AT 02:10 AM</text>
 
-      <rect x="240" y="268" width="60" height="48" rx="4" fill="#F5EFE4"></rect>
-      <rect x="240" y="268" width="60" height="48" rx="4" fill="rgba(11,30,59,0.05)" stroke="#1F4A4E" stroke-width="0.8"></rect>
-      <text x="270" y="298" fill="#1F4A4E" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="middle" letter-spacing="0.06em">5xx</text>
+      <!-- CPU / mem / 5xx -->
+      <rect x="44" y="208" width="64" height="48" rx="6" fill="rgba(11,30,59,0.05)" stroke="#1F4A4E" stroke-width="1"></rect>
+      <text x="76" y="238" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans'" font-size="16" font-weight="600">CPU</text>
 
-      <!-- ================= QUOTE beside the unbroken stem ================= -->
-      <text x="505" y="256" fill="#8A8D90" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif" text-anchor="start">“why were</text>
-      <text x="505" y="276" fill="#8A8D90" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif" text-anchor="start">requests</text>
-      <text x="505" y="296" fill="#8A8D90" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif" text-anchor="start">from one</text>
-      <text x="505" y="316" fill="#8A8D90" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif" text-anchor="start">client slow</text>
-      <text x="505" y="336" fill="#8A8D90" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif" text-anchor="start">in region 2?”</text>
+      <rect x="120" y="208" width="64" height="48" rx="6" fill="rgba(11,30,59,0.05)" stroke="#1F4A4E" stroke-width="1"></rect>
+      <text x="152" y="238" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans'" font-size="16" font-weight="600">mem</text>
 
-      <!-- ================= DASHBOARD (Monitoring outcome) ================= -->
-      <rect x="60" y="424" width="220" height="152" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
-      <text x="170" y="464" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">Dashboard</text>
-      <text x="170" y="500" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle">answers the 4 questions</text>
-      <text x="170" y="522" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle">you picked</text>
+      <rect x="196" y="208" width="64" height="48" rx="6" fill="rgba(11,30,59,0.05)" stroke="#1F4A4E" stroke-width="1"></rect>
+      <text x="228" y="238" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans'" font-size="16" font-weight="600">5xx</text>
 
-      <!-- ================= OPEN QUERY (Observability outcome, FOCAL) ================= -->
-      <rect x="380" y="424" width="220" height="152" rx="6" fill="#F5EFE4"></rect>
-      <rect x="380" y="424" width="220" height="152" rx="6" fill="#B58B3E" fill-opacity="0.10" stroke="#B58B3E" stroke-width="1.2"></rect>
-      <text x="490" y="464" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">Open Query</text>
-      <text x="490" y="500" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="middle">over rich telemetry</text>
+      <!-- DASHBOARD -->
+      <rect x="32" y="320" width="240" height="96" rx="6" fill="rgba(11,30,59,0.05)" stroke="#1F4A4E" stroke-width="1"></rect>
+      <text x="152" y="352" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans'" font-size="16" font-weight="600">DASHBOARD</text>
+      <text x="152" y="374" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Sans'" font-size="14">answers the 4 questions</text>
+      <text x="152" y="392" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Sans'" font-size="14">you picked</text>
 
-      <!-- ================= THE RUNNING SYSTEM (shared foundation) ================= -->
-      <rect x="40" y="640" width="580" height="88" rx="8" fill="#F5EFE4"></rect>
-      <rect x="40" y="640" width="580" height="88" rx="8" fill="rgba(11,30,59,0.05)" stroke="#0B1E3B" stroke-width="1.2"></rect>
-      <text x="330" y="690" fill="#0B1E3B" font-size="16" font-weight="600" font-family="'Fira Sans', sans-serif" text-anchor="middle" letter-spacing="0.08em">THE RUNNING SYSTEM</text>
+      <!-- OPEN QUERY — focal: double border, no color-only signal -->
+      <rect x="368" y="320" width="240" height="96" rx="6" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"></rect>
+      <rect x="374" y="326" width="228" height="84" rx="4" fill="none" stroke="#B58B3E" stroke-width="1"></rect>
+      <text x="488" y="356" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans'" font-size="16" font-weight="600">OPEN QUERY</text>
+      <text x="488" y="378" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans'" font-size="14">over rich telemetry</text>
 
-      <!-- ================= LEGEND ================= -->
-      <line x1="40" y1="784" x2="620" y2="784" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
-      <text x="40" y="804" fill="#8A8D90" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" letter-spacing="0.12em">LEGEND</text>
+      <!-- THE RUNNING SYSTEM -->
+      <rect x="32" y="464" width="576" height="64" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1.2"></rect>
+      <text x="320" y="500" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans'" font-size="16" font-weight="600" letter-spacing="0.3em">THE RUNNING SYSTEM</text>
 
-      <rect x="40" y="824" width="24" height="14" rx="3" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
-      <text x="72" y="835" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">Step</text>
+      <!-- ===================== CAPTION ===================== -->
+      <text x="320" y="568" text-anchor="middle" fill="#1F4A4E" font-style="italic" font-family="'Fira Sans'" font-size="16">Both read the same system. The difference is upstream:</text>
+      <text x="320" y="592" text-anchor="middle" fill="#1F4A4E" font-style="italic" font-family="'Fira Sans'" font-size="16">one has a fixed question set, one does not.</text>
 
-      <rect x="300" y="824" width="24" height="14" rx="3" fill="rgba(11,30,59,0.05)" stroke="#1F4A4E" stroke-width="0.8"></rect>
-      <text x="332" y="835" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">Fixed indicator</text>
+      <!-- ===================== LEGEND ===================== -->
+      <line x1="40" y1="616" x2="600" y2="616" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+      <text x="40" y="636" fill="#1F4A4E" font-family="'Fira Mono'" font-size="14" letter-spacing="0.14em">LEGEND</text>
 
-      <circle cx="52" cy="863" r="4" fill="#0B1E3B"></circle>
-      <text x="72" y="867" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">Merge point</text>
+      <line x1="40" y1="656" x2="72" y2="656" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"></line>
+      <text x="80" y="660" fill="#0B1E3B" font-family="'Fira Mono'" font-size="14">READ PATH</text>
 
-      <line x1="300" y1="863" x2="324" y2="863" stroke="#B58B3E" stroke-width="1.4" marker-end="url(#arrow-accent)"></line>
-      <text x="332" y="867" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">Unbroken path</text>
+      <line x1="340" y1="656" x2="372" y2="656" stroke="#B58B3E" stroke-width="2.4" marker-end="url(#arrow-accent)"></line>
+      <rect x="380" y="648" width="16" height="16" rx="2" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1"></rect>
+      <rect x="384" y="652" width="8" height="8" rx="1" fill="none" stroke="#B58B3E" stroke-width="0.8"></rect>
+      <text x="404" y="660" fill="#0B1E3B" font-family="'Fira Mono'" font-size="14">FIXED POINT</text>
     </svg>

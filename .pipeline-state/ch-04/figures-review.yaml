@@ -24,13 +24,12 @@ figures:
     matches_intent: true
     fixed_point_visible: true
     structure_correct: true
-    reasoning: Two clearly stacked panels correctly separate the four top-level fields
-      (apiVersion, kind, metadata with nested name/uid/namespace, spec) that the author
-      writes from the single status field the system writes, which is exactly the
-      authorship split the learning outcome tests. The 'AUTHORSHIP BOUNDARY' divider
-      is rendered in brass with bold caps and flanking heavy rule lines, giving it
-      both the required color and a non-color emphasis signal, and the panel-stack
-      layout reads as hierarchical/structural rather than a flat list.
+    reasoning: The two stacked panels with a bold brass 'AUTHORSHIP BOUNDARY' divider
+      immediately convey which fields the author writes versus what the system generates,
+      matching the learning outcome and alt-text seed closely. The boundary uses brass
+      color plus a non-color signal (thick double rule + bold caps), and the panel/field
+      layout is an appropriate structural choice for an authorship split even though
+      'component_diagram' is a loose label for it.
     suggested_fix: ''
 - anchor_id: ch04-fig02-apply-round-trip
   status: approved
@@ -54,13 +53,11 @@ figures:
     matches_intent: true
     fixed_point_visible: true
     structure_correct: true
-    reasoning: The vertical flow clearly traces manifest.yaml through apiserver/etcd
-      into a controller loop, and the return path is rendered as a distinct brass,
-      thicker-stroke orthogonal connector back into the compare step, paired with
-      an italicized brass caption ('and it watches again, forever') — satisfying color
-      plus a non-color (weight/style) signal. Structure is a clean top-to-bottom flowchart
-      with an explicit feedback loop, matching the never-terminating reconciliation
-      concept.
+    reasoning: The vertical flow from manifest.yaml through kubectl apply, apiserver,
+      etcd write, and the controller's compare/act/update cycle reads clearly at a
+      glance, and the reconcile loop closes visibly back into the compare step so
+      the 'never terminates' idea lands without needing prose.
+    fixed_point_visible_detail: n/a
     suggested_fix: ''
 - anchor_id: ch04-fig04-namespaced-vs-cluster-scoped
   status: approved
@@ -84,15 +81,13 @@ figures:
     matches_intent: true
     fixed_point_visible: true
     structure_correct: true
-    reasoning: The nested containment (cluster boundary > cluster-scoped resources
-      box > two parallel namespace boxes with identical Deployment/Service/ConfigMap/Secret
-      entries) directly visualizes the scoping hierarchy, and the explicit callout
-      'Same names in both namespaces — the namespace boundary keeps them from colliding'
-      states the learning outcome outright. The four cluster-scoped resources (Node,
-      PersistentVolume, StorageClass, Namespace) sit in their own group with a solid
-      Brass border and Brass heading text against the dashed Fog cluster outline and
-      unbordered namespace items, and the legend confirms this FOCAL vs NAMESPACED
-      distinction, giving both a color and stroke-style signal.
+    reasoning: The nested containment (dashed cluster boundary > brass-framed cluster-scoped
+      group > two identical side-by-side namespace boxes) visually demonstrates scoping
+      and the explicit annotation plus the 'Namespace (itself cluster-scoped)' aside
+      directly reinforces the collision-avoidance learning point. The four cluster-scoped
+      resources are grouped and framed in a distinct brass-bordered container with
+      brass header text (color + border/framing as the non-color signal), backed by
+      a legend that labels it FOCAL vs NAMESPACED.
     suggested_fix: ''
 - anchor_id: ch04-fig05-configmap-secret-contrast
   status: approved
@@ -116,20 +111,23 @@ figures:
     matches_intent: true
     fixed_point_visible: true
     structure_correct: true
-    reasoning: The four-row ConfigMap-vs-Secret comparison table clearly separates
-      contents, consumption, storage, and added value, and the Stored row visually
-      announces its message before a reader parses any text.
+    reasoning: The four-row comparison table clearly contrasts ConfigMap and Secret
+      on intent, consumption, storage, and added value, letting a reader grasp the
+      concept faster than prose. The Stored row is unmistakably called out with brass
+      text plus a bordered/filled box in both cells (reinforced by an explicit legend),
+      correctly showing that the two values are substantively identical. The grid
+      geometry matches a comparison-table diagram type.
     suggested_fix: ''
 - anchor_id: ch04-fig03-labels-selectors-join
-  status: regenerate
+  status: pending
   render_paths:
     svg: figures/ch04-fig03-labels-selectors-join.svg
     png: figures/ch04-fig03-labels-selectors-join.png
   source_path: figures/sources/ch04-fig03-labels-selectors-join.html
   validation_results:
-    label_count: pass
-    palette_conformance: pass
-    min_font_size: pass
+    label_count: fail
+    palette_conformance: fail
+    min_font_size: fail
     max_dimensions: pass
     aspect_ratio: pass
     grayscale_legibility: pass
@@ -141,22 +139,17 @@ figures:
   review_notes: ''
   last_applied_hash: null
   ai_review:
-    verdict: concerns
-    matches_intent: false
+    verdict: looks_good
+    matches_intent: true
     fixed_point_visible: true
-    structure_correct: false
-    reasoning: The pod attributes and four selector results are factually correct
-      and legible, but the layout is a stacked text list (label, arrow, set notation)
-      rather than an actual concept map — there are no connector lines or overlap
-      geometry tying Pod A back to the three result rows it belongs to, so the core
-      lesson (selectors produce overlapping, non-partitioning sets) has to be inferred
-      by re-reading letters rather than seen at a glance.
-    suggested_fix: Draw connector lines (or an overlap/Venn-style grouping) from each
-      Pod card down to every selector result it belongs to, and bold/brass-highlight
-      the 'A' glyph specifically within the three result sets it appears in, so the
-      recurrence is visible without re-reading each line.
+    structure_correct: true
+    reasoning: The objects-then-selectors layout with connecting lines makes overlapping
+      set membership legible at a glance, and every selector's resolved set is logically
+      correct against the four pods' tier/env labels (fe→A,B; prod→A,C; prod-or-qa→A,C;
+      be+prod→C alone).
+    suggested_fix: ''
 - anchor_id: ch04-zenith-declaration-not-order
-  status: regenerate
+  status: pending
   render_paths:
     svg: figures/ch04-zenith-declaration-not-order.svg
     png: figures/ch04-zenith-declaration-not-order.png
@@ -176,18 +169,15 @@ figures:
   review_notes: ''
   last_applied_hash: null
   ai_review:
-    verdict: concerns
+    verdict: looks_good
     matches_intent: true
     fixed_point_visible: true
     structure_correct: true
-    reasoning: The single filed-declaration box is clearly the hub, and the explicit
-      timestamps plus the closing caption effectively sell the 'independent reads,
-      not instructions' idea. However, staggering the five readers into two vertical
-      rows (with the two lower controllers appearing to hang beneath the scheduler/kubelet
-      row) visually reads as a two-level org chart at a glance, which cuts against
-      this figure's whole point that it is a declaration, not an order — a reader
-      skimming the shape before the caption could misread it as a command hierarchy.
-    suggested_fix: Lay all five reader boxes out on a single flat row (or a radial/star
-      layout) connecting to the same horizontal bus, instead of staggering two of
-      them into a lower tier, so the geometry itself reads as flat independent consultation
-      rather than subordination.
+    reasoning: A single 'THE FILED DECLARATION' box fans out via one CONSULTED line
+      to five independently-timestamped reader boxes (Scheduler 09:00, Controller
+      09:04, Kubelet 09:04, Controller 11:20, Controller 03:17), and the caption 'No
+      hand receives an instruction... every hand reads the record' reinforces the
+      read-not-push concept at a glance. The focal box uses the locked Brass tone
+      plus rounded-corner/border styling distinct from the plain reader boxes, and
+      the legend explicitly labels it 'Reference (focal)' vs 'Independent reader'.
+    suggested_fix: ''

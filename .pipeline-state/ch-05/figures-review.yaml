@@ -3,13 +3,13 @@ book: kcna
 generated: '2026-09-01T07:27:15+00:00'
 figures:
 - anchor_id: ch05-fig01-pod-shared-network-namespace
-  status: regenerate
+  status: pending
   render_paths:
     svg: figures/ch05-fig01-pod-shared-network-namespace.svg
     png: figures/ch05-fig01-pod-shared-network-namespace.png
   source_path: figures/sources/ch05-fig01-pod-shared-network-namespace.html
   validation_results:
-    label_count: fail
+    label_count: pass
     palette_conformance: pass
     min_font_size: pass
     max_dimensions: pass
@@ -26,22 +26,24 @@ figures:
     matches_intent: true
     fixed_point_visible: true
     structure_correct: true
-    reasoning: The Node > Pod > containers nesting is clear and the IP:10.42.1.7 badge
-      is correctly bound to the Pod's own boundary rather than either container, which
-      nails the core learning outcome; however the 'localhost' arrow only points app
-      -> helper, visually implying one-way traffic when the spec calls for mutual
-      reachability over localhost.
-    suggested_fix: Make the localhost connector bidirectional (double-headed arrow
-      or two opposing arrows) between app and helper to show mutual reachability,
-      not one-way.
+    reasoning: 'Node > Pod > {app, helper} hierarchy is clear, the two containers
+      are joined by a bidirectional LOCALHOST arrow which nails the core learning
+      outcome, and the IP label sits directly astride the Pod''s own boundary line
+      in Brass with a bold border, correctly reading as bound to the Pod rather than
+      either container. The one flaw: both arrows to ''shared volume'' point upward
+      only (volume to container), implying read-only access, when the spec calls out
+      that containers both read and write it.'
+    suggested_fix: Make the two shared-volume connectors bidirectional (double-headed
+      or two opposing arrows) so the diagram doesn't imply read-only access to the
+      volume.
 - anchor_id: ch05-fig03-init-containers-sequence
-  status: regenerate
+  status: pending
   render_paths:
     svg: figures/ch05-fig03-init-containers-sequence.svg
     png: figures/ch05-fig03-init-containers-sequence.png
   source_path: figures/sources/ch05-fig03-init-containers-sequence.html
   validation_results:
-    label_count: pass
+    label_count: fail
     palette_conformance: pass
     min_font_size: pass
     max_dimensions: pass
@@ -54,20 +56,18 @@ figures:
   review_notes: ''
   last_applied_hash: null
   ai_review:
-    verdict: concerns
+    verdict: looks_good
     matches_intent: true
     fixed_point_visible: true
     structure_correct: true
-    reasoning: 'The sequential init-1 -> init-2 stack and the EXIT 1 branch into the
-      Brass-emphasized ''app containers: NEVER STARTED'' terminal read clearly at
-      a glance, but the parallel-start half of the learning outcome is only asserted
-      as text inside a single oval (''app-a, app-b start together'') rather than shown
-      structurally with a fork into two concurrent boxes, and the EXIT 1 arrow forks
-      simultaneously to RESTART and to NEVER STARTED without a loop-back to init-2
-      to indicate the retry cycle.'
-    suggested_fix: Split the success path into two side-by-side app-a/app-b boxes
-      off a fork bar to visualize parallelism, and route EXIT 1 through RESTART with
-      a loop-back arrow to init-2 before the terminal NEVER STARTED state.
+    reasoning: The success path clearly shows init-1 and init-2 running sequentially
+      (explicit 'SEQUENTIAL · ONE AT A TIME' label and vertical chain) before a fork
+      bar releases app-a and app-b together ('PARALLEL · TOGETHER'), and the failure
+      path shows init-2 exiting non-zero, looping through RESTART, and terminating
+      at 'APP CONTAINERS NEVER STARTED' — directly conveying both halves of the learning
+      outcome at a glance.
+    fixed_point_visible_detail: ''
+    suggested_fix: ''
 - anchor_id: ch05-fig02-pod-phases-and-container-states
   status: approved
   render_paths:
@@ -90,13 +90,11 @@ figures:
     matches_intent: true
     fixed_point_visible: true
     structure_correct: true
-    reasoning: 'The Pod-level phase machine (5 states) and two container-level state
-      machines (3 states each) are cleanly separated by nested scope panels, and the
-      worked-overlay panel makes the scope distinction concrete by showing Pod phase:
-      Running simultaneous with the helper container''s state: Waiting (ImagePullBackOff)
-      — directly illustrating the learning outcome. Label count is exactly at the
-      7-distinct-label ceiling (Pending/Running/Succeeded/Failed/Unknown/Waiting/Terminated),
-      so no overflow.'
+    reasoning: The diagram clearly separates Pod-scoped phase (5-state machine) from
+      per-container state (3-state machine, shown twice for APP and HELPER), and the
+      worked overlay panel makes the core learning point vivid by showing a single
+      instant where Pod phase=Running while the HELPER container is Waiting with ImagePullBackOff
+      — exactly the scope distinction the outcome asks for.
     suggested_fix: ''
 - anchor_id: ch05-fig04-three-probes-compared
   status: approved
@@ -120,21 +118,22 @@ figures:
     matches_intent: true
     fixed_point_visible: true
     structure_correct: true
-    reasoning: The three-card layout with parallel ASKS/ON FAILURE/DOES NOT fields
-      lets a reader scan across rows and immediately see that readiness is the odd
-      one out (no KILL, explicit 'ONLY PROBE THAT DE-REGISTERS WITHOUT RESTARTING'
-      callout), which directly serves the learning outcome. Palette and type ramp
-      are on-brand throughout.
-    fixed_point_visible_detail: ''
-    suggested_fix: ''
+    reasoning: The three parallel cards use identical ASKS / ON FAILURE / DOES NOT
+      structure, making the liveness-vs-readiness-vs-startup contrast scannable at
+      a glance, and the readiness card even spells out the exact learning outcome
+      ('ONLY PROBE THAT DE-REGISTERS WITHOUT RESTARTING'). The readiness row's failure
+      cell is clearly the fixed point via a brass border box plus bold brass text,
+      distinct from the plain de-emphasized (fog) 'DOES NOT' text elsewhere. The stacked-card
+      comparison layout is an appropriate structure for a three-way attribute comparison
+      given diagram_type 'other'.
 - anchor_id: ch05-fig05-requests-limits-qos-classes
-  status: regenerate
+  status: pending
   render_paths:
     svg: figures/ch05-fig05-requests-limits-qos-classes.svg
     png: figures/ch05-fig05-requests-limits-qos-classes.png
   source_path: figures/sources/ch05-fig05-requests-limits-qos-classes.html
   validation_results:
-    label_count: fail
+    label_count: pass
     palette_conformance: pass
     min_font_size: pass
     max_dimensions: pass
@@ -146,19 +145,18 @@ figures:
   review_notes: ''
   last_applied_hash: null
   ai_review:
-    verdict: concerns
+    verdict: looks_good
     matches_intent: true
     fixed_point_visible: true
     structure_correct: true
-    reasoning: The three-zone vertical band (reserved / allowed / not-allowed) with
-      request and limit boundaries correctly maps to the request-vs-limit concept,
-      and the bottom callout nails the CPU-throttle-vs-memory-OOM-kill payoff verbatim
-      from the learning outcome. However, the 'Limit' and 'Request' axis labels are
-      clipped at the left edge of the canvas, rendering as '.imit' and 'quest' — these
-      are the exact anchor labels the figure hinges on, so this needs a fix before
-      it ships.
-    suggested_fix: increase left canvas margin/padding so the 'Limit' and 'Request'
-      y-axis labels render in full instead of being clipped off the left edge
+    reasoning: 'The vertical scale from 0 through REQUEST to LIMIT to NOT ALLOWED
+      directly encodes the three learning-outcome components: request vs. limit as
+      zone boundaries, kube-scheduler vs. kubelet+kernel as the acting component at
+      each boundary, and a clear bottom note contrasting CPU throttling (brass, proactive)
+      with memory OOM-kill (oxblood, reactive hazard). The LIMIT tick/line is rendered
+      in brass and is visibly thicker than the navy REQUEST and 0 lines, giving it
+      both a color and stroke-weight signal.'
+    suggested_fix: ''
 - anchor_id: ch05-zenith-smallest-deployable-unit
   status: approved
   render_paths:
@@ -181,10 +179,12 @@ figures:
     matches_intent: true
     fixed_point_visible: true
     structure_correct: true
-    reasoning: The root claim is visually distinct (brass fill + brass outline + thicker
-      stroke) and sits above a central trunk that fans out to six equally-weighted
-      consequence boxes with chapter/section citations, making the 'one decision,
-      six effects' relationship legible at a glance; the forward-reference branch
-      to Ch 9 is clearly differentiated via dashed border and muted fill, matching
-      the spec's alt text, and a legend disambiguates the three box types.
+    reasoning: The root claim reads clearly at the top and radiates via a central
+      spine to six clearly labeled, evenly weighted consequence boxes plus the forward-reference
+      sub-branch, so a reader grasps 'one decision, six effects' at a glance faster
+      than from prose. The root box is distinguished by both a Brass fill/border color
+      and a visibly heavier stroke versus the plain white/navy-bordered consequence
+      boxes, satisfying the two-signal requirement. The trunk-and-branch layout reads
+      as hierarchical and the legend disambiguates the three node types (central claim,
+      consequence, forward ref.).
     suggested_fix: ''

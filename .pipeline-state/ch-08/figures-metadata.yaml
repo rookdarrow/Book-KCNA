@@ -77,29 +77,31 @@ figures:
     each box has a downward arrow to a REJECT outcome, and the Admission box has an
     additional arrow labelled REWRITTEN that loops back into the forward path
 - anchor_id: ch08-fig05-quota-vs-limitrange
-  source_hash: 867be4537f5876d0a7307033597b134df4fbe7375486d4209582b10061880272
+  source_hash: 10577c6f19dfab61a87f5e057563dac99361f98c7b248735fd7ae1ce23c9a66c
   output_hash:
-    svg: dc043ed26b9df0bc09234cb48b1920cc55ad04336bf8c81978ecdb7db585f309
-    png: 3755652f641970780d8e97ca115641fea3c8a6891f1d1d87e9982d21eb4b8ca2
+    svg: 956fd0e59ac16333925440fc3a256c654fdd318d8780beb8b43929a81e1e76dc
+    png: 5c2ba0da5683663a0f860d7c824bac8f792ff8f7b6e0868aca1ceef70da757e8
   validations:
     label_count:
-      result: fail
-      value: 26
+      result: pass
+      value: 7
       max: 7
-      reason: 26 labels exceeds working-memory limit of 7
+      reason: ''
     palette_conformance:
       result: pass
     min_font_size:
       result: pass
-      note: no explicit font-size; renderer default applies
+      value: 14.0
+      min: 14
+      reason: ''
     max_dimensions:
       result: pass
       value:
-      - 1120
-      - 1344
+      - 1280
+      - 1376
     aspect_ratio:
       result: pass
-      value: 1.2
+      value: 1.07
     grayscale_legibility:
       result: pass
       value: 8
@@ -188,16 +190,16 @@ figures:
     manager, scheduler and cloud controller manager reach back one, and all five stop
     at the double line, while the kubectl bar alone extends one version past it
 - anchor_id: ch08-zenith-consequences-not-rules
-  source_hash: 0920aaf3599188da90ebaae8e42ea62ac8879fe8beed867915905928af05b972
+  source_hash: c79658abda42d675357bbad561cfcc7f65c942dcd30d2690bc6c863223712fda
   output_hash:
-    svg: ba46e4a6ee3b8e5cd129a6310d3cce88e767e86091a3c3f27d0eeb55529a640f
-    png: 8e2023e0e3ad5e4cc612c1cac749077099db8575719e7cf1a2e3dd2bd6059536
+    svg: df019d68dec278ffbb3301b3f2bba26eea81baf37799410f67ba94e52dbef724
+    png: 8d792eee4104e050e5fed3323708d66a27ecdd5e09fb811b28fd5444ee4b6fe1
   validations:
     label_count:
       result: fail
-      value: 12
+      value: 22
       max: 7
-      reason: 12 labels exceeds working-memory limit of 7
+      reason: 22 labels exceeds working-memory limit of 7
     palette_conformance:
       result: pass
     min_font_size:
@@ -208,11 +210,11 @@ figures:
     max_dimensions:
       result: pass
       value:
-      - 1216
-      - 1440
+      - 1360
+      - 1480
     aspect_ratio:
       result: pass
-      value: 1.18
+      value: 1.09
     grayscale_legibility:
       result: pass
       value: 8

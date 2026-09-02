@@ -82,16 +82,16 @@ figures:
     by a dashed arrow to a different point, showing that a tag is a label that can
     be moved to point at a different image.'
 - anchor_id: ch02-fig04-cri-runtime-chain
-  source_hash: 73f51f5da376f388dffdfb3d5ca2ee9d8e7735a39af262e4d1075008dd71ff56
+  source_hash: 78736629fe8dccc7733164d9b8cb1d77dcdac1313ebec9d191a27108af3ec44d
   output_hash:
-    svg: c0fe28fab8d112bf26703533c438f68c92f260052dce6cc49b0791a87a3ff68e
-    png: 6f62cfcaf8c02d4d7215436e770b182da7f7b553766bcbf610cf96986b2614bb
+    svg: b8ab858251b995cc14ff4c11d8f9e4c4b96916e010907a58cadbfc6938b5c67e
+    png: 7c7a7a97be85e945479a0a0959081a9f2171316ed26106b48fb8a7db049c363f
   validations:
     label_count:
       result: fail
-      value: 21
+      value: 22
       max: 7
-      reason: 21 labels exceeds working-memory limit of 7
+      reason: 22 labels exceeds working-memory limit of 7
     palette_conformance:
       result: pass
     min_font_size:
@@ -102,11 +102,11 @@ figures:
     max_dimensions:
       result: pass
       value:
-      - 1392
-      - 1844
+      - 1240
+      - 1174
     aspect_ratio:
       result: pass
-      value: 1.32
+      value: 1.06
     grayscale_legibility:
       result: pass
       value: 8
@@ -119,32 +119,32 @@ figures:
     Kubernetes defines this line and implements nothing below it. Below the boundary,
     a socket into which exactly one conformant CRI runtime plugs — containerd or CRI-O.
     Below the socket, runC, which starts a running process.'
-  partial: true
 - anchor_id: ch02-fig03-oci-three-specs
-  source_hash: 07e6985cb2c796a6691569c7850a17e305a7734607cc547a0cdb68a9944f514e
+  source_hash: c6fffa3ebee03946a2f36fcc1f026dc97cf20e3db203dc2ef0317fd77ef829a6
   output_hash:
-    svg: 75b8ea63b70042fbf52558f2914a05976f39ea0d1581ea5a9912f4ef44e04bc8
-    png: 719a2e9f4608397981567c78288a9a8eba5fa35f57b601f9cc45562adea2c184
+    svg: 54274f2adb44a7705cfa3d9c7fba2bdee9659e67a0d5d994ad81052b5a147369
+    png: 8e93e969cd82fbd80581653a20ae9f2fd3237cc52de5d3963af9fdcc17312265
   validations:
     label_count:
       result: fail
-      reason: SVG unparseable
-      value: 0
+      value: 19
       max: 7
+      reason: 19 labels exceeds working-memory limit of 7
     palette_conformance:
-      result: fail
-      reason: SVG unparseable
+      result: pass
     min_font_size:
-      result: fail
-      reason: SVG unparseable
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
     max_dimensions:
       result: pass
       value:
-      - 1360
-      - 1400
+      - 1120
+      - 1388
     aspect_ratio:
       result: pass
-      value: 1.03
+      value: 1.24
     grayscale_legibility:
       result: pass
       value: 8
@@ -157,18 +157,17 @@ figures:
     how to run a filesystem bundle. Each has an arrow descending to the stage it governs
     in the flow beneath: an OCI Image is pulled, then unpacked, becoming a filesystem
     bundle, which is then run. Kubernetes appears nowhere in the figure.'
-  partial: true
 - anchor_id: ch02-fig05-imagepullpolicy-decision
-  source_hash: 7177f2856183c2c8f0437ece82f30e7ecd8086ac52169c4109d5151c5d29aaff
+  source_hash: 060cc41ae5948c2c8649d544605fdffc142f68863ab639f92627e6fe674a6d6d
   output_hash:
-    svg: b1d6be5c8ef45ff297a96899d52eca8773d629b7a7b038dd8c5a49531d14161f
-    png: 79bd472af1386550c06b1b92c2140ebd3107ebcec2fb277df44bfe75d6d43a66
+    svg: d17a58082cabfe29ed47820cd1b3cdb4e1dde852034ee195cb1c5a48c3aa065c
+    png: 570c8d68a04106b81e0c3f2bebdbd5ce15e7ef8bee5020c3e004925d28423c1e
   validations:
     label_count:
       result: fail
-      value: 31
+      value: 36
       max: 7
-      reason: 31 labels exceeds working-memory limit of 7
+      reason: 36 labels exceeds working-memory limit of 7
     palette_conformance:
       result: pass
     min_font_size:
@@ -179,11 +178,11 @@ figures:
     max_dimensions:
       result: pass
       value:
-      - 1520
-      - 1804
+      - 1800
+      - 2462
     aspect_ratio:
       result: pass
-      value: 1.19
+      value: 1.37
     grayscale_legibility:
       result: pass
       value: 8

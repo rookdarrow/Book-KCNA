@@ -1,199 +1,172 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SLI, SLO, SLA — and the Four Golden Signals</title>
-<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;700&family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Fira+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  :root {
-    --color-paper:  #F5EFE4;
-    --color-ink:    #0B1E3B;
-    --color-muted:  #1F4A4E;
-    --color-accent: #B58B3E;
-    --font-slab: 'Roboto Slab', serif;
-    --font-sans: 'Fira Sans', sans-serif;
-    --font-mono: 'Fira Mono', monospace;
-  }
-  body {
-    font-family: var(--font-sans);
-    background: var(--color-paper);
-    color: var(--color-ink);
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 3rem 1.5rem;
-  }
-  .frame { max-width: 520px; width: 100%; }
-  .eyebrow {
-    font-family: var(--font-mono);
-    font-size: 0.875rem;
-    font-weight: 500;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--color-muted);
-    margin-bottom: 0.5rem;
-  }
-  h1 {
-    font-family: var(--font-slab);
-    font-size: 1.5rem;
-    font-weight: 500;
-    letter-spacing: -0.01em;
-    line-height: 1.2;
-    color: var(--color-ink);
-    margin-bottom: 1.5rem;
-  }
-  svg { width: 100%; height: auto; display: block; }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SLI to SLO to SLA, and the four golden signals</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;700&family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Fira+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --color-paper:  #F5EFE4;
+      --color-ink:    #0B1E3B;
+      --color-muted:  #1F4A4E;
+      --color-accent: #B58B3E;
+      --color-soft:   #8A8D90;
+      --font-sans: 'Fira Sans', system-ui, sans-serif;
+      --font-slab: 'Roboto Slab', serif;
+      --font-mono: 'Fira Mono', ui-monospace, monospace;
+    }
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-paper);
+      color: var(--color-ink);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 2rem;
+    }
+    .frame { max-width: 640px; width: 100%; }
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      margin-bottom: 0.5rem;
+    }
+    h1 {
+      font-family: var(--font-slab);
+      font-size: clamp(1.35rem, 1.6vw + 0.9rem, 1.75rem);
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+      color: var(--color-ink);
+      margin-bottom: 1.5rem;
+    }
+    svg { width: 100%; min-width: 480px; display: block; }
+  </style>
 </head>
 <body>
-<div class="frame">
-  <p class="eyebrow">Concept Map · Site Reliability</p>
-  <h1>SLI, SLO, SLA — and the Four Golden Signals</h1>
+  <div class="frame">
+    <p class="eyebrow">Concept Map &middot; Reliability Engineering</p>
+    <h1>SLI &rarr; SLO &rarr; SLA, and the Four Golden Signals</h1>
 
-  <svg viewBox="0 0 720 960" xmlns="http://www.w3.org/2000/svg" role="img"
-       aria-labelledby="ch18-fig05-sli-slo-golden-signals-title ch18-fig05-sli-slo-golden-signals-desc">
-    <title id="ch18-fig05-sli-slo-golden-signals-title">SLI, SLO, and SLA, and the four golden signals</title>
-    <desc id="ch18-fig05-sli-slo-golden-signals-desc">On the left, an internal frame holds an SLI measured from the user's perspective, feeding an SLO target; below a labelled boundary, an external frame holds an SLA contract with consequences. On the right, a two-by-two grid of latency, traffic, errors, and saturation, with an arrow from latency to saturation marking latency increases as a leading indicator of saturation.</desc>
+    <svg viewBox="0 0 720 960" xmlns="http://www.w3.org/2000/svg" role="img"
+         aria-labelledby="ch18-fig05-sli-slo-golden-signals-title ch18-fig05-sli-slo-golden-signals-desc">
+      <title id="ch18-fig05-sli-slo-golden-signals-title">SLI to SLO to SLA, and the four golden signals</title>
+      <desc id="ch18-fig05-sli-slo-golden-signals-desc">On the left, an internal frame holds an SLI measured from the user's perspective feeding an SLO commitment target, separated by a boundary from an external frame holding an SLA contract with consequences; on the right, a two-by-two grid of latency, traffic, errors, and saturation shows latency increases as a leading indicator of saturation.</desc>
+      <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"/>
+        </marker>
+        <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#B58B3E"/>
+        </marker>
+        <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"/>
+        </marker>
+      </defs>
 
-    <defs>
-      <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-        <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"/>
-      </marker>
-      <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-        <polygon points="0 0, 8 3, 0 6" fill="#B58B3E"/>
-      </marker>
-      <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-        <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"/>
-      </marker>
-    </defs>
+      <rect width="100%" height="100%" fill="#F5EFE4"/>
 
-    <rect width="100%" height="100%" fill="#F5EFE4"/>
+      <!-- ===== Section A eyebrow ===== -->
+      <text x="360" y="44" fill="#8A8D90" font-size="14" font-weight="500" font-family="'Fira Mono', monospace"
+            text-anchor="middle" letter-spacing="0.12em">MEASUREMENT &rarr; COMMITMENT &rarr; CONTRACT</text>
 
-    <!-- top caption -->
-    <text x="360" y="28" text-anchor="middle" fill="#8A8D90" font-family="'Fira Mono', monospace"
-          font-size="14" font-weight="500" letter-spacing="0.12em">MEASUREMENT → COMMITMENT → CONTRACT</text>
+      <!-- ===== Zones (drawn before arrows/nodes) ===== -->
+      <rect x="220" y="64" width="280" height="268" rx="8" fill="rgba(11,30,59,0.02)" stroke="rgba(11,30,59,0.10)" stroke-width="0.8"/>
+      <rect x="228" y="68" width="76" height="12" rx="2" fill="#F5EFE4"/>
+      <text x="266" y="77" fill="#8A8D90" font-size="14" font-family="'Fira Mono', monospace"
+            text-anchor="middle" letter-spacing="0.12em">INTERNAL</text>
 
-    <!-- zone: internal -->
-    <rect x="64" y="44" width="592" height="168" rx="8" fill="rgba(11,30,59,0.02)" stroke="rgba(11,30,59,0.10)" stroke-width="0.8"/>
-    <rect x="72" y="48" width="88" height="16" fill="#F5EFE4"/>
-    <text x="116" y="60" text-anchor="middle" fill="#8A8D90" font-family="'Fira Mono', monospace"
-          font-size="14" font-weight="500" letter-spacing="0.12em">INTERNAL</text>
+      <rect x="220" y="396" width="280" height="132" rx="8" fill="rgba(11,30,59,0.02)" stroke="rgba(11,30,59,0.10)" stroke-width="0.8"/>
+      <rect x="228" y="400" width="84" height="12" rx="2" fill="#F5EFE4"/>
+      <text x="270" y="409" fill="#8A8D90" font-size="14" font-family="'Fira Mono', monospace"
+            text-anchor="middle" letter-spacing="0.12em">EXTERNAL</text>
 
-    <!-- zone: external -->
-    <rect x="64" y="268" width="592" height="220" rx="8" fill="rgba(11,30,59,0.02)" stroke="rgba(11,30,59,0.10)" stroke-width="0.8"/>
-    <rect x="72" y="272" width="88" height="16" fill="#F5EFE4"/>
-    <text x="116" y="284" text-anchor="middle" fill="#8A8D90" font-family="'Fira Mono', monospace"
-          font-size="14" font-weight="500" letter-spacing="0.12em">EXTERNAL</text>
+      <!-- Boundary divider -->
+      <line x1="220" y1="364" x2="500" y2="364" stroke="#8A8D90" stroke-width="1" stroke-dasharray="6,4"/>
+      <rect x="248" y="356" width="90" height="16" fill="#F5EFE4"/>
+      <text x="293" y="368" fill="#8A8D90" font-size="14" font-family="'Fira Mono', monospace"
+            text-anchor="middle" letter-spacing="0.12em">BOUNDARY</text>
 
-    <!-- boundary divider -->
-    <line x1="64" y1="240" x2="656" y2="240" stroke="#8A8D90" stroke-width="1" stroke-dasharray="4,4"/>
-    <rect x="76" y="232" width="128" height="16" fill="#F5EFE4"/>
-    <text x="140" y="244" text-anchor="middle" fill="#8A8D90" font-family="'Fira Mono', monospace"
-          font-size="14" font-weight="500" letter-spacing="0.12em">BOUNDARY</text>
+      <!-- ===== Arrows (before nodes) ===== -->
+      <!-- SLI -> SLO : focal "measures" relationship, thickened brass stroke -->
+      <line x1="360" y1="192" x2="360" y2="232" stroke="#B58B3E" stroke-width="3" marker-end="url(#arrow-accent)"/>
+      <rect x="366" y="204" width="84" height="16" fill="#F5EFE4"/>
+      <text x="374" y="216" fill="#B58B3E" font-size="14" font-weight="400" font-family="'Fira Mono', monospace"
+            letter-spacing="0.04em">MEASURES</text>
 
-    <!-- section header: golden signals -->
-    <text x="360" y="528" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Mono', monospace"
-          font-size="14" font-weight="500" letter-spacing="0.12em">THE FOUR GOLDEN SIGNALS</text>
+      <!-- SLO -> SLA : crosses the boundary into the external contract -->
+      <line x1="360" y1="312" x2="360" y2="428" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
 
-    <!-- arrow: SLI -> SLO (focal) -->
-    <line x1="272" y1="132" x2="400" y2="132" stroke="#B58B3E" stroke-width="1.2" marker-end="url(#arrow-accent)"/>
-    <rect x="291" y="108" width="90" height="16" fill="#F5EFE4"/>
-    <text x="336" y="120" text-anchor="middle" fill="#B58B3E" font-family="'Fira Mono', monospace"
-          font-size="14" letter-spacing="0.04em">MEASURES</text>
+      <!-- LATENCY -> SATURATION : leading-indicator relationship -->
+      <path d="M 344 632 H 352 Q 360 632 360 640 V 768 Q 360 776 368 776 H 376"
+            fill="none" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <rect x="366" y="696" width="140" height="16" fill="#F5EFE4"/>
+      <text x="374" y="708" fill="#1F4A4E" font-size="14" font-weight="400" font-family="'Fira Mono', monospace"
+            letter-spacing="0.04em">LEADING SIGNAL</text>
 
-    <!-- arrow: SLO -> SLA -->
-    <path d="M488,188 V226 Q488,234 480,234 H368 Q360,234 360,242 V300"
-          fill="none" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"/>
+      <!-- ===== Nodes ===== -->
+      <!-- SLI -->
+      <rect x="236" y="96" width="248" height="96" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"/>
+      <text x="360" y="136" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">SLI</text>
+      <text x="360" y="154" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif" text-anchor="middle">the measurement from the</text>
+      <text x="360" y="172" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif" text-anchor="middle">user's perspective</text>
 
-    <!-- arrow: LATENCY -> SATURATION -->
-    <path d="M220,700 V712 Q220,720 228,720 H508 Q516,720 516,728 V740"
-          fill="none" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"/>
-    <rect x="304" y="700" width="128" height="12" fill="#F5EFE4"/>
-    <text x="368" y="708" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Mono', monospace"
-          font-size="14" letter-spacing="0.04em">LEADING SIGNAL</text>
+      <!-- SLO -->
+      <rect x="236" y="232" width="248" height="80" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"/>
+      <text x="360" y="274" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">SLO</text>
+      <text x="360" y="290" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif" text-anchor="middle">the target you commit to</text>
 
-    <!-- node: SLI -->
-    <rect x="96" y="76" width="176" height="112" rx="6" fill="#F5EFE4"/>
-    <rect x="96" y="76" width="176" height="112" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
-    <text x="184" y="104" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif"
-          font-size="16" font-weight="500">SLI</text>
-    <text x="184" y="128" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Sans', sans-serif" font-size="14">the measurement,</text>
-    <text x="184" y="148" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Sans', sans-serif" font-size="14">from the user's</text>
-    <text x="184" y="168" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Sans', sans-serif" font-size="14">perspective</text>
+      <!-- SLA (external treatment: sits in the external zone) -->
+      <rect x="236" y="428" width="248" height="80" rx="6" fill="#F5EFE4"/>
+      <rect x="236" y="428" width="248" height="80" rx="6" fill="rgba(11,30,59,0.03)" stroke="rgba(11,30,59,0.30)" stroke-width="1"/>
+      <text x="360" y="470" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">SLA</text>
+      <text x="360" y="486" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif" text-anchor="middle">contract with consequences</text>
 
-    <!-- node: SLO -->
-    <rect x="400" y="76" width="176" height="112" rx="6" fill="#F5EFE4"/>
-    <rect x="400" y="76" width="176" height="112" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
-    <text x="488" y="104" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif"
-          font-size="16" font-weight="500">SLO</text>
-    <text x="488" y="128" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Sans', sans-serif" font-size="14">the target you</text>
-    <text x="488" y="148" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Sans', sans-serif" font-size="14">commit to</text>
+      <!-- Callout: SLO vs SLA differentiator -->
+      <text x="680" y="420" fill="#1F4A4E" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif" text-anchor="end">An SLO without</text>
+      <text x="680" y="440" fill="#1F4A4E" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif" text-anchor="end">consequences is</text>
+      <text x="680" y="460" fill="#1F4A4E" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif" text-anchor="end">just an SLO &mdash;</text>
+      <text x="680" y="480" fill="#1F4A4E" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif" text-anchor="end">not an SLA.</text>
+      <path d="M 560 448 Q 522 460 484 468" fill="none" stroke="rgba(31,74,78,0.35)" stroke-width="1" stroke-dasharray="4,3"/>
+      <circle cx="484" cy="468" r="2" fill="#1F4A4E"/>
 
-    <!-- node: SLA -->
-    <rect x="240" y="300" width="240" height="104" rx="6" fill="#F5EFE4"/>
-    <rect x="240" y="300" width="240" height="104" rx="6" fill="rgba(11,30,59,0.03)" stroke="rgba(11,30,59,0.30)" stroke-width="1"/>
-    <text x="360" y="328" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif"
-          font-size="16" font-weight="500">SLA</text>
-    <text x="360" y="352" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Sans', sans-serif" font-size="14">contract with consequences</text>
+      <!-- ===== Section B eyebrow ===== -->
+      <text x="360" y="552" fill="#8A8D90" font-size="14" font-weight="500" font-family="'Fira Mono', monospace"
+            text-anchor="middle" letter-spacing="0.12em">THE FOUR GOLDEN SIGNALS</text>
 
-    <!-- explanatory note -->
-    <text x="360" y="428" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Sans', sans-serif" font-size="14">&quot;what happens if the SLO isn't met?&quot;</text>
-    <text x="360" y="452" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Sans', sans-serif" font-size="14">no consequence = it's an SLO, not an SLA</text>
+      <!-- Golden signal grid -->
+      <rect x="40" y="576" width="304" height="112" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"/>
+      <text x="192" y="622" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">LATENCY</text>
+      <text x="192" y="640" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif" text-anchor="middle">time to serve a request</text>
+      <text x="192" y="658" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif" text-anchor="middle">track OK and FAIL separately</text>
 
-    <!-- node: LATENCY -->
-    <rect x="64" y="552" width="280" height="148" rx="6" fill="#F5EFE4"/>
-    <rect x="64" y="552" width="280" height="148" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
-    <text x="204" y="580" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif"
-          font-size="16" font-weight="500">LATENCY</text>
-    <text x="204" y="604" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Sans', sans-serif" font-size="14">time to serve a request.</text>
-    <text x="204" y="624" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Sans', sans-serif" font-size="14">track ok and fail separately.</text>
-    <text x="204" y="644" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Sans', sans-serif" font-size="14">a leading indicator</text>
-    <text x="204" y="664" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Sans', sans-serif" font-size="14">of saturation</text>
+      <rect x="376" y="576" width="304" height="112" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"/>
+      <text x="528" y="622" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">TRAFFIC</text>
+      <text x="528" y="640" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif" text-anchor="middle">demand on the system</text>
+      <text x="528" y="658" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif" text-anchor="middle">req/sec, sessions</text>
 
-    <!-- node: TRAFFIC -->
-    <rect x="376" y="552" width="280" height="148" rx="6" fill="#F5EFE4"/>
-    <rect x="376" y="552" width="280" height="148" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
-    <text x="516" y="580" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif"
-          font-size="16" font-weight="500">TRAFFIC</text>
-    <text x="516" y="604" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Sans', sans-serif" font-size="14">demand on the system.</text>
-    <text x="516" y="624" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Sans', sans-serif" font-size="14">measured in req/sec,</text>
-    <text x="516" y="644" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Sans', sans-serif" font-size="14">and active sessions.</text>
+      <rect x="40" y="720" width="304" height="112" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"/>
+      <text x="192" y="766" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">ERRORS</text>
+      <text x="192" y="784" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif" text-anchor="middle">rate of failed requests</text>
+      <text x="192" y="802" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif" text-anchor="middle">explicit, implicit, or by policy</text>
 
-    <!-- node: ERRORS -->
-    <rect x="64" y="740" width="280" height="148" rx="6" fill="#F5EFE4"/>
-    <rect x="64" y="740" width="280" height="148" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
-    <text x="204" y="768" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif"
-          font-size="16" font-weight="500">ERRORS</text>
-    <text x="204" y="792" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Sans', sans-serif" font-size="14">rate of failed requests.</text>
-    <text x="204" y="812" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Sans', sans-serif" font-size="14">explicit, implicit, or</text>
-    <text x="204" y="832" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Sans', sans-serif" font-size="14">set by policy.</text>
+      <rect x="376" y="720" width="304" height="112" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"/>
+      <text x="528" y="766" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">SATURATION</text>
+      <text x="528" y="784" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif" text-anchor="middle">how full the service is</text>
+      <text x="528" y="802" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif" text-anchor="middle">degrades before 100%</text>
 
-    <!-- node: SATURATION -->
-    <rect x="376" y="740" width="280" height="148" rx="6" fill="#F5EFE4"/>
-    <rect x="376" y="740" width="280" height="148" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
-    <text x="516" y="768" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif"
-          font-size="16" font-weight="500">SATURATION</text>
-    <text x="516" y="792" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Sans', sans-serif" font-size="14">how full the service is.</text>
-    <text x="516" y="812" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Sans', sans-serif" font-size="14">degrades before it</text>
-    <text x="516" y="832" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Sans', sans-serif" font-size="14">hits 100%.</text>
-
-    <!-- legend -->
-    <line x1="64" y1="912" x2="656" y2="912" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
-    <text x="64" y="928" fill="#8A8D90" font-family="'Fira Mono', monospace" font-size="14"
-          font-weight="500" letter-spacing="0.14em">LEGEND</text>
-
-    <line x1="140" y1="944" x2="164" y2="944" stroke="#B58B3E" stroke-width="1.2" marker-end="url(#arrow-accent)"/>
-    <text x="172" y="948" fill="#0B1E3B" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.04em">MEASURES (FOCAL)</text>
-
-    <line x1="340" y1="944" x2="364" y2="944" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"/>
-    <text x="372" y="948" fill="#0B1E3B" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.04em">LEADS TO</text>
-
-    <line x1="540" y1="944" x2="564" y2="944" stroke="#8A8D90" stroke-width="1" stroke-dasharray="4,4"/>
-    <text x="572" y="948" fill="#0B1E3B" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.04em">ORG BOUNDARY</text>
-  </svg>
-</div>
+      <!-- Callout: latency as a leading indicator -->
+      <text x="460" y="854" fill="#1F4A4E" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif" text-anchor="middle">Latency increases are often a</text>
+      <text x="460" y="874" fill="#1F4A4E" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif" text-anchor="middle">leading indicator of saturation.</text>
+      <path d="M 468 844 Q 500 836 528 832" fill="none" stroke="rgba(31,74,78,0.35)" stroke-width="1" stroke-dasharray="4,3"/>
+      <circle cx="528" cy="832" r="2" fill="#1F4A4E"/>
+    </svg>
+  </div>
 </body>
 </html>

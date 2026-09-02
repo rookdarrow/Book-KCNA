@@ -3,126 +3,130 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kubernetes Storage Lifetime Ladder</title>
+<title>Storage Lifetime Boundaries</title>
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;700&family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Fira+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
-    --color-paper:       #F5EFE4;
-    --color-ink:         #0B1E3B;
-    --color-muted:       #1F4A4E;
-    --color-soft:        #8A8D90;
-    --color-accent:      #B58B3E;
-    --color-accent-tint: rgba(181,139,62,0.10);
-    --font-sans:  'Fira Sans', sans-serif;
-    --font-serif: 'Roboto Slab', serif;
-    --font-mono:  'Fira Mono', monospace;
+    --paper:   #F5EFE4;
+    --ink:     #0B1E3B;
+    --muted:   #1F4A4E;
+    --soft:    #8A8D90;
+    --accent:  #B58B3E;
+    --rule:    rgba(11,30,59,0.12);
+    --font-sans:  'Fira Sans', system-ui, sans-serif;
+    --font-slab:  'Roboto Slab', serif;
+    --font-mono:  'Fira Mono', ui-monospace, monospace;
   }
-
   body {
     font-family: var(--font-sans);
-    background: var(--color-paper);
-    color: var(--color-ink);
+    background: var(--paper);
+    color: var(--ink);
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 3rem 2rem;
+    padding: 3rem 1.5rem;
   }
-
-  .frame { max-width: 760px; width: 100%; }
-
+  .frame { max-width: 560px; width: 100%; }
   .eyebrow {
     font-family: var(--font-mono);
-    font-size: 0.8rem;
+    font-size: 14px;
     font-weight: 500;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--color-muted);
+    color: var(--muted);
     margin-bottom: 0.6rem;
   }
-
   h1 {
-    font-family: var(--font-serif);
-    font-size: clamp(1.5rem, 2vw + 0.9rem, 1.9rem);
+    font-family: var(--font-slab);
+    font-size: 1.75rem;
     font-weight: 500;
     letter-spacing: -0.01em;
-    line-height: 1.2;
-    color: var(--color-ink);
+    line-height: 1.15;
+    color: var(--ink);
     margin-bottom: 0.6rem;
   }
-
   .subtitle {
     font-family: var(--font-sans);
-    font-size: 1rem;
-    color: var(--color-muted);
-    line-height: 1.5;
+    font-size: 16px;
+    color: var(--muted);
     margin-bottom: 1.75rem;
-    max-width: 60ch;
+    max-width: 46ch;
   }
-
-  svg { width: 100%; height: auto; display: block; }
+  .diagram { width: 100%; }
+  svg { width: 100%; max-width: 440px; height: auto; display: block; margin: 0 auto; }
+  footer {
+    margin-top: 1.75rem;
+    padding-top: 0.9rem;
+    border-top: 1px solid var(--rule);
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--soft);
+    letter-spacing: 0.04em;
+  }
 </style>
 </head>
 <body>
   <div class="frame">
-    <p class="eyebrow">Kubernetes Storage &middot; Nested Boundaries</p>
-    <h1>The Volume Lifetime Ladder</h1>
-    <p class="subtitle">Trace a file outward from the container filesystem and name which of two boundaries destroys it.</p>
+    <p class="eyebrow">Ch. 11 &middot; Fig. 01</p>
+    <h1>Storage Lifetime Boundaries</h1>
+    <p class="subtitle">Trace a file outward through three scopes to find which crossing destroys it.</p>
 
-    <svg viewBox="0 0 720 960" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch11-fig01-title ch11-fig01-desc">
-      <title id="ch11-fig01-title">Kubernetes Storage Lifetime Ladder</title>
-      <desc id="ch11-fig01-desc">Three nested rectangles show widening Kubernetes storage lifetimes: an innermost container writable layer that survives nothing, a middle Pod-scoped volume that survives a container restart, and an outermost cluster-scoped storage boundary that survives the Pod's deletion, with the two lifecycle boundaries marked where data below the line is discarded.</desc>
+    <div class="diagram">
+      <svg viewBox="0 0 480 620" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch11-fig01-volume-lifetime-ladder-title ch11-fig01-volume-lifetime-ladder-desc">
+        <title id="ch11-fig01-volume-lifetime-ladder-title">Kubernetes storage lifetime boundaries</title>
+        <desc id="ch11-fig01-volume-lifetime-ladder-desc">Three nested rectangles showing widening storage lifetimes: an innermost container writable layer that survives nothing, a middle Pod-scoped volume that survives a container restart, and an outermost cluster-scoped storage box that survives the Pod's deletion; two arrows mark the boundaries at container restart and at Pod deletion.</desc>
+        <defs>
+          <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"/></marker>
+          <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#B58B3E"/></marker>
+          <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"/></marker>
+        </defs>
 
-      <defs>
-        <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-          <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"/>
-        </marker>
-        <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-          <polygon points="0 0, 8 3, 0 6" fill="#B58B3E"/>
-        </marker>
-        <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-          <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"/>
-        </marker>
-      </defs>
+        <rect width="100%" height="100%" fill="#F5EFE4"/>
 
-      <rect width="100%" height="100%" fill="#F5EFE4"/>
+        <!-- Rung 3: CLUSTER-SCOPED STORAGE (outermost) -->
+        <rect x="32" y="32" width="416" height="504" rx="8" fill="rgba(11,30,59,0.02)" stroke="#8A8D90" stroke-width="1"/>
+        <rect x="48" y="24" width="56" height="16" fill="#F5EFE4"/>
+        <text x="76" y="36" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.12em" fill="#8A8D90">RUNG 3</text>
+        <text x="240" y="76" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">CLUSTER-SCOPED STORAGE</text>
+        <text x="240" y="100" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="14" fill="#1F4A4E">survives the Pod&#8217;s deletion</text>
 
-      <!-- RING 3 — CLUSTER-SCOPED STORAGE (outermost) -->
-      <rect x="40" y="64" width="640" height="856" rx="8" fill="rgba(11,30,59,0.02)" stroke="rgba(31,74,78,0.35)" stroke-width="1"/>
-      <rect x="60" y="56" width="380" height="16" fill="#F5EFE4"/>
-      <text x="68" y="68" fill="#1F4A4E" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" letter-spacing="0.12em">CLUSTER-SCOPED STORAGE &mdash; RUNG 3</text>
-      <text x="68" y="104" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">survives the Pod&#8217;s deletion</text>
+        <!-- Rung 2: POD-SCOPED VOLUME -->
+        <rect x="60" y="156" width="360" height="300" rx="8" fill="rgba(11,30,59,0.035)" stroke="#1F4A4E" stroke-width="1"/>
+        <rect x="76" y="148" width="56" height="16" fill="#F5EFE4"/>
+        <text x="104" y="160" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.12em" fill="#8A8D90">RUNG 2</text>
+        <text x="240" y="200" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">POD-SCOPED VOLUME</text>
+        <text x="240" y="224" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="14" fill="#1F4A4E">survives a container restart</text>
 
-      <!-- RING 2 — POD-SCOPED VOLUME -->
-      <rect x="96" y="156" width="528" height="504" rx="8" fill="rgba(11,30,59,0.035)" stroke="rgba(11,30,59,0.45)" stroke-width="1"/>
-      <rect x="116" y="148" width="340" height="16" fill="#F5EFE4"/>
-      <text x="124" y="160" fill="#0B1E3B" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" letter-spacing="0.12em">POD-SCOPED VOLUME &mdash; RUNG 2</text>
-      <text x="124" y="196" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">survives a container restart</text>
+        <!-- Rung 1: CONTAINER WRITABLE LAYER (innermost) -->
+        <rect x="88" y="280" width="304" height="96" rx="8" fill="rgba(11,30,59,0.05)" stroke="#0B1E3B" stroke-width="1.2"/>
+        <rect x="104" y="272" width="56" height="16" fill="#F5EFE4"/>
+        <text x="132" y="284" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.12em" fill="#8A8D90">RUNG 1</text>
+        <text x="240" y="324" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">CONTAINER WRITABLE LAYER</text>
+        <text x="240" y="348" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="14" fill="#1F4A4E">survives nothing</text>
 
-      <!-- RING 1 — CONTAINER WRITABLE LAYER (innermost) -->
-      <rect x="152" y="248" width="416" height="268" rx="8" fill="rgba(11,30,59,0.05)" stroke="#0B1E3B" stroke-width="1.2"/>
-      <rect x="172" y="240" width="380" height="16" fill="#F5EFE4"/>
-      <text x="180" y="252" fill="#0B1E3B" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" letter-spacing="0.12em">CONTAINER WRITABLE LAYER &mdash; RUNG 1</text>
-      <text x="180" y="288" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">survives nothing</text>
+        <!-- Boundary 1: CONTAINER RESTART -->
+        <path d="M240,392 L240,376" fill="none" stroke="#B58B3E" stroke-width="1.2" marker-end="url(#arrow-accent)"/>
+        <line x1="140" y1="392" x2="340" y2="392" stroke="#B58B3E" stroke-width="1.2" stroke-dasharray="6,4"/>
+        <rect x="148" y="400" width="184" height="16" fill="#F5EFE4"/>
+        <text x="240" y="412" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="600" letter-spacing="0.04em" fill="#B58B3E">CONTAINER RESTART</text>
 
-      <!-- BOUNDARY 1 — CONTAINER RESTART (focal) -->
-      <path d="M 152 560 L 568 560" fill="none" stroke="#B58B3E" stroke-width="1.2" stroke-dasharray="6,4"/>
-      <path d="M 200 560 L 200 516" fill="none" stroke="#B58B3E" stroke-width="1.2" marker-end="url(#arrow-accent)"/>
-      <rect x="152" y="528" width="300" height="20" fill="#F5EFE4"/>
-      <text x="160" y="544" fill="#B58B3E" font-size="14" font-weight="400" font-family="'Fira Mono', monospace" letter-spacing="0.04em">BOUNDARY: CONTAINER RESTART</text>
-      <text x="160" y="580" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">(data below this line is discarded)</text>
+        <!-- Boundary 2: POD CEASES TO EXIST -->
+        <path d="M240,472 L240,456" fill="none" stroke="#B58B3E" stroke-width="1.2" marker-end="url(#arrow-accent)"/>
+        <line x1="120" y1="472" x2="360" y2="472" stroke="#B58B3E" stroke-width="1.2" stroke-dasharray="6,4"/>
+        <rect x="140" y="480" width="200" height="16" fill="#F5EFE4"/>
+        <text x="240" y="492" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="600" letter-spacing="0.04em" fill="#B58B3E">POD CEASES TO EXIST</text>
 
-      <!-- BOUNDARY 2 — POD CEASES TO EXIST (focal) -->
-      <path d="M 96 740 L 624 740" fill="none" stroke="#B58B3E" stroke-width="1.2" stroke-dasharray="6,4"/>
-      <path d="M 192 740 L 192 660" fill="none" stroke="#B58B3E" stroke-width="1.2" marker-end="url(#arrow-accent)"/>
-      <rect x="96" y="708" width="320" height="20" fill="#F5EFE4"/>
-      <text x="104" y="724" fill="#B58B3E" font-size="14" font-weight="400" font-family="'Fira Mono', monospace" letter-spacing="0.04em">BOUNDARY: POD CEASES TO EXIST</text>
-      <text x="104" y="760" fill="#1F4A4E" font-size="14" font-family="'Fira Sans', sans-serif">(data below this line is discarded)</text>
+        <!-- Legend -->
+        <line x1="32" y1="560" x2="448" y2="560" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+        <text x="32" y="584" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.12em" fill="#8A8D90">LEGEND</text>
+        <line x1="104" y1="580" x2="132" y2="580" stroke="#B58B3E" stroke-width="1.2" stroke-dasharray="4,3"/>
+        <text x="144" y="584" font-family="'Fira Mono', monospace" font-size="14" fill="#8A8D90">DATA ABOVE THE LINE IS DISCARDED</text>
+      </svg>
+    </div>
 
-      <!-- Closing note — editorial callout -->
-      <text x="360" y="832" fill="#0B1E3B" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif" text-anchor="middle">nothing in a Pod&#8217;s lifecycle crosses this outer boundary</text>
-    </svg>
+    <footer>ch11-fig01-volume-lifetime-ladder</footer>
   </div>
 </body>
 </html>

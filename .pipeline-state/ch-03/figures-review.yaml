@@ -24,12 +24,14 @@ figures:
     matches_intent: true
     fixed_point_visible: true
     structure_correct: true
-    reasoning: The three side-by-side layer stacks correctly show one app on bare
-      metal, two VMs each with a Guest OS atop a Hypervisor/Host OS, and three apps
-      on one Shared OS, which directly visualizes the learning outcome; the bottom
-      SHARES row (brass text plus a continuous brass-bordered band spanning all three
-      columns, distinct from the navy panel borders above) clearly marks the fixed
-      point and reads across all three panels as instructed.
+    reasoning: Three clearly parallel layer stacks (App/OS/Hardware; App-App/Guest
+      OS-Guest OS/Hypervisor/Host OS/Hardware; App-App-App/Shared OS/Hardware) make
+      the sharing progression legible at a glance and directly support the learning
+      outcome. The bottom 'SHARES' band uses brass color plus a distinct border and
+      fill (non-color signal) and bold caps, and correctly spans all three columns
+      as instructed. Palette usage (navy structure, brass emphasis only on the fixed
+      point, cream background) and the vertically-nested geometry both match a deployment/layer-stack
+      diagram.
     suggested_fix: ''
 - anchor_id: ch03-fig01-control-plane-and-node-components
   status: approved
@@ -49,19 +51,20 @@ figures:
   review_notes: ''
   last_applied_hash: null
   ai_review:
-    verdict: looks_good
+    verdict: concerns
     matches_intent: true
     fixed_point_visible: true
     structure_correct: true
-    reasoning: The control-plane/node split is unmistakable as two stacked, clearly
-      labeled regions, letting a reader sort any component to the correct side at
-      a glance; the 'NODE — REPEATS PER WORKER' label substitutes for drawing two
-      node boxes and still conveys the per-worker repetition. cloud-controller-manager
-      and kube-proxy both carry brass dashed borders plus a distinct fill tint versus
-      the solid white 'always present' boxes, reinforced by a legend, satisfying the
-      dual color+non-color signal requirement. Region nesting reads as a clean hierarchy
-      appropriate for a k8s component census.
-    suggested_fix: ''
+    reasoning: The control-plane/node split is immediately legible and the legend
+      clarifies always-present vs optional, so a reader can place components correctly
+      at a glance. However, the spec calls for two node regions to visually reinforce
+      that node components repeat per worker, and the render collapsed this into a
+      single box relying only on the text label 'REPEATS PER WORKER' — a real loss
+      of the horizontal-scaling cue the alt text describes.
+    suggested_fix: Render two side-by-side (or stacked, slightly offset) node boxes,
+      each containing kubelet, kube-proxy (dashed), and container runtime, to visually
+      convey that node components repeat per worker instead of relying solely on the
+      header text.
 - anchor_id: ch03-fig04-request-path-through-apiserver
   status: approved
   render_paths:
@@ -84,17 +87,15 @@ figures:
     matches_intent: true
     fixed_point_visible: true
     structure_correct: true
-    reasoning: 'The hub topology is immediate and unambiguous: three clients converge
-      into kube-apiserver from above, two kubelets converge into it from below, and
-      only the apiserver-to-etcd edge exists at the bottom, with zero lines connecting
-      any of the five peer components to each other — directly demonstrating the ''no
-      direct communication'' learning outcome. The apiserver box uses brass fill/border
-      plus a thicker outline and bold label, and its sole edge to etcd is colored
-      brass/gold distinctly from every other (teal) edge, satisfying both the color
-      and non-color emphasis requirements.'
+    reasoning: The hub-and-spoke layout puts kube-apiserver at the visual center with
+      all five clients converging on it via elbow connectors and zero lateral edges
+      between them, making the 'everything talks only to the API server' rule legible
+      at a glance; etcd hangs off the bottom as the sole downstream dependency, matching
+      the alt-text seed almost exactly.
+    fixed_point_visible_detail: ''
     suggested_fix: ''
 - anchor_id: ch03-fig02-control-loop-desired-vs-current
-  status: regenerate
+  status: pending
   render_paths:
     svg: figures/ch03-fig02-control-loop-desired-vs-current.svg
     png: figures/ch03-fig02-control-loop-desired-vs-current.png
@@ -113,18 +114,14 @@ figures:
   review_notes: ''
   last_applied_hash: null
   ai_review:
-    verdict: concerns
+    verdict: looks_good
     matches_intent: true
-    fixed_point_visible: false
+    fixed_point_visible: true
     structure_correct: true
-    reasoning: The four-box layout correctly separates the closed loop (Compare ->
-      Act to Close the Gap -> Current State -> Compare, in Brass) from the external
-      read-only feed (Desired State -> Compare, in Teal), and the caption plus legend
-      reinforce the non-terminating-loop concept well. But the Brass loop arrows and
-      the Teal feed arrow share identical stroke weight with no double-line, thicker
-      stroke, or fill-pattern differentiation, so the fixed point is distinguished
-      by color alone, which fails the non-color-signal requirement and won't hold
-      up for colorblind readers.
-    suggested_fix: Increase stroke width (e.g. ~3px vs ~1.5px) or add a double-line
-      treatment on the three Brass loop arrows so the closed cycle is distinguished
-      by both color and a non-color signal, not color alone.
+    reasoning: The diagram cleanly separates the non-cyclic 'Desired State' input
+      (teal, single line, feeding only into Compare) from the actual closed loop (Current
+      State to Compare to Act to Close the Gap and back), and the 'no start. no end.
+      no exit condition.' caption directly reinforces the non-terminating-loop learning
+      outcome.
+    fixed_point_visible_note: ''
+    suggested_fix: ''

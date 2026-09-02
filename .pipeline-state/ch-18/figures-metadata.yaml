@@ -3,16 +3,16 @@ book: kcna
 generated: '2026-09-01T15:39:48+00:00'
 figures:
 - anchor_id: ch18-fig01-monitoring-vs-observability
-  source_hash: 636a17e371e3a6fcac958673b75c4e4bac863b0c20fa26ba55b2e9b8eeacdc5e
+  source_hash: bd563e33ce703ac174657114766f2fe63979c1c863463eea64dfdfbd680e4b00
   output_hash:
-    svg: d54acd4c18bbf6b93ccb64f376acfff5204645a9ce7f34630913c767398ae19c
-    png: e2dc867bb3ffd8654de7b3fad744f159da5a5209a97a30794d75428f4f8f5c94
+    svg: 3395cfcc5555a1e5f1654fcb062c9fab979d6042461098a9d25b0f481d5c6113
+    png: e21fb0ac00f99b658e553c99571cfd97da87c65f9d6030842a1397f65f4e7b4e
   validations:
     label_count:
       result: fail
-      value: 27
+      value: 30
       max: 7
-      reason: 27 labels exceeds working-memory limit of 7
+      reason: 30 labels exceeds working-memory limit of 7
     palette_conformance:
       result: pass
     min_font_size:
@@ -23,11 +23,11 @@ figures:
     max_dimensions:
       result: pass
       value:
-      - 1360
-      - 1854
+      - 1120
+      - 1226
     aspect_ratio:
       result: pass
-      value: 1.36
+      value: 1.09
     grayscale_legibility:
       result: pass
       value: 8
@@ -77,16 +77,16 @@ figures:
     and what. The three converge into an OpenTelemetry Collector that receives, processes
     and exports to one or more backends.
 - anchor_id: ch18-fig04-prometheus-pull-architecture
-  source_hash: 8d4ca63339f4cac026ba2a9e861063f3d8ae4b2061ac0ad4997aefe6e9f93349
+  source_hash: d6d96ec1f434dc70125073b0c9499e67462384b6453af2622303d106d6084c27
   output_hash:
-    svg: f58f5a1aed9014a301302dd1ae93e29283e9e5e0ab53fdf82282134d57dea503
-    png: e86ea9fb7f569758cda004d3626e90b2c0baaa7de4511d2e150afcce550e4e90
+    svg: b3c339223ebdb42b47942c657e157bfff689119bebfd66b474cc4ca342285cc1
+    png: 94e0b79ec36a2072b500792861ed185446d8c8305531c0214e63332ecc0c834b
   validations:
     label_count:
       result: fail
-      value: 26
+      value: 29
       max: 7
-      reason: 26 labels exceeds working-memory limit of 7
+      reason: 29 labels exceeds working-memory limit of 7
     palette_conformance:
       result: pass
     min_font_size:
@@ -97,11 +97,11 @@ figures:
     max_dimensions:
       result: pass
       value:
-      - 1240
-      - 1510
+      - 960
+      - 1046
     aspect_ratio:
       result: pass
-      value: 1.22
+      value: 1.09
     grayscale_legibility:
       result: pass
       value: 8
@@ -189,16 +189,16 @@ figures:
     it and forwards. In the second, a sidecar collector inside each Pod forwards the
     app's logs. In the third, the app pushes straight to the backend with no collector.
 - anchor_id: ch18-fig05-sli-slo-golden-signals
-  source_hash: 2e89d139dfa8e000bf0857e9134efc51a85e6e576c977b76627797150c5e52ec
+  source_hash: a3c25244dd9ce25b4baed6fb2070c1543273110bd0d40cf383c226e6f0b14ace
   output_hash:
-    svg: 422832044a8e45e5518a951f573941f4c6ff25ee2afbd6d33fc3270f7ff780f2
-    png: cd26a0c0adb480a2075a887f0f20e350c93d2d0d9b92dd9909af1a8d74a56f18
+    svg: 6d1df5a486aedf3d1bad6312bdf6db52a10d830d2a8640553001140e0f179b5d
+    png: cf3f3bb369c00bc414fcf5c2cab562af2d2e1cd04ab813110a5d279402825798
   validations:
     label_count:
       result: fail
-      value: 39
+      value: 32
       max: 7
-      reason: 39 labels exceeds working-memory limit of 7
+      reason: 32 labels exceeds working-memory limit of 7
     palette_conformance:
       result: pass
     min_font_size:
@@ -209,8 +209,8 @@ figures:
     max_dimensions:
       result: pass
       value:
-      - 1040
-      - 1388
+      - 1280
+      - 1708
     aspect_ratio:
       result: pass
       value: 1.33
@@ -227,7 +227,7 @@ figures:
     traffic, errors and saturation, with an arrow from latency to saturation marking
     latency increases as a leading indicator of saturation.
 - anchor_id: ch18-zenith-instruments-answer-one-question
-  source_hash: b15b8a03ad439e2d1e9e42d738007e7d7a81a93db5bf5423f83b8a0b2f92cdab
+  source_hash: 49a82f3e992f35a8d2b7ec55c5f0f896d89f1184bc3bbdd79be1f27f53a3167e
   output_hash:
     svg: 957b05b78b99c3b88abdc185eb64b6a5d46a36b631e4406b40890de39b91c73d
     png: 030541d8c83a0bd1096cc232ee1f7f46e1985c7f3d36582cabb7d3657ad736b4
@@ -263,3 +263,4 @@ figures:
     expect. Three boxes below point up into it: a metric answering whether, a trace
     answering where, and a log answering what. A baggage box beneath connects to all
     three, making them about the same request rather than three separate stories.'
+  partial: true

@@ -150,31 +150,30 @@ figures:
     how a Pod consumes them, how they are stored, and what each adds. The storage
     row reads unencrypted in etcd for both, with by default noted on the Secret side.
 - anchor_id: ch04-fig03-labels-selectors-join
-  source_hash: c98415bf907d9af7a50872f64c56ae0afc94c00abf25f24aee3ada86f7243eb4
+  source_hash: 3c90ae7b64818c64d3f209431390e79c7f2a835cba56de8eeb14651a20f94531
   output_hash:
-    svg: a11d5b71a86a24fa878308f8fc03ce295173fd320fd722afd3effdfdeadb2b9e
-    png: ec021ffddd06bdc6bf7fb79b20f51003d9e023c3918de6f3559ec892e6df4d0a
+    svg: 3fe1e1e912fe9ec0d3be8b786686fa7b33c3085ec8d167c4927370148d2e0ae3
+    png: adc85c36193a3e7e2ca6236a0962225faa2835a42902037ab6c1b0d60a642da9
   validations:
     label_count:
-      result: pass
-      value: 7
+      result: fail
+      reason: SVG unparseable
+      value: 0
       max: 7
-      reason: ''
     palette_conformance:
-      result: pass
+      result: fail
+      reason: SVG unparseable
     min_font_size:
-      result: pass
-      value: 14.0
-      min: 14
-      reason: ''
+      result: fail
+      reason: SVG unparseable
     max_dimensions:
       result: pass
       value:
-      - 880
-      - 1114
+      - 1280
+      - 1600
     aspect_ratio:
       result: pass
-      value: 1.27
+      value: 1.25
     grayscale_legibility:
       result: pass
       value: 8
@@ -188,10 +187,10 @@ figures:
     be and env equals prod gives C alone. Pod A appears in three sets and Pod D in
     none.'
 - anchor_id: ch04-zenith-declaration-not-order
-  source_hash: 82ad1739d37ea4da6e73a277fa94548bbc61de256a7379e3ab155dcd37d9044f
+  source_hash: 8474d7841fc08412b9d1febc5b592fbeb50718b70df9d329f0080c97c35db7d3
   output_hash:
-    svg: 7dbf4599c96945d5ebe075178da4fb4471e91c76b3cad2c7b07914cd19303f2e
-    png: 94e3ac3a9a2e72cfed230dcfd53a3e87689350d563f9f583412b46869f9e0fd2
+    svg: 0b69a990332d17fb40514e7e8b709b26a190c08e99f8ad4ade724b41570a13e8
+    png: b9574d267ea54880c89737e37d3d0cf0b6729d4d267c40c8730ec8b751052395
   validations:
     label_count:
       result: fail
@@ -208,11 +207,11 @@ figures:
     max_dimensions:
       result: pass
       value:
-      - 1040
-      - 1114
+      - 1520
+      - 1716
     aspect_ratio:
       result: pass
-      value: 1.07
+      value: 1.13
     grayscale_legibility:
       result: pass
       value: 8

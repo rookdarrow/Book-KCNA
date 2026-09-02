@@ -20,20 +20,24 @@ figures:
   review_notes: ''
   last_applied_hash: null
   ai_review:
-    verdict: looks_good
+    verdict: concerns
     matches_intent: true
     fixed_point_visible: true
     structure_correct: true
-    reasoning: The three-tier vertical hierarchy (Deployment > ReplicaSet > 3 Pods)
-      reads clearly at a glance, and the Deployment/ReplicaSet boxes explicitly contrast
-      'the count you write' vs 'the count it enforces', which directly answers the
-      learning outcome about which layer holds the template versus which enforces
-      the count. The ReplicaSet's replicas row is boxed in Brass with a distinct outline
-      against the plain text rows around it, satisfying both the color and non-color
-      emphasis requirement.
-    suggested_fix: ''
+    reasoning: The three-tier hierarchy (Deployment -> ReplicaSet -> 3 Pods) is geometrically
+      correct and the ownership arrow plus footer caption clearly convey the intent-down/existence-up
+      model, with the ReplicaSet's enforced replica count correctly distinguished
+      from the Deployment's template/authored count. However, the box annotations
+      push distinct text labels to roughly 9-10 (Deployment title + 3 sub-rows, edge
+      label, ReplicaSet title + 2 sub-rows, footer caption), well past the ≤7 working-memory
+      limit, which will likely trip validate_label_count and undercuts the 'at a glance'
+      goal.
+    suggested_fix: 'Trim each box to its title plus the one distinguishing annotation
+      (drop ''strategy'' and ''selector'' sub-rows or fold them into a single tooltip-style
+      line) to bring the diagram under 7 total labels while keeping the brass-highlighted
+      ''replicas: 3 — the count it enforces'' row.'
 - anchor_id: ch06-fig02-rolling-update-maxsurge-maxunavailable
-  status: regenerate
+  status: pending
   render_paths:
     svg: figures/ch06-fig02-rolling-update-maxsurge-maxunavailable.svg
     png: figures/ch06-fig02-rolling-update-maxsurge-maxunavailable.png
@@ -52,19 +56,19 @@ figures:
   review_notes: ''
   last_applied_hash: null
   ai_review:
-    verdict: concerns
+    verdict: looks_good
     matches_intent: true
     fixed_point_visible: true
     structure_correct: true
-    reasoning: 'The ceiling (13) and floor (8) bounds are excellent: brass, dashed,
-      bold-labeled with the derivation formula, making the core learning outcome legible
-      at a glance. However, the old-population and new-population step lines are both
-      rendered in near-identical dark navy/teal tones with no other distinguishing
-      signal, so the ''old declines while new rises'' story that the fill/staircase
-      is meant to tell is hard to read apart from the ceiling/floor bounds themselves.'
-    suggested_fix: Give the old-population and new-population lines a non-color differentiator
-      (e.g. solid vs. dashed stroke, or a visibly lighter teal) since navy and teal
-      are too close in value to distinguish at a glance.
+    reasoning: The chart shows Old Pod count declining and New Pod count rising across
+      t0-t6, with their sum never exceeding 13 and never dropping below 8, plus explicit
+      annotation text spelling out the 10+3=13 and 10-2=8 arithmetic — this teaches
+      the ceiling/floor prediction skill at a glance. The ceiling and floor lines
+      are both rendered in identical Brass dashed strokes with bold matching labels,
+      correctly signaling they're two halves of one rule via color plus line-style
+      (dashed vs. the solid Navy/Teal/Fog data and reference lines). Structurally
+      it's a correct count-vs-time XY chart with proper axes, legend, and monotonic
+      step progressions for both pod populations.
 - anchor_id: ch06-fig03-recreate-vs-rolling
   status: approved
   render_paths:
@@ -87,14 +91,14 @@ figures:
     matches_intent: true
     fixed_point_visible: true
     structure_correct: true
-    reasoning: 'The two stacked timelines make the Recreate-vs-RollingUpdate tradeoff
-      legible at a glance: Recreate''s old/new bars are visibly separated by a gap,
-      RollingUpdate''s bars are contiguous with an overlap region, and the ''ALL OLD
-      KILLED THEN NEW CREATED'' / ''OLD AND NEW OVERLAP THROUGHOUT'' captions reinforce
-      the mechanism without requiring prose.'
+    reasoning: 'The two stacked timelines make the core contrast immediate: Recreate
+      shows a visible bracketed gap between solid old/new bars, RollingUpdate shows
+      an unbroken bar with a striped overlap region and an explicit ''never reaches
+      zero'' caption, so the availability cost of each strategy reads at a glance
+      and matches the alt-text intent.'
     suggested_fix: ''
 - anchor_id: ch06-fig05-statefulset-vs-deployment-identity
-  status: regenerate
+  status: pending
   render_paths:
     svg: figures/ch06-fig05-statefulset-vs-deployment-identity.svg
     png: figures/ch06-fig05-statefulset-vs-deployment-identity.png
@@ -117,18 +121,16 @@ figures:
     matches_intent: true
     fixed_point_visible: true
     structure_correct: true
-    reasoning: 'The two-panel layout, captions, and ''NEW IDENTITY'' vs ''SAME IDENTITY''
-      labels do convey the interchangeable-vs-sticky distinction, but the StatefulSet
-      panel breaks the visual parallel that makes the Deployment panel work: there
-      the dashed/X''d terminated pod points to a distinct NEW pod box, while in the
-      StatefulSet panel the same dashed/X''d terminated db-0 is drawn as the source
-      of the reattachment arrow straight to vol db-0, with no intervening ''new db-0''
-      pod node. That reads as the dead pod reattaching to its volume rather than a
-      fresh replacement pod inheriting the identity and volume, which slightly undercuts
-      the at-a-glance clarity of the exact concept being emphasized.'
-    suggested_fix: Add a non-dashed replacement db-0 pod node between the terminated
-      db-0 and vol db-0 so the brass SAME IDENTITY arrow visibly runs terminated-pod
-      -> new-pod -> volume, mirroring the Deployment panel's dead-pod -> new-pod structure.
+    reasoning: 'The naming/UID framing (captions ''Nothing depended on which one it
+      was'' / ''The identity outlived the Pod'') correctly teaches interchangeability
+      as the real distinction, and the brass reattachment arrow + bordered vol db-0
+      box clearly mark the fixed point. But omitting storage entirely from the Deployment
+      panel risks the exact misconception the learning_outcome warns against: a reader
+      can glance at ''no volumes on top, volumes on bottom'' and walk away thinking
+      the difference IS disk usage, not pod identity.'
+    suggested_fix: Add a small caption under the Deployment panel noting a Deployment
+      pod could mount a volume too, it just wouldn't reattach to the same one on replacement,
+      so storage presence isn't read as the distinguishing signal.
 - anchor_id: ch06-fig04-workload-resource-decision-tree
   status: approved
   render_paths:
@@ -147,19 +149,19 @@ figures:
   review_notes: ''
   last_applied_hash: null
   ai_review:
-    verdict: looks_good
+    verdict: concerns
     matches_intent: true
     fixed_point_visible: true
     structure_correct: true
-    reasoning: The root node 'Does the work END?' is clearly promoted above and ahead
-      of the other three decisions, and the tree correctly resolves to all five expected
-      leaves (CronJob, Job, DaemonSet, Deployment, StatefulSet) via orthogonal YES/NO
-      branches that read as a proper decision tree rather than a generic flowchart.
-      The root diamond carries the locked Brass fill/stroke plus a visibly heavier
-      border than the plain white/navy decision diamonds, and a legend explicitly
-      calls out the shape-to-role mapping, reinforcing the fixed point without relying
-      on color alone.
-    suggested_fix: ''
+    reasoning: The tree correctly mirrors the alt-text logic (END -> schedule -> CronJob/Job;
+      NOT END -> every-node -> DaemonSet/interchangeable -> Deployment/StatefulSet)
+      and the root 'Does the work END?' diamond is clearly the fixed point via Brass
+      fill, larger size, and an explicit legend callout. However the diagram carries
+      9 distinct labels (4 questions + 5 resource outcomes), exceeding the locked
+      ≤7 label working-memory limit.
+    suggested_fix: Reduce label count to ≤7 by dropping the 'manages a ReplicaSet'
+      sub-label on Deployment and either merging the two right-side questions or splitting
+      the ending/non-ending halves into two linked mini-trees.
 - anchor_id: ch06-zenith-control-loop-instantiated
   status: approved
   render_paths:
@@ -182,10 +184,10 @@ figures:
     matches_intent: true
     fixed_point_visible: true
     structure_correct: true
-    reasoning: The single loop plus substitution table makes the 'one loop, six desired
-      states' idea legible at a glance, directly setting up the GitOps generalization;
-      the return path is rendered in brass with a visibly bolder stroke and bold label
-      text against the thin teal compare/act arrows, and the desired-state-over-current-state
-      layout with a looping return arrow correctly reads as a control loop rather
-      than a linear flowchart.
+    reasoning: The loop is drawn exactly once (Desired State -> Compare -> Current
+      State -> Act on the Gap -> return) with a substitution table below mapping all
+      six controllers to their desired-state input, which directly sells the 'one
+      loop, six instantiations' learning outcome at a glance. The return arrow is
+      rendered in Brass with a visibly heavier stroke than the teal Compare/Act-on-the-Gap
+      edges, satisfying color plus a non-color signal.
     suggested_fix: ''

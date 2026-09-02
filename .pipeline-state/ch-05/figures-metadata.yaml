@@ -3,16 +3,16 @@ book: kcna
 generated: '2026-09-01T07:27:15+00:00'
 figures:
 - anchor_id: ch05-fig01-pod-shared-network-namespace
-  source_hash: b7a97c583a12f2c8f4314bbd5e984108093a628b22d5cc0262a873297583511c
+  source_hash: e5ad5fbb54b9f0cf3cbec2cd54fcca3b7c773b560df4e4772c2e4cff18f56962
   output_hash:
-    svg: 96bba058b9be9814a327100e351be1b75ca97eebfd979f9f984a9578fbfa3ac8
-    png: ea47475f818e9278214dc10054375b8bfd46782f70cd3c388648bd6499f99773
+    svg: 1aa0bea98711e2d0ab717980f05a38a3977f9fdaf075d69a01d1c27c10cc02d3
+    png: 058beb455fafc84a62887487ec8f63d5e3560dee8e3d824af6bc5752eb03d0e5
   validations:
     label_count:
-      result: fail
-      value: 14
+      result: pass
+      value: 7
       max: 7
-      reason: 14 labels exceeds working-memory limit of 7
+      reason: ''
     palette_conformance:
       result: pass
     min_font_size:
@@ -24,10 +24,10 @@ figures:
       result: pass
       value:
       - 1120
-      - 1120
+      - 1344
     aspect_ratio:
       result: pass
-      value: 1.0
+      value: 1.2
     grayscale_legibility:
       result: pass
       value: 8
@@ -39,16 +39,16 @@ figures:
     boundary and holds two containers, app and helper, which communicate over localhost
     and both read and write a shared volume inside the Pod
 - anchor_id: ch05-fig03-init-containers-sequence
-  source_hash: c41cb19c2c484ee39b36aafc55ea278f87c40e1dd82b37bdfeddf24879b9cbd2
+  source_hash: ac8be3f117a9995c450252251d644177da63ad1841cede033a8e64042ffc4b49
   output_hash:
-    svg: 5908bca1388f7b2c252ec1ede9065eda08b234da11bef3cb4cb324a9fc8db0e5
-    png: f323d4d5efe87d56bb5a248f09dc54a242c71fe9d44f2808c2e85933f4f83364
+    svg: 93880453e70e1ab68d0406093cf96abc21b1802a019009aac27b7ec37342a179
+    png: 0c4f30e1e72dee15eedbabd0abc1e850baa19662742ea093d865068a8cb876ac
   validations:
     label_count:
-      result: pass
-      value: 3
+      result: fail
+      value: 31
       max: 7
-      reason: ''
+      reason: 31 labels exceeds working-memory limit of 7
     palette_conformance:
       result: pass
     min_font_size:
@@ -59,11 +59,11 @@ figures:
     max_dimensions:
       result: pass
       value:
-      - 1240
-      - 1432
+      - 1120
+      - 1504
     aspect_ratio:
       result: pass
-      value: 1.15
+      value: 1.34
     grayscale_legibility:
       result: pass
       value: 8
@@ -152,16 +152,16 @@ figures:
     anything; startup asks whether the application has started, on failure the kubelet
     kills the container, and while configured it suppresses the other two probes'
 - anchor_id: ch05-fig05-requests-limits-qos-classes
-  source_hash: ee4053e8cdccb4fc2c099af8c3d6de3359351df9b765ef77b6dae831034c37e1
+  source_hash: 4881fd3db9e2b48e99932403208728c9d3e4a3751f3bbfefa14dee5bbb46b431
   output_hash:
-    svg: a5fe661a1a5b70a3434a6f851b4bbcde99f6f6e022f0ee8fe19e2ab629f5f973
-    png: 8b21432e5609abe38dbdd45bf6d38fc7c3070b03d44f3bc5f47cea8988ee7134
+    svg: 50a53b630a427c8cc454e8ee94d61a35e91fc6f7a5f637c7e0494c6cedd12ea6
+    png: f7e344f3dc6eb09decacc3e3e0456a1d429ae07e85e026a64c6a78634fb34ae8
   validations:
     label_count:
-      result: fail
-      value: 19
+      result: pass
+      value: 7
       max: 7
-      reason: 19 labels exceeds working-memory limit of 7
+      reason: ''
     palette_conformance:
       result: pass
     min_font_size:
@@ -172,11 +172,11 @@ figures:
     max_dimensions:
       result: pass
       value:
-      - 1520
-      - 1840
+      - 1440
+      - 1800
     aspect_ratio:
       result: pass
-      value: 1.21
+      value: 1.25
     grayscale_legibility:
       result: pass
       value: 8

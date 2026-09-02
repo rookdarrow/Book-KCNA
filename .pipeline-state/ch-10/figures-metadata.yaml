@@ -43,16 +43,16 @@ figures:
     that forks to a shop Service and a blog Service. The matched fragment of each
     request is underlined.'
 - anchor_id: ch10-fig03-gateway-api-role-split
-  source_hash: 5ef44510d6958ead6e5e1277cac8a27b4816a5de1ddf7d9c58e3724b4d9dccc9
+  source_hash: 93158509c5d39d96d937c424adb4b9d04b427166f36be177d8caa73856723d43
   output_hash:
-    svg: 23f382d9eb3ab2e71673e5fea1de7bab4ddcfd1f5fcdac1518a524f8b3312af3
-    png: 8a1c803240cc7a56e77328cdad3fbc56fb0d6d3b583e4e6050635dcf8878b06f
+    svg: f4282667cd675cc71aa4e6d11ebb12124f3196c2415261a4f6d464b99423243d
+    png: 7c3297fffae7678c83f0001edf302453fa3b53dd827c188c494f72a27b16d533
   validations:
     label_count:
       result: fail
-      value: 12
+      value: 11
       max: 7
-      reason: 12 labels exceeds working-memory limit of 7
+      reason: 11 labels exceeds working-memory limit of 7
     palette_conformance:
       result: pass
     min_font_size:
@@ -63,11 +63,11 @@ figures:
     max_dimensions:
       result: pass
       value:
-      - 1200
-      - 1600
+      - 1440
+      - 1620
     aspect_ratio:
       result: pass
-      value: 1.33
+      value: 1.12
     grayscale_legibility:
       result: pass
       value: 8

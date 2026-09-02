@@ -114,10 +114,10 @@ figures:
     and the API server alone connects to etcd, with no direct links between any of
     the surrounding components
 - anchor_id: ch03-fig02-control-loop-desired-vs-current
-  source_hash: ecb6665deb3299b0e884c97f5f069ed8ac09c9e3736d2507a3aae5bc5273d63e
+  source_hash: 536adaf6dca62471cafb1ad82542dd3e97a981b08a7f380ecaa7e482c63a3425
   output_hash:
-    svg: ed735d778ad4580520c8e919133eaf7c076fb150c02da969fb8f0ab250d706bf
-    png: c8e0a926502528d23a55e08b4a71f6d25805e2c10016b0083406c7a8b3d1827f
+    svg: 161158c01143e7da15619efb0b21cf42166bda9fff1e2e8a8f8dacf85f37f2c7
+    png: abaa6923e6eb4fe961aeb5ceb6aa7a7395eb9d0fa01c6a2af19ab67257beeea9
   validations:
     label_count:
       result: fail
@@ -134,11 +134,11 @@ figures:
     max_dimensions:
       result: pass
       value:
-      - 960
-      - 1218
+      - 920
+      - 1204
     aspect_ratio:
       result: pass
-      value: 1.27
+      value: 1.31
     grayscale_legibility:
       result: pass
       value: 8

@@ -3,19 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Two Paths, One Pod</title>
+<title>Service Path vs. Port-Forward Path to a Pod</title>
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;700&family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Fira+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
-    --color-paper:   #F5EFE4;
-    --color-ink:     #0B1E3B;
-    --color-muted:   #1F4A4E;
-    --color-soft:    #8A8D90;
-    --color-accent:  #B58B3E;
-    --font-sans:  'Fira Sans', sans-serif;
-    --font-slab:  'Roboto Slab', serif;
-    --font-mono:  'Fira Mono', ui-monospace, monospace;
+    --color-paper:       #F5EFE4;
+    --color-ink:         #0B1E3B;
+    --color-muted:       #1F4A4E;
+    --color-soft:        #8A8D90;
+    --color-accent:      #B58B3E;
+    --color-accent-tint: rgba(181,139,62,0.10);
+    --color-rule:        rgba(11,30,59,0.12);
+    --font-slab: 'Roboto Slab', serif;
+    --font-sans: 'Fira Sans', sans-serif;
+    --font-mono: 'Fira Mono', monospace;
   }
   body {
     font-family: var(--font-sans);
@@ -27,12 +29,12 @@
     justify-content: center;
     padding: 3rem 2rem;
   }
-  .frame { max-width: 620px; width: 100%; }
+  .frame { max-width: 640px; width: 100%; }
   .eyebrow {
     font-family: var(--font-mono);
     font-size: 0.875rem;
     font-weight: 500;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--color-muted);
     margin-bottom: 0.6rem;
@@ -42,187 +44,146 @@
     font-size: 1.75rem;
     font-weight: 500;
     letter-spacing: -0.01em;
-    line-height: 1.15;
+    line-height: 1.2;
     color: var(--color-ink);
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.9rem;
   }
-  .subtitle {
+  p.dek {
     font-family: var(--font-sans);
     font-size: 1rem;
     line-height: 1.5;
     color: var(--color-muted);
-    max-width: 46ch;
-    margin-bottom: 1.75rem;
+    margin-bottom: 1.5rem;
+    max-width: 56ch;
   }
-  .diagram-wrap { max-width: 480px; margin: 0 auto; }
-  svg { width: 100%; display: block; }
-  .colophon {
-    font-family: var(--font-mono);
-    font-size: 0.875rem;
-    color: var(--color-soft);
-    text-align: center;
-    margin-top: 1.5rem;
-    padding-top: 0.75rem;
-    border-top: 1px solid rgba(11,30,59,0.12);
-    letter-spacing: 0.04em;
-  }
+  svg { width: 100%; height: auto; display: block; }
 </style>
 </head>
 <body>
 <div class="frame">
-  <p class="eyebrow">Data Flow &middot; Ch.16 Fig.03</p>
-  <h1>Two Paths, One Pod</h1>
-  <p class="subtitle">A working port-forward beside a failing Service call points the fault at the Service path, not the application &mdash; because the Pod is the only step the two paths share.</p>
+  <p class="eyebrow">CH16 &middot; FIG 03 &middot; DATA FLOW</p>
+  <h1>Two Roads to the Same Pod</h1>
+  <p class="dek">All four of &sect;4&rsquo;s break points live on the Service path. The port-forward path shares no step with it except the Pod itself &mdash; which is why a working port-forward beside a failing Service call points straight at the Service layer.</p>
 
-  <div class="diagram-wrap">
-    <svg viewBox="0 0 600 808" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="pfw-vs-svc-title pfw-vs-svc-desc">
-      <title id="pfw-vs-svc-title">Two Paths to the Pod: Service vs. Port-Forward</title>
-      <desc id="pfw-vs-svc-desc">Two separate request paths. The Service path, travelled by users, runs from client to DNS to the Service's ClusterIP to the service proxy to the Pod's targetPort, annotated with selector and endpoints at the Service and kube-proxy rules at the proxy; all four of section four's break points live on this path. The port-forward path, travelled by the engineer, runs from kubectl to the API server via the pods/portforward subresource and on to the Pod's port. The two paths share no step except the Pod itself.</desc>
+  <svg viewBox="0 0 560 780" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch16-fig03-portforward-vs-service-path-title ch16-fig03-portforward-vs-service-path-desc">
+    <title id="ch16-fig03-portforward-vs-service-path-title">Service Path vs. Port-Forward Path to a Pod</title>
+    <desc id="ch16-fig03-portforward-vs-service-path-desc">Diagram comparing the Service path a user's request travels &mdash; client, DNS, the Service's ClusterIP with its selector and endpoints, the service proxy applying kube-proxy rules, then the Pod's targetPort &mdash; against the port-forward path an engineer travels &mdash; kubectl, the API server's pods/portforward subresource, kubelet, then the Pod's port &mdash; showing the two paths share no step except the Pod itself.</desc>
 
-      <defs>
-        <marker id="arr-muted" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
-          <path d="M0,0 L7,3.5 L0,7 Z" fill="#1F4A4E"/>
-        </marker>
-        <marker id="arr-accent" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
-          <path d="M0,0 L7,3.5 L0,7 Z" fill="#B58B3E"/>
-        </marker>
-        <marker id="arr-link" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
-          <path d="M0,0 L7,3.5 L0,7 Z" fill="#1F4A4E"/>
-        </marker>
-      </defs>
+    <defs>
+      <marker id="arr-muted" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"/>
+      </marker>
+      <marker id="arr-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#B58B3E"/>
+      </marker>
+      <marker id="arr-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"/>
+      </marker>
+    </defs>
 
-      <rect width="100%" height="100%" fill="#F5EFE4"/>
+    <!-- background -->
+    <rect width="560" height="780" fill="#F5EFE4"/>
 
-      <!-- ===== column headers ===== -->
-      <text x="128" y="24" text-anchor="middle" font-family="'Fira Mono',monospace" font-size="14" font-weight="500" letter-spacing="0.10em" fill="#0B1E3B">THE SERVICE PATH</text>
-      <text x="128" y="44" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-style="italic" font-size="14" fill="#1F4A4E">(what your users travel)</text>
+    <!-- structural dividers -->
+    <line x1="40" y1="56" x2="520" y2="56" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+    <line x1="280" y1="56" x2="280" y2="648" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+    <line x1="40" y1="664" x2="520" y2="664" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
 
-      <text x="472" y="24" text-anchor="middle" font-family="'Fira Mono',monospace" font-size="14" font-weight="500" letter-spacing="0.10em" fill="#0B1E3B">THE PORT-FORWARD PATH</text>
-      <text x="472" y="44" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-style="italic" font-size="14" fill="#1F4A4E">(what you travel)</text>
+    <!-- column headers -->
+    <text x="152" y="20" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.12em">SERVICE PATH</text>
+    <text x="152" y="40" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Sans', sans-serif" font-size="14">what your users travel</text>
 
-      <!-- ===== connectors (drawn before nodes) ===== -->
-      <!-- main chain: service path -->
-      <line x1="128" y1="136" x2="128" y2="200" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arr-muted)"/>
-      <line x1="128" y1="264" x2="128" y2="328" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arr-muted)"/>
-      <line x1="128" y1="392" x2="128" y2="456" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arr-muted)"/>
-      <line x1="128" y1="520" x2="128" y2="584" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arr-muted)"/>
-      <!-- main chain: port-forward path -->
-      <line x1="472" y1="264" x2="472" y2="328" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arr-muted)"/>
-      <line x1="472" y1="392" x2="472" y2="456" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arr-muted)"/>
-      <line x1="472" y1="520" x2="472" y2="584" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arr-muted)"/>
+    <text x="408" y="20" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.12em">PORT-FORWARD PATH</text>
+    <text x="408" y="40" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Sans', sans-serif" font-size="14">what you travel</text>
 
-      <!-- annotation stub A: Service -> "selector, endpoints" -->
-      <line x1="216" y1="360" x2="224" y2="360" stroke="#8A8D90" stroke-width="0.8"/>
-      <circle cx="216" cy="360" r="2" fill="#8A8D90"/>
-      <circle cx="224" cy="360" r="2" fill="#8A8D90"/>
+    <!-- arrows: left column (client -> DNS -> Service -> service proxy -> Pod) -->
+    <line x1="152" y1="152" x2="152" y2="184" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arr-muted)"/>
+    <line x1="152" y1="272" x2="152" y2="304" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arr-muted)"/>
+    <line x1="152" y1="392" x2="152" y2="424" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arr-muted)"/>
+    <line x1="152" y1="512" x2="152" y2="544" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arr-muted)"/>
 
-      <!-- annotation stub B: kube-proxy -> "kube-proxy rules" -->
-      <line x1="216" y1="488" x2="224" y2="488" stroke="#8A8D90" stroke-width="0.8"/>
-      <circle cx="216" cy="488" r="2" fill="#8A8D90"/>
-      <circle cx="224" cy="488" r="2" fill="#8A8D90"/>
+    <!-- arrows: right column (kubectl -> API server -> kubelet -> Pod), skipping the empty DNS-equivalent row -->
+    <line x1="408" y1="152" x2="408" y2="304" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arr-muted)"/>
+    <line x1="408" y1="392" x2="408" y2="424" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arr-muted)"/>
+    <line x1="408" y1="512" x2="408" y2="544" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arr-muted)"/>
 
-      <!-- annotation stub C: kube-apiserver -> "pods/portforward subresource" -->
-      <path d="M384,372 H364 Q356,372 356,380 V416 Q356,424 364,424 H376" fill="none" stroke="#8A8D90" stroke-width="0.8"/>
-      <circle cx="384" cy="372" r="2" fill="#8A8D90"/>
-      <circle cx="376" cy="424" r="2" fill="#8A8D90"/>
+    <!-- dashed connector: same Pod, different access point (no arrowhead - equivalence, not flow) -->
+    <line x1="252" y1="588" x2="308" y2="588" stroke="#8A8D90" stroke-width="1" stroke-dasharray="4,3"/>
+    <circle cx="252" cy="588" r="3" fill="#8A8D90"/>
+    <circle cx="308" cy="588" r="3" fill="#8A8D90"/>
 
-      <!-- same-pod link: dashed, no directional marker -->
-      <line x1="216" y1="616" x2="384" y2="616" stroke="#1F4A4E" stroke-width="1" stroke-dasharray="5,4"/>
-      <circle cx="216" cy="616" r="3" fill="#B58B3E"/>
-      <circle cx="384" cy="616" r="3" fill="#B58B3E"/>
-      <rect x="260" y="592" width="80" height="16" rx="2" fill="#F5EFE4"/>
-      <text x="300" y="604" text-anchor="middle" font-family="'Fira Mono',monospace" font-size="14" letter-spacing="0.04em" fill="#0B1E3B">SAME POD</text>
+    <!-- ===== LEFT COLUMN NODES ===== -->
 
-      <!-- ===== nodes: service path (left column) ===== -->
-      <!-- client -->
-      <rect x="40" y="72" width="176" height="64" rx="6" fill="rgba(31,74,78,0.10)" stroke="#8A8D90" stroke-width="1"/>
-      <text x="128" y="109" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">client</text>
+    <!-- client -->
+    <rect x="52" y="64" width="200" height="88" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+    <text x="152" y="100" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500">client</text>
+    <text x="152" y="120" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Mono', monospace" font-size="14">sends the request</text>
 
-      <!-- DNS -->
-      <rect x="40" y="200" width="176" height="64" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"/>
-      <text x="128" y="237" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">DNS</text>
+    <!-- DNS -->
+    <rect x="52" y="184" width="200" height="88" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+    <text x="152" y="220" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500">DNS</text>
+    <text x="152" y="240" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Mono', monospace" font-size="14">resolves the name</text>
 
-      <!-- Service -->
-      <rect x="40" y="328" width="176" height="64" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"/>
-      <text x="128" y="355" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">Service</text>
-      <text x="128" y="374" text-anchor="middle" font-family="'Fira Mono',monospace" font-size="14" fill="#1F4A4E">ClusterIP</text>
+    <!-- Service -->
+    <rect x="52" y="304" width="200" height="88" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+    <text x="152" y="328" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500">Service</text>
+    <text x="152" y="348" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Mono', monospace" font-size="14">ClusterIP</text>
+    <text x="152" y="368" text-anchor="middle" fill="#8A8D90" font-family="'Fira Mono', monospace" font-size="14">selector, endpoints</text>
 
-      <!-- kube-proxy -->
-      <rect x="40" y="456" width="176" height="64" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"/>
-      <text x="128" y="483" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">kube-proxy</text>
-      <text x="128" y="502" text-anchor="middle" font-family="'Fira Mono',monospace" font-size="14" fill="#1F4A4E">service proxy</text>
+    <!-- service proxy -->
+    <rect x="52" y="424" width="200" height="88" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+    <text x="152" y="460" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500">service proxy</text>
+    <text x="152" y="480" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Mono', monospace" font-size="14">kube-proxy rules</text>
 
-      <!-- Pod (service path terminus) -->
-      <rect x="40" y="584" width="176" height="64" rx="6" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"/>
-      <text x="128" y="611" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">Pod</text>
-      <text x="128" y="630" text-anchor="middle" font-family="'Fira Mono',monospace" font-size="14" fill="#1F4A4E">targetPort</text>
+    <!-- Pod (targetPort) - FOCAL -->
+    <rect x="52" y="544" width="200" height="88" rx="6" fill="#F5EFE4"/>
+    <rect x="52" y="544" width="200" height="88" rx="6" fill="#B58B3E" fill-opacity="0.10" stroke="#B58B3E" stroke-width="1.2"/>
+    <text x="152" y="580" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500">Pod</text>
+    <text x="152" y="600" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Mono', monospace" font-size="14">targetPort</text>
 
-      <!-- ===== nodes: port-forward path (right column) ===== -->
-      <!-- kubectl -->
-      <rect x="384" y="200" width="176" height="64" rx="6" fill="rgba(31,74,78,0.10)" stroke="#8A8D90" stroke-width="1"/>
-      <text x="472" y="237" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">kubectl</text>
+    <!-- ===== RIGHT COLUMN NODES ===== -->
 
-      <!-- kube-apiserver -->
-      <rect x="384" y="328" width="176" height="64" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"/>
-      <text x="472" y="355" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">kube-apiserver</text>
-      <text x="472" y="374" text-anchor="middle" font-family="'Fira Mono',monospace" font-size="14" fill="#1F4A4E">API server</text>
+    <!-- kubectl -->
+    <rect x="308" y="64" width="200" height="88" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+    <text x="408" y="100" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500">kubectl</text>
+    <text x="408" y="120" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Mono', monospace" font-size="14">port-forward</text>
 
-      <!-- kubelet -->
-      <rect x="384" y="456" width="176" height="64" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"/>
-      <text x="472" y="483" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">kubelet</text>
+    <!-- (empty cell: no DNS-equivalent step on this path) -->
 
-      <!-- Pod (port-forward path terminus) -->
-      <rect x="384" y="584" width="176" height="64" rx="6" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"/>
-      <text x="472" y="611" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">Pod</text>
-      <text x="472" y="630" text-anchor="middle" font-family="'Fira Mono',monospace" font-size="14" fill="#1F4A4E">port</text>
+    <!-- API server -->
+    <rect x="308" y="304" width="200" height="88" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+    <text x="408" y="328" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500">API server</text>
+    <text x="408" y="348" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Mono', monospace" font-size="14">kube-apiserver</text>
+    <text x="408" y="368" text-anchor="middle" fill="#8A8D90" font-family="'Fira Mono', monospace" font-size="14">pods/portforward</text>
 
-      <!-- ===== annotation boxes ===== -->
-      <!-- Box A: selector, endpoints -->
-      <rect x="224" y="336" width="152" height="48" rx="4" fill="#F5EFE4" stroke="rgba(138,141,144,0.5)" stroke-width="0.8"/>
-      <text x="300" y="356" text-anchor="middle" font-family="'Fira Mono',monospace" font-size="14" fill="#1F4A4E">selector,</text>
-      <text x="300" y="374" text-anchor="middle" font-family="'Fira Mono',monospace" font-size="14" fill="#1F4A4E">endpoints</text>
+    <!-- kubelet -->
+    <rect x="308" y="424" width="200" height="88" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+    <text x="408" y="460" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500">kubelet</text>
+    <text x="408" y="480" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Mono', monospace" font-size="14">streams connection</text>
 
-      <!-- Box B: kube-proxy rules -->
-      <rect x="224" y="464" width="152" height="48" rx="4" fill="#F5EFE4" stroke="rgba(138,141,144,0.5)" stroke-width="0.8"/>
-      <text x="300" y="484" text-anchor="middle" font-family="'Fira Mono',monospace" font-size="14" fill="#1F4A4E">kube-proxy</text>
-      <text x="300" y="502" text-anchor="middle" font-family="'Fira Mono',monospace" font-size="14" fill="#1F4A4E">rules</text>
+    <!-- Pod (port) - FOCAL -->
+    <rect x="308" y="544" width="200" height="88" rx="6" fill="#F5EFE4"/>
+    <rect x="308" y="544" width="200" height="88" rx="6" fill="#B58B3E" fill-opacity="0.10" stroke="#B58B3E" stroke-width="1.2"/>
+    <text x="408" y="580" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500">Pod</text>
+    <text x="408" y="600" text-anchor="middle" fill="#1F4A4E" font-family="'Fira Mono', monospace" font-size="14">port</text>
 
-      <!-- Box C: pods/portforward subresource -->
-      <rect x="224" y="400" width="152" height="48" rx="4" fill="#F5EFE4" stroke="rgba(138,141,144,0.5)" stroke-width="0.8"/>
-      <text x="300" y="420" text-anchor="middle" font-family="'Fira Mono',monospace" font-size="14" fill="#1F4A4E">pods/portforward</text>
-      <text x="300" y="438" text-anchor="middle" font-family="'Fira Mono',monospace" font-size="14" fill="#1F4A4E">subresource</text>
+    <!-- ===== LEGEND ===== -->
+    <text x="40" y="688" fill="#1F4A4E" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.12em">LEGEND</text>
 
-      <!-- ===== footnotes (editorial callouts, max 2) ===== -->
-      <text x="128" y="692" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-style="italic" font-size="16" fill="#1F4A4E">
-        <tspan x="128" dy="0">&#167;4 breaks 1-4 all live</tspan>
-        <tspan x="128" dy="20">on this path.</tspan>
-      </text>
+    <rect x="40" y="704" width="16" height="16" rx="4" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+    <text x="64" y="716" fill="#0B1E3B" font-family="'Fira Mono', monospace" font-size="14">PIPELINE STEP</text>
 
-      <text x="472" y="672" text-anchor="middle" font-family="'Fira Sans',sans-serif" font-style="italic" font-size="16" fill="#1F4A4E">
-        <tspan x="472" dy="0">Shares no step with</tspan>
-        <tspan x="472" dy="20">the Service path &mdash;</tspan>
-        <tspan x="472" dy="20">except the Pod itself.</tspan>
-      </text>
+    <rect x="300" y="704" width="16" height="16" rx="4" fill="#B58B3E" fill-opacity="0.10" stroke="#B58B3E" stroke-width="1.2"/>
+    <text x="324" y="716" fill="#0B1E3B" font-family="'Fira Mono', monospace" font-size="14">SHARED STEP (FOCAL)</text>
 
-      <!-- ===== legend ===== -->
-      <text x="32" y="744" font-family="'Fira Mono',monospace" font-size="14" font-weight="500" letter-spacing="0.12em" fill="#8A8D90">LEGEND</text>
-      <line x1="32" y1="752" x2="568" y2="752" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+    <line x1="40" y1="740" x2="60" y2="740" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arr-muted)"/>
+    <text x="68" y="744" fill="#0B1E3B" font-family="'Fira Mono', monospace" font-size="14">REQUEST / CONNECTION FLOW</text>
 
-      <rect x="32" y="770" width="16" height="10" rx="2" fill="rgba(31,74,78,0.10)" stroke="#8A8D90" stroke-width="0.8"/>
-      <text x="56" y="779" font-family="'Fira Sans',sans-serif" font-size="14" fill="#0B1E3B">Entry</text>
-
-      <rect x="140" y="770" width="16" height="10" rx="2" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="0.8"/>
-      <text x="164" y="779" font-family="'Fira Sans',sans-serif" font-size="14" fill="#0B1E3B">Step</text>
-
-      <rect x="232" y="770" width="16" height="10" rx="2" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1"/>
-      <text x="256" y="779" font-family="'Fira Sans',sans-serif" font-size="14" fill="#0B1E3B">Shared Pod</text>
-
-      <line x1="384" y1="775" x2="408" y2="775" stroke="#1F4A4E" stroke-width="1" stroke-dasharray="5,4"/>
-      <text x="416" y="779" font-family="'Fira Sans',sans-serif" font-size="14" fill="#0B1E3B">Same object</text>
-
-    </svg>
-  </div>
-  <p class="colophon">ch16-fig03-portforward-vs-service-path</p>
+    <line x1="300" y1="740" x2="320" y2="740" stroke="#8A8D90" stroke-width="1" stroke-dasharray="4,3"/>
+    <circle cx="300" cy="740" r="3" fill="#8A8D90"/>
+    <circle cx="320" cy="740" r="3" fill="#8A8D90"/>
+    <text x="328" y="744" fill="#0B1E3B" font-family="'Fira Mono', monospace" font-size="14">SAME POD, DIFF. PORT</text>
+  </svg>
 </div>
 </body>
 </html>

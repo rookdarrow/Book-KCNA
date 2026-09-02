@@ -75,16 +75,16 @@ figures:
     in the middle, and Graduated at the top, each step captioned with what that level
     asserts, with a separate detached note explaining that Archived is not a rung
 - anchor_id: ch17-fig02-extension-points-map
-  source_hash: 76dd5b2d9eea8009078058eabad95a87185375ace8b6e5c94a8acaacd3f7dc2e
+  source_hash: c5ca42012549ed2bdb306864a8a52ec092d37203a4a5b256e4412184c13a6f85
   output_hash:
-    svg: 7f1ac10555ff28456d02fcb1b09f64b5b8c016f18e3f7d7825695f7f4edda2e3
-    png: edc60a896c9ca5c37a9d5b1f97cfd9b286c92a4c7bab01e188f3d20754a9102d
+    svg: e74c59ad62feedad643518cfd87076069d5f61cb18a81c4c0792cdc96d19335c
+    png: e5c17afa619194665614be443e3ab0f39678c004d895832e93e918f0f414dd43
   validations:
     label_count:
       result: fail
-      value: 18
+      value: 15
       max: 7
-      reason: 18 labels exceeds working-memory limit of 7
+      reason: 15 labels exceeds working-memory limit of 7
     palette_conformance:
       result: pass
     min_font_size:
@@ -95,11 +95,11 @@ figures:
     max_dimensions:
       result: pass
       value:
-      - 1280
-      - 1778
+      - 1040
+      - 1234
     aspect_ratio:
       result: pass
-      value: 1.39
+      value: 1.19
     grayscale_legibility:
       result: pass
       value: 8
@@ -113,31 +113,30 @@ figures:
     attaching storage; four identical sockets on the left edge mark each extension
     point with its chapter reference'
 - anchor_id: ch17-fig03-mesh-data-vs-control-plane
-  source_hash: 6928235b1fd7c028232005b8e3410ed8740d66852e2096fb6eab542e21fcd1d2
+  source_hash: e175b85e37b50c69a04210b95b8e7e75fd1f59d1c3b8a99756b60dd3f16fa05e
   output_hash:
-    svg: a7022f9546a6b051f510bccc40053f226252aec3b66247a219a0da8812958564
-    png: 5501206f1578e383e82076b4223605713bf49a572486b77e08479e061b4dbae0
+    svg: d4ab8eb54f8fd4dc9c30f4212c95058f112d2744333b318e9df46bc96542011f
+    png: df0981cafab13115b38762154487acdd7d730d968471a7ead2c4420370b776e7
   validations:
     label_count:
       result: fail
-      value: 31
+      reason: SVG unparseable
+      value: 0
       max: 7
-      reason: 31 labels exceeds working-memory limit of 7
     palette_conformance:
-      result: pass
+      result: fail
+      reason: SVG unparseable
     min_font_size:
-      result: pass
-      value: 14.0
-      min: 14
-      reason: ''
+      result: fail
+      reason: SVG unparseable
     max_dimensions:
       result: pass
       value:
-      - 1640
-      - 2088
+      - 1440
+      - 1714
     aspect_ratio:
       result: pass
-      value: 1.27
+      value: 1.19
     grayscale_legibility:
       result: pass
       value: 8
@@ -265,16 +264,16 @@ figures:
     charters three committees marked as not having open membership, alongside separate
     boxes for durable topic-scoped SIGs and time-bounded cross-SIG Working Groups
 - anchor_id: ch17-zenith-one-pluggability-story
-  source_hash: 9bcc09641d27045bc38841b2c58838990996f31a8bc6a82b5c462def939cf00f
+  source_hash: 9ee280cc4e40faed7792baae7f3e14238db5212c6848fc1682ac98b2e66209ad
   output_hash:
-    svg: 1e9e1e6783155ff029431d293f2e80b08cf0f35ffcd280d64e2b05ca7dfd3033
-    png: eb805bda4ba55b8f77f511871a606ceb463d65852c90e4a0f5335f60cc22cee0
+    svg: 0c9e7b4f547ff109ea46cc55fe52c8363dcc61c61acafabdc7178dba80067824
+    png: 1af94d6da3d6622f3310fd82fb1ed0b1ef3b74e8c21d010d7aca110811e1aa6f
   validations:
     label_count:
-      result: fail
-      value: 21
+      result: pass
+      value: 7
       max: 7
-      reason: 21 labels exceeds working-memory limit of 7
+      reason: ''
     palette_conformance:
       result: pass
     min_font_size:
@@ -285,11 +284,11 @@ figures:
     max_dimensions:
       result: pass
       value:
-      - 1040
-      - 1318
+      - 1240
+      - 1508
     aspect_ratio:
       result: pass
-      value: 1.27
+      value: 1.22
     grayscale_legibility:
       result: pass
       value: 8

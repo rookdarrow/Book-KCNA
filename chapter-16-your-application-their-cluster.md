@@ -934,9 +934,9 @@ One clarifying note on scope: `port-forward` is a diagnostic here, and only a di
 
 ---
 
-## ☆ Taking Your Bearings: Reachability — What Selects, What Routes, What Proves
+## ☆ Taking Your Bearings #2 — Reachability, Identity, and What a Laptop Can't Reproduce
 
-Five questions on §4 and §5. Two of them test material from earlier chapters. This is the checkpoint where the reachability material leans hardest on Chapter 9 and Chapter 5, so it is where that dependency gets verified.
+Eight questions on §4 through §7. Three of them reach back into earlier chapters.
 
 **1.** `kubectl get endpointslices -l kubernetes.io/service-name=api` returns a slice with three endpoints, every one of them showing `ready: false`. `kubectl get pods -l app=api` returns three Pods, all `Running`, all `0/1 READY`. What is the cause?
 
@@ -966,207 +966,28 @@ Five questions on §4 and §5. Two of them test material from earlier chapters. 
 - C) Liveness is irrelevant to readiness; the Pod receives traffic normally
 - D) Readiness failure forces liveness failure after the failure threshold
 
-**5.** A client Pod in namespace `frontend` calls `http://api/` and gets no response. The Service `api` exists in namespace `payments`, with three ready endpoints. What is the most likely cause?
-
-- A) Services are not reachable across namespace boundaries without an Ingress
-- B) The short name `api` resolves relative to the client's own namespace, not `payments`
-- C) The Pods behind `api` are not Ready
-- D) `port` and `targetPort` are mismatched on the `api` Service
-
----
-
-**Answers with Explanations:**
-
-**1 — B.** The endpoints are present in the slice, which means the Pods matched the selector; matching Pods are included regardless of readiness [source: k8s-docs-endpointslices-2026-08-24]. `ready: false` on all three, corroborated by `0/1 READY`, means readiness is disqualifying every one of them.
-
-- **A is wrong** on two counts, and both are worth having. The label query returned Pods, so the selector matches; and a selector that matched nothing would leave the slice with **no endpoints at all**, not three unready ones. The trace on the screen distinguishes the two causes.
-- **C is wrong** because a `port`/`targetPort` mismatch leaves the endpoints *ready* and the request failing further down. It is downstream of readiness; it cannot mark an endpoint not ready.
-- **D is wrong** and it is the "blame the platform" distractor. What you are reading is the controller working correctly: it found the matching Pods, put them in the slice, and reported their condition faithfully. Reaching for controller failure is the reflex §1 exists to break.
-
-**2 — B.** `targetPort` names the port on the Pod that traffic is delivered to, so the container must be listening on 8080. `port: 80` is the port clients use to reach the Service *[cross-bearing: see Ch 9 §3 — four ways to be reachable]*.
-
-- **A is wrong** — that inverts the two, which is exactly the confusion this question exists to catch.
-- **C is wrong** — there is no fallback behavior. Traffic goes to `targetPort` and nowhere else.
-- **D is half-true and therefore the most dangerous option.** `containerPort` in the Pod spec is largely informational, and the container's actual listening port is set by the application, not by Kubernetes. But `targetPort` is absolutely not independent of it: `targetPort` is where traffic is *sent*, and if the container isn't listening there, the request fails. The two must agree.
-
-**3 — B.** The narrowing step. The port-forward path shares no step with the Service path except the Pod itself, so a correct response proves the process serves correctly, and moves every remaining candidate onto the Service path.
-
-- **A is wrong** and is the trap this section is built around. Users travel the Service path. You just proved the Service path is broken. Nothing is resolved.
-- **C is wrong** — it inverts the finding. You reached the Pod directly and it answered; the Pod is demonstrably healthy in the way that matters.
-- **D is wrong** — the two paths differ almost entirely, which is what gives the experiment its power. If they were equivalent, both would fail identically.
-
-**4 — B.** A zero restart count tells you liveness is not failing; a failing liveness probe restarts the container and increments that counter. So liveness is passing or not configured, the container keeps running, and readiness independently disqualifies it as a target for every Service *[cross-bearing: see Ch 5 §7 — liveness, readiness, and startup probes]*.
-
-- **A is wrong** — the restart count of 0 rules it out directly, and the two probes are independent. That independence is the design: readiness failing means "don't send me traffic," liveness failing means "kill me."
-- **C is wrong** — readiness gates whether an endpoint is a valid target. A not-ready Pod gets no Service traffic at all.
-- **D is wrong** — there is no such escalation. Neither probe influences the other's result.
-
-**5 — B.** A short Service name resolves through the client's search domains, which include the client's own namespace [source: k8s-docs-dns-pod-service-2026-08-23]. A Pod in `frontend` asking for `api` looks for `api.frontend.svc.cluster.local` first. The fully qualified form `api.payments.svc.cluster.local`, or at minimum `api.payments`, is required to cross namespaces *[cross-bearing: see Ch 9 §7 — names, and where they resolve]*.
-
-- **A is wrong,** and it is the most tempting option in the set because it sounds like a security posture. Namespaces scope *names*, not network reachability; a fully qualified Service name crosses a namespace boundary with no Ingress involved *[cross-bearing: see Ch 4 §3 — where a name lives]*. Ingress is for traffic arriving from outside the cluster entirely *[cross-bearing: see Ch 10 §2 — routing by host and path]*.
-- **C is wrong** because the stem states the Service has three ready endpoints, which rules readiness out directly. Read the given facts before choosing a cause they exclude.
-- **D is wrong** because a port mismatch would produce a connection to the Service that fails at the Pod — a refused connection or a timeout from a real target — rather than the resolution failure the namespace crossing produces. Different signature, and distinguishing signatures is the skill.
-
----
-
-**How'd You Do?**
-
-**If you scored 0–2:** Re-read **§4** first, then **Chapter 9 §4** ("the list behind the name"). Most misses at this checkpoint are Chapter 9's material rather than this chapter's; this section is a workflow built on a model you were given earlier, and the workflow does not stick without it. If question 2 was among the misses, add **Chapter 9 §3**.
-
-**If you scored 3–4:** Re-read the why-wrong for anything you missed, paying particular attention to which stems already excluded the cause you picked. Half the skill here is reading the evidence before reaching for a diagnosis.
-
----
-
-**Checkpoint: You've Now Mastered**
-
-✓ Reading an EndpointSlice, and what "no ready endpoints" actually means
-✓ Telling the two causes apart from the slice itself — empty means selector, not-ready means readiness
-✓ Keeping upstream breaks (nothing ready) separate from downstream ones (ready endpoints, failed request)
-✓ Using `port-forward` as an elimination step rather than a verdict
-
-Two sections left. The first is what changes when the replicas are not interchangeable — where "the app is broken" turns out to mean "`web-2` is broken, and the other two are fine."
-
----
-
-## 🟡 §6 — When Each Replica Is Its Own
-
-Everything so far has assumed something that is usually true and sometimes catastrophically false: that your replicas are interchangeable. That if you diagnose one, you have diagnosed all of them.
-
-For a Deployment, that assumption holds. Three replicas of a stateless service are three instances of the same thing; whichever one you exec into will tell you the same story. For a StatefulSet it does not hold at all, and the four questions have to be asked of a *particular* replica rather than of the workload.
-
-Three things make this different, and each is a retrieval you already have with a diagnostic turn on it.
-
-### Find out which one
-
-A StatefulSet's Pods have stable ordinal identity — `web-0`, `web-1`, `web-2` — and *"each has a persistent identifier that it maintains across any rescheduling"* [source: k8s-docs-statefulset-2026-08-24] *[cross-bearing: see Ch 6 §6 — when Pods are not interchangeable]*. The diagnostic consequence: **"the app is broken" is very frequently "`web-2` is broken, and `web-0` and `web-1` are fine."**
-
-So the first move is not to investigate. It is to find out which replica you are investigating.
-
-```
-kubectl get pods -l app.kubernetes.io/name=MyApp
-```
-
-The docs give exactly this form for listing a StatefulSet's Pods by label [source: k8s-docs-debug-statefulset-2026-08-31]. Look at the whole list before you pick one. A single unhealthy ordinal among healthy siblings is a completely different diagnosis from all three being unhealthy: the first says something is wrong with that replica's *state*, the second says something is wrong with the *workload*.
-
-The docs also flag one specific case worth knowing: a Pod in `Unknown` or `Terminating` state can block the StatefulSet controller from making progress, because the controller's ordering guarantees mean it will wait rather than proceed past an uncertain replica [source: k8s-docs-debug-statefulset-2026-08-31]. A StatefulSet that seems frozen mid-rollout usually has one Pod in one of those states, and the freeze is the controller obeying its own rules *[cross-bearing: see Ch 6 §6 — when Pods are not interchangeable]*.
-
-<!-- AUTHOR-REVIEW: the Kubernetes "Debug a StatefulSet" page is a stub — it contains only the label-selector listing form and the Unknown/Terminating pointer, and nothing on per-replica PVC debugging, ordinal-specific triage, or headless-Service peer DNS. The remainder of this section is built from the Ch 6 and Ch 11 snapshots (k8s-docs-statefulset-2026-08-24, k8s-docs-statefulset-storage-2026-08-25) plus the DNS snapshot. Flagged so the fact-accuracy audit knows the sourcing is indirect by necessity, not by oversight. Note also that the snapshot's frontmatter simultaneously claims the page is complete AND describes an Unknown/Terminating pointer not present in the packed text — if that pointer is genuinely absent on disk, the paragraph above becomes a research gap. -->
-
-### The state that survives everything you try
-
-This is the one that most looks like a platform fault and is not.
-
-Each StatefulSet replica gets its own PersistentVolumeClaim from `volumeClaimTemplates` — *"for each VolumeClaimTemplate entry defined in a StatefulSet, each Pod receives one PersistentVolumeClaim"*, and *"the same PersistentVolumeClaim will be bound to a Pod throughout its lifecycle"* [source: k8s-docs-statefulset-2026-08-24] *[cross-bearing: see Ch 11 §6 — Pods that are not interchangeable, revisited]*. The claim is not deleted when the Pod is deleted. The default retention policy is `Retain` for both the scale-down and the delete case: *"Retain (default): PVCs from the volumeClaimTemplate are not affected when their Pod is deleted"* and *"The default for policies is Retain, matching the StatefulSet behavior before this new feature."* [source: k8s-docs-statefulset-storage-2026-08-25] And for the involuntary case: *"if a Pod associated with a StatefulSet fails due to node failure, and the control plane creates a replacement Pod, the StatefulSet retains the existing PVC. The existing volume is unaffected, and the cluster will attach it to the node where the new Pod is about to launch."* [source: k8s-docs-statefulset-storage-2026-08-25]
-
-Now put that next to the most common debugging reflex in the industry.
-
-Your application writes a corrupt record. `web-2` starts failing. You delete `web-2`. The controller recreates it, with the same name, the same DNS record, and **the same volume, containing the same corrupt record.** It fails again, identically. You delete it again. Same result.
-
-> ⚠ **Navigational Hazards**
->
-> **"Turn it off and on again" does not clear a StatefulSet replica's state, and the failure it leaves behind looks exactly like a platform bug.**
->
-> The symptom is a replica that fails, gets deleted, comes back, and fails in precisely the same way — repeatedly, deterministically, immune to every restart. That signature reads as "something in the cluster is broken," and engineers have spent days on it from that angle.
->
-> It is not the cluster. The PVC survived, by design, because throwing away a stateful workload's data on a restart would be the worse failure by a wide margin. The state is the thing that is broken, and no amount of restarting will touch it. Go look at the data: exec into the replica and inspect what is on the volume, or mount the PVC into a debug Pod and read it there.
->
-> The diagnostic tell that separates this from a genuine platform fault: **it is deterministic and it is confined to one ordinal.** A platform problem would not preferentially afflict `web-2` and leave `web-0` and `web-1` untouched across repeated rescheduling.
-
-> 🔭 **Closer Look:** `.spec.persistentVolumeClaimRetentionPolicy` has two settings — `whenDeleted` and `whenScaled` — each accepting `Delete` or `Retain`, with `Retain` the default for both [source: k8s-docs-statefulset-storage-2026-08-25]. A workload configured with `whenScaled: Delete` behaves differently on scale-down than the default described above. Check the StatefulSet's actual policy before you reason about what a deletion did; the default is only the default.
-
-### Peers that find each other by name
-
-The third difference is discovery. A StatefulSet uses a headless Service to give each Pod its own DNS name *[cross-bearing: see Ch 9 §5 — when you don't want a single address]*, and the form is `$(podname).$(governing service domain)` — for example `web-0.nginx.default.svc.cluster.local` [source: k8s-docs-statefulset-2026-08-24]. Replicas use these names to find each other: a database forming a cluster, a queue electing a leader, a cache building a ring.
-
-That creates failure modes a ClusterIP workload never sees. If `web-1` cannot resolve `web-2`'s name, the peer relationship fails while both Pods look perfectly healthy from outside. And there is a genuine timing trap here, which the docs call out directly: *"Depending on how DNS is configured in your cluster, you may not be able to look up the DNS name for a newly-run Pod immediately. This behavior can occur when other clients in the cluster have already sent queries for the hostname of the Pod before it was created. Negative caching (normal in DNS) means that the results of previous failed lookups are remembered and reused, even after the Pod is running, for at least a few seconds."* [source: k8s-docs-statefulset-2026-08-24]
-
-So a peer that came up, failed to resolve a sibling that did not exist yet, cached the negative result, and gave up is a real and reproducible failure that has nothing to do with your code and everything to do with startup ordering. The diagnostic move is to resolve the peer names from inside a replica and see what comes back:
-
-```
-kubectl exec -it web-1 -- nslookup web-2.nginx
-```
-
-> 🪝 **Snag:** A headless Service is required for a StatefulSet's network identity, and **you are responsible for creating it** — *"StatefulSets currently require a Headless Service to be responsible for the network identity of the Pods. You are responsible for creating this Service"* [source: k8s-docs-statefulset-2026-08-24]. Which means a `serviceName` pointing at a Service nobody created leaves you with Pods that run and cannot find each other, and nothing in a Pod's own status says why.
-
-<!-- AUTHOR-REVIEW (revision stage): the second half of the Snag above — what actually happens when the named Service does not exist — is INFERENCE, not documented behavior, and is now phrased as a consequence rather than as a fact. `k8s-docs-statefulset-2026-08-24` establishes the requirement and the creation responsibility (quoted, verified) but says nothing about the missing-Service case. Source it or leave it as inference. -->
-
-The unifying point across all three: for a StatefulSet, "which replica" is a question you have to answer before any of the other four questions mean anything.
-
----
-
-## 🟡 §7 — Before You Ship It
-
-The fastest debugging loop is the one that runs on your own machine, where you have a debugger, an IDE, and a rebuild that takes two seconds instead of a container build and a rollout.
-
-The judgment call is knowing when that loop is worth building and when the reproduction is worthless before you start.
-
-### The dividing line
-
-Some things about your application exist only in the cluster. Not "are easier in the cluster" — exist only there, and cannot be reproduced locally by definition:
-
-- **Cluster-supplied identity.** The ServiceAccount token projected into the Pod, and everything it authorizes *[cross-bearing: see Ch 12 §2 — who you are]*.
-- **Cluster DNS.** Any name resolution through `svc.cluster.local`, including peer discovery.
-- **Injected configuration.** ConfigMaps and Secrets mounted or projected into the container. You can copy the values locally, but you are then testing a copy, and if the bug is that the value *isn't what you think*, you have just reproduced your own misunderstanding.
-- **Admission mutation.** Anything a mutating webhook or a sidecar injector added to your Pod after you submitted it. Your local process was never mutated *[cross-bearing: see Ch 8 §2 — three gates and a logbook]*.
-- **Service routing.** Everything in §4. A local process is not behind a Service, has no selector, and appears in no endpoint list.
-
-Everything else — your business logic, your parsing, your request handling, your math — usually reproduces locally just fine, and reproducing it there is much faster than reproducing it in a cluster.
-
-<!-- AUTHOR-REVIEW (revision stage — recorded research gap, manifest Gaps item 2 / Notes item 5): the five-item dividing line above is AUTHORIAL SYNTHESIS and is this section's entire teaching payload. `k8s-docs-local-debugging-telepresence-2026-08-31`'s own scope_warning states the page "does NOT contain any general discussion of which failures are or are not reproducible locally — that framing, which is Ch 16 section 7's actual subject, is NOT sourced here." Each individual item IS established by an earlier chapter (Ch 12 for tokens, Ch 9 for DNS and Service routing, Ch 8 for admission, Ch 4 for injected config), and every one carries a cross-bearing to its owner. Flagged for parity with §6, which flagged the equivalent situation. No prose change recommended — the content is right and follows the outline's depth ruling. This reaches graded text at Practice Q15 and Bearings 3 Q4/Q5. -->
-
-> ⚓ **Worth Securing:** Before you build a local reproduction, ask one question: *does the failing behavior depend on anything the cluster supplies?* If yes, a local reproduction will either fail to reproduce the bug or reproduce a different one, and either outcome is worse than not trying, because both are misleading. That question takes ten seconds and routinely saves an afternoon.
-
-### The pattern that resolves it
-
-There is a third option between "reproduce it locally" and "debug it in the cluster," and it is the one worth knowing by shape: **proxy a local process into the cluster, so that your code runs on your machine with your debugger attached, while seeing the cluster's real dependencies.**
-
-The Kubernetes documentation describes the motivation exactly: *"Kubernetes applications usually consist of multiple, separate services, each running in its own container. Developing and debugging these services on a remote Kubernetes cluster can be cumbersome, requiring you to get a shell on a running container in order to run debugging tools."* [source: k8s-docs-local-debugging-telepresence-2026-08-31] The tool the docs walk through for this is **Telepresence**, described as *"a tool to ease the process of developing and debugging services locally while proxying the service to a remote Kubernetes cluster,"* which *"allows you to use custom tools, such as a debugger and IDE, for a local service and provides the service full access to ConfigMap, secrets, and the services running on the remote cluster."* [source: k8s-docs-local-debugging-telepresence-2026-08-31]
-
-That last clause is the whole pattern in one line: your process, their cluster's dependencies. The list above stops being a list of things you cannot reproduce, because you are not reproducing them. You are using the real ones.
-
-Telepresence is one instance of the pattern and the one the Kubernetes docs happen to document. The tooling in this space changes; the pattern does not. Learn the shape — a local process, proxied into the cluster's network and configuration — and you will recognize whichever tool is current when you need one.
-
-> 🔭 **Closer Look:** There is also a fourth option worth naming, which is running a small local cluster — kind, minikube, or k3s — rather than proxying into a shared one *[cross-bearing: see Ch 8 §5 — who owns the control plane]*. That gets you real cluster DNS, real ServiceAccounts, real admission, and real Services, on your laptop. What it does *not* get you is *their* cluster's config, *their* webhooks, and *their* network policy, so it reproduces the class of bug, not the instance. Useful for "does my manifest work at all," not for "why does it fail in staging."
-
-<!-- AUTHOR-REVIEW (revision stage — minor research gap): the three tool names above are not in any cached snapshot; the Telepresence page names exactly one third-party tool. Low severity — kind and minikube are documented on `https://kubernetes.io/docs/tasks/tools/` if a tag is wanted; k3s is not a Kubernetes-project tool and would need separate treatment. Alternative is to drop the names and keep the pattern. Kept as written because Ch 8 §5 already names all three. -->
-
-That closes the practical arc. Four questions, five tools, one boundary, and one thing left to say about why the boundary was the point all along.
-
----
-
-## ☆ Taking Your Bearings: Identity, Storage, and the Limits of Reproducing It Locally
-
-Five questions on §6 and §7. One tests material from an earlier chapter.
-
-**1.** A three-replica StatefulSet has one failing Pod, `db-1`. You delete it. The controller recreates `db-1`, which fails identically. You delete it twice more with the same result. What is the most likely cause?
+**5.** A three-replica StatefulSet has one failing Pod, `db-1`. You delete it. The controller recreates `db-1`, which fails identically. You delete it twice more with the same result. What is the most likely cause?
 
 - A) A node-level fault on whichever node `db-1` keeps landing on
 - B) Corrupt or unexpected state on `db-1`'s PersistentVolumeClaim, which survives every deletion
 - C) The StatefulSet's image is broken and needs to be repulled
 - D) An admission webhook is rejecting `db-1` specifically
 
-**2.** `[retrieval: ch11]` Chapter 11 taught what happens to a StatefulSet's PersistentVolumeClaim when a replica is rescheduled or deleted. What is the default — is the claim retained or removed — and why does that default make a failing replica's storage worth investigating before you delete the Pod again?
+**6.** `[retrieval: ch11]` Chapter 11 taught what happens to a StatefulSet's PersistentVolumeClaim when a replica is rescheduled or deleted. What is the default — is the claim retained or removed — and why does that default make a failing replica's storage worth investigating before you delete the Pod again?
 
 - A) `Delete` for both
 - B) `Retain` for both
 - C) `Retain` for `whenDeleted`, `Delete` for `whenScaled`
 - D) There is no default; the field must be set explicitly
 
-**3.** A StatefulSet's Pods run normally, but the replicas cannot discover each other and the cluster never forms. All Pods are `Running` and `Ready`, and they have been up for two hours. What should you check first?
+**7.** A StatefulSet's Pods run normally, but the replicas cannot discover each other and the cluster never forms. All Pods are `Running` and `Ready`, and they have been up for two hours. What should you check first?
 
 - A) DNS negative caching from lookups issued before the peers existed
 - B) The headless Service named by `serviceName`, and whether per-Pod DNS names resolve
 - C) The `port`/`targetPort` pairing on the workload's ClusterIP Service
 - D) The PersistentVolumeClaims for each ordinal
 
-**4.** A bug appears only when the application runs in the cluster. The failing code path reads a value that a mutating admission webhook injects into the Pod. Is a local reproduction useful?
-
-- A) Yes — copy the injected value into a local environment variable and run it locally
-- B) No — the value's origin is the thing in question, and a local copy reproduces your assumption rather than the bug
-- C) Yes — mutating webhooks run identically against local processes
-- D) No — mutating webhooks apply non-deterministically, so the injected value differs on each admission and cannot be pinned down
-
-**5.** Which of these is genuinely reproducible on a laptop, without any cluster or proxy?
+**8.** Which of these is genuinely reproducible on a laptop, without any cluster or proxy?
 
 - A) A ServiceAccount token's permissions against the API server
 - B) A parsing error in the application's handling of a malformed request body
@@ -1177,54 +998,44 @@ Five questions on §6 and §7. One tests material from an earlier chapter.
 
 **Answers with Explanations:**
 
-**1 — B.** The PVC follows the ordinal identity and survives Pod deletion by default [source: k8s-docs-statefulset-storage-2026-08-25]. Recreating the Pod reattaches the same volume with the same contents, so a state-caused failure reproduces exactly, every time.
+**1 — B.** The slice holds three endpoints, so the selector matched; a match failure leaves the slice empty, not populated with unready entries [source: k8s-docs-endpointslices-2026-08-24]. `ready: false` across the board, matching `0/1 READY`, means readiness is disqualifying all three. **A** is wrong — Pods were returned by the label query and the slice isn't empty. **C** is wrong — a port mismatch leaves endpoints ready and fails further downstream; it can't mark an endpoint not-ready. **D** is wrong — the controller found the Pods and reported their condition faithfully. That's it working, not failing.
 
-- **A is wrong,** and the reasoning matters more than the answer. A node fault would not follow a specific ordinal across repeated rescheduling; the replacement Pod may well land somewhere else. Deterministic failure confined to one ordinal points at that ordinal's *state*, not at hardware.
-- **C is wrong** — a broken image would fail all three replicas identically, since they share a Pod template. The confinement to one ordinal rules it out.
-- **D is wrong** — an admission rejection would prevent the Pod from being created at all, producing a different signature entirely, and admission does not discriminate by ordinal.
+**2 — B.** `targetPort` is where the Service delivers traffic, so the container must listen on 8080; `port: 80` is only what clients use to reach the Service *[cross-bearing: Ch 9 §3]*. **A** inverts the two. **C** is wrong — there's no fallback. **D** is the trap: `containerPort` is informational, but `targetPort` is not independent of where the container listens — if they disagree, the request fails.
 
-**2 — B.** `Retain` for both, which is why deleting a replica does not clear its storage [source: k8s-docs-statefulset-storage-2026-08-25].
+**3 — B.** Port-forward and the Service path share only the Pod. A correct response proves the process itself is healthy and pushes every remaining suspect onto the Service path. **A** is wrong — users travel the Service path, which you just proved is broken. **C** inverts the finding. **D** is wrong — the paths differ almost entirely, which is exactly what makes the test useful.
 
-- **A is wrong** and would be actively dangerous as a default: it would mean a scale-down silently destroyed data.
-- **C is wrong,** but it is a real configuration many teams choose deliberately. It is not the default, and assuming it is will cost you the diagnosis in question 1.
-- **D is wrong** — the field is optional with documented defaults.
+**4 — B.** A restart count of 0 rules out a failing liveness probe, since that would restart the container and increment the count. Liveness is passing or absent; readiness independently withholds the Pod from Service traffic *[cross-bearing: Ch 5 §7]*. **A** is wrong — restarts and the zero count rule it out directly. **C** is wrong — readiness gates whether a Pod is a valid target at all. **D** is wrong — neither probe's result influences the other's.
 
-**3 — B.** Peer discovery in a StatefulSet runs on per-Pod DNS names provided by the headless Service, and you are responsible for creating that Service yourself [source: k8s-docs-statefulset-2026-08-24]. If it is missing or misnamed, the Pods run fine and simply cannot find each other.
+**5 — B.** The PVC follows the ordinal and survives Pod deletion by default [source: k8s-docs-statefulset-storage-2026-08-25], so recreating `db-1` reattaches the same volume with the same contents — a state-caused failure reproduces exactly, every time. **A** is wrong: a node fault wouldn't follow one ordinal across reschedules. **C** is wrong: a broken image would fail all three replicas, since they share a template. **D** is wrong: an admission rejection would block creation entirely — a different signature, and one that doesn't discriminate by ordinal.
 
-- **A is wrong here, though it is a real failure and worth knowing.** Negative caching means a peer that queried a sibling's name before that Pod existed keeps getting the cached failure *"for at least a few seconds"* [source: k8s-docs-statefulset-2026-08-24]. Seconds — and the stem says two hours. A cluster that never forms is a structural problem, not a timing one.
-- **C is wrong** — this is peer-to-peer traffic between replicas by individual name, not client traffic through a ClusterIP.
-- **D is wrong** — a storage fault would show as a replica failing, not as healthy replicas that cannot see each other.
+**6 — B.** `Retain` for both [source: k8s-docs-statefulset-storage-2026-08-25] — exactly why deleting a replica doesn't clear its storage, and why question 5's failure survives repeated deletions. **A** would be a dangerous default: silent data loss on scale-down. **C** is a real configuration some teams choose, but it isn't the default — assume it and you'll misdiagnose question 5. **D** is wrong; the field has documented defaults.
 
-**4 — B.** The bug is about what the webhook injected. Copying a value you believe it injected tests your belief, not the system, and if your belief is the wrong part, the local run passes and tells you nothing.
+**7 — B.** Peer discovery runs on per-Pod DNS names from the headless Service named in `serviceName`, which you're responsible for creating yourself [source: k8s-docs-statefulset-2026-08-24]. Missing or misnamed, the Pods run fine and simply never find each other. **A** is a real failure, but negative caching clears in "at least a few seconds" [source: k8s-docs-statefulset-2026-08-24] — the stem says two hours; that's structural, not timing. **C** is wrong — this is Pod-to-Pod traffic by individual name, not client traffic through a ClusterIP. **D** is wrong — a storage fault shows as a replica failing, not as healthy replicas unable to see each other.
 
-- **A is wrong** for exactly that reason, and it is the appealing wrong answer because it *feels* like rigor.
-- **C is wrong** — admission controllers run in the API server request path. A local process never passes through them *[cross-bearing: see Ch 8 §2 — three gates and a logbook]*.
-- **D is wrong,** and the reason is the same one that sinks C from the other direction. Webhooks are not random; a given webhook applied to a given submission produces a given result. The reason a local reproduction cannot reach this bug is not that the mutation is unpredictable. It is that the local process never gets mutated at all.
-
-**5 — B.** Parsing logic is your code operating on your input, with no cluster-supplied dependency anywhere in the path. Reproduce it locally, fix it in seconds.
-
-- **A, C, and D are all wrong** for the same reason, which is the point of the question: each depends on something only a cluster supplies — API-server authorization for a projected token, Service selection against real Pod labels, and cluster DNS respectively. All three are on §7's list.
+**8 — B.** Parsing logic runs on your code and your input, with no cluster dependency anywhere in the path. **A, C, and D** all depend on something only a cluster supplies — API-server authorization, real Pod labels for selection, and cluster DNS, respectively.
 
 ---
 
 **How'd You Do?**
 
-**If you scored 0–2:** Re-read **§6**, then **Chapter 11 §6** for the retention policy. Question 1's diagnosis is unreachable without it, and question 2 is that chapter's fact stated plainly. If the misses were 4 and 5 rather than 1 through 3, the section to re-read is **§7**, not §6.
+**If you scored 0–3:** Re-read **§4**, **§6**, and **Chapter 9 §4** ("the list behind the name") — most misses at this checkpoint trace back to that chapter's model, not this one's. If question 6 was among the misses, add **Chapter 11 §6** on the retention policy.
 
-**If you scored 3–4:** Check whether your misses cluster in §6 or §7 before deciding what to review; the two halves of this checkpoint fail for different reasons.
+**If you scored 4–6:** Re-read the why-wrong for whatever you missed, and check whether it clusters around reachability (1–4) or identity/storage (5–8) — the two halves fail for different reasons.
 
 ---
 
 **Checkpoint: You've Now Mastered**
 
+✓ Reading an EndpointSlice, and what "no ready endpoints" actually means
+✓ Telling the two causes apart from the slice itself — empty means selector, not-ready means readiness
+✓ Keeping upstream breaks (nothing ready) separate from downstream ones (ready endpoints, failed request)
+✓ Using `port-forward` as an elimination step rather than a verdict
 ✓ Asking "which replica" before asking anything else about a StatefulSet
 ✓ The surviving-PVC signature, and why it impersonates a platform fault
 ✓ Headless-Service peer DNS as a failure surface that ClusterIP workloads never have
 ✓ Which failures a local reproduction can and cannot reach, and the proxy pattern for the rest
 
 🏆 **Safe Harbor reached** — the practical material of this chapter is behind you. One section remains, and it is about what the last two chapters were actually for.
-
----
 
 ## ☀️ §8 — Mine, or the Platform's
 

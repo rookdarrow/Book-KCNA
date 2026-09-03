@@ -1066,9 +1066,9 @@ The honest summary: Service gives you a name, NetworkPolicy gives you a fence, a
 
 ---
 
-## ☆ Taking Your Bearings: Extension Points, and the Layer That Knows What It's Carrying
+## ☆ Taking Your Bearings #2 — Extension Points, Service Meshes, and How the Project Scales and Runs Itself
 
-Five questions. Two of them draw their answers from earlier chapters, and the first of those is the most important question in this chapter.
+Eight questions on §4 through §8. Three of them reach back into earlier chapters.
 
 **1.** `[retrieval: ch2, ch6, ch9, ch11]` An organization runs Kubernetes on hardware with a proprietary storage array, a network fabric that requires a vendor's own routing agent, a container runtime hardened for their compliance regime, and an in-house database platform they want their developers to manage with `kubectl` the same way they manage Deployments.
 
@@ -1100,540 +1100,28 @@ B) The data plane is the kube-apiserver and etcd; the control plane is the set o
 C) The data plane is the proxies that mediate service-to-service communication; the control plane manages and configures those proxies
 D) They are two names for the same component, used in different documentation
 
-**5.** Which statement about Istio's data plane modes is correct?
-
-A) Ambient mode uses a per-node L4 proxy and optional per-namespace L7 proxies, and the L7 waypoint is a deployment of Envoy — the same engine sidecar mode uses
-B) Sidecar mode uses Envoy; ambient mode replaces Envoy with a purpose-built proxy at every layer
-C) A mesh must use sidecars; ambient mode is a non-Istio concept
-D) Sidecar and ambient mode Pods cannot coexist within the same mesh
-
----
-
-**Answers with Explanations:**
-
-**1. D.** This is the chapter's central claim, and if you got it without looking back, §9 is going to land properly.
-
-- CRI *(Ch 2 §4)* — Kubernetes defines the protocol between kubelet and runtime; containerd or CRI-O implements it.
-- CNI *(Ch 9 §1)* — Kubernetes states the network model's requirements; a plugin implements it.
-- CSI *(Ch 11 §5)* — a published interface a storage vendor writes a driver against.
-- CRDs *(Ch 6 §8)* — a mechanism for defining new object kinds, with your controller supplying the behavior.
-
-- **A is wrong** and misses the entire point: these are not four unrelated configuration surfaces, they are four instances of one architectural decision.
-- **B is wrong.** No forking is involved, which is precisely what a published interface exists to avoid. The whole benefit is that implementations are independent and interchangeable.
-- **C is wrong.** Admission webhooks are a real extension point *(Ch 8 §2)*, but they intercept API requests. They do not run containers, wire networks, mount volumes, or define object kinds.
-
-**2. A.** The aggregation layer "allows Kubernetes to be extended with additional APIs, beyond what is offered by the core Kubernetes APIs," by registering an `APIService` object that "claims" a URL path, after which the layer proxies anything sent to that path to the registered service [source: k8s-docs-api-aggregation-and-device-plugins-2026-08-31]. The team already has the server; aggregation is how it gets reached.
-
-- **B is the trap, and a good one.** A CRD also adds an API, but it works by having the kube-apiserver store and serve the objects itself. That is more service than this team wants, and it would strand the server they already run. The documentation flags the distinction directly: "The aggregation layer is different from Custom Resource Definitions."
-- **C is wrong.** Device plugins advertise hardware resources to the kubelet. Different problem, different layer.
-- **D is wrong.** A validating or mutating webhook can approve, reject, or modify objects; it cannot serve an API.
-
-**3. B.** NetworkPolicy is an allow-list for connectivity. It decides which connections are permitted, using selectors *(Ch 10 §6)*, and encryption is entirely outside its remit *(Ch 10 §7)*.
-
-- **A is wrong** and is the single most common misreading of NetworkPolicy: it permits and denies; it does not protect what it permits.
-- **C is wrong**, and it is the misconception this question exists to catch. TLS *terminated* at the Ingress means the encrypted connection ended there. Whatever continues to the Pod is a new, separate connection, and by default it is plaintext.
-- **D is wrong** on the requirement. Nothing in the Kubernetes network model requires encryption of pod-to-pod traffic, and nothing in the described setup provides it.
-
-This is exactly the gap §5 is about. A service mesh's mTLS is what closes it.
-
-**4. C.** Istio's own framing: the mesh consists of "a data plane (proxies that mediate and control all network communication between services) and a control plane (which manages and configures the proxies)" [source: istio-service-mesh-2026-08-23].
-
-- **A inverts them.** The proxies carry traffic; the control plane configures.
-- **B is the vocabulary collision this section exists to defuse.** kube-apiserver and etcd are the *cluster's* control plane *(Ch 3 §2)*, a different structure at a different layer. A mesh's control plane distributes policy to proxies; the cluster's control plane reconciles Kubernetes objects.
-- **D is wrong.** They are distinct components with distinct jobs.
-
-**5. A.** In ambient mode "Istio implements its features using a per-node Layer 4 (L4) proxy, and optionally a per-namespace Layer 7 (L7) proxy," and the waypoint proxy "is a deployment of the Envoy proxy; the same engine that Istio uses for its sidecar data plane mode" [source: istio-ambient-mode-2026-08-31].
-
-- **B is wrong** on the key detail, and it is the near-miss worth understanding. Ambient does add a purpose-built proxy, ztunnel, at L4, per node, but the L7 waypoint is Envoy. Ambient removes *sidecars*, not Envoy.
-- **C is wrong** — ambient mode is an Istio feature, documented by the Istio project.
-- **D is wrong.** The documentation states directly that "Pods and workloads using sidecar mode can co-exist within the same mesh as pods that use ambient mode."
-
----
-
-**How'd You Do?**
-
-**4–5 correct:** You are holding the chapter's hardest material. §9 will land.
-
-**2–3 correct:** Review your misses and continue. §6 and §7 do not build on §4 or §5.
-
-**0–1 correct:** Re-read **§4** in full before continuing. It is the section the rest of the book points at, and §9 is unreadable without it. If question 1 specifically was the miss, go further back first: **Chapter 2 §8** and **Chapter 11 §5**, in that order, and then §4.
-
----
-
-**Checkpoint: You've Now Mastered**
-
-✓ The four pluggable interfaces as one shape, and the documentation's wider extension map beside it
-✓ CRDs versus API aggregation — two routes to a new API, with different costs
-✓ What a service mesh is, and the property that defines it
-✓ Data plane, mesh control plane, cluster control plane — three things, two names
-
-**Voyage Progress:** 🗺️ → 🌊 → 🌅 — you are in the passage. Four sections behind, four ahead, and the two hardest are done.
-
----
-
-## 🔵 §6 — Code Without a Server to Put It On
-
-"Serverless" is the worst-named idea in this book, and correcting the name is most of what this section does.
-
-### What serverless actually means
-
-> **Serverless Computing abstracts servers away from the user.**
-
-[source: cncf-glossary-serverless-2026-08-31]
-
-*Abstracts away from the user.* Not *eliminates*. The servers are still there; somebody is still running them; you are simply not the one thinking about them.
-
-The glossary gives three more defining properties [source: cncf-glossary-serverless-2026-08-31]:
-
-- "Charges are based on a pay-per-use model."
-- "Scaling and resource provisioning for computing, storage, or networking are automatically adjusted based on application demand without user intervention."
-- "A serverless platform provider consolidates resources to serve multiple users on a single physical machine, ensuring isolation through virtualization."
-
-And it names the problem this solves in terms that should sound familiar by now: without it, "users commit to a predefined capacity, resulting in charges for continuous server availability regardless of actual use," and "responsibility for adjusting server capacity to meet fluctuating demands falls on the user, maintaining active infrastructure even during idle periods" [source: cncf-glossary-serverless-2026-08-31].
-
-The serverless answer is "activating services solely upon demand" [source: cncf-glossary-serverless-2026-08-31].
-
-### Knative, and the correction that matters
-
-**Knative** is "a Kubernetes-based platform that provides a complete set of middleware components for building, deploying, and managing modern serverless workloads," and it is a CNCF Graduated project [source: knative-overview-2026-08-23].
-
-It has three components, and they answer genuinely different questions.
-
-**Knative Serving** is "an HTTP-triggered autoscaling container runtime that manages the complete lifecycle of stateless HTTP services, including deployment, routing, and automatic scaling (including scale to zero)" [source: knative-overview-2026-08-23]. Synchronous. A request arrives, something serves it.
-
-**Knative Eventing** is "a CloudEvents-over-HTTP asynchronous routing layer that provides infrastructure for consuming and producing events, enabling loose coupling between event producers and consumers" [source: knative-overview-2026-08-23]. **CloudEvents** is itself a CNCF project: a specification for describing event data in a common way, so that an event emitted by one system can be understood by another without a bespoke adapter between them. Asynchronous. Something happened; interested parties get told.
-
-**Knative Functions** "leverages Serving and Eventing to provide a simplified experience for building and deploying stateless functions" [source: knative-overview-2026-08-23]. It is built on the other two rather than being a third independent thing.
-
-> 🪝 **Snag:** Serving and Eventing answer different questions and a candidate who can only say "Knative does serverless" will lose the item. **Serving: synchronous HTTP, autoscaling, scale to zero. Eventing: asynchronous event routing over CloudEvents.** One sentence each, and keep them apart.
-
-Now the correction this whole section exists for.
-
-> **★ Fixed Point**
->
-> Serverless workloads on Kubernetes are still **containers in Pods**. Knative "builds on the Kubernetes Pod abstraction," and Serving and Eventing "are implemented as Kubernetes Custom Resource Definitions (CRDs)" [source: knative-overview-2026-08-23].
->
-> The serverless property is the **lifecycle** — driven by requests, scaled to zero when idle — not the absence of containers or servers.
-
-Read that alongside the glossary's "abstracts servers away from the user" and the misconception dissolves completely. Nothing disappeared. A container image still gets pulled; a Pod still gets scheduled onto a node; a kubelet still starts it. What changed is that none of that happens until a request arrives, and it all goes away again when the requests stop.
-
-> 🔭 **Closer Look:** Notice what Knative is *built out of*. It is implemented as CRDs, the fourth pluggable interface, two sections ago. A whole serverless platform, sitting on the extension mechanism, with the API server storing and serving its objects. *[cross-bearing: see Ch 6 §8 — the control loop, extended]*. This is the pattern from §4 doing real work rather than being an example.
-
-### Scale to zero
-
-Knative Serving "provides automatic scaling, or *autoscaling*, for applications to match incoming demand," and this is provided by default "by using the Knative Pod Autoscaler (KPA)" [source: knative-serving-autoscaling-2026-08-31].
-
-And the headline behavior:
-
-> If an application is receiving no traffic and scale to zero is enabled, Knative Serving scales the application down to zero replicas.
-
-[source: knative-serving-autoscaling-2026-08-31]
-
-Zero. Not one idle replica riding at anchor, burning memory in case somebody shows up. None.
-
-<!-- FIGURE: ch17-fig07-scale-to-zero-and-the-knative-service -->
-![A closed cycle: an idle Knative Service at zero replicas with nothing running, a request arriving and the Knative Pod Autoscaler scaling from zero to N with a container visible inside a Pod, a serving state with several such Pods, then traffic stopping and the autoscaler scaling back down to zero replicas](figures/ch17-fig07-scale-to-zero-and-the-knative-service.svg)
-
-<!-- ASCII-FALLBACK
-```
-   IDLE                REQUEST ARRIVES         SERVING
-   ----                ---------------         -------
-
-   Knative Service     Knative Service         Knative Service
-   replicas: 0    -->  replicas: 0 -> N   -->  replicas: N
-                       (KPA scales up)
-
-   ( nothing            +------------+          +------------+
-     running )          |  Pod       |          |  Pod       |
-                        | +--------+ |          | +--------+ |
-                        | |contain-| |          | |contain-| |
-                        | |  er    | |          | |  er    | |
-                        | +--------+ |          | +--------+ |
-                        +------------+          +------------+
-                                                +------------+
-                                                |  Pod  ...  |
-                                                +------------+
-
-                                                     |
-              TRAFFIC STOPS                          |
-              -------------                          v
-                                                +------------+
-   Knative Service        <-- KPA scales down --|  replicas  |
-   replicas: 0                                  |   N -> 0   |
-                                                +------------+
-
-   The containers and Pods are real at every populated step.
-   "Serverless" describes the LIFECYCLE, not their absence.
-```
--->
-
-*A request arrives at an idle Knative Service; replicas go from zero to N; traffic stops; replicas return to zero. Containers in Pods are visible at both ends of the cycle — deliberately, because that is the section's Fixed Point.*
-
-A **Knative Service** relates to the Deployment you already know the way a specialist relates to a generalist. A Deployment holds a replica count you or a controller sets *(Ch 6 §1)*. A Knative Service holds the same underlying idea, Pods running your container, with an autoscaler that will take it all the way to zero and bring it back on a request. *[cross-bearing: see Ch 6 §1 — the resource that holds the intent]*, and *[cross-bearing: see Ch 5 §1 — the Pod as the unit of scheduling]* for the abstraction Knative is built on.
-
-> ⚓ **Worth Securing:** Always write **Knative Service** in full. Chapter 9 §2 owns the Kubernetes Service, the stable virtual address with a selector, and the two are a completely different kind of object that happen to share a word. A sentence with a bare "Service" in a Knative context is a sentence somebody will misread.
-
-Knative Serving can also be configured to use the Kubernetes HorizontalPodAutoscaler instead of the default KPA [source: knative-serving-autoscaling-2026-08-31], which is a neat bridge into the next section, where the whole autoscaling landscape gets laid out. *[cross-bearing: see Ch 17 §7 — four things that scale]*.
-
----
-
-## 🔵 §7 — Four Things That Scale
-
-Chapter 6 gave you the HorizontalPodAutoscaler in one sentence and promised the landscape here. Chapter 7 planted an unschedulable Pod and said something could be watching for exactly that. Chapter 13 named metrics-server as what an HPA reads. Chapters 3 and 10 both told you the VPA is not shipped by default and pointed here.
-
-All four of those debts come due in this section.
-
-### Two axes, then a third
-
-Start with the distinction the documentation itself leads with, because everything else hangs off it.
-
-> **★ Fixed Point**
->
-> **Horizontal** scaling changes the **number** of replicas. **Vertical** scaling changes the **resources** available to each replica.
->
-> "Horizontal scaling means that the response to increased load is to deploy more Pods. This is different from *vertical* scaling, which for Kubernetes would mean assigning more resources (for example: memory or CPU) to the Pods that are already running for the workload" [source: k8s-docs-hpa-2026-08-24].
-
-More of them, or bigger ones. And then there is a third axis that is not about Pods at all: **node autoscaling** adds or removes the machines underneath.
-
-### The four autoscalers
-
-**HorizontalPodAutoscaler (HPA).** Ships with Kubernetes. Implemented "as a Kubernetes API resource and a controller," where the controller "periodically adjusts the desired scale of its target (for example, a Deployment) to match observed metrics such as average CPU utilization, average memory utilization, or any other custom metric you specify" [source: k8s-docs-hpa-2026-08-24]. Moves the **replica count**, on **observed utilization**.
-
-Two details worth carrying. The HPA runs as a control loop "that runs intermittently (it is not a continuous process)" [source: k8s-docs-hpa-2026-08-24], so a change in load does not produce an instant change in replicas. And it "does not apply to objects that can't be scaled (for example: a DaemonSet)" [source: k8s-docs-hpa-2026-08-24], which makes sense, because a DaemonSet's replica count is a function of the node count, not something you set.
-
-**VerticalPodAutoscaler (VPA).** Does *not* ship with Kubernetes.
-
-> ⚠ **Navigational Hazards**
->
-> **The VPA is an add-on. It is not there unless somebody installed it.**
->
-> The documentation says it twice, on two different pages. The autoscaling concepts page: unlike the HPA, the VPA "doesn't come with Kubernetes by default," and is an add-on you or a cluster administrator may need to deploy before you can use it. The VPA's own page: "Unlike HorizontalPodAutoscaler, which is part of the core Kubernetes API, VPA must be installed separately in your cluster" [source: k8s-docs-autoscaling-and-vpa-2026-08-31].
->
-> You have met this shape before, and you have met it under a name. Chapter 3 gave you the sentence and Chapter 10 §3 named it as a pattern: **an object without its component does nothing.** An Ingress with no Ingress controller is a document nobody reads. A `kubectl top` with no metrics-server is a command with nothing to query. A VPA object on a cluster with no VPA installed is the same failure one layer over.
->
-> *[cross-bearing: see Ch 10 §3 — the object is not the implementation]*.
-
-The VPA also needs metrics-server installed to work at all, and it runs as three cooperating pieces: a recommender that analyzes usage, an updater that acts on the recommendations, and an admission controller webhook that applies them to new or recreated Pods [source: k8s-docs-autoscaling-and-vpa-2026-08-31]. Moves the **per-replica resources**.
-
-**Cluster Autoscaler**, and **Karpenter** as a second implementation of the same idea. These do not touch Pods. They provision and remove **nodes**.
-
-> Automatically provision and consolidate the Nodes in your cluster to adapt to demand and optimize cost.
-
-[source: k8s-docs-node-autoscaling-2026-08-31]
-
-And here is the trigger, which is the second half of a sentence Chapter 7 left hanging:
-
-> If there are Pods in a cluster that can't be scheduled on existing Nodes, new Nodes can be automatically added to the cluster — *provisioned* — to accommodate the Pods.
-
-[source: k8s-docs-node-autoscaling-2026-08-31]
-
-Chapter 7 §2 told you an unschedulable Pod sits in `Pending`, and that its continued existence is "a standing, machine-readable statement that the cluster is short of somewhere to put work. Something could be watching for exactly that."
-
-This is the something. *[cross-bearing: see Ch 7 §2 — what makes a node feasible]*.
-
-The reverse operation is **consolidation**, and it is the half nobody puts on the brochure: the fleet gets smaller when the work does. "Nodes in your cluster can be automatically *consolidated* in order to improve the overall Node utilization, and in turn the cost-effectiveness of the cluster. Consolidation happens through removing a set of underutilized Nodes from the cluster" [source: k8s-docs-node-autoscaling-2026-08-31]. Node autoscalers also "need to interact with cloud provider APIs to provision and consolidate Nodes" [source: k8s-docs-node-autoscaling-2026-08-31]; they are not purely Kubernetes-internal, because buying a machine is not a Kubernetes operation.
-
-Cluster Autoscaler and Karpenter "are the two Node autoscalers currently sponsored by SIG Autoscaling," and "from the perspective of a cluster user, both autoscalers should provide a similar Node autoscaling experience. Both will provision new Nodes for unschedulable Pods, and both will consolidate the Nodes that are no longer optimally utilized" [source: k8s-docs-node-autoscaling-2026-08-31]. Cluster Autoscaler works against pre-configured **node groups**; Karpenter describes itself as "an open-source node lifecycle management project built for Kubernetes" whose job is "to add nodes to handle unschedulable pods, schedule pods on those nodes, and remove the nodes when they are not needed" [source: karpenter-concepts-2026-08-31].
-
-> ⚓ **Worth Securing:** Karpenter is sponsored by Kubernetes SIG Autoscaling [source: k8s-docs-node-autoscaling-2026-08-31]. It is **not** a CNCF project with a maturity level, and no official source assigns it one. Contrast Knative, whose own documentation states it is a CNCF Graduated project [source: knative-overview-2026-08-23], and KEDA, which kubernetes.io describes the same way [source: k8s-docs-autoscaling-and-vpa-2026-08-31]. Karpenter's documentation makes no such claim. If an answer option gives Karpenter a CNCF maturity level, be suspicious of it, and notice that §2 just taught you why that distinction is meaningful.
-
-**KEDA.** Kubernetes Event-Driven Autoscaling, "a CNCF-graduated project enabling you to scale your workloads based on the number of events to be processed, for example the amount of messages in a queue. There exists a wide range of adapters for different event sources to choose from" [source: k8s-docs-autoscaling-and-vpa-2026-08-31].
-
-KEDA also handles **schedule-based** scaling, through its `Cron` scaler, which "allows you to define schedules (and time zones) for scaling your workloads in or out" [source: k8s-docs-autoscaling-and-vpa-2026-08-31], for reducing consumption during off-peak hours.
-
-### Four autoscalers, three axes — and the overlap is the lesson
-
-The section is titled "Four Things That Scale," and an attentive reader will already have noticed that four autoscalers do not produce four axes. KEDA moves the **replica count**, same as the HPA.
-
-That is not a flaw in the taxonomy. It is the most useful thing in the section.
-
-<!-- FIGURE: ch17-fig04-autoscaler-landscape -->
-![A four-row comparison table of autoscalers: HPA moves replica count on observed utilization and ships with Kubernetes; KEDA moves replica count on external events and schedules; VPA moves per-replica CPU and memory on observed usage and is flagged as an add-on that is not shipped; Cluster Autoscaler and Karpenter move the node pool in response to unschedulable Pods and underutilized nodes](figures/ch17-fig04-autoscaler-landscape.svg)
-
-<!-- ASCII-FALLBACK
-```
-   +-------------------+------------------+---------------------+
-   | AUTOSCALER        | WHAT MOVES       | WHAT TRIGGERS IT    |
-   +-------------------+------------------+---------------------+
-   | HPA               | replica count    | observed            |
-   | (ships with K8s)  |                  | utilization         |
-   +-------------------+------------------+---------------------+
-   | KEDA          [*] | replica count    | external EVENT      |
-   |                   |    ^^^ same axis | (queue depth,       |
-   |                   |    as HPA        |  schedule via Cron) |
-   +-------------------+------------------+---------------------+
-   | VPA          [!]  | per-replica      | observed usage      |
-   | ** ADD-ON.        |   resources      | (needs metrics-     |
-   | NOT SHIPPED. **   |   (CPU, memory)  |  server)            |
-   +-------------------+------------------+---------------------+
-   | Cluster Auto-     | the NODE POOL    | unschedulable Pods  |
-   | scaler            |                  | (provision);        |
-   | / Karpenter       |                  | underutilized nodes |
-   |                   |                  | (consolidate)       |
-   +-------------------+------------------+---------------------+
-
-   [!] VPA is the one that is NOT there by default.
-   [*] KEDA shares HPA's axis with a different trigger.
-       Axis and trigger are two separate questions.
-```
--->
-
-*Four autoscalers, three axes. The two marked cells carry most of this section's exam value.*
-
-> 🪢 **Mnemonic:** Ask two questions of every autoscaler, never one. **What moves? What triggers it?** HPA and KEDA give the same answer to the first and different answers to the second. Cluster Autoscaler and Karpenter give the same answer to both. Once you separate the two questions, the taxonomy stops being four things to memorize and becomes a small grid you can reconstruct.
-
-Two more things sit at the edges of this landscape, named for completeness and not taught: the **Cluster Proportional Autoscaler**, which scales replica counts based on the number of schedulable nodes and cores (the classic use is cluster DNS), and its vertical counterpart [source: k8s-docs-autoscaling-2026-08-23]. Neither is graded material here.
-
-### The in-place resize question, stated to the conflict
-
-There is a moving target in this material and you should see it as a moving target rather than as a fact.
-
-**In-place Pod vertical scaling** lets you change a running Pod's CPU and memory requests and limits without recreating it. It went stable in Kubernetes v1.35, "more than 6 years after its initial conception," having been alpha in v1.27 and beta in v1.33 [source: k8s-docs-autoscaling-and-vpa-2026-08-31].
-
-The question the exam might reach for is whether the VPA can use it. And here the official sources do not agree with each other.
-
-The autoscaling concepts page states flatly: "As of Kubernetes 1.37, VPA does not support resizing pods in-place, but this integration is being worked on" [source: k8s-docs-autoscaling-and-vpa-2026-08-31]. But the VPA's own documentation page lists `InPlaceOrRecreate` and `InPlace` among its update modes, and the v1.35 release blog says VPA's "`InPlaceOrRecreate` update mode, which leverages this feature, has graduated to beta" [source: k8s-docs-autoscaling-and-vpa-2026-08-31].
-
-<!-- AUTHOR-REVIEW: three kubernetes.io sources disagree on whether VPA supports in-place resize — the autoscaling concepts page says it does not, while the VPA page's update-mode list and the v1.35 GA blog both describe an InPlaceOrRecreate mode at beta. Recorded in the source snapshot as an explicit conflict. Written to the conflict rather than through it, per the snapshot's own instruction. If a later research pass resolves it, this paragraph can be tightened. -->
-
-> 🪝 **Snag:** The safe statement, and the one this book will stand behind: **in-place Pod vertical resize is a stable Kubernetes feature, and full VPA support for it is not a settled story.** Do not write or believe "VPA now resizes in place" as an unqualified claim. If an exam item hinges on this, it will hinge on the durable half: that horizontal and vertical are different axes, and that VPA is an add-on.
-
-### The three debts, paid
-
-Worth naming explicitly, because each was a pointer laid chapters ago:
-
-**metrics-server is what an HPA reads.** The resource metrics pipeline exists so that "the HorizontalPodAutoscaler (HPA) and VerticalPodAutoscaler (VPA) use data from the metrics API to adjust workload replicas and resources to meet customer demand" [source: k8s-docs-resource-metrics-pipeline-2026-08-31]. metrics-server is a "cluster addon component" and "a reference implementation of the Metrics API" [source: k8s-docs-resource-metrics-pipeline-2026-08-31]. No Metrics API server, whether metrics-server or something equivalent serving that API, no HPA scaling. *[cross-bearing: see Ch 13 §7 — numbers nobody collects by default]*.
-
-**An unschedulable Pod is what a node autoscaler watches for.** Answered above; the sentence Chapter 7 left open is closed.
-
-**The VPA is the absent-component pattern by name.** Not a new lesson, the same lesson, one layer over. *[cross-bearing: see Ch 10 §3 — the object is not the implementation]*.
-
-And a fourth connection that costs nothing: an HPA reasons about utilization *relative to what a Pod requested*, which is why Chapter 5's requests-and-limits material is load-bearing here and not merely adjacent. *[cross-bearing: see Ch 5 §8 — what a Pod is owed]*, and *[cross-bearing: see Ch 18 §3 — utilization relative to requests]* for where that gets examined properly.
-
-*[cross-bearing: see Ch 6 §2 — a loop you can watch working]* for the HPA concept as you first met it.
-
----
-
-## ⚪ §8 — How the Project Actually Runs, and How You'd Join
-
-This is the section Chapter 1 warned you about, the one technically strong candidates skip because it looks like soft content. It is also, per point of exam weight, some of the cheapest material in the book. What follows is an org chart and an invitation, and the invitation is the more interesting half.
-
-### The four principles
-
-Kubernetes states four community principles, and they are short enough to quote whole [source: k8s-community-governance-2026-08-23]:
-
-- **Open** — Kubernetes is open source.
-- **Welcoming and respectful** — see the Code of Conduct.
-- **Transparent and accessible** — work and collaboration should be done in public.
-- **Merit** — ideas and contributions are accepted according to their technical merit and alignment with project objectives, scope, and design principles.
-
-Hold "transparent and accessible" in mind. In a moment you will meet the one group that is deliberately exempt from it, and that exemption is the section's sharpest exam item.
-
-### SIGs, Working Groups, and Committees
-
-> **★ Fixed Point**
->
-> - A **SIG (Special Interest Group)** is the primary, **durable**, topic-focused unit. Members from multiple companies, common purpose of advancing the project on a specific topic.
-> - A **Working Group** is **time-bounded** and **crosses SIG lines**. Formed for a topic in scope for Kubernetes that spans multiple SIGs.
-> - A **Committee** does **not have open membership** and does not always operate in the open.
->
-> [source: k8s-community-governance-2026-08-23], [source: k8s-sig-list-and-groups-2026-08-31]
-
-The project's framing: "Most community activity is organized into Special Interest Groups (SIGs) and time bounded Working Groups" [source: k8s-sig-list-and-groups-2026-08-31].
-
-SIGs come in three orientations, and the examples make the taxonomy concrete: **vertical** (Network, Storage, Node), **horizontal** (Scalability, Architecture), or **project-support oriented** (Testing, Release, Docs) [source: k8s-community-governance-2026-08-23]. Each SIG "must have at least one and ideally two SIG chairs at any given time," who are "organizers and facilitators, responsible for the operation of the SIG and for communication and coordination with the other SIGs and the rest of the project" [source: k8s-community-governance-2026-08-23].
-
-Within a SIG, "specific work is divided into **subprojects**, each with designated owners who serve as technical leaders for their respective areas" [source: k8s-community-governance-2026-08-23]. SIG Release, for instance, has a Release Engineering subproject "dedicated to the technical aspects of Kubernetes releases, for example its tooling and source code ownership" [source: k8s-release-cycle-and-cadence-2026-08-31].
-
-Working groups "are primarily used to facilitate topics of discussion that are in scope for Kubernetes but that cross SIG lines. They are short-lived or address issues spanning multiple SIGs" [source: k8s-community-governance-2026-08-23].
-
-And then Committees.
-
-> ⚠ **Navigational Hazards**
->
-> **Committees are the one community group that is not open, and that asymmetry is the whole item.**
->
-> "Committees do not have open membership and do not always operate in the open. They are formed by the steering committee for specific topics requiring discretion (for example Security, Code of Conduct), have charters and chairs, and report periodically to the steering committee" [source: k8s-community-governance-2026-08-23].
->
-> A project whose stated principle is *transparent and accessible* has three closed bodies, and the reason is not hypocrisy. You cannot handle an unreported security vulnerability or a code-of-conduct complaint in a public meeting. Discretion is the requirement, and the exception is deliberate and chartered.
-
-There are exactly **three** Committees: **Code of Conduct**, **Security Response**, and **Steering** [source: k8s-sig-list-and-groups-2026-08-31]. Steering is one of them, and it also holds overall project governance; it is Steering that charters the other two [source: k8s-community-governance-2026-08-23].
-
-<!-- FIGURE: ch17-fig06-cncf-and-k8s-governance -->
-![Two org charts side by side separated by a divider. On the CNCF side, the Governing Board sets the scope for the TOC, which aligns the five TAGs, with an End User TAB feeding the TOC. On the Kubernetes side, the Steering Committee charters three committees marked as not having open membership, alongside separate boxes for durable topic-scoped SIGs and time-bounded cross-SIG Working Groups](figures/ch17-fig06-cncf-and-k8s-governance.svg)
-
-<!-- ASCII-FALLBACK
-```
-   ==================== CNCF ====================    ====== KUBERNETES ======
-   ( the foundation -- 227+ projects )              ( ONE of those projects )
-
-   +-------------------------+                      +----------------------+
-   |    GOVERNING BOARD      |                      | STEERING COMMITTEE   |
-   |  marketing, business    |                      |  overall project     |
-   |  oversight, budget      |                      |  governance          |
-   +-----------+-------------+                      +-----------+----------+
-               | sets the scope                                 | charters
-               v                                                v
-   +-------------------------+                      +----------------------+
-   |          TOC            |                      |  COMMITTEES  [X]     |
-   |  technical vision;      |                      |  Code of Conduct     |
-   |  approves projects      |                      |  Security Response   |
-   |  within that scope      |                      |  Steering            |
-   +-----------+-------------+                      |  [X] NOT open        |
-               | aligns                             |      membership      |
-               v                                    +----------------------+
-   +-------------------------+
-   |         TAGs            |                      +----------------------+
-   |  5 of them, restruc-    |                      |  SIGs                |
-   |  tured 2025. Bridge     |                      |  durable, topic-     |
-   |  projects <-> TOC       |                      |  scoped. ~24 of them |
-   +-------------------------+                      +----------------------+
-                                                    +----------------------+
-   +-------------------------+                      |  WORKING GROUPS      |
-   |    END USER TAB         |                      |  time-bounded,       |
-   |  voice of end users;    |                      |  cross-SIG           |
-   |  feeds the TOC          |                      +----------------------+
-   +-------------------------+
-
-   TAGs are CNCF-wide.  SIGs are Kubernetes-internal.
-   Different organizations, different scopes.
-```
--->
-
-*Two governance structures side by side. The pairing is the point — most of the confusion in this material comes from meeting them separately.*
-
-> 🔭 **Closer Look:** CNCF **TAGs** and Kubernetes **SIGs** are easy to confuse, and there is a historical reason that is more useful than any warning. The CNCF's own groups were *originally called SIGs*: "By June 2019, this number had grown to 37 projects and the TOC approved the creation of SIGs, later to be renamed Technical Advisory Groups" [source: cncf-tags-current-structure-2026-08-31]. They were the same word once, at two scales, and CNCF renamed theirs. TAGs operate across the whole foundation. SIGs operate inside the Kubernetes project. One foundation, many projects; Kubernetes is one of them.
-
-A detail that makes the SIG list concrete rather than abstract: several SIGs are ones you have already met the work of. **SIG Network**, **SIG Storage**, **SIG Node**, **SIG Autoscaling** and **SIG Release** are all on the roster [source: k8s-sig-list-and-groups-2026-08-31], and mapping them onto this book's chapters is straightforward: Network to Chapters 9 and 10, Storage to Chapter 11, Node to much of Chapters 2 and 5, Release to the versions Chapter 8 taught you to reason about. SIG Autoscaling sponsors both of the node autoscalers from the section you just read [source: k8s-docs-node-autoscaling-2026-08-31]. Every interface in §4 has a group of people behind it, working in public.
-
-### The release train, and the fact you already half-know
-
-Here is the section's quietest payoff, and possibly the chapter's.
-
-**Kubernetes releases happen approximately three times per year** [source: k8s-release-cycle-and-cadence-2026-08-31].
-
-**The project maintains release branches for the most recent three minor releases** [source: k8s-release-cycle-and-cadence-2026-08-31].
-
-Look at those two numbers together. Three releases a year. Three maintained branches. Which means a release stays supported for roughly — do the arithmetic yourself before reading on.
-
-Roughly a year. And the source confirms it independently, on the same page: "Kubernetes 1.19 and newer receive approximately 1 year of patch support" [source: k8s-release-cycle-and-cadence-2026-08-31].
-
-> **★ Fixed Point**
->
-> **Three minor releases a year**, **three supported minor versions**, and **roughly one year of patch support** are not three facts. They are one fact stated three ways. Three releases per year × three maintained branches ≈ one year — and because the documentation states that year independently, you can *derive* the support window instead of memorizing it.
-
-Chapter 8 §6 warned you that the version-skew numbers were the most forgettable material in the book, and it was right: they are three unrelated-looking integers. They are much harder to forget once they are one relationship. *[cross-bearing: see Ch 8 §6 — versions that are allowed to disagree]*, and *[cross-bearing: see Ch 13 §6 — versions that don't agree]* for what happens when the window is violated.
-
-**SIG Release** is the group that makes this happen — and this is where Chapter 8's fifteen weeks go *[cross-bearing: see Ch 8 §6 — release cadence and supported versions]*. Three minor releases a year, roughly one every fifteen weeks, is not an arbitrary rhythm: it is the length of a cycle that has to accommodate enhancement freeze, code freeze, testing and the staffing of the release roles below. Its charter lists "Production of Kubernetes releases on a reliable schedule" as its first responsibility, along with defining and staffing release roles, driving the development and release processes, and "managing the creation of release specific artifacts, including: Code branches, Binary artifacts, Container Images, Release notes" [source: k8s-release-cycle-and-cadence-2026-08-31].
-
-The cycle itself has three phases — **Enhancement Definition, Implementation, Stabilization** — with an **Enhancements Freeze** around week 4, **Code Freeze** starting around week 12 and running about two weeks, during which "only critical bug fixes are accepted into the release codebase," and a post-release phase from week 14 [source: k8s-release-cycle-and-cadence-2026-08-31].
-
-<!-- AUTHOR-REVIEW: an older cached snapshot (k8s-releases-cadence-2026-08-23) states the cadence as "approximately every 15 weeks." The current release-cycle page says "approximately three times per year" and describes a cycle whose post-release phase begins at week 14+. This section teaches the three-times-a-year formulation, which is current, sourced, and the half the exam would test. Flagged so a later stage does not "correct" it toward the 15-week figure. -->
-
-### KEPs: how a change becomes a change
-
-A **Kubernetes Enhancement Proposal** is "a way to propose, communicate and coordinate on new efforts for the Kubernetes project," using "a standard proposal format with useful metadata" [source: k8s-keps-and-feature-stages-2026-08-23].
-
-A KEP is required for potentially controversial changes, most new features, major modifications to existing features, and changes that affect most of the project. The framework was "inspired by similar processes such as IETF RFCs and Python PEPs," and it provides "exposure through searchable websites, cross-referencing, and structured decision-making with a discoverable record" [source: k8s-keps-and-feature-stages-2026-08-23].
-
-KEPs track a feature through **alpha → beta → stable (GA)**, with graduation criteria stated in the KEP itself. You have already seen this machinery from the outside: every "Feature state: Stable since Kubernetes v1.35" banner in the documentation is the visible end of a KEP that ran its course.
-
-> ⚓ **Worth Securing:** The discoverable record is the real product. When you find yourself asking "why on earth does Kubernetes do it *this* way," there is very often a KEP with the argument written down, including the alternatives that were rejected and why. That is an unusually good property for a system you have to reason about under exam conditions, and an unusually good one for a system you have to operate.
-
-### How you'd actually join
-
-This is not a metaphor. There is a published chart of the passage, and the first leg is shorter than it looks.
-
-The Kubernetes contributor ladder has four rungs [source: k8s-community-membership-ladder-2026-08-23]:
-
-| Role | Responsibility | What it requires |
-|---|---|---|
-| **Member** | Active contributor in the community | Sponsored by 2 reviewers; multiple contributions to the project |
-| **Reviewer** | Review contributions from other members | History of review and authorship in a subproject |
-| **Approver** | Approve acceptance of contributions | Highly experienced active reviewer and contributor to a subproject |
-| **Subproject Owner** | Set direction and priorities for a subproject | Demonstrated responsibility and excellent technical judgement |
-
-The Member requirements in full: two-factor authentication enabled on your GitHub account; multiple contributions "enough to demonstrate an ongoing and long-term commitment to the project"; subscribed to the dev mailing list; read the contributor guide; **sponsored by 2 reviewers from different companies**; and open a membership request issue [source: k8s-community-membership-ladder-2026-08-23].
-
-Reviewer requires being a member for at least three months, primary reviewer on at least 5 PRs, and having reviewed or merged at least 20 substantial PRs. Approver requires three months as a reviewer, primary reviewer on at least 10 substantial PRs, 30 reviewed or merged, and nomination by a subproject owner [source: k8s-community-membership-ladder-2026-08-23].
-
-Notice what is and is not on that list. There is no employer requirement. No seniority requirement. No credential. The gate is *contributions and two people willing to vouch for you*, and the sponsors have to be from different companies: a deliberate structural check against any one employer manufacturing members.
-
-> **Logbook Entry:** The most common misconception about contributing to a project this size is that the work is all deep systems programming, and that a first contribution has to be impressive.
->
-> It does not. SIG Docs exists. So does SIG Contributor Experience [source: k8s-sig-list-and-groups-2026-08-31]. In my experience, a great many people on the contributor ladder got their first merged PR by fixing documentation that was wrong, or by writing a test for a code path that had none, or by reproducing a bug report that a maintainer did not have the environment to reproduce.
->
-> The reason this matters for an exam chapter, and not just as encouragement: the project's own stated principle is that "work and collaboration should be done in public" [source: k8s-community-governance-2026-08-23], and the fastest way to stop finding "SIG, Working Group, Committee, Steering" abstract is to go and watch some of that work happen. Forty-five minutes spent following a group of engineers arguing about a KEP will do more for your retention of this section than reading it three times.
-
-<!-- AUTHOR-REVIEW: an earlier draft of this Logbook Entry and of the SIG paragraph above claimed that every SIG holds a public meeting on a public calendar, and that such a meeting is available "this week." Neither cached snapshot supports it: k8s-community-governance-2026-08-23 gives the transparency principle, and k8s-sig-list-and-groups-2026-08-31 gives the roster without the meeting-schedule columns that the upstream sig-list.md carries. Softened to the sourced principle. To restore the stronger, more useful invitation, re-fetch sig-list.md capturing the per-SIG meeting schedules. -->
-
-The CNCF side has its own on-ramps, and they are distinct from the Kubernetes ones. **LFX Mentorship** is "a mentoring initiative by the Linux Foundation"; **Google Summer of Code** is "a mentoring program for the open source beginners"; **Outreachy** is "a mentoring initiative for the communities traditionally underrepresented in tech" [source: cncf-mentoring-and-community-groups-2026-08-31]. The foundation also "supports the worldwide community of the Cloud Native Community Groups (CNCGs)" [source: cncf-mentoring-and-community-groups-2026-08-31]: "free, volunteer-run meetups on the CNCF community platform, including Kubernetes Community Days" [source: cncf-landscape-and-community-2026-08-23].
-
-**CNCF Ambassadors** are an extension of the CNCF, furthering the mission of making cloud native ubiquitous through community leadership and mentorship; many of them organize those local groups [source: cncf-landscape-and-community-2026-08-23].
-
-And **KubeCon + CloudNativeCon** is the flagship conference series where the whole community convenes [source: cncf-landscape-and-community-2026-08-23].
-
-### The Code of Conduct
-
-The **CNCF Community Code of Conduct** applies across all CNCF projects and events, and its scope statement is the examinable part because it is broader than people assume:
-
-> This code of conduct applies: within project and community spaces, in other spaces when an individual CNCF community participant's words or actions are directed at or are about a CNCF project, the CNCF community, or another CNCF community participant in the context of a CNCF activity.
-
-[source: cncf-code-of-conduct-2026-08-31]
-
-Project spaces, event spaces, *and* conduct outside both when it is directed at the community. The pledge commits to "making participation in the CNCF community a harassment-free experience for everyone," across a long enumerated list of dimensions of diversity [source: cncf-code-of-conduct-2026-08-31].
-
-It is administered by the **CNCF Code of Conduct Committee**, reachable at a published address for incidents that are project-agnostic or span multiple projects, with a stated expectation of "a response within three business days" [source: cncf-code-of-conduct-2026-08-31].
-
-### The certification ladder
-
-Chapter 1 deferred this here by name, and it is a short answer.
-
-The KCNA "is a pre-professional certification designed for candidates interested in advancing to the professional level," and it "is intended to prepare candidates to work with cloud native technologies and pursue further CNCF credentials, including CKA, CKAD, and CKS" — the Certified Kubernetes Administrator, the Certified Kubernetes Application Developer, and the Certified Kubernetes Security Specialist [source: cncf-kcna-certification-page-2026-08-23]. The certification overview page puts it more directly: KCNA "lays the groundwork for further CNCF certifications like CKA, CKAD, and CKS" [source: cncf-kcna-certification-page-2026-08-23].
-
-The shape of that ladder matters because the *format* changes, not just the difficulty. KCNA is "online and multiple-choice." **CKA** is "a performance-based exam where candidates interact with the command line to solve real-world challenges." **CKAD** is "a hands-on, command-line environment." **CKS** is "performance-based" [source: cncf-kcna-certification-page-2026-08-23].
-
-CNCF also offers **KCSA**, the Kubernetes and Cloud Native Security Associate, and the Cloud Native Network Function certification [source: cncf-who-we-are-2026-08-23].
-
-<!-- AUTHOR-REVIEW: cncf-who-we-are-2026-08-23 gives the acronym KCSA inside a list of credentials and does not expand it; the expansion above ("Kubernetes and Cloud Native Security Associate") is standard and almost certainly correct but is not in the cached corpus. The book's acronym register requires expansion at first use, so it stands here. Tag it to the CNCF certification overview page on the next research pass, or drop the expansion if the register is relaxed. No snapshot states KCSA's exam format, which is why the Mnemonic below scopes its claim to CKA/CKAD/CKS. -->
-
-> 🪢 **Mnemonic:** **KCNA is the only one on this ladder — CKA, CKAD, CKS — you can pass by knowing things.** Everything above it requires doing things, at a terminal, against a live cluster, under time pressure. That is not a reason to underrate this exam. It is the reason the vocabulary you are building here has to be solid before you go on, because at the next tier nobody gives you four options to pick from.
-
----
-
-## ☆ Taking Your Bearings: Scaling, Serverless, and How the Project Runs
-
-Five questions. At least two are about the material a strong technical reader skims, which is deliberate.
-
-**1.** A team runs a workload whose load is driven by messages arriving in a queue, not by CPU utilization. They also have a nightly batch window where they want capacity increased on a schedule regardless of current load. Which autoscaler addresses both needs, and what axis does it move?
+**5.** A team runs a workload whose load is driven by messages arriving in a queue, not by CPU utilization. They also have a nightly batch window where they want capacity increased on a schedule regardless of current load. Which autoscaler addresses both needs, and what axis does it move?
 
 A) The VerticalPodAutoscaler, moving per-replica CPU and memory in response to observed usage
 B) Cluster Autoscaler, moving the node pool in response to the queue
 C) KEDA, moving the replica count on external events and on schedules via its Cron scaler
 D) The HorizontalPodAutoscaler, moving the replica count natively on queue depth
 
-**2.** Which statement about the VerticalPodAutoscaler is accurate?
-
-A) It ships with Kubernetes and is enabled by default on all clusters
-B) It adjusts the number of replicas of a workload in response to memory pressure
-C) It provisions new nodes when Pods cannot be scheduled on the existing ones
-D) It is an add-on that must be installed separately, and it requires metrics-server
-
-**3.** What distinguishes a Kubernetes **Committee** from a SIG and a Working Group?
+**6.** What distinguishes a Kubernetes **Committee** from a SIG and a Working Group?
 
 A) It does not have open membership and does not always operate in the open; Steering forms it for topics requiring discretion
 B) It is scoped to a single technical topic, where SIGs deliberately span several
 C) It is longer-lived than a SIG and outlasts any individual Working Group
 D) It is a CNCF body, where SIGs and Working Groups are Kubernetes bodies
 
-**4.** `[retrieval: ch8]` A cluster runs Kubernetes 1.35. Two newer minor versions have since been released. Using the project's release cadence and support policy, what can you say about 1.35's patch support?
+**7.** `[retrieval: ch8]` A cluster runs Kubernetes 1.35. Two newer minor versions have since been released. Using the project's release cadence and support policy, what can you say about 1.35's patch support?
 
 A) Three years of support remain, since the project maintains three years of release branches
 B) It is at or very near the end of its window — three branches are maintained, releases come about three times a year, and 1.19 and newer get about a year of patch support
 C) It is already out of support, because only the current release is maintained
 D) It depends entirely on the cloud provider; the upstream project makes no commitment
 
-**5.** A developer says: "We moved to serverless, so we're not running containers any more." Correct them, with reference to how Knative works.
+**8.** A developer says: "We moved to serverless, so we're not running containers any more." Correct them, with reference to how Knative works.
 
 A) They are right — serverless workloads run as functions outside the container model
 B) They are right about Knative Functions but wrong about Knative Serving
@@ -1644,61 +1132,36 @@ D) They are wrong — Knative builds on the Pod abstraction and ships as CRDs, s
 
 **Answers with Explanations:**
 
-**1. C.** KEDA scales "based on the number of events to be processed, for example the amount of messages in a queue," and its `Cron` scaler "allows you to define schedules (and time zones) for scaling your workloads in or out" [source: k8s-docs-autoscaling-and-vpa-2026-08-31]. Both requirements, one tool. It moves the replica count, the same axis as the HPA, with a different trigger.
+**1. D.** CRI, CNI, CSI, and CRDs are one architectural decision applied four times: Kubernetes defines what the thing must do and hands the implementation to a vendor or your own controller. *(CRI — Ch 2 §4; CNI — Ch 9 §1; CSI — Ch 11 §5; CRDs — Ch 6 §8.)* A misses the point — these aren't unrelated configuration surfaces. B is wrong: no forking is involved, which is precisely what a published interface exists to avoid. C is wrong: admission webhooks *(Ch 8 §2)* intercept API requests; they don't run containers, wire networks, or mount volumes.
 
-- **A is wrong** on both halves: VPA moves resources, not replicas, and it responds to observed usage, not queue depth or schedules.
-- **B is wrong.** Cluster Autoscaler operates on nodes, reacting to unschedulable Pods. It has no view of a queue.
-- **D is the near-miss worth understanding.** The HPA scales on "observed resource utilization such as CPU or memory usage" or custom metrics [source: k8s-docs-hpa-2026-08-24]. Getting queue depth in front of an HPA is possible through custom metrics plumbing, but it is not native, and it does not address the scheduling requirement at all.
+**2. A.** The aggregation layer registers an `APIService` object that claims a URL path and proxies requests sent there [source: k8s-docs-api-aggregation-and-device-plugins-2026-08-31] — exactly what a team with an existing server needs. B is the trap: a CRD also adds an API, but by having the apiserver store and serve the objects itself, which would strand the server this team already runs. C and D solve different problems — hardware advertisement and object mutation, not API serving.
 
-**2. D.** Unlike the HPA, the VPA does not come with Kubernetes by default; it is an add-on a cluster administrator must deploy, and "You will need to have the Metrics Server installed to your cluster for the VPA to work" [source: k8s-docs-autoscaling-and-vpa-2026-08-31].
+**3. B.** NetworkPolicy is an allow-list: it decides which connections are permitted, not whether they're encrypted, and nothing described here encrypts the pod-to-pod leg. A misreads NetworkPolicy's job entirely. C is the misconception this question targets: TLS terminated at the Ingress means that connection ended there — what continues to the Pod is new, and by default plaintext. D invents a requirement the Kubernetes network model doesn't make. Closing this gap is exactly what a service mesh's mTLS is for.
 
-- **A is the misconception this section exists to prevent.** VPA is the standing example of the pattern Chapter 10 §3 named: the object can exist while nothing acts on it.
-- **B describes the HPA's axis, not the VPA's.** Vertical means resources per replica.
-- **C describes a node autoscaler.**
+**4. C.** Istio's own framing: the data plane is the proxies that mediate service-to-service traffic; the control plane manages and configures those proxies [source: istio-service-mesh-2026-08-23]. B is the vocabulary collision worth flagging — kube-apiserver and etcd are the *cluster's* control plane, a different structure at a different layer. A mesh's control plane distributes policy to proxies; the cluster's reconciles objects.
 
-**3. A.** Committees "do not have open membership and do not always operate in the open. They are formed by the steering committee for specific topics requiring discretion (for example Security, Code of Conduct)" [source: k8s-community-governance-2026-08-23].
+**5. C.** KEDA scales on external events — queue depth among them — and its `Cron` scaler covers scheduled capacity changes: one tool, both requirements, moving the replica count [source: k8s-docs-autoscaling-and-vpa-2026-08-31]. A is wrong on both halves: VPA moves resources per replica, not replica count, and reacts to observed usage, not queue depth or schedule. B is wrong — Cluster Autoscaler reacts to unschedulable Pods, with no view of a queue. D is the near-miss: the HPA scales natively on CPU/memory or custom metrics, but queue-driven scaling isn't native, and schedules aren't its concern at all.
 
-- **B inverts the SIG/WG relationship.** SIGs are the topic-scoped unit; Working Groups are the ones that cross SIG lines.
-- **C is wrong** — longevity is not the distinction. SIGs are the durable unit; Working Groups are the time-bounded one. Committees are distinguished by closed membership.
-- **D confuses the two organizations.** All three, SIGs and Working Groups and Committees, are Kubernetes bodies. CNCF's equivalent coordination units are TAGs.
+**6. A.** Committees "do not have open membership and do not always operate in the open" — Steering forms them for topics requiring discretion, such as Security or Code of Conduct [source: k8s-community-governance-2026-08-23]. B inverts the relationship: SIGs are the topic-scoped unit, and Working Groups are the ones that cross SIG lines. D confuses organizations — SIGs, Working Groups, and Committees are all Kubernetes bodies; CNCF's equivalent units are TAGs.
 
-**4. B.** The project "maintains release branches for the most recent three minor releases," and "Kubernetes 1.19 and newer receive approximately 1 year of patch support" [source: k8s-release-cycle-and-cadence-2026-08-31]. With approximately three releases per year, being two versions behind puts a release at the end of its supported window.
+**7. B.** The project maintains release branches for the most recent three minor versions, ships roughly three releases a year, and gives 1.19+ about a year of patch support [source: k8s-release-cycle-and-cadence-2026-08-31]. Two versions behind puts 1.35 at the end of its window. A misreads "three releases" as "three years" — the three attaches to minor versions, not years. C understates it: three branches are maintained, not one. D is wrong about the upstream project, which publishes explicit end-of-life dates regardless of what a managed provider layers on top.
 
-- **A misreads "three releases" as "three years."** The number three attaches to *minor versions*, not years.
-- **C understates it — three branches are maintained, not one.**
-- **D is wrong** about the upstream project, which publishes explicit end-of-life dates per release. Managed providers may offer extended support commercially, but that is in addition to the upstream policy, not instead of it.
-
-This is the fact Chapter 8 §6 taught and §8 of this chapter explains: the cadence and the support window are the same fact.
-
-**5. D.** Knative "builds on the Kubernetes Pod abstraction," and "Serving and Eventing are implemented as Kubernetes Custom Resource Definitions (CRDs)" [source: knative-overview-2026-08-23]. The CNCF glossary's own definition says serverless "abstracts servers away from the user" [source: cncf-glossary-serverless-2026-08-31]: abstracts away, not eliminates.
-
-- **A is the misconception.** The name suggests absence; the architecture is a lifecycle.
-- **B is wrong** — Functions is built on Serving and Eventing, so it inherits exactly the same container-and-Pod substrate.
-- **C reaches the right verdict for the wrong reason**, which makes it the trap. Knative does not replace Kubernetes; it is Kubernetes-based and is built out of Kubernetes' own extension mechanism.
-
----
-
-**How'd You Do?**
-
-**4–5 correct:** Done. §9 asks nothing new of you — read it once, slowly.
-
-**2–3 correct:** Review your misses. If they were questions 3 or 4, review them carefully: those two are §8's, and §8's material is the cheapest on the exam.
-
-**0–1 correct:** Re-read **§7's autoscaler grid** and **§8's three groups**. Those are the chapter's two highest-density recall blocks and they reward a second pass more than any other pages here. Do it before the Practice Questions, not after.
+**8. D.** Knative builds on the Pod abstraction, and Serving and Eventing ship as Kubernetes CRDs [source: knative-overview-2026-08-23] — the workloads are still containers in Pods. "Serverless" abstracts servers away from the user; it doesn't eliminate them [source: cncf-glossary-serverless-2026-08-31]. C reaches the right verdict for the wrong reason: Knative doesn't replace Kubernetes, it's built from Kubernetes' own extension mechanism. B is wrong too — Knative Functions is built on Serving and Eventing, so it inherits the same substrate.
 
 ---
 
 **Checkpoint: You've Now Mastered**
 
+✓ The four pluggable interfaces as one shape, and the documentation's wider extension map beside it
+✓ CRDs versus API aggregation — two routes to a new API, with different costs
+✓ What a service mesh is, and the property that defines it
+✓ Data plane, mesh control plane, cluster control plane — three things, two names
 ✓ Four autoscalers across three axes, and the two questions to ask of each
 ✓ Serverless as a lifecycle claim, not a claim about the absence of containers
 ✓ SIG, Working Group, Committee, Steering — and which one is deliberately closed
 ✓ Why three releases a year and three supported versions are one fact
 ✓ The contributor ladder, its actual entry requirements, and the certification ladder above this exam
 
-One section left, and it does not teach you anything new.
-
----
 
 ## ☀️ §9 — One Pluggability Story
 

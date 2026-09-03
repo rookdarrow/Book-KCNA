@@ -474,7 +474,7 @@ Two header lines at the top: "ONE TRACE = the whole request path.  ONE SPAN = on
 ```yaml-figure-spec
 anchor_id: ch18-fig03-trace-spans-across-services
 diagram_type: gantt
-source_ascii: |
+source_ascii: |5
      ONE TRACE = the whole request path.  ONE SPAN = one unit of work.
      trace ID: 4bf92f...  (crosses every boundary below)
 
@@ -611,7 +611,7 @@ Panel 3, titled "3. APP PUSHES DIRECTLY": a NODE frame containing a single Pod f
 ```yaml-figure-spec
 anchor_id: ch18-fig06-cluster-logging-architectures
 diagram_type: k8s_architecture
-source_ascii: |
+source_ascii: |5
      THREE WAYS TO COLLECT.  Same backend in all three;
      the difference is WHERE collection happens.
 
@@ -749,7 +749,7 @@ The two panels are related but must not be read as one chain: the visual gutter 
 ```yaml-figure-spec
 anchor_id: ch18-fig05-sli-slo-golden-signals
 diagram_type: concept_map
-source_ascii: |
+source_ascii: |4
     MEASUREMENT → COMMITMENT → CONTRACT     THE FOUR GOLDEN SIGNALS
 
     ┌─────────────────────────────┐        ┌──────────┐ ┌──────────┐

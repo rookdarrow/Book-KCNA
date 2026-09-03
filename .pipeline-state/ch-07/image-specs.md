@@ -395,7 +395,7 @@ A two-panel comparison under a shared two-line title: *"SAME CLUSTER. SAME RULE:
 ```yaml-figure-spec
 anchor_id: ch07-fig04-pod-affinity-anti-affinity-topology
 diagram_type: k8s_architecture
-source_ascii: |
+source_ascii: |5
      SAME CLUSTER. SAME RULE: "no two Pods labelled app=web in one domain."
      THE ONLY DIFFERENCE IS THE topologyKey.
 
@@ -494,7 +494,7 @@ Two collector boxes sit side by side across the top. The left is headed `FILTERS
 ```yaml-figure-spec
 anchor_id: ch07-zenith-berth-assignment
 diagram_type: flowchart
-source_ascii: |
+source_ascii: |4
     FILTERS — remove nodes                     SCORES — rank what remains
     ┌────────────────────────────────┐         ┌────────────────────────────────┐
     │ requests vs allocatable        │         │ preferred node affinity        │

@@ -1,0 +1,56 @@
+/* Lodestar Ledgers — ebook stylesheet. Deliberately restrained: Kindle overrides
+   most typography, so this sets structure and rhythm rather than fighting it. */
+body { line-height: 1.5; }
+h1 { page-break-before: always; margin-top: 1em; }
+h2 { margin-top: 1.4em; }
+h3 { margin-top: 1.1em; }
+blockquote {
+  margin: 1em 0.6em; padding-left: 0.8em;
+  border-left: 3px solid #B58B3E; font-style: normal;
+}
+table { border-collapse: collapse; width: 100%; margin: 1em 0; font-size: 0.9em; }
+th, td { border: 1px solid #999; padding: 0.35em 0.5em; text-align: left; }
+th { background: #F5EFE4; }
+pre { white-space: pre-wrap; word-wrap: break-word; font-size: 0.85em;
+      background: #F7F4EE; padding: 0.6em; }
+code { font-size: 0.9em; }
+/* Long URLs and dense table cells are the only things left that can exceed a
+   narrow column. Let them break inside a word rather than run off the page. */
+p, li, td, th, dd { overflow-wrap: break-word; word-break: break-word; }
+/* Pandoc injects its own `pre > code.sourceCode { white-space: pre }` into
+   every document with a highlighted block, and gives each SOURCE LINE its
+   own inline-block span. Both defeat the wrapping set on <pre> above: the
+   line cannot break at a space and the span cannot break at all, so a long
+   kubectl line runs off the page on a 6in reader with no way to see it.
+   Higher specificity than pandoc's rule, so this is the one that applies. */
+pre > code.sourceCode { white-space: pre-wrap !important; }
+pre > code.sourceCode > span { display: inline !important; }
+/* A wrapped continuation is indented so it reads as the same command.
+   Kindle ignores hanging indents on <pre>, so this is a plain left pad. */
+
+img { max-width: 100%; height: auto; }
+img[alt="Soundings"], img[alt="Fixed Point"], img[alt="Taking Your Bearings"], img[alt="Navigational Hazards"], img[alt="Safe Harbor"], img[alt="Zenith"], img[alt="Exam Alert"], img[alt="Worth Securing"], img[alt="Closer Look"], img[alt="Mnemonic"], img[alt="Snag"], img[alt="Running Aground"], img[alt="Files"], img[alt="Chart"], img[alt="Passage"], img[alt="Dawn"], img[alt="Foundation"], img[alt="Standard"], img[alt="Advanced"], img[alt="Expert"], img[alt="Optional"] { height: 1em; width: auto; vertical-align: -0.12em; margin-right: 0.25em; display: inline; }
+figcaption, .caption { font-size: 0.85em; font-style: italic; text-align: center; }
+hr { border: 0; border-top: 1px solid #ccc; margin: 1.5em 20%; }
+
+/* Print-only additions. The screen stylesheet is shared with the EPUB so the two agree. */
+/* Margins come from the pdf() call so the running header has room; an @page margin
+   rule here overrides them and the header lands on top of body text. */
+body { font-family: "Fira Sans", -apple-system, "Segoe UI", sans-serif; font-size: 10.5pt;
+       line-height: 1.5; color: #16202e; }
+h1 { page-break-before: always; break-before: page; font-size: 20pt; color: #0B1E3B;
+     border-bottom: 2px solid #B58B3E; padding-bottom: 6pt; }
+h1:first-of-type { page-break-before: avoid; break-before: avoid; }
+h2 { font-size: 14pt; color: #0B1E3B; margin-top: 18pt; }
+h3 { font-size: 11.5pt; color: #1F4A4E; }
+h1, h2, h3, h4 { page-break-after: avoid; break-after: avoid; }
+table, pre, blockquote, figure { page-break-inside: avoid; break-inside: avoid; }
+pre { font-size: 8.5pt; background: #F7F4EE; border-left: 3px solid #B58B3E; }
+/* Pandoc injects `pre > code.sourceCode { white-space: pre }` and wraps each
+   source line in an inline-block span. Both defeat the wrapping above, so a
+   long command line runs past the trim and KDP rejects the interior. */
+pre > code.sourceCode { white-space: pre-wrap !important; }
+pre > code.sourceCode > span { display: inline !important; }
+table { font-size: 9pt; }
+img { max-width: 100%; }
+a { color: #1F4A4E; text-decoration: none; }

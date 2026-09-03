@@ -980,9 +980,9 @@ There is a real limit to it, though, and it is the difference between the two ki
 
 ---
 
-## ☆ Taking Your Bearings: Pull, Push, and the Path One Request Took
+## ☆ Taking Your Bearings #2 — Pull, Push, and the Signals They Answer
 
-Five questions. Two draw on earlier chapters.
+Nine questions on §4 through §7. Two of them reach back into earlier chapters.
 
 **1.** A team wants their long-running web service to report metrics to Prometheus. A developer proposes: "We'll have the service POST its metrics to the Pushgateway every 15 seconds — that way Prometheus doesn't have to reach into our network." Evaluate this proposal.
 
@@ -995,61 +995,52 @@ Five questions. Two draw on earlier chapters.
 - C) One span is produced, containing three traces
 - D) Three root spans are produced and correlated afterward by timestamp
 
-**4.** *[retrieval: ch13]* Your cluster already runs metrics-server. You now need Prometheus to collect metrics from two things: a PostgreSQL instance you cannot modify, and a Go service your own team wrote. Which pairing is correct?
+**4.** *[retrieval: ch13]* Your cluster already runs metrics-server. You now need Prometheus to collect metrics from two things: a PostgreSQL instance you cannot modify, and a Go service your own team wrote. Which pairing is correct — and in one sentence, why doesn't metrics-server, already installed, remove the need for either?
 
 - A) A client library for both
 - B) An exporter for both
 - C) A client library in the Go service, an exporter alongside PostgreSQL
 - D) The Pushgateway for PostgreSQL, a client library for the Go service
 
-Then, in one sentence: why does metrics-server, already installed, not remove the need for either?
+**5.** *[retrieval: ch17]* A service mesh is deployed and the platform team now has per-service latency and error rates for applications that were never instrumented. An engineer asks: "Which of the three database queries in that handler is slow?" Can the mesh telemetry answer that? Why or why not?
 
-**5.** *[retrieval: ch17]* A service mesh is deployed and the platform team now has per-service latency and error rates for applications that were never instrumented. An engineer investigating a slow endpoint asks: "Which of the three database queries in that handler is slow?" Can the mesh telemetry answer that? Why or why not?
+**6.** A Pod has restarted four times over the past hour. You need to see what the container printed before its *first* crash. Can you get it with `kubectl logs`? Name the specific mechanisms involved.
+
+**7.** Name the three cluster-logging architectures. Which is the default answer for a platform team, and what is the structural reason?
+
+**8.** A team commits: "99.9% of API requests will complete successfully within 300ms, measured over a rolling 30 days. If we miss this in a calendar quarter, affected enterprise customers receive a 10% service credit." Identify the SLI, the SLO, and the SLA in that statement.
+
+**9.** Name the four golden signals. For one of them, state a relationship it has to another that makes it useful as an early warning.
 
 ---
 
 **Answers with Explanations:**
 
-**1.** The proposal is wrong, and it is wrong for a reason more specific than "Prometheus pulls."
+**1.** Wrong, and specifically so: Prometheus collects "via a pull model over HTTP" [source: prometheus-overview-2026-08-23], and the Pushgateway isn't a general bypass for that — "the only valid use case for the Pushgateway is for capturing the outcome of a service-level batch job" [source: prometheus-pushgateway-practices-2026-08-31]. A long-running service can be scraped; the fix is a client library plus service discovery, not a gateway.
 
-Prometheus collects "via a pull model over HTTP" [source: prometheus-overview-2026-08-23], and the Pushgateway is not a general-purpose bypass for that. It is "an intermediary service which allows you to push metrics from jobs which cannot be scraped," and "the only valid use case for the Pushgateway is for capturing the outcome of a service-level batch job" [source: prometheus-pushgateway-practices-2026-08-31].
+**2.** The architect has matched on the word "metrics" and missed the requirement: completeness, not measurement. Prometheus names this exact case as its own non-fit: "If you need 100% accuracy, such as for per-request billing, Prometheus is not a good choice as the collected data will likely not be detailed and complete enough" [source: prometheus-overview-2026-08-23]. That's the pull model at work — scraping samples state on an interval, not observing every event; billing needs the latter.
 
-A long-running web service **can** be scraped, and that is the entire distinction. The correct design is a client library exposing a metrics endpoint, plus service discovery so Prometheus finds it. Note also that even the Pushgateway does not reverse the arrow into Prometheus: Prometheus scrapes *the gateway*.
+**3. B.** "A trace is made of one or more spans. The first span represents the root span" [source: opentelemetry-observability-primer-2026-08-23]. One request, one trace, spans beneath the root for each unit of work. A treats it like a log file, one artifact per service; C inverts containment; D misses that correlation comes from propagated trace and span IDs [source: opentelemetry-context-propagation-2026-08-31], not timestamps.
 
-**2.** The architect has matched on the word "metrics" and missed the requirement, which is **completeness**, not measurement.
+**4. C.** The discriminator is which side of the code boundary you're on. A client library "makes it easy to directly instrument your code" [source: prometheus-glossary-2026-08-31] — it goes *into* software you can change, ruling out A for PostgreSQL. An exporter is "a binary running alongside the application you want to obtain metrics from" [source: prometheus-glossary-2026-08-31] — right for PostgreSQL, unnecessary beside code you already instrument, ruling out B. D over-generalizes the Pushgateway from *short-lived* to *unmodifiable*; PostgreSQL is long-running and scrapeable. Metrics-server holds current CPU and memory for autoscaling — no history, no application metric — so connection counts and query latency sit outside its scope. *[cross-bearing: see Ch 13 §7]*
 
-Prometheus states its own non-fit: "If you need 100% accuracy, such as for per-request billing, Prometheus is not a good choice as the collected data will likely not be detailed and complete enough" [source: prometheus-overview-2026-08-23]. The billing example is the documentation's own. This falls out of the pull model: scraping samples state on an interval rather than observing every event.
+**5. No.** The mesh proxy sits in the network path and reports on what crosses it — which service called which, how long, what status. Queries *inside* a handler never cross the proxy. This is the zero-code/code-based boundary: zero-code instrumentation provides telemetry "from libraries you use and/or the environment your application runs in" [source: opentelemetry-instrumentation-2026-08-31], but seeing inside a handler requires instrumentation *in* the handler. *[cross-bearing: see Ch 17 §5]*
 
-The trade is deliberate: "Prometheus values reliability" [source: prometheus-overview-2026-08-23], and each server is standalone specifically so it works "when other parts of your infrastructure are broken." Billing needs an event stream that captures every transaction, which is a different system.
+**6. No,** on two grounds. Rotation: the kubelet rotates container logs, and only the latest log file is available through `kubectl logs` [source: k8s-docs-logging-architecture-2026-08-23]. Restart depth: the kubelet keeps one terminated container's logs, retrieved with `kubectl logs --previous` [source: k8s-docs-logging-architecture-2026-08-23] — one restart back, not four. Four restarts ago is gone from the node; retrieving it needs cluster-level logging, an agent that shipped those lines out before the node discarded them.
 
-**3. B.** "A trace is made of one or more spans. The first span represents the root span; each root span represents a request from start to finish" [source: opentelemetry-observability-primer-2026-08-23]. One request, one trace, spans beneath the root for each unit of work.
+**7.** A node-level logging agent (typically a DaemonSet), a dedicated sidecar container, and the application pushing directly to a backend [source: k8s-docs-logging-architecture-2026-08-23]. The default is the node-level agent, because it works *without the application's cooperation*: container logs are already on the node's filesystem regardless of what the application team did [source: k8s-docs-logging-architecture-2026-08-23]. One agent per node covers everything, including workloads the platform team never touched.
 
-- **A is wrong** and is the answer someone gives who is thinking in log files: one artifact per service. Traces are per-*request*, which is exactly what makes them useful across service boundaries.
-- **C is wrong** and inverts the containment. Traces contain spans, not the reverse.
-- **D is wrong** twice over. There is one root span per trace, and correlation comes from propagated trace and span IDs, not from comparing timestamps after the fact [source: opentelemetry-context-propagation-2026-08-31]. Timestamp correlation is precisely the fragile thing tracing exists to replace.
+**8.** SLI: the proportion of requests completing successfully within 300ms — the measurement, user-perspective [source: opentelemetry-observability-primer-2026-08-23]. SLO: 99.9% over a rolling 30 days — the target attached to the SLI [source: sre-book-service-level-objectives-2026-08-31]. SLA: the 10% service credit — apply the test "what happens if the SLOs aren't met?" [source: sre-book-service-level-objectives-2026-08-31]; an explicit consequence makes this the agreement, not the objective.
 
-**4. C.** The discriminator is which side of the code boundary you are on.
-
-- **A is wrong.** A client library "makes it easy to directly instrument your code" [source: prometheus-glossary-2026-08-31] — it goes *into* software you can change. You cannot add one to a PostgreSQL you do not build.
-- **B is wrong.** An exporter is "a binary running alongside the application you want to obtain metrics from" [source: prometheus-glossary-2026-08-31]: right for PostgreSQL, but an unnecessary extra process beside a service you can instrument directly.
-- **C is correct.** Client library inside the code you own; exporter beside the code you don't.
-- **D is wrong**, and it is the strongest distractor here. It comes from correctly learning that the Pushgateway handles things Prometheus cannot reach into, and over-generalizing from *short-lived* to *unmodifiable*. PostgreSQL is long-running and perfectly scrapeable; "the only valid use case for the Pushgateway is for capturing the outcome of a service-level batch job" [source: prometheus-pushgateway-practices-2026-08-31].
-
-**On metrics-server:** it holds current CPU and memory readings so autoscalers can make decisions. It keeps no history and collects no application-level metric, so connection counts, query latencies and rejected requests are outside its scope entirely: different word, different system, different boundary. *[cross-bearing: see Ch 13 §7 — numbers nobody collects by default]*
-
-**5. No.**
-
-The mesh proxy sits in the network path and reports on what crosses it: which service called which, how long the call took, what status came back. Database queries *inside* a handler never cross the proxy, so the proxy has no knowledge of them at all.
-
-This is the boundary between zero-code and code-based instrumentation. Zero-code is "great for getting started, or when you can't modify the application," providing telemetry "from libraries you use and/or the environment your application runs in" [source: opentelemetry-instrumentation-2026-08-31] — but seeing inside a request handler requires instrumentation *in* the handler. Answering this engineer's question means code-based instrumentation. *[cross-bearing: see Ch 17 §5 — a network that knows what it's carrying]*
+**9.** Latency, traffic, errors, saturation [source: sre-book-four-golden-signals-2026-08-23]. Worth naming: "latency increases are often a leading indicator of saturation" [source: sre-book-four-golden-signals-2026-08-23] — many systems degrade before hitting 100% utilization, so rising response times often show up before saturation metrics look alarming.
 
 ---
 
 **How'd You Do?**
 
-**5 correct:** you have the densest section in the chapter. Keep going.
-**3–4 correct:** review the misses now rather than later. §8 pays off both the arrow and the span/trace containment, and it will land harder if they're solid.
-**0–2 correct:** re-read §4's opening (the arrow) and §5's Fixed Point (span inside trace) before continuing. Those two are the most reliably tested ideas in this chapter.
+**8–9 correct:** you have the densest material in the chapter. §8 is what's left, and it names the question all of this has been in service of.
+**5–7 correct:** review the misses before §8 — the arrow, span/trace containment, the three logging architectures, and the SLI→SLO→SLA chain are the most reliably tested ideas here.
+**0–4 correct:** re-read §4's opening (the arrow), §5's Fixed Point (span inside trace), §6's three architectures, and §7's SLI/SLO/SLA chain before continuing.
 
 ---
 
@@ -1060,287 +1051,6 @@ This is the boundary between zero-code and code-based instrumentation. Zero-code
 ✓ Where the project says Prometheus does *not* fit
 ✓ Span versus trace versus root span, as a containment relationship
 ✓ What mesh-generated telemetry can and cannot see
-
-Two content sections left. The next one is the most mechanical in the chapter, and the one after it names the question all of this has been in service of.
-
----
-
-## 🔵 §6 — Lines From Everywhere
-
-Start with the limit, because everything downstream is a consequence of it.
-
-**Kubernetes provides no native storage for log data** [source: k8s-docs-logging-architecture-2026-08-23]. Container logs are written to the node's filesystem by the container runtime, and the kubelet manages them there using the CRI logging format [source: k8s-docs-logging-architecture-2026-08-23], and that is the end of the platform's involvement. The platform carries your logs as far as the pier and no further. If you want logs that outlive the node, the Pod, or the rotation window, you need a separate backend, and something to get the lines to it.
-
-That is what cluster-level logging is: an architecture bolted alongside Kubernetes, not a feature inside it.
-
-### Why `kubectl logs` is not an archive
-
-You have used `kubectl logs` since Chapter 13. *[cross-bearing: see Ch 13 §3 — looking inside]* It is a diagnostic, and it is bounded in three separate ways.
-
-**Rotation.** The kubelet rotates container log files. The defaults are `containerLogMaxSize` of 10Mi and `containerLogMaxFiles` of 5, and critically, **only the contents of the latest log file are available through `kubectl logs`** [source: k8s-docs-logging-architecture-2026-08-23]. A chatty container blows through 10Mi in minutes, and the lines you wanted are in a rotated file the command will not read.
-
-**Restarts.** If a container restarts, the kubelet keeps one terminated container with its logs, which is what `kubectl logs --previous` retrieves [source: k8s-docs-logging-architecture-2026-08-23]. One. Not three, not "since the Pod was created."
-
-**Eviction.** "If a pod is evicted from the node, all corresponding containers are also evicted, along with their logs" [source: k8s-docs-logging-architecture-2026-08-23]. *[cross-bearing: see Ch 13 §4 — pods that start and then don't stay]* The Pod that got OOMKilled and evicted at 3 a.m. took the evidence with it.
-
-That last one is the reason the whole architecture exists. Every other limit is inconvenient; this one means the exact failure you most want to investigate is the one that most reliably destroys its own logs.
-
-> **⚠ Navigational Hazards**
->
-> The mistake is treating `kubectl logs` as a log store because it is the log command you know. It is a live-tail-and-recent-history diagnostic scoped to one container on one node. Any scenario involving *yesterday*, *across all replicas*, *searching for a pattern*, or *a Pod that no longer exists* is describing cluster-level logging, and `kubectl logs` is the wrong answer.
-
-### The three architectures
-
-The Kubernetes documentation describes three approaches to getting logs off a node and into a backend [source: k8s-docs-logging-architecture-2026-08-23].
-
-<!-- FIGURE: ch18-fig06-cluster-logging-architectures -->
-![Three stacked panels, all feeding one logging backend on the right. In the first, three Pods write to the node filesystem and a DaemonSet agent reads it and forwards. In the second, a sidecar collector inside each Pod forwards the app's logs. In the third, the app pushes straight to the backend with no collector.](figures/ch18-fig06-cluster-logging-architectures.svg)
-
-<!-- ASCII-FALLBACK
-```
-   THREE WAYS TO COLLECT.  Same backend in all three;
-   the difference is WHERE collection happens.
-
-   ┌─ 1. NODE-LEVEL AGENT ────────┐  ← the default answer
-   │  NODE                        │
-   │  ┌──────┐ ┌──────┐ ┌──────┐  │
-   │  │ Pod  │ │ Pod  │ │ Pod  │  │
-   │  └──┬───┘ └──┬───┘ └──┬───┘  │
-   │     └────────┼────────┘      │
-   │        node filesystem       │
-   │              ▼               │
-   │      ┌───────────────┐       │
-   │      │ AGENT (Daemon │───────┼──────┐
-   │      │ Set: 1/node)  │       │      │
-   │      └───────────────┘       │      │
-   └──────────────────────────────┘      │
-                                          │
-   ┌─ 2. SIDECAR IN THE POD ──────┐      │
-   │  NODE                        │      │
-   │  ┌────────────────────────┐  │      ▼
-   │  │ Pod                    │  │  ┌────────┐
-   │  │ ┌─────┐  ┌───────────┐ │  │  │ LOGGING│
-   │  │ │ app │─►│ sidecar   │─┼──┼─►│ BACKEND│
-   │  │ └─────┘  │ collector │ │  │  │        │
-   │  │          └───────────┘ │  │  │(outside│
-   │  └────────────────────────┘  │  │  k8s)  │
-   │   one collector PER POD      │  │        │
-   └──────────────────────────────┘  │        │
-                                      │        │
-   ┌─ 3. APP PUSHES DIRECTLY ─────┐  │        │
-   │  NODE                        │  │        │
-   │  ┌────────────────────────┐  │  │        │
-   │  │ Pod                    │  │  │        │
-   │  │ ┌─────────────────┐    │  │  │        │
-   │  │ │ app w/ logging  │────┼──┼──┼───────►│
-   │  │ │ library         │    │  │  └────────┘
-   │  │ └─────────────────┘    │  │
-   │  └────────────────────────┘  │   app must know
-   │   no collector at all        │   about the backend
-   └──────────────────────────────┘
-```
--->
-
-**1. A node-level logging agent** that runs on every node, typically as a DaemonSet [source: k8s-docs-logging-architecture-2026-08-23], reading the container log files the runtime already writes and forwarding them to a backend. This is the default answer, and the reason is structural: the logs are already on the node's filesystem, for every container the node runs, whether or not the application cooperated. One agent covers everything.
-
-The workload resource for "exactly one Pod on every node" is the **DaemonSet** *[cross-bearing: see Ch 6 §7 — one per node, and work that ends]*, and node-level log collection is its canonical example. When a new node joins the cluster, it gets the agent automatically, because that is what a DaemonSet does.
-
-**2. A dedicated sidecar container** for logging in the application Pod [source: k8s-docs-logging-architecture-2026-08-23]. This comes in two shapes: a streaming sidecar that reads the application's output and writes it to its own stdout/stderr, or a sidecar running a logging agent configured to pick logs up from the application container [source: k8s-docs-logging-architecture-2026-08-23]. Either is useful when an application writes to a file inside the container rather than to stdout, or needs per-application processing. The cost is one extra container per Pod rather than one per node, which on a node running forty Pods is a meaningfully different resource bill.
-
-**3. The application pushes logs directly** to a backend from within the application [source: k8s-docs-logging-architecture-2026-08-23]. No collector at all; the app knows the backend's address and speaks its protocol. Simple, and it couples your application code to your logging vendor.
-
-> ⚓ **Worth Securing:** "Which architecture?" almost always answers **node-level agent as a DaemonSet**, and the discriminator is worth stating as a rule: node-level collection is the only option that works *without the application's cooperation*. That is exactly why platform teams choose it. The platform team does not control what forty application teams write, and cannot make forty deploys to fix logging.
-
-### Fluentd and Fluent Bit
-
-Two agents dominate this slot, and the exam-adjacent detail is their relationship.
-
-**Fluentd** is a CNCF graduated project. Its design idea is the unified logging layer: it "tries to structure data as JSON as much as possible: this allows Fluentd to unify all facets of processing log data" [source: fluentd-architecture-2026-08-31], and it "connects dozens of data sources and data outputs" [source: fluentd-architecture-2026-08-31] through "a flexible plugin system that allows the community to extend its functionality" [source: fluentd-architecture-2026-08-31]. Fluentd was accepted into the CNCF in November 2016 and graduated in 2019 [source: fluentd-architecture-2026-08-31].
-
-**Fluent Bit** is "an open source telemetry agent that processes logs, metrics, traces, and profiles," created in 2014 by Eduardo Silva "as a lightweight log processor, developed by the Fluentd team at Treasure Data for constrained environments such as embedded Linux"; it is "a sub-project of Fluentd" [source: fluent-bit-overview-2026-08-23].
-
-Why two? Footprint. A vanilla Fluentd instance "runs on 30-40MB of memory" [source: fluentd-architecture-2026-08-31]: trivial on a server, less trivial multiplied across every node in a large fleet, and genuinely limiting on constrained hardware. Fluent Bit is the lightweight answer. Both "are commonly deployed on Kubernetes as node-level logging agents (DaemonSets) that collect container logs from each node and forward them to a backend" [source: fluent-bit-overview-2026-08-23].
-
-> 🔭 **Closer Look — what a log agent actually does.** Fluent Bit's data pipeline runs six stages in order: **input** plugins gather from sources such as log files and OS metrics; a **parser** converts unstructured data to structured; **filters** alter the data before delivery; a **buffer** stores it in memory or on the filesystem; a **router** directs it through filters to one or more destinations using tags and matching rules; and **output** plugins define those destinations [source: fluent-bit-overview-2026-08-23]. This is deployment-level detail, not exam surface. It is here because it makes concrete what happens between reading a file off a node and writing it to a backend.
-
-> 🪢 **Mnemonic:** **Fluentd** is one word. **Fluent Bit** is two. The parent is a single compound; the lightweight child is "Fluent" plus a "Bit" of it. That asymmetry looks like a typo and is not, and a question that renders one of them wrong is testing whether you noticed.
-
-> 🪝 **Snag:** Fluentd is CNCF graduated *as of the source cached for this book*. Project maturity levels change, and a question asking which projects are *currently* graduated is asking about a moving roster rather than a durable fact. What is durable and worth knowing: Fluentd is the CNCF project, Fluent Bit is its lighter sub-project, and both serve as node-level agents. *[cross-bearing: see Ch 17 §2 — sandbox, incubating, graduated, and who decides]*
-
-<!-- AUTHOR-REVIEW: G32 / FinOps, recorded here because Ch 18 is the last content chapter. Cost management (OpenCost) is absent from this chapter, consistent with Ch 17, which carries the parallel note. The decision is defensible on objective grounds: `opencost-overview-2026-08-23` tags itself D4 Cloud Native Ecosystem and Principles — Ch 17's competency, not Observability — so its absence is not a Ch 18 coverage failure. It is worth flagging anyway: once this gate clears, the book ships with zero FinOps coverage, and the retired KCNA blueprint grouped cost management closely enough with observability that a candidate may expect it. The outline asked for this decision to be visible in both chapters rather than silent in one; it now is. -->
-
----
-
-## 🔵 §7 — Is the Service Doing What Users Expect
-
-Six sections of instruments. Here is the question they exist to answer.
-
-**Reliability answers the question: "Is the service doing what users expect it to be doing?"** [source: opentelemetry-observability-primer-2026-08-23]
-
-That is the whole thing. Not "is CPU below 80%." Not "are all Pods `Running`." Not "did the probes pass." Every one of those can be true while the service is failing the people using it, and every one of them can be false while users are perfectly happy.
-
-The rest of this section is vocabulary for making that question answerable: turning "is it doing what users expect" from a feeling into a number somebody can be held to.
-
-### Three letters that get swapped
-
-Take them in dependency order, because the dependency order is the memory hook.
-
-**An SLI — Service Level Indicator — "represents a measurement of a service's behavior. A good SLI measures your service from the perspective of your users"** [source: opentelemetry-observability-primer-2026-08-23]. Google's definition is complementary: "a carefully defined quantitative measure of some aspect of the level of service that is provided" [source: sre-book-service-level-objectives-2026-08-31].
-
-The user-perspective clause is the part with teeth. "Average CPU across the fleet" is a measurement, and it is not an SLI in any useful sense, because no user has ever cared about it. "The proportion of checkout requests that completed successfully in under 400ms" is an SLI. The difference is whose experience is being measured.
-
-**An SLO — Service Level Objective — "is the means by which reliability is communicated to an organization/other teams. This is accomplished by attaching one or more SLIs to business value"** [source: opentelemetry-observability-primer-2026-08-23]. Or, mechanically: "a target value or range of values for a service level that is measured by an SLI" [source: sre-book-service-level-objectives-2026-08-31].
-
-The SLI is the measurement. The SLO is the *target you commit to* on that measurement. 99.5% of checkout requests under 400ms, over a rolling 30 days — that is an SLO, and it takes an SLI as its input.
-
-> **★ Fixed Point**
->
-> **An SLI is the MEASUREMENT. An SLO is the OBJECTIVE — a target value for that measurement. The SLI is a number you observe; the SLO is a number you commit to.**
-
-One term travels with the SLO and is worth a clause. An **error budget** is the unreliability the objective leaves room for, and its value is organizational rather than mechanical: "as long as the uptime measured is above the SLO — in other words, as long as there is error budget remaining — new releases can be pushed" [source: sre-book-error-budgets-2026-08-31]. It exists because of a structural tension: "Product development performance is largely evaluated on product velocity, which creates an incentive to push new code as quickly as possible. Meanwhile, SRE performance is evaluated based upon reliability of a service, which implies an incentive to push back against a high rate of change" [source: sre-book-error-budgets-2026-08-31]. The budget is the referee: a number both sides agreed to in advance, in place of an argument about judgment.
-
-**An SLA — Service Level Agreement** — is the third term, and it is here mostly because it is the distractor. SLAs are "an explicit or implicit contract with your users that includes consequences of meeting (or missing) the SLOs they contain" [source: sre-book-service-level-objectives-2026-08-31]. External, contractual, with teeth.
-
-The discrimination has a procedure rather than requiring you to hold two definitions side by side: "An easy way to tell the difference between an SLO and an SLA is to ask 'what happens if the SLOs aren't met?': if there is no explicit consequence, then you are almost certainly looking at an SLO" [source: sre-book-service-level-objectives-2026-08-31].
-
-> 🪢 **Mnemonic:** **I** for **I**ndicator — what you *measure*. **O** for **O**bjective — what you *aim at*. **A** for **A**greement — what you *sign*, with consequences attached. And the containment runs the same direction as the letters: an SLA contains SLOs, which are measured by SLIs.
-
-> 🪝 **Snag:** SLI and SLO get swapped constantly, in the wild and on exams. When a question describes *a number being observed*, that is the SLI. When it describes *a threshold being committed to*, that is the SLO. When it mentions penalties, credits, or a customer contract, that is the SLA.
-
-### The four golden signals
-
-If you can instrument only four things on a user-facing system, these are the four [source: sre-book-four-golden-signals-2026-08-23]:
-
-**Latency** — "the time it takes to service a request." With one crucial refinement: "It's important to distinguish between the latency of successful requests and the latency of failed requests." An HTTP 500 caused by a dropped database connection "might be served very quickly," so folding 500s into overall latency "might result in misleading calculations." And, memorably: "a slow error is even worse than a fast error!" [source: sre-book-four-golden-signals-2026-08-23]
-
-**Traffic** — "a measure of how much demand is being placed on your system, measured in a high-level system-specific metric." Usually HTTP requests per second for a web service; network I/O rate or concurrent sessions for audio streaming; transactions and retrievals per second for a key-value store [source: sre-book-four-golden-signals-2026-08-23].
-
-**Errors** — "the rate of requests that fail, either explicitly (e.g., HTTP 500s), implicitly (for example, an HTTP 200 success response, but coupled with the wrong content), or by policy (for example, 'If you committed to one-second response times, any request over one second is an error')" [source: sre-book-four-golden-signals-2026-08-23].
-
-**Saturation** — "how 'full' your service is. A measure of your system fraction, emphasizing the resources that are most constrained." And the operational warning: "many systems degrade in performance before they achieve 100% utilization, so having a utilization target is essential" [source: sre-book-four-golden-signals-2026-08-23].
-
-<!-- FIGURE: ch18-fig05-sli-slo-golden-signals -->
-![On the left, an internal frame holds an SLI, measured from the user's perspective, feeding an SLO target; below a labelled boundary, an external frame holds an SLA contract with consequences. On the right, a two-by-two grid of latency, traffic, errors and saturation, with an arrow from latency to saturation marking latency increases as a leading indicator of saturation.](figures/ch18-fig05-sli-slo-golden-signals.svg)
-
-<!-- ASCII-FALLBACK
-```
-  MEASUREMENT → COMMITMENT → CONTRACT     THE FOUR GOLDEN SIGNALS
-
-  ┌─────────────────────────────┐        ┌──────────┐ ┌──────────┐
-  │  INTERNAL                   │        │ LATENCY  │ │ TRAFFIC  │
-  │                             │        │ time to  │ │ demand   │
-  │   ┌─────┐    measures       │        │ serve a  │ │ on the   │
-  │   │ SLI │  ──────────┐      │        │ request  │ │ system   │
-  │   │     │            │      │        │          │ │          │
-  │   │ the │            ▼      │        │ track OK │ │ req/sec, │
-  │   │ mea-│      ┌──────────┐ │        │ and FAIL │ │ sessions │
-  │   │sure-│      │   SLO    │ │        │ separate │ │          │
-  │   │ ment│      │ the      │ │        └──────────┘ └──────────┘
-  │   └─────┘      │ target   │ │        ┌──────────┐ ┌──────────┐
-  │                │ you      │ │        │  ERRORS  │ │SATURATION│
-  │  from the      │ commit to│ │        │ rate of  │ │ how FULL │
-  │  USER's        └────┬─────┘ │        │ failed   │ │ the svc  │
-  │  perspective        │       │        │ requests │ │ is       │
-  └─────────────────────┼───────┘        │          │ │          │
-                        │                │ explicit,│ │ degrades │
-        ══════ boundary ══════            │ implicit,│ │ BEFORE   │
-                        │                │ or by    │ │ 100%     │
-  ┌─────────────────────▼───────┐        │ policy   │ │          │
-  │  EXTERNAL                   │        └──────────┘ └────▲─────┘
-  │        ┌──────────┐         │                          │
-  │        │   SLA    │         │        latency increases ─┘
-  │        │ contract │         │        are often a LEADING
-  │        │ w/ CONSE-│         │        INDICATOR of saturation
-  │        │ QUENCES  │         │
-  │        └──────────┘         │
-  │  "what happens if the SLO   │
-  │   isn't met?" No consequence│
-  │   = it's an SLO, not an SLA │
-  └─────────────────────────────┘
-```
--->
-
-> 🪢 **Mnemonic:** **L-T-E-S.** Latency, Traffic, Errors, Saturation. Or read the figure as a sentence: *how long, how much, how broken, how full.*
-
-And the one relationship among the four that is worth carrying: **"Latency increases are often a leading indicator of saturation"** [source: sre-book-four-golden-signals-2026-08-23]. Response times creeping up before anything looks full is the system telling you it is about to be. Treat that as the early warning it is.
-
-### RED and USE
-
-Two other framings appear alongside the golden signals, and both are named in the CNCF TAG Observability whitepaper [source: cncf-tag-observability-whitepaper-2026-08-31]. Their value here is the contrast between them, not their details.
-
-**USE** — "the Utilization Saturation and Errors (USE) Method is a methodology for analyzing the performance of any system," directing "the construction of a checklist, which for server analysis can be used for quickly identifying resource bottlenecks or errors" [source: use-method-brendan-gregg-2026-08-31]. It is oriented at **resources**.
-
-**RED** — Rate, Errors, Duration: "the number of requests per second," "the number of those requests that are failing," and "the amount of time those requests take" [source: red-method-tom-wilkie-2026-08-31]. It is oriented at **services**.
-
-The person who created RED drew the line himself: "The USE Method doesn't really apply to services; it applies to hardware, network disks, things like this. We really wanted a microservices-oriented monitoring philosophy, so we came up with the RED Method" [source: red-method-tom-wilkie-2026-08-31].
-
-That is the whole complementarity, and note what produced it. RED exists *because* one service became twenty. *[cross-bearing: see Ch 17 §3 — small pieces, replaced whole]* The architecture changed, and the measurement framing had to change with it, which is this chapter's thesis showing up in the methodology literature.
-
-> 🔭 **Closer Look — one word, three meanings.** "Utilization" now means three different things in this chapter, and all three are correct in their own context. In §3, utilization is **a percentage of the containers' resource request** [source: k8s-docs-hpa-utilization-vs-requests-2026-08-31]. In the USE method, utilization is "the average time that the resource was busy servicing work" [source: use-method-brendan-gregg-2026-08-31], a duration fraction. And the golden-signals concept nearest to both is **saturation**, how full the service is [source: sre-book-four-golden-signals-2026-08-23]. When you meet the word in a question, check which system is speaking.
-
-<!-- AUTHOR-REVIEW: RED's only surviving authoritative source is a Grafana Labs blog post by Tom Wilkie, the method's originator — the original Weaveworks publication is dead, and the CNCF TAG Observability whitepaper's RED link now points to that dead host. That is the method's author but is not official documentation, and no CNCF/LF source defines RED. Per the outline's stated posture, RED is named and contrasted here but carries no teaching weight, and no graded item in this chapter depends on it. B1 gap G21 should be recorded as substantially-but-not-fully closed. -->
-
----
-
-## ☆ Taking Your Bearings: Lines, Signals, and the Question They Answer
-
-Five questions. One draws on Chapter 6.
-
-**1.** A Pod has restarted four times over the past hour. You need to see what the container printed before its *first* crash. Can you get it with `kubectl logs`? Explain, naming the specific mechanisms involved.
-
-**2.** Name the three cluster-logging architectures. Which is the default answer for a platform team, and what is the structural reason?
-
-**3.** A team commits: "99.9% of API requests will complete successfully within 300ms, measured over a rolling 30 days. If we miss this in a calendar quarter, affected enterprise customers receive a 10% service credit." Identify the SLI, the SLO, and the SLA in that statement.
-
-**4.** Name the four golden signals. For one of them, state a relationship it has to another that makes it useful as an early warning.
-
-**5.** *[retrieval: ch6]* Your log-collection agent must run on every node in the cluster, including nodes added tomorrow. Which workload resource, and why not a Deployment with `replicas` set to the node count?
-
----
-
-**Answers with Explanations:**
-
-**1.** No, on two independent grounds, and you should be able to name both.
-
-**Rotation:** the kubelet rotates container logs, and only the contents of the latest log file are available through `kubectl logs` [source: k8s-docs-logging-architecture-2026-08-23]. Even within a single container run, older output can already be out of reach. (The specific defaults are in §6; you are not expected to recite them.)
-
-**Restart depth:** if a container restarts, the kubelet keeps one terminated container with its logs, which is what `kubectl logs --previous` retrieves [source: k8s-docs-logging-architecture-2026-08-23]. One restart back, not four.
-
-Four restarts ago is gone from the node. Retrieving it requires cluster-level logging: an agent that shipped those lines to a backend before the node discarded them. *[cross-bearing: see Ch 13 §3 — looking inside]*
-
-**2.** The three: **a node-level logging agent** (typically a DaemonSet), **a dedicated sidecar container** in the application Pod, and **the application pushing directly** to a backend [source: k8s-docs-logging-architecture-2026-08-23].
-
-The default is the **node-level agent**, and the structural reason is that it works *without the application's cooperation*. Container logs are already written to the node's filesystem for every container the node runs, whether the application team did anything or not [source: k8s-docs-logging-architecture-2026-08-23]. One agent per node covers all of them, including workloads owned by teams the platform team has never spoken to. Sidecars require a change to every Pod spec; direct push requires a change to every application.
-
-**3.**
-- **SLI:** the proportion of API requests completing successfully within 300ms. This is the measurement, and it is user-perspective: it measures what a caller experiences [source: opentelemetry-observability-primer-2026-08-23].
-- **SLO:** 99.9% of them, over a rolling 30 days. The target value attached to the SLI [source: sre-book-service-level-objectives-2026-08-31].
-- **SLA:** the 10% service credit. Apply the test — "what happens if the SLOs aren't met?" [source: sre-book-service-level-objectives-2026-08-31] There is an explicit consequence, so this clause is the agreement, not the objective.
-
-**4. Latency, traffic, errors, saturation** [source: sre-book-four-golden-signals-2026-08-23].
-
-The relationship worth naming: **"Latency increases are often a leading indicator of saturation"** [source: sre-book-four-golden-signals-2026-08-23]. Because many systems degrade before reaching 100% utilization, rising response times frequently appear *before* any saturation metric looks alarming.
-
-(Also acceptable: latency's relationship to errors — failed-request latency must be tracked separately, because a fast 500 makes overall latency look good while "a slow error is even worse than a fast error" [source: sre-book-four-golden-signals-2026-08-23].)
-
-**5. A DaemonSet.**
-
-A DaemonSet's semantics are "one Pod per node," maintained by the controller. When a node joins the cluster, it gets a Pod automatically; when a node leaves, the Pod goes with it. *[cross-bearing: see Ch 6 §7 — one per node, and work that ends]* Kubernetes names this shape directly for logging: a node-level agent runs on every node, typically as a DaemonSet [source: k8s-docs-logging-architecture-2026-08-23].
-
-A Deployment with `replicas: 12` gives you twelve Pods, placed by the scheduler according to feasibility and scoring. Nothing guarantees one per node; the scheduler may well put two on a roomy node and none on a constrained one *[cross-bearing: see Ch 7 §1 — one decision, made once]*. And the count is a number *you* set, which is stale the moment the cluster scales. Log collection is a per-node job, so it needs the resource whose contract is per-node.
-
----
-
-**How'd You Do?**
-
-**5 correct:** you have the whole chapter. §8 introduces nothing; read it for the shape, not for facts.
-**3–4 correct:** review your misses, then read §8 — it re-frames exactly the material you just tested.
-**0–2 correct:** re-read §6's three architectures and §7's SLI → SLO → SLA chain before the Practice Questions. Six of the seventeen depend on those two sections, and §8 will not re-teach them.
-
----
-
-**Checkpoint: You've Now Mastered**
-
 ✓ Why `kubectl logs` is a diagnostic and not an archive — rotation, restart depth, eviction
 ✓ The three cluster-logging architectures, and why one is the default
 ✓ SLI, SLO, and SLA, with a procedure for telling the last two apart

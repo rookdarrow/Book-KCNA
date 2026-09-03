@@ -200,7 +200,7 @@ Left-column entries are terse by design and use the same abbreviations as the so
 ```yaml-figure-spec
 anchor_id: ch19-fig02-confusion-pair-matrix
 diagram_type: concept_map
-source_ascii: |
+source_ascii: |5
      PAIR                          →  DISCRIMINATOR (the question to ask)
      ───────────────────────────────────────────────────────────────────
      D1  Pod phase / container state → "Lifecycle, or one container?"
@@ -321,7 +321,7 @@ The division at 54 minutes is the whole figure. Give it a heavier vertical rule 
 ```yaml-figure-spec
 anchor_id: ch19-fig03-exam-day-pacing
 diagram_type: timeline
-source_ascii: |
+source_ascii: |4
     0                              54 min                        90 min
     ├───────────── FIRST PASS ───────┼──── SECOND PASS ────────────┤
     │                                │                             │

@@ -687,65 +687,77 @@ Application-scope triage, meaning the app is running but behaving wrongly, is Ch
 
 ---
 
-## ☆ Taking Your Bearings #2: Lifetime, Phase, and State
+## ☆ Taking Your Bearings #2 — Lifetime, Identity, and Health
 
-Five questions covering §4–§5. Two of them retrieve material from earlier chapters, because this is where those two threads finally land.
+Eight questions on §4 through §8. Two reach back into earlier chapters; the last one folds §5 back in for a harder synthesis.
 
-1. A Pod reports the phase `Running`. One of its containers is in the state `Waiting`, serving a restart backoff between runs. Is the Pod broken?
+1. **[retrieval: ch2]** A Pod's only container cannot pull its image. Give the Pod's phase, the container's state, and the field on the container status that names the specific failure.
 
-2. A colleague sets `restartPolicy` on one container of a two-container Pod, intending only that container to restart on failure. What actually happens?
+2. A colleague sets `restartPolicy` on one container of a two-container Pod, meaning only that container to restart on failure. What actually happens?
 
-3. 🟡 **Challenge item — this one is meant to be hard.** A container has been crash-looping for twenty minutes. Roughly how long is the kubelet now waiting between restart attempts, and what would reset that interval?
+3. **[retrieval: ch4]** Which of `spec` and `status` carries `phase`? Who writes it, and what would it mean to set it yourself?
 
-4. **[retrieval: ch2]** Chapter 2 told you to bank a name and said its state was this chapter's material. For a Pod whose only container cannot pull its image: give the Pod's phase, the container's state, and the field on the container status that tells you which specific failure it is.
+4. A Pod is created with no ServiceAccount specified. What identity does it have, and what can it do with that identity?
 
-5. **[retrieval: ch4]** Which of `spec` and `status` carries `phase`? Who writes it? And what would it mean if you tried to set it yourself?
+5. A liveness probe and a readiness probe both fail on the same container. Describe both consequences.
+
+6. A container takes four minutes to start. Which probe solves this, and what does configuring it do to the other two?
+
+7. A container has a memory request of `256Mi` and a memory limit of `512Mi`. The node has spare memory, and the container is using `400Mi`. Is anything wrong?
+
+8. 🟡 Two containers run identical images and identical code. One is exceeding its CPU limit; the other is exceeding its memory limit. Describe what an operator observes in each case, and name the Pod phase and container state each ends up in.
 
 ---
 
 **Answers with Explanations:**
 
-**1. No — or at least, the two signals don't say so. Both readings are legitimate, because they're at different scopes.**
+**1. Phase: `Pending`. State: `Waiting`. Field: `Reason`, carrying `ImagePullBackOff`.**
 
-A Pod is `Running` when it's bound to a node, all containers have been created, and at least one container is running, starting, or restarting [source: k8s-docs-pod-lifecycle-2026-08-23]. The waiting container in this scenario has been created; it is between runs. Nothing about that contradicts the definition. Whether something is *wrong* depends entirely on the `Reason` on the waiting container, and neither the phase nor the bare state name will tell you.
+A Pod is `Pending` until every container has been created; one that can't pull its image never gets that far [source: k8s-docs-pod-lifecycle-2026-08-23]. The container sits `Waiting`, and `Waiting` carries a `Reason` naming the specific cause [source: k8s-docs-pod-lifecycle-2026-08-23]; here that's `ImagePullBackOff` [source: k8s-docs-images-2026-08-23]. Three fields, three scopes, increasing specificity.
 
-**The discriminating half, which is worth more than the answer itself:** change the reason and the answer changes. A container waiting because its **image has not been pulled** has not been created at all, and `Running` requires that all containers *have* been created. That Pod reports `Pending`, not `Running`. Same state name, different reason, different phase. That is the whole game.
+The trap: writing `ImagePullBackOff` as the *state* rather than the *reason* is the most self-concealing miss in the chapter — the string is right, the slot is wrong. The three container states are only ever `Waiting`, `Running`, or `Terminated`.
 
-*Why two tempting answers are wrong — and these are two different misconceptions that happen to produce the same "no":*
-- **"Yes, because a Pod can't be Running if a container is Waiting"** treats phase and state as one vocabulary that must agree. They are two vocabularies at two scopes, and for post-creation waits they are not required to agree, because they are not describing the same thing.
-- **"No, because `Running` means the application is working"** gets the right answer for a reason that's badly wrong. `Running` explicitly includes containers that are starting or restarting. A reader holding this belief will look at a crash-looping Pod, see `Running`, and conclude everything is fine. Chapter 13 will be unusable for them.
+Contrast a Pod that's `Running` with one container `Waiting` on a restart backoff between crash-loop attempts: same state name, but that container has already been created once, so the Pod reports `Running`, not `Pending`. Same word, different reason, different phase.
 
-**2. It cannot be set on one container. `restartPolicy` is a field on the Pod's `spec`, and it applies to all containers in the Pod** [source: k8s-docs-pod-lifecycle-2026-08-23].
+Two more answers are tempting here, for different reasons. "A Pod can't be `Running` if a container is `Waiting`" treats phase and state as one vocabulary that must agree — they're two vocabularies at two scopes, and post-creation waits are exactly the case where they needn't. "`Running` means the app is healthy" reaches the right verdict for the wrong reason: `Running` explicitly includes containers that are starting or restarting, so this belief will look at a crash-looping Pod, see `Running`, and call it fine.
 
-If two workloads genuinely need different restart behavior, that's a signal they should be two Pods, which is §2's rule arriving from an unexpected direction.
+**2. It can't be set per-container. `restartPolicy` lives on the Pod's `spec` and governs every container in it** [source: k8s-docs-pod-lifecycle-2026-08-23].
 
-**3. About five minutes — the backoff has hit its cap. It would reset after the container ran for ten continuous minutes without a problem.**
+If two workloads genuinely need different restart behavior, that's a sign they belong in two Pods, not one.
 
-The kubelet restarts with exponential backoff — 10s, 20s, 40s, and onward — capped at five minutes. Once a container has executed for 10 minutes without any problems, the kubelet resets the restart backoff timer for that container [source: k8s-docs-pod-lifecycle-2026-08-23].
+**3. `status` carries `phase`, and the Kubernetes system writes it.** You declare desired state in `spec`; `status` is what gets reported back [source: k8s-docs-objects-2026-08-23]. `phase` is an observation, not an instruction — asking for a particular phase is a category error. A phase is a report on what's true, not a request. Chapter 4's spec/status split was abstract when you learned it; this is the first place in the book with a concrete field to hang it on.
 
-*This one was labeled a challenge for a reason.* If you got it, you're holding a level of detail most candidates skip. If you didn't, notice that you only needed two facts, the cap and the reset, and that twenty minutes of failing is more than enough to reach a cap that's hit within a few minutes. Both outcomes are fine here; the struggle is doing the encoding work.
+**4. It has the namespace's `default` ServiceAccount, and can do almost nothing with it.**
 
-**4. Phase: `Pending`. Container state: `Waiting`. The field: `Reason`, carrying the value `ImagePullBackOff`.**
+Kubernetes assigns the `default` ServiceAccount automatically when none is specified [source: k8s-docs-service-accounts-2026-08-23]. That account grants no permissions beyond the API-discovery access every authenticated principal gets under RBAC. There is no such thing as an anonymous Pod in a namespace — but "has an identity" and "can do something with it" are independent facts, and the second is deliberately false by default.
 
-The phase is `Pending` because the Pod has been accepted but its container is not yet set up and running [source: k8s-docs-pod-lifecycle-2026-08-23]. The container is `Waiting` because it is still doing what it needs in order to start, and `Waiting` carries a `Reason` field that summarizes why [source: k8s-docs-pod-lifecycle-2026-08-23]. `ImagePullBackOff` means the container could not start because Kubernetes could not pull the image [source: k8s-docs-images-2026-08-23].
+Two wrong answers show up often: "None — it has no identity" assumes anonymity is possible, and it isn't. "`cluster-admin`" or any broad-permission guess confuses "assigned automatically" with "powerful" — the default assignment is deliberately inert.
 
-Three fields, three scopes, increasing specificity. That's the shape to remember.
+**5. The container is killed and restarted per `restartPolicy`, and the Pod's IP is pulled from every matching Service's endpoints — simultaneously**, because the two probes are independent diagnostics with independent consequences [source: k8s-docs-pod-lifecycle-2026-08-23]. Liveness kills; readiness de-registers. Treat them as one "health check" with one outcome and you'll miss that both fire together here.
 
-*Why two very likely wrong answers are wrong:*
-- **"State: `ImagePullBackOff`."** `ImagePullBackOff` is a **`Reason`**, not a state. The three container states are `Waiting`, `Running`, and `Terminated`, and nothing else is ever one of them. If you wrote the right string in the wrong slot, you have the fact and not yet the taxonomy, and that is precisely the error §5's hazards block exists to close. It is also the most self-concealing miss in the chapter, because the correct string appears in your answer and it *looks* right.
-- **"Phase: `Running`."** Tempting, because the Pod exists and the kubelet is visibly working on it. But `Running` requires that all of the containers **have been created**, and this one never was. It's stuck ahead of creation, which is the definition of `Pending`.
+**6. A `startupProbe`. Configuring one disables liveness and readiness until it succeeds** [source: k8s-docs-pod-lifecycle-2026-08-23].
 
-**5. `status` carries `phase`. The Kubernetes system writes it. Trying to set it yourself would be a category error.**
+Without that suppression, a slow-starting container gets killed by a liveness probe correctly reporting that nothing is answering yet. The startup probe isn't checking anything new — it silences the other two during the window when their answers would mislead.
 
-The `status` field describes the current state of the object, supplied and updated by the Kubernetes system and its components; `spec` is where you declare desired state [source: k8s-docs-objects-2026-08-23]. `phase` is an observation, not an instruction. Writing "I would like this Pod's phase to be `Running`" expresses nothing. The phase is a *report* on what's true, and reports aren't requests. Chapter 4's spec/status distinction was abstract when you learned it; this is the first place in the book where it has a concrete sub-field to point at.
+**7. No. Nothing is wrong.**
+
+Exceeding a *request* is fine when the node has spare capacity — a container may use more of a resource than its request specifies if the node can spare it. Only the *limit* is a hard boundary a container isn't allowed to cross [source: k8s-docs-resource-management-2026-08-23]. `400Mi` sits between the two, which is the intended operating range, not a problem to fix. The request is a floor for the scheduler's benefit, not a promise the container made.
+
+**8. The CPU container is throttled and stays `Running`. The memory container is eventually killed and its container state becomes `Terminated`.**
+
+Approaching a CPU limit, the kernel restricts the container's access to CPU [source: k8s-docs-resource-management-2026-08-23]. The operator sees latency — nothing else. Phase and container state don't move at all, which is exactly why this failure mode hides from every §5 signal you've been trained to trust.
+
+Over a memory limit, the kernel *may* kill the container, but only once it detects memory pressure on the node — so the kill can land long after the over-allocation started [source: k8s-docs-resource-management-2026-08-23]. The container reaches `Terminated`, with a reason and exit code recorded [source: k8s-docs-pod-lifecycle-2026-08-23]; the Pod's phase then depends on `restartPolicy` and its other containers.
+
+Naming the mechanism is this chapter's job — it's the direct precursor to Chapter 13's material on diagnosing killed and evicted Pods. Which command to run and which events to read is Chapter 13's — *[cross-bearing: see Ch 13 §4 — OOMKilled and Evicted]*.
 
 ---
 
 **How'd you do?**
 
-- **5/5.** You have the chapter's centerpiece. §7 and §8 both assume it, and both will go quickly from here.
-- **3–4 correct.** Good. Review the misses and continue, but note which one you missed. If it was item 1 or item 4, that's the phase/state scope split specifically, and it's the one thing in this chapter you cannot carry a gap on.
-- **0–2 correct.** Stop here. Re-read §5's three legs, the five phases, the three states, and the hazards block, then retake this checkpoint. This is not optional pacing advice: §7's probe behaviors and §8's OOM-kill material are both narrated in this vocabulary, and Chapter 13's entire diagnostic method is *"read the phase before you read the logs."* Twenty minutes here saves you the rest of the book.
+- **7–8 correct.** You have the chapter's spine: phase and state at their correct scopes, `restartPolicy`'s reach, default identity, requests versus limits, and the probe and resource mechanics Chapter 13 spends a whole section diagnosing. Move on.
+- **5–6 correct.** Solid. Review the misses. If one was Q1 or Q8, that's the phase/state-versus-reason split and the CPU-throttle/memory-OOM split specifically — neither is optional going into Chapter 13.
+- **0–4 correct.** Stop here. Re-read §5's phases, states, and hazards block, then §7's probe comparison and §8's requests-versus-limits material, before retaking this checkpoint. Chapter 13's entire diagnostic method starts with this vocabulary, and its readiness behavior is the mechanism Chapter 9's Services are built on.
 
 ---
 
@@ -756,304 +768,6 @@ The `status` field describes the current state of the object, supplied and updat
 ✓ Five Pod phases and three container states, at their correct scopes
 ✓ `restartPolicy` scope, values, and the backoff schedule
 ✓ The chapter's three highest-value traps, and their shared root cause
-☐ What a Pod is to the API server (§6)
-☐ What "healthy" actually means (§7)
-☐ What a Pod asks for and what it's held to (§8)
-
----
-
-## ⚪ §6 — A Pod's Identity
-
-§5 ended with a Pod being destroyed and replaced by a different object with a different UID. That raises a question worth one section: if the instance is disposable, what, if anything, persists about *who* this Pod is?
-
-**A service account is a type of non-human account that, in Kubernetes, provides a distinct identity in a Kubernetes cluster** [source: k8s-docs-service-accounts-2026-08-23]. Application Pods use one to identify themselves to the API server. Four facts, and then we stop.
-
-**One. ServiceAccounts are namespaced, and every namespace gets one named `default` upon creation** [source: k8s-docs-service-accounts-2026-08-23]. Chapter 4 taught you the namespaced-versus-cluster-scoped boundary; here it is doing work rather than being recited *[cross-bearing: see Ch 4 §3 — namespaced and cluster-scoped objects]*.
-
-**Two. If you deploy a Pod in a namespace and don't manually assign a ServiceAccount to it, Kubernetes assigns the `default` ServiceAccount for that namespace to the Pod** [source: k8s-docs-service-accounts-2026-08-23]. There is no such thing as a Pod without an identity. Every Pod sails under some flag, including the ones you never bothered to name.
-
-**Three. The `default` ServiceAccounts get no permissions by default** other than the default API discovery permissions Kubernetes grants to all authenticated principals when RBAC is enabled [source: k8s-docs-service-accounts-2026-08-23]. Having an identity and being able to *do* anything with it are two separate questions, and the default answer to the second one is "essentially nothing."
-
-**Four. You assign one via `spec.serviceAccountName`** [source: k8s-docs-service-accounts-2026-08-23].
-
-### The credential, in one sentence
-
-Chapter 4 cataloged the built-in Secret types and named `kubernetes.io/service-account-token`, then deferred the identity model it belongs to *[cross-bearing: see Ch 4 §4 — the service-account-token Secret type]*. Here is the deferral honored, at the altitude Chapter 4 promised.
-
-In Kubernetes v1.22 and later, Kubernetes gets a **short-lived, automatically rotating token** using the TokenRequest API and mounts it as a **projected volume** *[cross-bearing: see Ch 11 — projected volumes]*. Long-lived ServiceAccount token Secrets, the type Chapter 4 listed, don't expire or rotate and are not recommended [source: k8s-docs-service-accounts-2026-08-23]. The type still exists; it's the legacy form [source: k8s-docs-secret-2026-08-23].
-
-> ⚓ **Worth Securing:** **Every Pod has an identity whether or not you gave it one.** Practitioners find this genuinely surprising the first time — the mental model of "I didn't configure authentication, so there isn't any" is wrong. There is an identity, it's the namespace's `default`, it can authenticate to the API server, and it can do almost nothing. That last clause is doing a lot of load-bearing work, and Chapter 12 is where it gets examined.
-
-That's the whole section. Everything else about ServiceAccounts — what one can be *granted*, how RBAC binds permissions to it, how to harden its tokens, and the privilege-escalation path that opens up when the wrong principal can create Pods — is Chapter 12's *[cross-bearing: see Ch 12 §2 — ServiceAccounts as RBAC subjects]*. Chapter 4 told you as much in as many words, and there's no advantage in spending that material seven chapters early.
-
-Identity also shows up once more, in a different guise: the agent that delivers your application to the cluster needs one too *[cross-bearing: see Ch 15 §4 — the delivery agent's identity]*.
-
----
-
-## 🔵 §7 — Three Probes, Three Jobs
-
-Chapter 3 said the kubelet ensures containers are "running and healthy." §1 handled *running*. This section handles *healthy*, and the answer turns out to be that "healthy" is not one question. It's three.
-
-Soundings question 4 asked you to describe a situation where a process is running but can't do its job. Whatever example you gave — the stuck JVM, the exhausted connection pool, the model still loading — you were identifying a gap that "is the process alive?" cannot detect. Kubernetes fills that gap with probes, and it uses three of them because the gap has three different shapes.
-
-**A probe is a diagnostic performed periodically by the kubelet on a container** [source: k8s-docs-pod-lifecycle-2026-08-23].
-
-### The four mechanisms (how a probe asks)
-
-Take these first, separately, because they're orthogonal to the three types and tangle badly if you learn them together. There are four check mechanisms [source: k8s-docs-pod-lifecycle-2026-08-23]:
-
-| Mechanism | What it does | Success means |
-|---|---|---|
-| `exec` | Executes a command in the container | Exit status 0 |
-| `httpGet` | HTTP GET against the Pod's IP, port, and path | Status code ≥ 200 and < 400 |
-| `tcpSocket` | TCP check against a port | The port is open |
-| `grpc` | A gRPC health check | The gRPC health check passes |
-
-**Any probe type can use any mechanism.** The mechanism is *how the question is asked*; the type is *what the answer is used for*. Keep them in separate compartments and this section is easy. Merge them and you'll be trying to memorize twelve things instead of seven.
-
-<!-- AUTHOR-REVIEW: two small over-tagging notes on the table and the sentence above. (a) The cached pod-lifecycle snapshot gives explicit success criteria for exec, httpGet and tcpSocket but says only "grpc (gRPC health check)" — the fourth cell has been softened to "the gRPC health check passes" rather than the more specific "reports serving," which was authorial. (b) The orthogonality claim — "any probe type can use any mechanism" — is correct in fact but is inferred from the snapshot listing mechanisms and types in adjacent sentences; it is nowhere asserted. It is also the entire answer to Practice question 17, whose three distractors all depend on it. Fetch the probes section of the Pod-lifecycle page or the Pod API reference and tag both sites properly before a graded item rests on document layout. -->
-
-Note that `httpGet` goes to *the Pod's* IP, not the container's: §1's fact turning up somewhere you might not have expected it.
-
-### The three types (what the answer is used for)
-
-For each type, the definition matters less than the **consequence of failure**. That's what gets tested, and that's what matters at three in the morning too.
-
-**`livenessProbe` — is the container running?** If it fails, **the kubelet kills the container**, and the container is then subject to its restart policy [source: k8s-docs-pod-lifecycle-2026-08-23]. This is §5's `restartPolicy` doing visible work, which is exactly why §5 came first: a liveness probe failure hands the container to the restart machinery you already understand.
-
-**`readinessProbe` — is the container ready to respond to requests?** If it fails, **the endpoints controller removes the Pod's IP address from the endpoints of all Services that match the Pod** [source: k8s-docs-pod-lifecycle-2026-08-23]. The container keeps running. Nothing is killed. Nothing is restarted. The Pod is simply taken out of service until it says it's ready again.
-
-Readiness stands a container down from the watch. Liveness relieves it of duty altogether. That behavior is the one Soundings question 5 primed: a load balancer removes an unhealthy backend from rotation; it doesn't kill it. Readiness is Kubernetes' version of exactly that, and it's the probe people most often reverse, because "readiness failed" *sounds* more severe than it is.
-
-**`startupProbe` — has the application within the container started?** While a startup probe is configured and has not yet succeeded, **all other probes are disabled** [source: k8s-docs-pod-lifecycle-2026-08-23]. If the startup probe itself fails, the kubelet kills the container and applies the restart policy [source: k8s-docs-pod-lifecycle-2026-08-23].
-
-<!-- FIGURE: ch05-fig04-three-probes-compared -->
-![A three-row comparison of Kubernetes probes: liveness asks whether the container is running and on failure the kubelet kills it without removing it from Service endpoints; readiness asks whether the container can respond and on failure the Pod IP is removed from matching Service endpoints without killing or restarting anything; startup asks whether the application has started, on failure the kubelet kills the container, and while configured it suppresses the other two probes](figures/ch05-fig04-three-probes-compared.svg)
-
-<!-- ASCII-FALLBACK
-```
-             │ ASKS                    │ ON FAILURE           │ DOES *NOT*
-─────────────┼─────────────────────────┼──────────────────────┼──────────────────────
- liveness    │ Is the container        │ kubelet KILLS the    │ remove it from
-             │ running?                │ container → restart  │ Service endpoints
-             │                         │ policy applies       │
-─────────────┼─────────────────────────┼──────────────────────┼──────────────────────
- readiness   │ Can the container       │ Pod IP REMOVED from  │ kill or restart
-             │ respond to requests?    │ endpoints of all     │ anything — the
-             │                         │ matching Services    │ container keeps running
-─────────────┼─────────────────────────┼──────────────────────┼──────────────────────
- startup     │ Has the application     │ kubelet KILLS the    │ run alongside the
-             │ started?                │ container → restart  │ others — it SUPPRESSES
-             │                         │ policy applies       │ them until it succeeds
-```
--->
-
-The third column is the one doing the teaching. Two probes kill and don't de-register; one de-registers and doesn't kill. Get that asymmetry and the rest is detail.
-
-> 🪝 **Snag:** Configuring a startup probe **disables** the liveness and readiness probes until the startup probe succeeds [source: k8s-docs-pod-lifecycle-2026-08-23]. Readers consistently assume all three run in parallel from the moment the container starts. They don't — and that suppression is the startup probe's entire reason for existing. Without it, a liveness probe would kill a slow-starting application before it ever finished starting, forever.
-
-### The parameters
-
-Probes are tuned with five parameters: `initialDelaySeconds`, `periodSeconds`, `timeoutSeconds`, `successThreshold`, and `failureThreshold` [source: k8s-docs-pod-lifecycle-2026-08-23]. Know that they exist and roughly what each governs — how long to wait before the first check, how often to check, how long to wait for an answer, and how many consecutive results it takes to flip the verdict in each direction. Choosing good values is a real engineering skill and it isn't what this exam is asking.
-
-### The discrimination this section exists for
-
-Liveness and readiness look almost identical on paper. Both are periodic checks. Both use the same four mechanisms. Both can fail. And they do **opposite** things:
-
-- **Liveness restarts, and does not remove from service.**
-- **Readiness removes from service, and does not restart.**
-
-If you remember one sentence from §7, that's the one.
-
-> ★ **Fixed Point:** **Liveness failure → the kubelet kills the container** (restart policy then applies). **Readiness failure → the Pod's IP is removed from the endpoints of all matching Services; nothing is restarted.** **Startup probe configured → all other probes are disabled until it succeeds.**
-
-The readiness behavior is a forward plant. When Chapter 9 explains how a Service knows which Pods to send traffic to, this is the mechanism doing the removing *[cross-bearing: see Ch 9 §4 — readiness and Service endpoint membership]*. And probes are what make a rolling update safe: a new Pod that never reports ready is a new Pod that never receives traffic, which is how Chapter 6 stops a bad release from taking down the service *[cross-bearing: see Ch 6 §4 — what makes a rolling update safe]*.
-
-One thing probes are **not**: observability. A probe answers a yes/no question for the kubelet's benefit and produces no history, no trend, and no measurement. That distinction gets its proper treatment in Chapter 18 *[cross-bearing: see Ch 18 §1 — health checking is not observability]*.
-
----
-
-## 🟡 §8 — What a Pod Is Owed
-
-Soundings question 6 asked you to distinguish reserving capacity from capping it. Kubernetes uses both, calls them by different names, has different components enforce them, and — this is the part that surprises people — enforces the two kinds of cap by completely different mechanisms.
-
-This section has the longest forward reach in the book. Four later chapters retrieve it by name.
-
-### Leg one: two words, two components
-
-**When you specify the resource request for containers in a Pod, the kube-scheduler uses this information to decide which node to place the Pod on. When you specify a resource limit for a container, the kubelet enforces those limits so that the running container is not allowed to use more of that resource than the limit you set. The kubelet also reserves at least the request amount of that system resource specifically for that container to use** [source: k8s-docs-resource-management-2026-08-23].
-
-Two words, two jobs, two components:
-
-| | **Request** | **Limit** |
-|---|---|---|
-| Who reads it | **kube-scheduler** — to choose a node | **kubelet** (with the kernel) — to enforce at runtime |
-| What it means | *Reserve at least this much for me* | *Never let me exceed this* |
-| When it acts | At placement time, once | Continuously, while the container runs |
-
-And the rule that connects them: **if the node where a Pod is running has enough of a resource available, it's possible — and allowed — for a container to use more of that resource than its request specifies. However, a container is not allowed to use more than its resource limit** [source: k8s-docs-resource-management-2026-08-23].
-
-So a request is a floor, not a ceiling. Exceeding your request on a node with spare capacity is normal, expected behavior, not a violation of anything. One number gets you a berth. The other keeps you inside it.
-
-> 🪢 **Mnemonic:** **Requests are about placement. Limits are about containment.** Scheduler places; kubelet contains.
-
-### Leg two: the two enforcement mechanisms are not the same
-
-Here is the part that explains a large fraction of real production behavior, and it's the part most people don't know.
-
-**CPU limits are enforced by CPU throttling. When a container approaches its cpu limit, the kernel will restrict access to the CPU corresponding to the container's limit. Thus, a cpu limit is a hard limit the kernel enforces** [source: k8s-docs-resource-management-2026-08-23].
-
-**Memory limits are enforced by the kernel with out of memory (OOM) kills. When a container uses more than its memory limit, the kernel may terminate it. However, terminations only happen when the kernel detects memory pressure. Thus, a container that over allocates memory may not be immediately killed; memory limits are enforced reactively** [source: k8s-docs-resource-management-2026-08-23].
-
-Sit with the asymmetry:
-
-- **Exceed your CPU limit and you get slow.** The container keeps running. It's throttled, held to its allocation, and the effect is latency, not death. Neither of §5's two vocabularies reports it: the phase doesn't change and the container state doesn't change.
-- **Exceed your memory limit and you eventually get killed.** But not necessarily *when* you exceed it, only when the kernel detects memory pressure. Which means an over-allocating container can run fine for hours and then die at an apparently unrelated moment, when something else on the node needed memory.
-
-That "reactively" is the word to hold onto. It's why memory problems in Kubernetes have a reputation for being hard to reproduce: the trigger for the kill isn't your container's behavior alone, it's the node's aggregate pressure.
-
-### Leg three: resource types and units
-
-The two you will specify constantly [source: k8s-docs-resource-management-2026-08-23]:
-
-| Type | What it measures | Base unit |
-|---|---|---|
-| `cpu` | Compute processing | cpu (core) |
-| `memory` | RAM | bytes |
-
-Two more exist and are specified the same way — `ephemeral-storage` (local ephemeral storage, in bytes) and `hugepages-<size>` (Linux only, in bytes) — and clusters can additionally provide **extended resources**, custom-named resources typically exposed by device plugins [source: k8s-docs-resource-management-2026-08-23]. Know that they exist; you will not be asked to reason about them.
-
-**CPU units.** In Kubernetes, **1 CPU unit is equivalent to 1 physical CPU core, or 1 virtual core**, depending on whether the node is a physical host or a VM. Fractional requests are allowed: `0.5` requests half as much CPU time as `1.0`, and the quantity expression `0.1` is equivalent to `100m`, "one hundred millicpu" [source: k8s-docs-resource-management-2026-08-23].
-
-**Memory units.** Measured in bytes. You can express memory as a plain integer or with quantity suffixes, in either decimal form (`k`, `M`, `G`, and up) or the power-of-two equivalents (`Ki`, `Mi`, `Gi`, and up) [source: k8s-docs-resource-management-2026-08-23]. In practice you will write `Mi` and `Gi` most of the time.
-
-> ⚠ **Navigational Hazards**
->
-> **`M` means megabytes. `m` means millibytes.** The documentation calls this out explicitly, and for good reason: **a request of `400m` of memory is a request for 0.4 bytes** [source: k8s-docs-resource-management-2026-08-23].
->
-> This is the most mechanically checkable gotcha in the chapter, which is exactly what makes it so easy to write a question around. `400M` and `400m` differ by nine orders of magnitude and by one keystroke. When you see a memory quantity on an exam question, read the case of the suffix before you read anything else.
->
-> Note that `m` is perfectly correct — and extremely common — for CPU, where `100m` means one tenth of a core. The suffix isn't wrong; it's wrong *for memory*. Habit carries it across, and nothing in the manifest will stop you.
-
-> 🔭 **Closer Look:** Two details that reward a second look. First, **CPU resource is always specified as an absolute amount, never as a relative amount**: `500m` CPU represents roughly the same amount of computing power whether the container runs on a single-core, dual-core, or 48-core machine [source: k8s-docs-resource-management-2026-08-23]. That's more useful than it first appears. Most capacity intuitions are relative ("give this service a quarter of the box"), and they break the moment the box changes size. A CPU request in Kubernetes is portable across node types by construction. Second, there is a floor on precision: **Kubernetes doesn't allow CPU resources finer than `1m`** [source: k8s-docs-resource-management-2026-08-23]. One thousandth of a core is as small as the vocabulary goes.
-
-<!-- RESOLVED 2026-08-24: QoS passage below written from k8s-docs-pod-qos-2026-08-24 (harvested). The page's loose "exceeding a resource limit will be killed" wording is deliberately NOT quoted; the CPU-throttles/memory-OOM-kills asymmetry above stands. -->
-
-There is a fourth movement to this arithmetic, and it is the one the exam names. **Kubernetes classifies every Pod you run into a *quality of service (QoS) class* and uses that classification to influence how the Pod is treated when a node comes under resource pressure** [source: k8s-docs-pod-qos-2026-08-24]. You never set the class directly. It is derived entirely from the shape of the requests and limits you just learned to write:
-
-- **`Guaranteed`** — every container in the Pod has a memory limit and a memory request set equal to each other, and a CPU limit and CPU request set equal to each other. These Pods have the strictest resource bounds and are the least likely to face eviction: guaranteed not to be killed until they exceed their own limits [source: k8s-docs-pod-qos-2026-08-24].
-- **`Burstable`** — the Pod does not meet the `Guaranteed` criteria, but at least one container has a memory or CPU request or limit. There is a lower-bound guarantee based on the request, with room to use more when the node has spare capacity [source: k8s-docs-pod-qos-2026-08-24].
-- **`BestEffort`** — no container in the Pod has any memory or CPU request or limit at all. These Pods may use whatever node resources are not spoken for by the other classes — and when the node runs short, they are the first over the side [source: k8s-docs-pod-qos-2026-08-24].
-
-Keep the mechanisms separate in your head, because a distractor will happily blur them: CPU overuse is throttled and memory overuse is OOM-killed, per container, as above — while the QoS class governs *eviction under node pressure*, a Pod-level decision. Same inputs, different machinery.
-
-<!-- FIGURE: ch05-fig05-requests-limits-qos-classes -->
-![A horizontal band for one container's use of one resource, marked at zero, at the request, and at the limit; the zone up to the request is reserved and read by the kube-scheduler, the zone between request and limit is allowed when the node has spare capacity, and the zone past the limit is not allowed and is enforced by the kubelet with the kernel; a note beneath states that CPU is throttled at the limit while memory is OOM-killed reactively under node memory pressure](figures/ch05-fig05-requests-limits-qos-classes.svg)
-
-<!-- ASCII-FALLBACK
-```
-A SINGLE CONTAINER'S RESOURCE BAND
-
-  0                request                    limit
-  ├──────────────────┤═══════════════════════════┤ ─ ─ ─ ─ ─ ─►
-  │                  │                           │
-  │   reserved for   │   allowed IF the node     │  NOT ALLOWED
-  │   this container │   has spare capacity      │
-  │                  │                           │
-  └── read by ───────┘                           └── enforced by
-      kube-SCHEDULER                                 the KUBELET
-      (chooses the node)                             (+ the kernel)
-
-  ENFORCEMENT DIFFERS BY RESOURCE:
-     cpu    → THROTTLED at the limit  (hard, immediate, you get slow)
-     memory → OOM-KILLED past it      (reactive, under node memory
-                                        pressure — you get slow, then dead)
-
-  QoS CLASS: [ derived from how request and limit were filled in ]
-  QoS CLASS      DERIVED FROM THE SHAPE ABOVE
-  Guaranteed     every container: limits = requests (CPU and memory)
-  Burstable      not Guaranteed, but at least one request or limit set
-  BestEffort     no requests and no limits anywhere in the Pod
-                research snapshot, do not fill in from memory
-```
--->
-
-> ★ **Fixed Point:** **Requests are what the scheduler reads** to place the Pod. **Limits are what the kubelet enforces** on the running container. **CPU limits throttle; memory limits kill** — and the memory kill is reactive, arriving when the kernel detects pressure rather than the instant you cross the line.
-
-### Where these two numbers come back
-
-Briefly, because you'll see all of this again: requests are the input to the scheduler's filtering step *[cross-bearing: see Ch 7 §2 — resource requests as a scheduling filter]*. They're what the system is reporting on when a Pod is killed for using too much *[cross-bearing: see Ch 13 §4 — OOMKilled and Evicted]*. They're the baseline autoscalers compare observed usage against *[cross-bearing: see Ch 17 — autoscaling targets]*, and they're the denominator when monitoring reports "utilization" *[cross-bearing: see Ch 18 §3 — utilization relative to requests]*.
-
-Two numbers in a Pod spec; four later chapters. It's worth getting right the first time.
-
----
-
-## ☆ Taking Your Bearings #3: Identity, Health, and What a Pod Is Owed
-
-Five questions covering §6–§8, with the last one reaching back into §5.
-
-1. A Pod is created with no ServiceAccount specified. What identity does it have, and what can it do with that identity?
-
-2. A liveness probe and a readiness probe both fail on the same container. Describe **both** consequences.
-
-3. A container takes four minutes to start. Which probe solves this, and what does configuring it do to the other two?
-
-4. A container has a memory request of `256Mi` and a memory limit of `512Mi`. The node has spare memory. The container is currently using `400Mi`. Is anything wrong?
-
-5. 🟡 Two containers run identical images and identical code. One is exceeding its CPU limit; the other is exceeding its memory limit. Describe what an operator observes in each case, and name the Pod phase and container state each one ends up in.
-
----
-
-**Answers with Explanations:**
-
-**1. It has the namespace's `default` ServiceAccount, and it can do essentially nothing with it.**
-
-If you deploy a Pod and don't manually assign a ServiceAccount, Kubernetes assigns the `default` ServiceAccount for that namespace [source: k8s-docs-service-accounts-2026-08-23]. That account gets no permissions by default other than the API discovery permissions granted to all authenticated principals when RBAC is enabled [source: k8s-docs-service-accounts-2026-08-23].
-
-Both halves matter and they're independent. It *has* an identity: it can authenticate. It has almost no *authorization*: it can't do anything with the authentication.
-
-*Why the wrong answers are wrong:*
-- **"None — it has no identity"** is the intuitive answer and it's wrong. Kubernetes assigns one automatically. There is no such thing as an anonymous Pod in a namespace.
-- **"cluster-admin"** or any broad-permissions answer confuses "the system gave it something automatically" with "the system gave it something powerful." The default assignment is deliberately inert.
-
-**2. The container is killed and restarted according to `restartPolicy`, and the Pod's IP is removed from the endpoints of all matching Services.**
-
-Both, simultaneously, because the two probes are independent diagnostics with independent consequences [source: k8s-docs-pod-lifecycle-2026-08-23]. A liveness failure kills; a readiness failure de-registers. Two probes failing means both things happen.
-
-This question exists to force both behaviors into one answer, because the failure mode in candidates' heads is treating the two probes as a single "health check" with a single outcome. They're two mechanisms with two different consequences, and they can fire independently or together.
-
-**3. A `startupProbe`. Configuring it disables the liveness and readiness probes until it succeeds.**
-
-A startup probe indicates whether the application within the container has started; all other probes are disabled if a startup probe is provided, until it succeeds [source: k8s-docs-pod-lifecycle-2026-08-23].
-
-The second half is where people lose the point. Without the suppression, a four-minute startup would be repeatedly killed by a liveness probe that concluded, correctly given what it can see, that the container wasn't responding. The startup probe's value is not that it checks something new; it's that it *silences* the other two during the window when their answers would be misleading.
-
-**4. No. Nothing is wrong.**
-
-Exceeding a *request* is allowed when the node has capacity. The documentation is explicit that a container may use more of a resource than its request specifies if the node has enough available. Only the *limit* is a hard boundary that a container is not allowed to cross [source: k8s-docs-resource-management-2026-08-23].
-
-`400Mi` is above the `256Mi` request and below the `512Mi` limit. That's the intended operating range, not a problem to be fixed. The request was a floor for the scheduler's benefit, not a promise the container made.
-
-**5. The CPU case is throttled and stays `Running`. The memory case is eventually terminated — reactively, under node memory pressure, not immediately — and its container state becomes `Terminated`.**
-
-*The CPU container:* when it approaches its cpu limit, the kernel restricts its access to the CPU [source: k8s-docs-resource-management-2026-08-23]. The operator observes **latency**. Requests take longer. Throughput drops. Nothing in the Pod's status changes at all: the phase stays `Running`, the container state stays `Running`. This is the failure mode that hides from every signal §5 taught you.
-
-*The memory container:* when it uses more than its memory limit, the kernel may terminate it, but terminations only happen when the kernel detects memory pressure, so a container that over-allocates may not be killed immediately [source: k8s-docs-resource-management-2026-08-23]. The operator observes the container **dying**, possibly long after the over-allocation started, and possibly at a moment that correlates with something else entirely on the node. The container reaches the `Terminated` state, with a reason and an exit code recorded [source: k8s-docs-pod-lifecycle-2026-08-23]. The Pod's phase then depends on `restartPolicy` and on what the other containers are doing.
-
-This item required §5 and §8 together, which is the point: it's the direct precursor to Chapter 13's material on diagnosing killed and evicted Pods. What we're **not** doing here is diagnosing it. Naming the mechanism is this chapter's job. Which command to run and which events to read is Chapter 13's *[cross-bearing: see Ch 13 §4 — OOMKilled and Evicted]*.
-
----
-
-**How'd you do?**
-
-- **5/5.** You're done with new material. §9 introduces no facts at all; it only rearranges the ones you already have.
-- **3–4 correct.** Review the misses, then continue. If item 2 or item 3 was among them, re-read §7's failure-behavior table before the Practice Questions; five of those twenty-three items live in that table.
-- **0–2 correct.** Go back to §7's three-probe comparison figure and §8's Leg two (the CPU-throttle / memory-OOM split), roughly twenty minutes, then retake this checkpoint. Both come back in Chapter 13, and §7's readiness behavior is the mechanism Chapter 9's Services are built on.
-
----
-
-**Checkpoint: You've Now Mastered**
-
 ✓ What identity a Pod has by default, and what it can do with it
 ✓ Three probes, four mechanisms, and — most importantly — three distinct failure behaviors
 ✓ Requests versus limits, and which component acts on each
@@ -1061,8 +775,6 @@ This item required §5 and §8 together, which is the point: it's the direct pre
 ✓ The `m`-versus-`M` memory suffix trap
 
 One section left, and it contains no new facts at all.
-
----
 
 ## ☀️ §9 — The Smallest Deployable Unit
 

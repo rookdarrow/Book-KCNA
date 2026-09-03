@@ -791,56 +791,67 @@ Which is precisely why the next two sections exist. **§6 is which versions are 
 
 ---
 
-## ☆ Taking Your Bearings #2 — The Machine, and Whose It Is
+## ☆ Taking Your Bearings #2 — The Machine, the Skew, and What You Cannot Improvise
 
-Five questions on §4 and §5. Two of them reach back into earlier chapters.
+Seven questions on §4 through §7. Two of them reach back into earlier chapters.
 
-**1.** 🔵 **[retrieval: ch7]** You cordon a node. Chapter 7 taught you a built-in taint whose effect matches what cordoning does: name that taint and its effect, and then, using Chapter 7's rule about that effect, say what happens to the Pods already running on the node.
+**1.** 🔵 **[retrieval: ch7]** You cordon a node. Chapter 7 taught you a built-in taint whose effect matches what cordoning does: name that taint and its effect, then say what happens to the Pods already running on the node.
 
-**2.** 🟡 **Challenge item — this one is meant to be uncomfortable, and the intuition it breaks is a reasonable intuition.** An engineer cordons a node and immediately reboots it for maintenance. Three services go down. What did they skip, and why did the cordon not prevent it?
+**2.** 🔵 A node stops responding. Its `Ready` condition changes. To what value — and what does that mean that `False` would not? Name the other four conditions a Node's status carries.
 
-**3.** 🔵 A node stops responding. Its `Ready` condition changes. To what value — and what does that value mean that `False` would not? Then name the other four conditions a Node's status carries.
+**3.** 🔵 **[retrieval: ch2]** You bootstrap a cluster with kubeadm. Before any node can run a Pod, one piece of software must be installed that kubeadm does not provide. Name it, name the two implementations the documentation names, and say which interface Kubernetes uses to talk to it.
 
-**4.** 🔵 **[retrieval: ch2]** You bootstrap a cluster with kubeadm. Before any node in it can run a Pod, one piece of software must be installed on that node which kubeadm does not provide. Name it, name the two implementations the documentation names, and say which interface Kubernetes uses to talk to it.
+**4.** 🟡 State the one rule that generates three of the five rows of the version-skew table. Then name the two rows it does not generate, and say why each is different.
 
-**5.** 🔵 Two engineers describe their clusters. One says "we upgraded to 1.36 last Tuesday." The other says "we *got* upgraded to 1.36 last Tuesday." What is different about their situations, and name one further duty that differs between them.
+**5.** 🔵 How many minor releases does the project maintain release branches for? Roughly how long is patch support for 1.19 and newer? Roughly how many minor releases ship per year? Say why those three numbers agree.
+
+**6.** 🟡 You lose every control-plane node. Workers are untouched and applications are still serving traffic. What have you actually lost — and what single artifact gets it back?
+
+**7.** 🔵 An etcd snapshot is sitting, unencrypted, on one of your control-plane nodes. Give two separate reasons this is wrong.
 
 <details>
 <summary>Answers + explanations</summary>
 
-**1.** The taint is **`node.kubernetes.io/unschedulable`**, with a **`NoSchedule`** effect. **Nothing happens to the running Pods:** `NoSchedule` means no new Pods will be scheduled on the tainted node unless they have a matching toleration, and Pods currently running on the node are not evicted [source: k8s-docs-taints-tolerations-2026-08-23].
+**1.** The taint is **`node.kubernetes.io/unschedulable`**, effect **`NoSchedule`**: no new Pods land without a matching toleration, and Pods already running are **not evicted** [source: k8s-docs-taints-tolerations-2026-08-23]. `cordon` itself only marks the node Unschedulable in its spec [source: k8s-docs-node-status-2026-08-24]; the relationship between that field and the built-in taint is left exactly where the documentation leaves it.
 
-Note what the question asks and does not ask. It asks you to name a taint whose *effect matches*, which you can do from Chapter 7 alone. What `cordon` writes is a spec field — cordoned nodes are marked Unschedulable in their spec [source: k8s-docs-node-status-2026-08-24] — and the relationship between that field and the built-in taint is left where the documentation leaves it.
+*Common wrong turn:* answering "evicted" — that's `NoExecute`'s behavior, not `NoSchedule`'s.
 
-*Common wrong turn:* answering that the Pods are evicted, which is `NoExecute`'s behavior, not `NoSchedule`'s.
+**2.** **`Unknown`** — the node controller hasn't heard from the node within the `node-monitor-grace-period`. `False` would mean the node reported itself unhealthy; `Unknown` means the control plane has no information at all, consistent with either a dead machine or a network partition.
 
-**2.** They skipped **`kubectl drain`**. `cordon` stops new Pods arriving and deliberately leaves running Pods alone; the three services were still on that node when the machine went down.
+The other four: **`DiskPressure`**, **`MemoryPressure`**, **`PIDPressure`**, **`NetworkUnavailable`** — three pressure conditions plus one about configuration.
 
-If you got this wrong, you got it wrong for a sensible reason. "Take a node out of service" reads as one action, and in most operational vocabularies it *is* one action. Kubernetes splits it in two because there are real situations where you want arrivals stopped and the current occupants left in place: `cordon` is documented as a preparatory step before a node reboot or other maintenance, and draining is disruptive, so you may want to cordon now and drain during a window. The split is a feature. It is also a trap, and the fix is one more command before the reboot.
+*Common wrong turns:* `False` (intuitive, and wrong), `NotReady` (a display convenience, not an API value), and `SchedulingDisabled` (a kubectl display string, not a Condition).
 
-**3.** **`Unknown`.** The node controller has not heard from the node within the `node-monitor-grace-period`. `False` would mean something different and more specific: the node reported *itself* unhealthy and not accepting Pods. `Unknown` is the control plane saying it has no current information, which is consistent with a dead machine and equally consistent with a network partition.
+**3.** A **container runtime** — **containerd** or **CRI-O** — reached through the **CRI**, the Container Runtime Interface. Chapter 2 drew this as an architectural boundary; here it turns operational: the officially supported bootstrapper builds you a control plane, but the runtime still has to be installed separately, because it lives on the other side of that interface.
 
-The other four conditions: **`DiskPressure`**, **`MemoryPressure`**, **`PIDPressure`**, **`NetworkUnavailable`**. Three of those four are pressure conditions — disk, memory, processes — which is the easiest way to hold them; the fourth is about configuration rather than exhaustion.
+**4.** The rule: **nothing may be newer than the API server.** It generates the kubelet row, the kube-proxy row, and the controller-manager/scheduler/cloud-controller-manager row.
 
-*Common wrong turns:* `False` (the intuitive answer, and the wrong one) and `NotReady` (which is how it is often displayed in summary output, but is not one of the three condition values). If you offered `SchedulingDisabled` among the four, re-read §4's Snag: that string is displayed by command-line tools and is not a Condition in the API.
+The two exceptions, for two different reasons:
 
-**4.** A **container runtime** — **containerd** or **CRI-O** — and Kubernetes talks to it through the **CRI**, the Container Runtime Interface.
+- **`kubectl`** — a user tool outside the cluster, not part of its internal consistency, so its window is symmetric: one release either direction, newer included.
+- **The HA kube-apiserver row** — not a bound relative to "the" API server at all, but a mutual bound *between* API servers: newest and oldest instances must sit within one minor version of each other.
 
-Six chapters back, Chapter 2 drew this as an interface boundary and it was, at the time, an architectural point. This is the moment it becomes an operational one: the officially supported bootstrapper will build you a control plane, and the thing that runs containers still has to be there, because it lives on the other side of the line.
+*Common wrong turn:* naming `kubectl` and stopping. The HA row is the one most readers miss, because it doesn't look like an exception until you notice it has no fixed point to measure from.
 
-**5.** The first engineer operates their own control plane (self-hosted); the second is on a managed platform where the provider holds the upgrade calendar. The further duty this chapter can defend: **etcd backup**, which sits with whoever operates the control plane.
+**5.** **Three** branches. **About a year** of patch support for 1.19 and newer. **About three** releases a year, roughly every fifteen weeks. They agree because three releases a year across three maintained branches is about twelve months of coverage — the branch count *is* the support window, expressed in releases rather than months.
 
-Notice that both engineers are now running 1.36. The version is not what differs. The *ownership of the decision* is.
+*Common wrong turn:* "the last two releases" — it's three. You'll meet this cadence again in Chapter 17's release-governance material *[cross-bearing: see Ch 17 §8 — SIG Release and the release cycle]*; it's forgettable material, and that pass is its second look.
 
-*A note on scope:* it is tempting to extend the list — certificates, machine maintenance, capacity. Those may or may not move depending on the provider, and no Kubernetes documentation defines a shared-responsibility split, so this book asserts only the two duties the architecture itself decides.
+**6.** You've lost **the cluster's entire record of intent** — every object — since all Kubernetes objects live in etcd. Not the running workloads: kubelets keep running what they were last told, so traffic keeps flowing. What's gone is every declaration of what *should* be running, so nothing can be reconciled, changed, scheduled, healed, or scaled. The artifact that brings it back: **an etcd snapshot**.
+
+The scenario is built so you notice that "running workloads" and "cluster state" are different things — most people's first answer to "we lost the control plane" is "the applications are down," and for a while, they are not.
+
+**7.** **First:** it isn't stored outside the nodes it protects against losing — a snapshot living only on the machines it insures against doesn't survive the event it exists for. **Second:** access to etcd is root-equivalent for the cluster, and the snapshot holds all of it — every Secret, every config. Unencrypted, it's a complete compromise in one readable file.
+
+Two reasons, two failure modes: one about availability, one about confidentiality.
 
 </details>
 
 **How'd you do?**
 
-**5/5:** You own the node lifecycle. Take the recommended break here; §6 deserves a fresh start.
-**3–4:** Good. If item 2 was a miss, re-read §4's Navigational Hazards before continuing; it is the one item in this chapter with an operational cost attached.
-**0–2:** Re-read §4, about fifteen minutes, with Figure 8.4 open. Then take the break. §6 is the densest section in this book and it is not the place to arrive tired.
+**7/7:** You own the node lifecycle and the two duties that cannot be improvised. Take the recommended break; §8 is short, and then Part II is done.
+**5–6:** Good. If a skew-table or cordon item was among the misses, spend ten minutes with Figure 8.5 — it holds the exceptions better than the table does.
+**0–4:** Re-read §4 and §6 before continuing. Don't memorize the skew table's five rows — derive them: one rule, three rows, two exceptions for two different reasons.
 
 **Checkpoint: you've now mastered**
 ✓ How Node objects come into existence, and that a kubelet joins by writing one
@@ -848,203 +859,6 @@ Notice that both engineers are now running 1.36. The version is not what differs
 ✓ The five node conditions, and why `Ready` has three values
 ✓ Two heartbeat forms, and the control loop watching them
 ✓ Capacity, Allocatable, and the two reservations that separate them
-☐ Which versions are permitted to disagree (next)
-
----
-
-## 🟡 §6 — Versions That Are Allowed to Disagree
-
-This section is a table. There is no honest way around that, and printing the table is the wrong way to teach it: a table you memorized in August is a table you have half-lost by October.
-
-So take the rule first, before any numbers.
-
-**Nothing in the cluster may be newer than the API server it talks to.**
-
-Every component in a Kubernetes cluster is a client of one door. Chapter 3 established that; §2 built three gates on it. A client that is *newer* than its server is a client that may ask for things the server has never heard of: new fields, new resources, new behavior that does not exist on the other end of the connection. That single sentence generates three of the five rows below. The numbers are then not five unrelated facts; they are the *sizes of the windows*.
-
-### The vocabulary
-
-Kubernetes versions are expressed as `x.y.z`, where x is the major version, y is the minor version, and z is the patch version, following Semantic Versioning terminology [source: k8s-version-skew-policy-2026-08-23].
-
-The Kubernetes project maintains release branches for the most recent **three** minor releases [source: k8s-version-skew-policy-2026-08-23]. Kubernetes 1.19 and newer receive approximately one year of patch support; 1.18 and older received approximately nine months [source: k8s-releases-cadence-2026-08-23]. Applicable fixes, including security fixes, may be backported to those three release branches depending on severity and feasibility [source: k8s-version-skew-policy-2026-08-23].
-
-### The cadence, which makes the branch count make sense
-
-Since 2021 the project ships **three minor releases per year**, approximately every fifteen weeks, each following a release cycle led by a SIG Release team; patch releases are cut monthly from the supported branches [source: k8s-releases-cadence-2026-08-23].
-
-Now put the two facts beside each other, because neither is memorable alone and together they are almost self-evident: three releases a year, across three supported branches, is roughly a year of coverage, which is exactly the patch-support figure. The three-branch rule is not an arbitrary number somebody picked. It is what "about a year of support" costs at this release cadence.
-
-*[cross-bearing: see Ch 17 §8 — SIG Release, KEPs, and how a release gets made]*. You will meet the cadence again there, inside the governance material that explains why it is what it is. Make the connection now; it is the cheapest insurance this chapter offers against forgetting the number.
-
-> 🪝 **Snag:** "Kubernetes supports the last two releases" is a common half-memory and it is wrong. It is **three**.
-
-### The rules
-
-> **Dead Reckoning:** The supported version skew, stated flat.
->
-> | Component | Rule |
-> |---|---|
-> | **kube-apiserver** | In highly-available clusters, the newest and oldest kube-apiserver instances must be within **one** minor version of each other |
-> | **kubelet** | Must not be newer than kube-apiserver. May be up to **three** minor versions older. (A kubelet older than 1.25 may only be up to two minor versions older.) With kube-apiserver at 1.36: kubelet at 1.36, 1.35, 1.34 or 1.33 |
-> | **kube-proxy** | Must not be newer than kube-apiserver. May be up to three minor versions older than kube-apiserver, and up to three minor versions older *or newer* than the kubelet instance it runs alongside |
-> | **kube-controller-manager, kube-scheduler, cloud-controller-manager** | Must not be newer than the kube-apiserver instances they communicate with. Expected to match the kube-apiserver minor version, but may be up to **one** minor version older, to allow live upgrades |
-> | **kubectl** | Supported within **one** minor version, **older or newer**, of kube-apiserver. With kube-apiserver at 1.36: kubectl at 1.37, 1.36 or 1.35 |
->
-> *(All five rules and both worked examples: [source: k8s-version-skew-policy-2026-08-23].)*
-
-<!-- FIGURE: ch08-fig03-version-skew-window -->
-![A horizontal range chart on a relative axis from minus three to plus one minor versions, with the API server's version marked by a double line at zero; bars for kubelet and kube-proxy reach back three versions, bars for the controller manager, scheduler and cloud controller manager reach back one, and all five stop at the double line, while the kubectl bar alone extends one version past it](figures/ch08-fig03-version-skew-window.svg)
-
-<!-- ASCII-FALLBACK
-```
-                  older ◄───────── kube-apiserver ─────────► newer
-                    -3      -2      -1       0       +1
-                     │       │       │       ║       │
-
-  kubelet            ●━━━━━━━━━━━━━━━━━━━━━━━┫
-  kube-proxy         ●━━━━━━━━━━━━━━━━━━━━━━━┫
-  controller-manager                 ●━━━━━━━┫
-  scheduler                          ●━━━━━━━┫
-  cloud-ctrl-manager                 ●━━━━━━━┫
-  kubectl                            ●━━━━━━━╬━━━━━━━●
-                                             ║
-                                    ▲ the only bar that crosses
-```
--->
-
-**Figure 8.5 —** The double line at 0 is the API server's minor version. For every component but one it is a wall: bars extend to the left and stop dead. `kubectl` is the single bar that crosses to the right. The HA kube-apiserver rule is deliberately absent — it is a mutual bound *between* API servers, not a bound relative to one, so it has no bar to draw. The axis is relative; the rules do not change when the version numbers do.
-
-### The exception, which is where the exam points are
-
-`kubectl` is the only entry in that table permitted to be *newer* than the API server.
-
-Everything in the first half of this section built an intuition — never newer, never newer, never newer — and for exactly one component that intuition is wrong. Worse, it is wrong in a way that looks like carelessness rather than like a rule, so candidates who half-remember the kubelet's generous three-minor window reach for it when the question is about `kubectl`, and lose the point twice over: wrong number, wrong direction.
-
-There is an explanation, and this book offers it as its own reasoning rather than as documented rationale — the version-skew policy states the rules without saying why. `kubectl` is a **user tool that addresses the cluster from outside**, not a component running inside it. It is the thing on your laptop. It is not participating in the cluster's internal consistency, so its compatibility window is about human convenience: you should be able to run one `kubectl` against a fleet of clusters that are not all on the same release. That is a good reason for the only symmetric window in the table, and it is worth holding onto — but hold it as a memory aid, not as a fact the exam can ask you to reproduce.
-
-> ★ **Fixed Point:** **Nothing may be newer than the API server.** kubelet may be up to **three** minors older. **`kubectl` is the single exception, in both directions, at one minor.**
-
-> ⚠ **Navigational Hazards:** The kubelet rule and the `kubectl` rule are different rules, and candidates routinely apply the first to the second. **kubelet: three minors, older only. `kubectl`: one minor, either direction.** They are not the same number and they are not the same shape. If a question gives you a kubectl version, the number you want is one, and the direction is both.
-
-> 🪢 **Mnemonic:** *Three back, three a year, three branches.* The kubelet's window, the release cadence, and the number of supported minor releases are all three. That is a coincidence, and it is a useful one: three of this chapter's numbers collapse into a single digit, which leaves you only one other number to hold — `kubectl`'s one, in both directions.
-
-### What the rule implies about upgrade order
-
-The order falls out of the rule and does not need memorizing separately. If nothing may be newer than the API server, then the API server must be upgraded first; everything else follows behind it, within its permitted window. No cached documentation states an upgrade order in those words — this is a derivation from the tagged rule above, and it is offered as one.
-
-That is as far as this book goes. Writing an upgrade runbook is not in the curriculum, and the procedure differs by how the cluster was built anyway — which, as §5 noted, may not be a decision that was ever yours *[cross-bearing: see Ch 8 §5 — whose watch the upgrade stands on]*.
-
-**A note on the numbers in this section.** The rules above are stable. The specific releases are not: the roster supported at the time this book's sources were captured was 1.36, 1.35 and 1.34 [source: k8s-releases-cadence-2026-08-23], and by the time you sit the exam it will be a different three. Learn the rule and treat the numbers as an illustration of it. Nothing in this book's practice questions turns on which minor version is current, and nothing in the exam should either.
-
-*[cross-bearing: see Ch 13 §6 — version skew as a cause of failures you will otherwise misdiagnose]*. This material returns there, deliberately, in a form where you have to use it rather than recite it.
-
----
-
-## 🔵 §7 — The One Backup That Matters
-
-Short section. It is also the only material in this chapter where the consequence of getting it wrong cannot be undone afterwards, so read it at half speed.
-
-Chapter 3 introduced etcd as a consistent and highly-available key value store used as Kubernetes' backing store for all cluster data [source: k8s-docs-etcd-access-control-2026-08-24], and pointed here for what to do about that *[cross-bearing: see Ch 3 §2 — etcd, the cluster's memory]*.
-
-All Kubernetes objects are stored in etcd [source: k8s-docs-etcd-backup-2026-08-23]. Every Deployment you have written in this book. Every ConfigMap and Secret. Every Service. Every Node object, including the ones a kubelet wrote itself in §4. All of it is one datastore's contents.
-
-Which is why: periodically backing up the etcd cluster data is important to recover Kubernetes clusters under disaster scenarios, such as **losing all control plane nodes** [source: k8s-docs-etcd-backup-2026-08-23].
-
-Sit with that scenario for a second, because it is more specific and more survivable than "the cluster died." Losing every control-plane node does not stop your worker nodes. The kubelets keep running the containers they were last told to run; traffic keeps being served. What you have lost is not the workloads. It is the entire record of *intent*: every declaration that says what should be running, which is the only thing that lets the cluster put itself back together when something changes.
-
-### The mechanics
-
-Backing up an etcd cluster can be accomplished in two ways: a built-in snapshot, `etcdctl snapshot save backup.db`, or a volume snapshot of etcd's storage [source: k8s-docs-etcd-backup-2026-08-23]. The `etcdctl` form takes optional `--endpoints`, `--cacert`, `--cert` and `--key` flags for a TLS-protected cluster [source: k8s-docs-etcd-backup-2026-08-23].
-
-Restoring uses `etcdutl snapshot restore`, which operates directly on the etcd data files; after a restore, the control plane components are restarted against the restored data directory [source: k8s-docs-etcd-backup-2026-08-23].
-
-<!-- AUTHOR-REVIEW: the TLS flags are named above because the backup snapshot lists them. No configuration guidance is given, deliberately: the etcd-access-control snapshot's note states that the source page's TLS configuration guidance was not verbatim-verified in that fetch. Do not expand this into how to configure etcd TLS without a fresh verified fetch. -->
-
-> 🔭 **Closer Look:** Restore is not a command you run against a running cluster. `etcdutl snapshot restore` operates on the data files directly, and the control-plane components come back up against the restored directory afterwards. That is why restoring from a snapshot is a maintenance *event*, with a window, a plan, and somebody watching, rather than an operation you slip in between meetings.
-
-### The fact that matters more than the commands
-
-Two sentences, and read them together rather than separately.
-
-The snapshot file contains all the Kubernetes state and critical information; keep it encrypted and store it outside the control plane nodes [source: k8s-docs-etcd-backup-2026-08-23].
-
-Access to etcd is equivalent to root permission in the cluster, so ideally only the API server should have access to it [source: k8s-docs-etcd-access-control-2026-08-24].
-
-Put them side by side and they say something you should feel rather than merely file away: **an unencrypted etcd snapshot sitting on a control-plane node is simultaneously your only disaster recovery and a complete compromise of the cluster, waiting for someone to copy it.** Not a credential *for* the cluster. Root *in* the cluster, in one file, at rest.
-
-> ★ **Fixed Point:** Every object you have ever created lives in etcd. **Access to etcd is equivalent to root permission in the cluster.** A snapshot is therefore both your only route back from disaster and the most dangerous single file you own.
-
-> ⚓ **Worth Securing:** "Store it outside the control plane nodes" is the entire point of that sentence, and it is the half people skip. A snapshot that lives only on the machines it exists to protect you against losing is not a backup. It is a copy that goes down with the original — the maritime word for which is *ballast*, not *lifeboat*.
-
-Notice also that the second sentence is the single-door architecture stated from the other side. §2 said every request terminates at the API server. This says only the API server should reach the store behind it. Same claim, different direction *[cross-bearing: see Ch 8 §2 — one door, three gates]*.
-
-And whose job is this? §5's answer applies: whoever operates the control plane holds it. On a managed platform you may not be able to reach etcd at all. On a self-hosted cluster it is yours, and it is the one duty in this chapter where doing it late is not the same as doing it.
-
-*[cross-bearing: see Ch 12 §4 — Secrets, and encryption at rest]*. Chapter 12 covers why "keep it encrypted" is not paranoia. It is the reason that clause is in the sentence.
-
----
-
-## ☆ Taking Your Bearings #3 — The Two Things You Cannot Improvise
-
-Five questions on §6 and §7. These carry the highest concentration of directly examinable material in the chapter.
-
-**1.** 🔵 Your cluster's API servers are at 1.36. For each of the following, say whether it is supported: (a) a kubelet at 1.33; (b) a kubelet at 1.37; (c) a `kubectl` at 1.37; (d) a kube-scheduler at 1.34.
-
-**2.** 🟡 State the one rule that generates three of the five rows of the skew table. Then name the two rows it does *not* generate, and say why each is different.
-
-**3.** 🔵 How many minor releases does the project maintain release branches for? Roughly how long is patch support for 1.19 and newer? Roughly how many minor releases ship per year? Then say why those three numbers are consistent with each other.
-
-**4.** 🟡 You lose every control-plane node. Your worker nodes are untouched and your applications are still serving traffic. What have you actually lost — and what single artifact would let you get it back?
-
-**5.** 🔵 An etcd snapshot is sitting, unencrypted, on one of your control-plane nodes. Give two *separate* reasons this is wrong.
-
-<details>
-<summary>Answers + explanations</summary>
-
-**1.** (a) **Supported** — kubelet may be up to three minor versions older than kube-apiserver. (b) **Not supported** — kubelet must never be newer than kube-apiserver. (c) **Supported** — `kubectl` is permitted within one minor version in either direction, and this is the only component for which "newer" is allowed. (d) **Not supported** — kube-scheduler may be at most one minor version older than the API servers it talks to, and 1.34 is two behind 1.36.
-
-*Common wrong turn:* marking (c) unsupported. That is the kubelet's never-newer rule applied to `kubectl`, and it is this chapter's most durable error — it costs you twice, because it is the wrong number *and* the wrong direction. If you missed only (c), spend five minutes with Figure 8.5; the picture holds the exception better than the table does.
-
-Note also what this item is testing. It is not the version numbers; the roster will be different by the time you sit the exam. It is four rules, applied. Redo the question with the API servers at any minor version you like and the four answers stay in the same places.
-
-**2.** The rule: **nothing may be newer than the API server.** It generates the kubelet row, the kube-proxy row, and the controller-manager/scheduler/cloud-controller-manager row — three of five.
-
-The two rows it does not generate, and they are different for different reasons:
-
-- **`kubectl`**, because it is a user tool addressing the cluster from outside rather than a component running inside it. It is not participating in the cluster's internal consistency, so its window is symmetric — one release either way.
-- **The HA kube-apiserver row**, because it is not a bound *relative to* the API server at all. It is a mutual bound *between* API servers: the newest and oldest instances must be within one minor version of each other. There is no "the API server" to be measured against when the rule is about several of them.
-
-*Common wrong turn:* naming `kubectl` and stopping. The HA row is the one most readers miss, precisely because it does not look like an exception — it looks like another row, until you notice it has no fixed point to measure from. If you could answer both halves, you derived the table rather than memorizing it, and that is the version of this knowledge that survives to exam day.
-
-**3.** **Three** release branches. **Approximately one year** of patch support for 1.19 and newer. **Approximately three** minor releases per year, roughly every fifteen weeks.
-
-They are consistent because three releases a year across three maintained branches is about twelve months of coverage: the branch count *is* the support window, expressed in releases instead of months.
-
-*Common wrong turn:* "the last two releases." That is the standard half-memory for this fact and it is wrong in the one direction that costs a point — it is three, and the three-year-three-branch coincidence in §6's Mnemonic exists to keep it there.
-
-You will meet the cadence again in Chapter 17, inside the project's release-governance material, where SIG Release and the KEP process explain where those fifteen weeks go *[cross-bearing: see Ch 17 §8 — SIG Release and the release cycle]*. That is not a throwaway pointer: this trio of numbers is among the most forgettable material in this book, and the Chapter 17 pass is when it gets its second look.
-
-**4.** You have lost **the cluster's entire record of intent**, every object, since all Kubernetes objects are stored in etcd. Not the running workloads: kubelets keep running what they were last told to run, and traffic keeps flowing. What is gone is every declaration of what *should* be running, which means nothing can be reconciled, changed, scheduled, healed or scaled.
-
-The artifact that brings it back is **an etcd snapshot**.
-
-The scenario is constructed so you have to notice that "running workloads" and "cluster state" are different things. Plenty of people's first answer to "we lost the control plane" is "the applications are down," and for a little while, they are not.
-
-**5.** **First:** it is not stored outside the nodes it protects against losing. The documented instruction is to store it outside the control plane nodes, precisely because a snapshot that lives only on the machines whose loss it insures against does not survive the event it exists for.
-
-**Second:** access to etcd is equivalent to root permission in the cluster, and the snapshot contains all the Kubernetes state and critical information. An unencrypted snapshot is therefore a complete compromise of the cluster in a single readable file — every Secret, every configuration, everything — available to anyone who can read that disk.
-
-Two reasons, two different failure modes: one about availability, one about confidentiality. A snapshot can fail you by not being there, or by being read.
-
-</details>
-
-**How'd you do?**
-
-**5/5:** You have the two duties that cannot be improvised. §8 is a short read and then you are done with Part II.
-**3–4:** Review your misses now rather than later. If item 1 or 2 was among them, spend ten minutes with Figure 8.5; the picture holds better than the table.
-**0–2:** Re-read §6 with the derivation in mind: one rule, three rows, two exceptions for two different reasons. Do not try to memorize five rows. Then re-read §7, which is five minutes and has no numbers in it at all.
-
-**Checkpoint: you've now mastered**
 ✓ The rule that generates the skew table, and the two rows that sit outside it
 ✓ Three branches, one year, three releases a year — and why those agree
 ✓ What losing every control-plane node does and does not cost you
@@ -1052,6 +866,8 @@ Two reasons, two different failure modes: one about availability, one about conf
 ☐ Why none of this was new (next, and it is the point of the chapter)
 
 ---
+
+One flag: the brief said the two checkpoints hold 20 questions total — they actually hold 10 (5 each). I merged from the real 10, dropping 3 (the cordon/drain challenge-scenario duplicate, the upgrade-ownership item, and the applied skew-table item whose ground the kept conceptual version already covers), landing on 7. Word count came to 1091, comfortably inside the 1350 budget.
 
 ## ⚪ §8 — Rules, or Consequences
 

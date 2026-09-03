@@ -989,13 +989,9 @@ What Chapter 6 kept back for itself, and still owns, is **identity** *[cross-bea
 
 ---
 
-## ☆ Taking Your Bearings #2
+## ☆ Taking Your Bearings #2 — Persistent Volumes, Reclaim Policy, and the CSI/StatefulSet Pairing
 
-⚠️ **These questions are intentionally challenging.** Struggle is the point here. Four of the exam traps this chapter's domain analysis identified are tested in this checkpoint alone, and that concentration is not accidental. It is where the material is genuinely counter-intuitive.
-
-Two of the four turn on a decision made by someone who was gone before you came aboard: a reclaim policy inherited from a class nobody named, set by an administrator who is not going to be consulted when the claim is deleted. That is the shape of most storage surprises.
-
-If you find these easy, you have genuinely mastered the highest-yield section of the chapter. If you struggle, you are encoding deeply, and §5 immediately afterward is a straightforward win.
+Eight questions on §3 through §6: access modes, reclaim policy, CSI, and the StatefulSet storage pairing. Two of them reach back into earlier chapters.
 
 **1.** A PersistentVolume is bound with access mode `ReadWriteOnce`. Three Pods are scheduled: `pod-a` and `pod-b` on node-1, and `pod-c` on node-2. All three reference the same PVC. Which Pods can mount the volume read-write?
 
@@ -1011,8 +1007,6 @@ B) Data is retained; decided by the PersistentVolume, since manually created PVs
 C) Data is destroyed; decided by the StorageClass, whose unspecified `reclaimPolicy` defaults to `Delete` and is inherited by the dynamically provisioned volume
 D) Data is destroyed; decided at deletion time by the user, since deleting a PVC always deletes its backing storage
 
-<!-- AUTHOR-REVIEW: The curriculum-alignment audit asked whether question 3 should be graded at all, since §3 frames `WaitForFirstConsumer` as 🔭 Closer Look depth above what KCNA asks. Retained: it is the chapter's strongest storage/scheduling integration item, it carries this checkpoint's Ch 7 retrieval tag, and dropping it would put the chapter under its 15-question Bearings budget. Distractors C and D revised per the question-quality audit — C replaced, D's self-defeating justification repaired. -->
-
 **3.** *[retrieval: ch7]* A StorageClass sets `volumeBindingMode: WaitForFirstConsumer`. A developer creates a PVC using that class, then creates a Pod that references it. The Pod requests 64Gi of memory and no node in the cluster has that much allocatable. What is the state of the PVC and the Pod?
 
 A) PVC `Bound`, Pod `Pending` — the volume provisions immediately and the Pod waits for a node
@@ -1027,286 +1021,28 @@ B) The PV becomes `Released`; the admin deletes the PV, cleans the storage asset
 C) The PV becomes `Released` and Kubernetes scrubs it automatically before returning it to `Available`
 D) The PV becomes `Failed` because `Retain` cannot complete automatic reclamation
 
-**5.** A developer writes a PVC with `storageClassName: ""`, on a cluster that has one default StorageClass backed by a working CSI provisioner and no classless PersistentVolumes. What happens?
-
-A) The default StorageClass is used, since an empty string means "unspecified"
-B) The PVC is rejected by the API server as invalid
-C) The PVC is created, dynamic provisioning is disabled for it, and it remains unbound because no PV without a class exists
-D) The PVC binds to the first `Available` PV of any class, since an empty class matches all classes
-
----
-
-**Answers with Explanations:**
-
-**1 — B.** *ReadWriteOnce access mode still can allow multiple Pods to access the volume when the Pods are running on the same node* [source: k8s-docs-persistent-volumes-depth-2026-08-25]. `pod-a` and `pod-b` share node-1 and can share the volume. `pod-c` is on a different node and cannot.
-- **A is wrong**, and it is *the* access-mode trap. RWO counts nodes. The mode that means exactly one Pod is `ReadWriteOncePod`, and its existence is the proof that RWO does not mean that [source: k8s-docs-persistent-volumes-depth-2026-08-25].
-- **C is wrong**: the "Once" is a real constraint on nodes, and `pod-c` on node-2 is blocked. Its Pod will not start.
-- **D is wrong**: RWO is entirely valid and extremely common; nothing about it prevents binding.
-
-**2 — C.** Follow the chain: no `storageClassName` → the default class applies → that class specifies no `reclaimPolicy` → *if no `reclaimPolicy` is specified when a StorageClass object is created, it will default to `Delete`* [source: k8s-docs-storage-classes-2026-08-25] → *volumes that were dynamically provisioned inherit the reclaim policy of their StorageClass* [source: k8s-docs-persistent-volumes-depth-2026-08-25]. Deleting the claim destroys the PV object and the backing asset.
-- **A is wrong**: a PVC has no reclaim policy of its own to default. Reclaim policy lives on the PV.
-- **B is wrong** in a subtle and instructive way. `Retain` *is* the default for manually created PVs [source: k8s-api-ref-persistentvolume-v1-2026-08-25], but this volume was dynamically provisioned, and the dynamic path has the opposite default. Choosing B means you knew a real fact and applied it to the wrong provisioning path.
-- **D is wrong**: deleting a PVC does not *always* delete the storage. It does what the reclaim policy says. Getting the outcome right for the wrong reason is still getting it wrong, and the exam will offer you that option.
-
-**3 — B.** `WaitForFirstConsumer` *will delay the binding and provisioning of a PersistentVolume until a Pod using the PersistentVolumeClaim is created*, and the volume is then *selected or provisioned conforming to the topology that is specified by the Pod's scheduling constraints* [source: k8s-docs-storage-classes-2026-08-25]. The Pod is unschedulable, because no node satisfies its memory request during the filter phase *[cross-bearing: see Ch 7 §2 — what makes a node feasible]*, so the scheduler never picks a node, so binding never proceeds. Both objects sit `Pending`.
-- **A is wrong**: that is `Immediate` mode's behavior, which is precisely what `WaitForFirstConsumer` exists to avoid.
-- **C is wrong**, and it is the most reasonable of the three, because it assumes the provisioner has some sensible policy of its own — free capacity, spare headroom, whichever zone looks emptiest. It does not. The mode provisions to the topology the *Pod's* scheduling constraints specify, and there are no such constraints to conform to until the scheduler has chosen a node [source: k8s-docs-storage-classes-2026-08-25]. Zone capacity is not an input here. The Pod's node is the input, and there is not going to be one.
-- **D is wrong**. `Failed` is a PersistentVolume phase, describing a volume whose automatic reclamation did not succeed [source: k8s-docs-persistent-volumes-depth-2026-08-25]: a storage-lifecycle outcome, not a scheduling one. Nothing here has been reclaimed, or attempted. A Pod that no node can hold waits in `Pending`; it is not marked failed for waiting, and neither is its claim.
-
-**4 — B.** Chapter 4's Fixed Point named Nodes, PersistentVolumes, and StorageClasses as cluster-scoped, alongside namespace objects themselves *[cross-bearing: see Ch 4 §3 — where a name lives]*. This chapter supplied the reason for two of them: a PV is supply the cluster owns, and a StorageClass is a template the cluster offers. Neither belongs to a tenant, so neither belongs to a namespace.
-- **A** and **C** both include the PersistentVolumeClaim, and that is the half Chapter 4 never taught. The claim is namespaced — it is the tenant's request, and *claims must exist in the same namespace as the Pod using the claim* [source: k8s-docs-persistent-volumes-depth-2026-08-25]. **C** is the more reasonable of the two: having correctly placed the PV at cluster scope, it assumes the claim follows its supply. It does not.
-- **D** swaps the Node for the Namespace object. Namespace objects genuinely are cluster-scoped — they are the example Chapter 4 said people most often miss, since a namespace is not itself in a namespace — so the trap is a true statement sitting beside a false one. The set still fails on the claim.
-
-
-**5 — C.** *A PVC with its `storageClassName` set to `""` is explicitly stating that it is bound with a PV with no class, hence the PV's `storageClassName` must also be empty* [source: k8s-docs-persistent-volumes-depth-2026-08-25], and *claims that request the class `""` effectively disable dynamic provisioning for themselves* [source: k8s-docs-persistent-volumes-2026-08-23]. No classless PVs exist, so nothing matches, and nothing will be provisioned.
-- **A is wrong** and is the whole point of the question. Omitting the field and setting it to `""` are different acts with different meanings. Only the omission gets the default.
-- **B is wrong**: the empty string is entirely valid API input with a defined meaning.
-- **D is wrong**: a claim requesting class `""` binds only to PVs whose class is also empty. It matches nothing else.
-
----
-
-**If you scored 0–2:** This is the hard checkpoint and a low score here is common. Re-read §4 in full, about fourteen minutes, with particular attention to the two ★ Fixed Points and the ⚠ Navigational Hazards block. If only question 3 went wrong, the gap is §3's `WaitForFirstConsumer` subsection rather than §4.
-
-**If you scored 3–4:** Good. This checkpoint was built to be hard. Work out *why* the ones you missed were wrong before continuing; the wrong answers here are all real misconceptions, not filler.
-
-**If you scored 5:** You have the highest-yield material in the chapter and you have it cold. §5 is short and §6 is a payoff.
-
----
-
-**Checkpoint: You've Now Mastered**
-✓ Access modes as node-count semantics, and RWOP as the one exception
-✓ The three reclaim policies, including which one is retired
-✓ That dynamically provisioned volumes inherit `Delete` by default, from the class
-✓ That `Released` requires three manual steps and a new PV object to become reusable
-✓ Chapter 6's five deferred verbs, all five closed
-
-One question left, and it is the one that has been implicit since §3: when a provisioner creates a volume, what is actually doing the creating? Something below the waterline has been doing that work for four sections now, and you have not been introduced to it yet.
-
----
-
-## 🔵 §5 — Who Actually Provides the Storage
-
-Chapter 10 closed by telling you that this chapter brings the last of the four pluggable interfaces, and that with it the set closes. Here it is.
-
-You have three already, collected one chapter at a time. CRI at the container runtime *[cross-bearing: see Ch 2 §4 — the Container Runtime Interface]*. CRDs at the API itself *[cross-bearing: see Ch 6 §8 — the control loop, extended]*. CNI at the network *[cross-bearing: see Ch 9 §1 — four rules and a plugin]*. The fourth is CSI, at storage.
-
-**The Container Storage Interface (CSI) defines a standard interface for container orchestration systems (like Kubernetes) to expose arbitrary storage systems to their container workloads** [source: k8s-docs-volumes-csi-and-subpath-2026-08-25].
-
-The glossary states the consequence: *CSI allows vendors to create custom storage plugins for Kubernetes without adding them to the Kubernetes repository (out-of-tree plugins)* [source: k8s-glossary-storage-terms-2026-08-25]. And from the volumes page, the same claim in the sharpest available form: vendors *can implement `csi` volumes to introduce new storage systems into Kubernetes without ever having to edit the core Kubernetes code* [source: k8s-docs-volumes-2026-08-23].
-
-*Without ever having to edit the core Kubernetes code.* If that phrasing feels familiar, it should. It is structurally identical to what CRI bought at the runtime boundary and what CNI bought at the network boundary. Same move, fourth socket.
-
-### Why it exists: the world before
-
-The reason CSI was necessary takes one paragraph, and it makes the argument concrete rather than architectural.
-
-*Previously, all volume plugins were "in-tree". The "in-tree" plugins were built, linked, compiled, and shipped with the core Kubernetes binaries. This meant that adding a new storage system to Kubernetes (a volume plugin) required checking code into the core Kubernetes code repository* [source: k8s-docs-volumes-csi-and-subpath-2026-08-25].
-
-Sit with the consequences of that. The documentation records the arrangement, not what it cost the people living inside it, so what follows is this book's reading rather than a sourced claim. A storage vendor wanting Kubernetes support had to submit code to the Kubernetes project, have it reviewed by Kubernetes maintainers, and wait for a Kubernetes release. Their bug fixes shipped on Kubernetes' schedule, not their own. Meanwhile, Kubernetes maintainers were reviewing and carrying storage code for hardware they did not own and could not test.
-
-*Both CSI and FlexVolume allow volume plugins to be developed independently of the Kubernetes code base, and deployed (installed) on Kubernetes clusters as extensions* [source: k8s-docs-volumes-csi-and-subpath-2026-08-25]. FlexVolume was the earlier attempt and is now deprecated: *using an out-of-tree CSI driver is the recommended way to integrate external storage with Kubernetes* [source: k8s-docs-volumes-csi-and-subpath-2026-08-25].
-
-> ★ **Fixed Point**
->
-> **CSI is a published contract between two parties, and one of them is not Kubernetes.**
->
-> The specification states its own purpose in a sentence that says more than any Kubernetes documentation can: CSI exists to *"define an industry standard 'Container Storage Interface' (CSI) that will enable storage vendors (SP) to develop a plugin once and have it work across a number of container orchestration (CO) systems"* [source: csi-spec-objective-2026-08-25].
->
-> Read *"across a number of container orchestration systems."* CSI is not a Kubernetes feature that vendors happen to use. It is a cross-orchestrator standard that Kubernetes happens to implement, the same shape as OCI at the image and runtime boundary *[cross-bearing: see Ch 2 §5 — the Open Container Initiative]*. Storage stops being Kubernetes' problem and becomes a vendor's, on terms both parties agreed to in public.
->
-> With this you hold all four: **CRI, CNI, CSI, CRDs.** Chapter 17 will ask you to state the shape they have in common without help *[cross-bearing: see Ch 17 §4 — every place Kubernetes lets you in]*.
-
-### What a driver is, and what installing one puts in the cluster
-
-Chapter 2 promised you "CSI and storage drivers," with *drivers* in the promise. So: what is a driver, concretely?
-
-A CSI driver is software you deploy into the cluster, and it deploys as ordinary Kubernetes workloads. *A CSI driver is typically deployed in Kubernetes as two components: a controller component and a per-node component* [source: kubernetes-csi-docs-deployment-2026-08-25]. The controller component *can be deployed as a Deployment or StatefulSet on any node in the cluster*, and the node component *should be deployed on every node in the cluster through a DaemonSet* [source: kubernetes-csi-docs-deployment-2026-08-25].
-
-That shape should be recognizable without further explanation. One controller, running somewhere, handling the cluster-wide operations: create this volume, delete that one *[cross-bearing: see Ch 6 §1 — the resource that holds the intent]*. One agent per node, running everywhere, handling the node-local operations: mount this volume into this path on this machine. DaemonSet is exactly the workload type for "one per node" *[cross-bearing: see Ch 6 §7 — one per node, and work that ends]*. A CSI driver is not exotic infrastructure. It is a Deployment and a DaemonSet, running software somebody else wrote.
-
-Installing one also puts an object in the cluster: *CSIDriver captures information about a Container Storage Interface (CSI) volume driver deployed on the cluster* [source: k8s-api-ref-csidriver-v1-2026-08-25]. Which makes it the fourth object in this chapter that describes storage without providing any — PV, PVC, StorageClass, CSIDriver — and the one where the gap is most literal, since its whole documented job is to *capture information about* a driver that exists elsewhere.
-
-Once installed, the driver's volumes are usable in three ways: *through a reference to a PersistentVolumeClaim*, *with a generic ephemeral volume*, or *with a CSI ephemeral volume if the driver supports that* [source: k8s-docs-volumes-csi-and-subpath-2026-08-25]. The PersistentVolumeClaim path is the one §2 through §4 described.
-
-### The fourth sighting
-
-You have now seen the pattern three times in three sections: an Ingress without a controller, a StorageClass without a provisioner, and now this. Here is the fourth, and the sources state it not as a warning but as a plain ordering requirement:
-
-*To use a CSI driver from a storage provider, you must first deploy it to your cluster. You will then be able to create a Storage Class that uses that CSI driver* [source: k8s-glossary-storage-terms-2026-08-25].
-
-*First.* Then. And from the migration documentation, in case the point needed to be blunter: *as part of that migration, you — or another cluster administrator — must have installed and configured the appropriate CSI driver for that storage. **The core of Kubernetes does not install that software for you**.* [source: k8s-docs-volumes-csi-and-subpath-2026-08-25]
-
-**An object without its component does nothing** *[cross-bearing: see Ch 10 §3 — the object is not the implementation]*. A StorageClass naming a CSI driver nobody deployed is not an exotic failure you have to imagine. It is the documented prerequisite, unmet. The claim sits unbound. The Pod sits `Pending`. `kubectl get storageclass` shows the class, healthy and correct, describing a capability that does not exist.
-
-That is the same light, the fourth time. And once you have seen it four times, you stop asking "is the object there?" and start asking "is the *component* there?", which is the question Chapter 10 said you would know to ask.
-
-> 🔭 **Closer Look: CSI migration**
->
-> CNCF publishes the Storage competency as a single word. This book's reading of it puts CSI at recall depth: name the storage interface, say what it is for, and stop there. What follows goes deeper than that reading requires, and is here for the day you meet it in a cluster rather than on a test.
->
-> The in-tree plugins did not vanish when CSI arrived; they were migrated behind it. *The `CSIMigration` feature directs operations against existing in-tree plugins to corresponding CSI plugins (which are expected to be installed and configured). As a result, operators do not have to make any configuration changes to existing Storage Classes, PersistentVolumes, or PersistentVolumeClaims (referring to in-tree plugins) when transitioning to a CSI driver that supersedes an in-tree plugin* [source: k8s-docs-volumes-csi-and-subpath-2026-08-25].
->
-> The compatibility promise is unusually strong: *existing PVs created by an in-tree volume plugin can still be used in the future without any configuration changes, even after the migration to CSI is completed for that volume type, and even after you upgrade to a version of Kubernetes that doesn't have compiled-in support for that kind of storage* [source: k8s-docs-volumes-csi-and-subpath-2026-08-25]. Your manifests keep working; the machinery underneath them was replaced. *The actual storage management now happens through the CSI driver* [source: k8s-docs-volumes-csi-and-subpath-2026-08-25].
->
-> The operations CSI covers: *provisioning/delete, attach/detach, mount/unmount, and resizing of volumes* [source: k8s-docs-volumes-csi-and-subpath-2026-08-25]. That list is the storage lifecycle, and it maps cleanly onto everything §2 through §4 described.
-
-> 🪝 **Snag:** CSI is an interface, not a product. There is no "CSI storage" you can buy or deploy, any more than there is "CNI networking." What you deploy is a *driver*, written by whoever owns the storage it speaks to — one for a cloud provider's block store, one for a software-defined storage project, one for an on-premises array — each implementing the same contract against different hardware. A question that treats CSI as a storage system rather than as the interface storage systems implement is testing exactly this confusion.
-
-<!-- AUTHOR-REVIEW: The three named CSI drivers previously listed here (AWS EBS, Ceph, vSphere) were genericized — no cached snapshot enumerates driver implementations. Research gap to open: the kubernetes-csi drivers list, (the `ebs.csi.aws.com` clause that stood here was struck 2026-08-30: that string appears nowhere in the chapter any more — Bearings #3 Q2 now uses `blockstore.example.com` — so no source is owed for it). If that source lands, restore the named examples with a tag. -->
-
----
-
-## 🔵 §6 — Pods That Are Not Interchangeable, Revisited
-
-In Chapter 6, you were told that this explanation was incomplete. Not implied. Told, in as many words, with the deferred material enumerated and the deferral labeled deliberate.
-
-This is the missing half, arriving on schedule.
-
-Chapter 6 §6 gave you StatefulSet identity: Pods with stable ordinals, `web-0` and `web-1` and `web-2`, names that stick across rescheduling rather than being regenerated with each replacement *[cross-bearing: see Ch 6 §6 — when Pods are not interchangeable]*. Chapter 9 gave you the network half of that identity: the headless Service *[cross-bearing: see Ch 9 §5 — when you don't want a single address]* and the per-Pod DNS names it produces *[cross-bearing: see Ch 9 §7 — names, and where they resolve]*. What was missing both times was storage, and storage needed the whole of §2 through §4 before it could be explained without hand-waving.
-
-### One claim per Pod, from a template
-
-The mechanism is a field on the StatefulSet: `volumeClaimTemplates`. It looks like this, in the documentation's own nginx example:
-
-```yaml
-  volumeClaimTemplates:
-  - metadata:
-      name: www
-    spec:
-      accessModes: [ "ReadWriteOnce" ]
-      storageClassName: "my-storage-class"
-      resources:
-        requests:
-          storage: 1Gi
-```
-[source: k8s-docs-statefulset-storage-2026-08-25]
-
-That is a PersistentVolumeClaim spec — the same fields §2 taught you, in the same shapes — sitting inside a workload controller as a template rather than as an object. And the rule for what the controller does with it is one sentence:
-
-**For each VolumeClaimTemplate entry defined in a StatefulSet, each Pod receives one PersistentVolumeClaim** [source: k8s-docs-statefulset-storage-2026-08-25].
-
-Not one claim for the set. One claim *per Pod*, minted from the template as each Pod is created. A three-replica StatefulSet named `web` with a template named `www` yields three claims, and the naming follows the same ordinal identity Chapter 6 taught, so you can read a cluster's storage from its Pod names and vice versa.
-
-Where those claims get their storage is §3, arriving as a consequence rather than as a rule: *the storage for a given Pod must either be provisioned by a PersistentVolume Provisioner based on the requested storage class, or pre-provisioned by an admin* [source: k8s-docs-statefulset-2026-08-24]. Dynamic or static. The two paths from §3, with nothing special added for StatefulSets.
-
-<!-- FIGURE: ch11-fig05-statefulset-pvc-pairing -->
-![Three stacked bands showing a three-replica StatefulSet named web, each Pod paired one-to-one with its own PersistentVolumeClaim named www-web-0 through www-web-2; in the second band web-1 has moved to a different node and keeps its claim, and in the third band web-1 is deleted while its claim remains in place](figures/ch11-fig05-statefulset-pvc-pairing.svg)
-
-<!-- ASCII-FALLBACK
-```
-   StatefulSet "web"  ·  volumeClaimTemplates: [ www ]  ·  replicas: 3
-
-     ┌─────────┐        ┌─────────┐        ┌─────────┐
-     │  web-0  │        │  web-1  │        │  web-2  │
-     └────┬────┘        └────┬────┘        └────┬────┘
-          │                  │                  │
-          ▼                  ▼                  ▼
-     ┌─────────┐        ┌─────────┐        ┌─────────┐
-     │ PVC     │        │ PVC     │        │ PVC     │
-     │ www-    │        │ www-    │        │ www-    │
-     │ web-0   │        │ web-1   │        │ web-2   │
-     └─────────┘        └─────────┘        └─────────┘
-
-   ── STATE 1: web-1 is RESCHEDULED to a different node ──────────
-
-     node-a              node-c              node-b
-     ┌─────────┐        ┌─────────┐        ┌─────────┐
-     │  web-0  │        │  web-1  │◀── moved from node-b
-     └────┬────┘        └────┬────┘        └────┬────┘
-          │                  │  the claim line   │
-          ▼                  ▼  FOLLOWS the Pod  ▼
-     [www-web-0]        [www-web-1]        [www-web-2]
-
-   ── STATE 2: web-1 is DELETED ──────────────────────────────────
-
-     ┌─────────┐             ✕             ┌─────────┐
-     │  web-0  │        (Pod gone)         │  web-2  │
-     └────┬────┘             ╎             └────┬────┘
-          │                  ╎                  │
-          ▼                  ▼                  ▼
-     [www-web-0]        [www-web-1]        [www-web-2]
-                        ↑ THE CLAIM REMAINS.
-                          Nothing cleans it up.
-```
--->
-
-### The reschedule, which is the under-weighted half
-
-Chapter 10 promised you two things about per-replica claims: that they outlive the Pod, and that they outlive *the rescheduling*. Most readers weight the first and skim the second. The second is the more interesting one.
-
-A StatefulSet's Pod keeps the same PersistentVolumeClaim for the whole of its lifecycle, and when that Pod is rescheduled onto a different node, its `volumeMounts` mount that same claim wherever it lands [source: k8s-docs-statefulset-2026-08-24].
-
-<!-- AUTHOR-REVIEW: the 2026-08-25 capture of the StatefulSet "Stable Storage" section flags the 08-24 wording of these two sentences as differing load-bearingly (PersistentVolumes vs PersistentVolumeClaims) and records itself as the verifiable version. The substance is stated here in the book's own words rather than quoted, and the verified 08-25 statement of the same behavior is quoted in the Closer Look below. -->
-
-Note what that does *not* say. It does not say the storage moves. It does not say the data is copied. It says the mount happens wherever the Pod lands, because the Pod's storage is attached to *the claim*, and the claim is not attached to a node at all. The claim is a namespaced API object with no node in it, lashed to no particular deck. The volume behind it is cluster-scoped. Neither one cares which machine `web-1` is running on today.
-
-That is why a StatefulSet can survive a node failure with its data intact [source: k8s-docs-statefulset-storage-2026-08-25], and stating it explicitly explains something otherwise mysterious: the identity you learned in Chapter 6 is not just a naming convention. `web-1` is a name that carries a claim with it. Reschedule the Pod and the claim comes along, because the claim was never anywhere else.
-
-> ⚓ **Worth Securing:** This also explains the constraint you may have wondered about back in Chapter 6: why StatefulSets recreate a Pod with the *same* ordinal rather than just adding a new one. A Deployment's replacement Pod is a new Pod with a new name and no history. A StatefulSet's replacement for `web-1` must be *named* `web-1`, because the name is how it finds `www-web-1`. Identity and storage are one mechanism seen from two sides.
-
-### The claims survive the workload
-
-Now the part that costs people real money.
-
-> ★ **Fixed Point**
->
-> **A StatefulSet's PersistentVolumeClaims are not deleted when the Pod is deleted, or when the StatefulSet is deleted. This must be done manually.**
->
-> The claims are governed by a retention policy, and that policy's default is to keep them: *Retain (default): PVCs from the volumeClaimTemplate are not affected when their Pod is deleted* [source: k8s-docs-statefulset-storage-2026-08-25], and *the default for policies is Retain* [source: k8s-docs-statefulset-storage-2026-08-25].
->
-> The volumes behind those claims persist alongside them: *the PersistentVolumes associated with the Pods' PersistentVolume Claims are not deleted when the Pods, or StatefulSet are deleted. This must be done manually* [source: k8s-docs-statefulset-storage-2026-08-25]. Read that second sentence carefully and notice which object it is about — the PersistentVolumes, not the claims. Both survive, for different reasons stated in different places. The claims are the ones you will find still sitting in the namespace afterward.
->
-> `kubectl delete statefulset web` removes the workload and leaves `www-web-0`, `www-web-1`, and `www-web-2` sitting in the namespace, bound, billing, and invisible to anyone who thinks deleting a workload cleans up after itself.
-
-The reason is stated as a deliberate choice rather than an oversight: *deleting and/or scaling a StatefulSet down will not delete the volumes associated with the StatefulSet. This is done to ensure data safety, which is generally more valuable than an automatic purge of all related StatefulSet resources* [source: k8s-docs-statefulset-2026-08-24].
-
-Read that as a judgment call, because that is what it is. Kubernetes chose the failure mode where the hold stays full of cargo nobody remembers loading over the failure mode where one command puts a database over the side. Given the two, it chose correctly. But it means the cleanup is yours, and nobody will remind you.
-
-> 🔭 **Closer Look: the retention policy field**
->
-> That default is configurable. *The optional `.spec.persistentVolumeClaimRetentionPolicy` field controls if and how PVCs are deleted during the lifecycle of a StatefulSet* [source: k8s-docs-statefulset-storage-2026-08-25], with two independently settable policies: `whenDeleted`, which *configures the volume retention behavior that applies when the StatefulSet is deleted*, and `whenScaled`, which *configures the volume retention behavior that applies when the replica count of the StatefulSet is reduced* [source: k8s-docs-statefulset-storage-2026-08-25]. Each takes `Delete` or `Retain`, and `Retain` is the default for both [source: k8s-docs-statefulset-storage-2026-08-25].
->
-> One boundary to know: these policies apply only to *voluntary* removal. *If a Pod associated with a StatefulSet fails due to node failure, and the control plane creates a replacement Pod, the StatefulSet retains the existing PVC. The existing volume is unaffected, and the cluster will attach it to the node where the new Pod is about to launch* [source: k8s-docs-statefulset-storage-2026-08-25]. A node dying is not a scale-down. Your data does not get cleaned up because a machine crashed.
->
-> <!-- AUTHOR-REVIEW: the retrieval for k8s-docs-statefulset-storage-2026-08-25 also returned a sentence about a StatefulSetAutoDeletePVC feature gate whose current stability stage could not be confirmed. Deliberately omitted rather than stated with a possibly-stale stage. The Retain default is the safe claim and is what is stated above. -->
-
-> 🪝 **Snag:** There is a mechanism elsewhere in this chapter that does the *opposite*, and the contrast is worth holding. A **generic ephemeral volume** also creates a PVC per Pod, and *when the Pod is deleted, the Kubernetes garbage collector deletes the PVC, which then usually triggers deletion of the volume because the default reclaim policy of storage classes is to delete volumes* [source: k8s-docs-ephemeral-volumes-2026-08-25]. Two mechanisms, both creating one claim per Pod, with exactly opposite deletion behavior. The difference is intent: an ephemeral volume is scratch space that happens to be provisioned like real storage, and a StatefulSet's claim is real storage that happens to be created by a controller.
-
----
-
-## ☆ Taking Your Bearings #3
-
-Five questions on CSI, the driver behind it, and the StatefulSet pairing.
-
-**1.** Which statement most accurately describes what CSI is?
+**5.** Which statement most accurately describes what CSI is?
 
 A) A storage system maintained by the CNCF that Kubernetes clusters can deploy for persistent volumes
 B) A standard interface allowing storage vendors to write one plugin that works across container orchestration systems, without editing core Kubernetes code
 C) A Kubernetes-internal API used by the kubelet to mount volumes, not exposed to external vendors
 D) The successor to StorageClass, replacing dynamic provisioning with vendor-managed volumes
 
-**2.** An administrator creates a StorageClass whose `provisioner` field names `blockstore.example.com`. The corresponding CSI driver has never been deployed to the cluster. A developer creates a PVC requesting that class and a Pod that mounts it. What is observed?
-
-A) The API server rejects the StorageClass at creation time, since the provisioner does not exist
-B) The PVC binds to an existing `Available` PersistentVolume of a different class, since the requested class cannot be satisfied
-C) The StorageClass exists and looks correct, the PVC remains unbound, and the Pod stays `Pending`
-D) Kubernetes automatically installs the named CSI driver on first use
-
-**3.** *[retrieval: ch6]* You run `kubectl get statefulset` in a namespace and get "No resources found." You then run `kubectl get pvc` in the same namespace and see `www-web-0`, `www-web-1`, and `www-web-2`, all `Bound`. What is the most likely explanation, and what does it tell you about identity and storage?
+**6.** *[retrieval: ch6]* You run `kubectl get statefulset` in a namespace and get "No resources found." You then run `kubectl get pvc` in the same namespace and see `www-web-0`, `www-web-1`, and `www-web-2`, all `Bound`. What is the most likely explanation, and what does it tell you about identity and storage?
 
 A) The claims are orphaned by a bug; StatefulSet deletion is supposed to remove them
 B) A StatefulSet named `web` was deleted; its per-replica PVCs survive by design and must be removed manually
 C) The claims belong to a Deployment, since Deployments also generate per-replica claims
 D) The StatefulSet is in a different namespace; PVCs are cluster-scoped and appear everywhere
 
-**4.** A StatefulSet has three replicas and one `volumeClaimTemplate`. `web-1` is running on `node-b`. `node-b` fails and the control plane schedules the replacement `web-1` onto `node-e`. What happens to `web-1`'s storage?
+**7.** A StatefulSet has three replicas and one `volumeClaimTemplate`. `web-1` is running on `node-b`. `node-b` fails and the control plane schedules the replacement `web-1` onto `node-e`. What happens to `web-1`'s storage?
 
 A) A new PVC is created for the replacement Pod on `node-e`, and the old data is lost with the failed node
 B) The existing PVC is retained, and the cluster attaches the existing volume to the node where the new Pod launches
 C) The data is copied from `node-b` to `node-e` by the StatefulSet controller before the Pod starts
 D) The Pod cannot be rescheduled, because a StatefulSet's storage is pinned to its original node
 
-**5.** A StatefulSet named `cache` declares three replicas and two entries in `volumeClaimTemplates`, named `data` and `wal`. Once all three Pods are running, how many PersistentVolumeClaims exist in the namespace, and what are they named?
+**8.** A StatefulSet named `cache` declares three replicas and two entries in `volumeClaimTemplates`, named `data` and `wal`. Once all three Pods are running, how many PersistentVolumeClaims exist in the namespace, and what are they named?
 
 A) Three — `cache-0`, `cache-1`, and `cache-2`; each Pod receives one claim regardless of how many templates the set declares
 B) Six — `data-cache-0` through `data-cache-2`, and `wal-cache-0` through `wal-cache-2`
@@ -1317,51 +1053,59 @@ D) Six — `cache-data-0` through `cache-data-2`, and `cache-wal-0` through `cac
 
 **Answers with Explanations:**
 
-**1 — B.** The specification's own objective: to *"enable storage vendors (SP) to develop a plugin once and have it work across a number of container orchestration (CO) systems"* [source: csi-spec-objective-2026-08-25], and vendors can introduce new storage systems *without ever having to edit the core Kubernetes code* [source: k8s-docs-volumes-2026-08-23].
-- **A is wrong** and is the most common CSI misconception: treating an interface as a product. There is no "CSI storage." There are CSI *drivers*, one per storage system.
-- **C is wrong** in the crucial respect: CSI is explicitly out-of-tree and vendor-facing. That is its entire purpose.
-- **D is wrong**: CSI and StorageClass are complementary. A StorageClass names a provisioner; a CSI driver is what that provisioner often is.
+**1 — B.** *ReadWriteOnce still permits multiple Pods to access the volume when those Pods run on the same node* [source: k8s-docs-persistent-volumes-depth-2026-08-25]. `pod-a` and `pod-b` share node-1; `pod-c`, on node-2, cannot join them — RWO tests are about counting nodes, not counting Pods.
+- **A** confuses RWO with `ReadWriteOncePod`, the mode that actually limits access to one Pod.
+- **C** ignores that "Once" is a real node constraint — `pod-c` is blocked.
+- **D** is wrong outright: RWO is valid and common; nothing about it blocks binding.
 
-**2 — C.** *To use a CSI driver from a storage provider, you must first deploy it to your cluster* [source: k8s-glossary-storage-terms-2026-08-25], and *the core of Kubernetes does not install that software for you* [source: k8s-docs-volumes-csi-and-subpath-2026-08-25]. The object exists; the component does not; nothing happens.
-- **A is wrong**: the API server does not validate that a provisioner is running. The StorageClass is a perfectly valid object.
-- **B is wrong**, and it is the one to linger on, because it is the reasonable answer rather than the careless one. Binding is not best-effort matching. A claim that names a class is filtered against that class, and the filter is a requirement, not a preference — alongside capacity, access mode, label selector, and `volumeName`, all ANDed together [source: k8s-docs-persistent-volumes-depth-2026-08-25]. A claim that no volume satisfies stays unbound indefinitely rather than settling for a near miss [source: k8s-docs-persistent-volumes-2026-08-23].
-- **D is wrong**, and stating why matters more than the right answer: nothing in Kubernetes installs drivers. This is the fourth instance of the pattern named at Ch 10 §3.
+**2 — C.** No `storageClassName` → the default class applies → that class specifies no `reclaimPolicy` → *unspecified `reclaimPolicy` defaults to `Delete`* [source: k8s-docs-storage-classes-2026-08-25] → *dynamically provisioned volumes inherit the reclaim policy of their StorageClass* [source: k8s-docs-persistent-volumes-depth-2026-08-25]. Deleting the claim destroys the PV and its backing asset.
+- **A** is wrong: a PVC carries no reclaim policy of its own.
+- **B** is wrong for a subtle reason: `Retain` genuinely is the default for *manually created* PVs [source: k8s-api-ref-persistentvolume-v1-2026-08-25]. Choosing B means you knew a real fact and applied it to the wrong provisioning path.
+- **D** is wrong: destruction follows the policy, not a blanket rule about deletion. Getting the outcome right for the wrong reason is still wrong, and the exam will offer you that option.
 
-**3 — B.** The citation that speaks about *claims* is the retention policy. A StatefulSet's `persistentVolumeClaimRetentionPolicy` has two settings — `whenDeleted`, for deletion of the StatefulSet itself, and `whenScaled`, for a scale-down — and *the default for policies is `Retain`* [source: k8s-docs-statefulset-storage-2026-08-25]. Unless somebody changed it, deleting `web` left `www-web-0`, `www-web-1`, and `www-web-2` exactly where they were. The documentation adds that the PersistentVolumes behind those claims are not deleted either, and that removing them is manual [source: k8s-docs-statefulset-storage-2026-08-25]. The naming, `<template>-<statefulset>-<ordinal>`, tells you the set was called `web` and had a template called `www`. What it says about identity and storage: the claim is attached to the *name*, not to the workload object, which is why deleting the workload does not disturb it.
-- **A is wrong**: this is documented, deliberate behavior, chosen because *data safety... is generally more valuable than an automatic purge* [source: k8s-docs-statefulset-2026-08-24].
-- **C is wrong**: Deployments have no `volumeClaimTemplates` field. A Deployment's replicas share whatever claim the PodSpec names, if any.
-- **D is wrong** twice over: PVCs are namespaced, not cluster-scoped *[cross-bearing: see Ch 4 §3 — where a name lives]*, and `kubectl get` was run in the namespace.
+**3 — B.** `WaitForFirstConsumer` *delays binding and provisioning until a Pod using the claim exists*, then provisions *conforming to the topology the Pod's scheduling constraints specify* [source: k8s-docs-storage-classes-2026-08-25]. No node satisfies the Pod's memory request, so the scheduler never picks one *[cross-bearing: see Ch 7 §2 — what makes a node feasible]*, so binding never proceeds. Both objects sit `Pending`.
+- **A** describes `Immediate` mode — the behavior this mode exists to avoid.
+- **C** is the most reasonable of the three wrong answers, since it assumes the provisioner falls back to some sensible policy — free capacity, spare headroom, whichever zone looks emptiest. It does not; the *Pod's* constraints are the only input, and there are none yet.
+- **D** confuses `Failed`, a PV phase for unsuccessful automatic reclamation, with an unscheduled Pod waiting in `Pending`.
 
-**4 — B.** *If a Pod associated with a StatefulSet fails due to node failure, and the control plane creates a replacement Pod, the StatefulSet retains the existing PVC. The existing volume is unaffected, and the cluster will attach it to the node where the new Pod is about to launch* [source: k8s-docs-statefulset-storage-2026-08-25].
-- **A is wrong**: the replacement `web-1` reuses `www-web-1`, which is the entire point of stable identity.
-- **C is wrong**: nothing is copied. The volume is cluster-scoped storage attached at mount time; it was never *on* `node-b` in the sense this answer implies.
-- **D is wrong**: this inverts the mechanism. The claim's independence from any node is what *permits* the reschedule.
+**4 — B.** `Retain` means the volume and its data survive claim deletion, but survival is not reuse. The PV moves to `Released`, and a `Released` volume is not yet available to another claim because the previous claimant's data remains on it [source: k8s-docs-persistent-volumes-depth-2026-08-25]. Reclaiming it is manual: delete the PV, clean the storage asset by hand, delete the asset, and provision a new PV if it's to be reused. The two manual deletions plus a fresh PV are the price of the guarantee — nothing is thrown away without a human choosing that, and nothing is handed to the next tenant without a human clearing it first.
+- **A** describes `Delete` or an automatic rebind — not what `Retain` does.
+- **C** invents automatic scrubbing. Nothing scrubs a `Retain` volume; declining to do so is the entire point of choosing it.
+- **D** is wrong: `Retain` has no automatic reclamation to fail at. It isn't attempting one.
 
-**5 — B.** *For each VolumeClaimTemplate entry defined in a StatefulSet, each Pod receives one PersistentVolumeClaim* [source: k8s-docs-statefulset-storage-2026-08-25]. Three Pods against two templates is six claims, and each name is assembled `<template>-<statefulset>-<ordinal>` — template first.
-- **A is wrong**, and it is the most reasonable wrong answer here: it remembers "each Pod receives one PersistentVolumeClaim" and drops the clause standing in front of it. The rule is one claim per Pod *per template*.
-- **C is wrong**, and it is Deployment-shaped thinking. A single shared claim is what a Deployment's replicas get when the PodSpec names a PVC directly. `volumeClaimTemplates` exists precisely because that is not what a StatefulSet wants *[cross-bearing: see Ch 6 §6 — when Pods are not interchangeable]*.
-- **D is wrong** on ordering alone, which is what makes it dangerous. It gets the count right and the components right, and still names six claims that do not exist. `cache-data-0` looks entirely plausible and matches nothing.
+**5 — B.** The spec's own objective: *"enable storage vendors to develop a plugin once and have it work across a number of container orchestration systems"* [source: csi-spec-objective-2026-08-25]; vendors add storage systems *without editing core Kubernetes code* [source: k8s-docs-volumes-2026-08-23].
+- **A** treats an interface as a product. There is no "CSI storage," only CSI *drivers*, one per vendor.
+- **C** inverts the design: CSI is explicitly out-of-tree and vendor-facing.
+- **D** is wrong: CSI and StorageClass are complementary — a StorageClass names a provisioner, and a CSI driver is often what that provisioner is.
 
----
+**6 — B.** A StatefulSet's `persistentVolumeClaimRetentionPolicy` defaults both `whenDeleted` and `whenScaled` to `Retain` [source: k8s-docs-statefulset-storage-2026-08-25]. Deleting `web` left its claims in place; the PVs behind them survive too, and removing them is manual. The naming, `<template>-<statefulset>-<ordinal>`, confirms a set called `web` with a template called `www`. The lesson: the claim is attached to the *name*, not the workload object — the same shape as the reclaim-policy surprises earlier in this checkpoint, decided by someone who is not in the room when the object is deleted.
+- **A** is wrong: this is deliberate, since *data safety is generally more valuable than an automatic purge* [source: k8s-docs-statefulset-2026-08-24].
+- **C** is wrong: Deployments have no `volumeClaimTemplates`; replicas share whatever claim the PodSpec names.
+- **D** is wrong twice: PVCs are namespaced, not cluster-scoped *[cross-bearing: see Ch 4 §3 — where a name lives]*, and the query ran in the right namespace.
 
-**If you scored 0–2:** Re-read §5 and §6, about eighteen minutes. If the misses clustered in questions 3 through 5, the gap is §6 alone, and it repays a re-reading with one question held in mind: what is the claim actually attached to? Every answer in this checkpoint follows from that.
+**7 — B.** *If a Pod fails due to node failure and the control plane creates a replacement, the StatefulSet retains the existing PVC; the volume is unaffected and the cluster attaches it to the node where the new Pod launches* [source: k8s-docs-statefulset-storage-2026-08-25]. Storage in Kubernetes is attached at the cluster level and mounted where needed; it does not live on a node the way local disk does.
+- **A** is wrong: the replacement reuses `www-web-1` — the point of stable identity.
+- **C** is wrong: nothing is copied; the volume was never "on" node-b in the sense this implies.
+- **D** inverts the mechanism: the claim's independence from any node is what permits the reschedule.
 
-**If you scored 3–4:** Good. You have the interface pattern and the StatefulSet pairing.
-
-**If you scored 5:** You have closed the book's one deliberate forward reference, and with §5 behind you, you hold all four interfaces. Chapter 17 will be a collection exercise rather than a learning one.
+**8 — B.** *For each `volumeClaimTemplates` entry, each Pod receives one PersistentVolumeClaim* [source: k8s-docs-statefulset-storage-2026-08-25]. Three Pods against two templates is six claims, named `<template>-<statefulset>-<ordinal>` — template first.
+- **A** drops the "per template" clause from the rule.
+- **C** is Deployment-shaped thinking: a single shared claim is what a PodSpec-named PVC gives a Deployment's replicas — exactly what `volumeClaimTemplates` exists to avoid *[cross-bearing: see Ch 6 §6 — when Pods are not interchangeable]*.
+- **D** gets the count and components right and the order wrong — `cache-data-0` matches nothing that exists, and it is the trap most likely to survive a quick glance, since every piece of it is individually correct.
 
 ---
 
 **Checkpoint: You've Now Mastered**
+✓ Access modes as node-count semantics, and RWOP as the one exception
+✓ The three reclaim policies, including which one is retired
+✓ That dynamically provisioned volumes inherit `Delete` by default, from the class
+✓ That `Released` requires three manual steps and a new PV object to become reusable
+✓ Chapter 6's five deferred verbs, all five closed
 ✓ CSI as the fourth pluggable interface, and as a cross-orchestrator standard rather than a Kubernetes feature
 ✓ What a CSI driver is — a Deployment plus a DaemonSet, written by somebody outside the project
 ✓ `volumeClaimTemplates`, the one-claim-per-Pod-per-template rule, and the `<template>-<set>-<ordinal>` name it produces
 ✓ Why a StatefulSet's storage follows a reschedule, and why identity is the mechanism that makes it possible
 ✓ That the claims outlive the workload, deliberately, and that cleanup is yours
-
-<!-- AUTHOR-REVIEW: Coverage gap #4 from the question-quality audit — CSI driver architecture (controller Deployment plus per-node DaemonSet, promised at chapter-02:600) — is still untested. The curriculum-alignment audit's prescribed rebalance claimed this checkpoint's fifth slot for a volumeClaimTemplates item, so the two findings compete for the same seat and only one could be seated. The driver-architecture bullet above is therefore asserted from §5's prose rather than confirmed by a graded item. If a slot is found for it, the Practice set is the right home: adding it back here would return CSI to 3 of 5 in this checkpoint against a practice allocation of 1 of 17, which is the imbalance the rebalance was correcting. -->
-
----
 
 ## ☀️ §7 — Outliving the Pod That Asked
 

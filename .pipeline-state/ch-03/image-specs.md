@@ -73,7 +73,7 @@ Three vertically-stacked-layer panels side by side, left to right, under the hea
 ```yaml-figure-spec
 anchor_id: ch03-fig03-deployment-eras-timeline
 diagram_type: deployment_diagram
-source_ascii: |
+source_ascii: |5
      TRADITIONAL              VIRTUALIZED                CONTAINER
      ───────────              ───────────                ─────────
 
@@ -173,7 +173,7 @@ An upper region bordered and titled **CONTROL PLANE** containing five component 
 ```yaml-figure-spec
 anchor_id: ch03-fig01-control-plane-and-node-components
 diagram_type: k8s_architecture
-source_ascii: |
+source_ascii: |2
   ┌─── CONTROL PLANE ────────────────────────────────────────────┐
   │                                                              │
   │   ┌────────────────┐   ┌────────┐   ┌──────────────────┐     │

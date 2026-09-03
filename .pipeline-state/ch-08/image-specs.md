@@ -97,7 +97,7 @@ Beneath the grid, two upward-pointing arrows rise from the TYPE column and the N
 ```yaml-figure-spec
 anchor_id: ch08-fig01-kubectl-verb-resource-grammar
 diagram_type: other
-source_ascii: |
+source_ascii: |4
     kubectl   [command]        [TYPE]        [NAME]      [flags]
               ─────────        ──────        ──────      ───────
 
@@ -564,7 +564,7 @@ The four chapter attributions on the right are the caption's stated payoff — t
 ```yaml-figure-spec
 anchor_id: ch08-zenith-consequences-not-rules
 diagram_type: k8s_architecture
-source_ascii: |
+source_ascii: |4
     administrative acts                                 controllers you
     (§1, §3, §4)                    ┌───────────┐       already met
                                     │           │

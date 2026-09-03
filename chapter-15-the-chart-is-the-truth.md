@@ -1030,9 +1030,9 @@ Second: this is a controller acting on custom resources, which is precisely the 
 
 ---
 
-## ☆ Taking Your Bearings 2: Push, Pull, and the Agent
+## ☆ Taking Your Bearings #2 — Push, Pull, Ordering, and the Other Agent
 
-Five questions. One reaches back.
+Eight questions on §3 through §6. Two reach back — one into Ch 12, one into Ch 3.
 
 **1.** A team stores all manifests in Git. Their CI pipeline, running on a hosted service, builds an image and then runs `kubectl apply -f manifests/` against the production cluster using credentials stored in the CI system's secret store. Which of the four OpenGitOps principles does this satisfy, and which does it fail?
 
@@ -1042,7 +1042,13 @@ Five questions. One reaches back.
 
 **4.** [retrieval: ch12] A delivery agent needs to create Deployments and Services in namespaces it does not own, and — where pruning is enabled — delete resources that have been removed from the repository. Name the two kinds of object that must exist before any of that is permitted, and say which one determines the *scope* across namespaces.
 
-**5.** An `Application` tracks the `main` branch. A colleague argues the team should track a Git tag instead. What changes about the system's behavior, and which OpenGitOps principle is the argument appealing to?
+**5.** A repository contains a CustomResourceDefinition and a custom resource that uses it. Applied together with no ordering, the custom resource is rejected. Which object must land first, what mechanism expresses that, and what ordering value does a resource with no ordering annotation receive?
+
+**6.** Describe the structural difference between Argo CD's and Flux's design posture in one sentence each, and name one consequence of that difference for a team adopting either.
+
+**7.** A colleague fixes a production incident with `kubectl patch` on a cluster managed by Flux. They do not commit the change. What happens, and which OpenGitOps principle is responsible? Then say why the same edit on an out-of-the-box Argo CD installation behaves differently.
+
+**8.** [retrieval: ch3] In your own words: what does a controller do, what two things does it compare, and how often does it do it? Answer without mentioning Git, repositories, or delivery.
 
 ---
 
@@ -1051,251 +1057,51 @@ Five questions. One reaches back.
 
 **1. Satisfies 1 (Declarative) and 2 (Versioned and Immutable). Fails 3 (Pulled Automatically) and 4 (Continuously Reconciled).**
 
-Manifests are declarative and stored in Git with history, so the first two hold. Principle 3 requires that *"software agents automatically pull the desired state declarations from the source"* [source: opengitops-principles-v1-2026-08-31]; here the pipeline pushes, from outside. Principle 4 requires agents to *continuously* observe and apply; this pipeline runs once per commit and then exits, leaving nothing observing between runs.
+Manifests are declarative and stored in Git with history, so the first two hold. Principle 3 requires that *"software agents automatically pull the desired state declarations from the source"* [source: opengitops-principles-v1-2026-08-31]; here the pipeline pushes, from outside. Principle 4 requires agents to *continuously* observe and apply; this pipeline runs once per commit and exits, leaving nothing observing between runs.
 
-This is a perfectly good delivery system. It is not GitOps. Storing manifests in Git is necessary and nowhere near sufficient, which is exactly the confusion the term is meant to prevent.
+This is a working delivery system, but not GitOps — Git storage is necessary, not sufficient.
 
-**2. Two benign explanations:**
+**2. Two benign explanations:** a person changed the cluster directly with `kubectl` — live state now deviates from target, so the status is `OutOfSync` [source: argocd-overview-2026-08-23], and by default *"changes that are made to the live cluster will not trigger automated sync"* [source: argocd-auto-sync-policy-2026-08-31]. Or: a new commit landed and hasn't synced yet — the target moved, live hasn't caught up. Nothing has failed; the docs confirm *"it is possible for an application to be `OutOfSync` even immediately after a successful Sync operation"* [source: argocd-diffing-outofsync-2026-08-31].
 
-*A person changed the cluster:* somebody edited a live object directly with `kubectl`. Live state now deviates from target state, so the status is `OutOfSync` [source: argocd-overview-2026-08-23]. The last sync succeeded; it just happened before the edit. And by default this state persists, because *"changes that are made to the live cluster will not trigger automated sync"* [source: argocd-auto-sync-policy-2026-08-31].
+**Where a failure would show:** sync operation status, which answers *"whether or not a sync succeeded,"* as against sync status, which answers *"is the deployed application the same as Git says it should be?"* [source: argocd-core-concepts-2026-08-31].
 
-*A commit has not landed yet:* a new commit arrived in the tracked path and has not been applied. The target moved; live state has not caught up. Nothing has failed — this is the normal transient state between commit and sync.
+**3. Blast radius**, this book's term for how far one compromise reaches. Compromising Team A's CI system yields write credentials to twelve clusters, because that's what the system holds to do its job. Compromising Team B's equivalent yields the ability to build and publish images — a real supply-chain problem, but not cluster-write credentials, since Team B's clusters hold their own credentials internally.
 
-**Also benign, and worth knowing:** the documentation states outright that *"it is possible for an application to be `OutOfSync` even immediately after a successful Sync operation"* [source: argocd-diffing-outofsync-2026-08-31].
-
-**Where a failure would show:** in **sync operation status**, which is a separate glossary entry answering a separate question — *"whether or not a sync succeeded"* — as against sync status, which answers *"is the deployed application the same as Git says it should be?"* [source: argocd-core-concepts-2026-08-31]. Reading `OutOfSync` as a failure report is the misconception this item targets.
-
-**3. Blast radius**, which is this book's term for how far one compromise reaches. Compromising Team A's CI system yields write credentials to twelve clusters, because that is what the system holds in order to do its job. Compromising the same system for Team B yields the ability to build and publish images, which is bad and a real supply-chain problem, but not cluster-write credentials, because Team B's clusters hold their own credentials internally and the CI system never had any.
-
-Pull does not prevent the compromise. It bounds what one compromise reaches. Note that this is the book's architectural argument rather than a claim any cached source makes; what the sources do establish is where each arrangement stores its credentials.
+Pull doesn't prevent the compromise. It bounds what one compromise reaches.
 
 **4. [retrieval: ch12] A ServiceAccount and an RBAC binding (with its Role or ClusterRole). The ClusterRoleBinding determines cross-namespace scope.**
 
-The ServiceAccount is the identity; the binding attaches a permission set to it. Because the work spans namespaces the agent does not own, the grant must be cluster-scoped, a ClusterRole bound by a ClusterRoleBinding, rather than a Role in each namespace *[cross-bearing: see Ch 12 §3 — what you may do]*. Argo CD's own documentation confirms the shape: it uses a `argocd-manager` ServiceAccount, and reduction is done by editing the ClusterRole `argocd-manager-role` [source: argocd-security-cluster-credentials-2026-08-31].
+The ServiceAccount is the identity; the binding attaches permissions to it. Because the work spans namespaces the agent doesn't own, the grant must be cluster-scoped *[cross-bearing: see Ch 12 §3 — what you may do]*. Argo CD's own docs confirm the shape: an `argocd-manager` ServiceAccount, reduced by editing the ClusterRole `argocd-manager-role` [source: argocd-security-cluster-credentials-2026-08-31]. And permission to delete isn't configuration to delete: *"by default... automated sync will not delete resources when Argo CD detects the resource is no longer defined in Git"* [source: argocd-auto-sync-policy-2026-08-31].
 
-**Why "just a ServiceAccount" is wrong:** a ServiceAccount alone gets almost nothing. Identity without a binding is a name with no permissions attached.
+**5. The CustomResourceDefinition must land first**, because a custom resource of a kind the API server doesn't yet recognize is rejected. The mechanism is **sync waves** — resources sync *"lower values first"* within a phase, and negative waves let you run something before everything else [source: argocd-sync-phases-and-waves-2026-08-31]. Give the CRD a lower wave than the custom resource; only relative order matters.
 
-**Why the pruning qualifier is in the stem:** permission to delete and *configuration* to delete are different things. The agent must be permitted before it can be configured, but permission alone does not make it prune — *"by default (and as a safety mechanism), automated sync will not delete resources when Argo CD detects the resource is no longer defined in Git"* [source: argocd-auto-sync-policy-2026-08-31].
+A resource with no annotation lands in **wave 0**: *"Hooks and resources are assigned to wave 0 by default"* [source: argocd-sync-phases-and-waves-2026-08-31]. Waves are a sort key, not absolute positions — `-5` and `0` order exactly as `0` and `1` do.
 
-**5. Behavior change: the target stops moving on its own.** With a branch, Argo CD compares against *"the tip of the specified branch"*, which advances with every merge [source: argocd-tracking-strategies-2026-08-31]. With a tag, the target is fixed until someone deliberately moves the tag or changes what the `Application` tracks; tags are *"generally considered more stable, and less frequently updated"* [source: argocd-tracking-strategies-2026-08-31].
+**6. Argo CD is integrated** — one product, one `Application` resource binding source to destination, one UI over the whole thing. **Flux is composable** — *"a collection of specialized tools, Flux Controllers, composable APIs"* [source: flux-concepts-2026-08-31].
 
-**The principle: 2, Versioned and Immutable** — *"Desired state is stored in a way that enforces immutability, versioning and retains a complete version history"* [source: opengitops-principles-v1-2026-08-31]. Argo CD's best-practices page makes exactly this argument, noting that an unstable revision means manifests *"can suddenly change meaning, even without any changes to your own Git repository"* [source: argocd-best-practices-2026-08-31].
+Any of these earns credit: Flux lets you adopt or replace pieces independently, while Argo CD is more nearly all-or-nothing; Argo CD gives one console showing every application, while Flux's state is spread across controllers. "Composable" isn't "less capable" — Argo CD's own integration sits on three distinct components: an API server, a repository server, and an application controller [source: argocd-architecture-2026-08-31].
 
----
+**7. The change is reverted, by principle 4 (Continuously Reconciled).**
 
-**If you got 4–5:** You have the chapter's core. What remains is ordering, alternatives, and the synthesis.
+Flux states it directly: *"if you make any changes to the cluster using `kubectl edit/patch/delete`, they will be promptly reverted"* [source: flux-concepts-2026-08-31]. Principle 4 requires that *"software agents continuously observe actual system state and attempt to apply the desired state"* [source: opengitops-principles-v1-2026-08-31]; the uncommitted patch isn't the desired state, so it's not what the agent applies.
 
-**If you got 2–3:** Re-read §3's four principles and §4's `OutOfSync` Fixed Point.
+**Why Argo CD differs out of the box:** self-healing is opt-in. *"By default, changes that are made to the live cluster will not trigger automated sync"* [source: argocd-auto-sync-policy-2026-08-31] — the edit produces `OutOfSync` and stays put. Both projects implement principle 4's *observation*; they differ on what they do about what they observe. Under reconciliation with self-heal on, an emergency fix must be committed to survive — the tool is doing the job it was installed for.
 
-**If you got 0–1:** Go back to **§3** and read it properly before continuing. §5 and §6 assume the push/pull distinction as settled ground.
+**8. [retrieval: ch3] A controller compares desired state against current state, and acts to close the gap — continuously, in a loop, indefinitely**, not once at creation and not only when triggered. If the two disagree it takes whatever action moves current toward desired, then checks again *[cross-bearing: see Ch 3 §6 — controllers and the control loop]*.
+
+**A common wrong answer:** describing the loop as event-driven — "it runs when something changes." That inverts the architecture: the controller isn't woken by a notification, it observes and decides for itself whether a gap exists.
+
+If that came back clean, keep it loaded — the next section is one substitution away from it. If it didn't, **re-read Ch 3 §6 now, before §7**: the final section owns no new material, only a change made to the thing you just tried to state.
 
 </details>
 
 ---
 
-## 🟡 §5 — Ordering the Sync
+**If you got 6–8:** You have the chapter's core — push/pull, reconciliation, ordering, and the two agents' postures. What remains is synthesis.
 
-This section is marked Advanced, and the marking is honest: it goes somewhat deeper than an associate credential is likely to reach. It is here because the chapter raises a question it would be unsatisfying to leave hanging, and because a promise from Chapter 12 lands precisely on it.
+**If you got 3–5:** Re-read §3's four principles, §4's `OutOfSync` Fixed Point, and Ch 12 §3 on what an agent may do.
 
-The question is ordering.
-
-Chapter 14 opened by listing what a folder of YAML fails to give you, and one of the four was apply ordering: `kubectl apply -f` over a directory offers no guarantee about which object lands first *[cross-bearing: see Ch 14 §1 — why a folder of YAML stops working]*. Helm's `crds/` directory exists partly to address one instance of this *[cross-bearing: see Ch 14 §6 — which one, when]*.
-
-GitOps does not inherit that fix. It inherits the problem, at a larger scale. An agent reconciling an entire repository against an entire cluster faces the same ordering question about far more objects: a namespace before the things inside it, a CustomResourceDefinition before any custom resource that uses it, a database migration before the version of the application that expects the new schema.
-
-Argo CD's answer has two levels, and the two are independent.
-
-### Phases
-
-A sync runs in phases, and hooks attach to them:
-
-- **PreSync** — hooks run *"prior to the application of the manifests"*
-- **Sync** — hooks run *"after all PreSync hooks completed and were successful, at the same time as the application of the manifests"*
-- **PostSync** — hooks run *"after all Sync hooks completed and were successful, a successful application, and all resources in a Healthy state"*
-- **SyncFail** — hooks run *"when the sync operation fails"*
-
-[source: argocd-sync-phases-and-waves-2026-08-31]
-
-Phase execution is strictly ordered and gated on success. PreSync-marked resources are applied first, and if any fail the process stops. Sync-marked resources are applied next; a failure marks the operation failed and also triggers SyncFail hooks. PostSync hooks run last, and their failure marks the deployment failed [source: argocd-sync-phases-and-waves-2026-08-31].
-
-Read PreSync as *"this must be finished before anything else changes"*: the database migration, the schema check. Read PostSync as *"this runs only if everything else worked and is healthy"*: the smoke test, the notification, the traffic cutover.
-
-That last one connects back. Argo CD's feature list ties hooks directly to §2's vocabulary: *"PreSync, Sync, PostSync hooks to support complex application rollouts (e.g. blue/green and canary upgrades)"* [source: argocd-overview-2026-08-23]. Section 2 told you blue/green and canary need tooling above the Deployment. Hooks are part of how that tooling is built; a PostSync hook is a natural place for "now switch the traffic."
-
-### Waves
-
-Phases are coarse. Within a phase you frequently need finer ordering, and that is what waves provide.
-
-Resources carry an integer that determines their order within a phase, and Argo CD's rule for it is short: *"Hooks and resources are assigned to wave 0 by default. The wave can be negative, so you can create a wave that runs before all other resources"* [source: argocd-sync-phases-and-waves-2026-08-31]. Lower values sync first. The mechanism is an annotation, `argocd.argoproj.io/sync-wave`, taking an integer value [source: argocd-sync-phases-and-waves-2026-08-31], noted for concreteness, not for memorization.
-
-The ordering algorithm, in order of precedence, begins: *"1. The phase 2. The wave they are in (lower values first)"*, with two further deterministic tie-breaks after those [source: argocd-sync-phases-and-waves-2026-08-31]. Phase first, then wave. Everything you can control is in those two lines.
-
-<!-- FIGURE: ch15-fig06-sync-waves-and-hook-phases -->
-![Three sync phases run left to right: PreSync holding a database migration, Sync, then PostSync holding a smoke test. Inside the Sync phase a vertical wave axis orders three resources lowest first: wave minus one Namespace, wave zero CustomResourceDefinition, wave one custom resource. Ordering precedence is phase, then wave, then kind, then name.](figures/ch15-fig06-sync-waves-and-hook-phases.svg)
-
-<!-- ASCII-FALLBACK
-```
-   PHASE ──────────────────────────────────────────────────────────►
-
-   ┌───────────┐   ┌───────────────────────────────┐   ┌───────────┐
-   │  PreSync  │   │            Sync               │   │ PostSync  │
-   │           │   │                               │   │           │
-   │  db       │   │  W  wave -1 ┌───────────┐     │   │  smoke    │
-   │  migration│   │  A          │ Namespace │     │   │  test     │
-   │           │   │  V          └───────────┘     │   │           │
-   │           │   │  E   wave 0 ┌───────────┐     │   │           │
-   │           │   │             │    CRD    │     │   │           │
-   │           │   │  │          └───────────┘     │   │           │
-   │           │   │  ▼   wave 1 ┌───────────┐     │   │           │
-   │           │   │             │  custom   │     │   │           │
-   │           │   │             │ resource  │     │   │           │
-   │           │   │             └───────────┘     │   │           │
-   └───────────┘   └───────────────────────────────┘   └───────────┘
-
-   must finish     within the phase, lower wave        runs only if
-   before          numbers land first (default 0;      everything
-   anything        negatives run before that)          succeeded and
-   is applied                                          is Healthy
-
-   ordering precedence:  phase → wave → (deterministic tie-breaks)
-```
--->
-
-**Figure 15.6 — Two orderings, nested.** The horizontal axis is the phase; the vertical axis inside `Sync` is the wave. The example is the ordering problem this section opened with: a namespace must exist before the CustomResourceDefinition, which must exist before any custom resource that uses it.
-
-Chapter 12 pointed here for a specific reason, and it is a good illustration of why ordering is not a theoretical concern.
-
-<!-- RESOLVED 2026-08-31 (integration gate): the note was right that the earlier wording named
-     the wrong field, and wrong that no snapshot covers it. Shipped Ch 12 (ch12:866) quotes
-     k8s-docs-rbac-2026-08-23 verbatim: "After you create a binding, you cannot change the
-     Role or ClusterRole that it refers to." Restored on that tag, worded against the role
-     reference rather than the subjects. This is the receiving end of Ch 12's inbound pointer
-     to this section. -->
-
-Chapter 12 taught that **"After you create a binding, you cannot change the Role or ClusterRole that it refers to"** [source: k8s-docs-rbac-2026-08-23] — the binding's *role reference* is fixed, though its list of subjects is not *[cross-bearing: see Ch 12 §3 — a binding cannot be retargeted]*. So retargeting a RoleBinding is not an update at all. It is a delete and a create, with a window in between during which the subject holds nothing.
-
-That is the general shape, and it is why ordering stops being theoretical. Some objects cannot simply be updated in place: they must be deleted and recreated. Under a system that reconciles a whole repository against a whole cluster in one operation, that is a real ordering constraint. The delete must precede the create, and anything depending on the result must come after both. Waves are how you say so.
-
-**What to take from this section.** Phases run in a fixed order and are gated on success. Waves order resources within a phase, lower numbers first, defaulting to zero and permitting negatives. Ordering is a problem GitOps has and a single `kubectl apply` merely ignores.
-
-That is the whole of what this section owes you. The annotation is here for concreteness, not for memorization; you do not need to be able to write one from memory, and nothing in this chapter's questions asks you to.
-
----
-
-## 🔵 §6 — The Other Agent, and More Than One Cluster
-
-Argo CD is not the only implementation, and the alternative is worth meeting. Not because you need to operate it, but because the two make genuinely different design choices and the contrast sharpens what "GitOps agent" means.
-
-**Flux** is a **GitOps Toolkit**: *"a collection of specialized tools, Flux Controllers, composable APIs, and reusable Go packages"* [source: flux-concepts-2026-08-31]. The earlier phrasing was blunter: *"Flux is a GitOps Toolkit: a set of composable APIs and specialized tools that can be used to build Continuous Delivery on top of Kubernetes"* [source: flux-concepts-2026-08-23].
-
-That word *composable* is the whole contrast. Argo CD presents as one integrated product, with a single `Application` resource binding source to destination and one UI over everything, though "integrated" does not mean "one process," since §4 already showed you three components behind it [source: argocd-architecture-2026-08-31]. Flux presents as a set of controllers you assemble, each owning its own custom resources:
-
-| Controller | Its custom resources |
-|---|---|
-| Source | `GitRepository`, `OCIRepository`, `HelmRepository`, `HelmChart`, `Bucket`, and others |
-| Kustomize | `Kustomization` |
-| Helm | `HelmRelease` |
-| Notification | `Provider`, `Alert`, `Receiver` |
-| Image Reflector / Image Automation | `ImageRepository`, `ImagePolicy`, `ImageUpdateAutomation` |
-
-[source: flux-components-2026-08-31]
-
-*The table names representative resources per controller rather than a complete inventory; the source controller alone carries seven [source: flux-components-2026-08-31]. What is worth carrying is the shape — one controller per concern, each with its own API — not the roster.*
-
-Neither posture is better. Argo CD's integration gives you one thing to learn and a UI that shows you everything at once. Flux's composition gives you pieces you can adopt separately and replace individually. Teams pick on organizational grounds more than technical ones.
-
-**Sources as a first-class concept.** Flux elevates the idea of where-state-comes-from into its own API: *"A Source defines the origin of a repository containing the desired state of the system and the requirements to obtain it (e.g. credentials, version selectors)"* [source: flux-concepts-2026-08-31]. The source controller produces an artifact; other controllers consume it.
-
-Notice `OCIRepository` and `HelmRepository` in that list. Chapter 14 taught you that OCI registries can hold charts *[cross-bearing: see Ch 14 §4 — where charts come from]*, and Flux treats that as one source kind among several. Its Kustomize controller consumes overlays *[cross-bearing: see Ch 14 §5 — patching instead of templating]*, and its `Kustomization` API *"defines a pipeline for fetching, decrypting, building, validating and applying Kustomize overlays or plain Kubernetes manifests"* [source: flux-kustomization-api-2026-08-31].
-
-**The most concrete statement of principle 4 in this chapter.** Flux's own documentation gives reconciliation a number and a consequence:
-
-*"The reconciliation runs every five minutes by default, but this can be changed with `.spec.interval`."* And: *"If you make any changes to the cluster using `kubectl edit/patch/delete`, they will be promptly reverted"* [source: flux-concepts-2026-08-31].
-
-One qualification belongs with that figure. The `Kustomization` API reference states that `.spec.interval` is *"a required field that specifies the interval at which the Kustomization is reconciled"* with a minimum value of 60 seconds [source: flux-kustomization-api-2026-08-31], and declares no API-level default. So "five minutes by default" describes the Kustomization that Flux's own bootstrap generates, not a default the API supplies. The interval is always explicitly configured; five minutes is what it is usually configured to.
-
-> ⚓ **Worth Securing:** *"If you make any changes to the cluster using `kubectl edit/patch/delete`, they will be promptly reverted"* [source: flux-concepts-2026-08-31]. Read that as principle 4 with the abstraction removed. Continuous reconciliation is not a scheduling detail. It means your manual change has a shelf life measured in minutes. This is the same property that makes a ReplicaSet recreate a Pod you deleted, and note that Argo CD, out of the box, does *not* do this [source: argocd-auto-sync-policy-2026-08-31]. Two graduated projects, four shared principles, opposite defaults.
-
-**Bootstrap.** Flux installs itself the way it installs everything else. *"The process of installing the Flux components in a GitOps manner is called a bootstrap. The manifests are applied to the cluster, a `GitRepository` and `Kustomization` are created for the Flux components, then the manifests are pushed to an existing Git repository (or a new one is created)"* [source: flux-concepts-2026-08-31]. The 2026-08-23 capture puts the consequence plainly: *"Flux manages itself like any other resource"* [source: flux-concepts-2026-08-23].
-
-Sit with that for a moment, because it is the sort of thing that either seems trivial or seems remarkable depending on how carefully you read it. Upgrading Flux is a commit. Reconfiguring Flux is a commit. The agent's own desired state lives in the repository the agent watches, and the agent applies it to itself.
-
-**Where the credentials live in Flux.** The security model differs from Argo CD's in an interesting way. Flux installs a `crd-controller` ClusterRole with *"full access to all the Custom Resource Definitions defined by Flux controllers,"* and a `cluster-reconciler` ClusterRoleBinding referencing the `cluster-admin` ClusterRole, *"bound to service accounts for only `kustomize-controller` and `helm-controller`"*, because those two *"are the only two controllers that manage resources in the cluster"* [source: flux-security-2026-08-31].
-
-The reduction path is impersonation rather than narrowing: *"In a soft multi-tenancy setup, Flux does not reconcile a tenant's repo under the `cluster-admin` role. Instead, you specify a different service account in your manifest, and the Flux controllers will use the Kubernetes Impersonation API under `cluster-admin` to impersonate that service account"* [source: flux-security-2026-08-31]. The `Kustomization` API exposes this directly: `.spec.serviceAccountName` specifies *"the ServiceAccount to be impersonated while reconciling"* [source: flux-kustomization-api-2026-08-31].
-
-Same problem as §4's, a broadly privileged agent, solved by a different route. Argo CD narrows the ClusterRole; Flux keeps the broad role and impersonates a narrower identity per workload.
-
-**More than one cluster.** Which brings us to the question that shows the two designs most clearly. Where does desired state live when there are twenty clusters?
-
-Argo CD's answer is documented and is a control point: among its features is the *"ability to manage and deploy to multiple clusters"* [source: argocd-overview-2026-08-23], with each external cluster's credentials stored as a Secret in the `argocd` namespace of the managing cluster [source: argocd-security-cluster-credentials-2026-08-31]. One Argo CD, many destinations, one place to look, and one place holding credentials to everywhere.
-
-Flux's documented position is narrower, and the honest statement is the narrow one: Flux's reconciling controllers run *in* the cluster they reconcile [source: flux-security-2026-08-31], and bootstrap installs Flux into a cluster against a Git repository [source: flux-concepts-2026-08-31]. There is no equivalent documented mechanism for one Flux storing credentials to other clusters.
-
-<!-- AUTHOR-REVIEW: the previous draft asserted here (and in Q21's answer key, tagged to flux-concepts-2026-08-31) that "Flux's model is one Flux per cluster, each bootstrapped into its own repository or path and pulling independently, with no cluster holding credentials to another." That snapshot describes bootstrap on a single cluster and says nothing about multi-cluster topology or cross-cluster credentials, so the tag was a mis-attribution and the absolute ("no cluster holding credentials to another") had no basis in either direction. Both the body text and the Q21 key are now reduced to what the corpus supports. To restore the fuller comparison, cache fluxcd.io's multi-cluster / multi-tenancy guide. Note that flux-security-2026-08-31's soft multi-tenancy material is about tenants within one cluster and must not be read across to multi-cluster. -->
-
-The trade is §3's blast-radius argument at a larger scale, and it remains this book's argument rather than a documented finding: a single control point gives you one console to reason about and one component whose compromise reaches every destination it holds credentials for. Per-cluster agents give you isolation and no unified view.
-
-> 🔭 **Closer Look:** Argo and Flux are both CNCF **graduated** projects [source: cncf-project-maturity-levels-2026-08-23], the maturity tier CNCF describes as stable, widely adopted, and production ready [source: cncf-project-maturity-levels-2026-08-23]. What the levels *mean* is Chapter 17's subject, and that is the durable thing to know *[cross-bearing: see Ch 17 §2 — sandbox, incubating, graduated, and who decides]*. The roster of which projects currently hold which level is dated data that changes; do not memorize it.
-
----
-
-## ☆ Taking Your Bearings 3: Ordering, and the Other Agent
-
-Five questions. The last one is the most important retrieval item in this chapter. Read it carefully, because the next section is about to depend on your answer.
-
-**1.** A repository contains a CustomResourceDefinition and a custom resource that uses it. Applied together with no ordering, the custom resource is rejected. Which object must land first, what mechanism expresses that, and what ordering value does a resource with no ordering annotation receive?
-
-**2.** A team needs a database schema migration to complete before any new application Pod starts, and a smoke test to run only after everything is up and healthy. Which hook phase does each belong to, and what does the second one additionally require before it runs?
-
-**3.** Describe the structural difference between Argo CD's and Flux's design posture in one sentence each, and name one consequence of that difference for a team adopting either.
-
-**4.** A colleague fixes a production incident with `kubectl patch` on a cluster managed by Flux. They do not commit the change. What happens, and which OpenGitOps principle is responsible? Then say why the same edit on an out-of-the-box Argo CD installation behaves differently.
-
-**5.** [retrieval: ch3] In your own words: what does a controller do, what two things does it compare, and how often does it do it? Answer without mentioning Git, repositories, or delivery.
-
----
-
-<details>
-<summary>Answers with explanations</summary>
-
-**1. The CustomResourceDefinition must land first**, because a custom resource of a kind the API server does not yet recognize is rejected. The mechanism is **sync waves** — resources sync *"lower values first"* within a phase, and negative waves exist precisely so you can run something before everything else [source: argocd-sync-phases-and-waves-2026-08-31]. Give the CRD a lower wave than the custom resource; the absolute numbers do not matter, only the relative order.
-
-A resource with no ordering annotation lands in **wave 0**: *"Hooks and resources are assigned to wave 0 by default"* [source: argocd-sync-phases-and-waves-2026-08-31].
-
-**A common wrong answer: that waves are absolute positions rather than relative ordering.** They are not slots to be filled, and there is no requirement that you use consecutive integers or start anywhere in particular. `-5` and `0` order exactly as `0` and `1` do. Readers who treat the number as a position rather than a sort key end up inventing constraints the mechanism does not have.
-
-**2. Migration → PreSync. Smoke test → PostSync.**
-
-PreSync hooks run *"prior to the application of the manifests"*, before any new Pod exists [source: argocd-sync-phases-and-waves-2026-08-31].
-
-PostSync additionally requires health, not merely completion. It runs *"after all Sync hooks completed and were successful, a successful application, and all resources in a Healthy state"* [source: argocd-sync-phases-and-waves-2026-08-31]. That health gate is the part readers miss: PostSync is not "after the apply," it is "after the apply worked and the result is healthy."
-
-**3. Argo CD is integrated** — one product with one `Application` resource binding source to destination, and a UI over the whole thing. **Flux is composable** — *"a collection of specialized tools, Flux Controllers, composable APIs"* [source: flux-concepts-2026-08-31], each with its own custom resources [source: flux-components-2026-08-31].
-
-Any of these consequences earns credit: Flux lets you adopt or replace pieces independently while Argo CD is more nearly all-or-nothing; Argo CD gives one console showing every application while Flux's state is spread across controllers; Flux's per-controller APIs mean more objects to learn, Argo CD's integration means fewer.
-
-**A common wrong answer: reading "composable" as "less capable," or "integrated" as "one process."** Neither follows. Composability is about how the pieces are packaged and adopted, not about what they can do, and Argo CD's integration sits on top of three distinct components, an API server, a repository server, and an application controller [source: argocd-architecture-2026-08-31]. "Integrated" describes the product surface, not the process count.
-
-**4. The change is reverted, by principle 4 (Continuously Reconciled).**
-
-Flux states the behavior directly: *"if you make any changes to the cluster using `kubectl edit/patch/delete`, they will be promptly reverted"* [source: flux-concepts-2026-08-31]. The interval is typically five minutes [source: flux-concepts-2026-08-31] and is always explicitly configured, with a 60-second minimum and no API-level default [source: flux-kustomization-api-2026-08-31], so the durable answer is the behavior, not the number. Principle 4 requires that *"software agents continuously observe actual system state and attempt to apply the desired state"* [source: opengitops-principles-v1-2026-08-31]. The uncommitted patch is not the desired state, so it is not what the agent applies.
-
-**Why Argo CD differs out of the box:** self-healing is opt-in. *"By default, changes that are made to the live cluster will not trigger automated sync"* [source: argocd-auto-sync-policy-2026-08-31]. The edit produces an `OutOfSync` status and stays put until somebody acts or self-heal is enabled. Both projects implement principle 4's *observation*; they differ on what they do about what they observe.
-
-**Practical consequence worth stating:** under continuous reconciliation with self-heal on, an emergency fix must be committed to survive. The tool is not being obstructive; it is doing exactly the job it was installed for. A team that finds this intolerable during incidents needs a documented way to suspend reconciliation, not a workaround.
-
-**5. [retrieval: ch3] A controller compares desired state against current state, and acts to close the gap. It does this continuously, in a loop, indefinitely** — not once at creation, and not only when something triggers it. If the two disagree it takes whatever action moves current toward desired, then it checks again *[cross-bearing: see Ch 3 §6 — controllers and the control loop]*.
-
-**A common wrong answer: describing the loop as event-driven — "it runs when something changes."** That inverts the architecture. The controller is not woken by a notification that work is waiting; it observes state and decides for itself, on its own schedule, whether there is a gap. The difference matters in the next section, where the thing being observed lives somewhere unexpected and the loop does not care.
-
-If that came back clean, keep it loaded. The next section is one substitution away from it.
-
-If it did not come back clean, **re-read Ch 3 §6 now, before §7.** This is not a formality. The final section owns no new material; its entire content is a change made to the thing you just tried to state, and if the original is fuzzy, the change is invisible.
-
-</details>
-
----
+**If you got 0–2:** Go back to **§3** and read it properly before continuing. §5 and §6 assume the push/pull distinction as settled ground, and Ch 3 §6's control loop is load-bearing for everything after it.
 
 ## ☀️ §7 — The Control Loop, Pointed at a Repository
 

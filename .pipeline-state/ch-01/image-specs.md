@@ -71,7 +71,7 @@ The two elements that must dominate the reader's eye are (a) the `×2` on Applic
 ```yaml-figure-spec
 anchor_id: ch01-fig01-blueprint-change-2025
 diagram_type: flowchart
-source_ascii: |
+source_ascii: |7
        RETIRED (five domains)                  CURRENT (four domains)
        ─────────────────────────               ──────────────────────────
 
@@ -180,7 +180,7 @@ The point of the diagram is the visible one-to-one alignment across the middle f
 ```yaml-figure-spec
 anchor_id: ch01-fig02-book-map-parts-to-domains
 diagram_type: concept_map
-source_ascii: |
+source_ascii: |4
     PART                          CHAPTERS      EXAM DOMAIN                        WEIGHT
     ─────────────────────────────────────────────────────────────────────────────────────
     I    Orientation              Ch 1          (none — orientation)                  —

@@ -1355,20 +1355,20 @@ And a debug container is a container. In a namespace enforcing `restricted`, a d
 
 ---
 
-## ☆ Taking Your Bearings #2
+## ☆ Taking Your Bearings #2 — Securing the Workload and the Chain That Built It
 
-Five questions covering §4 through §6.
+Eight questions on §4 through §8. One of them reaches back into Chapter 2.
 
-**1.** ⚠️ **This one is intentionally difficult.** Struggle is the point — it is the single most consequential practical question in the chapter, and getting it wrong here is much cheaper than getting it wrong on a cluster.
+**1.** ⚠️ **This one is intentionally difficult.** Struggle is the point — it is the single most consequential practical question in the chapter, and getting it wrong here is cheaper now than on a cluster.
 
-You are auditing a namespace called `payments`. You enumerate every Role, ClusterRole, RoleBinding and ClusterRoleBinding that touches it. No subject holds `get`, `list`, or `watch` on `secrets`. Eight engineers hold a custom `deployer` Role — `create`, `update`, `patch` and `delete` on `deployments`, `pods` and `services`, and nothing at all on `secrets` — bound by RoleBindings so they can ship. The Secrets in the namespace include the production database password.
+You audit the `payments` namespace: no Role, ClusterRole, RoleBinding, or ClusterRoleBinding grants any subject `get`, `list`, or `watch` on `secrets`. Eight engineers hold a custom `deployer` Role — `create`, `update`, `patch`, `delete` on `deployments`, `pods`, and `services`, nothing on `secrets` — bound so they can ship. Its Secrets include the production database password.
 
 Who can read that password, and what is the correct remediation?
 
 A) Nobody — the audit is correct, since no subject holds any read verb on Secrets
 B) Only cluster administrators, via etcd; enable encryption at rest to close it
-C) All eight engineers, because permission to create workloads implicitly grants access to Secrets in the namespace; the remediation is to move the Secret and its consumers into a separate namespace
-D) All eight engineers, but only because `deployer` grants `delete` on `pods`; removing that one verb closes the path
+C) All eight engineers, because permission to create workloads implicitly grants access to Secrets in the namespace; move the Secret and its consumers into a separate namespace
+D) All eight engineers, but only because `deployer` grants `delete` on `pods`; removing that verb closes the path
 
 **2.** A cluster operator enables encryption at rest for Secrets with an `EncryptionConfiguration`. Which of the following is now true?
 
@@ -1392,51 +1392,76 @@ pod-security.kubernetes.io/warn: restricted
 pod-security.kubernetes.io/audit: restricted
 ```
 
-A developer submits a Pod that sets no `securityContext` at all and mounts no host paths. What happens?
+A developer submits a Pod with no `securityContext` at all and no host mounts. What happens?
 
 A) The Pod is rejected, because it does not meet `restricted`
 B) The Pod is rejected, because `enforce: baseline` requires an explicit `securityContext`
-C) The Pod is created, and the developer sees a warning that it does not meet `restricted`; a violation is also recorded in the audit log
+C) The Pod is created; the developer sees a warning that it does not meet `restricted`, and a violation is recorded in the audit log
 D) The Pod is created silently, because `enforce` is the only mode that produces any output
 
-**5.** *[retrieval: ch8]* Explain, in terms of a mechanism you already know, where Pod Security Admission sits in the processing of an API request — and name one consequence of that position.
+**5.** *[retrieval: ch2]* A build pipeline signs the image reference `registry.example.com/myapp:v2`. Three weeks later, an attacker with push access to the registry pushes different content to that same tag. A cluster verifies signatures at admission. What happens when the new content is pulled, and why?
 
-A) It runs before authorization, so a Pod can be refused for its contents before the API server has decided whether the requester may create Pods at all
-B) It runs during authorization, alongside RBAC, so a Pod can be refused either for who submitted it or for what it contains
-C) It runs at the admission gate — the third and last of the three gates — so it inspects the Pod object itself, and a rejected Pod never enters the cluster at all
-D) It runs after the Pod is scheduled but before the kubelet starts the container, so a rejected Pod appears briefly in `Pending`
+A) Verification passes, because the tag `v2` was signed and it is still `v2`
+B) Verification fails, because the signature bound to the digest of the original content, and the new content has a different digest
+C) Verification passes only if the attacker also re-signed; otherwise the image is pulled unverified
+D) Verification is not possible, because signatures cannot be applied to tagged references at all
+
+**6.** Put these supply-chain checkpoints in order, and identify which is the first one the cluster itself performs: scan, verify, sign, restrict, record.
+
+A) sign → scan → record → verify → restrict; the cluster performs *restrict*
+B) scan → sign → record → restrict → verify; the cluster performs *verify*
+C) scan → record → sign → verify → restrict; the cluster performs *verify*
+D) scan → sign → record → restrict → verify; the cluster performs *restrict*
+
+**7.** Your cluster already enforces the `baseline` Pod Security Standard everywhere. Your organization now requires every Pod to carry a `cost-center` label, rejecting any that lacks one. What do you reach for, and why can't Pod Security Admission do it?
+
+A) Add a fourth Pod Security level; PSA supports custom levels via ConfigMap
+B) A policy engine such as Kyverno or OPA Gatekeeper — PSA only evaluates the fixed Pod Security Standards and cannot express an arbitrary rule
+C) Falco, because it evaluates arbitrary rules against cluster objects
+D) An RBAC rule denying `create` on Pods without the label; PSA is for `securityContext` only
+
+**8.** A container has been running for six hours. During hour six, a process inside it spawns a shell and writes to `/etc`. Which tool is positioned to tell you, and what will it do about it?
+
+A) Pod Security Admission — it will terminate the Pod
+B) A Kyverno validating policy — it will refuse the write, since the policy is evaluated against every action in the cluster
+C) Falco — it observes the kernel events, evaluates them against its rules, and emits an alert; it does not stop the process
+D) The `restricted` Pod Security Standard — it will prevent the write, because `readOnlyRootFilesystem` is required
 
 ---
 
 **Answers with Explanations:**
 
-**1. C.** All eight, and not through any Secret permission. *"Permission to create workloads (either Pods, or workload resources that manage Pods) in a namespace implicitly grants access to many other resources in that namespace, such as Secrets, ConfigMaps, and PersistentVolumes that can be mounted in Pods"* [source: k8s-docs-rbac-good-practices-2026-08-31]. Anyone who can create a Pod can create one that mounts the Secret and prints it. The documentation's own remediation is the one in C: *"namespaces should be used to separate resources requiring different levels of trust or tenancy… boundaries within a namespace should be considered weak"* [source: k8s-docs-rbac-good-practices-2026-08-31].
+**1. C.** All eight, and not through any Secret permission — permission to create workloads implicitly grants access to Secrets, ConfigMaps, and PersistentVolumes mountable in that namespace [source: k8s-docs-rbac-good-practices-2026-08-31]. Anyone who can create a Pod can mount the Secret and print it. The fix is the documentation's own: namespaces separate resources by trust level, since boundaries within one are weak [source: k8s-docs-rbac-good-practices-2026-08-31].
 
-**A** is the audit finding, and it is the whole point of the question. The audit is not sloppy — it enumerated every object correctly and read the permission it was looking for accurately. It is reading a permission that is not the relevant one.
-**B** identifies a real route (etcd) and a real control (encryption at rest) but misses the route that is actually open here. Encryption at rest does nothing about an authorized API caller [source: k8s-docs-encrypt-data-2026-08-31].
-**D** gets the population right and the mechanism exactly backwards. The escalation runs through **create**, not `delete`: a Pod spec can mount any Secret in its namespace, so the operative permission is the one that lets you bring a new Pod into existence. Strip `delete` from `deployer` and all eight engineers can still read the password by tomorrow morning. This distractor exists because people instinctively police the destructive verbs.
+A is the audit finding itself, and the point of the question — it read the wrong permission. B names a real route (etcd) but misses the one open here; encryption at rest does nothing for an authorized API caller [source: k8s-docs-encrypt-data-2026-08-31]. D gets the population right and the mechanism backwards — the escalation runs through **create**, not `delete`. Strip `delete` from `deployer` and all eight can still read the password tomorrow.
 
-**2. B.** Encryption at rest protects the object as written to etcd [source: k8s-docs-encrypt-data-2026-08-31]. It closes the etcd and etcd-backup route completely and does nothing to the API route. **A** inverts the boundary; decryption happens server-side, transparently. **C** is the scope error the documentation explicitly heads off: encrypting data in filesystems mounted into containers requires a storage integration providing encrypted volumes, or application-level encryption [source: k8s-docs-encrypt-data-2026-08-31]. **D** invents a chain of custody. The kubelet receives the decrypted Secret and places its copy in tmpfs [source: k8s-docs-secret-risks-2026-08-31]; tmpfs is a separate protection with a separate rationale (it is memory-backed and removed with the Pod), not a downstream effect of at-rest encryption.
+**2. B.** Encryption at rest protects the object as written to etcd [source: k8s-docs-encrypt-data-2026-08-31] — it closes the etcd backup route, not the API route. A inverts the boundary; decryption happens server-side. C is the scope error the documentation heads off directly: encrypting data mounted into containers needs a storage integration or application-level encryption [source: k8s-docs-encrypt-data-2026-08-31]. D invents a chain of custody — the kubelet's tmpfs copy is a separate, memory-backed protection removed with the Pod [source: k8s-docs-secret-risks-2026-08-31], not a downstream effect of at-rest encryption.
 
-**3. C.** *"Security settings that you specify for a Container apply only to the individual Container, and they override settings made at the Pod level when there is overlap"* [source: k8s-docs-security-context-2026-08-31]. Pod scope is the default; container scope overrides it, per container. **A** inverts precedence. **B** invents a "most restrictive wins" rule that does not exist, and note 3000 is not obviously more restrictive than 2000 anyway. **D** invents a validation that does not exist; this configuration is entirely ordinary.
+**3. C.** Container-level security settings apply only to that container and override Pod-level settings where they overlap [source: k8s-docs-security-context-2026-08-31]. A inverts precedence. B invents a "most restrictive wins" rule that doesn't exist. D invents a validation that doesn't exist — this configuration is ordinary.
 
-**4. C.** Level and mode are independent axes, and a namespace may carry all three modes at different levels [source: k8s-docs-pod-security-standards-2026-08-23]. `enforce: baseline` is the gate that can reject, and *"Baseline… allows the default (minimally specified) Pod configuration"* [source: k8s-docs-pod-security-standards-2026-08-23], so a Pod with no `securityContext` passes it. `warn: restricted` and `audit: restricted` both fire, because the Pod does not meet Restricted (which requires `runAsNonRoot: true`, `allowPrivilegeEscalation: false`, capabilities dropping `ALL`, and an explicit seccomp profile [source: k8s-docs-pod-security-standards-profiles-2026-08-31]), but neither of those modes rejects anything. **A** reads `warn`'s level as though `warn` enforced. **B** inverts Baseline's defining property — allowing the minimally specified Pod is precisely what distinguishes it from Restricted; it is the one level that asks for nothing. **D** is wrong about `warn` and `audit` being silent, which is precisely their purpose.
+**4. C.** Level and mode are independent axes; a namespace can carry all three modes at different levels [source: k8s-docs-pod-security-standards-2026-08-23]. `enforce: baseline` is the only mode that can reject, and Baseline allows the minimally specified Pod [source: k8s-docs-pod-security-standards-2026-08-23], so a bare Pod passes it. `warn` and `audit` both fire because the Pod misses Restricted's requirements [source: k8s-docs-pod-security-standards-profiles-2026-08-31], though neither rejects. A reads `warn`'s level as though `warn` enforced. B inverts Baseline's defining property. D is wrong that `warn`/`audit` are silent — that's their entire purpose.
 
-**5. C.** Pod Security Admission is *"a built-in Pod Security admission controller"* [source: k8s-docs-pod-security-admission-2026-08-31], and admission is the third and last of the three gates. The consequence that matters: it inspects the object, so it can make decisions no authorization rule could. RBAC can say "this subject may create Pods," but only admission can say "not *this* Pod." And a rejected Pod is never created, so it has no phase, no events, and no logs.
+**5. B.** Signing tools resolve a tag to the digest of the content it currently points at, before signing [source: notary-project-signing-digest-2026-08-31] — the signature never covered the tag, only that digest. New content means a new digest, so the old signature doesn't verify, and admission refuses. A is the misconception this question exists to kill; always reference images by digest, since digest is immutable [source: notary-project-signing-digest-2026-08-31]. C gets the outcome right by accident, then adds a false claim — an unverified image isn't pulled under an enforcing policy, it's refused. D contradicts the source directly; you may hand the tool a tag, it just doesn't sign one.
 
-**A** puts admission before authorization. It is a coherent-sounding design and it is not this one — the order is authentication, authorization, admission, and it matters: admission is only ever reached for a request that has already been authorized, so a subject with no `create pods` grant never gets far enough for a Pod Security check to be relevant.
-**B** collapses two gates into one. RBAC and PSA answer different questions at different stages; authorization reasons about verb, resource and namespace, and cannot see the object's field values at all.
-**D** is the plausible-sounding wrong answer: it describes something that would look like a Pod stuck in `Pending`, which is a genuinely different failure and one you will diagnose in a later chapter.
+**6. B.** Scan and sign happen at build time; the signature lands in a transparency log; the registry restricts who may pull; the cluster verifies at admission before running anything [source: k8s-docs-cloud-native-security-2026-08-23; sigstore-overview-2026-08-23]. **Verify** is the first step the cluster itself performs, at the same admission gate later questions revisit. Everything before it happened elsewhere, possibly months earlier, under someone else's control.
+
+A signs before scanning, attesting to content never examined. C records before signing, backwards — the log records signing events [source: sigstore-overview-2026-08-23]. D gets the order right and the boundary wrong: restricting who may pull is the registry's job, not the cluster's.
+
+**7. B.** PSA enforces the Pod Security Standards and nothing else [source: k8s-docs-pod-security-admission-2026-08-31]; its levels are fixed definitions about `securityContext` and related fields, with no mechanism for an organizational rule about labels. Kyverno or OPA Gatekeeper validates arbitrary conditions at that same gate [source: kyverno-overview-2026-08-23]. A invents an extension PSA doesn't have. C puts a runtime detection tool at admission — Falco emits alerts, it doesn't refuse objects [source: falco-overview-2026-08-23]. D misreads both systems: RBAC has no deny rules and authorizes on verb and resource, not an object's field values.
+
+**8. C.** Falco observes kernel system calls, enriches them with container and Kubernetes metadata, evaluates the stream against its rules, and emits real-time alerts; its default rules cover unauthorized writes to sensitive directories and shell execution inside containers [source: falco-overview-2026-08-23]. It reports; it does not block.
+
+A reaches six hours past admission's window and invents a capability it doesn't have — admission accepts or refuses objects, not running Pods. B repeats the error more precisely: a policy engine's rules fire on API requests at admission, not on process behavior — a file write generates no API request to fire on. D is closest to defensible and still wrong twice over: `readOnlyRootFilesystem` isn't a field Restricted actually mandates [source: k8s-docs-pod-security-standards-profiles-2026-08-31], and any level only constrains a Pod at admission — it has no role once the Pod is running.
 
 ---
 
 **How'd You Do?**
 
-**5/5:** take the session break and start §7 fresh.
+**7–8:** move on — §9 will read as confirmation, not surprise.
 
-**3–4:** re-read the section behind each miss now, while the material is warm. Question 1 is the one to be least comfortable missing.
+**4–6:** re-read the section behind each miss now, while it's warm.
 
-**0–2:** re-read §5 before you go on to re-read §6. The three levels are a list of `securityContext` fields with names attached, and they are unmemorable — genuinely unmemorable, not just difficult — if the fields themselves are not yet familiar. Fields first, then levels.
+**0–3:** re-read §5 and §7 first — these fields and levels are unmemorable in the abstract; they stick once the mechanisms behind them are familiar.
 
 ---
 
@@ -1447,308 +1472,11 @@ D) It runs after the Pod is scheduled but before the kubelet starts the containe
 ✓ `securityContext` at two scopes, and which one wins
 ✓ Three levels against three modes, and why they are independent
 ✓ Pod Security Admission as one instance of a gate you already knew
-
-That is the API and the workload. **This is the natural place to stop if you are splitting this chapter across two sessions.** What follows leaves the cluster entirely.
-
----
-
-## 🟡 §7 — Trusting What You Ship
-
-Everything so far has been about a running cluster: who may call the API, what a workload may do once it is there. This section is about the question that comes first and gets asked least: **is the thing you are running the thing you built?**
-
-Chapter 2 raised this twice and deferred both times. It called reproducible layers *the hinge on which supply-chain verification swings*, and it flagged `imagePullSecrets` as *a genuine security boundary rather than a convenience feature*. Both arguments were made there. This section completes them rather than repeating them.
-
-There is a way to organize this material as a roster of projects, and it is the wrong way. There are five or six well-known tools here and they are not alternatives to each other; they occupy different positions in a sequence. So we will walk the sequence and name the tools where they sit.
-
-<!-- FIGURE: ch12-fig05-supply-chain-checkpoints -->
-![A left-to-right supply chain pipeline of build, scan, sign, record, restrict, verify and run, crossed by a vertical boundary between restrict and verify that separates work done outside the cluster from work done inside it; each step is annotated with what it produces and with the tools that perform it, and a callout notes that the artifact's digest is carried the whole length of the chain](figures/ch12-fig05-supply-chain-checkpoints.svg)
-
-<!-- ASCII-FALLBACK
-```
-   OUTSIDE THE CLUSTER                              │   INSIDE
-   ═════════════════════════════════════════════════╪═══════════
-                                                    │
-   BUILD ──▶ SCAN ──▶ SIGN ──▶ RECORD ──▶ RESTRICT ─┼─▶ VERIFY ──▶ RUN
-     │         │        │         │          │      │      │
-     │         │        │         │          │      │      │
-     ▼         ▼        ▼         ▼          ▼      │      ▼
-   image     known    binds     append-    private  │   admission
-   +digest   vulns    to the    only log   registry │   controller
-   +SBOM              DIGEST                        │
-                        ▲                           │   ▲
-     ┌──────────────────┴─────────────┐             │   │
-     │  the artifact's identity —     │             │   │
-     │  the same digest — is carried  │             │   │
-     │  the whole length of the chain │             │   │
-     └────────────────────────────────┘             │   │
-                                                    │   │
-   Harbor,          Cosign     Rekor    Harbor,     │  Kyverno,
-   image scanners   Notation            imagePull-  │  Gatekeeper,
-                    Fulcio              Secrets     │  Policy
-                                                    │  Controller
-                                                    │
-   ◀── everything left of the line happened somewhere else,
-       under somebody else's control, possibly months ago.
-       VERIFY is the first checkpoint the cluster performs itself.
-```
--->
-
-That vertical line is the point of the figure. Every step but one happens outside the cluster, in a build system you may not administer, at a time that is not now. Admission is the cluster's gangway: the one place it gets to inspect the cargo before it comes aboard. Which is why §8 follows this section rather than preceding it.
-
-### Scan
-
-*"As part of an image build step, you should scan your containers for known vulnerabilities"* [source: k8s-docs-4cs-cloud-native-security-v1-22-archived-2026-08-31], and the distribute-phase guidance says the same: scan container images and other artifacts for known vulnerabilities [source: k8s-docs-cloud-native-security-2026-08-23]. A **CVE** — Common Vulnerabilities and Exposures — is an identifier attached to a publicly disclosed vulnerability, and a scanner's job is to enumerate what an image contains and report which of those components have known vulnerabilities against them.
-
-The Code layer's parallel recommendation belongs alongside it: *"It is a good practice to regularly scan your application's third party libraries for known security vulnerabilities"* [source: k8s-docs-4cs-cloud-native-security-v1-22-archived-2026-08-31]. Same activity, different layer. Your dependencies and the image's base OS packages are both other people's code.
-
-<!-- AUTHOR-REVIEW: two gaps in this subsection. (1) No snapshot in this corpus expands CVE or describes the program; the Linux-kernel-constraints page cites CVE-2022-0185 and CVE-2019-5736 by number only, and the CNCF glossary index (checked 2026-08-31) has no CVE entry. The expansion above is carried because B7 assigns CVE to this section and the book's acronym-register convention requires expansion at first use, but it is not sourced — needs a cve.org fetch or a glossary entry. (2) No cached source describes image scanning as a *practice* beyond the two one-line recommendations quoted above (gap G22, partially open); Harbor's page names "Security and vulnerability analysis" as a feature without describing how scanning works. This subsection is deliberately thin as a result. If the author wants scanner mechanics (SBOM-driven vs filesystem-walking, registry-integrated vs CI-stage), it needs a fetch. Trivy was named in draft-v1's figure and appeared in no snapshot; it has been removed. -->
-
-### Sign
-
-A scan tells you what is *in* an image. A signature tells you *who produced it*, and the two are independent. A signed image can be full of known vulnerabilities; a clean image can come from anywhere.
-
-*"Sign container images to maintain a system of trust for the content of your containers"* [source: k8s-docs-4cs-cloud-native-security-v1-22-archived-2026-08-31].
-
-**Sigstore** is the project most of this ecosystem now runs through. It *"empowers software developers and consumers to securely sign and verify software artifacts such as release files, container images, binaries, software bills of materials (SBOMs), and more"*, operating as a free, public-good service under the Open Source Security Foundation [source: sigstore-overview-2026-08-23]. Its components divide the job [source: sigstore-overview-2026-08-23]:
-
-- **Cosign** — the client tool for signing and verifying artifacts, including container images.
-- **Fulcio** — the code-signing certificate authority, which issues **short-lived certificates bound to a verified identity** rather than long-lived keys.
-- **Rekor** — an **immutable, append-only transparency log** that records signing events for public audit.
-- **Policy Controller** — enforces signature verification policies within Kubernetes, as an admission controller.
-
-**Keyless signing** is what ties them together, and it removes the worst problem in signing. Conventionally, signing means holding a private key, which means protecting a private key forever, which means that the compromise of that key retroactively invalidates everything it ever signed. Sigstore's flow instead: a Cosign client creates an **ephemeral** key pair and requests a certificate from Fulcio using an OpenID Connect identity token; Fulcio validates the token and issues a short-lived certificate linking the public key to the verified identity; the artifact is signed; **the private key is discarded after a single signing**; and the signature and certificate are recorded in Rekor [source: sigstore-overview-2026-08-23].
-
-The key exists for seconds and is then gone. What persists is the certificate binding a public key to an identity, and the log entry proving when. There is no long-lived secret to steal.
-
-**Notary Project** is the other signing standard you will meet: *"a set of specifications and tools intended to provide a cross-industry standard for securing software supply chains"*, focused on *"signing and validating software artifacts, ensure they have not been tampered with and provide security policies to determine which validated artifacts are allowed to be used in your systems"*, with **Notation** as its CLI [source: notary-project-signing-digest-2026-08-31]. It is CNCF incubating [source: notary-project-signing-digest-2026-08-31].
-
-### What a signature covers — and this is the one
-
-Chapter 2 taught you that a tag is a mutable pointer and a digest is identity, and it taught it as a matter of build hygiene: pin your digests so you know what you deployed.
-
-It was not hygiene. Here is the Notary Project's own statement of what happens at signing time:
-
-> *"Notation resolves the tag to the digest before signing if a tag is used to identify the container image."*
->
-> *"Always reference and use the image digest instead of a tag since digest is immutable."* [source: notary-project-signing-digest-2026-08-31]
-
-Read the first sentence carefully. Even if you hand the tool a tag, it does not sign the tag. It resolves the tag to a digest and signs *that*. The signature has nothing to say about the tag at all.
-
-> **★ Fixed Point**
->
-> **A signature binds to a digest, not a tag.** Chapter 2 taught you that a tag is a mutable pointer and a digest is content identity, and framed it as build hygiene. It was not hygiene. It is the reason a signature means anything at all.
-
-Think about what a tag-covering signature would even assert. "I attest that whatever `myapp:v2` happens to point at is trustworthy" — a statement about a name, which anyone with push access can repoint at any moment, retroactively extending your attestation to bytes you have never seen. It would be worse than no signature, because it would look like one.
-
-A digest is a cryptographic hash of content. Signing it says: *these exact bytes, and no others.* That is the only form of the statement that survives contact with a mutable registry. *[cross-bearing: see Ch 2 §3 — registries, tags, and digests]*
-
-> 🪢 **Mnemonic:** **You sign the bytes, not the label on the box.**
-
-### Record
-
-*"Use validation mechanisms such as digital certificates for supply chain assurance"* [source: k8s-docs-cloud-native-security-2026-08-23], and the transparency log is what makes those mechanisms auditable rather than merely present. Rekor is *"an immutable, append-only transparency log that records signing events for public audit and verification"* [source: sigstore-overview-2026-08-23]. Append-only means entries cannot be removed or altered after the fact, so "was this artifact signed, by whom, and when?" is a question with a durable answer, including for artifacts signed with keys that no longer exist — which under keyless signing is all of them.
-
-### Attestation, provenance, and SBOMs
-
-**Attestation** generalizes signing. A signature says "I vouch for these bytes." An attestation says "I vouch for this *claim* about these bytes": that they were built by a particular pipeline from a particular commit, that they passed a particular test suite, that they contain a particular set of components.
-
-<!-- AUTHOR-REVIEW: the attestation gloss above is the author's, not a citation. Both in-toto-overview-2026-08-31 and notary-project-signing-digest-2026-08-31 list `attestation` in concepts_covered, and neither body defines it; the in-toto page additionally warns that supply-chain layout, link metadata and steps/inspections are not covered there and must not be described. Draft-v1 flagged the parallel SBOM case in a comment and did not flag this one — the asymmetry is now closed. Either source it (in-toto.io/docs, or the SLSA attestation spec) or mark the gloss [inferred] in prose. -->
-
-**in-toto** is the framework for the build-process half. It *"is designed to ensure the integrity of a software product from initiation to end-user installation. It does so by making it transparent to the user what steps were performed, by whom and in what order"* [source: in-toto-overview-2026-08-31]. That sentence — *what steps, by whom, in what order* — is in substance what **provenance** means: not just what the artifact is, but the verifiable record of how it came to be. SPDX names the same idea directly, listing *"Provenance and Integrity: Tracking the origin and history of components, including checksums and cryptographic hashes"* among what its standard covers [source: sbom-standards-spdx-cyclonedx-2026-08-31]. in-toto is a CNCF graduated project [source: in-toto-overview-2026-08-31].
-
-<!-- AUTHOR-REVIEW: the in-toto landing page does not itself use the word "provenance" (its own snapshot records this). The SPDX tag above carries the term; the in-toto tag carries the what-steps-by-whom-in-what-order sentence. Verify that split is acceptable, or add an [inferred] marker to the equation between them. -->
-
-An **SBOM** — Software Bill of Materials — is the components half. A bill of materials is a standardized record of what a software artifact is made of. The two dominant standards are **SPDX (Software Package Data Exchange)**, from the Linux Foundation, *"an open standard designed to facilitate the communication of Bill of Materials (BOM) information across diverse domains, including software, artificial intelligence (AI), datasets, and system components"*, covering metadata for packages, files and snippets, licensing information, and provenance and integrity [source: sbom-standards-spdx-cyclonedx-2026-08-31]; and **CycloneDX**, from OWASP (the Open Worldwide Application Security Project), *"a full-stack Bill of Materials (BOM) standard that provides advanced supply chain capabilities for cyber risk reduction"* [source: sbom-standards-spdx-cyclonedx-2026-08-31].
-
-And an SBOM is itself an artifact that can be signed; Sigstore names SBOMs explicitly among the artifact types it handles [source: sigstore-overview-2026-08-23]. Which closes a loop: a signed SBOM is a verifiable claim about what is inside a verifiable image, and the two together are what lets you answer "are we affected by this newly disclosed vulnerability?" without rebuilding anything.
-
-<!-- AUTHOR-REVIEW: no source in the corpus defines "SBOM" in a single canonical sentence. CISA and NTIA, which carry the canonical definitions, refused automated retrieval (HTTP 403, 2026-08-31) and the CNCF glossary has no SBOM entry (index checked). The description above is assembled from what SPDX and CycloneDX say their standards cover, which is defensible but is not a quoted definition. Flagging so a later stage does not attach a definition-shaped [source:] tag to it. Note also: draft-v1 carried the ISO/IEC 5962:2021 and ECMA-424 standardization details; these have been trimmed per the curriculum-alignment finding that §7 is over-covered relative to its recognition-depth allocation. Both facts are sourced in sbom-standards-spdx-cyclonedx-2026-08-31 if the author wants them restored. -->
-
-**TUF** — The Update Framework — belongs here too, though it operates one level up. It is *"a framework for securing software update systems"* that *"maintains the security of software update systems, providing protection even against attackers that compromise the repository or signing keys"* [source: tuf-overview-2026-08-31]. The attacks it names are the ones a naive signature check misses entirely [source: tuf-overview-2026-08-31]:
-
-- *"An attacker keeps giving you the same file, so you never realize there is an update."*
-- *"An attacker gives you an older, insecure version of a file that you already have and tricks you into thinking it's newer."*
-- *"An attacker gives you a newer version of a file you have but it's still not the newest one."*
-- *"An attacker compromises the key used to sign these files. Now you download a file that is properly signed, but is still malicious."*
-
-Every one of those involves a *correctly signed* artifact. That is what makes TUF interesting: signing answers "did this come from who I think?" and answers nothing about freshness, ordering, or key compromise. TUF is CNCF graduated [source: tuf-overview-2026-08-31].
-
-### Restrict
-
-The distribute-phase list ends with a step that is not cryptographic at all: *"restrict access to artifacts — place container images in a private registry that only allows authorized clients to pull images"* [source: k8s-docs-cloud-native-security-2026-08-23].
-
-**Harbor** is the CNCF graduated registry built for this. Its stated mission is *"to be the trusted cloud native repository for Kubernetes"*, and it *"is an open source registry that secures artifacts with policies and role-based access control, ensures images are scanned and free from vulnerabilities, and signs images as trusted"* [source: harbor-overview-2026-08-31]. Its feature list names security and vulnerability analysis, content signing and validation, and identity integration with role-based access control [source: harbor-overview-2026-08-31]. Which is to say it does scan, sign and restrict in one place — a useful thing to know when a question offers it as an answer.
-
-And the cluster's side of the restriction is a Secret. An `imagePullSecrets` entry holds registry credentials in a Secret of type `kubernetes.io/dockerconfigjson`, which is a serialized `~/.docker/config.json` [source: k8s-docs-secret-2026-08-23], and one of the documented ServiceAccount use cases is *"authenticating to a private image registry using an imagePullSecret"* [source: k8s-docs-service-accounts-2026-08-23]. Chapter 2 told you this was a security boundary rather than a convenience. Now you can see the whole boundary: the registry refuses unauthorized pulls, the credential to pull is a Secret, and the rules about who can read Secrets from §4 apply to it in full.
-
-### Verify
-
-The last checkpoint, and the first one the cluster performs itself. The deploy phase says: *"You can enforce measures from the distribute phase, such as verifying the cryptographic identity of container image artifacts"* [source: k8s-docs-cloud-native-security-2026-08-23]. The 4Cs Container layer says: *"Image Signing and Enforcement"* — signing *and* enforcement, two words, two activities [source: k8s-docs-4cs-cloud-native-security-v1-22-archived-2026-08-31].
-
-Signing without verification is theater. A signature that nothing checks is a file in a registry. The check happens at admission: Sigstore's Policy Controller *"enforces signature verification policies within Kubernetes as an admission controller"* [source: sigstore-overview-2026-08-23], and Kyverno can *"verify container images and metadata for software supply chain security"* [source: kyverno-overview-2026-08-23].
-
-Which is the third gate again, doing another job. Same position, different question. And it hands us straight into §8.
-
-> ⚓ **Worth Securing:** The one-sentence version of this whole section: **a signature tells you where something came from, a scan tells you what is wrong with it, an SBOM tells you what is in it, provenance tells you how it was made, and none of the four does any of the others' work.** Every real supply-chain question is asking which of those you need.
-
----
-
-## 🔵 §8 — Rules That Watch
-
-Section 6 gave you a controller that answers one question extremely well. Pod Security Admission checks a Pod against three fixed policies, at the admission gate, and does so without configuration beyond a namespace label. That is its strength and its limit: it is not extensible. If your organization's rule is "every Pod must carry a `cost-center` label," or "no image may come from outside our registry," or "every Namespace gets a default-deny NetworkPolicy on creation," PSS has nothing to say about any of it.
-
-A **policy engine** answers arbitrary questions at that same gate.
-
-The CNCF glossary gives the underlying idea a name: **"Policy as Code is the practice of storing the definition of policies as one or more files in machine-readable and processable form"** [source: cncf-glossary-policy-as-code-2026-08-31]. Codified policy gets consistent automated enforcement instead of manual review, and, because the files live in version control, a change history you can audit and revert [source: cncf-glossary-policy-as-code-2026-08-31].
-
-The organizing question for this section is not *which engine* but **when does the rule run?**
-
-### At admission
-
-**Kyverno** — Greek for "govern" — is *"a cloud native policy engine"* originally built for Kubernetes and now usable outside clusters as a unified policy language. It *"allows platform engineers to automate security, compliance, and best practices validation and deliver secure self-service to application teams"* [source: kyverno-overview-2026-08-23].
-
-Its policies can *"validate, mutate, generate, or clean up Kubernetes resources; verify container images and metadata for software supply chain security; and be applied as a Kubernetes admission controller (webhook) or as a CLI-based scanner"* [source: kyverno-overview-2026-08-23]. Policies are written in YAML using declarative rules and **CEL (Common Expression Language)**, managed as Kubernetes resources, and version-controlled with Git [source: kyverno-overview-2026-08-23].
-
-Those four verbs are worth separating, because they are not variations on one thing:
-
-- **Validate** — refuse an object that breaks a rule. This is what PSS does, generalized.
-- **Mutate** — change an object as it passes. Add a missing label, inject a sidecar, set a default.
-- **Generate** — create *other* objects in response. A new Namespace appears; a default NetworkPolicy and a ResourceQuota appear with it.
-- **Clean up** — remove objects meeting a condition.
-
-<!-- AUTHOR-REVIEW: kyverno-overview-2026-08-23 lists the four verbs and defines none of them. The four glosses above, and the examples attached to them, are the author's reading of standard policy-engine semantics rather than product documentation. Either open a small research gap for kyverno.io/docs/policy-types/ or mark the four glosses [inferred] in prose. -->
-
-Validate and mutate are the two answers Chapter 8 told you the third gate has *[cross-bearing: see Ch 8 §2 — three gates and a logbook]*: two gates ask about you and answer yes or no, while the third asks about the request itself and can also answer *yes, in modified form*. Those two answers have names — a **validating** admission webhook and a **mutating** one. **A policy engine is one.** It is what people actually install into that extension point, and it is the cleanest possible payoff for having learned the distinction. *[cross-bearing: see Ch 17 §4 — every place Kubernetes lets you in]*
-
-**OPA** — Open Policy Agent — is the other widely used engine, a CNCF graduated project, with its **Gatekeeper** admission controller for Kubernetes, expressing policy in the **Rego** language [source: kyverno-overview-2026-08-23]. The Pod Security Standards page itself names the third-party enforcement options: Kubewarden, Kyverno, and OPA Gatekeeper [source: k8s-docs-pod-security-standards-profiles-2026-08-31], alongside a framing worth keeping — *"Decoupling policy definition from policy instantiation allows for a common understanding and consistent language of policies across clusters, independent of the underlying enforcement mechanism"* [source: k8s-docs-pod-security-standards-profiles-2026-08-31]. The Standards are a *definition*; PSA and the policy engines are *instantiations* of it. That is why a third-party engine can enforce the same three levels PSA does.
-
-The practical difference between Kyverno and OPA Gatekeeper, at the level a KCNA candidate needs: Kyverno's policies are Kubernetes resources written in YAML and CEL; OPA's are written in Rego, a purpose-built policy language. Both sit at the admission gate. Choosing between them is a team decision about language and ecosystem, not a security-model decision.
-
-### At runtime
-
-Everything above happens before an object exists. **Falco** answers a different question at a different time.
-
-Falco *"is a cloud native security tool that provides runtime security across hosts, containers, Kubernetes, and cloud environments. It is designed to detect and alert on abnormal behavior and potential security threats in real-time"*, and it is a CNCF graduated project, originally created by Sysdig [source: falco-overview-2026-08-23].
-
-How it works: *"Falco observes Linux kernel events (system calls) and data from plugins, enriches them with metadata from the container runtime and Kubernetes, evaluates the event stream against a rules engine, and emits real-time alerts when rules detect violations"* [source: falco-overview-2026-08-23].
-
-Its default detections read like a list of things you now know to worry about [source: falco-overview-2026-08-23]:
-
-- privilege escalation via privileged containers
-- namespace manipulation
-- unauthorized modifications to sensitive directories such as `/etc` or `/usr/bin`
-- suspicious network connections
-- shell or SSH binary execution inside containers
-- unauthorized file ownership or permission changes
-- symlink creation
-
-Look at the first one against §5. A `privileged: true` Pod that got past admission — because the namespace was `enforce: privileged`, or because it predates the policy, or because someone granted an exception — is invisible to every control in §6. Falco sees the behavior after the fact.
-
-> ⚠ **Navigational Hazards**
->
-> **Falco detects. It does not prevent.** It observes, evaluates, and emits alerts [source: falco-overview-2026-08-23]. There is no step in that sequence that blocks anything.
->
-> This is the watch at the masthead, and it pays to be precise about what that is worth. A control that reports is not a lesser version of a control that refuses; it answers a question refusal cannot. Admission-time controls can only reason about the object as submitted; they know nothing about what the process does at hour six. Runtime detection knows nothing about the object and everything about the behavior. You want both, and an exam question distinguishing them is asking whether you know they are different questions rather than different qualities of answer.
-
-### The two positions, side by side
-
-| | admission time | runtime |
-|---|---|---|
-| **What it examines** | the object, as submitted | process behavior, as it happens |
-| **When** | before the object exists | after it is running |
-| **What it can do** | refuse, or change | observe, and report |
-| **Fixed question** | Pod Security Admission | — |
-| **Arbitrary question** | Kyverno, OPA/Gatekeeper | Falco |
-
-Three ways of covering the same territory: PSS answers a fixed question at the gate; a policy engine answers an arbitrary question at the same gate; Falco answers a different question entirely, later, and answers it by telling you rather than by stopping you.
-
-<!-- AUTHOR-REVIEW: eBPF is deliberately not named here. B7 rules it glossary-only and not eligible for graded text, and the Falco source describes the mechanism as kernel events and syscalls without needing the word. -->
-
----
-
-## ☆ Taking Your Bearings #3
-
-Five questions covering §7 and §8, plus one deliberate long-spacing item back to §3.
-
-**1.** *[retrieval: ch2]* A build pipeline signs the image reference `registry.example.com/myapp:v2`. Three weeks later, an attacker with push access to the registry pushes different content to that same tag. A cluster verifies signatures at admission. What happens when the new content is pulled, and why?
-
-A) Verification passes, because the tag `v2` was signed and it is still `v2`
-B) Verification fails, because the signature bound to the digest of the original content, and the new content has a different digest
-C) Verification passes only if the attacker also re-signed; otherwise the image is pulled unverified
-D) Verification is not possible, because signatures cannot be applied to tagged references at all
-
-**2.** Put these supply-chain checkpoints in the order they occur, and identify which is the first one performed by the cluster itself: scan, verify, sign, restrict, record.
-
-A) sign → scan → record → verify → restrict; the cluster performs *restrict*
-B) scan → sign → record → restrict → verify; the cluster performs *verify*
-C) scan → record → sign → verify → restrict; the cluster performs *verify*
-D) scan → sign → record → restrict → verify; the cluster performs *restrict*
-
-**3.** Your cluster already enforces the `baseline` Pod Security Standard in every namespace. Your organization now requires that every Pod carry a `cost-center` label, and that any Pod missing one be rejected. What do you reach for, and why can't Pod Security Admission do it?
-
-A) Add a fourth Pod Security level; PSA supports custom levels via ConfigMap
-B) A policy engine such as Kyverno or OPA Gatekeeper, because PSA evaluates only the fixed Pod Security Standards and cannot express an arbitrary rule
-C) Falco, because it evaluates arbitrary rules against cluster objects
-D) An RBAC rule denying `create` on Pods without the label; PSA is for `securityContext` only
-
-**4.** A container in your cluster has been running for six hours. During hour six, a process inside it spawns a shell and writes to `/etc`. Which tool in this chapter is positioned to tell you, and what specifically will it do about it?
-
-A) Pod Security Admission — it will terminate the Pod
-B) A Kyverno validating policy — it will refuse the write, because the policy is evaluated against every action in the cluster
-C) Falco — it will observe the kernel events, evaluate them against its rules, and emit an alert; it will not stop the process
-D) The `restricted` Pod Security Standard — it will prevent the write, because `readOnlyRootFilesystem` is required
-
-**5.** A team lead asks you to remove one specific permission from an engineer who currently holds the `edit` ClusterRole in a namespace: they should keep everything `edit` provides, except the ability to delete Deployments. What is your answer?
-
-A) Add a Role with a deny rule for `delete` on `deployments`, bound in the same namespace
-B) Patch the existing RoleBinding to exclude that verb
-C) There is no way to subtract from a grant; stop granting `edit` and grant a custom Role built from the permissions they should have
-D) Add a second RoleBinding to a more restrictive role; the intersection of the two applies
-
----
-
-**Answers with Explanations:**
-
-**1. B.** *"Notation resolves the tag to the digest before signing if a tag is used to identify the container image"* [source: notary-project-signing-digest-2026-08-31] — the signature never covered the tag, only the digest of the content the tag pointed at. New content has a new digest, so the existing signature does not verify against it, and admission refuses. **A** is the misconception the Fixed Point exists to kill, and it is the reason the documentation says *"Always reference and use the image digest instead of a tag since digest is immutable"* [source: notary-project-signing-digest-2026-08-31]. **C** gets the outcome accidentally right for the wrong reason and then adds a false claim: an unverified image is not "pulled unverified" under an enforcing policy, it is refused. **D** contradicts the quoted sentence; you may hand the tool a tag, it just does not sign one.
-
-**2. B.** Scan and sign happen at build time; the signature is recorded in a transparency log; the artifact goes to a registry that restricts who may pull it; and the cluster verifies at admission before running it [source: k8s-docs-cloud-native-security-2026-08-23; sigstore-overview-2026-08-23]. **Verify** is the first step the cluster itself performs; everything before it happened elsewhere, possibly months earlier, under someone else's control.
-
-**A** signs before scanning, which would attest to content you have not examined, and then names the wrong cluster-performed step.
-**C** records before signing, which is backwards — the log records signing events [source: sigstore-overview-2026-08-23], so there is nothing to record yet.
-**D** is the one to take slowly, because **the order is correct** and only the second half is wrong. Restricting who may pull is the registry's job, and the registry is not the cluster; the cluster's own first act on this artifact is verification at the admission gate. If you picked D, your model of the sequence is fine and your model of the boundary is not — which is exactly the distinction the figure's vertical line draws.
-
-**3. B.** PSA enforces the Pod Security Standards and nothing else [source: k8s-docs-pod-security-admission-2026-08-31]; its three levels are fixed definitions about `securityContext` and related fields, with no mechanism for expressing an organizational rule about labels. Kyverno validates arbitrary conditions at the admission gate [source: kyverno-overview-2026-08-23], as does OPA Gatekeeper. **A** invents an extension mechanism PSA does not have. **C** puts a runtime detection tool at the admission gate; Falco emits alerts, it does not refuse objects [source: falco-overview-2026-08-23]. **D** misunderstands both systems: RBAC has no deny rules, and it authorizes on verb and resource, not on an object's field values. RBAC cannot see the label.
-
-**4. C.** Falco *"observes Linux kernel events (system calls)… enriches them with metadata from the container runtime and Kubernetes, evaluates the event stream against a rules engine, and emits real-time alerts"*, and its default detections explicitly include unauthorized modifications to sensitive directories such as `/etc` and shell execution inside containers [source: falco-overview-2026-08-23]. It reports; it does not block.
-
-**A** reaches six hours past admission's window and then invents a capability admission does not have. Admission accepts or refuses objects; it does not terminate running Pods.
-**B** is the sharper version of the same error, and worth naming precisely: a policy engine's validating rules are evaluated against **API requests at the admission gate**, not against process behavior. A process writing a file generates no API request, so there is no admission event for the policy to fire on. Kyverno can also run as a CLI-based scanner [source: kyverno-overview-2026-08-23], but that scans manifests, not syscalls.
-**D** is the closest to defensible and still wrong on two counts: `readOnlyRootFilesystem` is a `securityContext` field the Restricted level does not in fact mandate [source: k8s-docs-pod-security-standards-profiles-2026-08-31], and in any case a level constrains a Pod *at admission*, so it could have prevented the Pod from being created but has no role once it is running.
-
-**5. C.** *"Permissions are purely additive (there are no 'deny' rules)"* [source: k8s-docs-rbac-2026-08-23]. There is no rule that subtracts, so the only path is to stop granting the role that includes the unwanted permission and grant something narrower. **A** invents deny rules. **B** would not work even if `roleRef` were mutable, which it is not [source: k8s-docs-rbac-2026-08-23], because a binding grants a role wholesale; it does not filter it. **D** is the most seductive because it sounds like how firewalls work: additive means *union*, not intersection, so a second binding can only add.
-
----
-
-**How'd You Do?**
-
-**5/5:** §9 will be a confirmation rather than a surprise, which is how it is meant to read.
-
-**3–4:** review the miss and continue. §9 introduces no new object and depends on no single fact from this checkpoint.
-
-**0–2:** re-read §7 before §8 — §8's whole framing is "the same gate, a different question," and it needs §7's picture of where that gate sits. If the miss was question 5, re-read §3's closing pages on the additive rule before you start §9, because §9 is an argument about that rule and nothing else.
-
----
-
-**Checkpoint: You've Now Mastered**
-
-✓ The supply chain as a sequence of checkpoints, and what each one buys
 ✓ What a signature binds to, and why a tag would be worthless
+✓ The supply chain as a sequence of checkpoints, and what each one buys
 ✓ Where a policy engine sits and what it does that PSS cannot
 ✓ Admission-time versus runtime, and why detection is a different question rather than a weaker answer
 
-One section left, and it is the one Chapter 10 and Chapter 11 have both been pointing at.
-
----
 
 ## ☀️ §9 — Additive, Never Deny
 

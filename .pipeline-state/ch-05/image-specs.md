@@ -81,7 +81,7 @@ Draw three levels of nesting as concentric rounded rectangles. The outermost box
 ```yaml-figure-spec
 anchor_id: ch05-fig01-pod-shared-network-namespace
 diagram_type: k8s_architecture
-source_ascii: |
+source_ascii: |2
   ┌─ Node ──────────────────────────────────────────────────┐
   │                                                          │
   │   ┌─ Pod ─────────────────────────────────────────┐      │
@@ -173,7 +173,7 @@ FAILURE PATH
 ```yaml-figure-spec
 anchor_id: ch05-fig03-init-containers-sequence
 diagram_type: activity
-source_ascii: |
+source_ascii: |2
   SUCCESS PATH
     time ──────────────────────────────────────────────────────►
 
@@ -274,7 +274,7 @@ WORKED OVERLAY — both readings are legitimate:
 ```yaml-figure-spec
 anchor_id: ch05-fig02-pod-phases-and-container-states
 diagram_type: state_machine
-source_ascii: |
+source_ascii: |2
   ┌─ POD ──────────────────────────────────────────────────────┐
   │  status.phase:  Pending → Running → Succeeded              │
   │                                   └→ Failed                │
@@ -462,7 +462,7 @@ A SINGLE CONTAINER'S RESOURCE BAND
 ```yaml-figure-spec
 anchor_id: ch05-fig05-requests-limits-qos-classes
 diagram_type: other
-source_ascii: |
+source_ascii: |2
   A SINGLE CONTAINER'S RESOURCE BAND
 
     0                request                    limit

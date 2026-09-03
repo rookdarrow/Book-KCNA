@@ -684,9 +684,9 @@ runC closes the loop: Docker donated its container runtime, runC, to the OCI to 
 
 ---
 
-## ☆ Taking Your Bearings #2: Who Runs It, and Who Standardized It
+## ☆ Taking Your Bearings #2 — Runtimes, Specs, and How Images Actually Move
 
-Four questions on §4 and §5. At least one of them requires holding both sections at once.
+Six questions spanning §4 through §7. One reaches back into Chapter 10.
 
 **1.** Which component in a standard Kubernetes cluster actually creates and starts a container?
 
@@ -695,167 +695,35 @@ B) The kubelet, directly
 C) A CRI-conformant container runtime such as containerd or CRI-O
 D) The kube-scheduler, at bind time
 
-**2.** What is the Open Container Initiative?
-
-A) A container runtime maintained by the Linux Foundation
-B) An open governance structure that publishes specifications for container formats and runtimes
-C) A company formed by Docker in 2015 to commercialize container tooling
-D) A CNCF graduated project providing a registry implementation
-
-**3.** A colleague describes a component as "the thing that defines how an unpacked filesystem bundle on disk gets executed." Which governs that, and what is the artifact called?
+**2.** A colleague describes a component as "the thing that defines how an unpacked filesystem bundle on disk gets executed." Which governs that, and what is the artifact called?
 
 A) The CRI; the artifact is a container image
 B) The CRI; the artifact is a filesystem bundle
 C) The OCI runtime specification; the artifact is a filesystem bundle
 D) The OCI image specification; the artifact is an image manifest
 
-**4.** Match the concern to the specification that standardizes it: (i) the layout of image layers and the manifest, (ii) the API a node uses to fetch an image from a registry, (iii) executing an unpacked bundle.
+**3.** Match the concern to the specification that standardizes it: (i) the layout of image layers and the manifest, (ii) the API a node uses to fetch an image from a registry, (iii) executing an unpacked bundle.
 
 A) i = runtime-spec, ii = image-spec, iii = distribution-spec
 B) i = image-spec, ii = distribution-spec, iii = runtime-spec
 C) i = distribution-spec, ii = runtime-spec, iii = image-spec
 D) i = image-spec, ii = runtime-spec, iii = distribution-spec
 
----
+**4.** A Pod specifies `image: internal.registry.example/api-gateway`, with no tag and no `imagePullPolicy` set. What policy applies, and what happens at each launch?
 
-**Answers with Explanations**
+A) IfNotPresent, because a registry hostname was given; it pulls only if no local copy exists at all
+B) Always, because no tag was specified; it resolves the name to a digest on every launch and reuses the cached image if that digest is already present
+C) IfNotPresent, because that's the global default; it copies from the local cache unconditionally
+D) Always, because `imagePullPolicy` defaults to Always whenever a registry hostname is present; it downloads unconditionally every time
 
-**1 — C.** The container runtime is responsible for managing the execution and lifecycle of containers, and Kubernetes supports containerd, CRI-O, and any other implementation of the CRI [source: k8s-docs-containers-2026-08-23].
-- **A is wrong.** The API server exposes the Kubernetes HTTP API [source: k8s-docs-components-2026-08-23]; it is nowhere near a container process.
-- **B is wrong**, and it is the most tempting distractor. The kubelet *ensures* that the containers described in PodSpecs are running and healthy [source: k8s-docs-cluster-architecture-2026-08-23]. It is the component that wants them to exist, not the one that creates them. It reaches a runtime across the CRI to do that.
-- **D is wrong.** The scheduler assigns Pods to nodes [source: k8s-docs-components-2026-08-23] and then its work is finished.
-
-**2 — B.** The OCI is an open governance structure for the express purpose of creating open industry standards around container formats and runtimes, established in June 2015 [source: oci-overview-2026-08-23].
-- **A is wrong**, and this is the most frequently held misconception about the OCI. It publishes specifications; it does not ship a runtime. runC was *donated to* it [source: oci-overview-2026-08-23], which is a different relationship.
-- **C is wrong.** Docker was a founding participant, along with other container-industry leaders, but the OCI is a governance structure rather than a company, and "commercialize" inverts its purpose.
-- **D is wrong.** It is not a CNCF project and does not provide a registry; it specifies the *API* that registries implement.
-
-**3 — C.** The runtime specification outlines how to run a filesystem bundle that is unpacked on disk [source: oci-overview-2026-08-23]. The term "filesystem bundle" is the specification's own.
-- **A is wrong** on both counts: wrong governing body and wrong artifact, since an image is what gets *unpacked into* a bundle.
-- **B is wrong** on the governing body. This is the OCI/CRI conflation the ⚠ callout in §5 exists for. The artifact is right, the layer is not. The CRI governs how Kubernetes talks to a runtime, not how a bundle executes.
-- **D is wrong.** The image specification defines the format of the image, meaning manifest, layer serialization, configuration [source: oci-overview-2026-08-23], not its execution.
-
-**4 — B.** The image specification encompasses the image manifest, filesystem layer serialization, and image configuration; the distribution specification standardizes the API to distribute container images; the runtime specification outlines how to run a filesystem bundle [source: oci-overview-2026-08-23].
-- **A is wrong** on all three. It assigns the artifact's internal layout to `runtime-spec`, which governs execution, and hands the registry API to `image-spec`, which governs format.
-- **C is wrong** on all three in the opposite rotation: it makes `distribution-spec` responsible for the manifest and `runtime-spec` responsible for the transfer over the wire.
-- **D is wrong** on two, and it is the tempting one precisely because it gets `image-spec` right. It then swaps *moving* and *running*: the registry API is `distribution-spec` (v1.0, May 2020), and executing an unpacked bundle is `runtime-spec`. If you picked D, the fix is to run the lifecycle in order, image exists, then it moves, then it runs, and read the specification names off that sequence.
-
----
-
-**Checkpoint: You've Now Mastered**
-✓ The full path from a Pod's image field to a running process, and which component owns each hop
-✓ That Kubernetes defines the CRI and implements nothing below it
-✓ The OCI as a governance body with three specifications, and which artifact each one governs
-✓ The CRI/OCI boundary, the discrimination that Chapter 17 will lean on
-
-Two sections left, and both are about behavior rather than structure: when Kubernetes goes looking for an image, and how strong the walls around a container are.
-
----
-
-## §6 — 🟡 When Kubernetes Pulls, and When It Doesn't
-
-This is the fiddliest material in the chapter, and in the author's judgment the highest value per minute of anything in it. The rules are small, entirely conditional, and almost nobody guesses the defaults correctly.
-
-> **Dead Reckoning:** Three pull policies. **IfNotPresent:** the image is pulled only if it is not already present locally. **Always:** every time the kubelet launches a container, it queries the container image registry to resolve the name to an image digest; if the kubelet has a container image with that exact digest cached locally, it uses its cached image, otherwise it pulls the image with the resolved digest. **Never:** the kubelet does not try fetching the image; if the image is somehow already present locally, the kubelet attempts to start the container, otherwise startup fails.
->
-> Four defaults, applied when `imagePullPolicy` is omitted. With a **digest**: IfNotPresent. With the tag **`:latest`**: Always. With **no tag** specified: Always. With a tag **other than `:latest`**: IfNotPresent.
->
-> Once a Pod is created, `imagePullPolicy` is not updated if the image's tag or digest changes later.
->
-> When the kubelet cannot pull an image, the container sits in **`ImagePullBackOff`**. That means the container could not start because Kubernetes could not pull the image, for reasons such as an invalid image name or pulling from a private registry without credentials. The **BackOff** part indicates that Kubernetes will keep trying, with an increasing back-off delay, up to a compiled-in limit of 300 seconds (5 minutes). [source: k8s-docs-images-2026-08-23]
-
-That block is the whole exam surface for this section, stated flat. Now the two things worth saying about it.
-
-<!-- FIGURE: ch02-fig05-imagepullpolicy-decision -->
-![A decision tree. Root question: was imagePullPolicy set explicitly? On the YES branch, three policies: Always, which resolves the name to a digest and reuses the local cache on a match; IfNotPresent, which pulls only if the image is absent; and Never, which never fetches and fails if the image is absent. On the NO branch, a second question asks the reference form, fanning to four outcomes: a digest defaults to IfNotPresent, the :latest tag defaults to Always, no tag defaults to Always, and any other tag defaults to IfNotPresent.](figures/ch02-fig05-imagepullpolicy-decision.svg)
-
-<!-- ASCII-FALLBACK
-```
-                    was imagePullPolicy set explicitly?
-                          │                    │
-                         YES                   NO
-                          │                    │
-        ┌─────────────────┴───────┐            │
-        │ Always                  │      reference form?
-        │  → resolve to digest;   │            │
-        │    reuse cache if match │   ┌────────┼────────┬──────────┐
-        │ IfNotPresent            │   │        │        │          │
-        │  → pull only if absent  │ @digest :latest   no tag    :other
-        │ Never                   │   │        │        │          │
-        │  → never fetch; fail if │   ▼        ▼        ▼          ▼
-        │    absent               │ IfNot-  Always   Always    IfNot-
-        └─────────────────────────┘ Present                    Present
-```
--->
-
-**Figure 2-5.** What to notice, and it isn't the branches: the right-hand side of this tree is reached by *not making a decision*. The reference form you chose for identity reasons quietly chose your pull behavior too.
-
-That is the second half of §3's `:latest` hazard, now complete *[cross-bearing: see Ch 2 §3 — the `:latest` naming caution]*. Writing `:latest` is not merely untidy. It flips the default from IfNotPresent to Always [source: k8s-docs-images-2026-08-23], which means the kubelet consults the registry on every container launch. So the tag that made you unsure which version is running is also the tag that maximizes the number of opportunities for the answer to change. Two problems, one field, and the documentation's caution names only the first.
-
-The `Always` behavior also repays a careful reading, because its name oversells it. `Always` does not mean "always download." It means always *check*: resolve the name to a digest at the registry, and if the local cache already holds that exact digest, use the cached copy [source: k8s-docs-images-2026-08-23]. Always re-resolve; download only on a miss. This is a classic distractor shape, and now you know why the distractor is wrong.
-
-> 🪝 **Snag:** Once a Pod is created, `imagePullPolicy` is not updated if the image's tag or digest changes later [source: k8s-docs-images-2026-08-23]. The policy was resolved when the Pod was created, and moving the tag afterwards does not retroactively change how that existing Pod behaves. If you need new behavior, you need a new Pod, which is §2's immutability principle showing up in an unexpected place.
-
-One name to bank and not chase. `ImagePullBackOff` is reported as a container in the **Waiting** state [source: k8s-docs-images-2026-08-23], and container states are Chapter 5's material *[cross-bearing: see Ch 5 §5 — Pod phases and container states]*. Diagnosing a stuck pull, meaning reading the events and checking whether the image name is right and whether it was actually pushed [source: k8s-docs-debug-pods-2026-08-23], is Chapter 13's *[cross-bearing: see Ch 13 §2 — diagnosing ImagePullBackOff]*. What Chapter 2 owes you is the name, the cause, and the retry behavior. You have all three.
-
----
-
-## §7 — 🟡 Not All Isolation Is Equal: RuntimeClass
-
-Readers skip this section. It earns your attention anyway, for a reason worth stating plainly: it is the one place in the chapter where a rule you were just taught turns out to be adjustable, and that is exactly what a well-written exam item likes to probe.
-
-§1 established that a container shares the host operating system, and the ⚓ callout there insisted that this was a *tradeoff* rather than a deficiency. Tradeoffs can be renegotiated. This is the renegotiation.
-
-**RuntimeClass is a feature for selecting the container runtime configuration** used to run a Pod's containers [source: k8s-docs-runtime-class-2026-08-23].
-
-Take the motivation before the mechanism, because the mechanism without the motivation is unmemorable trivia.
-
-You can set a different RuntimeClass between different Pods to provide a balance of performance versus security. For example, if part of your workload deserves a high level of information-security assurance, you might choose to schedule those Pods so that they run in a container runtime that uses **hardware virtualization** (such as Kata Containers) or a **user-space kernel** (such as gVisor). You'd then benefit from the extra isolation of the alternative runtime, at the expense of some additional overhead. You can also use RuntimeClass to run different Pods with the same container runtime but with different settings [source: k8s-docs-runtime-class-2026-08-23].
-
-Read what that makes possible. Two workloads, same cluster, same API, manifests shaped the same way, and different isolation floors. The workload handling untrusted user-submitted code gets hardware virtualization. The internal batch job that nobody worries about gets the default, and doesn't pay for a boundary it doesn't need. This is the answer to a question that sounds unanswerable: "containers are less isolated than VMs, so how can I run genuinely untrusted code?" You change the floor for that workload.
-
-> ⚓ **Worth Securing:** **"Container" names an interface, not an isolation level.** That sentence is what makes this section stick. Everything you learned in §1 through §6, the image format, the pull behavior, the CRI socket, is unchanged whether the thing on the other end of the socket shares the host kernel directly, interposes a user-space kernel, or boots a lightweight virtual machine. The contract is stable; the strength of the walls is a parameter.
-
-The mechanism, at the depth the exam reaches. Configure the CRI implementation on your nodes; each configuration has a corresponding **handler** name. Create the corresponding RuntimeClass resources (`apiVersion: node.k8s.io/v1`, `kind: RuntimeClass`, with a `handler` field). Once RuntimeClasses are configured for the cluster, specify a `runtimeClassName` in the Pod spec to use one; **if no `runtimeClassName` is specified, the default runtime handler is used** [source: k8s-docs-runtime-class-2026-08-23].
-
-Two levels of indirection, which is the part to hold onto: the Pod names a RuntimeClass, and the RuntimeClass names a handler that was configured on the nodes. The Pod author does not name a runtime. They name a *class of runtime configuration* that a cluster administrator has already established, which is why this works as a self-service mechanism rather than as a way for application teams to request arbitrary runtimes.
-
-A RuntimeClass can also carry scheduling constraints (`nodeSelector`, `tolerations`) so that Pods land on nodes which actually support the handler, and a **Pod overhead** so the scheduler accounts for the runtime's resource cost [source: k8s-docs-runtime-class-2026-08-23]. Both of those are scheduling concepts, and scheduling has its own chapter *[cross-bearing: see Ch 7 — node selection, tolerations, and accounting for overhead]*. Register that they exist; the reasoning behind them arrives later.
-
-> 🔭 **Closer Look:** Kata Containers and gVisor are two genuinely different answers to the same question. Kata uses **hardware virtualization**; gVisor uses a **user-space kernel** [source: k8s-docs-runtime-class-2026-08-23]. Kata's approach is, roughly, borrowing back the isolation model §1 traded away: a real virtualization boundary underneath the workload. gVisor's is to interpose a kernel implementation that is not the host's. Different techniques, same goal, different overheads. This is depth: an exam item is far likelier to ask *why RuntimeClass exists* than to ask which sandbox uses which technique. Know the motivation cold; know this as a bonus.
->
-> <!-- AUTHOR-REVIEW: the earlier version of this callout described gVisor's mechanism in detail — syscall interception, a kernel serviced as an ordinary process, the host kernel never being the workload's direct interlocutor — and tagged it to k8s-docs-runtime-class, which carries only the phrase "a user-space kernel (such as gVisor)". Trimmed here to what the snapshot supports plus a minimal unsourced gloss on what "user-space kernel" means. NEW RESEARCH REQUIRED if the fuller mechanism is wanted: fetch gvisor.dev/docs/ for the Sentry/syscall-interception description; Appendix A does NOT cover it. Defensible alternative for an associate-tier chapter: leave as trimmed. The callout's own last line concedes the exam is likelier to ask why RuntimeClass exists than how each sandbox works. -->
-
-The security guidance is consistent with all of it: to protect compute at runtime, use a container runtime that provides security restrictions [source: k8s-docs-cloud-native-security-2026-08-23]. RuntimeClass is the Kubernetes-shaped way to say *which* one, per workload. Sandboxed runtimes come back as one control among several in the security lifecycle *[cross-bearing: see Ch 12 — runtime protection for compute]*.
-
----
-
-## ☆ Taking Your Bearings #3: Pull Behavior and Runtime Selection
-
-Four questions on §6 and §7.
-
-**1.** A Pod specifies `image: internal.registry.example/api-gateway` and does not set `imagePullPolicy`. What pull policy applies?
-
-A) IfNotPresent, because a registry hostname was given explicitly
-B) Always, because no tag was specified
-C) IfNotPresent, because that is the global default
-D) Always, because `imagePullPolicy` defaults to `Always` whenever a registry hostname is present
-
-**2.** A Pod's `imagePullPolicy` is set to `Always`. Which statement describes what happens each time the kubelet launches the container?
-
-A) The image is downloaded from the registry every time, unconditionally
-B) The kubelet queries the registry to resolve the name to a digest, and reuses its cached image if it already holds that exact digest
-C) The kubelet checks whether the local image is older than the registry's copy by timestamp
-D) The kubelet pulls only if the tag has changed since the last launch
-
-**3.** A container reports `ImagePullBackOff`. Which of the following is the correct reading of that status?
+**5.** A container reports `ImagePullBackOff`. Which of the following is the correct reading of that status?
 
 A) The image was pulled but failed its integrity check, and Kubernetes has given up
 B) The container could not start because the image could not be pulled, and Kubernetes will keep retrying with increasing delay up to 300 seconds
 C) The image pull succeeded but the container crashed on start-up, and the kubelet is backing off before restarting it
 D) The node has insufficient disk space, so the pull has been deferred indefinitely
 
-**4.** A platform team must run customer-submitted code on the same cluster as internal services, and the customer workloads require a stronger isolation boundary than the internal ones. Which instrument fits, and why?
+**6.** A platform team must run customer-submitted code on the same cluster as internal services, and the customer workloads require a stronger isolation boundary than the internal ones. Which instrument fits, and why?
 
 A) A separate cluster, because isolation strength is a cluster-level property
 B) RuntimeClass, to run the customer Pods on a runtime using hardware virtualization or a user-space kernel, at the cost of extra overhead
@@ -866,35 +734,42 @@ D) A separate namespace with a restrictive NetworkPolicy, which segments the cus
 
 **Answers with Explanations**
 
-**1 — B.** If no tag is specified, the default `imagePullPolicy` is Always [source: k8s-docs-images-2026-08-23]. The reference names a registry and an image but no tag, so the no-tag case applies.
-- **A is wrong.** The registry hostname has no effect on pull policy; the *tag form* determines the default.
-- **C is wrong.** There is no single global default. There are four conditional defaults, and IfNotPresent is only two of them: digest, and any tag other than `:latest` [source: k8s-docs-images-2026-08-23].
-- **D is wrong**, and it reaches the right answer by an invented rule, which is the more dangerous kind of wrong. The policy here *is* Always, but because no tag was given, not because a hostname was. Apply this half-rule to `internal.registry.example/api-gateway:v3` and it produces Always, where the correct answer is IfNotPresent.
+**1 — C.** The container runtime manages a container's execution and lifecycle; Kubernetes supports containerd, CRI-O, or any other CRI implementation [source: k8s-docs-containers-2026-08-23].
+- **B** is the tempting distractor: the kubelet ensures containers are running [source: k8s-docs-cluster-architecture-2026-08-23], but it delegates creation to a runtime across the CRI — wanting a container to exist isn't the same as starting it.
+- **A** and **D** confuse control-plane components (API server, scheduler) with the node-level work of starting a process.
 
-**2 — B.** With `Always`, the kubelet queries the registry to resolve the name to a digest, and if it already has an image with that exact digest cached locally, it uses the cached image; otherwise it pulls [source: k8s-docs-images-2026-08-23].
-- **A is wrong**, and it is the distractor the policy's name invites. `Always` means always *check*, not always *download*.
-- **C is wrong.** The resolution is by digest, not by timestamp comparison.
-- **D is wrong.** The kubelet does not track tag changes between launches; it re-resolves the reference each time.
+**2 — C.** The OCI runtime specification governs how to run a filesystem bundle unpacked on disk [source: oci-overview-2026-08-23]; "filesystem bundle" is the specification's own term.
+- **B** is the CRI/OCI conflation worth watching for: the CRI governs how Kubernetes talks to a runtime, not how a bundle executes.
+- **A** gets the governing body and the artifact both wrong; **D** names the right family but the wrong spec — image-spec defines format, not execution.
 
-**3 — B.** `ImagePullBackOff` means a container could not start because Kubernetes could not pull the image, whether from an invalid image name or a private registry without credentials, and the BackOff indicates continued retries with increasing delay up to a compiled-in limit of 300 seconds [source: k8s-docs-images-2026-08-23].
-- **A is wrong** twice: the pull did not succeed, and Kubernetes has not given up. Retrying is what BackOff describes.
-- **C is wrong.** That describes a different failure mode entirely; here the image never arrived.
-- **D is wrong.** Disk pressure is a distinct node condition and is not what this status reports.
+**3 — B.** OCI, the governance body behind all three specifications, splits them by concern: image-spec covers the manifest and layer serialization, distribution-spec covers the registry transfer API, runtime-spec covers execution [source: oci-overview-2026-08-23].
+- **D** is the tempting one — it gets image-spec right, then swaps *moving* and *running*: distribution-spec transfers, runtime-spec executes. Read the artifact's lifecycle in order (exists, moves, runs) and the names follow.
+- **A** and **C** rotate all three assignments and land on none of them correctly.
 
-**4 — B.** RuntimeClass exists precisely to provide a balance of performance versus security: a workload deserving high information-security assurance can be scheduled onto a runtime using hardware virtualization (Kata Containers) or a user-space kernel (gVisor), benefiting from extra isolation at the expense of additional overhead [source: k8s-docs-runtime-class-2026-08-23].
-- **A is wrong.** Isolation strength is selectable per Pod via `runtimeClassName`, which is the entire point of the feature. A separate cluster may be defensible for other reasons, but not because isolation is cluster-fixed.
-- **C is wrong**, and it misses that the tradeoff runs both ways. The stronger runtime costs overhead; applying it to everything makes every workload pay for a boundary most of them don't need. Selectivity is the feature.
-- **D is wrong**, and it is a real control aimed at the wrong axis. Namespaces and NetworkPolicy segment *network* reachability; the requirement here is a stronger boundary between the workload and the host it runs on. Network segmentation does nothing about that. *[cross-bearing: see Ch 10 — NetworkPolicy]*
+**4 — B.** No tag means the default `imagePullPolicy` is Always [source: k8s-docs-images-2026-08-23]. Under Always, the kubelet resolves the reference to a digest each launch and reuses the cached image if that digest is already present [source: k8s-docs-images-2026-08-23] — Always means always *check*, not always *download*.
+- **D** reaches the right policy through an invented rule (hostname triggers Always) and assumes an unconditional download; apply that rule to a tagged reference like `:v3` and it wrongly predicts Always where IfNotPresent applies.
+- **A** and **C** assume IfNotPresent applies here; there's no single global default, only four conditional ones, keyed on digest or tag form.
+
+**5 — B.** `ImagePullBackOff` means the container couldn't start because the pull failed — bad image name, missing registry credentials — and Kubernetes keeps retrying with increasing delay up to 300 seconds [source: k8s-docs-images-2026-08-23].
+- **A** and **C** both assume the pull succeeded; it didn't. **D** describes disk pressure, a separate node condition entirely.
+
+**6 — B.** RuntimeClass balances performance against security: a workload needing stronger isolation can run on Kata Containers (hardware virtualization) or gVisor (a user-space kernel), at the cost of extra overhead [source: k8s-docs-runtime-class-2026-08-23].
+- **A** is wrong — isolation is selectable per Pod via `runtimeClassName`, which is the entire point of the feature.
+- **C** misses that the tradeoff runs both ways: applying the strongest runtime everywhere makes every workload pay overhead most of them don't need.
+- **D** aims a control at the wrong axis — NetworkPolicy segments network reachability, not the boundary between a workload and the host it runs on. *[cross-bearing: see Ch 10 — NetworkPolicy]*
 
 ---
 
 **Checkpoint: You've Now Mastered**
+✓ The full path from a Pod's image field to a running process, and which component owns each hop
+✓ That Kubernetes defines the CRI and implements nothing below it
+✓ The OCI as a governance body with three specifications, and which artifact each one governs
+✓ The CRI/OCI boundary, the discrimination that Chapter 17 will lean on
 ✓ The three pull policies and, more importantly, the four conditional defaults
 ✓ Why `Always` does not mean "always download"
 ✓ `ImagePullBackOff` — what it reports and what BackOff implies
 ✓ RuntimeClass, and the fact that isolation strength is a per-workload decision
-
-Everything in this chapter is now on the table. One short section to see why it all has the shape it has.
+☐ Why the pieces click together — one short section remains
 
 ---
 

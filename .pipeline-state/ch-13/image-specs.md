@@ -458,7 +458,7 @@ A single vertical stack of five stacked cells, drawn as one bordered column subd
 ```yaml-figure-spec
 anchor_id: ch13-fig06-diagnostic-layer-stack
 diagram_type: component_diagram
-source_ascii: |
+source_ascii: |5
      ┌──────────────────────────────────────────────┐
      │  kubectl                          [terminal] │   Everything above this
      ├──────────────────────────────────────────────┤   line is the cluster's
@@ -548,7 +548,7 @@ A pipeline reading top to bottom. The top band holds three boxes in a horizontal
 ```yaml-figure-spec
 anchor_id: ch13-fig04-metrics-pipeline-and-metrics-server
 diagram_type: data_flow
-source_ascii: |
+source_ascii: |4
     ┌───────────┐   ┌──────────┐   ┌─────────┐
     │ container │──▶│ cAdvisor │──▶│ kubelet │   in the kubelet binary,
     │  runtime  │   │          │   │         │   on EVERY node, always present

@@ -315,14 +315,6 @@ figures_planned:
 > *"Every deploy is a claim about what should be true. Most of them are never checked again."*
 > — Lodestar Ledgers
 
-<!-- RESOLVED 2026-08-31 (integration gate): the callback was verbatim, and it was not the
-     only one -- this chapter's opening paragraph also restates Ch 14's closing paragraph
-     nearly word for word, so together roughly 60 words of Ch 14's last page were reproduced
-     on Ch 15's first. Same information, same channel, immediately adjacent: the negative
-     kind of redundancy under skill Part 7, landing exactly where arousal has to be
-     established. The prose recap does real structural work (it sets up the two-halves
-     split), so the epigraph was the cheaper cut and is now a new line on intent vs.
-     outcome. -->
 
 ---
 
@@ -401,10 +393,6 @@ In my experience, practitioners who make this shift describe the same two feelin
 
 The stakes here were banked in Chapter 1, and one clause will do: this domain doubled in the 2025-11-24 blueprint revision. Chapter 14 cashed the first half. This is the second.
 
-<!-- RESOLVED 2026-08-31 (integration gate): Chapter 1 does carry the pre-revision blueprint,
-     sourced to lf-kcna-program-changes-2026-08-23 (ch01:246, ch01:259 — "Cloud Native App
-     Delivery 8% -> 16% (x2)"). Figure restored here on that tag, as this note directed. No
-     archived curriculum PDF needed. -->
 
 **About what CNCF actually publishes.** Chapter 14 made this statement at length and it covers this chapter too, so one back-bearing rather than a repetition: the published curriculum gives two competency names under this domain and no list of topics beneath either *[cross-bearing: see Ch 14 — Why This Chapter Matters]*. What supports the inference that GitOps belongs here is positive rather than speculative. Argo and Flux are both CNCF **graduated** projects [source: cncf-project-maturity-levels-2026-08-23], and OpenGitOps is a CNCF project [source: opengitops-principles-v1-2026-08-31]. A CNCF exam asking about application delivery is asking about the delivery model CNCF's own graduated projects implement. That is the basis. It is a good one, and it is honest about being an inference.
 
@@ -1154,10 +1142,6 @@ Now move it. Take the desired state out of etcd and put it in a Git repository.
 
 **Figure 15.7 — The control loop, pointed at a repository.** Lay this beside Chapter 3's control-loop figure and the point is that it is the same loop. The controller sits in the same place, the API server is still the only door in, and the arrows run in the same directions. One box changed contents.
 
-<!-- RESOLVED 2026-08-31 (integration gate): ch03-fig02 has been redrawn onto this
-     figure's chassis, so the caption's "lay this beside Chapter 3's" instruction is now
-     checkable by a reader who actually flips back. The two are a matched pair and must
-     be regenerated together at the diagram pass. -->
 
 Look at what did *not* move.
 

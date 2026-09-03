@@ -271,11 +271,6 @@ Before reading this chapter, try these eight questions. Your score determines ho
 
 2. **`Service.Type=LoadBalancer`** *[cross-bearing: see Ch 9 §3 — the Service type ladder]*. Fifty of them costs fifty external addresses, fifty provisioned load balancers, fifty line items on a cloud bill, and fifty things to configure, monitor, and eventually decommission.
 
-<!-- RESOLVED 2026-08-30 (integration gate): not a research gap. Shipped Ch 9 §3 states
-     "A LoadBalancer Service gives you one external address per Service" and frames the
-     fifty-Service arithmetic as this book's own argument, not as documented fact. The ratio is
-     Ch 9-owned book reasoning, correctly inherited here, and the cross-bearing is the right
-     treatment. No source tag is needed, and none is possible. -->
 
 3. **None of them.** None of them reads HTTP. Three of the four operate on addresses and ports; the fourth, ExternalName, is a DNS alias with no proxying set up at all `[source: k8s-docs-service-2026-08-23]`. `/checkout` and `/catalog` are bytes inside an HTTP request, and nothing in Chapter 9 opens the request to look.
 
@@ -368,10 +363,6 @@ Two words from ordinary industry vocabulary that this book has not used yet. The
 
 This chapter does one of each. §1 through §5 are about north-south. §6 and §7 are about east-west.
 
-<!-- RESOLVED 2026-08-30 (integration gate): the revisit trigger fired — the question pass
-     added nothing, so the pair was taught, mnemonic'd and summarized across 41 questions
-     without once being assessed. Practice question 19 now tests it directly, against the
-     chapter's own §1-§5 / §6-§7 split. The mnemonic stays. -->
 
 > 🪢 **Mnemonic:** *North-south goes through the wall; east-west stays inside it.* §1–§5 is the wall. §6–§7 is inside.
 
@@ -1552,11 +1543,6 @@ The pairing is also the chapter's own map: §1–§5 is one direction, §6–§7
 | **Out of scope** | No TLS, no Service-name targeting, no logging, no explicit deny, no loopback blocking, and five more. |
 | **The rule** | An object without its component does nothing. Four instances of the pattern so far. Ask: *what is watching this, and is it installed?* |
 
-<!-- RESOLVED 2026-08-30 (integration gate): not a research gap. Shipped Ch 9 §3 states
-     "A LoadBalancer Service gives you one external address per Service" and frames the
-     fifty-Service arithmetic as this book's own argument, not as documented fact. The ratio is
-     Ch 9-owned book reasoning, correctly inherited here, and the cross-bearing is the right
-     treatment. No source tag is needed, and none is possible. -->
 
 <!-- AUTHOR-REVIEW: The `pathType` row drops "Longest match wins; `Exact` breaks ties" per curriculum-alignment R3, which authorizes the three values, required-ness, and the element-wise example only. If the §2 pass declines the matching cut at the precedence rule, restore the clause here so the two do not disagree. -->
 

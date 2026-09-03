@@ -752,12 +752,6 @@ What is *not* on that list: re-reading chapters you scored well on. It feels lik
 
 `the-lodestar.md` ships with this book, at the repository root. It is the one-page reference: the concentrated form of everything worth having in front of you in the hour before you sit down, and nothing else.
 
-<!-- RESOLVED 2026-08-31 (integration gate): the-lodestar.md is written and lives at the
-     repository root. Its blocks match this section's six, in this order: the exam's published
-     shape, exam-day pacing, the four hazards, the version-skew numbers, the confusion-pair
-     discriminators (which carry §2's homonym table as a subsection, since this section
-     describes that block as a compressed form of §2), and governance. The opening sentence is
-     present-tense again. Shipped Ch 1 line 452's promise of the file now resolves. -->
 
 ### What is in it
 

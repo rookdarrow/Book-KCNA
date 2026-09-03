@@ -1133,6 +1133,5 @@ The next time you see a Pod stuck in `Pending`, you will not wonder whether some
 
 > *"You cannot move a berth once it is assigned. You can only be careful about what you said before it was."*
 
-<!-- RESOLVED 2026-08-24: chapter-02's pointer was demoted to chapter level (`see Ch 7 — node selection, tolerations, and accounting for overhead`), which is satisfied by §3/§4/§2 collectively. No edit needed here. -->
 
-<!-- RESOLVED 2026-08-24: chapter-06 shipped; §1 (Deployments/ReplicaSets) and §7 (DaemonSets) both verified against final numbering, and ch-06 §7 now plants the DaemonSet-tolerations tease this chapter collects. -->
+

@@ -308,7 +308,6 @@ Chapter 2 left you with a promise: containers are not the unit Kubernetes schedu
 
 **A Pod represents a set of one or more running containers on your cluster** [source: k8s-docs-workloads-2026-08-23] — the documentation's own superlative is that Pods are *the smallest deployable units of computing that you can create and manage in Kubernetes* [source: k8s-docs-pods-2026-08-24]. It is the thing you hand Kubernetes when you want something run: the scheduler watches for newly created **Pods** with no assigned node and finds a node for each one [source: k8s-docs-kube-scheduler-2026-08-23]. You do not hand Kubernetes a container and ask for it to be placed. Chapter 2 already gave you the phrase that follows from this: containers in a Pod are **co-located and co-scheduled** to run on the same node [source: k8s-docs-containers-2026-08-23]. Every node in a cluster runs the containers that form the Pods assigned to that node. The assignment happens at Pod granularity, and the containers come along.
 
-<!-- RESOLVED 2026-08-24: k8s-docs-pods-2026-08-24 (harvested) opens with "Pods are the smallest deployable units of computing that you can create and manage in Kubernetes." The phrase is sourced; tag added below. -->
 
 That costs something. Everything in a Pod lands on one machine, scales as one thing, and dies as one thing. So the interesting question isn't *what* a Pod is. It's *why the wrapper exists at all*.
 
@@ -372,7 +371,6 @@ A Pod can hold more than one container. The question is when it should. Not ever
 
 Pods are used in two main ways [source: k8s-docs-pods-2026-08-24]. Overwhelmingly the most common is **one container per Pod**: the Pod is a thin wrapper around a single container, and that is what you should reach for by default. The other is **multiple tightly-coupled containers** that need to share resources, meaning a main application container plus one or more helpers that supplement or consume it.
 
-<!-- RESOLVED 2026-08-24: k8s-docs-pods-2026-08-24 states "Pods in a Kubernetes cluster are used in two main ways" and describes both. Tagged above. -->
 
 The decision rule is short, and it falls straight out of §1. There are exactly two mechanisms that make containers in one Pod tightly coupled:
 
@@ -401,9 +399,7 @@ The mechanics are simple. The semantics are what get tested.
 
 **Init containers run before the app containers, in the order they are declared, and each must run to completion successfully before the next one starts** [source: k8s-docs-init-containers-2026-08-24]**.** Only when all of them have succeeded does the kubelet start the Pod's app containers.
 
-<!-- RESOLVED 2026-08-24: k8s-docs-init-containers-2026-08-24 harvested ("Init containers run to completion sequentially, and the main container does not start until all the init containers have successfully completed"; failed init containers are restarted per restartPolicy). §3 tagged. -->
 
-<!-- RESOLVED 2026-08-24: figure numbering follows the arc outline's prescribed slugs, not document order (precedent: Ch 2 shipped the same property). Keep as-is. -->
 
 <!-- FIGURE: ch05-fig03-init-containers-sequence -->
 ![Two timelines: on the success path init-1 exits zero then init-2 exits zero, after which app-a and app-b start together in parallel; on the failure path init-2 exits non-zero, restart is governed by restartPolicy, and the app containers are never started](figures/ch05-fig03-init-containers-sequence.svg)
@@ -810,7 +806,6 @@ A hull is not cargo. The vessel is the thing that gets a berth, an address, and 
 ```
 -->
 
-<!-- RESOLVED 2026-08-24: chNN-zenith-<slug> is the arc outline's prescribed Zenith anchor form, with shipped precedent (ch02-zenith-standard-crate). Not malformed; keep. -->
 
 - **The Pod has an IP, not the container** — because a shared network namespace is what the wrapper exists to provide (§1).
 - **Containers reach each other on `localhost`** — same reason, same namespace (§1, §2).
@@ -1147,7 +1142,6 @@ This one needs §3 and §5 together. `Pending` means the Pod has been accepted b
 *A* is the trap, and it's a good one: it borrows the reasoning from question 9, which is correct there and wrong here. `Running` requires that **all** of the Pod's containers have been created. Question 9's crash-looping container had been created (repeatedly); these app containers never have, because the init sequence hasn't completed. Same rule, opposite outcome, and the difference is the word "created."
 *C* — `Failed` requires all containers terminated with at least one having failed and no automatic restarting. This one is still retrying.
 *D* — nothing has succeeded; the first init container completing is not the Pod completing, and `Succeeded` requires **all** containers to have terminated in success.
-<!-- RESOLVED 2026-08-24: the init-gating half is now sourced — k8s-docs-init-containers-2026-08-24, harvested. -->
 
 **23. B — `Running`.**
 A Pod is `Running` when it has been bound to a node, all of its containers have been created, and **at least one** container is still running, starting, or restarting [source: k8s-docs-pod-lifecycle-2026-08-23]. Two of three are running; that satisfies "at least one" comfortably.

@@ -1277,15 +1277,6 @@ ResourceQuota caps the namespace's aggregate; LimitRange supplies per-object def
 - **C is wrong** because `Never` means use only what is already on the node, and fail if nothing is there. The kubelet builds nothing.
 - **D is wrong** because `Always` re-checks the registry on every container start but places no requirement on how the image is referenced. A digest reference is a separate, stronger guarantee.
 
-<!-- RESOLVED 2026-08-31 (integration gate): walkthroughs 43-60 and the Scoring Rubric are
-     written below, against draft-v2's stems rather than draft-v1's (the numbering does not
-     map — draft-v2 rebuilt the exam block to break draft-v1's answer-key clustering).
-     The rubric's per-domain item lists were DERIVED MECHANICALLY from the per-item domain
-     tags in this answer key, not hand-keyed, which is what draft-v1's rubric got wrong:
-     asserted 26/17/10/7 and verified that every item 1-60 appears exactly once.
-     The guard that missed this now checks for a dropped tail as well as a short output
-     (certcomp pipeline/orchestrator.py) — draft-v2 was LARGER than draft-v1, so the size
-     floor could not see it. -->
 
 **43. C** — *D2.4 · Ch 11 §3 · ⚪*
 

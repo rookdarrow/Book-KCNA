@@ -453,15 +453,6 @@ You cannot give somebody a directory of manifests and expect them to install it 
 
 This is why "install metrics-server" is an *apply a file of objects* operation rather than a command. The project's own instruction is exactly that: `kubectl apply -f` against a published `components.yaml` [source: metrics-server-install-2026-08-31]. It needs the aggregation layer enabled on the API server to serve the Metrics API through it [source: metrics-server-install-2026-08-31], which is why the file contains registration and not just a workload. It is one indivisible apply because there is no unit smaller than "all of those files, plus the knowledge of which parts are yours to change."
 
-<!-- RESOLVED 2026-08-31 (integration gate): checked Ch 13's corpus as this note asked.
-     Ch 13 §7 sources metrics-server's ROLE but not its composition, so the
-     Deployment/Service/RBAC/APIService enumeration was never retrievable from Ch 13 and
-     the [retrieval: ch13] tag would have been false. Fetched
-     sources/metrics-server-install-2026-08-31.md instead: the page does NOT enumerate the
-     objects, but it does state the install shape -- `kubectl apply -f components.yaml`,
-     plus the aggregation-layer requirement -- which is the fact this chapter actually
-     argues from. Enumeration removed here and in the graded option; the argument is now
-     stronger, not weaker. -->
 
 > 🪝 **Snag:** It is tempting to read these four as one problem, "manifests are messy." They are not one problem, and the difference shows up on exam-shaped questions. Environment variation is about *what varies*. Ordering is about *sequence*. Versioning is about *identity over time*. Distribution is about *handing it to a stranger*. A tool can solve some and not others, and §6 is entirely about which solves which.
 
@@ -568,10 +559,6 @@ A directory containing any charts upon which this chart depends [source: helm-ch
 
 This solves a real problem: your application chart needs a Redis, and somebody has already written a good Redis chart, so you depend on theirs instead of writing your own. A chart in there is still a chart, which means it still has templates, which means it is still a source of objects.
 
-<!-- RESOLVED 2026-08-31 (integration gate): the extended sources/helm-charts-2026-08-31.md now carries
-     both halves — "A dependency should be an unpacked chart directory" for the charts/
-     relationship, and "After installation/upgrade of chart A a single Helm release is
-     created/modified" for the install semantics Practice Q3's distractor B rests on. -->
 
 > 🪝 **Snag:** `charts/` is not a chart repository. It is a directory *inside a chart* holding the charts that chart depends on. A chart repository is something else entirely: an HTTP server, out on the network, which §4 covers. The two share a word and share nothing else, and this is one of the genuinely easy confusions in this material. If you take one thing from this figure, take that annotation.
 
@@ -762,11 +749,6 @@ Charts are versioned according to SemVer 2, and a version number is required on 
 
 `Chart.yaml` separately carries `appVersion`, documented as "the version of the app that this contains" [source: helm-charts-2026-08-31] — the version of the *application the chart installs*. These move independently, and Helm says so outright: **"Note that the `appVersion` field is not related to the `version` field"** [source: helm-charts-2026-08-31]. It is informational, and has no impact on chart version calculations [source: helm-charts-2026-08-31]. You can ship chart 4.1.2 and 4.1.3 that both install nginx 1.25.3, because what changed between them was the chart. You can ship chart 5.0.0 that installs nginx 1.26.0, where both changed at once.
 
-<!-- RESOLVED 2026-08-31 (integration gate): sources/helm-charts-2026-08-31.md was re-fetched and
-     EXTENDED past its truncation point, exactly as this note specified, capturing the
-     Chart.yaml field table. `appVersion` and the "not related to the `version` field"
-     sentence are now cited here, in the answer key, and in the Chapter Summary. The
-     graded item ships sourced. -->
 
 > 🪢 **Mnemonic:** **Version is the box; `appVersion` is what's in the box.** You can redesign the box without changing the contents, and you can change the contents without redesigning the box. If a question gives you two numbers and asks which one the chart maintainer bumps when they fix a template typo, it is the box.
 
@@ -827,11 +809,6 @@ D) Neither; template fixes are not versioned changes
 
 **5. B.** The chart's own version tracks the packaging; `appVersion` tracks the application the chart installs, and they move independently — Helm states that `appVersion` "is not related to the `version` field" [source: helm-charts-2026-08-31]. **A inverts the two.** **C is wrong**: nothing requires them to move together, and requiring it would force meaningless application-version bumps for template fixes. **D is wrong**: charts are versioned according to SemVer 2 and a version is required [source: helm-glossary-2026-08-31], so any published change gets one.
 
-<!-- RESOLVED 2026-08-31 (integration gate): sources/helm-charts-2026-08-31.md was re-fetched and
-     EXTENDED past its truncation point, exactly as this note specified, capturing the
-     Chart.yaml field table. `appVersion` and the "not related to the `version` field"
-     sentence are now cited here, in the answer key, and in the Chapter Summary. The
-     graded item ships sourced. -->
 
 **If you scored 0–2:** Re-read **§3** before continuing. Not the whole chapter — §3. The chart/release/revision split is what §5 and §6 are built on, and if it has not landed yet, the Kustomize contrast will read as a second set of vocabulary rather than as a contrast.
 
@@ -1094,15 +1071,6 @@ D) Nothing; `kubectl top` works on any conformant cluster and the failure indica
 
 **5. B.** In a declarative system there is no installer; installation is applying objects somebody wrote — the project publishes a `components.yaml` and tells you to `kubectl apply -f` it [source: metrics-server-install-2026-08-31] *[cross-bearing: see Ch 13 §7 — metrics-server and the resource metrics pipeline]*. What this chapter added is the word for the packaged form of "objects somebody wrote" — in practice you will most often meet metrics-server as a chart, which is failure four answered. **A is wrong**: metrics-server is a separate component, not a feature gate, which is why `kubectl top` fails on a bare cluster in the first place. **C is wrong**: metrics-server is a Deployment that reads from the kubelets, not a per-node binary you install. **D is wrong**, and it is the misconception Chapter 13 named. `kubectl top` failing on a cluster without metrics-server is expected behavior, not a fault.
 
-<!-- RESOLVED 2026-08-31 (integration gate): checked Ch 13's corpus as this note asked.
-     Ch 13 §7 sources metrics-server's ROLE but not its composition, so the
-     Deployment/Service/RBAC/APIService enumeration was never retrievable from Ch 13 and
-     the [retrieval: ch13] tag would have been false. Fetched
-     sources/metrics-server-install-2026-08-31.md instead: the page does NOT enumerate the
-     objects, but it does state the install shape -- `kubectl apply -f components.yaml`,
-     plus the aggregation-layer requirement -- which is the fact this chapter actually
-     argues from. Enumeration removed here and in the graded option; the argument is now
-     stronger, not weaker. -->
 
 **If you scored 0–2:** Re-read **§5**, then the decision table in **§6**. The most common cause of a low score here is reading Kustomize as "Helm with different syntax," which makes every comparison question a coin flip.
 

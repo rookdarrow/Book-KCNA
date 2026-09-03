@@ -499,12 +499,6 @@ Then read the claim's StorageClass, because **the binding mode inverts the direc
 
 ★ **Fixed Point:** A `Pending` Pod with a `Pending` claim is a **storage** problem under `Immediate` binding and a **scheduling** problem under `WaitForFirstConsumer`. Same two symptoms, opposite direction of cause, and the StorageClass is the only thing that tells you which.
 
-<!-- RESOLVED 2026-08-31 (integration gate): written from the book's corpus --
-     sources/k8s-docs-persistent-volumes-depth-2026-08-25.md for the indefinite-unbound rule and
-     sources/k8s-docs-storage-classes-2026-08-25.md for both binding modes. The direction this note
-     flagged as needing verification is correct and is now the point of the passage:
-     WaitForFirstConsumer inverts which object is waiting on which. This discharges the
-     promise shipped Ch 11 line 588 makes by name. -->
 
 ### `Waiting`: scheduled, and unable to start
 
@@ -622,12 +616,6 @@ The second form is the one to reach for when you do not yet know which object is
 
 Chapter 6 left you a specific promise here. A Deployment that stalls reports `ProgressDeadlineExceeded`, a condition which says the rollout did not finish in time and says nothing at all about *why*. Several quite different underlying causes produce that identical condition, and Chapter 6 told you there were six of them. Here they are, from the same page Chapter 6 drew on: **insufficient quota, readiness probe failures, image pull errors, insufficient permissions, limit ranges, and application runtime misconfiguration** [source: k8s-docs-deployment-spec-fields-2026-08-24]. Notice how little they have in common. Two are about permission, one is about the registry, one is about the application's own health reporting, and one is about a quota you may not have known existed. A single condition string covers all six, which is exactly why the condition is a starting point and not a diagnosis. The events on the ReplicaSet and on its Pods are where the actual reason lives.
 
-<!-- RESOLVED 2026-08-31 (integration gate): the six causes are sourced after all, from
-     sources/k8s-docs-deployment-spec-fields-2026-08-24.md -- Chapter 6's own snapshot, which
-     was outside this chapter's corpus slice but inside the book's. Listing them here
-     discharges the promise shipped Ch 6 makes twice (§4 line 663, and TYB #2 line 778 in a
-     graded answer key). `progressDeadlineSeconds` itself remains uncached; Practice Q8's key
-     should not assert a default value for it. -->
 
 Worked through: a Deployment shows `ProgressDeadlineExceeded`. You describe the Deployment and learn only that it gave up waiting. You then find the new ReplicaSet it created (`kubectl describe deployment` names it), describe that, and find it created three Pods. You describe one of those Pods and find its container `Waiting` with `Reason: ImagePullBackOff`, and its events carry the registry's actual refusal: an authentication failure. The rollout stalled because the new image tag was pushed to a registry the cluster has no pull secret for.
 
@@ -912,10 +900,6 @@ This is scoped tightly: "Any Container exceeding a resource limit will be killed
 
 Chapter 5 put the same event a layer lower, saying that when a container exceeds its memory limit **the kernel** may terminate it [source: k8s-docs-resource-management-2026-08-23]. Both are true and they are not in competition: the kernel does the killing, and the kubelet observes the dead container and applies the Pod's `restartPolicy`. When a question asks who *restarts* the container, the answer is the kubelet. When it asks what *killed* it, the answer is the kernel enforcing a limit the kubelet set for it.
 
-<!-- RESOLVED 2026-08-31 (integration gate): shipped Ch 5 §8 line 1025 already places this
-     on the Terminated state, sourced to k8s-docs-pod-lifecycle-2026-08-23: "The container
-     reaches the `Terminated` state, with a reason and an exit code recorded." The framing
-     here and in TYB 2 Q1's stem is established canon. No softening needed. -->
 
 If a container is OOM-killed repeatedly, the visible signature in `kubectl get pods` becomes `CrashLoopBackOff` — that follows from two sourced facts (a container exceeding its limit is killed and restarted; repeated restarts enter backoff) rather than from a source that states it outright. The layering trips people up: `CrashLoopBackOff` and `OOMKilled` are not alternatives, they are two altitudes of the same event, and `describe` shows you the lower one under the container's last state.
 

@@ -212,9 +212,6 @@ figures_planned:
 | ☆ Taking Your Bearings #3 | 6 min | Medium | After brief break |
 | §8 — A Query With a Name | 5 min | Low | Anytime |
 
-<!-- RESOLVED 2026-08-30 (integration gate): the port-mechanics block was added to §3, so
-     that row is now 18 min and the rows sum to 101. The header's ~100 still rounds true and
-     is left alone. -->
 
 **Attention Cost Key:**
 - **Low:** Concrete, familiar concepts—study anytime
@@ -396,17 +393,6 @@ That published list runs longer than four [source: k8s-docs-extending-kubernetes
 
 Which network plugin? That is a genuine choice with genuine consequences. **Calico** is a networking and network policy provider supporting overlay and non-overlay networks, with or without BGP. **Cilium** provides a flat Layer 3 network with an eBPF-based data plane (see the glossary), in either native routing or overlay mode, and is a CNCF project at the Graduated level. **Flannel** is an overlay network provider [source: k8s-docs-cluster-addons-2026-08-24]. There are many more.
 
-<!-- RESOLVED 2026-08-30 (integration gate): the network-plugins snapshot was harvested to
-     sources/k8s-docs-network-plugins-2026-08-24.md, so the Fixed Point, Exam Alert #12 and the
-     trap-table row now carry "required to implement" on its authority. NOT added, and must not
-     be: "Kubernetes ships no network plugin by default" -- that snapshot's own note records
-     that the page does not contain the sentence.
-     STANDING (do not revert): this section names no executor of CNI binaries. CNI management
-     was removed from the kubelet in Kubernetes 1.24 and the container runtime loads the
-     plugins; do not restore "external programs that the kubelet executes."
-     STILL OPEN: the mechanism-level detail (node-to-node tunnels, BGP advertisement of Pod
-     CIDRs, kernel-level interception) narrowed out of the Closer Look per fact-accuracy F6
-     could now be restored from the same snapshot if a later pass wants it. -->
 
 ★ **Fixed Point:** Kubernetes **defines** the network model. A **CNI network plugin is required to implement** it. The four rules above are requirements the plugin satisfies, not machinery Kubernetes provides [source: k8s-docs-network-plugins-2026-08-24] [source: k8s-docs-extending-kubernetes-2026-08-23].
 
@@ -512,11 +498,6 @@ There are four Service types. Three of them are layers of the same mechanism. On
 
 ★ **Fixed Point:** The ladder types are **additive**. NodePort and LoadBalancer are both supersets of ClusterIP [source: k8s-docs-service-ports-2026-08-24], and the case the documentation spells out is the one to memorize: **a NodePort Service also has a cluster IP — Kubernetes sets one up, exactly as if you had requested `type: ClusterIP`** [source: k8s-docs-service-2026-08-23]. Asking for a higher rung never removes the rungs below it.
 
-<!-- RESOLVED 2026-08-30 (integration gate): the port-mechanics snapshot was harvested to
-     sources/k8s-docs-service-ports-2026-08-24.md, so the full three-rung claim is restored here,
-     in the figure annotation, and in the Bearings #1 answer-3 key. The snapshot flags
-     transcription variance on the exact wording of its "supersets" sentence, so the fact is
-     stated in the book's own words rather than quoted. -->
 
 ### The one that is not on the ladder
 
@@ -551,11 +532,6 @@ Four lines, not a flowchart. Definitions and additivity are more testable than t
 - You have a cloud provider that will hand you an external address → **LoadBalancer**.
 - You want an in-cluster name for something that isn't in the cluster at all → **ExternalName**.
 
-<!-- RESOLVED 2026-08-30 (integration gate): the snapshot was harvested to
-     sources/k8s-docs-service-ports-2026-08-24.md and the port-mechanics block is written above, at
-     the location this note specified. Scope held to the outline's guard: port/targetPort/
-     nodePort and the default range only. The snapshot's flagged transcription variance on
-     its three-field list means none of it is quoted verbatim. -->
 
 ### The three port numbers
 
@@ -1485,7 +1461,6 @@ A Service maps any incoming `port` to a `targetPort`, so a client connecting on 
      re-fetch of the Service page's `type: LoadBalancer` subsection lands in sources/.
      The "Kubernetes supplies none" half is separately sourced and stands as written. -->
 
-<!-- RESOLVED 2026-08-30 (integration gate): denominator corrected to 20, matching the B6 skeleton's 20-chapter book and the "Chapter N of 20" form already shipped in Ch 4 and Ch 5. -->
 
 ---
 

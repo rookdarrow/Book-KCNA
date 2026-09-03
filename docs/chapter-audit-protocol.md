@@ -21,6 +21,34 @@ The linter runs **first, not instead**. It catches what has already been encoded
 for what has not. Then work the checklist, file one bead per finding (`-l audit-finding`,
 `--deps discovered-from:<id>`), and close with a verdict.
 
+### Search by keyword, then look at the shapes
+
+Before any format-specific check, run:
+
+```bash
+python ../certcomp/scripts/variant_scan.py --book kcna --preset markers
+python ../certcomp/scripts/variant_scan.py --book kcna --preset figures --case
+```
+
+**Searching for a format is how a format audit goes wrong.** Every false count in this book
+came from assuming a shape and then trusting the number:
+
+| searched for | missed | consequence |
+|---|---|---|
+| `**Fixed Point` | `★ **Fixed Point` | "5 chapters missing it" — all had it |
+| `**1.**` | `**Q1.**` | 8 chapters reported zero questions |
+| `<!--.*?-->` | bodies containing `-->` | a 313,777-char runaway `<pre>` |
+| `source_ascii: \|` | `source_ascii: \|2` | 21 figures silently dropped |
+| `<!-- FIGURE:` | ids living only in frontmatter | "21 anchors missing" — wrong question |
+
+`variant_scan` searches the **word**, clusters the surrounding shapes, and flags minority
+forms. Its first run found four forms of one marker: `> **★ Fixed Point**` (26),
+`> ★ **Fixed Point**` (19), `> ★ **Fixed Point:**` (8), `★ **Fixed Point:**` (3).
+
+When a count looks wrong, **search for the identifier, not the syntax**. `<!-- FIGURE:`
+said 21 anchors were missing; searching `ch02-fig05-imagepullpolicy-decision` showed the ids
+sitting in frontmatter, which is a different finding entirely.
+
 ---
 
 ## A. Required structure
@@ -113,12 +141,28 @@ define / gloss+pointer / name+pointer / do not use.
 - `[retrieval: chN]` tags point at chapters already read.
 - Question difficulty spread is not all-easy or all-hard.
 
-## H. Figures
+## H. Figures, ASCII placeholders and icons
 
-- Alt text describes the figure, not the anchor id.
+- **Every anchor resolves to exactly one of**: an applied image, or a raw ``` ASCII
+  placeholder (correct while the figure is still `pending`), never both. Both means the
+  reader sees the diagram twice and print pays for it twice. Current state is clean: 86
+  anchors, 78 image, 7 ASCII, 0 both.
+- **Anchor vs frontmatter.** A `figure_anchor:` entry in the chapter's YAML with no
+  `<!-- FIGURE: -->` in the body is a figure with nowhere to land. 21 ids are in this state.
+- Alt text describes the figure, not the anchor id. Alt text was generated outside the voice
+  pass, so it is also where the British spellings concentrate.
 - **The caption claims what the figure shows.** `ch15-fig06` stacked its phases vertically
   while the spec called for left-to-right — accurate caption, wrong render.
 - Portrait figures (aspect < 0.75) render nearly full-page in print; note any taller than 3:4.
+- **ASCII-FALLBACK comment bodies** must not contain `-->`. Art arrows (`0 -> N   -->`) close
+  the comment early and orphan the terminator.
+- **Marker and difficulty emoji must never sit inside a fenced code block.** Substitution
+  skips fences, so the emoji survives to the EPUB and Kindle renders an empty box. 21 marker
+  icons are rendered to `markers/` and substituted at build time; check the chapter's markers
+  are in that set.
+- **Glyphs**: only the `stack` and `pipeline` figure families carry Lucide glyphs, and every
+  glyph must be registered in `certcomp-diagrams/assets/glyph-ledger.yaml` with exactly one
+  meaning. Any other family should be glyph-free.
 
 ## I. Scope — the judgment no tool can make
 

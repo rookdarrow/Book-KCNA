@@ -1093,6 +1093,161 @@ One step further down, and then we stop. If the kubelet itself is the suspect, e
 
 ---
 
+## 🟡 §6 — Versions That Don't Agree
+
+Chapter 8 taught you the version-skew rules and told you they would come back "in a form where you have to use it rather than recite it." This is that form. This section will not restate the skew table; go and re-read it if you need it *[cross-bearing: see Ch 8 §6 — the version-skew window and the three-minor rule]*. What it does is show you what skew *looks like* when you meet it as a symptom, and how you would rule it out.
+
+Skew is a diagnosis of last resort, and it is on the list precisely because nobody thinks of it. The symptoms it produces impersonate other problems convincingly.
+
+### The shape of a skewed client
+
+**Symptom:** `kubectl` reports that a resource type does not exist, or a field you are certain is valid is rejected, or output is missing columns another engineer sees.
+
+**Why skew explains it:** "`kubectl` is supported within one minor version (older or newer) of `kube-apiserver`." [source: k8s-version-skew-policy-2026-08-31] A client too far behind does not know about API groups the cluster has since added; a client too far ahead sends fields the server does not understand. Neither produces an error saying "your client is old." It produces an error about your *resource*, which sends you to your YAML.
+
+**How to rule it out:** run `kubectl version`. Compare client and server minor versions. If they are more than one apart, stop investigating your manifest. You are debugging your instrument, not the water.
+
+This is worth a specific warning because of who it happens to. An engineer with several clusters, one at 1.35 and one at 1.37, has one `kubectl` binary. It is inside the window for one cluster and outside it for the other, and the same command produces different results depending on which context is active.
+
+> 🪝 **Snag:** When a manifest applies cleanly against one cluster and is rejected by another, check `kubectl version` against both before you change a single line of YAML. The manifest is usually innocent.
+
+### The shape of a skewed kubelet
+
+**Symptom:** one node behaves differently from the others. A feature works everywhere except there. Pods scheduled to it fail in ways that make no sense against Pods with identical specs elsewhere.
+
+**Why skew explains it:** "`kubelet` may be up to three minor versions older than `kube-apiserver`" and "must not be newer than `kube-apiserver`." [source: k8s-version-skew-policy-2026-08-31] An old kubelet is *supported*; it is not an error state. But it does not implement API fields that were added after its release. It will accept a Pod spec containing a field it has never heard of and simply not act on it. No error. No event. The field is silently ignored on that one node.
+
+That silence is the whole danger. A misconfiguration produces a message; an unimplemented field produces nothing, which reads as "it worked."
+
+**How to rule it out:** `kubectl get nodes -o wide` prints each node's kubelet version. One node out of line with the others, on a cluster where a feature works inconsistently, is a strong lead. The general instruction from the project supports this as routine practice: when reporting a problem, include the "Kubernetes version: `kubectl version`" and the "container runtime version." [source: k8s-docs-troubleshooting-overview-2026-08-31] It is the first thing the maintainers ask for, which tells you how often it is the answer.
+
+There is a forward risk too. "Running a cluster with `kubelet` instances that are persistently three minor versions behind `kube-apiserver` means they must be upgraded before the control plane can be upgraded." [source: k8s-version-skew-policy-2026-08-31] A node at the far edge of the window is not merely a diagnostic curiosity; it is blocking the next control-plane upgrade.
+
+### Known issues as a triage step
+
+There is a step most people skip, and the same troubleshooting page that lists the four debugging guides closes by adding it: **"You should also check the known issues for the release you're using."** [source: k8s-docs-troubleshooting-overview-2026-08-31], pointing at the release notes on GitHub.
+
+That step feels like an admission of defeat, and it should not. The Kubernetes project "maintains release branches for the most recent three minor releases," with each getting "approximately 1 year of patch support." [source: k8s-version-skew-policy-2026-08-31] Fixes land in those branches continuously. A behavior that is genuinely a bug, and genuinely already known, will be described in the release notes of the version you are running, and hours of careful, correct investigation will arrive at a conclusion someone already wrote down.
+
+Reading the known issues first is not giving up. It is the cheapest step available and it is on the official list.
+
+> ⚓ **Worth Securing:** When a failure survives the whole triage flow (phase, conditions, events, logs, node) and still makes no sense, your next two moves are `kubectl version` across every component you can reach, and the release notes for the version you are on. Both are five-minute checks. Both are on the official troubleshooting path. Neither is where anyone thinks to look on the second hour of an incident.
+
+<!-- AUTHOR-REVIEW: an earlier draft asserted that "Kubernetes ships roughly three minor releases a year." That cadence claim is in no snapshot in this corpus — the version-skew page states the three-release support window and the ~1 year of patch support, and nothing about releases per year — so the clause has been removed rather than shipped from memory beside a tag that does not cover it. If the cadence is wanted, fetch kubernetes.io/releases/ and restore it with its own tag. Note also that Ch 17 §8 owns the release cadence per the term ledger, so a pointer may be the better answer than a fact. -->
+
+<!-- AUTHOR-REVIEW: Outline Open Question 3 (the LTS hazard) is unresolved. Per the term ledger, the fact that Kubernetes has no long-term-support release belongs to Ch 8 §6, and shipped Ch 8 does not state it. This section therefore does NOT raise the question, and no graded item in this chapter hinges on it. The 08-31 skew snapshot confirms the page contains no use of the term "LTS" at all. If the author retrofits a Navigational Hazards line into Ch 8 §6, this section can then retrieve it. -->
+
+*[cross-bearing: see Ch 17 §8 — SIG Release and the release cadence]*
+
+---
+
+## 🔵 §7 — Numbers Nobody Collects by Default
+
+You have a Pod you suspect is memory-hungry. You type the obvious command:
+
+```
+kubectl top pod myapp
+```
+
+And you get an error.
+
+Not a Pod-specific error, but an error saying the metrics API is unavailable, or the server could not find the requested resource. The same command fails identically for every Pod, every node, and every namespace on the cluster.
+
+Nothing is broken. **A stock Kubernetes cluster publishes no usage metrics at all** — not because nobody is measuring, but because nobody installed the component that would gather the measurements into an API you can query. The soundings are being taken on every node. There is simply nobody amidships writing them into a book you can read.
+
+### The pattern you already own
+
+You have met this exact shape before. Chapter 3 gave you the sentence and Chapter 10 §3 named it as a pattern: **an object without its component does nothing.** An Ingress object on a cluster with no Ingress controller is accepted by the API server, stored in etcd, retrievable with `kubectl get`, and completely inert. The API is the contract. The controller is the implementation. Kubernetes ships the contract; somebody has to install the implementation.
+
+*[cross-bearing: see Ch 10 §3 — an object without its component does nothing]*
+
+`kubectl top` is the same pattern with one twist: here it is not even the object that is missing, it is the **API itself**. The Metrics API is not part of the core API server. It is served by an extension, and if nobody deployed that extension, the API server has no such endpoint to route your request to. Hence the shape of the error: not "no data," but "no such resource."
+
+### What the pipeline actually is
+
+<!-- FIGURE: ch13-fig04-metrics-pipeline-and-metrics-server -->
+![A metrics pipeline flowing from the container runtime through cAdvisor to the kubelet, then over the slash metrics slash resource endpoint to a metrics-server box drawn with a dashed border and marked not installed by default, then over metrics.k8s.io to the API server, which serves both the horizontal pod autoscaler and kubectl top](figures/ch13-fig04-metrics-pipeline-and-metrics-server.svg)
+
+<!-- ASCII-FALLBACK
+```
+  ┌───────────┐   ┌──────────┐   ┌─────────┐
+  │ container │──▶│ cAdvisor │──▶│ kubelet │   in the kubelet binary,
+  │  runtime  │   │          │   │         │   on EVERY node, always present
+  └───────────┘   └──────────┘   └────┬────┘
+                                      │  /metrics/resource
+                                      ▼
+                         ┌ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ┐
+                            metrics-server        ◄── NOT INSTALLED BY DEFAULT.
+                         │  (cluster addon)     │      This gap is the whole
+                         └ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ┘      reason `kubectl top` fails.
+                                      │  metrics.k8s.io
+                                      ▼
+                              ┌───────────────┐
+                              │  API server   │
+                              └───┬───────┬───┘
+                                  │       │
+                          ┌───────▼──┐  ┌─▼──────────┐
+                          │   HPA    │  │kubectl top │
+                          └──────────┘  └────────────┘
+```
+-->
+
+*The dashed box is the whole lesson. Everything solid is already running on your cluster right now. The measurements exist; nothing is publishing them.*
+
+Working from the bottom of the stack up [source: k8s-docs-resource-metrics-pipeline-2026-08-31]:
+
+**cAdvisor** is a "Daemon for collecting, aggregating and exposing container metrics included in Kubelet." Note *included in*: it is part of the kubelet binary, on every node, always. Nobody installs it.
+
+**The kubelet** exposes what cAdvisor gathered: "Resource metrics are accessible using the `/metrics/resource` and `/stats` kubelet API endpoints."
+
+**metrics-server** is the missing piece: a "Cluster addon component that collects and aggregates resource metrics pulled from each kubelet. The API server serves Metrics API for use by HPA, VPA, and by the `kubectl top` command. Metrics Server is a reference implementation of the Metrics API."
+
+**The Metrics API** is what consumers actually query: a "Kubernetes API supporting access to CPU and memory used for workload autoscaling. To make this work in your cluster, you need an API extension server that provides the Metrics API."
+
+That last sentence is the fact. The API exists as a specification; it does not exist on your cluster until something serves it.
+
+The 2026-08-23 snapshot is blunter still: metrics-server "is a cluster addon component (not deployed by default in all distributions)." [source: k8s-docs-resource-metrics-pipeline-2026-08-23] Some distributions install it for you; many do not. Which is why "does `kubectl top` work?" is a genuinely useful first question about an unfamiliar cluster. It tells you something about how thoroughly the cluster was built.
+
+<!-- AUTHOR-REVIEW: an earlier draft named `kubeadm`, `kind`, and bare self-hosted clusters as ones that do NOT install metrics-server, and asserted that managed platforms often do. Neither claim is in any snapshot — the corpus goes exactly as far as "not deployed by default in all distributions" and no further — so the per-distribution breakdown has been cut to the sourced formulation. To restore it, fetch the metrics-server project README, which states the installation requirement directly. -->
+
+> ★ **Fixed Point**
+>
+> **`kubectl top` requires metrics-server, and many distributions do not install it.** An error from `kubectl top` is a statement about what is installed on the cluster, not about the workload you asked about.
+
+The same absence has a second consequence people meet separately and never connect: **a HorizontalPodAutoscaler reads the same Metrics API.** [source: k8s-docs-resource-metrics-pipeline-2026-08-31] An HPA created on a cluster without metrics-server is accepted like any other object, has no metric source to read, and never scales anything: the same pattern, one layer up. *[cross-bearing: see Ch 6 §2 — the HPA in one sentence]* and *[cross-bearing: see Ch 17 §7 — the autoscaling landscape]*
+
+<!-- AUTHOR-REVIEW: the HPA's *dependency* on the Metrics API is fully sourced. What an HPA object visibly *reports* on a cluster without metrics-server (an earlier draft said "unknown metrics") is not in any snapshot, so the prose above and TYB 3 Q3's key now state only the sourced consequence: created, no metric source, never scales. Fetch the HorizontalPodAutoscaler docs if the specific status text is wanted. -->
+
+One scope note worth carrying: metrics-server "is meant only for autoscaling purposes — for example, don't use it to forward metrics to monitoring solutions, or as a source of monitoring solution metrics." [source: k8s-docs-resource-metrics-pipeline-2026-08-23] It holds current values for autoscaling decisions. It is not a monitoring system, it keeps no history, and you cannot query it for what happened an hour ago. *[cross-bearing: see Ch 18 §3 — metrics-server versus a monitoring system]*
+
+*[cross-bearing: see Ch 3 §4 — addons, and what else is optional]*
+
+### Where logs actually live, and why `kubectl logs` is not an archive
+
+The same "nobody built this for you" argument applies to logs, and it is the one that costs people evidence.
+
+When you run `kubectl logs`, the request goes to the API server, which routes it to the kubelet on the node, and "the kubelet on that node handles the request and reads directly from the log file; the kubelet returns the content of the log file; only the latest log file's contents are available." [source: k8s-docs-logging-architecture-2026-08-23]
+
+There is no log database. There is a file on a node's disk, and a kubelet willing to read it to you.
+
+That file is rotated: the kubelet "is responsible for rotating container logs and managing the logging directory structure, configured via containerLogMaxSize (default 10Mi) and containerLogMaxFiles (default 5)." [source: k8s-docs-logging-architecture-2026-08-23] And it is not durable against the events this chapter is about: "if a container restarts, the kubelet keeps one terminated container with its logs. If a pod is evicted from the node, all corresponding containers are also evicted, along with their logs." [source: k8s-docs-logging-architecture-2026-08-23]
+
+Read that last clause against §4. **An evicted Pod takes its logs with it.** The failure you most want to investigate is the one whose evidence is most likely gone.
+
+The Kubernetes project states the gap plainly: "In a cluster, logs should have a separate storage and lifecycle independent of nodes, pods, or containers. This concept is called cluster-level logging." And: **"Cluster-level logging architectures require a separate backend to store, analyze, and query logs. Kubernetes does not provide a native storage solution for log data. Instead, there are many logging solutions that integrate with Kubernetes."** [source: k8s-docs-logging-architecture-2026-08-31]
+
+The most common answer is to "use a node-level logging agent that runs on every node (typically a DaemonSet) and pushes logs to a backend." [source: k8s-docs-logging-architecture-2026-08-23] That is the whole gloss you need here; the agents themselves, and the architecture around them, are Chapter 18's. *[cross-bearing: see Ch 18 §6 — node-level logging agents]* and *[cross-bearing: see Ch 6 §7 — DaemonSets]*
+
+> ⚠ **Navigational Hazards**
+>
+> **`kubectl logs` is a live read, not an archive.** It reads a file on a node, and that file is rotated, capped, and destroyed along with the Pod.
+>
+> The reader most likely to be caught by this is the one investigating the most interesting failure: an eviction, a node that died, a Pod deleted and recreated by a controller. In every one of those cases the evidence is gone by definition, and the absence of logs means nothing about what the application did.
+>
+> This is the same lesson as the event retention window in §3, arriving from a second direction. Two of the platform's diagnostic surfaces are ephemeral by design. Neither one's silence is evidence.
+
+---
+
 ## ☆ Taking Your Bearings #2 — Failure, Drift, and What Isn't There
 
 Eight questions on §4 through §7. Two of them reach back into earlier chapters.

@@ -744,6 +744,252 @@ Same loop. Same mechanics. Opposite direction.
 
 ---
 
+## 🔵 §6 — When Pods Are Not Interchangeable
+
+Everything so far has quietly rested on one assumption, and it is time to name it.
+
+A Deployment is a good fit for managing a stateless application workload where **any Pod in the Deployment is interchangeable** and can be replaced if needed [source: k8s-docs-workloads-2026-08-23]. That is why a count plus a template is a sufficient description of the whole workload. If any Pod can stand in for any other, then "three of these" says everything there is to say. It is also why §2's demonstration was unremarkable: the replacement Pod had a different name and a different UID and nothing cared, because nothing was depending on *which one it was*.
+
+Now ask Soundings question 4 again. What if they are not interchangeable? What if this one is the primary and that one is the replica, each holding data that belongs to it specifically, each reachable at an address the others have written down?
+
+### The resource
+
+A **StatefulSet** runs a group of Pods and maintains a sticky identity for each of them, which is useful for managing applications that need persistent storage or a stable, unique network identity [source: k8s-docs-statefulset-2026-08-24]. The pivotal sentence: like a Deployment, a StatefulSet manages Pods based on an identical container spec, but unlike a Deployment, it maintains a sticky identity for each Pod, and **these Pods are created from the same spec but are not interchangeable: each has a persistent identifier that it maintains across any rescheduling** [source: k8s-docs-statefulset-2026-08-24].
+
+That identity is concrete, not conceptual. For a StatefulSet with N replicas, each Pod is assigned an integer ordinal unique across the set — by default, from 0 through N−1 — and each Pod derives its hostname from the StatefulSet's name and its own ordinal. The pattern is `$(statefulset name)-$(ordinal)`, so a three-replica StatefulSet named `web` produces `web-0`, `web-1` and `web-2` [source: k8s-docs-statefulset-2026-08-24].
+
+Storage sticks to the identity too. For each volume claim template defined in a StatefulSet, each Pod receives one PersistentVolumeClaim, and **the same claim will be bound to that Pod throughout its lifecycle**; when the Pod is rescheduled onto a different node, its mounts follow [source: k8s-docs-statefulset-2026-08-24]. This is what the workloads overview means when it says a StatefulSet matches each Pod with a PersistentVolume, and that code running in those Pods can replicate data to other Pods in the same StatefulSet to improve overall resilience [source: k8s-docs-workloads-2026-08-23].
+
+And the ordering is guaranteed rather than incidental: for a StatefulSet with N replicas, Pods are created sequentially in order from 0 to N−1 and terminated in reverse order from N−1 to 0, and before a scaling operation is applied to a Pod, all of its predecessors must be Running and Ready [source: k8s-docs-statefulset-2026-08-24].
+
+<!-- FIGURE: ch06-fig05-statefulset-vs-deployment-identity -->
+```
+  Deployment — Pods are interchangeable
+
+     web-7d4b-x9k2      web-7d4b-mn4p      web-7d4b-qq8j
+                             ✗ dies
+                               │
+                               └──▶  web-7d4b-z7rt
+                                     new name, new UID.
+                                     Nothing depended on which one it was.
+
+  StatefulSet — identity is sticky, and the storage belongs to the identity
+
+     db-0 ──┐           db-1 ──┐           db-2 ──┐
+            │                  │                  │
+        [ vol db-0 ]       [ vol db-1 ]       [ vol db-2 ]
+       ✗ dies  ▲
+         │     │
+         └──▶ db-0 reattaches here
+              same name, same volume.
+              The identity outlived the Pod.
+```
+
+**Figure 6.4 — the storage belongs to the identity, not to the Pod.** Look at the lower row carefully. The volume is not drawn attached to a Pod; it is drawn attached to `db-0`, which is a slot that Pods pass through. That is the claim, and Chapter 11 is where it gets completed.
+
+<!-- AUTHOR-REVIEW (figure bookkeeping, two items, neither corrected here because both would break the image-specs join key):
+     (1) Anchor IDs and caption numbers are transposed for the fourth and fifth figures. `ch06-fig05-statefulset-vs-deployment-identity` carries caption "Figure 6.4"; `ch06-fig04-workload-resource-decision-tree` carries caption "Figure 6.5". Caption numbering is internally consistent (6.1–6.6) and every in-text reference — including the Exam Alert's "Figure 6.5" for the decision tree — matches the captions, so the captions are load-bearing and the anchor IDs are the outlier. Fixing means swapping the two `figNN` tokens in BOTH the draft anchors and image-specs.md in one edit.
+     (2) `ch06-zenith-control-loop-instantiated` (§9) does not match the `ch{NN}-fig{MM}-{slug}` pattern; the contract also permits `chNN-zenith-slug`, so it is legal, but if the author prefers sequence conformance the ID would become `ch06-fig06-control-loop-instantiated`, again requiring a matching image-specs edit. -->
+
+> ★ **Fixed Point:**
+>
+> **The property that distinguishes a StatefulSet from a Deployment is whether the Pods are interchangeable, not whether the application writes to disk.**
+>
+> StatefulSet is for related Pods with stable, sticky identities, each typically paired with its own durable storage that follows the identity rather than the Pod.
+
+> 🪝 **Snag:** "It writes to disk, so it needs a StatefulSet." No. A stateless web server can write to disk (caches, temp files, uploaded images on a shared volume) and a Deployment's Pods can mount volumes perfectly well. The question is never *does it write*. The question is: **if I destroyed this Pod and a differently-named Pod appeared in its place, would anything be broken?** If the answer is no, it is a Deployment, disk or no disk.
+
+> **Extended Analogy:** A Deployment's Pods are a watch rotation. Any qualified hand can stand any watch; the roster says "three on deck," not "these three on deck," and when someone goes below you send up whoever is next. The order is a number and a qualification.
+>
+> A StatefulSet's Pods are a pilot who knows this harbor. The order is not "one pilot." It is *this* pilot, who has the approach notes for this specific entrance, whose knowledge is not transferable by handing someone else the same job title. If that pilot is relieved, the relief has to be given the same approach notes, the same depths, and the same name on the manifest, or the ship goes aground while everyone insists the roster is full.
+>
+> Both are legitimate ways to staff a task. Confusing them costs you in exactly one direction: treat interchangeable crew as irreplaceable and you carry unnecessary machinery; treat irreplaceable crew as interchangeable and you lose data.
+
+### A loop left open on purpose
+
+You have now been told that a StatefulSet's Pods each get their own persistent storage, and you have not been told how that storage is provisioned, requested, sized, reclaimed, or shared. That is deliberate, and you should know it is deliberate rather than wonder what got skipped.
+
+The storage half of this — PersistentVolume, PersistentVolumeClaim, StorageClass, access modes, and the provisioning path — is a chapter of its own, and it needs vocabulary this chapter has not built.
+
+<!-- AUTHOR-REVIEW: two Chapter 11 facts were cut from this paragraph in revision, per the curriculum-alignment stage and research-manifest note 8 — that a StatefulSet's storage must be provisioned by a PV provisioner from the requested storage class or pre-provisioned by an admin, and that deleting or scaling down a StatefulSet does NOT delete the associated volumes [source: k8s-docs-statefulset-2026-08-24]. The second one should move into ch06-fig05's DESIGN BRIEF (not the reader's prose), where it is the cleanest evidence for the figure's requirement that storage belongs to the identity rather than to the Pod. -->
+
+*[cross-bearing: see Ch 11 — PersistentVolumes, claims, and how a Pod's storage follows its identity]*
+
+One more open thread, smaller: StatefulSets currently require a headless Service to be responsible for the network identity of the Pods, and you are responsible for creating it [source: k8s-docs-statefulset-2026-08-24]. What a headless Service is belongs with the rest of Services. *[cross-bearing: see Ch 9 — headless Services and stable DNS names]*
+
+*[cross-bearing: see Ch 16 — debugging StatefulSets and their claims]*
+
+<!-- AUTHOR-REVIEW: chapter-01 line 435 carries a published cross-bearing reading "*[see Ch 6 §3 — StatefulSets and stable identity]*". StatefulSet is §6 in this chapter, and §3 is pinned by chapter-04 line 688 (selectors and ownership), which cannot move. Per the outline's Open Question #1, the recommended fix is a one-token edit in chapter-01: §3 → §6. Not fixable from inside this draft. -->
+
+---
+
+## ⚪ §7 — One Per Node, and Work That Ends
+
+Three more resources, one defining property each, and then the figure that collects all six.
+
+### DaemonSet — one per node
+
+A **DaemonSet** ensures that all (or some) nodes run a copy of a Pod. As nodes are added to the cluster, Pods are added to them; as nodes are removed, those Pods are garbage collected. Deleting the DaemonSet cleans up the Pods it created [source: k8s-docs-daemonset-2026-08-24].
+
+Read the first clause again, because the whole resource is in it: *as nodes are added, Pods are added to them.* You never revisit the DaemonSet when the cluster grows. The order was written about the station, not about the number of hands standing it.
+
+The workloads overview puts the purpose well: a DaemonSet defines Pods that provide facilities local to nodes, and each Pod performs a job similar to a system daemon on a classic Unix or POSIX server [source: k8s-docs-workloads-2026-08-23]. The typical uses are all recognizably that shape: running a cluster storage daemon on every node, a log-collection daemon on every node, a node-monitoring daemon on every node [source: k8s-docs-daemonset-2026-08-24]. A DaemonSet might be fundamental to the operation of the cluster, such as a plugin to run cluster networking; it might help you manage the node; or it might provide optional behavior that enhances the platform [source: k8s-docs-workloads-2026-08-23].
+
+Two of those come back later. Cluster networking plugins ship as DaemonSets *[cross-bearing: see Ch 9 — CNI plugins and how Pod networking gets implemented]*, and node-level log agents are the canonical observability example *[cross-bearing: see Ch 18 — node-level log collection]*.
+
+The Pod count is a consequence, not a setting. If you specify a node selector or node affinity in the template, the DaemonSet controller creates Pods on nodes matching it; if you specify neither, it creates Pods on all nodes [source: k8s-docs-daemonset-2026-08-24]. The controller creates a Pod for each eligible node [source: k8s-docs-daemonset-2026-08-24]. Supporting this from another direction: horizontal pod autoscaling does not apply to objects that can't be scaled, and the documentation's own example of such an object is a DaemonSet [source: k8s-docs-hpa-2026-08-24]. *[cross-bearing: see Ch 7 §3 — nodeSelector and node affinity]*
+
+One more thing to bank, because Chapter 7 collects it. DaemonSets keep running on nodes where nothing else will — nodes the cluster has fenced off from ordinary workloads entirely. And you have already met the mechanism that makes this possible, in disguise: it has been holding those networking and logging agents in place on every node since you first saw them running everywhere in Chapter 3's census. Chapter 7 unmasks it *[cross-bearing: see Ch 7 §4 — taints, tolerations, and the fence DaemonSets step over]*.
+
+<!-- AUTHOR-REVIEW: no cached sentence states in so many words that a DaemonSet has no `replicas` field. The claim is supported by (a) "creates a Pod for each eligible node" [k8s-docs-daemonset-2026-08-24] and (b) the HPA page naming DaemonSet as an object that can't be scaled [k8s-docs-hpa-2026-08-24]. Prose here, in the §7 Fixed Point, and in the Chapter Summary all use the hedged form — the count is a consequence of node eligibility — rather than asserting field absence. The stronger form needs the DaemonSet API reference fetched (research gap G-6A). -->
+
+### Job — work that ends
+
+Jobs represent one-off tasks that run to completion and then stop. A Job creates one or more Pods and continues to retry execution until a specified number of them successfully terminate; as Pods complete, the Job tracks the successful completions, and when the specified number is reached the Job is complete. Deleting a Job cleans up the Pods it created [source: k8s-docs-job-2026-08-24].
+
+The simple case is one Job object reliably running one Pod to completion, and the Job will start a new Pod if the first one fails or is deleted, for example due to node hardware failure or a node reboot [source: k8s-docs-job-2026-08-24]. Note the shape of that: it is still the control loop. The desired state is just *completion* rather than *a count of running things*.
+
+Chapter 5 taught you five Pod phases and gave you an immediate use for three of them. Here are the other two. `Succeeded` means all containers in the Pod terminated in success and will not be restarted; `Failed` means all containers terminated and at least one terminated in failure [source: k8s-docs-pod-lifecycle-2026-08-23]. For everything in §1 through §6, those two phases were terminal states you hoped never to see. For a Job, `Succeeded` is the *point*. *[cross-bearing: see Ch 5 §5 — the five Pod phases]*
+
+Consistent with that, a Job's Pod template may only use a `restartPolicy` of `Never` or `OnFailure` [source: k8s-docs-job-2026-08-24]. `Always` is not permitted, and once you have the concept, that restriction writes itself: a Pod that is always restarted can never complete.
+
+### CronJob — work that ends, repeatedly
+
+A **CronJob** creates Jobs on a repeating schedule, and one CronJob object is like one line of a crontab file on a Unix system [source: k8s-docs-cronjob-2026-08-24]. It is meant for regular scheduled actions such as backups and report generation [source: k8s-docs-cronjob-2026-08-24].
+
+The `.spec.schedule` field is required and follows standard Cron syntax, five fields, minute through day-of-week, so `0 3 * * 1` means weekly on a Monday at 3 a.m. [source: k8s-docs-cronjob-2026-08-24]. You can set `.spec.timeZone` to a valid time zone name to control how the schedule is interpreted [source: k8s-docs-cronjob-2026-08-24]. The `.spec.jobTemplate` defines the Jobs it creates and has exactly the same schema as a Job, nested, without its own `apiVersion` or `kind` [source: k8s-docs-cronjob-2026-08-24]: the same nesting move you saw with Pod templates in §1, one level further up.
+
+One caution that is worth its space because it bites in production: a CronJob creates a Job **approximately** once per execution time of its schedule. The scheduling is approximate because there are circumstances where two Jobs might be created, or none. Kubernetes tries to avoid those situations but does not completely prevent them, therefore the Jobs you define **should be idempotent** [source: k8s-docs-cronjob-2026-08-24]. Write the nightly report generator so that running it twice produces one report, not two.
+
+### The decision
+
+Six resources. Four questions. Get the questions in the right order and the three most common wrong turns disappear.
+
+<!-- FIGURE: ch06-fig04-workload-resource-decision-tree -->
+![Decision tree for choosing a Kubernetes workload resource: if the work ends, ask whether it repeats on a schedule, giving CronJob for yes and Job for no; if the work does not end, ask whether it must run on every node, giving DaemonSet for yes, and otherwise ask whether the Pods are interchangeable, giving Deployment for yes and StatefulSet for no](figures/ch06-fig04-workload-resource-decision-tree.svg)
+
+<!-- ASCII-FALLBACK
+```
+                        Does the work END?
+                    ┌──────────┴──────────┐
+                  yes                     no
+                   │                       │
+        Does it repeat on          Must it run on
+          a schedule?               EVERY node?
+        ┌─────┴─────┐              ┌─────┴─────┐
+      yes           no           yes           no
+       │             │            │             │
+   CronJob         Job        DaemonSet   Are the Pods
+                                          INTERCHANGEABLE?
+                                          ┌─────┴─────┐
+                                        yes           no
+                                         │             │
+                                    Deployment    StatefulSet
+                                  (which manages
+                                   a ReplicaSet)
+```
+-->
+
+**Figure 6.5 — ask about the work before you ask about the application.** The first question is about the shape of the work, not the nature of the software. That ordering is deliberate, and the next block explains why.
+
+The documentation offers the same guidance from the ReplicaSet's side, phrased as alternatives: use a Job instead of a ReplicaSet for Pods expected to terminate on their own; use a DaemonSet instead of a ReplicaSet for Pods providing a machine-level function such as machine monitoring or machine logging; and use a Deployment when you want ReplicaSets, since Deployments own and manage them for you [source: k8s-docs-replicaset-2026-08-24].
+
+> ★ **Fixed Point:**
+>
+> **DaemonSet: one Pod per eligible node, added automatically as nodes join. The count is a consequence of the cluster, not a setting.**
+> **Job: runs a task to completion, once.**
+> **CronJob: creates the same Job repeatedly, on a schedule.**
+
+> ⚠ **Navigational Hazards**
+>
+> Three misconceptions cluster around this section, and they share one root cause, so learn the root cause instead of memorizing three corrections.
+>
+> **The root cause: people choose a workload resource by what the application *is*, rather than by how its Pods need to be *managed*.** Every one of the following is that mistake wearing a different coat.
+>
+> **"It's a database, so it needs a StatefulSet."** The application being a database is not the criterion. Interchangeability is. A single-replica read-only cache backed by an ephemeral volume is fine as a Deployment even though it is technically a datastore; a three-member quorum where each member has a distinct identity needs a StatefulSet even if the data is tiny. Ask what happens when one Pod is replaced by a differently-named one, and let the answer decide.
+>
+> **"I need six copies for capacity, so I'll use a DaemonSet."** A DaemonSet does not express a number. It creates a Pod for each eligible node [source: k8s-docs-daemonset-2026-08-24], so you get however many nodes are eligible: possibly three, possibly sixty, and different tomorrow. If you want six, you want a Deployment with `replicas: 6`. Use a DaemonSet when the requirement is genuinely *per host*, which usually means the Pod is doing something to or about the machine it is sitting on.
+>
+> **"Job and CronJob both run scheduled work."** No. A Job runs a task to completion once [source: k8s-docs-job-2026-08-24]. A CronJob creates Jobs on a repeating schedule [source: k8s-docs-cronjob-2026-08-24]. The CronJob is not a kind of Job. It is a thing that *makes* Jobs, the way a Deployment is not a kind of ReplicaSet but a thing that makes ReplicaSets. Once you notice that both pairs have the same shape, the distinction stops being something to memorize.
+>
+> Run the tree in Figure 6.5 in order and none of these three can happen, because the tree asks about the work before it asks about the software.
+
+*[cross-bearing: see Ch 7 §4 — a DaemonSet's Pods still go through scheduling, and taints are how a node opts out]*
+
+---
+
+## 🟡 §8 — The Control Loop, Extended
+
+Chapter 3 closed by promising you controllers you configure yourself. Chapter 2 named custom resources as the fourth socket in the pattern where Kubernetes defines an interface and lets the ecosystem implement it. Both promises come due here.
+
+<!-- AUTHOR-REVIEW: chapter-02 line 600 carries a published cross-bearing reading "*[see Ch 6 §3 — CRDs and extending the API]*". CRDs are §8 in this chapter; §3 is pinned by chapter-04 line 688 and cannot move, and CRDs cannot move earlier than §8 without teaching API extension before the reader has met a built-in controller. Per the outline's Open Question #1, the recommended fix is a one-token edit in chapter-02: §3 → §8. Not fixable from inside this draft. -->
+
+### Start with the word "resource"
+
+A resource is an endpoint in the Kubernetes API that stores a collection of API objects of a certain kind; the built-in `pods` resource contains a collection of Pod objects [source: k8s-docs-custom-resources-2026-08-23]. You have been using resources all book. `kubectl get pods` talks to one. `kubectl get deployments` talks to another.
+
+A **custom resource** is an extension of the Kubernetes API that is not necessarily available in a default Kubernetes installation; it represents a customization of a particular installation. Custom resources can appear and disappear in a running cluster through **dynamic registration**, and cluster admins can update them independently of the cluster itself [source: k8s-docs-custom-resources-2026-08-23].
+
+Here is the clause that makes it click: once a custom resource is installed, users create and access its objects using `kubectl`, **just as they do for built-in resources like Pods** [source: k8s-docs-custom-resources-2026-08-23]. Nothing about the tooling changes. `kubectl get`, `kubectl describe`, `kubectl apply`, labels, selectors, namespaces, RBAC, all of it works on the new kind, because the new kind lives in the same API. *[cross-bearing: see Ch 12 — RBAC, where this permission model is taught]*
+
+### The object that does the installing
+
+The **CustomResourceDefinition**, the CRD, is the API resource that lets you define custom resources. Defining a CRD object creates a new custom resource with a name and schema that you specify, and the Kubernetes API then serves and handles the storage of it for you. This frees you from writing your own API server, though the generic nature of the implementation means you have less flexibility than with API-server aggregation [source: k8s-docs-custom-resources-2026-08-23].
+
+Many core Kubernetes functions are now built using custom resources, which is part of what makes Kubernetes modular [source: k8s-docs-custom-resources-2026-08-23]. This is not an exotic corner of the platform. It is one of the main ways the platform grows.
+
+### The honest limitation
+
+**On their own, custom resources let you store and retrieve structured data.** That is all [source: k8s-docs-custom-resources-2026-08-23].
+
+Sit with that for a second, because it is the thing that surprises people. A CRD by itself is a shape in a database. You can create objects of that kind, list them, label them, and delete them. Nothing else happens. No Pods appear. No infrastructure is provisioned. You have defined a noun and taught the API server to store it.
+
+> ★ **Fixed Point:**
+>
+> **A custom resource on its own stores and retrieves structured data. A custom resource combined with a custom controller is the operator pattern.**
+
+When you combine a custom resource with a custom controller, custom resources provide a true declarative API. The Kubernetes declarative API enforces a separation of responsibilities: you declare the desired state of your resource, and the controller keeps the current state of Kubernetes objects in sync with your declared desired state. This is in contrast to an imperative API, where you instruct a server what to do [source: k8s-docs-custom-resources-2026-08-23].
+
+That is Chapter 3's control loop, written by someone who is not the Kubernetes project. The published description of the controller extension pattern makes the shape explicit: controllers are client programs that read and/or write to the Kubernetes API, following a control loop, reading an object's `.spec`, possibly doing things, and then updating the object's `.status` [source: k8s-docs-extending-kubernetes-2026-08-23]. Read `.spec`, act, write `.status`. Nothing about that sentence is privileged. Anyone can write a program that does it.
+
+> 🪝 **Snag:** "We installed the CRD, created an object of the new kind, and nothing happened." That is the correct behavior. There is no controller. You gave the cluster a new noun and no verb.
+>
+> **Name this shape, because you are going to meet it again.** *An object without its component does nothing.* An Ingress with no ingress controller is the same shape. `kubectl top` with no metrics-server is the same shape. A vertical autoscaler that isn't shipped by default is the same shape. It is not four gotchas. It is one rule with four instances, and the rule is that Kubernetes will happily accept a record of intent that nothing in the cluster is currently able to act on. *[cross-bearing: see Ch 10 — Ingress without an ingress controller]* *[cross-bearing: see Ch 13 — `kubectl top` without metrics-server]*
+
+### The pattern, named
+
+The **operator pattern** combines custom resources and custom controllers [source: k8s-docs-custom-resources-2026-08-23].
+
+What it is for is more interesting than what it is. The pattern aims to capture the key aim of a human operator who is managing a service, someone with deep knowledge of how the system ought to behave, how to deploy it, and how to react if there are problems, and to write that knowledge as code that automates a task beyond what Kubernetes itself provides [source: k8s-docs-operator-pattern-2026-08-23]. The mechanism is unglamorous and precise: operators are clients of the Kubernetes API that act as controllers for a custom resource, and the pattern lets you extend the cluster's behavior without modifying the code of Kubernetes itself [source: k8s-docs-operator-pattern-2026-08-23].
+
+The published list of things people automate this way is the fastest way to make it concrete [source: k8s-docs-operator-pattern-2026-08-23]:
+
+- deploying an application on demand
+- taking and restoring backups of that application's state
+- handling upgrades of the application code alongside related changes such as database schemas or extra configuration settings
+- publishing a Service so applications that don't support Kubernetes APIs can discover them
+- simulating failure in all or part of a cluster to test its resilience
+- choosing a leader for a distributed application that has no internal election process
+
+Every one of those is somebody's 2 a.m. runbook, turned into a loop that never sleeps.
+
+And now the closing turn, which is the reason §8 sits after §1 rather than before it. The most common way to deploy an operator is to add the CustomResourceDefinition and its associated controller to your cluster, and **the controller will normally run outside of the control plane, much as you would run any containerized application: for example, as a Deployment** [source: k8s-docs-operator-pattern-2026-08-23].
+
+The thing that extends Kubernetes is itself deployed *by* Kubernetes, using the first resource in this chapter. The operator that manages your database is three replicas of a container image, held at a count by a ReplicaSet, held at a template by a Deployment. It is not a plugin. It is not privileged. It sails under the same standing orders as everything else in the fleet, and everything §1 through §5 told you about workloads applies to it unchanged.
+
+### The fourth socket
+
+Chapter 2 showed you the move: Kubernetes defines an interface and lets the ecosystem implement it. You met it with the container runtime, with networking, and with storage, and you were told you would meet it once more at the API layer. This is that. The published extension points list **API extensions, Custom Resource Definitions (CRDs) and the API aggregation layer,** as one of six categories, alongside controllers, scheduling extensions, API access extensions, kubectl plugins, and infrastructure extensions [source: k8s-docs-extending-kubernetes-2026-08-23].
+
+Four sockets, one pattern. Collecting them into a single statement about what kind of system Kubernetes is belongs later, when you have met all four in their own contexts. *[cross-bearing: see Ch 17 — CRI, CNI, CSI and CRDs, resolved into one story]*
+
+> 🔭 **Closer Look:** CRDs are not the only route to a custom API. The other is API-server aggregation, which offers more flexibility at the cost of writing and operating more of the API machinery yourself [source: k8s-docs-custom-resources-2026-08-23]. For this book's purposes: CRD is the common path, aggregation is the rarer one, and knowing that both exist is enough.
+
+*[cross-bearing: see Ch 14 — why Helm charts have a `crds/` directory]*
+*[cross-bearing: see Ch 15 — a delivery tool that is, structurally, a controller acting on custom resources]*
+
+---
+
 ## ☆ Taking Your Bearings #2 — Updating the Fleet, and the Rest of the Family
 
 Eight questions on Deployment updates through the rest of the workload family. One reaches back into an earlier chapter.

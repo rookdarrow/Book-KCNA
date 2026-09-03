@@ -961,6 +961,261 @@ Having just been told to prefer Gateway API, the obvious next question is whethe
 
 ---
 
+## 🔵 §6 — Allowing, Never Denying
+
+One piece of housekeeping before we get under way, and it is not politeness.
+
+**The word `ingress` is about to mean something completely different, and capitalisation is the tell.** For four sections, `Ingress` has meant an API object and the controller that fulfills it. From here to the end of §7, lowercase `ingress` means **a direction of traffic**: inbound, as opposed to `egress`, outbound. NetworkPolicy has nothing to do with the Ingress object. If you carry the old meaning into this section, you will spend §7 trying to work out how the Ingress controller fits in, and it does not.
+
+Good. Now the object.
+
+### What a NetworkPolicy controls
+
+**NetworkPolicies let you specify rules for traffic flow at the IP address or port level — OSI layer 3 or 4 — within your cluster, and also between Pods and the outside world** [source: k8s-docs-network-policies-depth-2026-08-24]. They are an **application-centric construct**, which lets you specify how a Pod is allowed to communicate with various network *entities* — a word the documentation chose deliberately to avoid overloading "endpoints" and "services," which already have specific Kubernetes meanings [source: k8s-docs-network-policies-depth-2026-08-24]. And they **apply to a connection with a Pod on one or both ends, and are not relevant to other connections** [source: k8s-docs-network-policies-depth-2026-08-24].
+
+Note what that rules out. This is **network reachability**: who may open a connection to whom, at layer 3 or 4, and nothing else. It is not the boundary between a workload and the host it runs on. Chapter 2 already told you those were different axes, and it told you on a graded question *[cross-bearing: see Ch 2 §7 — RuntimeClass, and workload-to-host isolation as a separate concern]*. The other axis of Pod security has its own chapter *[cross-bearing: see Ch 12 §5 — what a Pod may do to its node]*.
+
+And note the layer. §1 spent five sections climbing to layer 7 to read hostnames and paths. This section is back down at 3 and 4, reading addresses and ports. Different problem, different altitude.
+
+### Three identifiers, and two selectors doing different jobs
+
+The entities a Pod can communicate with are identified through a combination of three identifiers [source: k8s-docs-network-policies-depth-2026-08-24]:
+
+1. **Other Pods** that are allowed — with the exception that a Pod cannot block access to itself.
+2. **Namespaces** that are allowed.
+3. **IP blocks** — with the exception that traffic to and from the node where a Pod is running is always allowed, regardless of the IP address of the Pod or the node.
+
+For Pod- and namespace-based policies, **you use a selector to specify what traffic is allowed to and from the Pods that match the selector.** For IP-based policies, you define the rule on **IP blocks (CIDR ranges)** [source: k8s-docs-network-policies-depth-2026-08-24]. *(CIDR notation is a way of writing a range of IP addresses as an address plus a prefix length: `172.17.0.0/16` means "the addresses whose first sixteen bits are those of 172.17.0.0." An `except` list carves ranges back out of the block — in the manifest below, everything in 172.17.0.0/16 apart from the addresses in 172.17.1.0/24. The glossary carries the expansion.)*
+
+Chapter 4 saw this coming. It told you, six chapters ago, that **a NetworkPolicy selects both its subject and its peers** *[cross-bearing: see Ch 4 §5 — labels and selectors as the universal join]*. Pause on that, because it is the structurally most interesting thing in this section. Here is the shape:
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: test-network-policy
+  namespace: default
+spec:
+  podSelector:              # <-- chooses the SUBJECT: who this policy governs
+    matchLabels:
+      role: db
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - ipBlock:
+        cidr: 172.17.0.0/16
+        except:
+        - 172.17.1.0/24
+    - namespaceSelector:    # <-- chooses PEERS: who may connect
+        matchLabels:
+          project: myproject
+    - podSelector:          # <-- also chooses PEERS
+        matchLabels:
+          role: frontend
+    ports:
+    - protocol: TCP
+      port: 6379
+  egress:
+  - to:
+    - ipBlock:
+        cidr: 10.0.0.0/24
+    ports:
+    - protocol: TCP
+      port: 5978
+```
+
+[source: k8s-docs-network-policies-depth-2026-08-24]
+
+**Each NetworkPolicy includes a `podSelector` which selects the grouping of Pods to which the policy applies** — here, Pods labeled `role: db` [source: k8s-docs-network-policies-depth-2026-08-24]. That is the subject. Inside the rules, a different set of selectors chooses who may connect: `podSelector` selects particular Pods in the **same namespace as the NetworkPolicy** as allowed sources or destinations, and `namespaceSelector` selects particular namespaces for which **all** Pods are allowed [source: k8s-docs-network-policies-depth-2026-08-24].
+
+One mechanism, the label selector you learned in Chapter 4, doing two entirely different jobs in one object, at two different depths of the same YAML.
+
+> 🪝 **Snag:** Whether `namespaceSelector` and `podSelector` appear as one `from` entry or two changes the meaning completely. A single entry specifying **both** selects particular Pods *within* particular namespaces, an AND. Two entries in the `from` array is an OR: connections from Pods in the local namespace with the peer label, **or** from any Pod at all in the matching namespaces [source: k8s-docs-network-policies-depth-2026-08-24]. One YAML hyphen is the difference. The documentation's own advice: when in doubt, use `kubectl describe` to see how Kubernetes has interpreted the policy [source: k8s-docs-network-policies-depth-2026-08-24].
+
+### The two sorts of isolation
+
+This is the center of the section, and the place your firewall instinct gets corrected.
+
+There are **two sorts of isolation for a Pod: isolation for egress, and isolation for ingress.** They concern what connections may be established. "Isolation" here is **not absolute** — it means *some restrictions apply*. The alternative, "non-isolated for a direction," means that **no restrictions apply** in that direction. The two are declared independently, and both are relevant for a connection from one Pod to another [source: k8s-docs-network-policies-depth-2026-08-24].
+
+**Egress.** By default, a Pod is **non-isolated for egress; all outbound connections are allowed.** A Pod becomes isolated for egress if there is **any** NetworkPolicy that both **selects the Pod** and has `Egress` in its `policyTypes`. When it is isolated, the only allowed outbound connections are those permitted by the `egress` list of some policy that applies to it [source: k8s-docs-network-policies-depth-2026-08-24].
+
+**Ingress.** By default, a Pod is **non-isolated for ingress; all inbound connections are allowed.** It becomes isolated for ingress on exactly the same terms, with `Ingress` in `policyTypes`. When it is isolated, the only allowed inbound connections are **those from the Pod's node** and those permitted by the `ingress` list of some applicable policy [source: k8s-docs-network-policies-depth-2026-08-24].
+
+Reply traffic for allowed connections is implicitly allowed in both directions [source: k8s-docs-network-policies-depth-2026-08-24], which is to say the mechanism is connection-aware, not packet-by-packet, and you do not need a return rule.
+
+Now collect the debt from Soundings question 4. You almost certainly answered *dropped* and *the deny wins*, because that is how ordinary firewalls work and it is a good instinct nearly everywhere else. Kubernetes is the other way around on both counts. **A Pod starts fully open in both directions, and becomes restricted only because some policy went looking for it and found it.** Nothing is closed until something selects it. This is open water rather than a walled harbour: it stays open until somebody declares a restricted zone and puts you inside it.
+
+> ★ **Fixed Point:** **By default a Pod is non-isolated in both directions.** It becomes isolated for a direction only when some NetworkPolicy both **selects it** and names that direction in `policyTypes` [source: k8s-docs-network-policies-depth-2026-08-24]. No policy means no restriction.
+
+A note on `policyTypes`, because it has a default that catches people. Each policy includes a `policyTypes` list which may include `Ingress`, `Egress`, or both. **If no `policyTypes` are specified, `Ingress` will always be set, and `Egress` will be set if the policy has any egress rules** [source: k8s-docs-network-policies-depth-2026-08-24]. So an omitted `policyTypes` is not "neither." It is at minimum `Ingress`.
+
+### Additive, and there is no deny
+
+**The effects of the ingress lists combine additively. The effects of the egress lists combine additively. Network policies do not conflict; they are additive.** If any policy or policies apply to a given Pod for a given direction, the connections allowed in that direction are **the union of what the applicable policies allow.** Thus **order of evaluation does not affect the policy result** [source: k8s-docs-network-policies-depth-2026-08-24].
+
+Sit with that for a moment, because it removes something you have relied on everywhere else.
+
+There is **no deny rule.** None. The API has no syntax for one. Two policies selecting the same Pod produce the union of what they permit, and there is no third policy you can write that subtracts from that union. If a Pod can currently reach something and you want it not to, you do not add a denial. **You remove the grant.**
+
+> ★ **Fixed Point:** **Policies are additive and never conflict. There is no deny rule** [source: k8s-docs-network-policies-depth-2026-08-24]. Two policies produce the union of what they permit. Removing access means removing the grant, not adding a denial.
+
+<!-- FIGURE: ch10-fig04-networkpolicy-additive-selectors -->
+![Two NetworkPolicy stanzas, A and B, both selecting Pods labelled role equals db, one permitting ingress from app equals web and the other from app equals batch. Heavy edges run from both stanzas to a single Pod box, and a single arrow runs from that Pod to a rounded blob labelled permitted set containing app equals web plus app equals batch, glossed as one set with two grants. A fourth box labelled app equals other sits unconnected, annotated as not denied but simply never granted.](figures/ch10-fig04-networkpolicy-additive-selectors.svg)
+
+<!-- ASCII-FALLBACK
+```
+   POLICY A                                          PERMITTED SET
+   podSelector: role=db  ─────┐                    ╭───────────────╮
+   ingress from: app=web      │                    │               │
+                              ▼                    │   app=web     │
+                        ┌───────────┐              │      +        │
+                        │  Pod      │─────────────▶│   app=batch   │
+                        │  role=db  │              │               │
+                        └───────────┘              │  (one set,    │
+                              ▲                    │   two grants) │
+   POLICY B                   │                    ╰───────────────╯
+   podSelector: role=db  ─────┘
+   ingress from: app=batch
+                                                     ┌───────────┐
+   ═══▶  podSelector (chooses the SUBJECT)            │ app=other │
+   ───▶  peer selector (chooses WHO MAY CONNECT)      └───────────┘
+                                                       no arrow.
+                                                       not denied —
+                                                       simply never
+                                                       granted.
+```
+-->
+
+Note what is *not* in that figure: any mark of denial. No barrier, no crossed-out arrow, no red X. The excluded Pod is excluded by the **absence of a grant**, which is a different thing from being blocked, and drawing it as blocking would contradict the Fixed Point above.
+
+### Both ends must allow it
+
+**For a connection from a source Pod to a destination Pod to be allowed, both the egress policy on the source Pod and the ingress policy on the destination Pod need to allow the connection. If either side does not allow the connection, it will not happen** [source: k8s-docs-network-policies-depth-2026-08-24].
+
+This is the rule that costs practitioners the most time, because a policy that is perfectly correct in isolation is only ever half of a working configuration. You write an egress policy on `frontend` permitting traffic to `api`, you verify the YAML, you apply it, and nothing connects, because `api` has an ingress policy that never heard of `frontend`. Two harbours, two authorities: clearance to depart is not permission to enter, and a vessel holding only one of them stays at anchor.
+
+> ★ **Fixed Point:** **Both ends must allow it.** The source Pod's egress policy *and* the destination Pod's ingress policy [source: k8s-docs-network-policies-depth-2026-08-24].
+
+> ⚠ **Navigational Hazards:** If your firewall instinct says *"unlisted traffic is dropped"* and *"the more restrictive rule wins,"* both instincts are wrong here. And they are wrong in the direction that makes a cluster **more open than you expect**, not less. Candidates get both of these wrong, reliably, and they get them wrong *confidently*, which is worse. The default is open. Nothing denies. The union permits.
+
+> 🪢 **Mnemonic:** *Nothing is closed until something selects it; nothing selected can be re-closed by another rule; and both ends have to agree.*
+
+### Getting default-deny with no deny rule
+
+The obvious objection: if there is no deny rule, how does anyone ever lock anything down?
+
+Follow the two facts you already have. A Pod becomes isolated for a direction when a policy selects it and names that direction. Once isolated, the only permitted connections are the ones some policy's list allows. So: **select the Pods, name the direction, and permit nothing.** Isolation without permission *is* denial, arrived at by construction rather than by a deny keyword.
+
+The mechanism for "select every Pod in the namespace" is an **empty `podSelector`**, which **selects all Pods in the namespace** [source: k8s-docs-network-policies-depth-2026-08-24]:
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-all
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  - Egress
+```
+
+No `ingress` list. No `egress` list. Every Pod in the namespace selected, both directions named, nothing permitted. **This ensures that even Pods without any other NetworkPolicy selected will not be allowed any ingress or egress traffic** [source: k8s-docs-network-policies-depth-2026-08-24]. The same shape with only `Ingress` in `policyTypes` gives you default-deny inbound and leaves outbound alone [source: k8s-docs-network-policies-depth-2026-08-24].
+
+And because the model is additive, the reverse also works: an explicit allow-all is a policy with `podSelector: {}` and a single empty rule, `ingress: [{}]`, which permits everything to everything even if other policies have caused some Pods to be treated as isolated [source: k8s-docs-network-policies-depth-2026-08-24]. Union semantics cut both ways: you cannot subtract, and neither can anybody else.
+
+The documentation puts the whole model in one sentence worth memorising: **a Pod will accept all traffic by default; however, once a NetworkPolicy is created for a Pod, the Pod will reject any traffic that is not allowed by any NetworkPolicy — and other Pods in the namespace that are not selected by any NetworkPolicy will continue to accept all traffic** [source: k8s-docs-network-policies-depth-2026-08-24].
+
+### The two exceptions
+
+Both were in the three-identifiers list above, and both are unconditional:
+
+- **A Pod cannot block access to itself** [source: k8s-docs-network-policies-depth-2026-08-24].
+- **Traffic to and from the node where a Pod is running is always allowed, regardless of the IP address of the Pod or the node** [source: k8s-docs-network-policies-depth-2026-08-24].
+
+The second one is why the ingress isolation rule says the allowed inbound connections are "those from the Pod's node **and** those allowed by the ingress list": node-local traffic is not something a policy grants, it is something no policy can take away.
+
+> 🪝 **Snag:** These two exceptions get rediscovered regularly by someone testing a policy from the wrong place. `kubectl exec` into the Pod and curl itself: allowed, always, and it proves nothing. Test from the node: allowed, always, and it proves nothing either. If you want to know whether a restriction works, the traffic has to originate somewhere the policy could actually govern.
+
+*[cross-bearing: see Ch 9 §1 — the network model's second rule, and the "barring intentional network segmentation" hedge that pointed here]*
+*[cross-bearing: see Ch 4 §3 — namespaces, which are the second of the three identifiers]*
+*[cross-bearing: see Ch 5 §1 — the Pod IP, which is ultimately what a policy is about]*
+*[cross-bearing: see Ch 12 §9 — RBAC and NetworkPolicy as one shared semantic]*
+
+---
+
+## 🟡 §7 — What NetworkPolicy Cannot Do
+
+Two facts. This section teaches two facts and nothing else, and the first one is the highest-consequence sentence in the chapter.
+
+### The prerequisite
+
+**Network policies are implemented by the network plugin. To use network policies, you must be using a networking solution which supports NetworkPolicy. Creating a NetworkPolicy resource without a controller that implements it will have no effect** [source: k8s-docs-network-policies-depth-2026-08-24].
+
+Read that last clause against §3's. *Only creating an Ingress resource has no effect.* *Creating a NetworkPolicy resource without a controller that implements it will have no effect.* The same sentence, twice, four sections apart, about two objects with nothing else in common.
+
+> ★ **Fixed Point:** **NetworkPolicies are implemented by the network plugin.** On a plugin that does not implement NetworkPolicy, the resource has no effect [source: k8s-docs-network-policies-depth-2026-08-24].
+
+### Why this one is worse
+
+Here is the asymmetry, and it is the reason §7 exists as its own section.
+
+When an Ingress does nothing, **requests fail.** The site is down, somebody's monitoring fires, a user complains, and within minutes someone is looking at it. The failure announces itself.
+
+When a NetworkPolicy does nothing, **traffic flows exactly as it did before.** `kubectl get networkpolicy` shows the object. `kubectl describe` shows the rules, correctly parsed and neatly formatted. Everything you can observe about the object says it is fine, and the observable behavior of an unenforced policy is *identical* to the observable behavior of a perfectly enforced policy against traffic nobody happens to be sending. There is no signal. There is nothing to notice. One failure fires a flare; the other is an uncharted rock, and nothing on the surface says it is there.
+
+That is not a documented claim; the source states the plugin dependency and the no-effect consequence and stops there. The characterisation of the failure as *silent*, and as harder to detect than a broken Ingress, is this book's reasoning about what those two documented facts imply. Hold the two apart: the dependency is sourced, the inference about detectability is ours. We think it is sound, it is the most valuable thing in this chapter, and it is still an inference.
+
+> ⚠ **Navigational Hazards:** *"I applied a NetworkPolicy, so that traffic is blocked"* is only true if something is enforcing it. Verify that your network plugin supports NetworkPolicy before you rely on one, and test the restriction from somewhere the policy could actually govern rather than trusting the object's existence. The object existing is a fact about etcd.
+
+Nothing about this is careless. You wrote a correct policy, the API accepted it, `kubectl` showed it back to you, and every signal available said the thing was working. The expectation is entirely reasonable. It is the *mechanism* that offers no feedback, and that is worth knowing about in advance precisely because you will not discover it in the moment.
+
+### Where else could it possibly live?
+
+You can reason your way to this dependency rather than memorising it.
+
+Chapter 9 taught that Kubernetes **defines** the network model but provides none of the machinery that satisfies it: a CNI network plugin is required to implement the model, and it does the actual work of wiring Pods onto a network *[cross-bearing: see Ch 9 §1 — CNI and the Kubernetes network model]*. CNI is one of the interfaces where Kubernetes hands off to an implementation — and it is the container runtime, not the kubelet, that loads the plugin: CNI management was removed from the kubelet in Kubernetes 1.24 [source: k8s-docs-network-plugins-2026-08-24].
+
+So if the plugin is what moves the packets, **where else could enforcement possibly live?** Nowhere. The dependency is not an oversight or an inconvenience. It is the only place in the stack where the machinery to enforce a layer-3/4 rule exists.
+
+If you reasoned to something like this in Soundings question 7, you derived the *dependency* before the chapter stated it. Not the consequence — the silence is the part you had no way to predict — but the dependency itself, which is the half that makes the other half inevitable. Notice that.
+
+### What it cannot do, stated flat
+
+> **Dead Reckoning:** The source states this list as current "as of" whichever release you happen to be reading — a version-templated claim with no fixed version behind it, so there is no release number to pin here without asserting more than the documentation does. What follows is the list as it stood at this book's source snapshot, 24 August 2026. Treat it as a list that shrinks over time; check the current page before concluding that an item on it is still impossible [source: k8s-docs-network-policies-depth-2026-08-24].
+>
+> The following functionality does not exist in the NetworkPolicy API [source: k8s-docs-network-policies-depth-2026-08-24]:
+>
+> - Forcing internal cluster traffic to go through a common gateway.
+> - Anything TLS related.
+> - Node specific policies. You can use CIDR notation, but you cannot target nodes by their Kubernetes identities specifically.
+> - Targeting of services by name. You can target Pods or namespaces by their labels, which is often a viable workaround.
+> - Creation or management of "Policy requests" that are fulfilled by a third party.
+> - Default policies which are applied to all namespaces or Pods.
+> - Advanced policy querying and reachability tooling.
+> - The ability to log network security events, for example connections that are blocked or accepted.
+> - The ability to explicitly deny policies.
+> - The ability to prevent loopback or incoming host traffic. Pods cannot block localhost access, nor can they block access from their resident node.
+>
+> The documentation notes that some of these may be achievable through operating-system components such as SELinux, OpenVSwitch or IPTables, through layer-7 technologies such as ingress controllers and service mesh implementations, or through admission controllers [source: k8s-docs-network-policies-depth-2026-08-24].
+
+Ten items. Three of them earn a sentence each, because they are the ones you will actually reach for.
+
+**No TLS.** Anything TLS related is out of scope, and the documentation says outright to use a service mesh or ingress controller for it [source: k8s-docs-network-policies-depth-2026-08-24]. §2 already told you that terminating TLS at the Ingress leaves the leg from Ingress to Pod in cleartext. NetworkPolicy will not encrypt it either. That gap has an owner *[cross-bearing: see Ch 17 §5 — service mesh, mTLS, and what a mesh adds inside the cluster]*.
+
+**No targeting Services by name.** Policies select Pods. You can target Pods or namespaces by label, which the documentation calls a viable workaround [source: k8s-docs-network-policies-depth-2026-08-24], but you cannot write `allow traffic to the checkout Service`. This is surprising after nine chapters in which nearly everything has been Service-shaped, and it is the item on this list a reader is most likely to reach for by reflex.
+
+**No explicit deny.** §6 taught additivity as a *property* of the model: policies grant, and the model has no subtraction operator. The out-of-scope list states that same architectural fact as a *limitation* — the ability to explicitly deny is simply not in the API [source: k8s-docs-network-policies-depth-2026-08-24]. Same fact, met from the side you will actually encounter it on. You go looking for a deny rule, and there is not one.
+
+> 🔭 **Closer Look:** "No targeting of services by name" is stranger than it looks, and it follows directly from §6. A policy selects Pods. A Service is a stable name in front of a set of Pods that *changes*; that is the entire reason Chapter 9 gave you Services. Selecting the Service would mean selecting a moving target through an indirection that the policy layer, sitting at layer 3/4 on Pod IPs, does not have access to. The restriction is a consequence of the architecture, not an omission from the API. Deeper than the exam requires.
+
+Two objects. Four sections apart. Nothing in common except a failure mode.
+
+---
+
 ## ☆ Taking Your Bearings #2 — from Ingress to Gateway, and what NetworkPolicy permits once you're inside
 
 Nine questions on §4 through §7. One of them reaches back into an earlier chapter.

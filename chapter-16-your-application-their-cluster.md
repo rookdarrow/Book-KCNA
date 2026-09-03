@@ -934,6 +934,112 @@ One clarifying note on scope: `port-forward` is a diagnostic here, and only a di
 
 ---
 
+## 🟡 §6 — When Each Replica Is Its Own
+
+Everything so far has assumed something that is usually true and sometimes catastrophically false: that your replicas are interchangeable. That if you diagnose one, you have diagnosed all of them.
+
+For a Deployment, that assumption holds. Three replicas of a stateless service are three instances of the same thing; whichever one you exec into will tell you the same story. For a StatefulSet it does not hold at all, and the four questions have to be asked of a *particular* replica rather than of the workload.
+
+Three things make this different, and each is a retrieval you already have with a diagnostic turn on it.
+
+### Find out which one
+
+A StatefulSet's Pods have stable ordinal identity — `web-0`, `web-1`, `web-2` — and *"each has a persistent identifier that it maintains across any rescheduling"* [source: k8s-docs-statefulset-2026-08-24] *[cross-bearing: see Ch 6 §6 — when Pods are not interchangeable]*. The diagnostic consequence: **"the app is broken" is very frequently "`web-2` is broken, and `web-0` and `web-1` are fine."**
+
+So the first move is not to investigate. It is to find out which replica you are investigating.
+
+```
+kubectl get pods -l app.kubernetes.io/name=MyApp
+```
+
+The docs give exactly this form for listing a StatefulSet's Pods by label [source: k8s-docs-debug-statefulset-2026-08-31]. Look at the whole list before you pick one. A single unhealthy ordinal among healthy siblings is a completely different diagnosis from all three being unhealthy: the first says something is wrong with that replica's *state*, the second says something is wrong with the *workload*.
+
+The docs also flag one specific case worth knowing: a Pod in `Unknown` or `Terminating` state can block the StatefulSet controller from making progress, because the controller's ordering guarantees mean it will wait rather than proceed past an uncertain replica [source: k8s-docs-debug-statefulset-2026-08-31]. A StatefulSet that seems frozen mid-rollout usually has one Pod in one of those states, and the freeze is the controller obeying its own rules *[cross-bearing: see Ch 6 §6 — when Pods are not interchangeable]*.
+
+<!-- AUTHOR-REVIEW: the Kubernetes "Debug a StatefulSet" page is a stub — it contains only the label-selector listing form and the Unknown/Terminating pointer, and nothing on per-replica PVC debugging, ordinal-specific triage, or headless-Service peer DNS. The remainder of this section is built from the Ch 6 and Ch 11 snapshots (k8s-docs-statefulset-2026-08-24, k8s-docs-statefulset-storage-2026-08-25) plus the DNS snapshot. Flagged so the fact-accuracy audit knows the sourcing is indirect by necessity, not by oversight. Note also that the snapshot's frontmatter simultaneously claims the page is complete AND describes an Unknown/Terminating pointer not present in the packed text — if that pointer is genuinely absent on disk, the paragraph above becomes a research gap. -->
+
+### The state that survives everything you try
+
+This is the one that most looks like a platform fault and is not.
+
+Each StatefulSet replica gets its own PersistentVolumeClaim from `volumeClaimTemplates` — *"for each VolumeClaimTemplate entry defined in a StatefulSet, each Pod receives one PersistentVolumeClaim"*, and *"the same PersistentVolumeClaim will be bound to a Pod throughout its lifecycle"* [source: k8s-docs-statefulset-2026-08-24] *[cross-bearing: see Ch 11 §6 — Pods that are not interchangeable, revisited]*. The claim is not deleted when the Pod is deleted. The default retention policy is `Retain` for both the scale-down and the delete case: *"Retain (default): PVCs from the volumeClaimTemplate are not affected when their Pod is deleted"* and *"The default for policies is Retain, matching the StatefulSet behavior before this new feature."* [source: k8s-docs-statefulset-storage-2026-08-25] And for the involuntary case: *"if a Pod associated with a StatefulSet fails due to node failure, and the control plane creates a replacement Pod, the StatefulSet retains the existing PVC. The existing volume is unaffected, and the cluster will attach it to the node where the new Pod is about to launch."* [source: k8s-docs-statefulset-storage-2026-08-25]
+
+Now put that next to the most common debugging reflex in the industry.
+
+Your application writes a corrupt record. `web-2` starts failing. You delete `web-2`. The controller recreates it, with the same name, the same DNS record, and **the same volume, containing the same corrupt record.** It fails again, identically. You delete it again. Same result.
+
+> ⚠ **Navigational Hazards**
+>
+> **"Turn it off and on again" does not clear a StatefulSet replica's state, and the failure it leaves behind looks exactly like a platform bug.**
+>
+> The symptom is a replica that fails, gets deleted, comes back, and fails in precisely the same way — repeatedly, deterministically, immune to every restart. That signature reads as "something in the cluster is broken," and engineers have spent days on it from that angle.
+>
+> It is not the cluster. The PVC survived, by design, because throwing away a stateful workload's data on a restart would be the worse failure by a wide margin. The state is the thing that is broken, and no amount of restarting will touch it. Go look at the data: exec into the replica and inspect what is on the volume, or mount the PVC into a debug Pod and read it there.
+>
+> The diagnostic tell that separates this from a genuine platform fault: **it is deterministic and it is confined to one ordinal.** A platform problem would not preferentially afflict `web-2` and leave `web-0` and `web-1` untouched across repeated rescheduling.
+
+> 🔭 **Closer Look:** `.spec.persistentVolumeClaimRetentionPolicy` has two settings — `whenDeleted` and `whenScaled` — each accepting `Delete` or `Retain`, with `Retain` the default for both [source: k8s-docs-statefulset-storage-2026-08-25]. A workload configured with `whenScaled: Delete` behaves differently on scale-down than the default described above. Check the StatefulSet's actual policy before you reason about what a deletion did; the default is only the default.
+
+### Peers that find each other by name
+
+The third difference is discovery. A StatefulSet uses a headless Service to give each Pod its own DNS name *[cross-bearing: see Ch 9 §5 — when you don't want a single address]*, and the form is `$(podname).$(governing service domain)` — for example `web-0.nginx.default.svc.cluster.local` [source: k8s-docs-statefulset-2026-08-24]. Replicas use these names to find each other: a database forming a cluster, a queue electing a leader, a cache building a ring.
+
+That creates failure modes a ClusterIP workload never sees. If `web-1` cannot resolve `web-2`'s name, the peer relationship fails while both Pods look perfectly healthy from outside. And there is a genuine timing trap here, which the docs call out directly: *"Depending on how DNS is configured in your cluster, you may not be able to look up the DNS name for a newly-run Pod immediately. This behavior can occur when other clients in the cluster have already sent queries for the hostname of the Pod before it was created. Negative caching (normal in DNS) means that the results of previous failed lookups are remembered and reused, even after the Pod is running, for at least a few seconds."* [source: k8s-docs-statefulset-2026-08-24]
+
+So a peer that came up, failed to resolve a sibling that did not exist yet, cached the negative result, and gave up is a real and reproducible failure that has nothing to do with your code and everything to do with startup ordering. The diagnostic move is to resolve the peer names from inside a replica and see what comes back:
+
+```
+kubectl exec -it web-1 -- nslookup web-2.nginx
+```
+
+> 🪝 **Snag:** A headless Service is required for a StatefulSet's network identity, and **you are responsible for creating it** — *"StatefulSets currently require a Headless Service to be responsible for the network identity of the Pods. You are responsible for creating this Service"* [source: k8s-docs-statefulset-2026-08-24]. Which means a `serviceName` pointing at a Service nobody created leaves you with Pods that run and cannot find each other, and nothing in a Pod's own status says why.
+
+<!-- AUTHOR-REVIEW (revision stage): the second half of the Snag above — what actually happens when the named Service does not exist — is INFERENCE, not documented behavior, and is now phrased as a consequence rather than as a fact. `k8s-docs-statefulset-2026-08-24` establishes the requirement and the creation responsibility (quoted, verified) but says nothing about the missing-Service case. Source it or leave it as inference. -->
+
+The unifying point across all three: for a StatefulSet, "which replica" is a question you have to answer before any of the other four questions mean anything.
+
+---
+
+## 🟡 §7 — Before You Ship It
+
+The fastest debugging loop is the one that runs on your own machine, where you have a debugger, an IDE, and a rebuild that takes two seconds instead of a container build and a rollout.
+
+The judgment call is knowing when that loop is worth building and when the reproduction is worthless before you start.
+
+### The dividing line
+
+Some things about your application exist only in the cluster. Not "are easier in the cluster" — exist only there, and cannot be reproduced locally by definition:
+
+- **Cluster-supplied identity.** The ServiceAccount token projected into the Pod, and everything it authorizes *[cross-bearing: see Ch 12 §2 — who you are]*.
+- **Cluster DNS.** Any name resolution through `svc.cluster.local`, including peer discovery.
+- **Injected configuration.** ConfigMaps and Secrets mounted or projected into the container. You can copy the values locally, but you are then testing a copy, and if the bug is that the value *isn't what you think*, you have just reproduced your own misunderstanding.
+- **Admission mutation.** Anything a mutating webhook or a sidecar injector added to your Pod after you submitted it. Your local process was never mutated *[cross-bearing: see Ch 8 §2 — three gates and a logbook]*.
+- **Service routing.** Everything in §4. A local process is not behind a Service, has no selector, and appears in no endpoint list.
+
+Everything else — your business logic, your parsing, your request handling, your math — usually reproduces locally just fine, and reproducing it there is much faster than reproducing it in a cluster.
+
+<!-- AUTHOR-REVIEW (revision stage — recorded research gap, manifest Gaps item 2 / Notes item 5): the five-item dividing line above is AUTHORIAL SYNTHESIS and is this section's entire teaching payload. `k8s-docs-local-debugging-telepresence-2026-08-31`'s own scope_warning states the page "does NOT contain any general discussion of which failures are or are not reproducible locally — that framing, which is Ch 16 section 7's actual subject, is NOT sourced here." Each individual item IS established by an earlier chapter (Ch 12 for tokens, Ch 9 for DNS and Service routing, Ch 8 for admission, Ch 4 for injected config), and every one carries a cross-bearing to its owner. Flagged for parity with §6, which flagged the equivalent situation. No prose change recommended — the content is right and follows the outline's depth ruling. This reaches graded text at Practice Q15 and Bearings 3 Q4/Q5. -->
+
+> ⚓ **Worth Securing:** Before you build a local reproduction, ask one question: *does the failing behavior depend on anything the cluster supplies?* If yes, a local reproduction will either fail to reproduce the bug or reproduce a different one, and either outcome is worse than not trying, because both are misleading. That question takes ten seconds and routinely saves an afternoon.
+
+### The pattern that resolves it
+
+There is a third option between "reproduce it locally" and "debug it in the cluster," and it is the one worth knowing by shape: **proxy a local process into the cluster, so that your code runs on your machine with your debugger attached, while seeing the cluster's real dependencies.**
+
+The Kubernetes documentation describes the motivation exactly: *"Kubernetes applications usually consist of multiple, separate services, each running in its own container. Developing and debugging these services on a remote Kubernetes cluster can be cumbersome, requiring you to get a shell on a running container in order to run debugging tools."* [source: k8s-docs-local-debugging-telepresence-2026-08-31] The tool the docs walk through for this is **Telepresence**, described as *"a tool to ease the process of developing and debugging services locally while proxying the service to a remote Kubernetes cluster,"* which *"allows you to use custom tools, such as a debugger and IDE, for a local service and provides the service full access to ConfigMap, secrets, and the services running on the remote cluster."* [source: k8s-docs-local-debugging-telepresence-2026-08-31]
+
+That last clause is the whole pattern in one line: your process, their cluster's dependencies. The list above stops being a list of things you cannot reproduce, because you are not reproducing them. You are using the real ones.
+
+Telepresence is one instance of the pattern and the one the Kubernetes docs happen to document. The tooling in this space changes; the pattern does not. Learn the shape — a local process, proxied into the cluster's network and configuration — and you will recognize whichever tool is current when you need one.
+
+> 🔭 **Closer Look:** There is also a fourth option worth naming, which is running a small local cluster — kind, minikube, or k3s — rather than proxying into a shared one *[cross-bearing: see Ch 8 §5 — who owns the control plane]*. That gets you real cluster DNS, real ServiceAccounts, real admission, and real Services, on your laptop. What it does *not* get you is *their* cluster's config, *their* webhooks, and *their* network policy, so it reproduces the class of bug, not the instance. Useful for "does my manifest work at all," not for "why does it fail in staging."
+
+<!-- AUTHOR-REVIEW (revision stage — minor research gap): the three tool names above are not in any cached snapshot; the Telepresence page names exactly one third-party tool. Low severity — kind and minikube are documented on `https://kubernetes.io/docs/tasks/tools/` if a tag is wanted; k3s is not a Kubernetes-project tool and would need separate treatment. Alternative is to drop the names and keep the pattern. Kept as written because Ch 8 §5 already names all three. -->
+
+That closes the practical arc. Four questions, five tools, one boundary, and one thing left to say about why the boundary was the point all along.
+
+---
+
 ## ☆ Taking Your Bearings #2 — Reachability, Identity, and What a Laptop Can't Reproduce
 
 Eight questions on §4 through §7. Three of them reach back into earlier chapters.

@@ -739,6 +739,116 @@ One forward pointer before we move on. "Store config in the environment" is the 
 
 ---
 
+## §5 — 🔵 The Universal Join
+
+Everything so far has been about one object at a time. This section is about how you talk about many.
+
+**Labels** are key/value pairs that are attached to objects. Labels are intended to be used to specify identifying attributes of objects that are meaningful and relevant to users, but that **do not directly imply semantics to the core system**. They can be used to organize and to select subsets of objects. Labels can be attached to objects at creation time and subsequently added and modified at any time. Each object can have a set of key/value labels defined, and each key must be unique for a given object [source: k8s-docs-labels-selectors-2026-08-23].
+
+Slow down on that middle clause: *do not directly imply semantics to the core system*. Kubernetes does not know what `tier: frontend` means. It has no built-in concept of a frontend. That ignorance is precisely why labels are useful everywhere: because the system attaches no meaning to them, you are free to attach yours, and the system's grouping machinery works identically regardless of what you meant. A label is closer to a signal flag than to a filing category. The flag means whatever your fleet agreed it means; the machinery that reads it only cares that it is flying. Labels let you map your own organizational structures onto system objects in a loosely coupled fashion, without requiring clients to store those mappings [source: k8s-docs-labels-selectors-2026-08-23].
+
+The documentation's own example labels are the ones practitioners actually use, and they make the abstraction concrete for free [source: k8s-docs-labels-selectors-2026-08-23]:
+
+```
+release:      stable | canary
+environment:  dev | qa | production
+tier:         frontend | backend | cache
+partition:    customerA | customerB
+track:        daily | weekly
+```
+
+The syntax, at the depth this exam tests. Valid label keys have two segments: an optional prefix and a name, separated by a slash. The name segment is required and must be **63 characters or less**, beginning and ending with an alphanumeric character, with dashes, underscores, dots, and alphanumerics between. The prefix is optional; if specified it must be a DNS subdomain no longer than 253 characters, followed by a slash. The **`kubernetes.io/` and `k8s.io/` prefixes are reserved** for Kubernetes core components. Valid label values must be 63 characters or less, and can be empty [source: k8s-docs-labels-selectors-2026-08-23].
+
+### The label selector
+
+Via a label selector, a client or user can identify a set of objects. The documentation gives it a title, and the title is the one line to memorize verbatim: **the label selector is the core grouping primitive in Kubernetes** [source: k8s-docs-labels-selectors-2026-08-23].
+
+The API supports two types.
+
+**Equality-based** selectors use `=`, `==`, and `!=`. For example, `environment = production`, or `tier != frontend` [source: k8s-docs-labels-selectors-2026-08-23].
+
+**Set-based** selectors use `in`, `notin`, and `exists` (plus its negation). For example, `environment in (production, qa)`, `tier notin (frontend, backend)`, `partition` (meaning: has the key at all), and `!partition` (meaning: does not have the key). Set-based requirements are **more expressive** than equality-based ones, and multiple requirements are **ANDed** together with commas [source: k8s-docs-labels-selectors-2026-08-23].
+
+<!-- FIGURE: ch04-fig03-labels-selectors-join -->
+![Four Pod cards labelled A through D, each carrying a tier and an env label. Below them, four selectors resolve to sets: tier equals fe gives A and B; env equals prod gives A and C; env in prod or qa also gives A and C; tier equals be and env equals prod gives C alone. Pod A appears in three sets and Pod D in none.](figures/ch04-fig03-labels-selectors-join.svg)
+
+<!-- ASCII-FALLBACK
+```
+  OBJECTS, each carrying labels
+
+    ┌───────────┐   ┌───────────┐   ┌───────────┐   ┌───────────┐
+    │  Pod A    │   │  Pod B    │   │  Pod C    │   │  Pod D    │
+    │ tier=fe   │   │ tier=fe   │   │ tier=be   │   │ tier=be   │
+    │ env=prod  │   │ env=dev   │   │ env=prod  │   │ env=dev   │
+    └───────────┘   └───────────┘   └───────────┘   └───────────┘
+
+  SELECTORS, each resolving to a set
+
+    tier = fe                ──►   { A , B }
+    env  = prod              ──►   { A ,     C }
+    env in (prod, qa)        ──►   { A ,     C }
+    tier = be , env = prod   ──►   {         C }
+```
+-->
+
+*Figure: sets, not a taxonomy. Pod A belongs to two selected sets at once and Pod D to none of them, and that overlap is the entire reason this mechanism is useful. If the four Pods had partitioned cleanly into four boxes you would be looking at a folder structure, not a selector.*
+
+### The bridge to what you will actually see
+
+Some resource types accept only equality-based selectors. Newer resources (**Job, Deployment, ReplicaSet, and DaemonSet**) support set-based requirements through two structured fields, `matchLabels` and `matchExpressions`. And the relationship between them is exact: **`matchLabels` is a map of `{key, value}` pairs equivalent to a `matchExpressions` entry with operator `In`** [source: k8s-docs-labels-selectors-2026-08-23].
+
+That equivalence is the kind of precise, checkable fact this exam rewards. `matchLabels: {tier: frontend}` and `matchExpressions: [{key: tier, operator: In, values: [frontend]}]` are the same requirement written two ways. `matchLabels` is not a weaker feature; it is shorthand.
+
+> ★ **Fixed Point:** **The label selector is the core grouping primitive in Kubernetes** [source: k8s-docs-labels-selectors-2026-08-23]. Labels are selectable. Annotations are not. Nearly every question in Kubernetes of the form *"which objects does this apply to?"* is answered by a selector over labels.
+
+Write that one down, because you are about to meet it constantly. A ReplicaSet knows which Pods are *its* Pods by selector *[cross-bearing: see Ch 6 — a controller's selector and the Pods it owns]*. A Service identifies the set of Pods behind it by selector, which is what makes Pod churn survivable [source: k8s-docs-service-2026-08-23] *[cross-bearing: see Ch 9 — a Service selects its backends]*. Node scheduling constraints use labels on nodes; the recommended approaches all use label selectors to facilitate the selection [source: k8s-docs-assign-pod-node-2026-08-23] *[cross-bearing: see Ch 7 — node labels and nodeSelector]*. A NetworkPolicy uses a selector to specify what traffic is allowed to and from the Pods that match [source: k8s-docs-network-policies-2026-08-23] *[cross-bearing: see Ch 10 — NetworkPolicy selects both its subject and its peers]*.
+
+> ⚓ **Worth Securing:** Once you internalize that all of those are the same mechanism pointed at different things, four chapters get considerably easier. ReplicaSet, Service, NetworkPolicy, and node affinity are not four mechanisms to learn. They are one mechanism, *describe a set by its attributes*, aimed at four problems. Learn the primitive once and you spend the later chapters learning what each resource *does* with its set, which is the interesting part.
+
+There is one important exception, and it goes in now precisely because you have just been told that everything is a selector. Kubernetes' permission model is not. Role-based access control names its subjects and its resources explicitly — an explicit list, where everything else in this section is a query [source: k8s-docs-rbac-2026-08-23]. A reader who leaves this section assuming otherwise will make a specific, confident, wrong prediction in Chapter 12 *[cross-bearing: see Ch 12 — why RBAC names subjects instead of selecting them]*.
+
+*(Kubernetes also has field selectors — the name is worth recognizing, and recognition is all this chapter needs [source: k8s-docs-objects-2026-08-23]. Different thing, different syntax, not a substitute. Noted so that you recognize the name; nothing here depends on it.)*
+
+### Annotations, by contrast
+
+**Annotations** are the other half of `metadata`'s user-supplied data. The documentation's opening line is the whole definition: you use annotations to attach **arbitrary non-identifying metadata** to objects, and clients such as tools and libraries can retrieve it [source: k8s-docs-annotations-2026-08-24].
+
+The contrast with labels is stated directly, and it is the sentence to keep:
+
+> Labels can be used to select objects and to find collections of objects that satisfy certain conditions. In contrast, annotations are **not used to identify and select objects** [source: k8s-docs-annotations-2026-08-24].
+
+The rule fits in one sentence, and it is the whole distinction:
+
+**If you might ever want to find objects by it, it is a label. If you only want to record it, it is an annotation.**
+
+A build identifier that a deployment tool wants to select on is a label. A build identifier that exists so a human can read it during an incident is an annotation. Same string, different job.
+
+**What people actually put in them.** The documentation's own list is the best answer to "like what?": build, release, or image information such as timestamps, release IDs, git branch, PR numbers, image hashes, and registry addresses; pointers to logging, monitoring, analytics, or audit repositories; client library or tool information used for debugging, such as name, version, and build; lightweight rollout-tool metadata such as config or checkpoints; and phone or pager numbers of the people responsible, or a directory entry pointing at the team's web site [source: k8s-docs-annotations-2026-08-24]. Notice the shape of that list. Every item is something a human or a tool reads *after* it has already found the object. None of them is something you would search on.
+
+**The syntax difference is the sharper version of the rule.** Annotation keys follow exactly the same two-segment rules as label keys, an optional DNS-subdomain prefix and a required name segment of 63 characters or less, and `kubernetes.io/` and `k8s.io/` are reserved for core components in both cases [source: k8s-docs-annotations-2026-08-24]. The *values* are where they part company:
+
+| | Label value | Annotation value |
+|---|---|---|
+| Character set | Constrained — values capped at 63 characters; not free-form the way annotation values are [source: k8s-docs-annotations-2026-08-24] | **No restrictions** — any string, including special characters, whitespace, and structured data such as JSON or YAML |
+| Length | 63 characters or less | No per-value cap; **all annotations on one object must total ≤ 256 KiB** |
+| Selectable | Yes | No |
+
+[source: k8s-docs-labels-selectors-2026-08-23] [source: k8s-docs-annotations-2026-08-24]
+
+That table is the distinction restated as engineering. Labels are constrained *because* they are indexed and selected on. Annotations are unconstrained *because* nothing has to search them. For annotations, the keys and the values in the map must be strings — no numbers, booleans, or lists [source: k8s-docs-annotations-2026-08-24]; label values are strings as well, under the tighter syntax above.
+
+> ⚠ **Navigational Hazards**
+>
+> Two mistakes live here, and they are the same mistake twice.
+>
+> **Recording something as an annotation and then trying to select on it.** Selectors operate over labels. An annotation cannot be selected on, not because it is a less capable field, but because that is the definition of the two [source: k8s-docs-annotations-2026-08-24]. A controller that needs to find its objects cannot find them by annotation.
+>
+> **Using a namespace to separate two versions of the same software.** §3 flagged this and deferred the reason. Here it is: namespaces partition *names*. Labels partition *sets*. Nearly everything in Kubernetes operates over sets, every controller and every Service and every policy, so partitioning by namespace when you meant to partition by set leaves the mechanism that would have grouped your objects unable to see across the line you drew. The documentation's advice to use labels for different versions of the same software is not a stylistic preference [source: k8s-docs-namespaces-2026-08-23]; it is the difference between a distinction the system can act on and one it cannot.
+>
+> Both errors are the same shape: reaching for the wrong partitioning tool. Learn the shape, not the two facts.
+
+---
+
 ## ☆ Taking Your Bearings #2 — Namespaces, Configuration, and Labels
 
 Six questions, covering §3 through §5. One reaches back into Chapter 2.

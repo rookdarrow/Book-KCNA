@@ -685,6 +685,118 @@ Read the verbs. *Notices.* *Selects.* *Records.* *Notices.* At no point does one
 
 ---
 
+## §6 — 🔵 Controllers and the Control Loop
+
+This is the section the rest of the book leans on. If you read one section of this chapter at full attention, read this one.
+
+### Start where the documentation starts
+
+In robotics and automation, a control loop is a non-terminating loop that regulates the state of a system. Here is one example: a thermostat in a room. When you set the temperature, that's telling the thermostat about your **desired state**. The actual room temperature is the **current state**. The thermostat acts to bring the current state closer to the desired state, by turning equipment on or off [source: k8s-docs-controllers-2026-08-23].
+
+Sit with how ordinary that is. A thermostat doesn't execute a heating plan. It doesn't calculate that reaching 20°C will require 14 minutes of furnace time and then run the furnace for 14 minutes. It compares two numbers and acts on the difference, then does it again, and again, forever. It never finishes. If someone opens a window, the thermostat doesn't need to be told; the gap widens and it acts. If someone lights a fire, same story in the other direction. Nobody wrote a rule about windows or fires.
+
+**In Kubernetes, controllers are control loops that watch the state of your cluster, then make or request changes where needed. Each controller tries to move the current cluster state closer to the desired state** [source: k8s-docs-controllers-2026-08-23].
+
+<!-- FIGURE: ch03-fig02-control-loop-desired-vs-current -->
+![A closed four-step cycle with no beginning or end: compare reads desired state and current state, acting to close the gap changes current state, and comparison begins again; captioned no start, no end, no exit condition](figures/ch03-fig02-control-loop-desired-vs-current.svg)
+
+<!-- ASCII-FALLBACK
+```
+                        ┌─────────────────┐
+                        │  DESIRED STATE  │
+                        │                 │
+                        │  ╔═══════════╗  │
+                        │  ║   etcd    ║  │
+                        │  ║ the store ║  │
+                        │  ╚═══════════╝  │
+                        └────────┬────────┘
+                                 │
+                                 │  observe
+                                 ▼
+                        ┌─────────────────┐
+                        │                 │
+             ┌─────────►│   CONTROLLER    │──────────┐
+             │          │                 │          │
+             │          └─────────────────┘          │  act to
+             │                                       │  close the gap
+             │  observe                              │
+             │                                       ▼
+    ┌────────┴────────┐                     ┌─────────────────┐
+    │ CURRENT STATE   │◄────────────────────│   API SERVER    │
+    │                 │                     │  (the only      │
+    │  what is        │                     │   door in)      │
+    │  actually true  │                     └─────────────────┘
+    └─────────────────┘
+
+        no start.  no end.  no exit condition.
+```
+-->
+*Notice there is no entry arrow and no terminus. A loop drawn with a beginning teaches the wrong thing: this one was already running before your request arrived and will still be running after it's satisfied.*
+
+<!-- FIGURE PAIR (do not redraw in isolation): this figure and `ch15-zenith-control-loop-pointed-at-a-repo` are a matched pair on one chassis.
+     Chapter 15 §7 is the book's designated primary Zenith and its caption asks the
+     reader to lay the two side by side and see that ONE BOX CHANGED CONTENTS — Git
+     replaces etcd in the DESIRED STATE box — with the controller in the same place
+     and the API server still the only door in. Three shipped chapters stake the
+     payoff on that (ch06:1465, ch09:1249, ch14's Voyage Ahead). Geometry, node
+     positions and arrow directions must stay identical across the two. Redrawn here
+     2026-08-31 at the Ch 15 gate; ch03-fig02's image-spec needs regeneration to
+     match, alongside ch15's. -->
+
+### The controller pattern, precisely
+
+A controller tracks at least one Kubernetes resource type. Those objects carry a field that represents the desired state, and the controller for that resource is responsible for making the current state come closer to it. The controller might carry the action out itself; more commonly, in Kubernetes, a controller will send messages to the API server that have useful side effects [source: k8s-docs-controllers-2026-08-23].
+
+Read that last clause carefully, because it is the distinction most people get wrong.
+
+**Control via API server.** The Job controller is the documentation's own example of a built-in controller. A Job is a Kubernetes resource that runs a Pod, or perhaps several Pods, to carry out a task and then stop. When the Job controller sees a new task it makes sure that, somewhere in your cluster, the kubelets on a set of Nodes are running the right number of Pods to get the work done. **The Job controller does not run any Pods or containers itself. Instead, the Job controller tells the API server to create or remove Pods. Other components in the control plane act on the new information** — there are new Pods to schedule and run — and eventually the work is done [source: k8s-docs-controllers-2026-08-23].
+
+(The Job *resource*, how you write one and when to reach for it, is Chapter 6's material. We're using it here only because it's the documentation's own chosen example of a controller, and swapping in a different one would cost precision for no gain.)
+
+> 🪝 **Snag:** "The controller does the work" is the intuitive reading and it's wrong. A controller almost never touches a container. It writes something down. Then a different component, one that has never heard of this controller, notices what was written and acts. If you take one habit from this section, take this one: when something happens in Kubernetes, ask *which component actually performed the action*, and expect the answer to be different from *which controller wanted it*.
+
+**Direct control.** The less common shape. Some controllers need to make changes to things outside your cluster. If you use a control loop to make sure there are enough Nodes in your cluster, that controller needs something outside the current cluster to set up new Nodes. Controllers that interact with external state find their desired state from the API server, then communicate directly with an external system to bring the current state closer in line [source: k8s-docs-controllers-2026-08-23].
+
+Note what's the same and what's different. The loop is identical: desired state read from the API server, current state observed, act to close the gap. Only the *direction of the action* changes: inward through the API server in the common case, outward to some external system in the uncommon one.
+
+Controllers also update the objects that configure them. Once the work is done for a Job, the Job controller updates that Job object to mark it Finished [source: k8s-docs-controllers-2026-08-23]. The loop reports on itself through the same shared state it reads from.
+
+> **★ Fixed Point**
+>
+> **A control loop is: a desired state, a current state, and an action that closes the gap between them — repeating, without terminating.**
+>
+> A Kubernetes controller is a control loop that watches cluster state and acts to move current state closer to desired state. It does this continuously, not once. It usually acts by asking the API server to change something, not by doing the thing itself. [source: k8s-docs-controllers-2026-08-23] When later chapters say **reconciliation**, this closing-the-gap work is exactly what the word names.
+
+> **Extended Analogy:**
+>
+> A ship's company is not a workflow. There is no master schedule pinned in the wardroom listing every action the crew will take between departure and arrival, in order, with dependencies. Such a document would be worthless within the hour, because the sea does not consult it.
+>
+> What exists instead is standing orders. The helmsman's standing order is a heading: compare the compass to the ordered course, and correct. Not once, but continuously, every few seconds, for the whole watch. The lookout's standing order is a horizon: observe, and report anything on it. The engineer's standing order is a pressure range: watch the gauge, act when it drifts. Each rating holds one comparison and one response, and each of them performs it forever, without waiting to be told and without coordinating with the others.
+>
+> The vessel arrives on course not because someone executed a plan but because a few dozen small corrections were made continuously by people who were each watching one thing. No one aboard is running the voyage. The voyage is what all of that watching adds up to.
+>
+> The reason this analogy earns its place here rather than in the prose: what a control loop replaces is *the plan*, and that's easier to feel in a setting where you can picture the plan being useless.
+
+### Desired versus current state
+
+Now the claim that unsettles people, and the most quietly radical idea in the chapter.
+
+Kubernetes takes a cloud-native view of systems, and is able to handle constant change. Your cluster could be changing at any point as work happens and control loops automatically fix failures. This means that, potentially, **your cluster never reaches a stable state. As long as the controllers for your cluster are running and able to make useful changes, it doesn't matter if the overall state is stable or not** [source: k8s-docs-controllers-2026-08-23].
+
+That is not a caveat. That is a design position, and it is unusual enough to deserve a moment.
+
+Most systems you've operated treat "converged and quiet" as the healthy state and "constantly changing" as an alarm. Kubernetes inverts it. Constant change is expected: machines fail, load shifts, images get updated, someone deletes something they shouldn't have. A cluster that is never quite finished reconciling isn't malfunctioning; it's a vessel underway, where the small correction is the normal condition and perfect stillness would be the thing worth investigating. The health question isn't *"has it settled?"* It's *"are the loops running, and can they still make useful changes?"*
+
+Now go back to Soundings question 1: three copies, you want five. The script answer works exactly once, in exactly the conditions you wrote it for. The loop answer handles the same request, plus the machine that dies at 3 a.m., plus the one that dies while you're recovering from the first one, plus the copy someone deletes by hand next Tuesday, without anybody writing a rule for any of those cases. You didn't handle those cases. You stated a desired state and left something watching.
+
+This is also where §1's capability list cashes out. Self-healing was listed as something Kubernetes *provides* [source: k8s-docs-overview-2026-08-23]: restarting containers that fail, replacing containers, killing containers that fail a health check. Read it now with §6's vocabulary and it stops being a feature and becomes a description of loops running. A gap opens between what you asked for and what exists, and something closes it. Nobody triggered anything.
+
+*[cross-bearing: see Ch 4 — the field that holds desired state, and its status counterpart]*
+*[cross-bearing: see Ch 6 — ReplicaSet, a control loop you can watch working in real time]*
+*[cross-bearing: see Ch 15 — the same loop, with a Git repository holding desired state]*
+
+---
+
 ## ☆ Taking Your Bearings #2 — Arrangement, Optionality, and the Control Loop
 
 Six questions on §5 and §6 — arrangement, optionality, and the control loop. Q4 carries two ideas at once, so treat it as two questions in disguise.

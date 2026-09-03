@@ -791,6 +791,138 @@ Which is precisely why the next two sections exist. **§6 is which versions are 
 
 ---
 
+## 🟡 §6 — Versions That Are Allowed to Disagree
+
+This section is a table. There is no honest way around that, and printing the table is the wrong way to teach it: a table you memorized in August is a table you have half-lost by October.
+
+So take the rule first, before any numbers.
+
+**Nothing in the cluster may be newer than the API server it talks to.**
+
+Every component in a Kubernetes cluster is a client of one door. Chapter 3 established that; §2 built three gates on it. A client that is *newer* than its server is a client that may ask for things the server has never heard of: new fields, new resources, new behavior that does not exist on the other end of the connection. That single sentence generates three of the five rows below. The numbers are then not five unrelated facts; they are the *sizes of the windows*.
+
+### The vocabulary
+
+Kubernetes versions are expressed as `x.y.z`, where x is the major version, y is the minor version, and z is the patch version, following Semantic Versioning terminology [source: k8s-version-skew-policy-2026-08-23].
+
+The Kubernetes project maintains release branches for the most recent **three** minor releases [source: k8s-version-skew-policy-2026-08-23]. Kubernetes 1.19 and newer receive approximately one year of patch support; 1.18 and older received approximately nine months [source: k8s-releases-cadence-2026-08-23]. Applicable fixes, including security fixes, may be backported to those three release branches depending on severity and feasibility [source: k8s-version-skew-policy-2026-08-23].
+
+### The cadence, which makes the branch count make sense
+
+Since 2021 the project ships **three minor releases per year**, approximately every fifteen weeks, each following a release cycle led by a SIG Release team; patch releases are cut monthly from the supported branches [source: k8s-releases-cadence-2026-08-23].
+
+Now put the two facts beside each other, because neither is memorable alone and together they are almost self-evident: three releases a year, across three supported branches, is roughly a year of coverage, which is exactly the patch-support figure. The three-branch rule is not an arbitrary number somebody picked. It is what "about a year of support" costs at this release cadence.
+
+*[cross-bearing: see Ch 17 §8 — SIG Release, KEPs, and how a release gets made]*. You will meet the cadence again there, inside the governance material that explains why it is what it is. Make the connection now; it is the cheapest insurance this chapter offers against forgetting the number.
+
+> 🪝 **Snag:** "Kubernetes supports the last two releases" is a common half-memory and it is wrong. It is **three**.
+
+### The rules
+
+> **Dead Reckoning:** The supported version skew, stated flat.
+>
+> | Component | Rule |
+> |---|---|
+> | **kube-apiserver** | In highly-available clusters, the newest and oldest kube-apiserver instances must be within **one** minor version of each other |
+> | **kubelet** | Must not be newer than kube-apiserver. May be up to **three** minor versions older. (A kubelet older than 1.25 may only be up to two minor versions older.) With kube-apiserver at 1.36: kubelet at 1.36, 1.35, 1.34 or 1.33 |
+> | **kube-proxy** | Must not be newer than kube-apiserver. May be up to three minor versions older than kube-apiserver, and up to three minor versions older *or newer* than the kubelet instance it runs alongside |
+> | **kube-controller-manager, kube-scheduler, cloud-controller-manager** | Must not be newer than the kube-apiserver instances they communicate with. Expected to match the kube-apiserver minor version, but may be up to **one** minor version older, to allow live upgrades |
+> | **kubectl** | Supported within **one** minor version, **older or newer**, of kube-apiserver. With kube-apiserver at 1.36: kubectl at 1.37, 1.36 or 1.35 |
+>
+> *(All five rules and both worked examples: [source: k8s-version-skew-policy-2026-08-23].)*
+
+<!-- FIGURE: ch08-fig03-version-skew-window -->
+![A horizontal range chart on a relative axis from minus three to plus one minor versions, with the API server's version marked by a double line at zero; bars for kubelet and kube-proxy reach back three versions, bars for the controller manager, scheduler and cloud controller manager reach back one, and all five stop at the double line, while the kubectl bar alone extends one version past it](figures/ch08-fig03-version-skew-window.svg)
+
+<!-- ASCII-FALLBACK
+```
+                  older ◄───────── kube-apiserver ─────────► newer
+                    -3      -2      -1       0       +1
+                     │       │       │       ║       │
+
+  kubelet            ●━━━━━━━━━━━━━━━━━━━━━━━┫
+  kube-proxy         ●━━━━━━━━━━━━━━━━━━━━━━━┫
+  controller-manager                 ●━━━━━━━┫
+  scheduler                          ●━━━━━━━┫
+  cloud-ctrl-manager                 ●━━━━━━━┫
+  kubectl                            ●━━━━━━━╬━━━━━━━●
+                                             ║
+                                    ▲ the only bar that crosses
+```
+-->
+
+**Figure 8.5 —** The double line at 0 is the API server's minor version. For every component but one it is a wall: bars extend to the left and stop dead. `kubectl` is the single bar that crosses to the right. The HA kube-apiserver rule is deliberately absent — it is a mutual bound *between* API servers, not a bound relative to one, so it has no bar to draw. The axis is relative; the rules do not change when the version numbers do.
+
+### The exception, which is where the exam points are
+
+`kubectl` is the only entry in that table permitted to be *newer* than the API server.
+
+Everything in the first half of this section built an intuition — never newer, never newer, never newer — and for exactly one component that intuition is wrong. Worse, it is wrong in a way that looks like carelessness rather than like a rule, so candidates who half-remember the kubelet's generous three-minor window reach for it when the question is about `kubectl`, and lose the point twice over: wrong number, wrong direction.
+
+There is an explanation, and this book offers it as its own reasoning rather than as documented rationale — the version-skew policy states the rules without saying why. `kubectl` is a **user tool that addresses the cluster from outside**, not a component running inside it. It is the thing on your laptop. It is not participating in the cluster's internal consistency, so its compatibility window is about human convenience: you should be able to run one `kubectl` against a fleet of clusters that are not all on the same release. That is a good reason for the only symmetric window in the table, and it is worth holding onto — but hold it as a memory aid, not as a fact the exam can ask you to reproduce.
+
+> ★ **Fixed Point:** **Nothing may be newer than the API server.** kubelet may be up to **three** minors older. **`kubectl` is the single exception, in both directions, at one minor.**
+
+> ⚠ **Navigational Hazards:** The kubelet rule and the `kubectl` rule are different rules, and candidates routinely apply the first to the second. **kubelet: three minors, older only. `kubectl`: one minor, either direction.** They are not the same number and they are not the same shape. If a question gives you a kubectl version, the number you want is one, and the direction is both.
+
+> 🪢 **Mnemonic:** *Three back, three a year, three branches.* The kubelet's window, the release cadence, and the number of supported minor releases are all three. That is a coincidence, and it is a useful one: three of this chapter's numbers collapse into a single digit, which leaves you only one other number to hold — `kubectl`'s one, in both directions.
+
+### What the rule implies about upgrade order
+
+The order falls out of the rule and does not need memorizing separately. If nothing may be newer than the API server, then the API server must be upgraded first; everything else follows behind it, within its permitted window. No cached documentation states an upgrade order in those words — this is a derivation from the tagged rule above, and it is offered as one.
+
+That is as far as this book goes. Writing an upgrade runbook is not in the curriculum, and the procedure differs by how the cluster was built anyway — which, as §5 noted, may not be a decision that was ever yours *[cross-bearing: see Ch 8 §5 — whose watch the upgrade stands on]*.
+
+**A note on the numbers in this section.** The rules above are stable. The specific releases are not: the roster supported at the time this book's sources were captured was 1.36, 1.35 and 1.34 [source: k8s-releases-cadence-2026-08-23], and by the time you sit the exam it will be a different three. Learn the rule and treat the numbers as an illustration of it. Nothing in this book's practice questions turns on which minor version is current, and nothing in the exam should either.
+
+*[cross-bearing: see Ch 13 §6 — version skew as a cause of failures you will otherwise misdiagnose]*. This material returns there, deliberately, in a form where you have to use it rather than recite it.
+
+---
+
+## 🔵 §7 — The One Backup That Matters
+
+Short section. It is also the only material in this chapter where the consequence of getting it wrong cannot be undone afterwards, so read it at half speed.
+
+Chapter 3 introduced etcd as a consistent and highly-available key value store used as Kubernetes' backing store for all cluster data [source: k8s-docs-etcd-access-control-2026-08-24], and pointed here for what to do about that *[cross-bearing: see Ch 3 §2 — etcd, the cluster's memory]*.
+
+All Kubernetes objects are stored in etcd [source: k8s-docs-etcd-backup-2026-08-23]. Every Deployment you have written in this book. Every ConfigMap and Secret. Every Service. Every Node object, including the ones a kubelet wrote itself in §4. All of it is one datastore's contents.
+
+Which is why: periodically backing up the etcd cluster data is important to recover Kubernetes clusters under disaster scenarios, such as **losing all control plane nodes** [source: k8s-docs-etcd-backup-2026-08-23].
+
+Sit with that scenario for a second, because it is more specific and more survivable than "the cluster died." Losing every control-plane node does not stop your worker nodes. The kubelets keep running the containers they were last told to run; traffic keeps being served. What you have lost is not the workloads. It is the entire record of *intent*: every declaration that says what should be running, which is the only thing that lets the cluster put itself back together when something changes.
+
+### The mechanics
+
+Backing up an etcd cluster can be accomplished in two ways: a built-in snapshot, `etcdctl snapshot save backup.db`, or a volume snapshot of etcd's storage [source: k8s-docs-etcd-backup-2026-08-23]. The `etcdctl` form takes optional `--endpoints`, `--cacert`, `--cert` and `--key` flags for a TLS-protected cluster [source: k8s-docs-etcd-backup-2026-08-23].
+
+Restoring uses `etcdutl snapshot restore`, which operates directly on the etcd data files; after a restore, the control plane components are restarted against the restored data directory [source: k8s-docs-etcd-backup-2026-08-23].
+
+<!-- AUTHOR-REVIEW: the TLS flags are named above because the backup snapshot lists them. No configuration guidance is given, deliberately: the etcd-access-control snapshot's note states that the source page's TLS configuration guidance was not verbatim-verified in that fetch. Do not expand this into how to configure etcd TLS without a fresh verified fetch. -->
+
+> 🔭 **Closer Look:** Restore is not a command you run against a running cluster. `etcdutl snapshot restore` operates on the data files directly, and the control-plane components come back up against the restored directory afterwards. That is why restoring from a snapshot is a maintenance *event*, with a window, a plan, and somebody watching, rather than an operation you slip in between meetings.
+
+### The fact that matters more than the commands
+
+Two sentences, and read them together rather than separately.
+
+The snapshot file contains all the Kubernetes state and critical information; keep it encrypted and store it outside the control plane nodes [source: k8s-docs-etcd-backup-2026-08-23].
+
+Access to etcd is equivalent to root permission in the cluster, so ideally only the API server should have access to it [source: k8s-docs-etcd-access-control-2026-08-24].
+
+Put them side by side and they say something you should feel rather than merely file away: **an unencrypted etcd snapshot sitting on a control-plane node is simultaneously your only disaster recovery and a complete compromise of the cluster, waiting for someone to copy it.** Not a credential *for* the cluster. Root *in* the cluster, in one file, at rest.
+
+> ★ **Fixed Point:** Every object you have ever created lives in etcd. **Access to etcd is equivalent to root permission in the cluster.** A snapshot is therefore both your only route back from disaster and the most dangerous single file you own.
+
+> ⚓ **Worth Securing:** "Store it outside the control plane nodes" is the entire point of that sentence, and it is the half people skip. A snapshot that lives only on the machines it exists to protect you against losing is not a backup. It is a copy that goes down with the original — the maritime word for which is *ballast*, not *lifeboat*.
+
+Notice also that the second sentence is the single-door architecture stated from the other side. §2 said every request terminates at the API server. This says only the API server should reach the store behind it. Same claim, different direction *[cross-bearing: see Ch 8 §2 — one door, three gates]*.
+
+And whose job is this? §5's answer applies: whoever operates the control plane holds it. On a managed platform you may not be able to reach etcd at all. On a self-hosted cluster it is yours, and it is the one duty in this chapter where doing it late is not the same as doing it.
+
+*[cross-bearing: see Ch 12 §4 — Secrets, and encryption at rest]*. Chapter 12 covers why "keep it encrypted" is not paranoia. It is the reason that clause is in the sentence.
+
+---
+
 ## ☆ Taking Your Bearings #2 — The Machine, the Skew, and What You Cannot Improvise
 
 Seven questions on §4 through §7. Two of them reach back into earlier chapters.

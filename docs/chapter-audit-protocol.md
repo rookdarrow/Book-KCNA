@@ -67,6 +67,12 @@ From `structural-contract.yaml`. Present, in order, correctly named:
 **Checkpoints are now at exactly the minimum of 2.** There is no slack: removing one breaks
 the contract.
 
+**Cross-check the Attention Budget table against the headings, both ways.** Every `§N` row
+names a heading that exists, every `##` section has a row, and every checkpoint row is a
+checkpoint that still exists. The 2026-09-03 checkpoint merge deleted 33 sections from 16
+chapters and left every table untouched; the tables were the only place the loss was visible,
+and nobody was reading them. A `§` list with a gap (`1 2 3 4 5 8`) is a finding, not a style.
+
 ## B. Branded markers
 
 Required with a per-chapter minimum: `☆` Taking Your Bearings (2), `★` Fixed Point (1),

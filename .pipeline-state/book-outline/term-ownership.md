@@ -35,30 +35,30 @@ Where the instruction column reads `—`, no chapter earlier than the owner uses
 
 ## Ch 1 — Taking Departure  [SHIPPED]
 
-Ch 1's sections are unnumbered (B6 Collision #1), so every pointer into this chapter addresses it **by heading name**, never `Ch 1 §N`.
+Ch 1's sections were unnumbered at draft time (B6 Collision #1). **Numbered 2026-09-04** (audit finding aqk/tj8): §1 *What the KCNA Is, and Who It's For* · §2 *Ninety Minutes: The Exam as Published* · §3 *The Curriculum That Moved Under Everyone's Feet* · §4 *The Phrase We Haven't Defined Yet* · §5 *How This Book Is Built* · §6 *Three Ways to Read This Book*. Pointers into Ch 1 may now use `Ch 1 §N`; the by-heading-name pointers already shipped in other chapters remain valid.
 
 | Term | Defined by | First appears | Earlier chapters must |
 |---|---|---|---|
-| KCNA (Kubernetes and Cloud Native Associate) | Ch 1 § *What the KCNA Is* | Ch 1 | — |
-| The Linux Foundation | Ch 1 § *What the KCNA Is* | Ch 1 | — |
-| CNCF — **as exam sponsor and credential issuer** | Ch 1 § *What the KCNA Is* | Ch 1 | — |
-| Exam domain | Ch 1 § *The Curriculum That Moved* | Ch 1 | — |
-| Domain weight | Ch 1 § *The Curriculum That Moved* | Ch 1 | — |
-| Blueprint (exam blueprint / curriculum) | Ch 1 § *The Curriculum That Moved* | Ch 1 | — |
-| Online proctored exam | Ch 1 § *Ninety Minutes* | Ch 1 | — |
-| "Commonly reported" vs "published" | Ch 1 § *Ninety Minutes* | Ch 1 | — |
-| The Lodestar (the book's one-page reference) | Ch 1 § *How This Book Is Built* | Ch 1 | — |
-| 🧭 Soundings | Ch 1 § *How This Book Is Built* | Ch 1 | — |
-| ☆ Taking Your Bearings | Ch 1 § *How This Book Is Built* | Ch 1 | — |
-| ★ Fixed Point | Ch 1 § *How This Book Is Built* | Ch 1 | — |
-| ⚠ Navigational Hazards | Ch 1 § *How This Book Is Built* | Ch 1 | — |
-| — Dead Reckoning | Ch 1 § *How This Book Is Built* | Ch 1 | — |
-| 🏆 Safe Harbor | Ch 1 § *How This Book Is Built* | Ch 1 | — |
-| ☀️ Zenith | Ch 1 § *How This Book Is Built* | Ch 1 | — |
-| ⚓ Worth Securing · 🪝 Snag · 🔭 Closer Look · 🪢 Mnemonic | Ch 1 § *How This Book Is Built* | Ch 1 | — |
-| Logbook Entry · Extended Analogy (sidebars) | Ch 1 § *How This Book Is Built* | Ch 1 | — |
-| Cross-bearing | Ch 1 § *How This Book Is Built* | Ch 1 | — |
-| Difficulty band (⚪🔵🟡🔴) | Ch 1 § *How This Book Is Built* | Ch 1 | — |
+| KCNA (Kubernetes and Cloud Native Associate) | Ch 1 §1 *What the KCNA Is* | Ch 1 | — |
+| The Linux Foundation | Ch 1 §1 *What the KCNA Is* | Ch 1 | — |
+| CNCF — **as exam sponsor and credential issuer** | Ch 1 §1 *What the KCNA Is* | Ch 1 | — |
+| Exam domain | Ch 1 §3 *The Curriculum That Moved* | Ch 1 | — |
+| Domain weight | Ch 1 §3 *The Curriculum That Moved* | Ch 1 | — |
+| Blueprint (exam blueprint / curriculum) | Ch 1 §3 *The Curriculum That Moved* | Ch 1 | — |
+| Online proctored exam | Ch 1 §2 *Ninety Minutes* | Ch 1 | — |
+| "Commonly reported" vs "published" | Ch 1 §2 *Ninety Minutes* | Ch 1 | — |
+| The Lodestar (the book's one-page reference) | Ch 1 §5 *How This Book Is Built* | Ch 1 | — |
+| 🧭 Soundings | Ch 1 §5 *How This Book Is Built* | Ch 1 | — |
+| ☆ Taking Your Bearings | Ch 1 §5 *How This Book Is Built* | Ch 1 | — |
+| ★ Fixed Point | Ch 1 §5 *How This Book Is Built* | Ch 1 | — |
+| ⚠ Navigational Hazards | Ch 1 §5 *How This Book Is Built* | Ch 1 | — |
+| — Dead Reckoning | Ch 1 §5 *How This Book Is Built* | Ch 1 | — |
+| 🏆 Safe Harbor | Ch 1 §5 *How This Book Is Built* | Ch 1 | — |
+| ☀️ Zenith | Ch 1 §5 *How This Book Is Built* | Ch 1 | — |
+| ⚓ Worth Securing · 🪝 Snag · 🔭 Closer Look · 🪢 Mnemonic | Ch 1 §5 *How This Book Is Built* | Ch 1 | — |
+| Logbook Entry · Extended Analogy (sidebars) | Ch 1 §5 *How This Book Is Built* | Ch 1 | — |
+| Cross-bearing | Ch 1 §5 *How This Book Is Built* | Ch 1 | — |
+| Difficulty band (⚪🔵🟡🔴) | Ch 1 §5 *How This Book Is Built* | Ch 1 | — |
 
 ## Ch 2 — Cargo in Standard Crates  [SHIPPED]
 
@@ -151,7 +151,7 @@ Ch 1's sections are unnumbered (B6 Collision #1), so every pointer into this cha
 | `default` · `kube-system` · `kube-public` · `kube-node-lease` | Ch 4 §3 | Ch 4 §3 | — |
 | **Namespaced vs cluster-scoped** | Ch 4 §3 | Ch 4 §3 | — |
 | ConfigMap | Ch 4 §4 | Ch 4 §4 | — |
-| Secret (the object; hardening is Ch 12 §4) | Ch 4 §4 | Ch 2 §6 | name only, always with a pointer |
+| Secret (the object; hardening is Ch 12 §4) | Ch 4 §4 | Ch 2 §3 | name only, always with a pointer |
 | Secret type | Ch 4 §4 | Ch 4 §4 | — |
 | base64 (encoding, not protection) | Ch 4 §4 | Ch 4 §4 | — |
 | `stringData` | Ch 4 §4 | Ch 4 §4 | — |
@@ -263,7 +263,7 @@ Ch 1's sections are unnumbered (B6 Collision #1), so every pointer into this cha
 
 | Term | Defined by | First appears | Earlier chapters must |
 |---|---|---|---|
-| kubectl | Ch 8 §1 | Ch 4 §1 | gloss in one clause + pointer |
+| kubectl | Ch 8 §1 | Ch 1 §1 | gloss in one clause + pointer *(audit 2026-09-04: Ch 1 §1 names it in "not a kubectl drill book"; a pointer to Ch 8 §1 was added there)* |
 | Verb (kubectl verb) | Ch 8 §1 | Ch 8 §1 | — |
 | kubeconfig | Ch 8 §1 | Ch 8 §1 | — |
 | Context (kubeconfig context) | Ch 8 §1 | Ch 8 §1 | — |
@@ -871,7 +871,7 @@ These are the pairs most likely to produce a reader who thinks they have met a t
 
 | Headword | Sense A (owner) | Sense B (owner) | Rule |
 |---|---|---|---|
-| **namespace** | Linux namespace — the kernel isolation primitive (Ch 2 §1) | Namespace — the Kubernetes object (Ch 4 §3) | Sense A is always written **"Linux namespace"**, lowercase, never bare after Ch 2 §1. Sense B is capitalized **"Namespace"** when it means the object, lowercase "namespace" when it means the scope. Ch 4 §3 must open by disposing of the collision explicitly. |
+| **namespace** | Linux namespace — the kernel isolation primitive (Ch 2 §1) | Namespace — the Kubernetes object (Ch 4 §3) | Sense A is always written **"Linux namespace"**, lowercase, never bare after Ch 2 §1. Sense B is capitalized **"Namespace"** when it means the object, lowercase "namespace" when it means the scope. Ch 4 §3 must open by disposing of the collision explicitly. A third, unrelated sense exists in Ch 2 §3 (the Snag on bare image names): the **registry namespace**, `library` in `docker.io/library/busybox`. Write it as "registry namespace" on every use so it collides with neither. *(audit 2026-09-04)* |
 | **control plane** | The cluster's control plane (Ch 3 §2) | A service mesh's control plane (Ch 17 §5) | Sense B is always **"the mesh's control plane"** or **"the service mesh control plane"** on first use in Ch 17 §5, and the section must say in one clause that this is a different control plane from Ch 3 §2's. Bare "control plane" always means sense A. |
 | **sandbox** | Sandboxed runtime — gVisor, Kata (Ch 2 §7) | CNCF **Sandbox** — the maturity level (Ch 17 §2) | Sense A is **"sandboxed runtime"**, adjectival, never the bare noun. Sense B is capitalized **"Sandbox"** and always appears alongside at least one sibling level (Incubating, Graduated). A confusion-pair row in Ch 19 §2. |
 | **revision** | Deployment revision (Ch 6 §5) | Helm release revision (Ch 14 §3) | Sense B is always **"release revision"** or **"Helm revision"**, never bare, and Ch 14 §3 owns the explicit contrast. |

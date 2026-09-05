@@ -39,7 +39,7 @@ This is a **distillation, not a summary**. There are no chapter recaps here, no 
 | 3 | Cloud Native Application Delivery | **16%** | 14–16 |
 | 4 | Cloud Native Architecture | **12%** | 17–18 |
 
-The 2025-11-24 revision **doubled** Application Delivery from 8% to 16% and folded the old standalone Observability domain into Cloud Native Architecture. Material written against the five-domain blueprint under-serves D3 badly. *[cross-bearing: see Ch 1 § What Changed, and What It Costs You]*
+The 2025-11-24 revision **doubled** Application Delivery from 8% to 16% and folded the old standalone Observability domain into Cloud Native Architecture. Material written against the five-domain blueprint under-serves D3 badly. *[cross-bearing: see Ch 1 §3 — The Curriculum That Moved Under Everyone's Feet]*
 
 ---
 
@@ -51,7 +51,7 @@ On 90 minutes that is the end of the first pass at about the **54-minute mark**,
 
 - **Don't know it?** Answer anyway, then mark it. A blank scores zero with certainty; no wrong-answer penalty is published in either direction.
 - **The failure mode this guards against** is spending four minutes on question nine.
-- **Check the console on the tutorial screen**, before the clock matters: is there a flag/mark control, and will it let you move backward? Thirty seconds of checking buys you the shape of the next ninety minutes.
+- **The console lets you move backward and flag questions.** The Linux Foundation's exam-UI page documents Previous and Next navigation, a Flag control, a Review Screen, and changing an answer before you finish; Pause does not stop the timer. Spend the tutorial screen confirming those controls are where you expect them, not discovering whether they exist.
 
 ---
 
@@ -61,7 +61,7 @@ On 90 minutes that is the end of the first pass at about the **54-minute mark**,
 |---|---|
 | `ReadWriteOnce` means one Pod | It means one **node**. Multiple Pods *on that node* can share it. `ReadWriteOncePod` is the one that means one Pod |
 | `storageClassName: ""` is the same as omitting it | `""` means **no class** — bind only to a PV that also has none. Omitting it means "whatever the cluster's default behavior is" |
-| A second default IngressClass is ambiguous | It is worse: it **removes** the default, and the Ingress can no longer be created at all |
+| A second default IngressClass is ambiguous | It is worse: the admission controller then **rejects any new Ingress that omits `ingressClassName`**; Ingresses that name a class still work |
 | Phase `Running` means working | It means bound, containers created, at least one running **or starting or restarting**. A crash-looping Pod reports `Running` |
 
 ---

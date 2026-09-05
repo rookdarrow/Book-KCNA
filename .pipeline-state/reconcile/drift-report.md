@@ -53,5 +53,153 @@ _None._
 - Ch 17: Self-reference (chapter pointing to itself). Reference: `*[cross-bearing: see Ch 17 §7 — four things that scale]*`
 
 ## Glossary candidates (bold first-use terms not in current glossary)
-**⚠ NO GLOSSARY FILE FOUND.** This book has no glossary at its root. Expected `glossary.md`, `{book}-glossary.md`, or an appendix-named file containing 'glossary'. Every other drafted book ships one — this is a real gap worth addressing before release.
+_Glossary file: `kcna-glossary.md`_
+
+_145 candidates surfaced. These are suggestions, not auto-additions — review and add to the glossary as appropriate._
+
+- Addons
+- Alerting
+- Allocatable
+- Allocate
+- App Definition and Development
+- AppArmor
+- Approver
+- Archived
+- Attention Cost Key
+- Auditing
+- Bookkeeping
+- CNCF Ambassadors
+- CNCF Landscape
+- CRI, CNI, CSI, CRDs
+- Calico
+- Certificate Authority
+- Choose
+- Closer Look
+- Cloud Native Architecture
+- Cluster Proportional Autoscaler
+- Cluster-level Logging
+- Code Freeze
+- Code-based
+- Common Traps
+- Community and Collaboration
+- Container Resource Monitoring
+- Cosign
+- Decompose
+- Developer Experience
+- Diagnose
+- Discretionary Access Control
+- Discriminate
+- Distinguish
+- East-west
+- Egress
+- Enhancement Definition, Implementation, Stabilization
+- Enhancements Freeze
+- Explain
+- Exporters
+- Expressive
+- Extended Analogy
+- Extensible
+- Feasibility
+- Filtering
+- Fulcio
+- GatewayClass, Gateway, HTTPRoute
+- Generate
+- Generators
+- GitOps Toolkit
+- Google Summer of Code
+- High-Priority Topics
+- HorizontalPodAutoscaler (HPA
+- Image Specification
+- Instrumentation
+- Istio
+- Knative Eventing
+- Knative Functions
+- Knative Serving
+- LFX Mentorship
+- Linkerd
+- Linux Capabilities
+- Logbook Entry
+- Medium
+- Merit
+- Mnemonic
+- Multi-container Pod
+- Namespaces
+- Navigational Hazards
+- NodeRestriction
+- Non-idempotency
+- North-south
+- Notary Project
+- OOM-kill
+- OTel Collector
+- Observability and Analysis
+- OpenTelemetry Collector
+- Operational Resilience
+- Orchestration and Management
+- Origin
+- Orphans
+- Outreachy
+- Pacing
+- Platforms and Special
+- Pod IP
+- PodSpec
+- Policy Controller
+- Portable
+- PostSync
+- PreSync
+- Predicates
+- Predict
+- Priorities
+- Propagation
+- Quote
+- Recognize
+- Reconciliation
+- Recreate
+- Refresh
+- Rekor
+- ReplicationController
+- Reviewer
+- RollingUpdate
+- Rotation
+- Runtime Specification
+- SELinux
+- SIG Autoscaling
+- SIG Network
+- SIG Node
+- SIG Release
+- SIG Storage
+- Safe Harbor
+- Scheduling Policies
+- Scheduling Profiles
+- Scoring
+- Seccomp
+- Security Response
+- Security and Compliance
+- Self-heal
+- Self-healing
+- Serverless
+- Service DNS
+- Service and EndpointSlice
+- Sigstore
+- Snag
+- Steering
+- Structural
+- Subproject Owner
+- Symptom
+- SyncFail
+- TAGs
+- Technical Advisory Groups, TAGs
+- Telepresence
+- Template-free
+- Tie-break
+- Tolerations
+- Undefined
+- Units
+- Verify
+- Versioning
+- VerticalPodAutoscaler (VPA
+- Waiting
+- Workloads Foundation
+- Worth Securing
+- Zenith
+- Zero-code
 

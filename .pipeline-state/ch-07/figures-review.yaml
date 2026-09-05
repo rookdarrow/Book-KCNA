@@ -4,6 +4,7 @@ generated: '2026-09-01T14:56:33+00:00'
 figures:
 - anchor_id: ch07-fig01-filter-score-bind
   status: regenerate
+  regenerate_hint: 'Second pass. Keep the three-column FILTER / SCORE / BIND layout and the tight highlight box around node-c only (that part is now right). Restore the two arrows the previous render dropped: inside BIND, a bold brass ASSIGNS arrow pointing DOWN from kube-scheduler to kube-apiserver with the label ASSIGNS beside it; and in the separate lower panel, a STARTS arrow from 'kubelet on node-c' down to 'container runtime -> containers'. The legend already names ASSIGNS as the focal element, so the arrow must exist. Nothing else changes.'
   render_paths:
     svg: figures/ch07-fig01-filter-score-bind.svg
     png: figures/ch07-fig01-filter-score-bind.png
@@ -105,7 +106,7 @@ figures:
     fixed_point_visible_detail: ''
     suggested_fix: ''
 - anchor_id: ch07-fig04-pod-affinity-anti-affinity-topology
-  status: approved  # 2026-09-05: cosmetic label nit recorded in the hint below; author chose not to regenerate approved renders
+  status: approved
   render_paths:
     svg: figures/ch07-fig04-pod-affinity-anti-affinity-topology.svg
     png: figures/ch07-fig04-pod-affinity-anti-affinity-topology.png

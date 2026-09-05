@@ -69,7 +69,7 @@ figures:
     fixed_point_visible_detail: ''
     suggested_fix: ''
 - anchor_id: ch05-fig02-pod-phases-and-container-states
-  status: regenerate
+  status: approved  # 2026-09-05 coordinator review: worked overlay now pairs phase Running with helper Waiting/CrashLoopBackOff; promoted
   render_paths:
     svg: figures/ch05-fig02-pod-phases-and-container-states.svg
     png: figures/ch05-fig02-pod-phases-and-container-states.png

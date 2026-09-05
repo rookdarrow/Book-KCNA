@@ -592,7 +592,7 @@ Notice how much more each container state tells you than a phase does. A phase i
 > **Dead Reckoning:** A Pod has exactly one **phase**, which is one of: Pending, Running, Succeeded, Failed, Unknown. Each container in that Pod separately has a **state**, which is one of: Waiting, Running, Terminated. Phase is a Pod-level field in `status`; state is per-container [source: k8s-docs-pod-lifecycle-2026-08-23] [source: k8s-docs-objects-2026-08-23]. A Pod with three containers has one phase and three states. These are different fields with different vocabularies at different scopes. They are not interchangeable.
 
 <!-- FIGURE: ch05-fig02-pod-phases-and-container-states -->
-![A Pod box shows five phase values Pending, Running, Succeeded, Failed and Unknown, and nested inside it two container boxes each show three states Waiting, Running and Terminated; a second panel shows a real instant where the Pod's phase is Running while its helper container's state is Waiting with reason ImagePullBackOff](figures/ch05-fig02-pod-phases-and-container-states.svg)
+![A Pod box shows five phase values Pending, Running, Succeeded, Failed and Unknown, and nested inside it two container boxes each show three states Waiting, Running and Terminated; a second panel shows a real instant where the Pod's phase is Running while its helper container's state is Waiting with reason CrashLoopBackOff](figures/ch05-fig02-pod-phases-and-container-states.svg)
 
 <!-- ASCII-FALLBACK
 ```
@@ -621,8 +621,6 @@ WORKED OVERLAY — both readings are legitimate:
 └─────────────────────────────────────────────────────────────┘
 ```
 -->
-
-<!-- FIGURE-REGEN ch05-fig02: the 2026-09-01 render still labels the worked overlay "Reason: ImagePullBackOff" against "phase: Running", a pairing the prose below rules out (an unpulled image means the container was never created, so the Pod is Pending). Regenerate the overlay with CrashLoopBackOff to match this fallback, then update the alt text to match the new render. -->
 
 The nesting in that figure is the point. Container states are drawn *inside* the Pod because that is the actual relationship: one contains the other. If you find yourself picturing them side by side, as two alternative ways of saying the same thing, the figure has failed and so has the model.
 

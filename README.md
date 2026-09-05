@@ -25,7 +25,11 @@ Unlike the CKA, this exam has no terminal. It tests whether you can recognize th
 
 ## Status
 
-**Commissioned 2026-08-23.** Drafted end-to-end through the Lodestar Ledgers pipeline at [`rookdarrow/certcomp`](https://github.com/rookdarrow/certcomp) — book-outline stages first, then the 14-stage chapter pipeline per chapter, then reconciliation, back-of-book reference, and the diagram pass via [`rookdarrow/certcomp-diagrams`](https://github.com/rookdarrow/certcomp-diagrams). This section is updated as the book lands.
+**Commissioned 2026-08-23; manuscript complete and audited 2026-09-05.** Drafted end-to-end through the Lodestar Ledgers pipeline at [`rookdarrow/certcomp`](https://github.com/rookdarrow/certcomp), then every chapter was read in full against `docs/chapter-audit-protocol.md` and fixed in place (verdicts: chapters 1, 2, 3, 19 and 20 tight; chapter 12 over-scoped and trimmed at sentence level; the rest defensible). Claims are tagged to cached snapshots in `sources/`; the term ledger, the front matter, `the-lodestar.md` and the listing copy were reconciled with the chapters.
+
+**Builds.** `KCNA.epub` passes epubcheck with no errors and reflows cleanly on five e-reader profiles; `KCNA.pdf` is the screen/reference PDF. The print interiors build but exceed KDP's 828-page maximum at every trim (1,400 pages at 6x9, 1,272 at 7x10, 999 at 8.5x11 for ~413,000 words), so a paperback needs a decision: two volumes, a trimming pass, or another printer. The cover (`KCNA.png`/`KCNA.jpg`) uses the bearing-log art direction; the print wrap waits on the page count.
+
+**Open items** are tracked as beads (`bd list --status open`): figure renders queued for regeneration where they contradicted the prose, glossary decisions for terms the ledger marks unowned, and the print-length decision above.
 
 **Role in the Lodestar Ledgers series:**
 - Role family: **The Communications Officer** — networking and distributed-systems coordination

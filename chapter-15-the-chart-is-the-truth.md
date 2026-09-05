@@ -149,7 +149,7 @@ sections:
     objectives: ["D3.1"]
     requires_figure: true
     figure_anchor: "ch15-fig04-argocd-sync-states-and-hooks"
-    checkpoint_after: true
+    checkpoint_after: false
 
   - name: "Ordering the Sync"
     objectives: ["D3.1"]
@@ -190,23 +190,19 @@ soundings_planned:
     - "General professional knowledge: you have a repository whose commit history records what was intended. What can you do with that history that you cannot do with the current state of a running server?"
 
 #-- Skill Part 8: practice-question budget ------------------------------
-#-- B4 allocated 8 / 10 / 21 = 39. Bearings raised to 16 across three
-#-- checkpoints (6+5+5), following the Ch 13 precedent exactly. Reason,
-#-- identical to Ch 13's: this chapter's arc-outline retrieval target is the
-#-- **25% ceiling**, and 16 is the smallest count that lets retrieval land at
-#-- EXACTLY 25.0% (4 of 16) across three checkpoints of >= 5. At B4's 10, a
-#-- 25% target rounds to 2.5 and the ceiling cannot be hit cleanly; at 15
-#-- (the Ch 5-12 shape) it rounds to 3.75. Practice stays at B4's 21.
-#-- New total 45. B4 explicitly sanctions this: "Outlines should treat the 10
-#-- as a contract to exceed, not a target to hit," and names multi-arc
-#-- chapters as the case. This chapter carries three arcs (§1-§2 the
-#-- application and its releases; §3-§4 push/pull and the agent; §5-§6
-#-- ordering and the alternatives).
+#-- B4 allocated 8 / 10 / 21 = 39; the outline raised Taking Your Bearings
+#-- to 16 (6+5+5) so retrieval could land at exactly 25%. The 2026-09-03
+#-- checkpoint merge collapsed the second and third checkpoints into one
+#-- covering §3-§6; the chapter now carries 14 across two checkpoints
+#-- (6 + 8), four of them retrieval-tagged (2 + 2). Practice stays at B4's
+#-- 21. Total 43. B4 sanctions exceeding the 10 for multi-arc chapters; this
+#-- chapter carries three arcs (§1-§2 the application and its releases;
+#-- §3-§4 push/pull and the agent; §5-§6 ordering and the alternatives).
 question_budget:
   soundings: 8
-  taking_your_bearings: 16             # across 3 checkpoints (6 + 5 + 5)
+  taking_your_bearings: 14             # across 2 checkpoints (6 + 8)
   practice_questions: 21
-  total_this_chapter: 45
+  total_this_chapter: 43
 
 #-- Concept / objective / command tagging -------------------------------
 kb_tags:
@@ -279,13 +275,13 @@ figures_planned:
 
 **Domain Weight: 16% (Cloud Native Application Delivery) [source: cncf-kcna-curriculum-pdf-2026-08-23] | Complexity: Mixed | Novelty: Paradigm-shifting**
 
-*This domain **doubled** in the 2025-11-24 revision, from 8% to 16% [source: lf-kcna-program-changes-2026-08-23] — the largest proportional change on the blueprint, and the reason a great deal of third-party prep under-serves it. CNCF publishes two competencies under this domain — Application Delivery and Debugging — and no topic list beneath either [source: cncf-kcna-curriculum-pdf-2026-08-23]. The allocation of that 16% across Chapters 14, 15, and 16 is this book's authored judgment, not a published split.*
+*This domain **doubled** in the 2025-11-24 revision, from 8% to 16% [source: cncf-kcna-curriculum-retired-2026-09-04] [source: lf-kcna-program-changes-2026-08-23] — the largest proportional change among the domains that survived the restructure, and the reason a great deal of third-party prep under-serves it. CNCF publishes two competencies under this domain — Application Delivery and Debugging — and no topic list beneath either [source: cncf-kcna-curriculum-pdf-2026-08-23]. The allocation of that 16% across Chapters 14, 15, and 16 is this book's authored judgment, not a published split.*
 
 ---
 
 ## Attention Budget
 
-**Total time: ~100 minutes | Recommended: Split across 2 sessions**
+**Total time: ~98 minutes | Recommended: Split across 2 sessions**
 
 | Section | Time | Attention Cost | Best Time to Study |
 |---|---|---|---|
@@ -295,10 +291,9 @@ figures_planned:
 | ☆ Taking Your Bearings 1 | 6 min | Medium | After a short break |
 | §3 Push, or Pull | 15 min | High | Peak attention |
 | §4 An Agent That Watches a Repository | 15 min | High | Peak attention |
-| ☆ Taking Your Bearings 2 | 5 min | Medium | After a short break |
 | §5 Ordering the Sync | 8 min | Medium | Anytime |
 | §6 The Other Agent, and More Than One Cluster | 8 min | Low | Anytime |
-| ☆ Taking Your Bearings 3 | 5 min | Medium | Immediately before §7 |
+| ☆ Taking Your Bearings 2 | 8 min | Medium | After a short break |
 | §7 The Control Loop, Pointed at a Repository | 8 min | Medium | Peak attention |
 
 **Attention Cost Key:**
@@ -351,7 +346,7 @@ This chapter leans harder on what came before than any other in the book. Two of
 
 4. A new *kind* of object can now be created and stored through the API server: the API is extended. But storage is all you get. Nothing acts on those objects unless a controller is running and watching for them. *(Ch 6 §8, and the pattern named at Ch 10 §3)*
 
-5. It needs an identity, a ServiceAccount, and it needs RBAC grants bound to that identity. The Role or ClusterRole defines what verbs on what resources are permitted; the binding attaches that permission set to the ServiceAccount. Permissions are additive, and there is no deny rule. *(Ch 5 §6, Ch 12 §2–§3)*
+5. It needs an identity, a ServiceAccount, and it needs RBAC grants bound to that identity. The Role or ClusterRole defines what verbs on what resources are permitted; the RoleBinding or ClusterRoleBinding attaches that permission set to the ServiceAccount. Permissions are additive, and there is no deny rule. *(Ch 5 §6, Ch 12 §2–§3)*
 
 6. Outside the image, in ConfigMaps and Secrets, injected at runtime. Baking it in means one image per environment, which destroys the property that makes images useful: the artifact you tested is not the artifact you ship. *(Ch 4 §4, Ch 2 §2)*
 
@@ -394,7 +389,7 @@ In my experience, practitioners who make this shift describe the same two feelin
 The stakes here were banked in Chapter 1, and one clause will do: this domain doubled in the 2025-11-24 blueprint revision. Chapter 14 cashed the first half. This is the second.
 
 
-**About what CNCF actually publishes.** Chapter 14 made this statement at length and it covers this chapter too, so one back-bearing rather than a repetition: the published curriculum gives two competency names under this domain and no list of topics beneath either *[cross-bearing: see Ch 14 — Why This Chapter Matters]*. What supports the inference that GitOps belongs here is positive rather than speculative. Argo and Flux are both CNCF **graduated** projects [source: cncf-project-maturity-levels-2026-08-23], and OpenGitOps is a CNCF project [source: opengitops-principles-v1-2026-08-31]. A CNCF exam asking about application delivery is asking about the delivery model CNCF's own graduated projects implement. That is the basis. It is a good one, and it is honest about being an inference.
+**About what CNCF actually publishes.** Chapter 14 made this statement at length and it covers this chapter too, so one back-bearing rather than a repetition: the published curriculum gives two competency names under this domain and no list of topics beneath either *[cross-bearing: see Ch 14 — Why This Chapter Matters]*. What supports the inference that GitOps belongs here is positive rather than speculative. Argo and Flux are both CNCF **graduated** projects [source: cncf-project-maturity-levels-2026-08-23], and OpenGitOps is a CNCF project at the Sandbox level [source: cncf-project-opengitops-2026-09-04]. A CNCF exam asking about application delivery is asking about the delivery model CNCF's own graduated projects implement. That is the basis. It is a good one, and it is honest about being an inference.
 
 One consequence runs through the rest of the chapter without further comment: nothing here is described as "frequently tested" or "commonly appears." Those claims would require a published sub-topic list, and there isn't one. What you will see instead is "easy to confuse" and "this is the distinction the material rewards," which are claims this book can actually stand behind.
 
@@ -426,9 +421,9 @@ The **twelve-factor app** is a methodology for building software delivered as a 
 
 Read that list again and notice something: it predates Kubernetes and describes Kubernetes exactly.
 
-<!-- AUTHOR-REVIEW: the previous draft said the methodology was "published in 2011", "drawn from experience running a large number of applications on a shared platform", and that it "predates Kubernetes by three years." None of those three facts appears in any cached snapshot — twelve-factor-app-2026-08-23 begins at "In the modern era, software is commonly delivered as a service" and carries no date, authorship, or provenance, and no snapshot carries Kubernetes's release date either. The claim has been reduced to the bare precedence relation, which the surrounding argument still supports. To restore the specifics, cache 12factor.net's Background section and a dated Kubernetes release reference. -->
+<!-- AUTHOR-REVIEW (reduced 2026-09-04): 12factor.net carries no publication date; its footer reads only "Written by Adam Wiggins" and "Last updated 2017" (twelve-factor-background-2026-09-04). So "published in 2011" and "predates Kubernetes by three years" cannot be restored from a primary source and stay out; the sentence above keeps the bare precedence relation, untagged. The Heroku provenance is now sourced in the next paragraph. -->
 
-That is not coincidence and it is not prophecy. Both came out of the same problem, running many applications reliably on shared infrastructure, and arrived at the same conclusions about what an application must do to be run that way.
+That is not coincidence and it is not prophecy. Both came out of the same problem, running many applications reliably on shared infrastructure, and arrived at the same conclusions about what an application must do to be run that way. The methodology says as much about itself: its contributors *"have been directly involved in the development and deployment of hundreds of apps, and indirectly witnessed the development, operation, and scaling of hundreds of thousands of apps via our work on the Heroku platform"* [source: twelve-factor-background-2026-09-04].
 
 Here are the twelve:
 
@@ -517,7 +512,7 @@ The rule is that the application does not participate in log management at all: 
 
 That is exactly why `kubectl logs` works on every container without any container being configured for it, and it is why cluster-wide log collection can be a node-level concern rather than an application concern *[cross-bearing: see Ch 18 §6 — lines from everywhere]*.
 
-> ★ **Fixed Point**
+> ★ **Fixed Point:**
 >
 > **The twelve-factor app is a set of constraints an application accepts in exchange for being run by a platform. Kubernetes implements the platform side — config injection, stateless replication, graceful termination, log collection. It cannot implement the application side. An application that writes its own log files, keeps session state in memory, or takes ninety seconds to start is not made twelve-factor by being containerized.**
 
@@ -531,7 +526,7 @@ Chapter 6 taught you the mechanics of replacing a running fleet: `RollingUpdate`
 
 The line is this.
 
-> ★ **Fixed Point**
+> ★ **Fixed Point:**
 >
 > **`RollingUpdate` and `Recreate` are values of a field on a Deployment. Blue/green and canary are patterns that require tooling above the Deployment object. A Deployment cannot express either one on its own.**
 
@@ -553,7 +548,7 @@ The trade is stated in the definition: you accept downtime and you get the guara
 
 No downtime, and the exact inverse guarantee: both versions serve traffic simultaneously, for the duration. Your application must tolerate that.
 
-**Blue/green.** Two complete environments. CNCF's glossary describes the operator maintaining two environments, "blue" and "green," with one serving live production traffic while the other is updated; after testing on the inactive environment, traffic switches via load balancer [source: cncf-glossary-blue-green-deployment-2026-08-31]. Argo's description agrees and adds the reason: *"During this time, only the old version of the application will receive production traffic. This allows the developers to run tests against the new version before switching the live traffic to the new version"* [source: argo-rollouts-strategies-2026-08-23].
+**Blue/green.** Two complete environments. CNCF's glossary describes a team maintaining two environments, "blue" and "green," with one serving live production traffic while the other is updated; after testing on the inactive environment, traffic switches via load balancer [source: cncf-glossary-blue-green-deployment-2026-08-31]. Argo's description agrees and adds the reason: *"During this time, only the old version of the application will receive production traffic. This allows the developers to run tests against the new version before switching the live traffic to the new version"* [source: argo-rollouts-strategies-2026-08-23].
 
 The cost is capacity. You run two full copies. What you buy is the ability to test the new version *in production, with production configuration and production backing services*, before a single user reaches it. The cutover is one moment rather than a gradual mix, which means the rollback is also one moment.
 
@@ -654,7 +649,7 @@ Six questions. Two of them reach back to earlier chapters. Those are marked, and
 
 What must already exist: something that can split traffic by weight, a service mesh or an ingress controller, and a metrics system the release logic can query [source: argo-rollouts-strategies-2026-08-23]. Without traffic splitting there is no way to send 5% anywhere; without metrics there is nothing to abort on.
 
-**6. `Recreate` and `RollingUpdate` are Deployment strategy values. Blue/green and canary require tooling above the Deployment.** This is the section's Fixed Point and the distinction most likely to be tested from this material. `RollingUpdate` *"is the default strategy of the Deployment object"* [source: argo-rollouts-strategies-2026-08-23]; the other two are patterns implemented by controllers that manage Deployments or replace them.
+**6. `Recreate` and `RollingUpdate` are Deployment strategy values. Blue/green and canary require tooling above the Deployment.** This is the section's Fixed Point and the distinction this material most rewards getting right. `RollingUpdate` *"is the default strategy of the Deployment object"* [source: argo-rollouts-strategies-2026-08-23]; the other two are patterns implemented by controllers that manage Deployments or replace them.
 
 ---
 
@@ -674,7 +669,7 @@ This is the chapter's central argument, and it begins with a fact that clears th
 
 Kubernetes *"does not deploy source code and does not build your application. Continuous Integration, Delivery, and Deployment (CI/CD) workflows are determined by organization cultures and preferences as well as technical requirements"* [source: k8s-docs-overview-2026-08-23].
 
-That is the documentation's own list of what Kubernetes is not, and it settles something. The cluster is indifferent to who builds your artifact and how. It receives objects through its API and reconciles them. Everything before that — compiling, testing, packaging, tagging — happens elsewhere, by arrangement. Chapter 4 told you this in passing *[cross-bearing: see Ch 4 §1 — you file a declaration]*; here it becomes load-bearing.
+That is the documentation's own list of what Kubernetes is not, and it settles something. The cluster is indifferent to who builds your artifact and how. It receives objects through its API and reconciles them. Everything before that — compiling, testing, packaging, tagging — happens elsewhere, by arrangement. Chapter 3 told you this in passing *[cross-bearing: see Ch 3 §1 — how the cluster got the shape it has]*; here it becomes load-bearing.
 
 ### The three letters, expanded
 
@@ -754,7 +749,7 @@ There is one thing the corpus does say in this neighborhood, and it is worth hav
 
 ### GitOps
 
-**GitOps** is the name for the pull arrangement done rigorously. The definition is not a vendor's; it comes from OpenGitOps, a CNCF project, and it is four principles rather than a description of tooling.
+**GitOps** is the name for the pull arrangement done rigorously. The definition is not a vendor's; it comes from OpenGitOps, a CNCF project [source: cncf-project-opengitops-2026-09-04], and it is four principles rather than a description of tooling.
 
 *"GitOps is a set of principles for operating and managing software systems."* The desired state of a GitOps-managed system must be:
 
@@ -820,7 +815,7 @@ Before §4 makes this concrete, kill a misreading that the phrase "the repositor
 >
 > **Where this goes wrong:** readers hear "the repository is the source of truth" and picture the repository *replacing* etcd, as though desired state now lives in Git instead of in the cluster. It does not. etcd still holds every object. What Git holds is the *authored* desired state, upstream of the cluster, and the agent's job is to keep the two in agreement by making ordinary API calls.
 >
-> The consequence you can act on: an agent that lacks RBAC permission to create a resource will fail to create it, with an ordinary authorization error. GitOps grants no exemption from any cluster control. If anything it is *more* constrained than a human operator, because its permissions are written down.
+> The consequence you can act on: an agent that lacks RBAC permission to create a resource will fail to create it, with an ordinary authorization error. GitOps grants no exemption from any cluster control. If anything it is *more* constrained than a human administrator, because its permissions are written down.
 
 Which raises the question §4 opens with: what is this agent, exactly?
 
@@ -842,7 +837,7 @@ Read it as three separate claims:
 
 Chapter 6 told you that anyone can write a controller acting on custom resources *[cross-bearing: see Ch 6 §8 — the control loop, extended]*. Somebody did. This is what it looks like.
 
-> ★ **Fixed Point**
+> ★ **Fixed Point:**
 >
 > **A GitOps delivery agent is a controller. Its desired state lives in a repository instead of in etcd. Nothing else about the architecture is different — not the API server's position, not the watch-based coordination, not the shape of the loop.**
 
@@ -886,23 +881,23 @@ A **tag**: *"If a tag is specified, the manifests at the specified Git tag will 
 
 A **pinned commit**: *"If a Git commit SHA is specified, the app is effectively pinned to the manifests defined at the specified commit."* And the consequence: *"Since commit SHAs cannot change meaning, the only way to change the live state of an app which is pinned to a commit, is by updating the tracking revision in the application to a different commit containing the new manifests"* [source: argocd-tracking-strategies-2026-08-31].
 
-That last sentence is principle 2, versioned and immutable, showing up as an operational property rather than an abstraction. Argo CD's own best-practices documentation makes the same argument against tracking an unstable revision: *"Since this is not a stable target, the manifests for this kustomize application can suddenly change meaning, even without any changes to your own Git repository. A better version would be to use a Git tag or commit SHA"* [source: argocd-best-practices-2026-08-31].
+That last sentence is principle 2, versioned and immutable, showing up as an operational property rather than an abstraction. Argo CD's own best-practices documentation makes the same argument against tracking an unstable revision: *"Since this is not a stable target, the manifests for this kustomize application can suddenly change meaning, even without any changes to your own Git repository."* Its remedy: *"A better version would be to use a Git tag or commit SHA"* [source: argocd-best-practices-2026-08-31].
 
 > 🪢 **Mnemonic:** **Branch moves. Tag rarely moves. Commit never moves.** Pick according to how much you want the deck under your production cluster to shift without a commit of your own.
 
 ### Synced, and OutOfSync
 
-Now the section's second Fixed Point, and the one most likely to be tested from this material.
+Now the section's second Fixed Point, and the one this material most rewards getting right.
 
 *"A deployed application whose live state deviates from the target state is considered OutOfSync"* [source: argocd-overview-2026-08-23]. Argo CD *"reports and visualizes the differences, while providing facilities to automatically or manually sync the live state back to the desired target state"* [source: argocd-overview-2026-08-23].
 
-> ★ **Fixed Point**
+> ★ **Fixed Point:**
 >
 > **`OutOfSync` means live state deviates from the target state in Git. It is a drift signal, not an error. Nothing has necessarily failed. A person editing an object by hand produces an `OutOfSync` application, and so does a commit that has not been applied yet.**
 
 Argo CD's glossary keeps these on separate lines for exactly this reason. **Sync status** answers *"is the deployed application the same as Git says it should be?"* A separate item, **sync operation status**, answers *"whether or not a sync succeeded"* [source: argocd-core-concepts-2026-08-31]. Two questions. Two answers. A sync can succeed and leave the application `OutOfSync`; the documentation says so outright: *"It is possible for an application to be `OutOfSync` even immediately after a successful Sync operation"* [source: argocd-diffing-outofsync-2026-08-31].
 
-<!-- AUTHOR-REVIEW: argocd-diffing-outofsync-2026-08-31 quotes the claim above but its capture note says the page's enumerated causes (unknown fields, pruning disabled, mutating controllers/webhooks, Helm template functions, HPA metric reordering) were returned as summary rather than quotation and must not be attributed to that snapshot. The claim is therefore stated without its causes, which weakens it. A fetch of the full diffing page would let §4 name at least one concrete cause. -->
+The documentation's own list of reasons is worth a glance, because not one of them is a failed deploy. Two examples: *"The sync was performed (with pruning disabled), and there are resources which need to be deleted"*, and *"A controller or mutating webhook is altering the object after it was submitted to Kubernetes so it differs from the one in Git"* [source: argocd-diffing-outofsync-2026-09-04]. The second is the admission chain you met in Chapter 8 doing its job *[cross-bearing: see Ch 8 §2 — three gates and a logbook]*: the cluster is behaving correctly, the repository is behaving correctly, and the two still disagree.
 
 Return to the Logbook Entry in §3. Friday afternoon, one field, thirty seconds, invisible for six weeks. Under a GitOps agent, that edit produces an `OutOfSync` status within one reconciliation interval. Not an alert, not a page, not a failure. A status field, changed, saying *these two things no longer agree*. The mechanism that catches the story is not an alarm. It is a comparison that never stops running.
 
@@ -947,7 +942,7 @@ Return to the Logbook Entry in §3. Friday afternoon, one field, thirty seconds,
 
 Reporting a difference and correcting it are separate decisions, and Argo CD keeps them separate, including in what it does when you say nothing.
 
-*"Argo CD has the ability to automatically sync an application when it detects differences between the desired manifests in Git, and the live state in the cluster"* [source: argocd-auto-sync-policy-2026-08-31]. That ability is configured declaratively, which is itself in keeping, since the agent's own behavior is a field on an object in the repository.
+*"Argo CD has the ability to automatically sync an application when it detects differences between the desired manifests in Git, and the live state in the cluster"* [source: argocd-auto-sync-policy-2026-09-04]. That ability is configured declaratively, which is itself in keeping, since the agent's own behavior is a field on an object in the repository.
 
 Now the part that catches people, and it is the strongest evidence in the chapter for the Fixed Point you just read.
 
@@ -957,10 +952,10 @@ Now the part that catches people, and it is the strongest evidence in the chapte
 >
 > Two behaviors that readers assume are automatic are documented as opt-in:
 >
-> - **Self-healing is off by default.** *"By default, changes that are made to the live cluster will not trigger automated sync"* [source: argocd-auto-sync-policy-2026-08-31]. **Self-heal** is the name for the agent correcting drift it detects in the cluster, rather than only responding to new commits, and until you enable it, a hand-edited object stays hand-edited.
-> - **Pruning is off by default.** *"By default (and as a safety mechanism), automated sync will not delete resources when Argo CD detects the resource is no longer defined in Git"* [source: argocd-auto-sync-policy-2026-08-31]. Delete a manifest from the repository and the object stays on the cluster until pruning is enabled.
+> - **Self-healing is off by default.** *"By default, changes that are made to the live cluster will not trigger automated sync"* [source: argocd-auto-sync-policy-2026-09-04]. **Self-heal** is the name for the agent correcting drift it detects in the cluster, rather than only responding to new commits, and until you enable it, a hand-edited object stays hand-edited.
+> - **Pruning is off by default.** *"By default (and as a safety mechanism), automated sync will not delete resources when Argo CD detects the resource is no longer defined in Git"* [source: argocd-auto-sync-policy-2026-09-04]. Delete a manifest from the repository and the object stays on the cluster until pruning is enabled.
 >
-> Two further facts worth carrying. Automated sync fires only on a difference: *"An automated sync will only be performed if the application is `OutOfSync`"* [source: argocd-auto-sync-policy-2026-08-31]. And the cadence is not instantaneous: the automated sync interval *"defaults to `120s` with added jitter of `60s` for a maximum period of 3 minutes"* [source: argocd-auto-sync-policy-2026-08-31].
+> Two further facts worth carrying. Automated sync fires only on a difference: *"An automated sync will only be performed if the application is `OutOfSync`"* [source: argocd-auto-sync-policy-2026-09-04]. And the cadence is not instantaneous: the automated sync interval *"defaults to `120s` with added jitter of `60s` for a maximum period of 3 minutes"* [source: argocd-auto-sync-policy-2026-09-04].
 >
 > **Where people get confused:** §6 will tell you that Flux *"promptly reverts"* a manual `kubectl` change [source: flux-concepts-2026-08-31], and it is tempting to generalize that into "GitOps agents revert manual edits." Two graduated implementations of the same four principles ship with different defaults here. Principle 4 requires continuous *observation*; what the agent then *does* about a difference is configuration, and the two projects choose oppositely out of the box.
 
@@ -979,7 +974,7 @@ Look at what is actually happening. You do not invoke a rollback subsystem. You 
 | | What moves | Where the previous state was kept |
 |---|---|---|
 | `kubectl rollout undo` (Ch 6 §5) | The Deployment's Pod template | In the old ReplicaSet, on the cluster |
-| `helm rollback` (Ch 14 §3) | The Helm release to a prior revision | In Helm's release history, on the cluster |
+| `helm rollback` (Ch 14 §3) | The Helm release to a prior release revision | In Helm's release history, on the cluster |
 | **Rollback by revert** (here) | A commit in the repository | In the repository's history |
 
 Three mechanisms, one English word. This book writes the third as **rollback by revert**, always in that three-word form, so that it cannot be confused with the other two.
@@ -996,7 +991,7 @@ Then ask what this particular Pod does for a living. It creates, updates, and de
 
 Argo CD's security documentation states the default plainly: *"By default, Argo CD uses a clusteradmin level role in order to: 1. watch & operate on cluster state 2. deploy resources to the cluster"* [source: argocd-security-cluster-credentials-2026-08-31].
 
-The same documentation immediately supplies the reduction: *"Although Argo CD requires cluster-wide read privileges to resources in the managed cluster to function properly, it does not necessarily need full write privileges to the cluster."* Operators may edit the ClusterRole of `argocd-manager-role` *"such that write privileges are limited to only the namespaces and resources that you wish Argo CD to manage"* [source: argocd-security-cluster-credentials-2026-08-31].
+The same documentation immediately supplies the reduction: *"Although Argo CD requires cluster-wide read privileges to resources in the managed cluster to function properly, it does not necessarily need full write privileges to the cluster."* Cluster administrators may edit the ClusterRole of `argocd-manager-role` *"such that write privileges are limited to only the namespaces and resources that you wish Argo CD to manage"* [source: argocd-security-cluster-credentials-2026-08-31].
 
 Note the asymmetry, because it is the interesting part: cluster-wide **read** is structural, since the agent cannot detect drift in something it cannot see, while broad **write** is a default, not a requirement.
 
@@ -1053,7 +1048,7 @@ Phases are coarse. Within a phase you frequently need finer ordering, and that i
 
 Resources carry an integer that determines their order within a phase, and Argo CD's rule for it is short: *"Hooks and resources are assigned to wave 0 by default. The wave can be negative, so you can create a wave that runs before all other resources"* [source: argocd-sync-phases-and-waves-2026-08-31]. Lower values sync first. The mechanism is an annotation, `argocd.argoproj.io/sync-wave`, taking an integer value [source: argocd-sync-phases-and-waves-2026-08-31], noted for concreteness, not for memorization.
 
-The ordering algorithm, in order of precedence, begins: *"1. The phase 2. The wave they are in (lower values first)"*, with two further deterministic tie-breaks after those [source: argocd-sync-phases-and-waves-2026-08-31]. Phase first, then wave. Everything you can control is in those two lines.
+The ordering algorithm, in order of precedence, begins: *"1. The phase 2. The wave they are in (lower values first)"*, with two tie-breaks after those, *"By kind"* and then *"By name"* [source: argocd-sync-phases-and-waves-2026-08-31]. Phase first, then wave. Everything you can control is in those two lines.
 
 <!-- FIGURE: ch15-fig06-sync-waves-and-hook-phases -->
 ![Three sync phases run left to right: PreSync holding a database migration, Sync, then PostSync holding a smoke test. Inside the Sync phase a vertical wave axis orders three resources lowest first: wave minus one Namespace, wave zero CustomResourceDefinition, wave one custom resource. Ordering precedence is phase, then wave, then kind, then name.](figures/ch15-fig06-sync-waves-and-hook-phases.svg)
@@ -1090,7 +1085,7 @@ The ordering algorithm, in order of precedence, begins: *"1. The phase 2. The wa
 
 Chapter 12 pointed here for a specific reason, and it is a good illustration of why ordering is not a theoretical concern.
 
-Chapter 12 taught that **"After you create a binding, you cannot change the Role or ClusterRole that it refers to"** [source: k8s-docs-rbac-2026-08-23] — the binding's *role reference* is fixed, though its list of subjects is not *[cross-bearing: see Ch 12 §3 — a binding cannot be retargeted]*. So retargeting a RoleBinding is not an update at all. It is a delete and a create, with a window in between during which the subject holds nothing.
+Chapter 12 taught that **"After you create a binding, you cannot change the Role or ClusterRole that it refers to"** [source: k8s-docs-rbac-2026-08-23] — the RoleBinding's *role reference* is fixed, though its list of subjects is not *[cross-bearing: see Ch 12 §3 — a binding cannot be retargeted]*. So retargeting a RoleBinding is not an update at all. It is a delete and a create, with a window in between during which the subject holds nothing.
 
 That is the general shape, and it is why ordering stops being theoretical. Some objects cannot simply be updated in place: they must be deleted and recreated. Under a system that reconciles a whole repository against a whole cluster in one operation, that is a real ordering constraint. The delete must precede the create, and anything depending on the result must come after both. Waves are how you say so.
 
@@ -1132,25 +1127,19 @@ Notice `OCIRepository` and `HelmRepository` in that list. Chapter 14 taught you 
 
 One qualification belongs with that figure. The `Kustomization` API reference states that `.spec.interval` is *"a required field that specifies the interval at which the Kustomization is reconciled"* with a minimum value of 60 seconds [source: flux-kustomization-api-2026-08-31], and declares no API-level default. So "five minutes by default" describes the Kustomization that Flux's own bootstrap generates, not a default the API supplies. The interval is always explicitly configured; five minutes is what it is usually configured to.
 
-> ⚓ **Worth Securing:** *"If you make any changes to the cluster using `kubectl edit/patch/delete`, they will be promptly reverted"* [source: flux-concepts-2026-08-31]. Read that as principle 4 with the abstraction removed. Continuous reconciliation is not a scheduling detail. It means your manual change has a shelf life measured in minutes. This is the same property that makes a ReplicaSet recreate a Pod you deleted, and note that Argo CD, out of the box, does *not* do this [source: argocd-auto-sync-policy-2026-08-31]. Two graduated projects, four shared principles, opposite defaults.
+> ⚓ **Worth Securing:** *"If you make any changes to the cluster using `kubectl edit/patch/delete`, they will be promptly reverted"* [source: flux-concepts-2026-08-31]. Read that as principle 4 with the abstraction removed. Continuous reconciliation is not a scheduling detail. It means your manual change has a shelf life measured in minutes. This is the same property that makes a ReplicaSet recreate a Pod you deleted, and note that Argo CD, out of the box, does *not* do this [source: argocd-auto-sync-policy-2026-09-04]. Two graduated projects, four shared principles, opposite defaults.
 
 **Bootstrap.** Flux installs itself the way it installs everything else. *"The process of installing the Flux components in a GitOps manner is called a bootstrap. The manifests are applied to the cluster, a `GitRepository` and `Kustomization` are created for the Flux components, then the manifests are pushed to an existing Git repository (or a new one is created)"* [source: flux-concepts-2026-08-31]. The 2026-08-23 capture puts the consequence plainly: *"Flux manages itself like any other resource"* [source: flux-concepts-2026-08-23].
 
 Sit with that for a moment, because it is the sort of thing that either seems trivial or seems remarkable depending on how carefully you read it. Upgrading Flux is a commit. Reconfiguring Flux is a commit. The agent's own desired state lives in the repository the agent watches, and the agent applies it to itself.
 
-**Where the credentials live in Flux.** The security model differs from Argo CD's in an interesting way. Flux installs a `crd-controller` ClusterRole with *"full access to all the Custom Resource Definitions defined by Flux controllers,"* and a `cluster-reconciler` ClusterRoleBinding referencing the `cluster-admin` ClusterRole, *"bound to service accounts for only `kustomize-controller` and `helm-controller`"*, because those two *"are the only two controllers that manage resources in the cluster"* [source: flux-security-2026-08-31].
-
-The reduction path is impersonation rather than narrowing: *"In a soft multi-tenancy setup, Flux does not reconcile a tenant's repo under the `cluster-admin` role. Instead, you specify a different service account in your manifest, and the Flux controllers will use the Kubernetes Impersonation API under `cluster-admin` to impersonate that service account"* [source: flux-security-2026-08-31]. The `Kustomization` API exposes this directly: `.spec.serviceAccountName` specifies *"the ServiceAccount to be impersonated while reconciling"* [source: flux-kustomization-api-2026-08-31].
-
-Same problem as §4's, a broadly privileged agent, solved by a different route. Argo CD narrows the ClusterRole; Flux keeps the broad role and impersonates a narrower identity per workload.
+**Where the credentials live in Flux.** The same problem as §4's, a broadly privileged agent, solved by a different route. Flux binds the `cluster-admin` ClusterRole to the service accounts of only its two reconciling controllers, because those two *"are the only two controllers that manage resources in the cluster"* [source: flux-security-2026-08-31]. Rather than narrowing that role, Flux lets you name a less privileged ServiceAccount per workload, and its controllers *"will use the Kubernetes Impersonation API under `cluster-admin` to impersonate that service account"* [source: flux-security-2026-08-31]. Argo CD narrows the ClusterRole; Flux keeps the broad role and impersonates a narrower identity. The mechanism is here for the contrast, not for memorization; nothing in this chapter's questions asks for it.
 
 **More than one cluster.** Which brings us to the question that shows the two designs most clearly. Where does desired state live when there are twenty clusters?
 
 Argo CD's answer is documented and is a control point: among its features is the *"ability to manage and deploy to multiple clusters"* [source: argocd-overview-2026-08-23], with each external cluster's credentials stored as a Secret in the `argocd` namespace of the managing cluster [source: argocd-security-cluster-credentials-2026-08-31]. One Argo CD, many destinations, one place to look, and one place holding credentials to everywhere.
 
-Flux's documented position is narrower, and the honest statement is the narrow one: Flux's reconciling controllers run *in* the cluster they reconcile [source: flux-security-2026-08-31], and bootstrap installs Flux into a cluster against a Git repository [source: flux-concepts-2026-08-31]. There is no equivalent documented mechanism for one Flux storing credentials to other clusters.
-
-<!-- AUTHOR-REVIEW: the previous draft asserted here (and in Q21's answer key, tagged to flux-concepts-2026-08-31) that "Flux's model is one Flux per cluster, each bootstrapped into its own repository or path and pulling independently, with no cluster holding credentials to another." That snapshot describes bootstrap on a single cluster and says nothing about multi-cluster topology or cross-cluster credentials, so the tag was a mis-attribution and the absolute ("no cluster holding credentials to another") had no basis in either direction. Both the body text and the Q21 key are now reduced to what the corpus supports. To restore the fuller comparison, cache fluxcd.io's multi-cluster / multi-tenancy guide. Note that flux-security-2026-08-31's soft multi-tenancy material is about tenants within one cluster and must not be read across to multi-cluster. -->
+Flux's documented model is per cluster. The bootstrap command *"deploys the Flux controllers on Kubernetes cluster(s) and configures the controllers to sync the cluster(s) state from a Git repository"* [source: flux-installation-bootstrap-2026-09-04], and Flux's repository-structure guidance gives each cluster its own directory: *"Each cluster state is defined in a dedicated dir e.g. `clusters/production` where the specific apps and infrastructure overlays are referenced"* [source: flux-repository-structure-2026-09-04]. Each cluster runs its own controllers and pulls its own path. The documentation describes no arrangement in which one Flux holds credentials to another cluster, and this book asserts none either way.
 
 The trade is §3's blast-radius argument at a larger scale, and it remains this book's argument rather than a documented finding: a single control point gives you one console to reason about and one component whose compromise reaches every destination it holds credentials for. Per-cluster agents give you isolation and no unified view.
 
@@ -1189,17 +1178,17 @@ Manifests are declarative and stored in Git with history, so the first two hold.
 
 This is a working delivery system, but not GitOps — Git storage is necessary, not sufficient.
 
-**2. Two benign explanations:** a person changed the cluster directly with `kubectl` — live state now deviates from target, so the status is `OutOfSync` [source: argocd-overview-2026-08-23], and by default *"changes that are made to the live cluster will not trigger automated sync"* [source: argocd-auto-sync-policy-2026-08-31]. Or: a new commit landed and hasn't synced yet — the target moved, live hasn't caught up. Nothing has failed; the docs confirm *"it is possible for an application to be `OutOfSync` even immediately after a successful Sync operation"* [source: argocd-diffing-outofsync-2026-08-31].
+**2. Two benign explanations:** a person changed the cluster directly with `kubectl` — live state now deviates from target, so the status is `OutOfSync` [source: argocd-overview-2026-08-23], and by default *"changes that are made to the live cluster will not trigger automated sync"* [source: argocd-auto-sync-policy-2026-09-04]. Or: a new commit landed and hasn't synced yet — the target moved, live hasn't caught up. Nothing has failed; the docs confirm *"it is possible for an application to be `OutOfSync` even immediately after a successful Sync operation"* [source: argocd-diffing-outofsync-2026-08-31].
 
 **Where a failure would show:** sync operation status, which answers *"whether or not a sync succeeded,"* as against sync status, which answers *"is the deployed application the same as Git says it should be?"* [source: argocd-core-concepts-2026-08-31].
 
-**3. Blast radius**, this book's term for how far one compromise reaches. Compromising Team A's CI system yields write credentials to twelve clusters, because that's what the system holds to do its job. Compromising Team B's equivalent yields the ability to build and publish images — a real supply-chain problem, but not cluster-write credentials, since Team B's clusters hold their own credentials internally.
+**3. Blast radius**, this book's term for how far one compromise reaches. Compromising Team A's CI system yields write credentials to twelve clusters, because that's what the system holds to do its job. Compromising Team B's equivalent yields the ability to build and publish images — a real supply-chain problem, but not cluster-write credentials, since Team B's clusters hold their own credentials internally. One caveat from §4's Navigational Hazards: if that CI system can also commit to the repository the agents track, commit access is cluster access by another route, and the bound holds only as well as the repository's branch protection does.
 
 Pull doesn't prevent the compromise. It bounds what one compromise reaches.
 
-**4. [retrieval: ch12] A ServiceAccount and an RBAC binding (with its Role or ClusterRole). The ClusterRoleBinding determines cross-namespace scope.**
+**4. [retrieval: ch12] A ServiceAccount and a RoleBinding or ClusterRoleBinding (with its Role or ClusterRole). The ClusterRoleBinding determines cross-namespace scope.**
 
-The ServiceAccount is the identity; the binding attaches permissions to it. Because the work spans namespaces the agent doesn't own, the grant must be cluster-scoped *[cross-bearing: see Ch 12 §3 — what you may do]*. Argo CD's own docs confirm the shape: an `argocd-manager` ServiceAccount, reduced by editing the ClusterRole `argocd-manager-role` [source: argocd-security-cluster-credentials-2026-08-31]. And permission to delete isn't configuration to delete: *"by default... automated sync will not delete resources when Argo CD detects the resource is no longer defined in Git"* [source: argocd-auto-sync-policy-2026-08-31].
+The ServiceAccount is the identity; the RoleBinding or ClusterRoleBinding attaches permissions to it. Because the work spans namespaces the agent doesn't own, the grant must be cluster-scoped *[cross-bearing: see Ch 12 §3 — what you may do]*. Argo CD's own docs confirm the shape: an `argocd-manager` ServiceAccount, reduced by editing the ClusterRole `argocd-manager-role` [source: argocd-security-cluster-credentials-2026-08-31]. And permission to delete isn't configuration to delete: *"by default... automated sync will not delete resources when Argo CD detects the resource is no longer defined in Git"* [source: argocd-auto-sync-policy-2026-09-04].
 
 **5. The CustomResourceDefinition must land first**, because a custom resource of a kind the API server doesn't yet recognize is rejected. The mechanism is **sync waves** — resources sync *"lower values first"* within a phase, and negative waves let you run something before everything else [source: argocd-sync-phases-and-waves-2026-08-31]. Give the CRD a lower wave than the custom resource; only relative order matters.
 
@@ -1213,11 +1202,11 @@ Any of these earns credit: Flux lets you adopt or replace pieces independently, 
 
 Flux states it directly: *"if you make any changes to the cluster using `kubectl edit/patch/delete`, they will be promptly reverted"* [source: flux-concepts-2026-08-31]. Principle 4 requires that *"software agents continuously observe actual system state and attempt to apply the desired state"* [source: opengitops-principles-v1-2026-08-31]; the uncommitted patch isn't the desired state, so it's not what the agent applies.
 
-**Why Argo CD differs out of the box:** self-healing is opt-in. *"By default, changes that are made to the live cluster will not trigger automated sync"* [source: argocd-auto-sync-policy-2026-08-31] — the edit produces `OutOfSync` and stays put. Both projects implement principle 4's *observation*; they differ on what they do about what they observe. Under reconciliation with self-heal on, an emergency fix must be committed to survive — the tool is doing the job it was installed for.
+**Why Argo CD differs out of the box:** self-healing is opt-in. *"By default, changes that are made to the live cluster will not trigger automated sync"* [source: argocd-auto-sync-policy-2026-09-04] — the edit produces `OutOfSync` and stays put. Both projects implement principle 4's *observation*; they differ on what they do about what they observe. Under reconciliation with self-heal on, an emergency fix must be committed to survive — the tool is doing the job it was installed for.
 
 **8. [retrieval: ch3] A controller compares desired state against current state, and acts to close the gap — continuously, in a loop, indefinitely**, not once at creation and not only when triggered. If the two disagree it takes whatever action moves current toward desired, then checks again *[cross-bearing: see Ch 3 §6 — controllers and the control loop]*.
 
-**A common wrong answer:** describing the loop as event-driven — "it runs when something changes." That inverts the architecture: the controller isn't woken by a notification, it observes and decides for itself whether a gap exists.
+**A common wrong answer:** describing the loop as purely event-driven — "it runs when something changes, and otherwise it sleeps." That inverts the architecture: nothing tells the controller what to do. It observes, decides for itself whether a gap exists, and keeps checking whether or not anything announced a change.
 
 If that came back clean, keep it loaded — the next section is one substitution away from it. If it didn't, **re-read Ch 3 §6 now, before §7**: the final section owns no new material, only a change made to the thing you just tried to state.
 
@@ -1230,6 +1219,8 @@ If that came back clean, keep it loaded — the next section is one substitution
 **If you got 3–5:** Re-read §3's four principles, §4's `OutOfSync` Fixed Point, and Ch 12 §3 on what an agent may do.
 
 **If you got 0–2:** Go back to **§3** and read it properly before continuing. §5 and §6 assume the push/pull distinction as settled ground, and Ch 3 §6's control loop is load-bearing for everything after it.
+
+---
 
 ## ☀️ §7 — The Control Loop, Pointed at a Repository
 
@@ -1311,7 +1302,7 @@ Three of the four were already yours. You have been running GitOps-shaped machin
 
 Which kills the misreading this chapter was built to prevent.
 
-> ★ **Fixed Point**
+> ★ **Fixed Point:**
 >
 > **GitOps is not "running CI from Git." None of the four principles mentions integration, building, testing, or a pipeline. All four are about desired state — how it is expressed, how it is stored, how it is obtained, and how it is applied. The build is somebody else's job, and Kubernetes said so in its own documentation: it *"does not deploy source code and does not build your application"* [source: k8s-docs-overview-2026-08-23].**
 
@@ -1343,6 +1334,8 @@ Ten seconds is about right.
 ✓ Flux's composable posture, self-bootstrap, and the opposite default it ships with
 ✓ The control loop, pointed at a repository — and everything about it that did not change
 
+🗺️ Chart → **🌊 Passage** → 🌅 Dawn
+
 ---
 
 ## Exam Alert! 🚨
@@ -1351,7 +1344,7 @@ Ten seconds is about right.
 
 **1. The four OpenGitOps principles, in order, with the words that matter.** Declarative; versioned and immutable; **pulled** automatically; continuously reconciled [source: opengitops-principles-v1-2026-08-31]. *Pulled* and *continuously* carry the distinction. A definition missing either one describes something that is not GitOps.
 
-**2. `OutOfSync` is a drift signal, not an error.** It reports that live state deviates from the target state in Git [source: argocd-overview-2026-08-23]. A person editing the cluster produces it. Nothing failed, and out of the box Argo CD reports it rather than reverting it [source: argocd-auto-sync-policy-2026-08-31].
+**2. `OutOfSync` is a drift signal, not an error.** It reports that live state deviates from the target state in Git [source: argocd-overview-2026-08-23]. A person editing the cluster produces it. Nothing failed, and out of the box Argo CD reports it rather than reverting it [source: argocd-auto-sync-policy-2026-09-04].
 
 **3. Argo CD is a Kubernetes controller.** It *"continuously monitors running applications and compares the current, live state against the desired target state"* [source: argocd-architecture-2026-08-31]. It does not bypass the API server, and it is not a new category of technology.
 
@@ -1366,13 +1359,13 @@ Ten seconds is about right.
 | "GitOps means running CI from Git" | GitOps is four principles about *desired state*. Continuous integration is not one of them, and the cluster does not care who built the artifact. |
 | Assuming a pipeline pushes to the cluster | Principle 3 is explicit: agents **pull** desired-state declarations from the source [source: opengitops-principles-v1-2026-08-31]. Push-based CD is not GitOps, whatever its manifests are stored in. |
 | Treating reconciliation as a deploy-time event | Principle 4 is **continuous** and indefinite, the same property that makes a ReplicaSet recreate a Pod you deleted last Tuesday. |
-| "Every GitOps agent reverts manual changes" | Flux does, promptly [source: flux-concepts-2026-08-31]. Argo CD, by default, does not — *"changes that are made to the live cluster will not trigger automated sync"* [source: argocd-auto-sync-policy-2026-08-31]. Same principles, opposite defaults. |
+| "Every GitOps agent reverts manual changes" | Flux does, promptly [source: flux-concepts-2026-08-31]. Argo CD, by default, does not — *"changes that are made to the live cluster will not trigger automated sync"* [source: argocd-auto-sync-policy-2026-09-04]. Same principles, opposite defaults. |
 | "`OutOfSync` means the sync failed" | Sync status and sync *operation* status are two different fields answering two different questions [source: argocd-core-concepts-2026-08-31]. An application can be `OutOfSync` immediately after a successful sync [source: argocd-diffing-outofsync-2026-08-31]. |
 | "Argo CD only deploys plain YAML" | Kustomize applications, Helm charts, Jsonnet, plain YAML/JSON directories, and custom config-management plugins [source: argocd-overview-2026-08-23]. |
 | "Argo CD can only track a branch" | Branches, tags, or a **pinned Git commit** [source: argocd-tracking-strategies-2026-08-31]. |
 | Assuming a GitOps agent writes to the datastore directly | It is an API client like any other, subject to authentication, authorization, and admission. Chapter 3's claim about the only door in is not suspended *[cross-bearing: see Ch 3 §5 — the only door in]*. |
 | Assuming a delivery agent needs no identity because it is "infrastructure" | It is a Pod with a ServiceAccount and, by default, cluster-admin-level grants [source: argocd-security-cluster-credentials-2026-08-31] — one of the highest-value subjects in the cluster. |
-| Collapsing the third rollback into one of the first two | `rollout undo` restores a Pod template. `helm rollback` returns a release to a prior revision. **Rollback by revert** changes a commit and lets the agent reconcile. Three mechanisms, one word. |
+| Collapsing the third rollback into one of the first two | `rollout undo` restores a Pod template. `helm rollback` returns a Helm release to a prior release revision. **Rollback by revert** changes a commit and lets the agent reconcile. Three mechanisms, one word. |
 | Assuming a Deployment can express blue/green or canary by itself | Both need something above the Deployment; canary additionally needs traffic splitting and metric analysis [source: argo-rollouts-strategies-2026-08-23]. |
 
 ---
@@ -1383,105 +1376,105 @@ Twenty-one questions. Several present a situation rather than asking for a defin
 
 ---
 
-**Q1.** An application writes its logs to `/var/log/app.log` inside the container and rotates them itself with a background thread. Which twelve-factor factor does this violate, and what capability does it break?
+**1.** An application writes its logs to `/var/log/app.log` inside the container and rotates them itself with a background thread. Which twelve-factor factor does this violate, and what capability does it break?
 
-**Q2.** According to the twelve-factor methodology, which of the following is the *strongest* evidence that an application has correctly factored out its config?
+**2.** According to the twelve-factor methodology, which of the following is the *strongest* evidence that an application has correctly factored out its config?
 
 A) It has no configuration at all; every value is a compile-time constant
 B) Its codebase could be made open source at any moment without compromising credentials
 C) It has separate configuration bundles named `staging` and `production`
 D) It reads all settings from a `config.yaml` file at startup
 
-**Q3.** A team argues that because their application is containerized and deployed by a Deployment, it is twelve-factor compliant. The application holds user session state in process memory. Evaluate the claim.
+**3.** A team argues that because their application is containerized and deployed by a Deployment, it is twelve-factor compliant. The application holds user session state in process memory. Evaluate the claim.
 
-**Q4.** Which strategy guarantees that two versions of an application never run simultaneously, and what does it cost?
+**4.** Which strategy guarantees that two versions of an application never run simultaneously, and what does it cost?
 
 A) `RollingUpdate` — costs additional capacity
 B) Canary — costs traffic-splitting infrastructure
 C) `Recreate` — costs downtime
 D) Blue/green — costs double capacity
 
-**Q5.** A team runs a queue-consuming worker with no inbound HTTP traffic. They want to validate a new version against production configuration before it processes real work. Which strategy fits, and why is canary a poor choice here?
+**5.** A team runs a queue-consuming worker with no inbound HTTP traffic. They want to validate a new version against production configuration before it processes real work. Which strategy fits, and why is canary a poor choice here?
 
-**Q6.** A team tells you they have configured blue/green deployment "in the Deployment spec." Without seeing their manifests, what do you already know is wrong with that description, and what must actually exist for them to be running blue/green?
+**6.** A team tells you they have configured blue/green deployment "in the Deployment spec." Without seeing their manifests, what do you already know is wrong with that description, and what must actually exist for them to be running blue/green?
 
-**Q7.** Progressive delivery is defined as releasing updates in a controlled and gradual manner, *"typically coupling automation and metric analysis to drive the automated promotion or rollback of the update"* [source: argo-rollouts-strategies-2026-08-23]. Which half of that definition distinguishes progressive delivery from simply deploying slowly, and why?
+**7.** Progressive delivery is defined as releasing updates in a controlled and gradual manner, *"typically coupling automation and metric analysis to drive the automated promotion or rollback of the update"* [source: argo-rollouts-strategies-2026-08-23]. Which half of that definition distinguishes progressive delivery from simply deploying slowly, and why?
 
-**Q8.** A colleague who has just installed Argo CD says: "so this is a new kind of thing — a deployment engine that sits outside the normal Kubernetes machinery and pushes state in." Correct them in structural terms. What *category* of component is the Argo CD application controller, what two things does it compare, and what single element of the Chapter 3 architecture is different?
+**8.** A colleague who has just installed Argo CD says: "so this is a new kind of thing — a deployment engine that sits outside the normal Kubernetes machinery and pushes state in." Correct them in structural terms. What *category* of component is the Argo CD application controller, what two things does it compare, and what single element of the Chapter 3 architecture is different?
 
-**Q9.** Which statement about push-based delivery is accurate?
+**9.** Which statement about push-based delivery is accurate?
 
 A) It requires the cluster's API server to be reachable from the public internet
 B) It stores cluster-write credentials outside the cluster
 C) It is incompatible with storing manifests in Git
 D) It bypasses the Kubernetes API server
 
-**Q10.** Explain "blast radius" as this book uses it, using a compromised CI system as the example. Say what pull-based delivery does and does not change about it, and note what part of the argument is the book's rather than a documented finding.
+**10.** Explain "blast radius" as this book uses it, using a compromised CI system as the example. Say what pull-based delivery does and does not change about it, and note what part of the argument is the book's rather than a documented finding.
 
-**Q11.** Which principle is violated by a system that stores declarative manifests in Git, has an in-cluster agent fetch them, applies them on each new commit, and then does nothing until the next commit?
+**11.** Which principle is violated by a system that stores declarative manifests in Git, has an in-cluster agent fetch them, applies them on each new commit, and then does nothing until the next commit?
 
 A) Declarative
 B) Versioned and immutable
 C) Pulled automatically
 D) Continuously reconciled
 
-**Q12.** Kubernetes documentation states that it *"does not deploy source code and does not build your application"* [source: k8s-docs-overview-2026-08-23]. What does this establish about the relationship between CI and GitOps?
+**12.** Kubernetes documentation states that it *"does not deploy source code and does not build your application"* [source: k8s-docs-overview-2026-08-23]. What does this establish about the relationship between CI and GitOps?
 
-**Q13.** An Argo CD `Application` reports `OutOfSync`, and the most recent sync operation reports success. Which is true?
+**13.** An Argo CD `Application` reports `OutOfSync`, and the most recent sync operation reports success. Which is true?
 
 A) The report is contradictory; one of the two must be stale
 B) Sync status and sync operation status answer different questions, and both readings are valid simultaneously
 C) `OutOfSync` overrides the operation status; the sync did not actually complete
 D) The application will self-heal automatically, so the report can be disregarded
 
-**Q14.** An Argo CD `Application` points at a repository path containing a Helm chart. A colleague says this cannot work because "Argo CD is a YAML tool, and Helm is a separate deployment mechanism." Correct them, naming the component involved.
+**14.** An Argo CD `Application` points at a repository path containing a Helm chart. A colleague says this cannot work because "Argo CD is a YAML tool, and Helm is a separate deployment mechanism." Correct them, naming the component involved.
 
-**Q15.** A team pins an `Application` to a Git commit SHA. Their build pipeline pushes new commits to the tracked branch daily. What happens to the cluster, and what would have to change for it to update?
+**15.** A team pins an `Application` to a Git commit SHA. Their build pipeline pushes new commits to the tracked branch daily. What happens to the cluster, and what would have to change for it to update?
 
-**Q16.** [cross-domain: D2.2] A GitOps agent must create Deployments and Services in twelve namespaces it does not own, and — with pruning enabled — delete resources removed from the repository. What must exist for this to be permitted, and why is a Role in each namespace a poor answer?
+**16.** [cross-domain: D2.2] A GitOps agent must create Deployments and Services in twelve namespaces it does not own, and — with pruning enabled — delete resources removed from the repository. What must exist for this to be permitted, and why is a Role in each namespace a poor answer?
 
-**Q17.** [cross-domain: D1.1] An engineer describes `OutOfSync` as "the status field not matching the spec field." Is this a good analogy? Explain precisely what is being compared and where each operand lives.
+**17.** [cross-domain: D1.1] An engineer describes `OutOfSync` as "the status field not matching the spec field." Is this a good analogy? Explain precisely what is being compared and where each operand lives.
 
-**Q18.** Three things in this book are called rollback. Name the mechanism each one uses and where each keeps the state it returns to.
+**18.** Three things in this book are called rollback. Name the mechanism each one uses and where each keeps the state it returns to.
 
-**Q19.** A repository contains a namespace, a CustomResourceDefinition, and a custom resource of the type that CRD defines. Applied simultaneously, this fails. What must land in what order, what mechanism expresses that ordering, and what happens to an object with no ordering annotation?
+**19.** A repository contains a namespace, a CustomResourceDefinition, and a custom resource of the type that CRD defines. Applied simultaneously, this fails. What must land in what order, what mechanism expresses that ordering, and what happens to an object with no ordering annotation?
 
-**Q20.** Which hook phase runs *"after all Sync hooks completed and were successful, a successful application, and all resources in a Healthy state"* [source: argocd-sync-phases-and-waves-2026-08-31], and what does that make it suitable for?
+**20.** Which hook phase runs *"after all Sync hooks completed and were successful, a successful application, and all resources in a Healthy state"* [source: argocd-sync-phases-and-waves-2026-08-31], and what does that make it suitable for?
 
-**Q21.** Flux describes itself as a GitOps Toolkit — *"a collection of specialized tools, Flux Controllers, composable APIs"* [source: flux-concepts-2026-08-31] — while Argo CD presents as an integrated product with a single `Application` resource. Name one practical consequence of this difference for a team adopting either; name the thing Flux does at install time that Argo CD does not; and describe how their documented positions on drift correction differ.
+**21.** Flux describes itself as a GitOps Toolkit — *"a collection of specialized tools, Flux Controllers, composable APIs"* [source: flux-concepts-2026-08-31] — while Argo CD presents as an integrated product with a single `Application` resource. Name one practical consequence of this difference for a team adopting either; name the thing Flux does at install time that Argo CD does not; and describe how their documented positions on drift correction differ.
 
 ---
 
 <details>
 <summary>Answers with full explanations</summary>
 
-**Q1. Factor XI (Logs — treat logs as event streams).** The rule is that *"a twelve-factor app never concerns itself with routing or storage of its output stream"*; each process writes unbuffered to stdout and the execution environment captures it [source: twelve-factor-xi-logs-2026-08-31].
+**1. Factor XI (Logs — treat logs as event streams).** The rule is that *"a twelve-factor app never concerns itself with routing or storage of its output stream"*; each process writes unbuffered to stdout and the execution environment captures it [source: twelve-factor-xi-logs-2026-08-31].
 
 What it breaks: `kubectl logs` returns nothing useful, because the container's stdout is empty. Node-level log collection sees nothing. The logs exist only in the container's writable layer and are destroyed with the Pod, which means the logs from the crash you are investigating died with the thing that crashed.
 
-**Q2. B.** *"A litmus test for whether an app has all config correctly factored out of the code is whether the codebase could be made open source at any moment, without compromising any credentials"* [source: twelve-factor-iii-config-2026-08-31].
+**2. B.** *"A litmus test for whether an app has all config correctly factored out of the code is whether the codebase could be made open source at any moment, without compromising any credentials"* [source: twelve-factor-iii-config-2026-08-31].
 
 **A is wrong**, and it targets a real confusion: factor III is about *where config lives*, not about having less of it. An application with no configuration cannot vary between deploys at all, which fails factor III's own definition of config as *"everything that is likely to vary between deploys"* [source: twelve-factor-iii-config-2026-08-31], and it fails factor X, dev/prod parity, in the other direction. **C is wrong**, and is in fact a named anti-pattern: env vars *"are never grouped together as 'environments', but instead are independently managed for each deploy"* [source: twelve-factor-iii-config-2026-08-31]. **D is wrong** — a config file is explicitly called out as an improvement that *"still has weaknesses: it's easy to mistakenly check in a config file to the repo"* [source: twelve-factor-iii-config-2026-08-31].
 
-**Q3. The claim fails.** In-memory session state violates factor VI: *"Twelve-factor processes are stateless and share-nothing. Any data that needs to persist must be stored in a stateful backing service"* [source: twelve-factor-vi-processes-2026-08-31]. The methodology bans the usual workaround by name — *"Sticky sessions are a violation of twelve-factor and should never be used or relied upon"* — and suggests a time-expiring datastore instead [source: twelve-factor-vi-processes-2026-08-31].
+**3. The claim fails.** In-memory session state violates factor VI: *"Twelve-factor processes are stateless and share-nothing. Any data that needs to persist must be stored in a stateful backing service"* [source: twelve-factor-vi-processes-2026-08-31]. The methodology bans the usual workaround by name — *"Sticky sessions are a violation of twelve-factor and should never be used or relied upon"* — and suggests a time-expiring datastore instead [source: twelve-factor-vi-processes-2026-08-31].
 
 The general point matters more than this instance: containerization and Deployments implement the *platform* side of twelve-factor. They cannot implement the application side. Packaging a stateful process in a container produces a containerized stateful process.
 
-**Q4. C.** *"A Recreate deployment deletes the old version of the application before bringing up the new version. As a result, this ensures that two versions of the application never run at the same time, but there is downtime during the deployment"* [source: argo-rollouts-strategies-2026-08-23].
+**4. C.** *"A Recreate deployment deletes the old version of the application before bringing up the new version. As a result, this ensures that two versions of the application never run at the same time, but there is downtime during the deployment"* [source: argo-rollouts-strategies-2026-08-23].
 
 **A is wrong** — `RollingUpdate` guarantees the opposite: both versions run concurrently by design, which is what avoids the downtime. **D is wrong** — blue/green does run both versions simultaneously; only one *receives production traffic* [source: argo-rollouts-strategies-2026-08-23], which is a different guarantee and does not help with, say, an incompatible schema migration. **B is wrong** — canary deliberately runs both against real traffic.
 
-**Q5. Blue/green.** Both versions run, only the old receives production traffic, and *"this allows the developers to run tests against the new version before switching the live traffic"* [source: argo-rollouts-strategies-2026-08-23], against production configuration and production backing services.
+**5. Blue/green.** Both versions run, only the old receives production traffic, and *"this allows the developers to run tests against the new version before switching the live traffic"* [source: argo-rollouts-strategies-2026-08-23], against production configuration and production backing services.
 
 Canary is a poor fit for a specific mechanical reason: it works by proportioning *traffic*, and a queue worker has no inbound traffic to proportion. Argo's own comparison makes the pairing: canary demands traffic-splitting via a service mesh or ingress controller, while blue/green *"needs no traffic provider and suits workloads such as queue workers"* [source: argo-rollouts-strategies-2026-08-23].
 
-**Q6. What is wrong: a Deployment's update-strategy field takes only two values, `Recreate` and `RollingUpdate` [source: argo-rollouts-strategies-2026-08-23]. Blue/green is not among them and cannot be expressed there.** Whatever they have configured, it is not blue/green in the Deployment spec, most likely a `RollingUpdate` they are describing loosely, or a second Deployment they are switching between by hand.
+**6. What is wrong: a Deployment's update-strategy field takes only two values, `Recreate` and `RollingUpdate` [source: argo-rollouts-strategies-2026-08-23]. Blue/green is not among them and cannot be expressed there.** Whatever they have configured, it is not blue/green in the Deployment spec, most likely a `RollingUpdate` they are describing loosely, or a second Deployment they are switching between by hand.
 
 What must actually exist: **two complete environments running simultaneously**, and **something that controls which one receives production traffic** — a Service selector, a load balancer, or an ingress rule — plus something that flips it. CNCF's description turns on exactly that: two environments, one live, traffic switched via load balancer after testing the inactive one [source: cncf-glossary-blue-green-deployment-2026-08-31]. A Deployment object has no concept of a second environment and no control over traffic routing, which is why the pattern needs tooling above it. This is §2's Fixed Point in its consequential form.
 
-**Q7. The metric-analysis half.** *Gradual* alone is just a slower deployment: a `RollingUpdate` with a small `maxSurge` is gradual and is not progressive delivery. What the definition adds is *"automation and metric analysis to drive the automated promotion or rollback of the update"* [source: argo-rollouts-strategies-2026-08-23]. The release evaluates itself against measurements and decides whether to continue or reverse. Gradual buys time; metric analysis is what uses the time.
+**7. The metric-analysis half.** *Gradual* alone is just a slower deployment: a `RollingUpdate` with a small `maxSurge` is gradual and is not progressive delivery. What the definition adds is *"automation and metric analysis to drive the automated promotion or rollback of the update"* [source: argo-rollouts-strategies-2026-08-23]. The release evaluates itself against measurements and decides whether to continue or reverse. Gradual buys time; metric analysis is what uses the time.
 
-**Q8. It is a Kubernetes controller — not a new category of component, and not outside the normal machinery.** The documentation says so in the terms Chapter 3 taught: the application controller *"is a Kubernetes controller which continuously monitors running applications and compares the current, live state against the desired target state (as specified in the repo)"* [source: argocd-architecture-2026-08-31].
+**8. It is a Kubernetes controller — not a new category of component, and not outside the normal machinery.** The documentation says so in the terms Chapter 3 taught: the application controller *"is a Kubernetes controller which continuously monitors running applications and compares the current, live state against the desired target state (as specified in the repo)"* [source: argocd-architecture-2026-08-31].
 
 **What it compares:** live state (what is actually deployed) against target state (what the repository says should be) [source: argocd-core-concepts-2026-08-31].
 
@@ -1489,75 +1482,75 @@ What must actually exist: **two complete environments running simultaneously**, 
 
 **The "pushes state in" half of the colleague's description is wrong twice over.** The agent runs inside the cluster and *pulls* from the repository, which is principle 3 [source: opengitops-principles-v1-2026-08-31]; and it does not push into anything, it makes ordinary API calls like every other controller.
 
-**Q9. B.** In push-based delivery the pipeline lives outside the cluster and must hold credentials to it, which is the arrangement this chapter contrasts with pull.
+**9. B.** In push-based delivery the pipeline lives outside the cluster and must hold credentials to it, which is the arrangement this chapter contrasts with pull.
 
-**A is wrong**, and it is the confusion most worth clearing: push versus pull is about *where the credentials live*, not about network topology. A self-hosted runner inside the network, a VPN, or a private CI instance all push to an API server that is not publicly reachable. Nothing about push requires exposure. **C is wrong** — many push pipelines apply manifests from Git; that is precisely the arrangement Q8 and TYB 2 Q1 describe, and it is what makes the distinction subtle. **D is wrong** — nothing bypasses the API server, in either model *[cross-bearing: see Ch 3 §5 — the only door in]*.
+**A is wrong**, and it is the confusion most worth clearing: push versus pull is about *where the credentials live*, not about network topology. A self-hosted runner inside the network, a VPN, or a private CI instance all push to an API server that is not publicly reachable. Nothing about push requires exposure. **C is wrong** — many push pipelines apply manifests from Git; that is precisely the arrangement Taking Your Bearings 2, question 1 describes, and it is what makes the distinction subtle. **D is wrong** — nothing bypasses the API server, in either model *[cross-bearing: see Ch 3 §5 — the only door in]*.
 
-**Q10. Blast radius is this book's term for how far the damage from a single compromise reaches.** A shared CI system holding write credentials for a dozen clusters has a blast radius of a dozen clusters: whoever controls the pipeline controls every cluster it deploys to. Under pull-based delivery, each cluster's agent holds credentials only to its own cluster, so compromising the CI system yields the ability to build and publish artifacts, a serious supply-chain problem, but not direct cluster-write access anywhere.
+**10. Blast radius is this book's term for how far the damage from a single compromise reaches.** A shared CI system holding write credentials for a dozen clusters has a blast radius of a dozen clusters: whoever controls the pipeline controls every cluster it deploys to. Under pull-based delivery, each cluster's agent holds credentials only to its own cluster, so compromising the CI system yields the ability to build and publish artifacts, a serious supply-chain problem, but not direct cluster-write access anywhere.
 
 **What pull does not change:** it does not prevent compromise, and it does not make the agent's own credentials smaller. Argo CD's default is *"a clusteradmin level role"* [source: argocd-security-cluster-credentials-2026-08-31]. Anyone who can commit to the tracked branch can, transitively, do whatever the agent may do.
 
 **What is sourced and what is not:** the credential *locations* are documented — Argo CD stores external-cluster credentials as a Secret in the `argocd` namespace [source: argocd-security-cluster-credentials-2026-08-31], and its best-practices page argues for access separation on the grounds that *"the developers who are developing the application, may not necessarily be the same people who can/should push to production environments"* [source: argocd-best-practices-2026-08-31]. The *comparison* between push and pull as a security posture is this book's reading of principle 3 and those documented placements. No CNCF or vendor source in this chapter's corpus makes it in these terms.
 
-**Q11. D.** Principle 4 requires that agents *"continuously observe actual system state and attempt to apply the desired state"* [source: opengitops-principles-v1-2026-08-31]. A system that acts only on new commits satisfies principle 3, since it does pull, but has no answer to drift introduced any other way. A manual `kubectl edit` would persist indefinitely, which is exactly the failure GitOps exists to close.
+**11. D.** Principle 4 requires that agents *"continuously observe actual system state and attempt to apply the desired state"* [source: opengitops-principles-v1-2026-08-31]. A system that acts only on new commits satisfies principle 3, since it does pull, but has no answer to drift introduced any other way. A manual `kubectl edit` would persist indefinitely, which is exactly the failure GitOps exists to close.
 
 **A, B, and C are all satisfied** by the described system: the manifests are declarative, they are in a versioned store, and the agent pulls them. C is the closest call and the most useful distractor — readers who conflate "pulls" with "keeps checking" pick it. Pulling on a trigger is still pulling; principle 3 is about *direction*, principle 4 is about *cadence*.
 
-**Q12. It establishes that CI and GitOps are orthogonal concerns, not stages of one thing.** The cluster does not build your application and does not care who did; CI/CD workflows are *"determined by organization cultures and preferences as well as technical requirements"* [source: k8s-docs-overview-2026-08-23]. GitOps starts after a deployable artifact exists, and concerns itself only with how desired state is stored and applied. A team can have excellent CI and no GitOps, or GitOps with a build process that is entirely manual.
+**12. It establishes that CI and GitOps are orthogonal concerns, not stages of one thing.** The cluster does not build your application and does not care who did; CI/CD workflows are *"determined by organization cultures and preferences as well as technical requirements"* [source: k8s-docs-overview-2026-08-23]. GitOps starts after a deployable artifact exists, and concerns itself only with how desired state is stored and applied. A team can have excellent CI and no GitOps, or GitOps with a build process that is entirely manual.
 
 This is why "GitOps means running CI from Git" is wrong at the level of category, not just detail.
 
-**Q13. B.** Sync status answers *"is the deployed application the same as Git says it should be?"* while sync **operation** status answers *"whether or not a sync succeeded"* — two separate glossary entries, two separate questions [source: argocd-core-concepts-2026-08-31]. The documentation states the combination outright: *"it is possible for an application to be `OutOfSync` even immediately after a successful Sync operation"* [source: argocd-diffing-outofsync-2026-08-31].
+**13. B.** Sync status answers *"is the deployed application the same as Git says it should be?"* while sync **operation** status answers *"whether or not a sync succeeded"* — two separate glossary entries, two separate questions [source: argocd-core-concepts-2026-08-31]. The documentation states the combination outright: *"it is possible for an application to be `OutOfSync` even immediately after a successful Sync operation"* [source: argocd-diffing-outofsync-2026-08-31].
 
-**A is wrong** — it assumes the two fields report one fact, which is exactly the collapse the glossary's separate entries exist to prevent. **C is wrong**, and it is the misconception Exam Alert #2 names: reading `OutOfSync` as a failure report. It is a drift signal; a person editing the cluster produces one with nothing having failed [source: argocd-overview-2026-08-23]. **D is wrong on two counts.** First, self-healing is not on by default: *"by default, changes that are made to the live cluster will not trigger automated sync"* [source: argocd-auto-sync-policy-2026-08-31], so nothing is guaranteed to happen on its own. Second, a drift report is information, not noise — the whole point of the status is that somebody reads it.
+**A is wrong** — it assumes the two fields report one fact, which is exactly the collapse the glossary's separate entries exist to prevent. **C is wrong**, and it is the misconception Exam Alert #2 names: reading `OutOfSync` as a failure report. It is a drift signal; a person editing the cluster produces one with nothing having failed [source: argocd-overview-2026-08-23]. **D is wrong on two counts.** First, self-healing is not on by default: *"by default, changes that are made to the live cluster will not trigger automated sync"* [source: argocd-auto-sync-policy-2026-09-04], so nothing is guaranteed to happen on its own. Second, a drift report is information, not noise — the whole point of the status is that somebody reads it.
 
-**Q14. The colleague is wrong on both counts.** Argo CD accepts manifests *"in several ways: kustomize applications; helm charts; jsonnet files; plain directory of YAML/json manifests; any custom config management tool configured as a config management plugin"* [source: argocd-overview-2026-08-23].
+**14. The colleague is wrong on both counts.** Argo CD accepts manifests *"in several ways: kustomize applications; helm charts; jsonnet files; plain directory of YAML/json manifests; any custom config management tool configured as a config management plugin"* [source: argocd-overview-2026-08-23].
 
 The component: the **repository server**, which *"maintains a local cache of the Git repository holding the application manifests"* and is responsible for *"generating and returning the Kubernetes manifests"* given a repository URL, revision, path, and template-specific configuration [source: argocd-architecture-2026-08-31]. Rendering is a dedicated component, not an afterthought. Argo CD's glossary even names the choice: the **application source type** is *"which Tool is used to build the application"* [source: argocd-core-concepts-2026-08-31].
 
-**Q15. Nothing happens to the cluster.** *"If a Git commit SHA is specified, the app is effectively pinned to the manifests defined at the specified commit"* [source: argocd-tracking-strategies-2026-08-31]. New commits on the branch are irrelevant; the `Application` is not looking at the branch.
+**15. Nothing happens to the cluster.** *"If a Git commit SHA is specified, the app is effectively pinned to the manifests defined at the specified commit"* [source: argocd-tracking-strategies-2026-08-31]. New commits on the branch are irrelevant; the `Application` is not looking at the branch.
 
 To update: *"the only way to change the live state of an app which is pinned to a commit, is by updating the tracking revision in the application to a different commit containing the new manifests"* [source: argocd-tracking-strategies-2026-08-31]. Somebody must change the `Application`'s own revision field, which is itself typically a commit in a repository, and therefore itself reviewable. That is the point of pinning.
 
-**Q16. [cross-domain: D2.2] A ServiceAccount, and a ClusterRole bound by a ClusterRoleBinding.** The ServiceAccount is the identity the agent's Pod runs as; the ClusterRole enumerates permitted verbs on resources; the ClusterRoleBinding attaches the permission set to the identity across the whole cluster *[cross-bearing: see Ch 12 §3 — what you may do]*.
+**16. [cross-domain: D2.2] A ServiceAccount, and a ClusterRole bound by a ClusterRoleBinding.** The ServiceAccount is the identity the agent's Pod runs as; the ClusterRole enumerates permitted verbs on resources; the ClusterRoleBinding attaches the permission set to the identity across the whole cluster *[cross-bearing: see Ch 12 §3 — what you may do]*.
 
 **Why per-namespace Roles are a poor answer:** they work, and they break. Every new namespace the repository introduces requires a new Role and RoleBinding before the agent can act in it, which means the agent cannot create a namespace and populate it in one sync, and the failure appears as a permissions error at exactly the moment someone adds a namespace. Argo CD's own model uses a cluster-scoped role for this reason, noting that it *"requires cluster-wide read privileges to resources in the managed cluster to function properly"* even when write is narrowed [source: argocd-security-cluster-credentials-2026-08-31].
 
-**On the pruning qualifier in the stem:** permission and configuration are separate. Deleting requires the `delete` verb in the grant, but the grant does not cause deletion — *"by default (and as a safety mechanism), automated sync will not delete resources when Argo CD detects the resource is no longer defined in Git"* [source: argocd-auto-sync-policy-2026-08-31].
+**On the pruning qualifier in the stem:** permission and configuration are separate. Deleting requires the `delete` verb in the grant, but the grant does not cause deletion — *"by default (and as a safety mechanism), automated sync will not delete resources when Argo CD detects the resource is no longer defined in Git"* [source: argocd-auto-sync-policy-2026-09-04].
 
-**Q17. [cross-domain: D1.1] It is a good analogy and worth being precise about.** Argo CD compares **target state** — *"the desired state of an application, as represented by files in a Git repository"* — against **live state** — *"the live state of that application. What pods etc are deployed"* [source: argocd-core-concepts-2026-08-31].
+**17. [cross-domain: D1.1] It is a good analogy and worth being precise about.** Argo CD compares **target state** — *"the desired state of an application, as represented by files in a Git repository"* — against **live state** — *"the live state of that application. What pods etc are deployed"* [source: argocd-core-concepts-2026-08-31].
 
 The mapping to Chapter 4: target state plays the role of `spec` (what was asked for), and live state is observed from the cluster, which is what `status` reports on *[cross-bearing: see Ch 4 §2 — the anatomy of a record]*.
 
 The one refinement: the operands live in different places. In an ordinary object, `spec` and `status` are two fields of one record in etcd. Under GitOps, the authored `spec` lives outside the cluster entirely, and the cluster's copy is downstream of it. That relocation is the whole substitution, and it is why an object's own `spec` can be perfectly satisfied while the application is `OutOfSync`, if somebody changed the `spec` itself by hand.
 
-**Q18. Three mechanisms:**
+**18. Three mechanisms:**
 
 - **`kubectl rollout undo`** (Ch 6 §5) — restores a Deployment's Pod template. Prior state lives in the old ReplicaSet, on the cluster.
-- **`helm rollback`** (Ch 14 §3) — returns a Helm release to a prior revision. Prior state lives in Helm's release history, on the cluster.
+- **`helm rollback`** (Ch 14 §3) — returns a Helm release to a prior release revision. Prior state lives in Helm's release history, on the cluster.
 - **Rollback by revert** (this chapter) — changes a commit in the repository; the agent reconciles as it always does. Prior state lives in the repository's history. Argo CD describes the capability as *"rollback/roll-anywhere to any application configuration committed in Git repository"* [source: argocd-overview-2026-08-23].
 
 The structural point worth carrying: the third has no dedicated rollback code path. You move the target and the loop does the rest, the same loop that handles every ordinary change.
 
-**Q19. Order: namespace, then CustomResourceDefinition, then the custom resource.** The namespace must exist before namespaced objects can be placed in it, and the CRD must be registered before the API server will accept a custom resource of that kind.
+**19. Order: namespace, then CustomResourceDefinition, then the custom resource.** The namespace must exist before namespaced objects can be placed in it, and the CRD must be registered before the API server will accept a custom resource of that kind.
 
-**The mechanism is sync waves**, which order resources within a phase, *"lower values first"* [source: argocd-sync-phases-and-waves-2026-08-31]. What matters is the relative order, not the absolute numbers: `-2, -1, 0` and `0, 1, 2` behave identically. The full precedence puts the phase first and the wave second, with deterministic tie-breaks after those [source: argocd-sync-phases-and-waves-2026-08-31].
+**The mechanism is sync waves**, which order resources within a phase, *"lower values first"* [source: argocd-sync-phases-and-waves-2026-08-31]. What matters is the relative order, not the absolute numbers: `-2, -1, 0` and `0, 1, 2` behave identically. The full precedence puts the phase first and the wave second, with kind and then name as tie-breaks after those [source: argocd-sync-phases-and-waves-2026-08-31].
 
 **An object with no ordering annotation lands in wave 0:** *"Hooks and resources are assigned to wave 0 by default. The wave can be negative, so you can create a wave that runs before all other resources"* [source: argocd-sync-phases-and-waves-2026-08-31]. That negative-wave capability is what makes waves an ordering system rather than a queue — you can always insert something ahead of the default without renumbering everything else.
 
-**Q20. PostSync**, and the quoted condition is what makes it distinctive: it requires not just completion but *"all resources in a Healthy state"* [source: argocd-sync-phases-and-waves-2026-08-31].
+**20. PostSync**, and the quoted condition is what makes it distinctive: it requires not just completion but *"all resources in a Healthy state"* [source: argocd-sync-phases-and-waves-2026-08-31].
 
 Suitable for: smoke tests, notifications, and traffic cutover, anything that should happen only once the new state is both applied and demonstrably working. Argo CD ties the hook mechanism to release patterns explicitly, describing hooks as supporting *"complex application rollouts (e.g. blue/green and canary upgrades)"* [source: argocd-overview-2026-08-23].
 
 **Why not PreSync:** PreSync runs *"prior to the application of the manifests"* [source: argocd-sync-phases-and-waves-2026-08-31], before the thing you would be testing exists.
 
-**Q21. Practical consequence** (any one earns credit): Flux's composability means a team can adopt the source and Kustomize controllers without the Helm or image-automation ones, and can replace pieces independently; Argo CD's integration means fewer objects to learn and a single UI showing every application's state, at the cost of being more nearly all-or-nothing. Flux's design surfaces as many custom resources across several controllers [source: flux-components-2026-08-31]; Argo CD's surfaces mainly as `Application` objects [source: argocd-core-concepts-2026-08-31].
+**21. Practical consequence** (any one earns credit): Flux's composability means a team can adopt the source and Kustomize controllers without the Helm or image-automation ones, and can replace pieces independently; Argo CD's integration means fewer objects to learn and a single UI showing every application's state, at the cost of being more nearly all-or-nothing. Flux's design surfaces as many custom resources across several controllers [source: flux-components-2026-08-31]; Argo CD's surfaces mainly as `Application` objects [source: argocd-core-concepts-2026-08-31].
 
 **What Flux does at install time that Argo CD does not: it installs itself in a GitOps manner.** *"The process of installing the Flux components in a GitOps manner is called a bootstrap. The manifests are applied to the cluster, a `GitRepository` and `Kustomization` are created for the Flux components, then the manifests are pushed to an existing Git repository"* [source: flux-concepts-2026-08-31] — so that, as the earlier capture puts it, *"Flux manages itself like any other resource"* [source: flux-concepts-2026-08-23]. Upgrading Flux is a commit.
 
-**Drift correction — the documented positions differ.** Flux states that manual `kubectl edit/patch/delete` changes *"will be promptly reverted"* [source: flux-concepts-2026-08-31]. Argo CD's automated sync policy states the opposite default: *"by default, changes that are made to the live cluster will not trigger automated sync"* [source: argocd-auto-sync-policy-2026-08-31], and pruning is likewise opt-in — *"by default (and as a safety mechanism), automated sync will not delete resources when Argo CD detects the resource is no longer defined in Git"* [source: argocd-auto-sync-policy-2026-08-31]. Two graduated projects implementing the same four principles, shipping with opposite answers to "what do I do about drift I detect."
+**Drift correction — the documented positions differ.** Flux states that manual `kubectl edit/patch/delete` changes *"will be promptly reverted"* [source: flux-concepts-2026-08-31]. Argo CD's automated sync policy states the opposite default: *"by default, changes that are made to the live cluster will not trigger automated sync"* [source: argocd-auto-sync-policy-2026-09-04], and pruning is likewise opt-in — *"by default (and as a safety mechanism), automated sync will not delete resources when Argo CD detects the resource is no longer defined in Git"* [source: argocd-auto-sync-policy-2026-09-04]. Two graduated projects implementing the same four principles, shipping with opposite answers to "what do I do about drift I detect."
 
-**On multi-cluster:** Argo CD documents managing multiple clusters from one control point — the feature list includes the *"ability to manage and deploy to multiple clusters"* [source: argocd-overview-2026-08-23], with each remote cluster's credentials stored as a Secret in the `argocd` namespace [source: argocd-security-cluster-credentials-2026-08-31]. Flux's documented position is narrower: its reconciling controllers run in the cluster they reconcile [source: flux-security-2026-08-31] and bootstrap installs it into a cluster against a repository [source: flux-concepts-2026-08-31]. Credit an answer that states the Argo CD side accurately and does not over-claim the Flux side.
+**On multi-cluster:** Argo CD documents managing multiple clusters from one control point — the feature list includes the *"ability to manage and deploy to multiple clusters"* [source: argocd-overview-2026-08-23], with each remote cluster's credentials stored as a Secret in the `argocd` namespace [source: argocd-security-cluster-credentials-2026-08-31]. Flux's documented model is per cluster: bootstrap *"deploys the Flux controllers on Kubernetes cluster(s) and configures the controllers to sync the cluster(s) state from a Git repository"* [source: flux-installation-bootstrap-2026-09-04], with each cluster's state in its own directory of the repository [source: flux-repository-structure-2026-09-04]. Credit an answer that states the Argo CD side accurately and does not claim a cross-cluster credential mechanism for Flux that the documentation does not describe.
 
 </details>
 

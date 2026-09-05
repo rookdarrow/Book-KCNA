@@ -52,6 +52,7 @@ func listWithMoreString(list []string, more bool, count, max int) string {
 ## What this establishes
 
 - An EndpointSlice with no endpoints prints `<unset>` in the ENDPOINTS column, not `<none>`.
-- An EndpointSlice with no ports prints `<unset>` in the PORTS column. (The EndpointSlice controller's placeholder slice for a Service whose selector matches nothing carries an empty port list.)
+- An EndpointSlice with no ports prints `<unset>` in the PORTS column.
+- NOTE (not from this file; the auditor's reading of the EndpointSlice controller's reconciler, not verified against a cached snapshot): the placeholder slice the controller writes for a Service whose selector matches nothing carries an empty port list, so both PORTS and ENDPOINTS print `<unset>` for it. If a later fetch of the reconciler contradicts this, only the PORTS cell in Chapter 20 item 59's listing is affected.
 - More than three addresses or ports print as the first three followed by ` + N more...`.
 - The PORTS column sits between ADDRESSTYPE and ENDPOINTS; a listing without it is not kubectl's.

@@ -44,7 +44,7 @@ sections:
     objectives: ["D1.4"]
     requires_figure: true
     figure_anchor: "ch02-fig03-oci-three-specs"
-    checkpoint_after: true
+    checkpoint_after: false
   - name: "When Kubernetes Pulls, and When It Doesn't"
     objectives: ["D1.4"]
     requires_figure: true
@@ -79,9 +79,9 @@ soundings_planned:
 # Bearings checkpoints" for the justification and B4's own sanction of it.
 question_budget:
   soundings: 8
-  taking_your_bearings: 12             # across 3 checkpoints (4 + 4 + 4)
+  taking_your_bearings: 10             # across 2 checkpoints (4 + 6)
   practice_questions: 27
-  total_this_chapter: 47
+  total_this_chapter: 45
 
 # --- Concept / objective / command tagging ---
 kb_tags:
@@ -135,7 +135,7 @@ figures_planned:
 
 ## Attention Budget
 
-**Total time: ~85 minutes | Recommended: single session if you're fresh; otherwise split at Taking Your Bearings #2**
+**Total time: ~90 minutes | Recommended: single session if you're fresh; otherwise split after §5**
 
 | Section | Time | Attention Cost | Best Time to Study |
 |---|---|---|---|
@@ -145,10 +145,9 @@ figures_planned:
 | ☆ Taking Your Bearings #1 | 6 min | Medium | After a short break |
 | §4 The Container Runtime Interface | 12 min | Medium | When alert |
 | §5 The Open Container Initiative | 10 min | Medium | When alert |
-| ☆ Taking Your Bearings #2 | 6 min | Medium | After a short break |
 | §6 When Kubernetes Pulls, and When It Doesn't | 9 min | High | Peak attention |
 | §7 Not All Isolation Is Equal: RuntimeClass | 6 min | Medium | When alert |
-| ☆ Taking Your Bearings #3 | 6 min | Medium | After a short break |
+| ☆ Taking Your Bearings #2 | 9 min | Medium | After a short break |
 | §8 The Crate, Not the Cargo | 4 min | Low | Anytime |
 
 **Attention Cost Key:**
@@ -162,8 +161,6 @@ figures_planned:
 
 > *"The crate outlives the ship. Standardize the crate."*
 > — Lodestar Ledgers
-
-<!-- AUTHOR-REVIEW: outline § Open questions #9 preferred a real attributed quote (Malcolm McLean on containerization was the suggested well). No cached snapshot contains a verifiable McLean quotation, and Part 15 plus Ethical Guardrail #2 forbid shipping an attribution we cannot source. An original Lodestar epigraph is used instead. The research manifest offers a stronger alternative route than a quotation: ISO 668 (Series 1 freight containers — classification, dimensions and ratings) and ISO 1161 (corner fittings), which would let §8's standardization argument rest on a citable standard rather than on an epigraph. iso.org returns 403 to WebFetch; a browser session or an alternate authoritative catalog entry is needed. See also the §8 AUTHOR-REVIEW on the same gap. -->
 
 ---
 
@@ -216,7 +213,7 @@ Before reading this chapter, try these eight questions. Your score decides how t
 
 3. **From a default registry that Kubernetes assumes when you don't name one.** §3 names it and shows the other two defaults hiding in the same short string.
 
-4. **Once.** §2 has the structure.
+4. **Once.** The layered format allows layers to be reused between images [source: docker-docs-image-layers-2026-08-24]; §2 has the structure.
 
 5. **B.** §4 explains what makes them interchangeable.
 
@@ -226,7 +223,7 @@ Before reading this chapter, try these eight questions. Your score decides how t
 
 8. **It depends, and what it depends on will surprise you.** §6 has the four-case rule, and it hinges on how you wrote the reference, not on what you configured.
 
-**If you got 6+ right:** skim. Focus on the ★ Fixed Points and ⚠ Navigational Hazards callouts, and take all three Taking Your Bearings checkpoints. Do not skip §5 (OCI) or §7 (RuntimeClass) regardless of your score. Those two sections score well on intuition and still repay a careful read.
+**If you got 6+ right:** skim. Focus on the ★ Fixed Points and ⚠ Navigational Hazards callouts, and take both Taking Your Bearings checkpoints. Do not skip §5 (OCI) or §7 (RuntimeClass) regardless of your score. Those two sections score well on intuition and still repay a careful read.
 
 **If you got 3–5 right:** read at normal pace. This chapter is calibrated for you.
 
@@ -264,7 +261,7 @@ By the end of this chapter, you'll be able to:
 
 ---
 
-## §1 — ⚪ What a Container Actually Is
+## ⚪ §1 — What a Container Actually Is
 
 **If you remember nothing else:** a container is repeatable because everything it needs travels with it.
 
@@ -281,9 +278,6 @@ Containers are similar to VMs, but they have relaxed isolation properties in ord
 Two registers are in use here, and both are correct. The Kubernetes documentation and the CNCF glossary say a container **shares the operating system** [source: cncf-glossary-container-2026-08-24]. That is, in the author's judgment, the phrasing an exam item is likeliest to echo, and the one to recognize on an answer sheet. Practitioners and the container-runtime documentation usually sharpen it: a container **shares the host's kernel**, meaning the part of the operating system that talks to hardware, schedules processes, and enforces boundaries. Everything above the kernel that the application needs, its libraries, its files, its view of the process table, comes from the container itself. That is why a container has its own filesystem and its own process space while still running on somebody else's kernel. [source: docker-docs-what-is-a-container-2026-08-24]
 
 The sharpening is not a stylistic preference; the mechanism only parses one way. Kubernetes describes a sandboxed alternative runtime as one that supplies "a user-space kernel (such as gVisor)" [source: k8s-docs-runtime-class-2026-08-23]. That phrase is only meaningful if the ordinary, non-sandboxed case is the *host's* kernel. Hold both registers: **operating system** as the published wording, **kernel** as the mechanism underneath it.
-
-
-<!-- AUTHOR-REVIEW — PIPELINE, not content. Stage 2 researched 17 new snapshots (A1–A17) for this chapter, embedded their full bodies with frontmatter in research-manifest.md Appendix A, and could not write them to disk. `../Book-KCNA/sources/` contains only the 87 snapshots dated 2026-08-23; nothing dated 2026-08-24 exists. Three audits independently traced this chapter's remaining sourcing gaps to that single failure. Recovery is mechanical extraction from the manifest — NO re-fetching is required. Affected claims are marked individually below with the specific Appendix A item that closes them. Chapter 1's Stage 2 hit the same condition, so this is a recurring executor fault worth fixing above the per-chapter level. -->
 
 Now the single most useful move you can make with this material: stop memorizing the comparison table and derive it instead. Every difference between a container and a VM that anybody cites comes out of that one architectural choice.
 
@@ -318,11 +312,11 @@ Derive it yourself. Booting a guest operating system takes time, so VMs start sl
 
 > ⚓ **Worth Securing:** "Relaxed isolation" is a *tradeoff*, not a deficiency. The docs use exactly that word, *relaxed* [source: k8s-docs-overview-2026-08-23], and being honest about it is what makes the rest of the picture coherent. You gave up a boundary in exchange for weight, and because it was a trade, it can be renegotiated per workload when a particular workload deserves the boundary back. *[cross-bearing: see Ch 2 §7 — when relaxed isolation is not enough]*
 
-One forward plant, then we move on. Containers in a Pod are co-located and co-scheduled to run on the same node [source: k8s-docs-containers-2026-08-23]. You do not need to know what a Pod is yet. It is Chapter 5's whole subject, and it comes with a shared network namespace [source: k8s-docs-network-model-2026-08-23] and a lifecycle of its own *[cross-bearing: see Ch 5 §1 — the Pod as the unit of scheduling]*. For now, register only this: containers are not the unit Kubernetes schedules. Something wraps them.
+One forward plant, then we move on. Containers in a Pod are co-located and co-scheduled to run on the same node [source: k8s-docs-containers-2026-08-23]. You do not need to know what a Pod is yet. It is Chapter 5's whole subject, and it comes with a shared Linux network namespace [source: k8s-docs-network-model-2026-08-23] and a lifecycle of its own *[cross-bearing: see Ch 5 §1 — the Pod as the unit of scheduling]*. For now, register only this: containers are not the unit Kubernetes schedules. Something wraps them.
 
 ---
 
-## §2 — ⚪ What's Inside an Image
+## ⚪ §2 — What's Inside an Image
 
 A container is a running thing. An image is the package it runs from, and the contents repay precision, because the exam tests the contents and, more usefully, because the negative space in that list explains §1 backwards.
 
@@ -346,20 +340,18 @@ The payoff is concrete. Image immutability is exactly what makes quick and effic
 
 ### Layers
 
-An image is not a single opaque blob. The OCI Image Format encompasses the image manifest, **filesystem layer serialization**, and image configuration needed to launch applications on target platforms [source: oci-overview-2026-08-23]. In other words, the contents arrive as a set of filesystem layers, described by a manifest that names them, plus a configuration that says how to start the thing. (The image *manifest* here is an OCI artifact — a different thing from the Kubernetes manifests, the YAML files, you'll meet in Chapter 4 *[cross-bearing: see Ch 4 §2 — the anatomy of a record]*.)
+An image is not a single opaque blob. The OCI Image Format encompasses the image manifest, **filesystem layer serialization**, and image configuration needed to launch applications on target platforms [source: oci-overview-2026-08-23]. In other words, the contents arrive as a set of filesystem layers, described by a manifest that names them, plus a configuration that says how to start the thing. The specification's own definition of a layer is a changeset that describes a container's filesystem [source: oci-image-spec-overview-2026-08-24], and one or more layers are applied on top of each other to create a complete filesystem [source: oci-image-spec-layers-2026-08-24]. (The image *manifest* here is an OCI artifact — a different thing from the Kubernetes manifests, the YAML files, you'll meet in Chapter 4 *[cross-bearing: see Ch 4 §2 — the anatomy of a record]*.)
 
 Three consequences follow from that structure, and all three matter downstream.
 
-**The layers stack, in order.** The manifest lists them as an ordered set: a base at the bottom, and each subsequent layer applied on top of what came before. The image you finally run is the result of that stack resolved into a single filesystem view.
+**The layers stack, in order.** The manifest lists them as an ordered array, and the specification is strict about it: the array must have the base layer at index 0, and subsequent layers must follow in stack order [source: oci-image-spec-manifest-2026-08-24]. The image you finally run is the result of that stack resolved into a single filesystem view.
 
-**A shared base is a shared layer.** If two images are built starting from the same base, both of their manifests name that same base layer. The layer has one identity, so it is one object: stored once and transferred once, rather than duplicated per image.
+**A shared base is a shared layer.** If two images are built starting from the same base, both of their manifests name that same base layer. The layer has one identity, so it is one object: stored once and transferred once, rather than duplicated per image. Docker's documentation states the payoff without hedging: the layered format allows layers to be reused between images, which reduces the amount of storage and bandwidth required to distribute them [source: docker-docs-image-layers-2026-08-24].
 
-**Position in the stack determines rebuild cost.** Because each layer is applied on top of the ones beneath it, changing a lower layer invalidates everything above it. This is why the conventional advice is to put the parts that change least at the bottom.
-
-<!-- AUTHOR-REVIEW — G29, layers. The research manifest records G29 as CLOSED and this subsection is written to the depth that closure supports, but the closing snapshots are the ones Stage 2 could not write (see the pipeline note in §1). Currently on disk, `oci-overview` supplies only the phrase "filesystem layer serialization" — enough for the existence of layers and a manifest, not for stack order, sharing, or rebuild cost. Harvest and tag: A4 (layer = "a changeset that describes a container's filesystem"), A5 ("one or more layers are applied on top of each other"), A6 ("The array MUST have the base layer at index 0" and subsequent layers "MUST follow in stack order") for the ordering claim; A9 (docker-docs-image-layers: the format "allows layers to be reused between images", which "reduce[s] the amount of storage and bandwidth required to distribute the images") for the sharing claim AND for Soundings Q4's answer key, which the manifest notes it supplies verbatim; A10 ("once a layer changes, all downstream layers need to be rebuilt") for the rebuild-cost claim. DO NOT act on the earlier proposal to narrow this subsection or to rename ch02-fig02 — the manifest resolves Open Question #2 to option (a), keep the anchor and keep both halves of the figure. Layers are load-bearing for the digest concept in §3 and for the Chapter 12 supply-chain material. -->
+**Position in the stack determines rebuild cost.** Because each layer is applied on top of the ones beneath it, changing a lower layer invalidates everything above it: once a layer changes, all downstream layers need to be rebuilt as well [source: docker-docs-build-cache-2026-09-04]. This is why the conventional advice is to put the parts that change least at the bottom.
 
 <!-- FIGURE: ch02-fig02-image-layers-and-digests -->
-![Left: two image stacks, image A and image B, each with an app layer above a shared base layer, the two base layers joined to show they are one stored layer named by both manifests. Right: a card showing a truncated digest sha256:9f2c...be41 labelled content hash and immutable, with two identical :v2 tag boxes below it — one labelled today connected by a solid arrow, one labelled next week connected by a dashed arrow to a different point, showing that a tag is a label that can be moved to point at a different image.](figures/ch02-fig02-image-layers-and-digests.svg)
+![Left: two image stacks, image A and image B, each with an app layer above a shared base layer, the two base layers joined to show they are one stored layer named by both manifests. Right: a card showing a truncated digest sha256:9f2c...be41 labeled content hash and immutable, with two identical :v2 tag boxes below it — one labeled today connected by a solid arrow, one labeled next week connected by a dashed arrow to a different point, showing that a tag is a label that can be moved to point at a different image.](figures/ch02-fig02-image-layers-and-digests.svg)
 
 <!-- ASCII-FALLBACK
 ```
@@ -391,19 +383,17 @@ Note what the layer structure buys forward: the layers described here are precis
 
 You do not have to hand-author a build file to produce an image, and the exam's ecosystem awareness extends to knowing the alternative exists.
 
-A **buildpack** is software that transforms application source code into runnable artifacts by analyzing the code and determining the best way to build it. A **builder** is an OCI image containing an ordered combination of buildpacks and a build-time base image, a lifecycle binary, and a reference to a runtime base image. The base images come in a pair: the *build image* is the environment in which the buildpacks run, and the *run image* is the base for the final application image; that pairing is called the **stack**. A **platform**, either the `pack` CLI or a CI system, orchestrates the process by invoking the lifecycle binary together with the buildpacks and the application source to produce a runnable OCI image. The lifecycle runs in phases: **detect** (determine which buildpacks apply), **build** (compile and assemble the application), and **export** (create the final OCI image with reproducible layers). Cloud Native Buildpacks is a CNCF graduated project [source: buildpacks-concepts-2026-08-23].
+A **buildpack** is software that transforms application source code into runnable artifacts by analyzing the code and determining the best way to build it, and what comes out the far end is an ordinary, runnable OCI image, produced without anyone writing a build file. Cloud Native Buildpacks is a CNCF graduated project [source: buildpacks-concepts-2026-08-23].
 
-> ⚓ **Worth Securing:** The build-image / run-image split is the idea to take from Buildpacks even if you never use them. The environment that *compiles* your application and the environment that *runs* it do not have to be the same environment, and they usually shouldn't be. Compilers, headers, and build tooling are attack surface that your production image has no use for. Buildpacks make that separation structural rather than a discipline you have to remember. The same instinct scales down to base-image choice generally: a smaller base carries fewer things that can be exploited.
->
-> <!-- AUTHOR-REVIEW: the closing sentence on base-image size is the ⚓ beat the outline originally planned for §2 and is currently unsourced. Harvest A11 ("None of the build tools required to build the application are included in the resulting image") and A12 ("A small image with minimal dependencies can considerably lower the attack surface"); A12 also supplies "you can pin the image version to a specific digest," which is the hinge sentence for the new integrative Practice Q26. Tag both, then delete this comment. -->
+> ⚓ **Worth Securing:** Buildpacks build your application in one base image and ship it on a different one [source: buildpacks-concepts-2026-08-23], and that split is the idea to take from them even if you never use them. The environment that *compiles* your application and the environment that *runs* it do not have to be the same environment, and they usually shouldn't be. Compilers, headers, and build tooling are attack surface that your production image has no use for; a multi-stage build achieves the same separation by hand, so that none of the build tools required to build the application are included in the resulting image [source: docker-docs-multi-stage-2026-08-24]. Buildpacks make that separation structural rather than a discipline you have to remember. The same instinct scales down to base-image choice generally: a small image with minimal dependencies can considerably lower the attack surface [source: docker-docs-build-best-practices-2026-08-24].
 
-> 🔭 **Closer Look:** The export phase produces *reproducible* layers [source: buildpacks-concepts-2026-08-23], meaning the same input reliably produces the same layer bytes rather than layers that differ run to run because of timestamps or file ordering. (That gloss on "reproducible" is the author's, not the specification's wording.) The property is deeper than the exam requires, but it's the hinge on which supply-chain verification swings: you cannot meaningfully attest to an artifact whose bytes change when nothing changed. *[cross-bearing: see Ch 12 — signing, attestation, and the software supply chain]*
+> 🔭 **Closer Look:** The final step of a Buildpacks build, export, produces the image with *reproducible* layers [source: buildpacks-concepts-2026-08-23], meaning the same input reliably produces the same layer bytes rather than layers that differ run to run because of timestamps or file ordering. (That gloss on "reproducible" is the author's, not the specification's wording.) The property is deeper than the exam requires, but it's the hinge on which supply-chain verification swings: you cannot meaningfully attest to an artifact whose bytes change when nothing changed. *[cross-bearing: see Ch 12 — signing, attestation, and the software supply chain]*
 
 Supply-chain security, meaning scanning, signing, and bills of materials, is a real concern that attaches to everything in this section, and it is not this chapter's. It gets a full treatment later *[cross-bearing: see Ch 12 — securing the image supply chain]*.
 
 ---
 
-## §3 — 🔵 Registries, Tags, and Digests
+## 🔵 §3 — Registries, Tags, and Digests
 
 This section carries the chapter's sharpest single distinction, and it is one most practitioners carry wrong for years without consequence, right up until the afternoon it costs them.
 
@@ -423,18 +413,17 @@ Here are the defaults as a table, because that is what a table is for:
 
 The `busybox` equivalence and both `registry.k8s.io/pause` forms are the documentation's own examples [source: k8s-docs-images-2026-08-23]; `<version>` is a placeholder, not a real published tag.
 
-> 🪝 **Snag:** A bare name is not a bare name. `busybox` is three defaults stacked in a trench coat: a registry you didn't name, a namespace you didn't name, and a tag you didn't name. Every one of the three is a decision somebody made on your behalf, and at least two of them will matter to you eventually.
+> 🪝 **Snag:** A bare name is not a bare name. `busybox` is three defaults stacked in a trench coat: a registry you didn't name, a registry namespace you didn't name, and a tag you didn't name. Every one of the three is a decision somebody made on your behalf, and at least two of them will matter to you eventually.
 
 ### The distinction this section exists for
 
 Tags let you identify different versions of the same series of images. Digests are a unique identifier for a specific version of an image, **a hash of the image's content**, and are immutable; **tags can be moved to point to different images** [source: k8s-docs-images-2026-08-23].
 
-Sit with the asymmetry. A digest is *derived from* the image. Change one byte of the image and you get a different digest, necessarily, because that is what a content hash is. You cannot move a digest to point at different content, in the same way that you cannot move the number 4 to mean 5.
+Sit with the asymmetry. A digest is *derived from* the image. Change one byte of the image and you get a different digest, necessarily, because that is what a content hash is. You cannot move a digest to point at different content, in the same way that you cannot move the number 4 to mean 5. The OCI's distribution specification says the same thing in a standards body's register: a digest is a unique identifier created from a cryptographic hash of a blob's content [source: oci-distribution-spec-2026-08-24].
 
 A tag is *attached to* the image. It is a label, and labels come off.
 
 ★ **Fixed Point:**
-
 > **A tag identifies a series and can be moved to point at a different image. A digest is a hash of the image's content and is immutable. Two pulls of `myapp:v2` a week apart are not guaranteed to be the same bytes. Two pulls of an image by digest are.**
 
 If you recite one sentence from §1 through §3 cold, recite that one.
@@ -457,9 +446,7 @@ If you recite one sentence from §1 through §3 cold, recite that one.
 
 ### Registries, briefly
 
-A registry is where images live between being built and being run. You push there and nodes pull from there [source: k8s-docs-images-2026-08-23]. It is a distribution layer, and it speaks a standardized API for the purpose, which is a fact §5 will hand you *[cross-bearing: see Ch 2 §5 — the distribution specification]*.
-
-<!-- AUTHOR-REVIEW: A7 (the OCI distribution specification's own definitions) would upgrade this paragraph from paraphrase to spec-level citation — "Registry: a service that handles the required APIs defined in this specification", "Push: the act of uploading blobs and manifests to a registry", "Pull: the act of downloading blobs and manifests from a registry". Per research-manifest finding 6, A7 also gives §3's digest Fixed Point a second independent authority: "a unique identifier created from a cryptographic hash of a Blob's content". Recommended, not blocking. -->
+A registry is where images live between being built and being run. You push there and nodes pull from there [source: k8s-docs-images-2026-08-23]. The specification that governs it defines all three words plainly: a registry is a service that handles the required APIs defined in that specification, a push is the act of uploading blobs and manifests to a registry, and a pull is the act of downloading blobs and manifests from one [source: oci-distribution-spec-2026-08-24]. It is a distribution layer, and it speaks a standardized API for the purpose, which is a fact §5 will hand you *[cross-bearing: see Ch 2 §5 — the distribution specification]*.
 
 Private registries may require credentials to read images from them. Credentials can be supplied by: configuring nodes to authenticate to the private registry; a kubelet credential provider that fetches credentials dynamically; pre-pulled images; specifying `imagePullSecrets` on a Pod, which references a Secret of type `kubernetes.io/dockerconfigjson`; or vendor-specific and local extensions [source: k8s-docs-images-2026-08-23].
 
@@ -537,7 +524,7 @@ Two components left in the stack, and then you'll be able to draw the whole path
 
 ---
 
-## §4 — 🔵 The Container Runtime Interface
+## 🔵 §4 — The Container Runtime Interface
 
 Time to pay off the opening. Kubernetes cannot run a container, and here is the machinery.
 
@@ -549,18 +536,18 @@ Read the third item in that list carefully, because it is not padding. It is a p
 
 The runtime is a **node** component. It runs on every machine that runs workloads, alongside the kubelet and (optionally) kube-proxy [source: k8s-docs-components-2026-08-23]. A container runtime, containerd or CRI-O, must be installed on every node [source: k8s-docs-setup-tooling-2026-08-23]. Not on the control plane's behalf, not centrally: on each node, because that is where containers actually run.
 
-The **kubelet** is the agent that runs on each node in the cluster. It makes sure that containers are running in a Pod: the kubelet takes a set of PodSpecs provided through various mechanisms and ensures that the containers described in those PodSpecs are running and healthy. Notably, the kubelet doesn't manage containers which were not created by Kubernetes [source: k8s-docs-cluster-architecture-2026-08-23].
+The **kubelet**, the agent on each node, ensures that the containers described in its PodSpecs are running and healthy [source: k8s-docs-cluster-architecture-2026-08-23]; its full treatment, as one node component among several, is Chapter 3's *[cross-bearing: see Ch 3 §3 — node components in context]*.
 
 So the kubelet is the component that *wants* containers to exist. The runtime is the component that *makes* them exist. Between them is the interface.
 
 ### CRI is an interface, not an implementation
 
-Kubernetes' extension points include, under infrastructure extensions, the "container runtime (CRI, the Container Runtime Interface, to support alternative container runtimes)" [source: k8s-docs-extending-kubernetes-2026-08-23]. That single parenthetical is the whole design in one line. CRI exists *in order to* support alternatives. It is a socket, and the socket is the product.
+Kubernetes' extension points include, under infrastructure extensions, the "container runtime (CRI, the Container Runtime Interface, to support alternative container runtimes)" [source: k8s-docs-extending-kubernetes-2026-08-23]. That single parenthetical is the whole design in one line, and the CRI's own page states it as a thesis: the CRI is a plugin interface which enables the kubelet to use a wide variety of container runtimes, without having a need to recompile the cluster components; the kubelet acts as a client when connecting to the container runtime via gRPC [source: k8s-docs-cri-2026-08-24]. CRI exists *in order to* support alternatives. It is a socket, and the socket is the product.
 
-And beneath the CRI runtime there is one more hop. Docker donated its container runtime, **runC**, to the Open Container Initiative to serve as the cornerstone of that effort [source: oci-overview-2026-08-23], and an OCI runtime's job is defined by the runtime specification: it runs a filesystem bundle that has been unpacked on disk [source: oci-overview-2026-08-23]. That is the lowest hop, the one where a process actually starts.
+And beneath the CRI runtime there is one more hop. Docker donated its container runtime, **runC**, to the Open Container Initiative to serve as the cornerstone of that effort [source: oci-overview-2026-08-23], and an OCI runtime's job is defined by the runtime specification: it runs a filesystem bundle that has been unpacked on disk [source: oci-overview-2026-08-23]. The hand-off between the two is in containerd's own description of itself: most interactions with the Linux and Windows container feature sets are handled via runc or OS-specific libraries [source: containerd-cri-o-runc-2026-08-24]. That is the lowest hop, the one where a process actually starts.
 
 <!-- FIGURE: ch02-fig04-cri-runtime-chain -->
-![A vertical chain. At the top, the kubelet, the node agent Kubernetes ships. A connector descends across a heavy horizontal boundary labelled CRI, annotated: Kubernetes defines this line and implements nothing below it. Below the boundary, a socket into which exactly one conformant CRI runtime plugs — containerd or CRI-O. Below the socket, runC, which starts a running process.](figures/ch02-fig04-cri-runtime-chain.svg)
+![A vertical chain. At the top, the kubelet, the node agent Kubernetes ships. A connector descends across a heavy horizontal boundary labeled CRI, annotated: Kubernetes defines this line and implements nothing below it. Below the boundary, a socket into which exactly one conformant CRI runtime plugs — containerd or CRI-O. Below the socket, runC, which starts a running process.](figures/ch02-fig04-cri-runtime-chain.svg)
 
 <!-- ASCII-FALLBACK
 ```
@@ -589,16 +576,11 @@ And beneath the CRI runtime there is one more hop. Docker donated its container 
 **Figure 2-3.** What to notice is the socket, not the boxes. containerd and CRI-O are not two parallel paths through the system; they are two things that fit the same opening. Swap one for the other and the kubelet above does not change.
 
 ★ **Fixed Point:**
-
 > **kubelet → CRI → containerd or CRI-O → runC → a running process.**
 >
 > **Kubernetes defines the CRI. It does not implement it. Kubernetes never starts a container itself.**
 
-<!-- AUTHOR-REVIEW — the CRI-runtime → OCI-runtime hop. What is on disk supports the ends of this chain but not the middle link: (a) containerd and CRI-O are CRI implementations responsible for managing container execution and lifecycle [k8s-docs-containers]; (b) runC is the container runtime Docker donated to the OCI as the cornerstone of the effort [oci-overview]; (c) an OCI runtime runs a filesystem bundle unpacked on disk [oci-overview]. Nothing on disk states that the CRI runtime invokes the OCI runtime. The research manifest closes this — harvest A17, whose containerd README supplies "Most interactions with the Linux and Windows container feature sets are handled via runc", which closes the hop end to end. DO NOT take the earlier proposal to soften this Fixed Point to a generic "CRI runtime → OCI runtime": Ch 3, Ch 8, Ch 13, and Ch 17's secondary Zenith all retrieve this chain as written, and it is the chapter's most-reused item. Also harvest A1 (k8s-docs-cri) for the sentence the manifest calls the chapter's thesis — "The CRI is a plugin interface which enables the kubelet to use a wide variety of container runtimes, without having a need to recompile the cluster components" — plus "The kubelet acts as a client when connecting to the container runtime via gRPC". SCOPE GUARD on A1: take only those two sentences. `--container-runtime-endpoint`, the v1-CRI-API version requirement, the 16 MiB gRPC message limit, and the `CRIListStreaming` feature gate are all above associate tier and must not enter this chapter. -->
-
-> 🪝 **Snag:** "Docker" is four things wearing one name: a company, a command-line tool, a build format, and, historically, a runtime. So when someone says "Kubernetes runs Docker containers," at least three of those four meanings are doing no work at all. These are easy to confuse, and the confusion is historical rather than careless; for years the shorthand was accurate enough. The precise statement now is that Kubernetes runs containers via a CRI-conformant runtime, of which several exist [source: k8s-docs-containers-2026-08-23]. The era that produced the shorthand is Chapter 3's material *[cross-bearing: see Ch 3 §1 — how the cluster got the shape it has]*.
->
-> <!-- AUTHOR-REVIEW: the "four things wearing one name" enumeration is authored framing, not a documented taxonomy, and is deliberately left untagged rather than dressed as sourced. The March-2013-lightning-talk origin story that previously anchored this callout has been cut — the curriculum audit flagged it as drift into Chapter 3, whose scope boundary reads "Do not narrate the historical progression here." If a historical warrant is wanted for the misconception itself, A3 (the Kubernetes dockershim FAQ) documents it directly: "Early versions of Kubernetes only worked with a specific container runtime: Docker Engine." Two cautions from the manifest if A3 is used: that FAQ is dated 2022-02-17 and must not be presented as current, and the dockershim narrative itself belongs to Chapter 3. -->
+> 🪝 **Snag:** "Docker" is four things wearing one name: a company, a command-line tool, a build format, and, historically, a runtime. So when someone says "Kubernetes runs Docker containers," at least three of those four meanings are doing no work at all. These are easy to confuse, and the confusion is historical rather than careless; for years the shorthand was accurate enough, and the Kubernetes project's own 2022 FAQ on the subject records why: early versions of Kubernetes only worked with a specific container runtime, Docker Engine [source: k8s-blog-dockershim-faq-2026-08-24]. The precise statement now is that Kubernetes runs containers via a CRI-conformant runtime, of which several exist [source: k8s-docs-containers-2026-08-23]. The era that produced the shorthand is Chapter 3's material *[cross-bearing: see Ch 3 §1 — how the cluster got the shape it has]*.
 
 Both of the runtimes named in the documentation, containerd and CRI-O, are CNCF **graduated** projects, meaning they are considered stable, widely adopted, and production ready [source: cncf-project-maturity-levels-2026-08-23]. That matters less as trivia than as evidence: the pluggable position in the middle of Figure 2-3 is not theoretical. It has two mature occupants.
 
@@ -610,13 +592,11 @@ Usually, you can allow your cluster to pick the default container runtime for a 
 
 That is not a stray observation; it is the spine of the book's closing argument. *[cross-bearing: see Ch 9 §1 — CNI and pod networking]* *[cross-bearing: see Ch 11 — CSI and storage drivers]* *[cross-bearing: see Ch 6 §8 — CRDs and extending the API]* *[cross-bearing: see Ch 17 §4 — the four pluggable interfaces, collected]*
 
-Two more pointers, then §5. The kubelet gets its full treatment as one node component among several *[cross-bearing: see Ch 3 §3 — node components in context]*. And knowing there is a layer *below* the Kubernetes API is what makes a particular diagnostic tool make sense: `crictl` is a node-level diagnostic listed under debugging Kubernetes nodes [source: k8s-docs-debug-overview-2026-08-23], and it is occasionally exactly what you need *[cross-bearing: see Ch 13 §5 — debugging nodes with crictl]*.
-
-<!-- AUTHOR-REVIEW: the previous wording said crictl "reaches the runtime directly, beneath Kubernetes," which is true and useful — it reinforces §4's boundary — but the cited snapshot carries only the list item "debugging Kubernetes nodes with crictl" and no description of what the tool talks to. Softened here to what the tag supports. To restore the stronger framing, source it from kubernetes.io/docs/tasks/debug/debug-cluster/crictl/. -->
+One more pointer, then §5. Knowing there is a layer *below* the Kubernetes API is what makes a particular diagnostic tool make sense. `crictl` is a command-line interface for CRI-compatible container runtimes, used to inspect and debug container runtimes and applications on a Kubernetes node [source: k8s-docs-crictl-2026-08-31]: it reaches the runtime directly, beneath Kubernetes, which is why it is listed under debugging Kubernetes nodes [source: k8s-docs-debug-overview-2026-08-23] and why it is occasionally exactly what you need *[cross-bearing: see Ch 13 §5 — debugging nodes with crictl]*.
 
 ---
 
-## §5 — 🔵 The Open Container Initiative
+## 🔵 §5 — The Open Container Initiative
 
 You now know that Kubernetes talks to a runtime through an interface. Underneath *that* is a second question the interface does not answer: who decided what an image looks like, how it moves across a network, and what it means to run one? Not Kubernetes. Kubernetes is a consumer of those answers, not their author.
 
@@ -627,7 +607,6 @@ The Open Container Initiative is an **open governance structure** for the expres
 Governance structure. Not software. It publishes documents.
 
 ★ **Fixed Point:**
-
 > **The OCI is a governance body that publishes three specifications: the image specification, the distribution specification, and the runtime specification. It is not a runtime, not a company, and not a product you install.**
 
 ### The three specifications, each explaining a section you already read
@@ -640,9 +619,7 @@ Here is the satisfying part. Each specification retroactively explains something
 
 - The **Runtime Specification** (`runtime-spec`) outlines how to run a "filesystem bundle" that is unpacked on disk [source: oci-overview-2026-08-23]. That is §4's bottom hop. runC's job description is a document.
 
-A **filesystem bundle** is the artifact in the middle of that last item, and it earns a clause of definition rather than staying a term you only meet in an answer key. It is the unpacked, on-disk form of an image: the container's filesystem contents plus the configuration a runtime needs in order to start it.
-
-<!-- AUTHOR-REVIEW: the filesystem-bundle definition above is a plain-language gloss on `oci-overview`'s "filesystem bundle that is unpacked on disk", not a quotation. A8 supplies the specification's own definition — a set of files containing all the data and metadata needed for a compliant runtime to operate on it, with `config.json` required at the bundle root. Harvest A8, replace the gloss with the sourced definition, and tag it. -->
+A **filesystem bundle** is the artifact in the middle of that last item, and it earns a definition rather than staying a term you only meet in an answer key. The runtime specification defines it as a set of files organized in a certain way, and containing all the necessary data and metadata for any compliant runtime to perform all standard operations against it; a `config.json` file is required, and must reside in the root of the bundle directory [source: oci-runtime-spec-bundle-2026-08-24]. In plainer words, it is the unpacked, on-disk form of an image: the container's filesystem contents plus the configuration a runtime needs in order to start it.
 
 And the flow that connects them, in three beats: at a high level, an OCI implementation would download an OCI Image, then unpack that image into an OCI Runtime **filesystem bundle**; at that point the bundle would be run by an OCI Runtime [source: oci-overview-2026-08-23].
 
@@ -671,19 +648,15 @@ And the flow that connects them, in three beats: at a high level, an OCI impleme
 >
 > **OCI** is how *images* are formatted and distributed, and how *bundles* are executed [source: oci-overview-2026-08-23]. Its endpoints are build tools, registries, and runtimes. It is an industry concern; it would exist, unchanged, in a world where Kubernetes was never written.
 >
-> Two three-letter abbreviations. Both involve the word "runtime." Both sit underneath your Pod. They are easy to confuse, and the confusion is not carelessness, since a single component can genuinely participate in both planes at once. The discipline is to ask which *direction* you're looking. Up toward Kubernetes, that's CRI. Sideways toward the rest of the industry, that's OCI. Lay Figure 2-3 and Figure 2-4 side by side; the planes are drawn in the same grammar precisely so you can see that they are different planes.
->
-> <!-- AUTHOR-REVIEW: the "a single component can participate in both planes" sentence previously named containerd and asserted that it implements the CRI *and* handles OCI images. The first half is sourced [k8s-docs-containers]; the second half is not, anywhere in the cache. Generalized here rather than dropped, because the point is the hinge of this callout and of Practice Q20. Harvest A17 and restore the specific claim on a primary source — CRI-O's own front page states it in one sentence with both acronyms in their correct planes: "CRI-O is an implementation of the Kubernetes CRI (Container Runtime Interface) to enable using OCI (Open Container Initiative) compatible runtimes." Anchor both this callout and Q20 on that quotation. -->
+> Two three-letter abbreviations. Both involve the word "runtime." Both sit underneath your Pod. They are easy to confuse, and the confusion is not carelessness, since a single component can genuinely participate in both planes at once. CRI-O's own front page says so in one sentence, with each acronym in its correct plane: CRI-O is an implementation of the Kubernetes CRI (Container Runtime Interface) to enable using OCI (Open Container Initiative) compatible runtimes [source: containerd-cri-o-runc-2026-08-24]. The discipline is to ask which *direction* you're looking. Up toward Kubernetes, that's CRI. Sideways toward the rest of the industry, that's OCI. Lay Figure 2-3 and Figure 2-4 side by side; the planes are drawn in the same grammar precisely so you can see that they are different planes.
 
 > 🔭 **Closer Look:** Notice the dates. The OCI was founded in June 2015, and the distribution specification did not reach v1.0 until May 2020 [source: oci-overview-2026-08-23], arriving well after the other two. That ordering tells you something about which problems felt urgent. The industry settled *what an image is* and *what it means to run one* before it formalized *how it moves*. This is depth beyond what the exam asks. What the exam is more likely to ask — again the author's judgment — is which specification governs the registry API, and the answer is the one that arrived last.
->
-> <!-- AUTHOR-REVIEW: the earlier version of this callout asserted that "two of the three specifications were part of the effort from its 2015 founding" and did five-year arithmetic on the gap. The snapshot says only that the OCI was "Established in June 2015" and "currently contains three specifications", and gives a v1.0 date for distribution-spec alone. Both the two-from-founding claim and the arithmetic have been cut to what the tag carries. To restore the chronology, source image-spec and runtime-spec v1.0 dates from opencontainers.org. -->
 
 runC closes the loop: Docker donated its container runtime, runC, to the OCI to serve as the cornerstone of this new effort [source: oci-overview-2026-08-23]. The company that popularized containers gave away the piece that runs them. That is what an open governance structure is *for*, and it is the same institutional instinct you will meet again when the book turns to how CNCF itself is governed *[cross-bearing: see Ch 17 §2 — CNCF governance and project maturity]*.
 
 ---
 
-## §6 — 🟡 When Kubernetes Pulls, and When It Doesn't
+## 🟡 §6 — When Kubernetes Pulls, and When It Doesn't
 
 This is the fiddliest material in the chapter, and in the author's judgment the highest value per minute of anything in it. The rules are small, entirely conditional, and almost nobody guesses the defaults correctly.
 
@@ -698,7 +671,7 @@ This is the fiddliest material in the chapter, and in the author's judgment the 
 That block is the whole exam surface for this section, stated flat. Now the two things worth saying about it.
 
 <!-- FIGURE: ch02-fig05-imagepullpolicy-decision -->
-![A decision tree. Root question: was imagePullPolicy set explicitly? On the YES branch, three policies: Always, which resolves the name to a digest and reuses the local cache on a match; IfNotPresent, which pulls only if the image is absent; and Never, which never fetches and fails if the image is absent. On the NO branch, a second question asks the reference form, fanning to four outcomes: a digest defaults to IfNotPresent, the :latest tag defaults to Always, no tag defaults to Always, and any other tag defaults to IfNotPresent.](figures/ch02-fig05-imagepullpolicy-decision.svg)
+![A decision tree drawn as a cascade of yes-or-no diamonds. The first diamond asks whether imagePullPolicy was set explicitly; its YES branch leads to a panel listing the three explicit policies: Always, which resolves to a digest and reuses the cache; IfNotPresent, which pulls only if the image is absent; and Never, which never fetches and fails if the image is absent. The NO branch descends through three more diamonds in turn. Does the reference include a digest? YES ends at IfNotPresent. Was no tag given at all? YES ends at Always. Is the tag :latest? YES ends at Always, drawn with a double outline and annotated as the default nobody chooses on purpose. The final NO, any other tag, ends at IfNotPresent. A legend keys the shapes: decision, outcome, unchosen default, and branch.](figures/ch02-fig05-imagepullpolicy-decision.svg)
 
 <!-- ASCII-FALLBACK
 ```
@@ -731,7 +704,7 @@ One name to bank and not chase. `ImagePullBackOff` is reported as a container in
 
 ---
 
-## §7 — 🟡 Not All Isolation Is Equal: RuntimeClass
+## 🟡 §7 — Not All Isolation Is Equal: RuntimeClass
 
 Readers skip this section. It earns your attention anyway, for a reason worth stating plainly: it is the one place in the chapter where a rule you were just taught turns out to be adjustable, and that is exactly what a well-written exam item likes to probe.
 
@@ -753,9 +726,7 @@ Two levels of indirection, which is the part to hold onto: the Pod names a Runti
 
 A RuntimeClass can also carry scheduling constraints (`nodeSelector`, `tolerations`) so that Pods land on nodes which actually support the handler, and a **Pod overhead** so the scheduler accounts for the runtime's resource cost [source: k8s-docs-runtime-class-2026-08-23]. Both of those are scheduling concepts, and scheduling has its own chapter *[cross-bearing: see Ch 7 — node selection, tolerations, and accounting for overhead]*. Register that they exist; the reasoning behind them arrives later.
 
-> 🔭 **Closer Look:** Kata Containers and gVisor are two genuinely different answers to the same question. Kata uses **hardware virtualization**; gVisor uses a **user-space kernel** [source: k8s-docs-runtime-class-2026-08-23]. Kata's approach is, roughly, borrowing back the isolation model §1 traded away: a real virtualization boundary underneath the workload. gVisor's is to interpose a kernel implementation that is not the host's. Different techniques, same goal, different overheads. This is depth: an exam item is far likelier to ask *why RuntimeClass exists* than to ask which sandbox uses which technique. Know the motivation cold; know this as a bonus.
->
-> <!-- AUTHOR-REVIEW: the earlier version of this callout described gVisor's mechanism in detail — syscall interception, a kernel serviced as an ordinary process, the host kernel never being the workload's direct interlocutor — and tagged it to k8s-docs-runtime-class, which carries only the phrase "a user-space kernel (such as gVisor)". Trimmed here to what the snapshot supports plus a minimal unsourced gloss on what "user-space kernel" means. NEW RESEARCH REQUIRED if the fuller mechanism is wanted: fetch gvisor.dev/docs/ for the Sentry/syscall-interception description; Appendix A does NOT cover it. Defensible alternative for an associate-tier chapter: leave as trimmed. The callout's own last line concedes the exam is likelier to ask why RuntimeClass exists than how each sandbox works. -->
+> 🔭 **Closer Look:** Kata Containers and gVisor are two genuinely different answers to the same question. Kata uses **hardware virtualization**; gVisor uses a **user-space kernel** [source: k8s-docs-runtime-class-2026-08-23]. Kata's approach is, roughly, borrowing back the isolation model §1 traded away: a real virtualization boundary underneath the workload. gVisor's is to interpose a kernel implementation that is not the host's: gVisor is an application kernel that implements a Linux-like interface and runs in userspace; it intercepts application system calls and acts as the guest kernel, without the need for translation through virtualized hardware, and its Sentry component does not pass system calls through to the host kernel [source: gvisor-docs-what-is-gvisor-2026-09-04]. Different techniques, same goal, different overheads. This is depth: an exam item is far likelier to ask *why RuntimeClass exists* than to ask which sandbox uses which technique. Know the motivation cold; know this as a bonus.
 
 The security guidance is consistent with all of it: to protect compute at runtime, use a container runtime that provides security restrictions [source: k8s-docs-cloud-native-security-2026-08-23]. RuntimeClass is the Kubernetes-shaped way to say *which* one, per workload. Sandboxed runtimes come back as one control among several in the security lifecycle *[cross-bearing: see Ch 12 — runtime protection for compute]*.
 
@@ -763,7 +734,7 @@ The security guidance is consistent with all of it: to protect compute at runtim
 
 ## ☆ Taking Your Bearings #2 — Runtimes, Specs, and How Images Actually Move
 
-Six questions spanning §4 through §7. One reaches back into Chapter 10.
+Six questions spanning §4 through §7. One points forward to Chapter 10.
 
 **1.** Which component in a standard Kubernetes cluster actually creates and starts a container?
 
@@ -850,13 +821,11 @@ D) A separate namespace with a restrictive NetworkPolicy, which segments the cus
 
 ---
 
-## §8 — 🔵 The Crate, Not the Cargo
+## 🔵 §8 — The Crate, Not the Cargo
 
 The subtitle comes due.
 
-The intermodal shipping container did not win because it was a better box. It won because the industry standardized the **interface**, the dimensions and the corner fittings, rather than the contents. Once that interface was published, a crane could be designed once, a truck chassis could be designed once, a rail flatcar and a ship's hold could each be designed once, and every one of them could then handle anything. The cargo stopped mattering. Nobody at the crane has an opinion about what is inside.
-
-<!-- AUTHOR-REVIEW — §8's historical specifics. The claim that standardizing specific fittings is what produced the gain is a checkable engineering-and-history assertion, not analogy furniture, and no cached snapshot covers containerization history. The chapter already applies this standard to itself once, in the epigraph comment. Research manifest Open Question #9 names the route and prefers it to a quotation: ISO 668 (Series 1 freight containers — classification, dimensions and ratings) and ISO 1161 (corner fittings). iso.org returns 403 to WebFetch, so this needs a browser session or an alternate authoritative catalog entry. DO NOT draft the "McLean released the patent royalty-free to ISO" claim — the manifest found it only in third-party commercial sources and could not verify it. This passage has been trimmed toward the minimum the analogy needs; if the gap stays open, mark it as declared analogy ("the usual telling of it is…") so it stops reading as sourced history. Same gap as the epigraph comment at the top of the chapter. -->
+The intermodal shipping container did not win because it was a better box. It won because the industry standardized the **interface**, the box's dimensions and fittings, rather than the contents. The history bears that out: container shipping began in April 1956 with a refitted oil tanker carrying fifty-eight containers from Newark to Houston, and what turned that modest beginning into the industry that made the boom in global trade possible was, as the publisher's description of Marc Levinson's *The Box* puts it, the delicate negotiations on standards that made it possible for almost any container to travel on any truck or train or ship [source: levinson-the-box-pup-catalog-2026-09-04]. Once that interface was published, a crane could be designed once, a truck chassis could be designed once, a rail flatcar and a ship's hold could each be designed once, and every one of them could then handle anything. The cargo stopped mattering. Nobody at the crane has an opinion about what is inside.
 
 ☀️ **Zenith**
 
@@ -867,13 +836,15 @@ The OCI standardized the image format, so any build tool can produce an artifact
 Which is why Kubernetes never needed to know what is in the crate. It doesn't know what language your application is written in, what its dependencies are, which build tool produced it, or which of two mature runtimes will start it on any given node. It knows the shape of the fitting. That is the entire reason a system this large can be this indifferent to the workloads it runs, and the reason the answer to "can Kubernetes run *my* thing?" is that if an application can run in a container, it should run great on Kubernetes [source: k8s-docs-overview-2026-08-23].
 
 <!-- FIGURE: ch02-zenith-standard-crate -->
-**Figure 2-6 (Zenith illustration — to be commissioned).** Identical crates moving between incompatible carriers, each carrier built once against a published specification, the contents never inspected and never mattering. Rendered from the Communications Officer's vantage; narrator not depicted. The synthesis must read as being *about interfaces* — a reader who sees only an attractive freight scene has received a decorative illustration. Minimal labels by design; two or three at most. Register check against `illustrator-brief.md` required before commissioning: the crate motif must work in this book's era placement rather than defaulting to a 20th-century dockside.
+![Identical standardized crates moving between carriers of visibly different kinds, each carrier built once against a published specification and handling any crate presented to it. No crate is opened; the contents are never shown and never matter.](figures/ch02-zenith-standard-crate.svg)
+
+**Figure 2-6.** One published specification at the top; below it an ocean freighter, a rail flatcar, and a truck chassis, each built once against that specification; and beside each carrier the same crate, identical in all three panels and never opened. What to notice: every arrow runs from the specification to a carrier. Nothing runs from the cargo to anything, because the cargo was never part of the contract.
 
 > **Extended Analogy:**
 >
 > Consider what the world looks like before the standard, because that is the part usually skipped. A ship arrives. In the hold are barrels, sacks, crates of a dozen different sizes, machinery in wooden frames, loose timber. Every item is handled individually, by hand, and every item is handled *differently*, because there is no general procedure for a thing whose shape you cannot predict. Unloading is slow in a way that has nothing to do with how fast anyone is working. Most of the ship's economic life is spent stationary, being emptied.
 >
-> Now consider what changed. Not the ship; ships were fine. Not the cargo; the cargo was always the point. What changed is that somebody wrote down the dimensions of a box and the geometry of the fittings at its corners, and enough of the industry agreed to it that building machinery against the specification became rational. A crane that can lift one standard container can lift every standard container that will ever exist, including ones holding goods that had not been invented when the crane was built. The crane's designer never had to think about the cargo. That is not a convenience; it is the whole gain, and it is *larger* than any improvement to the crane.
+> Now consider what changed. Not the ship; ships were fine. Not the cargo; the cargo was always the point. What changed is that somebody wrote down the dimensions and fittings of a box, and enough of the industry agreed to it that building machinery against the specification became rational. A crane that can lift one standard container can lift every standard container that will ever exist, including ones holding goods that had not been invented when the crane was built. The crane's designer never had to think about the cargo. That is not a convenience; it is the whole gain, and it is *larger* than any improvement to the crane.
 >
 > Now read this chapter again in that light. An image is the crate: a published format with a manifest describing its contents, produced by any of a dozen build tools. A registry is the terminal: it moves crates according to a published API, without opening them. A CRI runtime is the crane: built once against an interface, able to handle any conformant crate, swappable for a different crane without redesigning the port. And Kubernetes is the port authority, coordinating, scheduling, deciding what goes where, and never once lifting anything itself.
 >
@@ -891,7 +862,7 @@ And that is the plant. This is the **first** of four times you will see this mov
 
 2. **The kubelet → CRI → containerd/CRI-O → runC chain.** Kubernetes defines the interface and implements nothing below it [source: k8s-docs-containers-2026-08-23] [source: k8s-docs-extending-kubernetes-2026-08-23]. This is the most reused idea in the chapter.
 
-3. **OCI's three specifications, and that the OCI is a governance body rather than software.** `image-spec` (format), `distribution-spec` (the registry API, v1.0 May 2020), `runtime-spec` (running a filesystem bundle) [source: oci-overview-2026-08-23].
+3. **OCI's three specifications, and that the OCI is a governance body rather than software.** `image-spec` (format), `distribution-spec` (the registry API), `runtime-spec` (running a filesystem bundle) [source: oci-overview-2026-08-23].
 
 4. **`imagePullPolicy` defaults.** IfNotPresent with a digest; Always with `:latest`; Always with no tag; IfNotPresent with any other tag [source: k8s-docs-images-2026-08-23]. Four cases, and an item can give you a reference and ask for the behavior.
 
@@ -969,12 +940,12 @@ B) They transform application source code into a runnable OCI image without a ha
 C) They replace the container runtime with a source-level execution engine
 D) They guarantee that the produced image contains no known vulnerabilities
 
-**8.** In the Buildpacks model, what is a **builder**?
+**8.** A team adopts Cloud Native Buildpacks in place of hand-authored build files. What does a Buildpacks build produce, and what follows for the rest of the pipeline?
 
-A) A CI system that runs the lifecycle
-B) An OCI image containing an ordered combination of buildpacks and a build-time base image, a lifecycle binary, and a reference to a runtime base image
-C) The final application image produced by the export phase
-D) The pairing of a build image and a run image
+A) A tool-specific artifact that only the Buildpacks tooling can run, so the runtime on each node must change
+B) An ordinary OCI image, so any registry can store it and any conformant runtime can run it, unchanged
+C) A source archive that the container runtime compiles on the node at start-up
+D) A virtual-machine image, because the build environment and the run environment are kept separate
 
 **9. [integrative: §2 + §5]** The layer structure of an image — manifest, serialized filesystem layers, configuration — is standardized by which specification?
 
@@ -1002,7 +973,7 @@ D) Both can be moved, but only by the registry operator
 A) It is harder to know which version is running, and harder to roll back properly
 B) `:latest` images are excluded from registry caching
 C) `:latest` always points to the most recently pushed image, so it is guaranteed current
-D) `:latest` is re-resolved on every request, so two nodes may run different builds of the same Deployment
+D) The `:latest` tag is immutable once pushed, so a fix can never be published under it
 
 **13.** Which is a documented way to supply credentials for a private registry?
 
@@ -1011,12 +982,12 @@ B) Specifying `imagePullSecrets` on a Pod, referencing a Secret of type `kuberne
 C) Configuring the kube-apiserver to authenticate to the registry on the nodes' behalf
 D) Pre-pulling the image on one node, which makes it available cluster-wide
 
-**14. [integrative: §3 + §5]** A registry serves images to nodes over a standardized API. Which specification standardizes that API, and when did it reach v1.0?
+**14. [integrative: §3 + §5]** A registry serves images to nodes over a standardized API. Which specification standardizes that API?
 
-A) `image-spec`, June 2015
-B) `distribution-spec`, May 2020
-C) `runtime-spec`, June 2015
-D) The CRI, May 2020
+A) `image-spec`, because the registry stores images in the format it defines
+B) `distribution-spec`
+C) `runtime-spec`, because a registry is where the runtime fetches its bundle from
+D) The CRI, because the kubelet is what pulls
 
 **15.** Which component is responsible for managing the execution and lifecycle of containers on a node?
 
@@ -1138,21 +1109,20 @@ D) A vendor-neutrality policy — Kubernetes refuses to name a default runtime, 
 - **C is wrong:** the documentation says explicitly you should not change the code of a running container.
 - **D** is a real technique for some problems but not the answer to "the application needs a different configuration baked in," and it trades away portability by binding the container to a particular host's contents.
 
-**6 — B.** An image is assembled from filesystem layers described by a manifest [source: oci-overview-2026-08-23]; two images built on the same base name the same base layer, and a layer named by both is one object rather than two.
+**6 — B.** An image is assembled from filesystem layers described by a manifest [source: oci-overview-2026-08-23]; two images built on the same base name the same base layer, and a layer named by both is one object rather than two. The layered format allows layers to be reused between images, which reduces the amount of storage and bandwidth required to distribute them [source: docker-docs-image-layers-2026-08-24].
 - **A is wrong.** Both manifests reference the same base layer by identity, so the registry and the node each hold one copy, not one per image. Duplication would defeat the reason images are layered at all. This is the intuition Soundings Q4 pre-tests.
 - **C is wrong:** layer sharing requires no merging; it is a property of how manifests reference layers.
 - **D is wrong:** sharing is a function of layer identity, not naming conventions.
-> <!-- AUTHOR-REVIEW: the correct answer's second clause and distractor A's rebuttal both rest on the layer-sharing consequence described in §2, which the cache supports only qualitatively. A9 states it directly — the format "allows layers to be reused between images", which "reduce[s] the amount of storage and bandwidth required to distribute the images". Harvest A9, tag this item, and delete this comment. Per the manifest, the earlier suggestion to reframe Q6 toward manifest structure instead of storage outcome is NOT needed once A9 lands. -->
 
-**7 — B.** A buildpack is software that transforms application source code into runnable artifacts by analyzing the code and determining the best way to build it; the lifecycle's export phase produces a runnable OCI image, and Cloud Native Buildpacks is a CNCF graduated project [source: buildpacks-concepts-2026-08-23].
+**7 — B.** A buildpack is software that transforms application source code into runnable artifacts by analyzing the code and determining the best way to build it; the output is a runnable OCI image, and Cloud Native Buildpacks is a CNCF graduated project [source: buildpacks-concepts-2026-08-23].
 - **A is wrong.** Build speed is not the claim the project makes, and nothing in the model promises parallel layer creation.
 - **C is wrong.** Buildpacks produce an ordinary OCI image; the runtime story is entirely unchanged, which is the point of producing an *OCI* image.
 - **D is wrong.** Vulnerability scanning is a supply-chain concern handled by other tools entirely [source: k8s-docs-cloud-native-security-2026-08-23]; no build system can guarantee a clean image.
 
-**8 — B.** That is the definition verbatim in substance [source: buildpacks-concepts-2026-08-23].
-- **A** describes the *platform*, which orchestrates by invoking the lifecycle [source: buildpacks-concepts-2026-08-23].
-- **C** describes the export phase's output, not the builder.
-- **D** describes the *stack*, the build-image/run-image pairing [source: buildpacks-concepts-2026-08-23].
+**8 — B.** Buildpacks transform application source code into runnable artifacts, and the artifact is a runnable OCI image [source: buildpacks-concepts-2026-08-23]. Because the output is the standard format, nothing downstream needs to know how it was built: a registry serves it like any other image, and a conformant runtime unpacks and runs it like any other image [source: oci-overview-2026-08-23].
+- **A is wrong**, and it is the misconception the word *OCI* in the definition exists to prevent. Buildpacks change how an image is *produced*; they change nothing about what runs it.
+- **C is wrong:** the build happens before the image exists, in the build environment, not on the node. A container runtime runs a filesystem bundle unpacked from an image [source: oci-overview-2026-08-23]; it does not compile.
+- **D is wrong.** Keeping the build environment and the run environment separate is a property of *images* in this model, one to build in and one to ship on [source: buildpacks-concepts-2026-08-23]; nothing about that separation involves a virtual machine or a guest kernel.
 
 **9 — B.** The Image Specification defines the OCI Image Format, encompassing the image manifest, filesystem layer serialization, and image configuration needed to launch applications on target platforms [source: oci-overview-2026-08-23].
 - **A** governs running an unpacked filesystem bundle, not the format of the artifact you unpack.
@@ -1172,17 +1142,17 @@ D) A vendor-neutrality policy — Kubernetes refuses to name a default runtime, 
 **12 — A.** You should avoid using the `:latest` tag when deploying containers in production as it is harder to track which version of the image is running and more difficult to roll back properly; specify a meaningful tag such as `v1.42.0` and/or a digest instead [source: k8s-docs-images-2026-08-23].
 - **B** is invented; caching behavior is governed by pull policy, not by the tag's name.
 - **C is wrong**, and it is a widely held belief. `:latest` is an ordinary tag with a conventional name. It points wherever it was last moved, which is usually but not necessarily the most recent push, and "most recently pushed" is not the same as "the version you want."
-- **D is wrong**, and it conflates tag mutability with pull policy. Re-resolution is a *pull-policy* behavior, and it is `Always` that re-resolves [source: k8s-docs-images-2026-08-23], which `:latest` happens to default to (see Q22), but the two facts are separate, and the "guaranteeing freshness" framing gets the mechanism backwards.
+- **D is wrong** and inverts the chapter's Fixed Point. No tag is immutable, `:latest` included: tags can be moved to point to different images, and it is the digest that is immutable [source: k8s-docs-images-2026-08-23]. The documentation's concern is the opposite of D's premise. Because the tag *can* move, the tag alone does not tell you which version is running.
 
 **13 — B.** Credentials can be provided by configuring nodes to authenticate, a kubelet credential provider, pre-pulled images, specifying `imagePullSecrets` on a Pod (a Secret of type `kubernetes.io/dockerconfigjson`), or vendor-specific and local extensions [source: k8s-docs-images-2026-08-23].
 - **A** is circular: you would need the credentials to pull the image containing the credentials.
 - **C is wrong**, and it is the control-plane/node confusion worth catching now. Configuring nodes to authenticate *is* a documented path, but it is the *nodes*, because the kubelet is what pulls. The API server is not on the image-pull path at all [source: k8s-docs-components-2026-08-23].
 - **D is wrong** in its second clause. Pre-pulled images are a genuine documented path [source: k8s-docs-images-2026-08-23], but pre-pulling is per-node: an image cached on one node does nothing for a Pod scheduled onto another.
 
-**14 — B.** The Distribution Specification reached v1.0 in May 2020 and was introduced to OCI as an effort to standardize the API to distribute container images [source: oci-overview-2026-08-23].
-- **A** names the wrong specification, and pairs it with June 2015, which is the OCI's founding date rather than the distribution specification's v1.0.
-- **C** names the specification governing bundle execution.
-- **D** conflates a Kubernetes interface with an OCI specification and attaches a date that belongs to the latter.
+**14 — B.** The Distribution Specification was introduced to the OCI as an effort to standardize the API to distribute container images [source: oci-overview-2026-08-23]; in its own words, it defines an API protocol to facilitate and standardize the distribution of content, and a registry is a service that handles the required APIs defined in it [source: oci-distribution-spec-2026-08-24].
+- **A is wrong**, though its premise is true: a registry does store images in the format `image-spec` defines. The format of the artifact and the protocol for moving it are two specifications, and the question asks about the second.
+- **C is wrong.** `runtime-spec` governs how a filesystem bundle is executed once it is on disk [source: oci-overview-2026-08-23]; a registry is not on that path.
+- **D is wrong**, and it is the OCI/CRI conflation once more. The kubelet does drive the pull, but the CRI is the kubelet-to-runtime interface [source: k8s-docs-cri-2026-08-24]; the protocol spoken to the registry is an industry specification, not a Kubernetes one.
 
 **15 — C.** The container runtime is responsible for managing the execution and lifecycle of containers within the Kubernetes environment [source: k8s-docs-containers-2026-08-23] [source: k8s-docs-cluster-architecture-2026-08-23].
 - **A** is the closest wrong answer: the kubelet ensures that containers described in PodSpecs are running and healthy [source: k8s-docs-cluster-architecture-2026-08-23]. It drives; it does not execute.
@@ -1208,7 +1178,7 @@ D) A vendor-neutrality policy — Kubernetes refuses to name a default runtime, 
 - **C is wrong.** It publishes specifications; it does not certify images.
 - **D is wrong**, and note that it carries the *correct founding date*. Getting the date right will not save you if you have the kind of body wrong, which is exactly why the Fixed Point in §5 leads with "governance body," not with "2015."
 
-**20 — B.** The CRI exists to let Kubernetes support alternative runtimes [source: k8s-docs-extending-kubernetes-2026-08-23]; the OCI specifications define the image format, its distribution, and how a filesystem bundle is executed [source: oci-overview-2026-08-23]. Different layers, and a runtime naturally sits at the intersection.
+**20 — B.** The CRI exists to let Kubernetes support alternative runtimes [source: k8s-docs-extending-kubernetes-2026-08-23]; the OCI specifications define the image format, its distribution, and how a filesystem bundle is executed [source: oci-overview-2026-08-23]. Different layers, and a runtime naturally sits at the intersection. CRI-O describes itself in exactly the colleague's terms: an implementation of the Kubernetes CRI (Container Runtime Interface) to enable using OCI (Open Container Initiative) compatible runtimes, which supports OCI container images and can pull from any container registry [source: containerd-cri-o-runc-2026-08-24].
 - **A is wrong** and states the conflation as a rule.
 - **C is wrong:** a Kubernetes interface does not supersede industry specifications about artifact formats, since they are not competing.
 - **D** reaches a correct conclusion by an irrelevant route; maturity level [source: cncf-project-maturity-levels-2026-08-23] has no effect on which specifications a component implements.
@@ -1241,7 +1211,7 @@ D) A vendor-neutrality policy — Kubernetes refuses to name a default runtime, 
 **26 — B.** Two facts compose. `imagePullPolicy` is resolved at Pod creation and is not updated when the image's tag or digest changes later [source: k8s-docs-images-2026-08-23]; and with a tag other than `:latest`, the default policy is IfNotPresent [source: k8s-docs-images-2026-08-23], so a kubelet that already holds an image for that reference never consults the registry.
 - **A is wrong:** re-pushing a tag is ordinary and permitted, which is precisely why tags are movable [source: k8s-docs-images-2026-08-23].
 - **C is wrong.** Caching is keyed on digest, not on tag, and there is no tag-cache expiry mechanism. `Always` re-resolves the name to a digest at the registry every launch [source: k8s-docs-images-2026-08-23]; the other policies do not.
-- **D is wrong**, and it is the strongest distractor because it is *nearly* right: the rebuild does produce a new digest. But the Pod is pinned to the *reference*, not to a resolved digest, which is exactly the tag-versus-digest discrimination §3 installs. Had the Pod referenced the image by digest, it would have been pinned to content, and the situation would be intentional rather than surprising.
+- **D is wrong**, and it is the strongest distractor because it is *nearly* right: the rebuild does produce a new digest. But the Pod is pinned to the *reference*, not to a resolved digest, which is exactly the tag-versus-digest discrimination §3 installs. Had the Pod referenced the image by digest, it would have been pinned to content, and the situation would be intentional rather than surprising; that is exactly why the documented remedy for supply-chain integrity is to pin the image version to a specific digest, so that even if the publisher updates the tag, the pinned image is what gets used [source: docker-docs-build-best-practices-2026-08-24].
 
 **27 — B.** The published extension points include CRI "to support alternative container runtimes," CNI (the Container Network Interface) "to implement pod networking," and CSI (the Container Storage Interface) "to add new storage types" [source: k8s-docs-extending-kubernetes-2026-08-23]. One design instinct, applied in several places.
 - **A is wrong.** Nothing in that phrasing is a support commitment; the qualifying condition is conformance to a published interface, not historical compatibility.
@@ -1259,7 +1229,7 @@ D) A vendor-neutrality policy — Kubernetes refuses to name a default runtime, 
 | Container image | Code, its runtime, application **and system** libraries, default settings. No kernel |
 | Immutability | Don't change a running container. Build a new image, recreate the container |
 | Layers | An image is serialized filesystem layers plus a manifest and a configuration. They stack in order; a shared base is a shared layer; changing a lower layer invalidates what sits above it |
-| Buildpacks | Source → runnable OCI image without hand-authored build files. detect → build → export. CNCF graduated |
+| Buildpacks | Source → an ordinary runnable OCI image, without hand-authored build files. Build in one image, ship on another. CNCF graduated |
 | Image reference | `[registry[:port]/]name[:tag | @digest]`. Omit the registry → Docker public registry. Omit the tag → `latest` |
 | Tag vs digest | **A tag is a movable label. A digest is a content hash and is immutable** |
 | `:latest` | Two problems: unclear version identity *and* a default pull policy of Always |

@@ -1,0 +1,1 @@
+Two columns of diagnostic questions side by side, platform scope on the left and application scope on the right, joined by a single arrow that runs only from left to right, labeled with the condition that the Pod is Running and Ready and the behavior is still wrong

@@ -1,0 +1,73 @@
+<svg viewBox="0 0 640 604" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch13-fig01-two-audience-split-title ch13-fig01-two-audience-split-desc" width="560" height="529">
+    <title id="ch13-fig01-two-audience-split-title">Platform scope vs. application scope: where to start debugging</title>
+    <desc id="ch13-fig01-two-audience-split-desc">Concept map splitting Kubernetes troubleshooting into two scopes: platform questions about scheduling, image pulls, container start, node health, and kills on the left; application questions about process behavior, configuration, dependencies, results, and Service selection on the right. A single arrow runs one way, from platform to application, labelled with the condition that the Pod is Running and Ready and the behavior is still wrong.</desc>
+    <defs>
+      <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon>
+      </marker>
+      <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#B58B3E"></polygon>
+      </marker>
+      <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon>
+      </marker>
+    </defs>
+
+    <rect width="100%" height="100%" fill="#F5EFE4"></rect>
+
+    <!-- Connector (drawn before boxes): platform bottom -> application bottom, one-way -->
+    <path d="M168,476 L168,564 Q168,572 176,572 L464,572 Q472,572 472,564 L472,476" fill="none" stroke="#B58B3E" stroke-width="2" marker-end="url(#arrow-accent)"></path>
+
+    <!-- Focal label mask + text, sits 8px clear of the connector stroke -->
+    <rect x="180" y="492" width="280" height="72" rx="4" fill="#F5EFE4"></rect>
+    <text x="320" y="512" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="16" fill="#B58B3E">“the Pod is Running and Ready,</text>
+    <text x="320" y="532" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="16" fill="#B58B3E">and the behavior is still</text>
+    <text x="320" y="552" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="16" fill="#B58B3E">wrong”</text>
+
+    <!-- Left zone: Platform Scope -->
+    <rect x="32" y="32" width="272" height="444" rx="8" fill="rgba(11,30,59,0.03)" stroke="#0B1E3B" stroke-width="1"></rect>
+    <text x="56" y="68" font-family="'Fira Sans', sans-serif" font-weight="600" font-size="20" letter-spacing="0.02em" fill="#0B1E3B">PLATFORM SCOPE</text>
+    <text x="56" y="96" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="16" fill="#8A8D90">(this chapter)</text>
+    <line x1="56" y1="112" x2="280" y2="112" stroke="rgba(11,30,59,0.12)" stroke-width="1"></line>
+
+    <rect x="56" y="148" width="8" height="8" fill="#1F4A4E"></rect>
+    <text x="76" y="164" font-family="'Fira Sans', sans-serif" font-size="16" fill="#0B1E3B">Did the Pod get scheduled?</text>
+
+    <rect x="56" y="212" width="8" height="8" fill="#1F4A4E"></rect>
+    <text x="76" y="228" font-family="'Fira Sans', sans-serif" font-size="16" fill="#0B1E3B">Did the image pull?</text>
+
+    <rect x="56" y="276" width="8" height="8" fill="#1F4A4E"></rect>
+    <text x="76" y="292" font-family="'Fira Sans', sans-serif" font-size="16" fill="#0B1E3B">Did the container start?</text>
+
+    <rect x="56" y="340" width="8" height="8" fill="#1F4A4E"></rect>
+    <text x="76" y="356" font-family="'Fira Sans', sans-serif" font-size="16" fill="#0B1E3B">Is the node healthy?</text>
+
+    <rect x="56" y="404" width="8" height="8" fill="#1F4A4E"></rect>
+    <text x="76" y="420" font-family="'Fira Sans', sans-serif" font-size="16" fill="#0B1E3B">Did something kill it?</text>
+
+    <!-- Right zone: Application Scope -->
+    <rect x="336" y="32" width="272" height="444" rx="8" fill="rgba(11,30,59,0.03)" stroke="#0B1E3B" stroke-width="1"></rect>
+    <text x="360" y="68" font-family="'Fira Sans', sans-serif" font-weight="600" font-size="20" letter-spacing="0.02em" fill="#0B1E3B">APPLICATION SCOPE</text>
+    <text x="360" y="96" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="16" fill="#8A8D90">(Chapter 16)</text>
+    <line x1="360" y1="112" x2="584" y2="112" stroke="rgba(11,30,59,0.12)" stroke-width="1"></line>
+
+    <rect x="360" y="148" width="8" height="8" fill="#1F4A4E"></rect>
+    <text x="380" y="156" font-family="'Fira Sans', sans-serif" font-size="16" fill="#0B1E3B">Is the process doing</text>
+    <text x="380" y="176" font-family="'Fira Sans', sans-serif" font-size="16" fill="#0B1E3B">the right thing?</text>
+
+    <rect x="360" y="212" width="8" height="8" fill="#1F4A4E"></rect>
+    <text x="380" y="220" font-family="'Fira Sans', sans-serif" font-size="16" fill="#0B1E3B">Is it reading the right</text>
+    <text x="380" y="240" font-family="'Fira Sans', sans-serif" font-size="16" fill="#0B1E3B">config?</text>
+
+    <rect x="360" y="276" width="8" height="8" fill="#1F4A4E"></rect>
+    <text x="380" y="284" font-family="'Fira Sans', sans-serif" font-size="16" fill="#0B1E3B">Is it reaching its</text>
+    <text x="380" y="304" font-family="'Fira Sans', sans-serif" font-size="16" fill="#0B1E3B">dependencies?</text>
+
+    <rect x="360" y="340" width="8" height="8" fill="#1F4A4E"></rect>
+    <text x="380" y="348" font-family="'Fira Sans', sans-serif" font-size="16" fill="#0B1E3B">Is it returning correct</text>
+    <text x="380" y="368" font-family="'Fira Sans', sans-serif" font-size="16" fill="#0B1E3B">results?</text>
+
+    <rect x="360" y="404" width="8" height="8" fill="#1F4A4E"></rect>
+    <text x="380" y="412" font-family="'Fira Sans', sans-serif" font-size="16" fill="#0B1E3B">Is it selected by its</text>
+    <text x="380" y="432" font-family="'Fira Sans', sans-serif" font-size="16" fill="#0B1E3B">Service?</text>
+  </svg>

@@ -3,7 +3,7 @@ book: kcna
 generated: '2026-09-01T15:24:44+00:00'
 figures:
 - anchor_id: ch13-fig01-two-audience-split
-  status: pending
+  status: approved  # 2026-09-04 coordinator review: render matches the chapter; promoted to figures/ and applied
   render_paths:
     svg: figures/ch13-fig01-two-audience-split.svg
     png: figures/ch13-fig01-two-audience-split.png

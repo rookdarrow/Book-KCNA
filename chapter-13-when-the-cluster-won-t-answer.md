@@ -358,6 +358,9 @@ The Kubernetes documentation splits its own troubleshooting material along exact
 Each guide assumes you have already done the other one's work. That is not an oversight; it is the split made explicit. There are two audiences, and the first move in any investigation is deciding which one you are.
 
 <!-- FIGURE: ch13-fig01-two-audience-split -->
+![Two columns of diagnostic questions side by side, platform scope on the left and application scope on the right, joined by a single arrow that runs only from left to right, labeled with the condition that the Pod is Running and Ready and the behavior is still wrong](figures/ch13-fig01-two-audience-split.svg)
+
+<!-- ASCII-FALLBACK
 ```
         PLATFORM SCOPE                    APPLICATION SCOPE
         (this chapter)                    (Chapter 16)
@@ -373,6 +376,7 @@ Each guide assumes you have already done the other one's work. That is not an ov
         └──────  and the behavior is still  ──────┘
                        wrong"
 ```
+-->
 
 *The handoff runs one way. Platform scope asks whether Kubernetes did its job; application scope asks whether your code is doing its job. You cross the line exactly once per investigation, and only in that direction.*
 

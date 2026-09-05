@@ -380,8 +380,6 @@ The filtering step finds the set of nodes where it is feasible to schedule the P
 
 Note the word. Requests. Not limits: the kubelet enforces limits on the running container, and it does that after placement, on a node that has already been chosen [source: k8s-docs-resource-management-2026-08-23]. And not observed usage either. As the next few paragraphs show, a request is spent the moment it is granted, whatever the container does with it afterwards.
 
-> 🔭 **Closer Look:** `PodFitsResources` is named in the documentation as *an example* of a filter, not as the only one [source: k8s-docs-kube-scheduler-2026-08-23]. Resources are one feasibility test among several; §3 and §4 add more, and §6 covers the fact that the whole filter set is configurable. Don't walk away from this section thinking capacity is the only thing that can make a node infeasible.
-
 ### Now the part that surprises everyone
 
 When you specify a resource request for a container, the kube-scheduler uses that information to decide which node to place the Pod on, and the kubelet **reserves at least the request amount** of that resource specifically for that container to use [source: k8s-docs-resource-management-2026-08-23].
@@ -795,8 +793,6 @@ Same cluster, same six nodes, same two zones, same rule text. Change one label k
 >
 > **Inter-Pod rules are evaluated against the labels of Pods that are *already placed*, within a topology domain defined by a node label (`topologyKey`). The domain is the part people forget — it is a variable, not a synonym for "node."**
 
-> 🔭 **Closer Look:** The documentation states the cost of these rules without explaining it: *"Inter-pod affinity and anti-affinity require substantial amounts of processing which can slow down scheduling in large clusters significantly. We do not recommend using them in clusters larger than several hundred nodes"* [source: k8s-docs-assign-pod-node-depth-2026-08-24]. The explanation below is mine rather than theirs, and it is the obvious one. To decide whether a single node is feasible, the scheduler now has to know what's already running everywhere else in the domain: the answer for node-a depends on the contents of node-b. That's a fundamentally different cost shape from "does this node have 4 GiB free." This is a sharp tool. It is not free.
-
 ### Topology spread constraints
 
 Anti-affinity can say "not in the same domain." What people usually *want* is "distributed fairly evenly, and tell me how much unevenness you'll tolerate." That's a different requirement, and it has a purpose-built mechanism.
@@ -1038,23 +1034,7 @@ One last thing to notice, and then we'll stop. The scheduler watches for newly c
 8. **A toleration permits; it does not attract.**
 9. **`nodeName` bypasses the scheduler**, overrules `nodeSelector` and affinity, and fails rather than waiting.
 
-**Common Traps**
-
 You met the first of these in Chapter 3, where it was defused explicitly and you were told it would come back *[cross-bearing: see Ch 3 §2 — the control plane]*. Here's the piece Chapter 3 held back.
-
-| Trap | The correction |
-|---|---|
-| "The scheduler places the Pod on the node." | It notifies the API server. The kubelet on the chosen node is what starts containers. |
-| "The scheduler picks the single best node, deterministically." | Ties are broken at random [source: k8s-docs-kube-scheduler-2026-08-23]. |
-| "An unschedulable Pod errors out." | It remains unscheduled until the scheduler is able to place it [source: k8s-docs-kube-scheduler-2026-08-23]. |
-| "A failed Pod is rescheduled to a healthy node." | A Pod is never rescheduled to a different node; it is replaced by a new Pod with a different UID [source: k8s-docs-pod-lifecycle-2026-08-23]. |
-| "A toleration schedules the Pod onto the tainted node." | Tolerations allow scheduling but don't guarantee it — the scheduler still evaluates every other parameter [source: k8s-docs-taints-tolerations-2026-08-23]. **The most durable error in this material.** |
-| "`NoSchedule` evicts the Pods already running." | It doesn't. Pods currently running are not evicted [source: k8s-docs-taints-tolerations-2026-08-23]. Only `NoExecute` does. |
-| "Node affinity moves a Pod when the node's labels change." | `IgnoredDuringExecution` — the Pod continues to run [source: k8s-docs-assign-pod-node-2026-08-23]. |
-| "`PreferNoSchedule` means never." | It's a preference; the control plane will try to avoid the node but it is not guaranteed [source: k8s-docs-taints-tolerations-2026-08-23]. |
-| "`nodeSelector` and affinity are two syntaxes for the same power." | Affinity adds soft rules and five operators `nodeSelector` cannot express [source: k8s-docs-assign-pod-node-2026-08-23]. |
-| "A Pod with `nodeName` set that doesn't fit will wait." | It fails, with a reason such as `OutOfmemory` [source: k8s-docs-assign-pod-node-depth-2026-08-24]. The one failure here that isn't `Pending`. |
-
 ---
 
 ## Practice Questions
@@ -1283,6 +1263,4 @@ The next time you see a Pod stuck in `Pending`, you will not wonder whether some
 *One chapter left before Part III.*
 
 > *"You cannot move a berth once it is assigned. You can only be careful about what you said before it was."*
-
-
 

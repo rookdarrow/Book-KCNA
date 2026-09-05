@@ -310,7 +310,6 @@ figures_planned:
 > *"Every deploy is a claim about what should be true. Most of them are never checked again."*
 > — Lodestar Ledgers
 
-
 ---
 
 ## 🧭 Soundings
@@ -387,7 +386,6 @@ That is genuinely uncomfortable, and it should be said plainly rather than sold.
 In my experience, practitioners who make this shift describe the same two feelings in sequence: first that it is slower, then that they cannot go back.
 
 The stakes here were banked in Chapter 1, and one clause will do: this domain doubled in the 2025-11-24 blueprint revision. Chapter 14 cashed the first half. This is the second.
-
 
 **About what CNCF actually publishes.** Chapter 14 made this statement at length and it covers this chapter too, so one back-bearing rather than a repetition: the published curriculum gives two competency names under this domain and no list of topics beneath either *[cross-bearing: see Ch 14 — Why This Chapter Matters]*. What supports the inference that GitOps belongs here is positive rather than speculative. Argo and Flux are both CNCF **graduated** projects [source: cncf-project-maturity-levels-2026-08-23], and OpenGitOps is a CNCF project at the Sandbox level [source: cncf-project-opengitops-2026-09-04]. A CNCF exam asking about application delivery is asking about the delivery model CNCF's own graduated projects implement. That is the basis. It is a good one, and it is honest about being an inference.
 
@@ -606,8 +604,6 @@ A/B testing appears in Argo's documentation not as a rollout strategy but as a u
 
 Nothing in this chapter's questions turns on A/B testing.
 
-> 🔭 **Closer Look:** One vocabulary note, for readers with a good memory. Chapter 6 called these "release strategies" *[cross-bearing: see Ch 6 §4 — changing the fleet under way]*. This book's headword is **deployment strategy**, and the reason is crowding: "release" already carries two other meanings here, a Kubernetes minor version and a Helm release *[cross-bearing: see Ch 14 §3 — chart, release, revision]*. Three senses of one word across two adjacent chapters is one too many. Both phrases name the same thing; if you meet "release strategy" in the field, it is this.
-
 ---
 
 ## ☆ Taking Your Bearings 1: The Application, and the Shapes of a Release
@@ -706,7 +702,6 @@ Now the question this section exists for. An artifact has been built. Something 
     │
    the key lives OUT HERE
 
-
   PULL
                     ┌ ─ ─ ─ cluster boundary ─ ─ ─ ─ ─ ─ ─ ─ ─ ┐
    ┌──────────┐     │  ┌─────────┐                             │
@@ -800,8 +795,6 @@ The project is unusually explicit that this precision was deliberate: *"The word
 OpenGitOps names the thing this catches. **Drift** is *"when a system's actual state has moved or is in the process of moving away from the desired state…"* [source: opengitops-glossary-2026-08-31] — the ellipsis is the snapshot's, and the definition it carries is partial. **Reconciliation** is *"the process of ensuring the actual state of a system matches its desired state"* [source: opengitops-glossary-2026-08-31].
 
 CNCF's own glossary entry for GitOps names drift first among the problems the practice addresses, alongside failed deployments, inconsistent environments, and difficulty tracking historical changes [source: cncf-glossary-gitops-2026-08-31].
-
-> 🔭 **Closer Look:** "GitOps" names Git, but the principles do not require it. OpenGitOps says so: *"many version control systems can be used in GitOps as long as they meet those two basic requirements and teams use them in a conformant manner"* [source: opengitops-1-0-announcement-2026-08-31]. The announcement does not restate which two requirements it means; on this book's reading they are principle 2's immutability and complete version history, which is the only pair the principles state about the store itself. Git is, in practice, the overwhelmingly common choice. The definition is about the properties, not the tool.
 
 ### One thing GitOps does not do
 
@@ -1143,8 +1136,6 @@ Flux's documented model is per cluster. The bootstrap command *"deploys the Flux
 
 The trade is §3's blast-radius argument at a larger scale, and it remains this book's argument rather than a documented finding: a single control point gives you one console to reason about and one component whose compromise reaches every destination it holds credentials for. Per-cluster agents give you isolation and no unified view.
 
-> 🔭 **Closer Look:** Argo and Flux are both CNCF **graduated** projects [source: cncf-project-maturity-levels-2026-08-23], the maturity tier CNCF describes as stable, widely adopted, and production ready [source: cncf-project-maturity-levels-2026-08-23]. What the levels *mean* is Chapter 17's subject, and that is the durable thing to know *[cross-bearing: see Ch 17 §2 — sandbox, incubating, graduated, and who decides]*. The roster of which projects currently hold which level is dated data that changes; do not memorize it.
-
 ---
 
 ## ☆ Taking Your Bearings #2 — Push, Pull, Ordering, and the Other Agent
@@ -1273,7 +1264,6 @@ Now move it. Take the desired state out of etcd and put it in a Git repository.
 
 **Figure 15.7 — The control loop, pointed at a repository.** Lay this beside Chapter 3's control-loop figure and the point is that it is the same loop. The controller sits in the same place, the API server is still the only door in, and the arrows run in the same directions. One box changed contents.
 
-
 Look at what did *not* move.
 
 **The API server is still the only mutator.** The agent writes to the cluster the way everything else does: as an API client, through authentication, authorization, and admission *[cross-bearing: see Ch 3 §5 — the only door in]*.
@@ -1351,22 +1341,6 @@ Ten seconds is about right.
 **4. Deployment strategy vocabulary versus Deployment fields.** `RollingUpdate` and `Recreate` are values on a Deployment [source: argo-rollouts-strategies-2026-08-23]. Blue/green and canary are patterns implemented by tooling above it.
 
 ---
-
-**Common Traps** — these are distinctions that are easy to confuse, and they are the ones this material rewards getting right.
-
-| The trap | The correct understanding |
-|---|---|
-| "GitOps means running CI from Git" | GitOps is four principles about *desired state*. Continuous integration is not one of them, and the cluster does not care who built the artifact. |
-| Assuming a pipeline pushes to the cluster | Principle 3 is explicit: agents **pull** desired-state declarations from the source [source: opengitops-principles-v1-2026-08-31]. Push-based CD is not GitOps, whatever its manifests are stored in. |
-| Treating reconciliation as a deploy-time event | Principle 4 is **continuous** and indefinite, the same property that makes a ReplicaSet recreate a Pod you deleted last Tuesday. |
-| "Every GitOps agent reverts manual changes" | Flux does, promptly [source: flux-concepts-2026-08-31]. Argo CD, by default, does not — *"changes that are made to the live cluster will not trigger automated sync"* [source: argocd-auto-sync-policy-2026-09-04]. Same principles, opposite defaults. |
-| "`OutOfSync` means the sync failed" | Sync status and sync *operation* status are two different fields answering two different questions [source: argocd-core-concepts-2026-08-31]. An application can be `OutOfSync` immediately after a successful sync [source: argocd-diffing-outofsync-2026-08-31]. |
-| "Argo CD only deploys plain YAML" | Kustomize applications, Helm charts, Jsonnet, plain YAML/JSON directories, and custom config-management plugins [source: argocd-overview-2026-08-23]. |
-| "Argo CD can only track a branch" | Branches, tags, or a **pinned Git commit** [source: argocd-tracking-strategies-2026-08-31]. |
-| Assuming a GitOps agent writes to the datastore directly | It is an API client like any other, subject to authentication, authorization, and admission. Chapter 3's claim about the only door in is not suspended *[cross-bearing: see Ch 3 §5 — the only door in]*. |
-| Assuming a delivery agent needs no identity because it is "infrastructure" | It is a Pod with a ServiceAccount and, by default, cluster-admin-level grants [source: argocd-security-cluster-credentials-2026-08-31] — one of the highest-value subjects in the cluster. |
-| Collapsing the third rollback into one of the first two | `rollout undo` restores a Pod template. `helm rollback` returns a Helm release to a prior release revision. **Rollback by revert** changes a commit and lets the agent reconcile. Three mechanisms, one word. |
-| Assuming a Deployment can express blue/green or canary by itself | Both need something above the Deployment; canary additionally needs traffic splitting and metric analysis [source: argo-rollouts-strategies-2026-08-23]. |
 
 ---
 

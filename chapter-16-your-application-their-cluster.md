@@ -477,8 +477,6 @@ That last point is worth dwelling on, because it is the good news in this sectio
 
 There is one more diagnostic surface here worth knowing. A container can write to a **termination message** file at `/dev/termination-log`, and Kubernetes surfaces the contents in the Pod's status [source: k8s-docs-determine-reason-pod-failure-2026-08-31]. The docs describe the purpose plainly: *"Termination messages provide a way for containers to write information about fatal events to a location where it can be easily retrieved and surfaced by tools like dashboards and monitoring software."* [source: k8s-docs-determine-reason-pod-failure-2026-08-31] For an init container that fails in a way that logs don't capture well, writing a one-line reason to the termination log makes the failure legible from `kubectl describe` alone.
 
-> 🔭 **Closer Look:** The same source notes that in most cases, information you put in a termination message should also be written to the general Kubernetes logs [source: k8s-docs-determine-reason-pod-failure-2026-08-31]. The termination message is a summary surfaced in status, not a replacement for logging.
-
 ---
 
 ## 🔵 §3 — Getting Inside, and Adding What Isn't There
@@ -953,8 +951,6 @@ Your application writes a corrupt record. `web-2` starts failing. You delete `we
 >
 > The diagnostic tell that separates this from a genuine platform fault: **it is deterministic and it is confined to one ordinal.** A platform problem would not preferentially afflict `web-2` and leave `web-0` and `web-1` untouched across repeated rescheduling.
 
-> 🔭 **Closer Look:** `.spec.persistentVolumeClaimRetentionPolicy` has two settings — `whenDeleted` and `whenScaled` — each accepting `Delete` or `Retain`, with `Retain` the default for both [source: k8s-docs-statefulset-storage-2026-08-25]. A workload configured with `whenScaled: Delete` behaves differently on scale-down than the default described above. Check the StatefulSet's actual policy before you reason about what a deletion did; the default is only the default.
-
 ### Peers that find each other by name
 
 The third difference is discovery. A StatefulSet uses a headless Service to give each Pod its own DNS name *[cross-bearing: see Ch 9 §5 — when you don't want a single address]*, and the form is `$(podname).$(governing service domain)` — for example `web-0.nginx.default.svc.cluster.local` [source: k8s-docs-statefulset-2026-08-24]. Replicas use these names to find each other: a database forming a cluster, a queue electing a leader, a cache building a ring.
@@ -1002,8 +998,6 @@ The Kubernetes documentation describes the motivation exactly: *"Kubernetes appl
 That last clause is the whole pattern in one line: your process, their cluster's dependencies. The list above stops being a list of things you cannot reproduce, because you are not reproducing them. You are using the real ones.
 
 Telepresence is one instance of the pattern and the one the Kubernetes docs happen to document. The tooling in this space changes; the pattern does not. Learn the shape — a local process, proxied into the cluster's network and configuration — and you will recognize whichever tool is current when you need one.
-
-> 🔭 **Closer Look:** There is also a fourth option worth naming, which is running a small local cluster — kind, minikube, or k3s — rather than proxying into a shared one *[cross-bearing: see Ch 8 §5 — who owns the control plane]*. That gets you real cluster DNS, real ServiceAccounts, real admission, and real Services, on your laptop. What it does *not* get you is *their* cluster's config, *their* webhooks, and *their* network policy, so it reproduces the class of bug, not the instance. Useful for "does my manifest work at all," not for "why does it fail in staging."
 
 That closes the practical arc. Four questions, five tools, one boundary, and one thing left to say about why the boundary was the point all along.
 
@@ -1168,22 +1162,6 @@ The chapter title is "Your Application, Their Cluster." Both halves are true at 
 3. **`kubectl debug` has three shapes.** Inject into the running Pod; `--copy-to` a copy; `node/` for the host. Each answers a different question and they are not interchangeable.
 
 4. **No ready endpoints has two causes** — selector mismatch, or Pods not Ready — and they live in two different files [source: k8s-docs-debug-pods-2026-08-23]. The slice distinguishes them: a mismatch leaves it empty, while a readiness failure leaves the endpoints in place and marked not ready [source: k8s-docs-endpointslices-2026-08-24].
-
-**Common Traps:**
-
-| Trap | The correct understanding |
-|---|---|
-| Assuming `kubectl exec ... -- sh` works on any container | It requires a shell *in the image*. A distroless image has none, which is the whole reason ephemeral containers exist [source: k8s-docs-ephemeral-containers-concept-2026-08-31]. |
-| Expecting `kubectl debug` to repair the broken Pod | It adds a process to look with, or makes a copy to experiment on. It fixes nothing, and an ephemeral container cannot be removed once added [source: k8s-docs-ephemeral-containers-concept-2026-08-31]. |
-| Reading `--copy-to` as "debug the running Pod" | It is the opposite. The original is untouched, which is precisely the point on a workload you did not deploy. |
-| Treating a working `port-forward` as proof the application is fine | It proves the application is fine **and** the Service path is not. Narrowing step, not clean bill of health. |
-| Confusing `port` with `targetPort` | `targetPort` is the port the container listens on. A mismatch produces a Service that selects perfectly and routes into nothing. |
-| Reading a Service with no ready endpoints as a broken Service | The Service is correct and finding nothing it will send traffic to. Two different bugs, two different files, and the slice tells you which: empty means selector, not-ready means readiness [source: k8s-docs-endpointslices-2026-08-24]. |
-| Believing a not-ready Pod is removed from its EndpointSlice | It is included and marked not ready. Matching Pods are in the slice regardless of readiness; readiness disqualifies an endpoint rather than deleting it [source: k8s-docs-endpointslices-2026-08-24]. |
-| Running plain `kubectl logs` on a Pod stuck in init | You get nothing useful. Name the init container with `-c` [source: k8s-docs-debug-init-containers-2026-09-04]. |
-| Assuming a rescheduled StatefulSet replica comes back with empty storage | The PVC follows the identity and is retained by default [source: k8s-docs-statefulset-storage-2026-08-25]. A corrupt write survives every restart you try, which is exactly why it impersonates a platform fault. |
-| Assuming `kubectl debug` always succeeds if you have RBAC for it | A debug container is a container. Under `restricted` enforcement, admission can refuse it *[cross-bearing: see Ch 12 §6 — three levels, three modes]*. |
-| Treating D3 Debugging as a different subject from D2 Troubleshooting | The split is *scope*, not tooling. A question tagged to one may test the other's commands, because the commands do not respect the domain boundary — only the questions do. |
 
 ---
 

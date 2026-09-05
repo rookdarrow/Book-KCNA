@@ -508,7 +508,6 @@ Compare the two manifests side by side. They put the same number of Services beh
    Host: shop.example.com                    │ checkout Service │
         ▲▲▲▲▲▲▲▲▲                            └──────────────────┘
 
-
            NAME-BASED VIRTUAL HOSTING — split by HOST
 
    GET / HTTP/1.1                            ┌──────────────────┐
@@ -941,8 +940,6 @@ Having just been told to prefer Gateway API, the obvious next question is whethe
 
 **Instead of Gateway API resources being natively implemented by Kubernetes, the specifications are defined as Custom Resources supported by a wide range of implementations.** You install the Gateway API CRDs, or follow the installation instructions of your selected implementation [source: k8s-docs-gateway-api-depth-2026-08-24]. The docs describe Gateway API as "an add-on containing API kinds" [source: k8s-docs-gateway-api-depth-2026-08-24], and the cluster addon list carries it among the networking entries [source: k8s-docs-cluster-addons-2026-08-24].
 
-> 🔭 **Closer Look:** The API the project names as Ingress's successor [source: k8s-docs-network-model-2026-08-23] is not built into the API server the way Ingress is. It arrives as custom resources *[cross-bearing: see Ch 6 §8 — custom resources and CustomResourceDefinitions]*. That is deeper than the exam requires, and it is a rather good demonstration of Chapter 6's claim that the extension mechanism is powerful enough to build first-class-looking APIs on top of. The successor to a built-in API is, structurally, an extension.
-
 *[cross-bearing: see Ch 9 §7 — the client's resolver, which appears here as one step in a flow rather than as a topic]*
 *[cross-bearing: see Ch 17 §4 — CRDs as one of the four pluggable interfaces, of which this is a conspicuous instance]*
 
@@ -1197,8 +1194,6 @@ Ten items. Three of them earn a sentence each, because they are the ones you wil
 
 **No explicit deny.** §6 taught additivity as a *property* of the model: policies grant, and the model has no subtraction operator. The out-of-scope list states that same architectural fact as a *limitation* — the ability to explicitly deny is simply not in the API [source: k8s-docs-network-policies-depth-2026-08-24]. Same fact, met from the side you will actually encounter it on. You go looking for a deny rule, and there is not one.
 
-> 🔭 **Closer Look:** "No targeting of services by name" is stranger than it looks, and it follows directly from §6. A policy selects Pods. A Service is a stable name in front of a set of Pods that *changes*; that is the entire reason Chapter 9 gave you Services. Selecting the Service would mean selecting a moving target through an indirection that the policy layer, sitting at layer 3/4 on Pod IPs, does not have access to. The restriction is a consequence of the architecture, not an omission from the API. Deeper than the exam requires.
-
 Two objects. Four sections apart. Nothing in common except a failure mode.
 
 ---
@@ -1352,25 +1347,6 @@ Look at the fourth panel one more time. Three of these announce themselves. One 
 10. **NetworkPolicies are implemented by the network plugin.** No supporting plugin, no effect.
 11. **GatewayClass / Gateway / HTTPRoute**, mapped to infrastructure provider / cluster operator / application developer. Exactly one GatewayClass per Gateway; many Routes.
 12. **Node-local traffic is always allowed, and a Pod cannot block access to itself.**
-
-**Common Traps** — each one has a specific wrong belief behind it, and the correction is the thing to carry into the exam room.
-
-| The trap | The correction |
-|---|---|
-| "Creating an Ingress object exposes the app" | Only creating an Ingress resource has no effect. A controller must be running. |
-| "Ingress can expose any protocol" | HTTP and HTTPS only. Everything else goes back to NodePort or LoadBalancer. |
-| "Ingress is deprecated and will be removed" | Frozen. GA, guaranteed, no removal plans — and no further development. |
-| "All Ingress controllers behave identically" | Ideally they fit the reference specification. In reality they operate slightly differently. |
-| "Creating a NetworkPolicy secures the cluster" | Only if the network plugin implements NetworkPolicy. Otherwise: no effect, no signal. |
-| "A Pod with no NetworkPolicy is closed by default" | Backwards. Non-isolated in both directions until something selects it. |
-| "One NetworkPolicy can deny what another allows" | There is no deny rule. Policies combine by union. |
-| "Only one end needs to permit the connection" | Both. Source's egress *and* destination's ingress. |
-| "NetworkPolicy can block node-local or self traffic" | Neither. Both exceptions are unconditional. |
-| "NetworkPolicy can do TLS / name targeting / logging / explicit deny" | All four are on the published out-of-scope list. |
-| "Virtual hosting is just DNS" | Opposite sides of the connection. DNS resolves before traffic moves; virtual hosting sorts traffic that has arrived. |
-| "Gateway API is a rename of Ingress" | Different API, different resource model, built around a different organizing principle. |
-| "NetworkPolicy can target a Service" | It selects Pods. Targeting Services by name is explicitly out of scope. |
-| "An Ingress controller and a NetworkPolicy plugin are unrelated concerns" | Functionally unrelated. Structurally identical — which is §8. |
 
 **A note on frequency.** Every trap above is a real point of confusion, drawn from the documentation's own emphases and from what the material makes easy to get wrong. What this book will not tell you is how often any of them appears on the exam. The published curriculum gives four domain weights and nothing finer [source: cncf-kcna-curriculum-pdf-2026-08-23] — no question counts, no per-competency split, nothing that would let anyone honestly attach a number to a single trap — and the Linux Foundation's own exam page states no question count either [source: lf-kcna-exam-page-2026-08-23]. Inventing one would be worse than saying nothing.
 

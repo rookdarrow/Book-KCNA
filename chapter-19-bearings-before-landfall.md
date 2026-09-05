@@ -452,8 +452,6 @@ The card below is a *selection*: the highest-value pairs, sized to be drilled in
 | **scheduled once vs rescheduled** | A Pod is bound to a node **once**. It is never moved. What people call "rescheduling" is a *new* Pod created by a controller after the old one died. | A stem describing a Pod "moving to another node" is describing a replacement, and the controller is the actor. |
 | **`restartPolicy` scope** | It governs **containers within a Pod**, not the Pod object. A Job whose Pod template sets `restartPolicy: Never` will still get a *replacement Pod* from the Job controller when the first one fails; the policy stopped the container from restarting in place, not the workload from being retried. | The trap is reading "Never" as "this workload will not come back." Note also that a Deployment's Pod template cannot use `Never` at all; the API requires `Always` there. |
 
-> 🔭 **Closer Look:** The version-skew numbers reward a moment of structure. Every rule is anchored to `kube-apiserver`, and every component except `kubectl` must be **no newer** than it, which is why the upgrade order is control plane first. `kubectl` is the only component allowed to be *newer*, because it is a client you run from your laptop and the project accepts you may have upgraded it casually [source: k8s-version-skew-policy-2026-08-31].
-
 ### Domain 2 — Container Orchestration (Ch 9–13)
 
 | Pair | The one-line test | The tell in a stem |

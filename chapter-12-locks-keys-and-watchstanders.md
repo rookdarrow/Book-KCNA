@@ -535,7 +535,6 @@ The whole thing at once, then, with a few controls plotted on both.
                                           │            │            │
                                         ACCESS      COMPUTE      STORAGE
 
-
    THE LAYERS — where a control acts
    ─────────────────────────────────────────────────────────────────
 
@@ -548,7 +547,6 @@ The whole thing at once, then, with a few controls plotted on both.
    │  │  └────────────────────────────────────────┘   │   │
    │  └───────────────────────────────────────────────┘   │
    └──────────────────────────────────────────────────────┘
-
 
    FIVE CONTROLS, PLOTTED ON BOTH
    ─────────────────────────────────────────────────────────────────
@@ -582,8 +580,6 @@ What Chapter 5 could not tell you is the contrast that makes ServiceAccounts int
 Read that twice. Kubernetes has no User object. There is no `kubectl create user`. A human identity arrives at the API server from *outside the cluster*, and Kubernetes' job is to validate the claim, extract a username and a set of groups, and hand those strings to the next gate. It stores nothing. Usernames are just strings, and *"it is up to you as a cluster administrator to configure the authentication modules so that authentication produces usernames in the format you want"* [source: k8s-docs-rbac-depth-2026-08-31]. Groups likewise are strings, supplied by the authenticator, with the `system:` prefix reserved [source: k8s-docs-rbac-depth-2026-08-31]. The authenticators themselves are pluggable — *"Kubernetes uses client certificates, bearer tokens, or an authenticating proxy to authenticate API requests through authentication plugins"* [source: k8s-docs-authentication-2026-09-04] — and one of the bearer-token methods is OpenID Connect, which is how a cluster accepts identities issued by an external provider [source: k8s-docs-authentication-2026-09-04]. Which method a cluster uses is an administrator's choice; what every method produces is the same pair of strings.
 
 That asymmetry surprises people: in-cluster identities are objects, human identities are not. It is the reason ServiceAccounts get their own section while users get a paragraph. Human identity is somebody else's system. Workload identity is Kubernetes'.
-
-> 🔭 **Closer Look:** ServiceAccounts get names prefixed with `system:serviceaccount:` and belong to groups prefixed with `system:serviceaccounts:` [source: k8s-docs-rbac-depth-2026-08-31]. Singular for the account, plural for the group. That one-character difference is real, and it is exactly the sort of thing that is unpleasant to debug at 3 a.m.
 
 ### The default account, and what it can do
 
@@ -760,7 +756,6 @@ Those two questions are independent, which is why there are four objects rather 
    │  or ClusterRole     │  ◀── either ──   │  FORCED             │
    └─────────────────────┘                  └─────────────────────┘
 
-
    THE SECOND, INDEPENDENT QUESTION
    ─────────────────────────────────────────
 
@@ -774,7 +769,6 @@ Those two questions are independent, which is why there are four objects rather 
    ┌──────────────┐    ┌─────────────────────┐
    │ RoleBinding  │    │ ClusterRoleBinding  │
    └──────────────┘    └─────────────────────┘
-
 
    THE FOUR COMBINATIONS FALL OUT
    ─────────────────────────────────────────
@@ -1047,8 +1041,6 @@ Note the scope carefully. *"This task covers encryption for resource data stored
 
 So the honest accounting of what encryption at rest gives you. It protects the object **as written to etcd**, which closes route two, the etcd-access and etcd-backup route, and closes it well. It does nothing whatsoever about routes one and three, because a caller the API server has authorized gets the object decrypted, in full, as normal. The lock is on the box; it says nothing about who is handed the box. That is not a shortcoming; it is the definition of the control. But an engineer who enables encryption at rest and believes the Secrets problem is now solved has closed one of three doors and stopped counting.
 
-> 🔭 **Closer Look:** This is also the moment to draw a line you will need in a later chapter. **Encryption at rest and encryption in transit are separate decisions with separate mechanisms.** At rest is about bytes sitting in storage. In transit is about bytes moving across a network: TLS between components, and, at the workload layer, mutual TLS between services. Enabling one says nothing about the other. *[cross-bearing: see Ch 17 §5 — a network that knows what it's carrying]*
-
 ### The four hardening steps
 
 Chapter 4 enumerated four things and deferred all of them. Here they are, in the documentation's own ordering:
@@ -1268,14 +1260,12 @@ The levels are the §5 fields with names on them. What each actually checks:
                 (restricted imposes every baseline requirement,
                  plus the rows below the line, so it admits fewer Pods)
 
-
    THE MODES — what happens when a check fails
    ══════════════════════════════════════════════════════════════════
 
            enforce  ──▶  the Pod is REJECTED
            audit    ──▶  recorded in the audit log; the Pod runs
            warn     ──▶  user-facing warning; the Pod runs
-
 
    APPLIED PER NAMESPACE, BY LABEL
    ══════════════════════════════════════════════════════════════════
@@ -1292,8 +1282,6 @@ The levels are the §5 fields with names on them. What each actually checks:
 -->
 
 The rows in that figure are the Baseline and Restricted controls this chapter grades on, not the complete published list. Baseline forbids `privileged`, the host namespaces (`hostNetwork`, `hostPID`, `hostIPC`), `hostPath` volumes, and unconfined seccomp, and restricts `hostPort` and added capabilities to known lists. Restricted adds every Baseline requirement plus: volumes limited to a safe list; `allowPrivilegeEscalation: false`; `runAsNonRoot: true`; `runAsUser` non-zero or unset; seccomp explicitly `RuntimeDefault` or `Localhost`; and capabilities dropping `ALL` with only `NET_BIND_SERVICE` addable back [source: k8s-docs-pod-security-standards-profiles-2026-08-31].
-
-> 🔭 **Closer Look:** The Restricted capability rule rewards a precise reading: drop must include `ALL`, and add is limited to `undefined/nil` or `NET_BIND_SERVICE` [source: k8s-docs-pod-security-standards-profiles-2026-08-31]. `NET_BIND_SERVICE` is the exception because binding a port below 1024 is a common legitimate reason a container wants a scrap of root's authority, and refusing it would break otherwise-conformant images for no security gain.
 
 There is no fourth level between Privileged and Baseline, and the FAQ explains why: *"The three profiles defined here have a clear linear progression from most secure (Restricted) to least secure (Privileged), and cover a broad set of workloads. Privileges required above the Baseline policy are typically very application specific, so we do not offer a standard profile in this niche"* [source: k8s-docs-pod-security-standards-profiles-2026-08-31].
 
@@ -1777,30 +1765,7 @@ That is not memorized. It is derived, and it will survive the next curriculum ch
 
 6. **Three PSS levels × three PSA modes, applied per namespace by label.** Level = what is checked. Mode = what happens.
 
-**Common Traps**
-
 These are the specific wrong answers this material produces. Every one of them is a wrong answer somebody has confidently written down.
-
-| The trap | The correct understanding |
-|---|---|
-| RBAC has deny rules | Purely additive. Removing access means removing the grant. [source: k8s-docs-rbac-2026-08-23] |
-| ClusterRole is only for cluster-scoped resources | Two of its three documented uses are about namespaced resources — bound into one namespace, or across all. [source: k8s-docs-rbac-2026-08-23] |
-| The four combinations must be memorized | They derive from one boundary. The binding sets the scope. |
-| A binding can be retargeted | It cannot, after creation. Delete and recreate. [source: k8s-docs-rbac-2026-08-23] |
-| `view` can read Secrets | It cannot — nor roles nor bindings. Reading Secrets is transitively becoming a ServiceAccount. [source: k8s-docs-rbac-depth-2026-08-31] |
-| `edit` can manage RBAC in its namespace | It cannot; `admin` can. [source: k8s-docs-rbac-2026-08-23] |
-| `cluster-admin` always means the whole cluster | In a RoleBinding it is scoped to that namespace. [source: k8s-docs-rbac-2026-08-23] |
-| Removing every binding revokes anyone's access | Not for `system:masters` — that membership bypasses RBAC entirely and cannot be revoked by removing bindings. [source: k8s-docs-rbac-good-practices-2026-08-31] |
-| Only `get` on Secrets reveals them | `list` and `watch` reveal the contents of every Secret in scope. [source: k8s-docs-rbac-good-practices-2026-08-31] |
-| Secrets are encrypted | Unencrypted in etcd by default; encryption at rest is opt-in and is a control-plane configuration. [source: k8s-docs-secret-2026-08-23] |
-| An RBAC audit showing no `get secrets` means Secrets are safe | Pod creation in the namespace reads any Secret in it, including via a Deployment. [source: k8s-docs-secret-2026-08-23] |
-| Token Secrets are current best practice | TokenRequest, short-lived and rotating, since v1.22. [source: k8s-docs-service-accounts-2026-08-23] |
-| Pod Security levels and admission modes are the same axis | Levels say what is checked; modes say what happens. Independent. `[inferred]` |
-| PodSecurityPolicy is a current control | Removed in v1.25; superseded by Pod Security Admission. [source: k8s-docs-pod-security-policy-removed-2026-09-04] |
-| A signature covers the tag you signed | It resolves to the digest. Tags are mutable; signatures are not. [source: notary-project-signing-digest-2026-08-31] |
-| A valid signature means the artifact is current | It means the bytes came from the signer. Freshness, ordering and key compromise are what TUF addresses. [source: tuf-overview-2026-08-31] |
-| Falco prevents the behavior it detects | It observes and alerts. It does not block. [source: falco-overview-2026-08-23] |
-
 One row above carries an `[inferred]` marker: the level/mode confusion. That mark means the row describes something *easy to confuse*, not something anyone has published as *frequently tested*. The distinction matters. This book will tell you when material is high-yield by reasoning about the published objectives, and it will not manufacture a statistic to make the point land harder.
 
 ---

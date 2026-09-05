@@ -570,10 +570,6 @@ The process itself is more concrete than most people expect. A project applies b
 
 That is not a rubber stamp. It is a months-long evidence-gathering exercise in which strangers are asked, on the record, whether they actually run the thing.
 
-> 🔭 **Closer Look:** The exact numbers, for the curious, and not exam material: the adopter interview form asks for **five to seven adopters**, the internal TOC comment period runs about **one week**, the public comment period **two weeks**, and the vote requires a **two-thirds supermajority** of the TOC [source: cncf-toc-project-lifecycle-process-2026-08-31]. Learn the shape of the process; the numerals are the TOC's operating detail, not the blueprint's.
-
-> 🔭 **Closer Look:** The lifecycle document says "Incubation" where the projects page says "Incubating": one names the process, the other names the level. This book uses **Incubating** throughout, matching the projects page and the level name. If you see both forms in the wild, they refer to the same rung.
-
 ### Who decides what, and why the split matters
 
 The CNCF has more than one governing body, and the exam cares about which does what. The clean version comes straight from the foundation's charter.
@@ -678,8 +674,6 @@ You can only replace a piece *whole* if the piece is small and independently dep
 Take any one away and the other two get much harder. Small pieces you have to patch in place are just a distributed monolith with extra network hops. Immutable replacement of a monolith means redeploying everything to change one line. Declarative desired state over components you edit by hand is a description that is constantly wrong.
 
 That is what §1's "loosely coupled systems… combined with robust automation" is actually made of.
-
-> 🔭 **Closer Look:** If several of these feel familiar from Chapter 15, that is not a coincidence: several of the twelve factors are these same principles under older names, written for a platform that did not exist yet. *[cross-bearing: see Ch 15 §1 — twelve factors]*. Also relevant: *[cross-bearing: see Ch 5 §4 — scheduled once, replaced never]*, which is immutable infrastructure enacted at the Pod level, and where you first met the replacement discipline as a concrete behavior rather than a principle.
 
 ---
 
@@ -940,7 +934,6 @@ This is the most dangerous piece of vocabulary in the chapter, and it is dangero
    ############################################################
                     (a different thing entirely)
 
-
    +----------------------------------------------------------+
    |  THE MESH'S CONTROL PLANE                                |
    |  Distributes policy + certificates to the proxies        |
@@ -1036,8 +1029,6 @@ The handshake, in Istio's own summary: outbound traffic from a client is re-rout
 
 Four steps, and the application was not consulted at any of them.
 
-> 🔭 **Closer Look:** Meshes also support a **permissive mode**, where "the server accepts both plaintext and mutual TLS traffic," which exists "to provide greater flexibility for the on-boarding process" [source: istio-security-mtls-identity-2026-08-31]. You cannot switch a hundred services to mandatory mTLS on a Tuesday afternoon; permissive mode is how a real migration happens. Worth knowing the concept exists; the configuration is well past associate tier.
-
 ### What a mesh adds over what you already have
 
 This is the boundary question, and you have been walking toward it since Chapter 9.
@@ -1050,8 +1041,6 @@ This is the boundary question, and you have been walking toward it since Chapter
 | **A service mesh** | mTLS between every pair of workloads; per-service telemetry; L7 traffic control east-west | It is not free — it is more moving parts, more resource use, and another control plane to run |
 
 The honest summary: Service gives you a name, NetworkPolicy gives you a fence, and a mesh gives you a *conversation you can inspect and trust*. The glossary is candid that the sidecar model "uses more computing resources and becomes more complex to manage as your system grows" [source: cncf-glossary-service-mesh-2026-08-31], which is the pressure ambient mode is responding to.
-
-> 🔭 **Closer Look:** **Istio** and **Linkerd** are the two service meshes you are most likely to meet by name, and both are CNCF Graduated projects [source: cncf-project-maturity-levels-2026-08-23]. This section teaches Istio's model because it is the most widely documented, and because the sidecar/ambient split is the fact most likely to be tested. At associate tier, know what a mesh *is* and what it *buys*, not how to configure one. If you find yourself learning the names of a mesh's own custom resources, you have gone past the exam.
 
 *[cross-bearing: see Ch 9 §6 — the component that makes it real]* and *[cross-bearing: see Ch 12 §4 — secrets are not encrypted]*, both of which are the same lesson in different clothes: the object is not the mechanism, and encoding is not encryption.
 
@@ -1102,8 +1091,6 @@ Now the correction this whole section exists for.
 > The serverless property is the **lifecycle** — driven by requests, scaled to zero when idle — not the absence of containers or servers.
 
 Read that alongside the glossary's "abstracts servers away from the user" and the misconception dissolves completely. Nothing disappeared. A container image still gets pulled; a Pod still gets scheduled onto a node; a kubelet still starts it. What changed is that none of that happens until a request arrives, and it all goes away again when the requests stop.
-
-> 🔭 **Closer Look:** Notice what Knative is *built out of*. It is implemented as CRDs, the fourth pluggable interface, two sections ago. A whole serverless platform, sitting on the extension mechanism, with the API server storing and serving its objects. *[cross-bearing: see Ch 6 §8 — the control loop, extended]*. This is the pattern from §4 doing real work rather than being an example.
 
 ### Scale to zero
 
@@ -1388,8 +1375,6 @@ There are exactly **three** Committees: **Code of Conduct**, **Security Response
 
 *Two governance structures side by side. The pairing is the point — most of the confusion in this material comes from meeting them separately.*
 
-> 🔭 **Closer Look:** CNCF **TAGs** and Kubernetes **SIGs** are easy to confuse, and there is a historical reason that is more useful than any warning. The CNCF's own groups were *originally called SIGs*: "By June 2019, this number had grown to 37 projects and the TOC approved the creation of SIGs, later to be renamed Technical Advisory Groups" [source: cncf-tags-current-structure-2026-08-31]. They were the same word once, at two scales, and CNCF renamed theirs. TAGs operate across the whole foundation. SIGs operate inside the Kubernetes project. One foundation, many projects; Kubernetes is one of them.
-
 A detail that makes the SIG list concrete rather than abstract: several SIGs are ones you have already met the work of. **SIG Network**, **SIG Storage**, **SIG Node**, **SIG Autoscaling** and **SIG Release** are all on the roster [source: k8s-sig-list-and-groups-2026-08-31], and mapping them onto this book's chapters is straightforward: Network to Chapters 9 and 10, Storage to Chapter 11, Node to much of Chapters 2 and 5, Release to the versions Chapter 8 taught you to reason about. SIG Autoscaling sponsors both of the node autoscalers from the section you just read [source: k8s-docs-node-autoscaling-2026-08-31]. Every interface in §4 has a group of people behind it, working in public.
 
 ### The release train, and the fact you already half-know
@@ -1642,34 +1627,6 @@ That is the pluggability story, and it is one story.
 3. **Data plane versus control plane, twice.** A mesh's data plane is the proxies; its control plane configures them; neither is the cluster's control plane. Same vocabulary, different layer.
 4. **Which autoscaler moves which axis, and which ones ship.** Replicas (HPA, KEDA), resources (VPA), nodes (Cluster Autoscaler, Karpenter). HPA is built in; VPA is an add-on.
 5. **SIG, Working Group, Committee, Steering — and TAG is none of them.** Durable and topic-scoped; cross-SIG and time-bounded; closed-membership; overall governance. TAGs are CNCF-wide; SIGs are Kubernetes-internal.
-
-**Common Traps:**
-
-| The trap | The correct understanding |
-|---|---|
-| Reading *cloud native* as "runs in a public cloud" | The definition's first sentence says public, private **and** hybrid. The term is about how you build and operate, not where it runs. |
-| Treating the CNCF technology list as exhaustive | The definition says outright that the list is non-exhaustive. |
-| Ordering the maturity levels wrong | Sandbox → Incubating → Graduated. Sandbox is bleeding edge; Incubating is production use by a small number of users; Graduated is stable and widely adopted. |
-| Looking for graduation criteria on the projects page | They live in the TOC's project lifecycle documentation. |
-| Memorizing which projects are Graduated | The roster changes. Learn the levels and what each one asserts. |
-| Confusing the TOC with the Governing Board | The Board handles business oversight and budget and sets the scope; the TOC owns technical vision and approves projects **within** that scope. |
-| Using the pre-2025 TAG list | TAGs were restructured in 2025. The old list is all over older study material. |
-| Treating CNCF TAGs and Kubernetes SIGs as the same thing | Different organizations at different scopes. *(Easy to confuse — they shared a name historically, which is exactly why.)* |
-| Confusing a SIG with a Working Group | SIGs are the primary, durable unit for a topic. Working Groups cross SIG lines and are time-bounded. |
-| Assuming every community group is open | Committees are not. They are formed by Steering for topics requiring discretion, and do not always operate in the open. |
-| "A service mesh needs application code changes" | The defining property is delivering security, observability and traffic management **without** them. |
-| Confusing the mesh's data plane with its control plane — or with the cluster's | Data plane = the proxies mediating service-to-service traffic. Control plane = what configures them. Neither is Chapter 3's control plane. |
-| "Service mesh means sidecars" | Sidecar mode puts an Envoy proxy beside each Pod; ambient mode uses per-node L4 proxies plus optional per-namespace Envoy waypoints. Both use Envoy. |
-| "Knative replaces Kubernetes" | Knative is Kubernetes-based, builds on the Pod abstraction, and is implemented as CRDs. |
-| Confusing Knative Serving with Eventing | Serving: HTTP-triggered autoscaling container runtime with scale to zero. Eventing: CloudEvents-over-HTTP asynchronous routing. |
-| "Serverless means no containers" | The workloads are still containers in Pods. Serverless describes the lifecycle. *(Easy to confuse — the name actively misleads.)* |
-| Confusing horizontal with vertical scaling | Horizontal changes the **number** of replicas. Vertical changes the **resources** available to each. |
-| "VPA ships with Kubernetes" | VPA is an add-on. The object can exist while nothing acts on it — the same pattern as `kubectl top` without metrics-server. |
-| "In-place vertical resize means VPA now works in place" | In-place Pod vertical resize is a stable Kubernetes feature; full VPA support for it is not a settled story. Do not state it as fact. |
-| Confusing Pod autoscaling with node autoscaling | HPA, VPA and KEDA scale **workloads**. Cluster Autoscaler and Karpenter scale the **node pool**. |
-| "KEDA is a CPU autoscaler" | KEDA is event-driven — queue depth and similar external signals — plus schedule-based scaling through its Cron scaler. |
-| Giving Karpenter a CNCF maturity level | No official source assigns it one. It is sponsored by Kubernetes SIG Autoscaling. |
-| Expecting Observability as its own domain | The current blueprint has four domains — Kubernetes Fundamentals 44%, Container Orchestration 28%, Cloud Native Application Delivery 16%, Cloud Native Architecture 12% [source: cncf-kcna-certification-page-2026-08-23]. Observability is not one of them; it is competency material inside Cloud Native Architecture. Under the retired five-domain blueprint it was a domain of its own, weighted 8%, and Cloud Native Application Delivery carried 8% rather than today's 16% [source: cncf-kcna-curriculum-retired-2026-09-04]. Much third-party prep still targets that older split. |
 
 ---
 

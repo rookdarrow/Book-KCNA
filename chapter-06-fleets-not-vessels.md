@@ -469,14 +469,6 @@ A ReplicaSet identifies new Pods to acquire using its selector: if a Pod has no 
 
 The documentation's own advice for the template is blunt: be careful not to overlap with the selectors of other controllers, lest they try to adopt this Pod [source: k8s-docs-replicaset-2026-08-24].
 
-> **Logbook Entry:** Overlapping selectors fail in two directions, and neither direction announces itself as a configuration mistake, which is what makes them expensive.
->
-> Somebody ships a second workload and copies the first one's manifest as a starting point, including its labels. Neither controller is misconfigured in any way the API can see; each one's template agrees with its own selector, which is all the API validates. But each is now querying for Pods the other created. The documented consequence is adoption: a Pod that matches a selector and has no controller owning it is immediately acquired, and if that acquisition puts the acquirer over its desired count, the Pod is immediately terminated [source: k8s-docs-replicaset-2026-08-24].
->
-> Then somebody notices the collision and fixes it the obvious way, by editing one of the selectors. That is the other direction. Pods the edited controller used to claim stop matching it, and nothing is left holding them — the unintentional orphaning the DaemonSet page warns about, and the reason a DaemonSet forbids the edit outright [source: k8s-docs-daemonset-2026-08-24].
->
-> The prevention is a single habit, and it costs nothing: give every workload one label that is genuinely unique to it, and never hand-write a selector by copying somebody else's.
-
 *[cross-bearing: see Ch 9 — a Service selects its backends with the same mechanism, which is a different controller reading the same labels]*
 *[cross-bearing: see Ch 12 — deleting a workload does not delete everything it referenced]*
 
@@ -623,7 +615,6 @@ The other strategy is the contrast that makes the first one legible. With `Recre
                           └── ZERO AVAILABLE ─┘
                ────────────────────────────────────────▶ time
                    all old killed        then new created
-
 
   RollingUpdate
     available  ██████████▓▓▓▓▓▓▓▓▓░░░░░░░░░░░░██████████
@@ -966,8 +957,6 @@ Chapter 2 showed you the move: Kubernetes defines an interface and lets the ecos
 
 Four sockets, one pattern. Collecting them into a single statement about what kind of system Kubernetes is belongs later, when you have met all four in their own contexts. *[cross-bearing: see Ch 17 — CRI, CNI, CSI and CRDs, resolved into one story]*
 
-> 🔭 **Closer Look:** CRDs are not the only route to a custom API. The other is API-server aggregation, which offers more flexibility at the cost of writing and operating more of the API machinery yourself [source: k8s-docs-custom-resources-2026-08-23]. For this book's purposes: CRD is the common path, aggregation is the rarer one, and knowing that both exist is enough. *[cross-bearing: see Ch 17 §4 — the aggregation layer, among the other extension points]*
-
 *[cross-bearing: see Ch 14 — why Helm charts have a `crds/` directory]*
 *[cross-bearing: see Ch 15 — a delivery tool that is, structurally, a controller acting on custom resources]*
 
@@ -1067,7 +1056,6 @@ Take Chapter 3's control loop, the one you retrieved in Soundings question 7 and
                                   │
                                   └──────▶ (and again, forever)
 
-
    Change only what you plug into DESIRED STATE, and you have
    named every controller in this chapter:
 
@@ -1110,19 +1098,6 @@ Which returns you to the title. Nobody sails one Pod, not because a single Pod i
 6. **`RollingUpdate` is the default strategy; `maxSurge` and `maxUnavailable` both default to 25%; `Recreate` kills all old Pods before creating any new one** [source: k8s-docs-deployment-2026-08-23] [source: k8s-docs-deployment-spec-fields-2026-08-24].
 7. **A revision is created if and only if the Pod template changes.** Scaling does not create one [source: k8s-docs-deployment-2026-08-23].
 8. **A CRD alone stores structured data; a CRD plus a custom controller is the operator pattern** [source: k8s-docs-custom-resources-2026-08-23].
-
-**Common traps.**
-
-| Trap | The correction |
-|---|---|
-| "StatefulSet is for apps that write to disk" | The property is interchangeability. Deployment Pods can write to disk. |
-| "Use a DaemonSet to run several copies" | A DaemonSet expresses *per node*, not a number. Six copies is a Deployment. |
-| "Job and CronJob are two ways to schedule work" | A Job runs once. A CronJob *creates Jobs*. Same relationship as Deployment → ReplicaSet. |
-| "Scaling creates a revision" | Only a `.spec.template` change does. |
-| `maxSurge` and `maxUnavailable` transposed | Surge bounds *total*. Unavailable bounds *available*. Surge rounds up, unavailable rounds down. |
-| "`Recreate` is a mistake" | It is a supported strategy with a stated cost. Choosing it deliberately is correct engineering. |
-| "Installing a CRD makes something happen" | It defines a noun. Nothing acts on it until a controller exists. |
-| "`revisionHistoryLimit: 0` just tidies up" | It also removes the ability to undo the next rollout. |
 
 **The single most useful thing to internalize:** all three of the resource-selection traps are the same error. People choose a workload resource by what the application *is* rather than by how its Pods need to be *managed*. Run Figure 6.5's questions in order (does the work end, must it run on every node, are the Pods interchangeable) and you cannot arrive at any of the three.
 

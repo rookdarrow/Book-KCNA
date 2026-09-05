@@ -462,8 +462,6 @@ Sit with that for a second. The bar is not "we emit metrics." The bar is: when s
 
 Instrumentation comes in two kinds. **Code-based** instrumentation is written into the application and gives "deeper insight and rich telemetry from your application itself." **Zero-code** instrumentation attaches from outside and is "great for getting started, or when you can't modify the application you need to get telemetry out of," pulling telemetry "from libraries you use and/or the environment your application runs in" [source: opentelemetry-instrumentation-2026-08-31]. Hold onto that second kind. It returns in §5.
 
-> 🔭 **Closer Look:** The CNCF glossary makes a point the other sources leave implicit: observability is "a system property," and consequently "how observable a system is will significantly impact its operating and development costs" [source: cncf-glossary-observability-2026-08-31]. It is not a product you install. It is a characteristic your system either has or lacks, and the cost of lacking it is paid in engineer-hours at three in the morning.
-
 ### What a probe is not
 
 You have already met something in this book that looks like observability, sits close to it, and is emphatically not it.
@@ -512,8 +510,6 @@ Baggage is a key-value store that travels with a request, letting you "propagate
 The detail that makes baggage a *separate* signal rather than a property of spans is this: "baggage is a separate key-value store and is unassociated with attributes on spans, metrics, or logs without explicitly adding them" [source: opentelemetry-baggage-2026-08-31]. It rides alongside. Attaching it to a span is a deliberate act. That separation is exactly why it earns its own row, and exactly why people forget it.
 
 Baggage "means you can pass data across services and processes, making it available to add to traces, metrics, or logs in those services" [source: opentelemetry-baggage-2026-08-31]. Which is to say: it is the signal that makes the other three signals talk about *the same thing*. Hold that. §8 is built on it.
-
-> 🔭 **Closer Look:** Baggage travels over the wire, which has a consequence worth one sentence of operational caution: "Sensitive Baggage items can be shared with unintended resources, like third-party APIs… making it visible to anyone inspecting your network traffic" [source: opentelemetry-baggage-2026-08-31]. Customer identifiers are the classic case. Not exam surface, but it is the reason mature teams have a policy about what goes in baggage.
 
 ### One limit, stated early
 
@@ -595,8 +591,6 @@ Time series are identified by more than a name.
 > 🪝 **Snag:** A *metric label* and a *Kubernetes label* are different things that share a word. Kubernetes labels are the universal join between objects and selectors *[cross-bearing: see Ch 4 §5 — the universal join]*. Metric labels are dimensions on a time series. They are not related, they are not interchangeable, and reading a question quickly is exactly how you conflate them.
 
 The identity rule has a consequence that follows directly from it: "The change of any label's value, including adding or removing labels, will create a new time series" [source: prometheus-data-model-2026-08-31].
-
-> 🔭 **Closer Look — cardinality.** Because the label set *is* the identity, "every unique combination of key-value label pairs represents a new time series, which can dramatically increase the amount of data stored" [source: prometheus-naming-labels-cardinality-2026-08-31]. Hence the standing advice: "Do not use labels to store dimensions with high cardinality (many different label values), such as user IDs, email addresses, or other unbounded sets of values" [source: prometheus-naming-labels-cardinality-2026-08-31]. Add a `user_id` label to a busy endpoint's request counter and you have not added a dimension. You have multiplied your storage by your user count. This is not KCNA exam surface; it is the single most common way real teams break their own metrics stack, which is why it's here.
 
 ### The denominator
 
@@ -1073,12 +1067,6 @@ Two agents dominate this slot, and the exam-adjacent detail is their relationshi
 
 Why two? Footprint. A vanilla Fluentd instance "runs on 30-40MB of memory" [source: fluentd-architecture-2026-08-31]: trivial on a server, less trivial multiplied across every node in a large fleet, and genuinely limiting on constrained hardware. Fluent Bit is the lightweight answer. Both "are commonly deployed on Kubernetes as node-level logging agents (DaemonSets) that collect container logs from each node and forward them to a backend" [source: fluent-bit-overview-2026-08-23].
 
-> 🔭 **Closer Look — what a log agent actually does.** Fluent Bit's data pipeline runs six stages in order: **input** plugins gather from sources such as log files and OS metrics; a **parser** converts unstructured data to structured; **filters** alter the data before delivery; a **buffer** stores it in memory or on the filesystem; a **router** directs it through filters to one or more destinations using tags and matching rules; and **output** plugins define those destinations [source: fluent-bit-overview-2026-08-23]. This is deployment-level detail, not exam surface. It is here because it makes concrete what happens between reading a file off a node and writing it to a backend.
-
-> 🪢 **Mnemonic:** **Fluentd** is one word. **Fluent Bit** is two. The parent is a single compound; the lightweight child is "Fluent" plus a "Bit" of it. That asymmetry looks like a typo and is not, and a question that renders one of them wrong is testing whether you noticed.
-
-> 🪝 **Snag:** Fluentd is CNCF graduated *as of the source cached for this book*. Project maturity levels change, and a question asking which projects are *currently* graduated is asking about a moving roster rather than a durable fact. What is durable and worth knowing: Fluentd is the CNCF project, Fluent Bit is its lighter sub-project, and both serve as node-level agents. *[cross-bearing: see Ch 17 §2 — sandbox, incubating, graduated, and who decides]*
-
 <!-- AUTHOR-REVIEW: G32 / FinOps, recorded here because Ch 18 is the last content chapter. Cost management (OpenCost) is absent from this chapter, consistent with Ch 17, which carries the parallel note. The decision is defensible on objective grounds: `opencost-overview-2026-08-23` tags itself D4 Cloud Native Ecosystem and Principles — Ch 17's competency, not Observability — so its absence is not a Ch 18 coverage failure. It is worth flagging anyway: once this gate clears, the book ships with zero FinOps coverage, and the retired KCNA blueprint grouped cost management closely enough with observability that a candidate may expect it. The outline asked for this decision to be visible in both chapters rather than silent in one; it now is. -->
 
 ---
@@ -1187,8 +1175,6 @@ Two other framings appear alongside the golden signals, and both are named in th
 The person who created RED drew the line himself: "The USE Method doesn't really apply to services; it applies to hardware, network disks, things like this. We really wanted a microservices-oriented monitoring philosophy, so we came up with the RED Method" [source: red-method-tom-wilkie-2026-08-31].
 
 That is the whole complementarity, and note what produced it. RED exists *because* one service became twenty. *[cross-bearing: see Ch 17 §3 — small pieces, replaced whole]* The architecture changed, and the measurement framing had to change with it, which is this chapter's thesis showing up in the methodology literature.
-
-> 🔭 **Closer Look — one word, three meanings.** "Utilization" now means three different things in this chapter, and all three are correct in their own context. In §3, utilization is **a percentage of the containers' resource request** [source: k8s-docs-hpa-utilization-vs-requests-2026-08-31]. In the USE method, utilization is "the average time that the resource was busy servicing work" [source: use-method-brendan-gregg-2026-08-31], a duration fraction. And the golden-signals concept nearest to both is **saturation**, how full the service is [source: sre-book-four-golden-signals-2026-08-23]. When you meet the word in a question, check which system is speaking.
 
 <!-- AUTHOR-REVIEW: RED's only surviving authoritative source is a Grafana Labs blog post by Tom Wilkie, the method's originator — the original Weaveworks publication is dead, and the CNCF TAG Observability whitepaper's RED link now points to that dead host. That is the method's author but is not official documentation, and no CNCF/LF source defines RED. Per the outline's stated posture, RED is named and contrasted here but carries no teaching weight, and no graded item in this chapter depends on it. B1 gap G21 should be recorded as substantially-but-not-fully closed. -->
 
@@ -1355,22 +1341,6 @@ The question was never "do we have monitoring." The question is: *is the service
 4. **SLI vs SLO.** Measurement versus objective. SLA is the third term and the usual distractor.
 5. **Observability vs monitoring.** New questions versus pre-chosen indicators. Not "dashboards versus no dashboards."
 6. **metrics-server is not a monitoring system.** The exam tests the boundary, not either side.
-
-**Common Traps** — these are distinctions that are easy to confuse, and they are the ones this material rewards getting right:
-
-| The trap | The correct understanding |
-|---|---|
-| "Observability is monitoring with better dashboards" | Observability handles **unknown unknowns** — questions you did not plan for. Monitoring detects known unknowns [source: cncf-tag-observability-whitepaper-2026-08-31] |
-| Naming three signals | **Four**, on OpenTelemetry's Signals page. Baggage is contextual information passed *between* signals [source: opentelemetry-signals-2026-08-23] |
-| Using "span" and "trace" interchangeably | One unit of work versus the whole request path [source: opentelemetry-observability-primer-2026-08-23] |
-| "Logs are the richest signal, so lead with them" | Logs "are not extremely useful for tracking code execution on their own, as they typically lack contextual information" [source: opentelemetry-observability-primer-2026-08-23] |
-| SLI and SLO swapped | SLI **measures**; SLO **commits**. If there's a consequence attached, it's an SLA [source: sre-book-service-level-objectives-2026-08-31] |
-| "Prometheus pushes" / "apps report to Prometheus" | It **scrapes over HTTP**. Pushgateway is an intermediary for jobs too short to scrape [source: prometheus-pushgateway-practices-2026-08-31] |
-| "Prometheus for per-request billing" | Explicitly not — "if you need 100% accuracy… Prometheus is not a good choice" [source: prometheus-overview-2026-08-23] |
-| "Prometheus needs clustered/network storage" | Each server is **standalone by design**, so it works "when other parts of your infrastructure are broken" [source: prometheus-overview-2026-08-23] |
-| "Prometheus was CNCF's first project" | **Second**, in 2016. Kubernetes was first [source: prometheus-overview-2026-08-23] |
-| Expecting Observability as a standalone domain | It is competency material inside **Cloud Native Architecture** [source: lf-kcna-program-changes-2026-08-23]. *[cross-bearing: see Ch 1 — the curriculum that moved under everyone's feet]* |
-| `kubectl logs` as a log archive | Rotation, one-restart depth, and eviction all bound it [source: k8s-docs-logging-architecture-2026-08-23]. Anything historical needs cluster-level logging |
 
 ---
 

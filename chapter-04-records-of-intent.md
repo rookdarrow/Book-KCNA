@@ -314,8 +314,6 @@ And one warning, stated by the documentation in its own alarmed voice:
 
 The verb you will use to submit a record is `kubectl apply`, which applies a configuration change to a resource from a file or standard input [source: k8s-docs-kubectl-overview-2026-08-23]. That sentence is the entire treatment `apply` gets in this chapter. You cannot teach a record of intent without showing how a record gets filed, so `apply` appears here; the full command surface, its verbs, its flags, how it authenticates, belongs to Chapter 8 *[cross-bearing: see Ch 8 — kubectl, in full]*.
 
-> 🔭 **Closer Look:** The three techniques differ in one thing that matters more than syntax: **where the record of what you wanted lives.** With an imperative command it lives only in the cluster, which is why the documentation says the technique gives you no history. With object configuration it lives in a file, which can go into source control, be reviewed before it is pushed, and serve as a template for the next object [source: k8s-docs-object-management-2026-08-24]. The trade-off is stated just as plainly in the other direction: object configuration requires a basic understanding of the object schema and the additional step of writing a YAML file. Nothing here is free, and the documentation does not pretend otherwise.
-
 One precision note before we go on, because the chapter subtitle is a slogan and slogans overclaim. Kubernetes accepts plenty of imperative instruction. `kubectl delete` deletes. `kubectl scale` updates the size of a workload. `kubectl exec` executes a command inside a running container and has no declarative reading at all [source: k8s-docs-kubectl-overview-2026-08-23] *[cross-bearing: see Ch 16 §3 — getting inside a running container]*. The accurate claim is narrower and more interesting than the slogan: **the objects are declarations, and the imperative commands work by changing declarations.** We will make that precise in §6. For now, hold the narrow version.
 
 > **Extended Analogy:** Think about the papers a vessel files before departure.
@@ -456,8 +454,6 @@ Put the pieces together. You have a file. You have a verb. You have a component 
 *Figure: one declaration, in sequence, over time. The loop at the bottom never terminates. That is not a diagram convention; it is the actual behavior. Compare this to Chapter 3's request-path figure, which showed which components talk to the API server; this one shows what happens to a single object after they do.*
 
 Nothing in that path is a command. You submitted a description; the API server stored it; a controller noticed it; the controller acted; the result was reported back into the same object you wrote. The object is the medium and the message both.
-
-> 🔭 **Closer Look:** Notice where the controller gets its information. It does not receive a message from you, and it does not receive one from `kubectl`. It watches the API server. This is why the same declaration can be applied by a person at a terminal, a CI pipeline, or a tool that reconciles from a Git repository, and the cluster behaves identically in all three cases. The cluster cannot tell the difference and does not care. That indifference is a design choice with consequences we will pick up much later *[cross-bearing: see Ch 15 — the same declaration, kept in a repository]*.
 
 One more command earns a mention here, because it converts a memorization problem into a lookup one: `kubectl explain` gets documentation for resources [source: k8s-docs-kubectl-overview-2026-08-23]. The four top-level fields you now know are the map. `kubectl explain` is how you read the territory inside `spec` for any resource type you have not memorized, which at associate tier is most of them, and that is fine.
 
@@ -657,12 +653,6 @@ One practical consequence worth carrying: if you configure a Secret through a ma
 The documentation follows its caution with four steps to take in order to use Secrets safely: enable Encryption at Rest for Secrets; enable or configure RBAC rules with least-privilege access to Secrets; restrict Secret access to specific containers; and consider using external Secret store providers [source: k8s-docs-secret-2026-08-23].
 
 Every one of those four is Chapter 12's, and this section is going to hand them over without teaching a single one. That restraint is deliberate: the material above is alarming enough that the pull toward "and here's how to fix it" is strong, but Chapter 12 is where encryption at rest, least-privilege access rules, and the broader security posture get the room they need *[cross-bearing: see Ch 12 — hardening Secrets, and the access-control model behind it]*. A Secret is a strongbox stowed in the same hold as everything else. The lock is Chapter 12's; this chapter is only telling you the box did not ship with one fitted.
-
-> 🔭 **Closer Look:** The third item in that caution, *anyone authorized to create a Pod in a namespace can read any Secret in that namespace, including indirectly via a Deployment*, inverts an intuition, and it repays turning over slowly.
->
-> You might reasonably assume that "can read Secrets" and "can create workloads" are separate permissions to be granted separately. They are separate permissions, and granting the second effectively grants the first: a Pod you create can mount any Secret in its namespace, and once mounted, its contents are yours to print. There is no way to create a Pod without that being true, because handing Secrets to Pods is what Secrets are for.
->
-> The practical consequence is that permission to create Pods in a namespace is, in security terms, a Secrets question, and nothing in the name of the permission says so. This is exactly the thread Chapter 12 picks up.
 
 ### Types of Secret
 
@@ -989,21 +979,6 @@ One more time, precisely, because §1 promised it and because slogans deserve au
 5. **Labels versus annotations:** identifying, constrained, and selectable, versus non-identifying, unconstrained, and not.
 6. **ConfigMap versus Secret:** a difference of intent and handling, not of encryption. Base64 is an encoding.
 7. **What a declaration actually is:** the objects are declarations, and the imperative commands work by changing declarations.
-
-**Common Traps**
-
-| Trap | Correct understanding |
-|---|---|
-| Using a namespace to separate two versions of the same software | Use labels within one namespace. Namespaces scope names; labels partition sets [source: k8s-docs-namespaces-2026-08-23] |
-| "Everything lives in a namespace" | Nodes, PersistentVolumes, StorageClasses, and namespaces themselves do not [source: k8s-docs-namespaces-2026-08-23] |
-| "`kube-public` is enforced as publicly readable" | The public aspect is only a convention, not a requirement [source: k8s-docs-namespaces-2026-08-23] |
-| Confusing labels with annotations | Labels identify and can be selected on; annotations record and cannot [source: k8s-docs-annotations-2026-08-24] |
-| "ConfigMaps hold config; Secrets hold *secure* config" | Secrets are stored unencrypted by default [source: k8s-docs-secret-2026-08-23]. The difference is treatment, not cryptography |
-| "The value is base64, so it's protected" | Base64 is not an encryption method and provides no additional confidentiality over plain text [source: k8s-docs-secrets-good-practices-2026-08-24] |
-| Assuming a ConfigMap change reaches a running container instantly | Environment variables need a Pod restart; a volume mount is refreshed eventually, on the kubelet's periodic sync, and never via `subPath`; only the API-reading path sees the change as it happens [source: k8s-docs-configmap-mounted-updates-2026-09-04] [source: k8s-docs-volumes-2026-08-23] |
-| "An immutable ConfigMap can be un-marked" | It cannot be reverted. Delete and recreate [source: k8s-docs-configmap-2026-08-23] |
-| Forgetting the ConfigMap size ceiling | 1 MiB [source: k8s-docs-configmap-2026-08-23] |
-| Referencing a ConfigMap across namespaces | The Pod and the ConfigMap must be in the same namespace [source: k8s-docs-configmap-2026-08-23] |
 
 Six of those ten live in §4, which is why that section carries the chapter's densest warning block and its highest attention cost. If you are budgeting revision time, §4 is where it goes.
 

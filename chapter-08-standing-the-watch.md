@@ -461,14 +461,6 @@ And here is the property that makes them a genuinely different kind of thing rat
 
 > ⚠ **Navigational Hazards:** Authorization and admission are not two names for the same check, and the sharpest proof is that they disagree about what counts as a decision. **Authorization is any-module-approves:** if any module authorizes the request, it proceeds; only if all modules deny is it refused [source: k8s-docs-controlling-access-2026-08-24]. **Admission is any-module-rejects:** unlike authentication and authorization modules, if any admission controller module rejects, the request is immediately rejected [source: k8s-docs-controlling-access-2026-08-24]. One gate is a vote you can win with a single supporter; the next is a veto any participant can exercise. A request can be fully authenticated, entirely authorized, and still be refused — or quietly rewritten — at the third gate.
 
-> 🔭 **Closer Look:** Admission controllers act on requests that create, modify, delete, or connect to (proxy) an object. They do not act on requests that merely read objects [source: k8s-docs-controlling-access-2026-08-24] — reads bypass the admission control layer entirely [source: k8s-docs-admission-controllers-2026-08-24]. So the whole of this gate is invisible to `kubectl get`, which is deeper than the exam requires and explains a great deal of otherwise-baffling behavior the first time you install a policy engine.
-
-> **Extended Analogy:** Think of a working commercial harbor rather than a locked building. A vessel arriving is met first by a pilot boat, whose only question is *which vessel is this*: papers, registration, identity. That is authentication. It has no view on your business here.
->
-> Once identified, the harbormaster consults the berth allocations: is this vessel entitled to a berth in this harbor today? That is authorization. The harbormaster does not open a single crate. The question is about standing, not about cargo.
->
-> Then, and only then, the customs officer comes aboard. This one *does* open crates. She may find something prohibited and turn the whole vessel around. But she has a third option the other two lack: she may say the vessel can dock provided a particular container stays sealed, or provided a declaration is completed and attached before unloading. The vessel proceeds — altered. That is admission control, and the third option is the entire reason it is a separate office rather than one more line on the harbormaster's form.
-
 ### Two admission controllers you have already met
 
 This is not an abstraction you have to take on faith. You have seen it work twice.
@@ -478,8 +470,6 @@ Chapter 7 introduced the **NodeRestriction** admission plugin, which prevents th
 And the Pod Security Standards are enforced by the built-in Pod Security Admission controller [source: k8s-docs-pod-security-standards-2026-08-23]. That is one clause and no more; Chapter 12 owns the three profiles and the three modes *[cross-bearing: see Ch 12 §6 — Pod Security Standards and Pod Security Admission]*. What matters here is the derivation: when you meet Pod Security Admission four chapters from now, you will not be learning a new kind of thing. You will be learning one instance of the third gate.
 
 The same is true of §3's material, arriving next. ResourceQuota is an admission controller that observes the incoming request and ensures that it does not violate any of the constraints enumerated in the ResourceQuota object [source: k8s-docs-admission-controllers-2026-08-24], and LimitRanger does the same for the constraints in a LimitRange object [source: k8s-docs-admission-controllers-2026-08-24]. Neither is a separate subsystem with its own enforcement path; both take effect at this gate.
-
-> 🔭 **Closer Look:** Dynamic admission control means the cluster calls out to a webhook *you* supplied — a mutating webhook or a validating webhook, with one built-in admission controller for each kind [source: k8s-docs-admission-controllers-2026-08-24]. Kubernetes makes synchronous HTTP requests to a remote service, a webhook backend, and the documentation is candid that this adds a potential point of failure [source: k8s-docs-extending-kubernetes-2026-08-23]. Which is to say: once you install a validating webhook, your webhook being down is a thing that can stop your cluster accepting requests.
 
 ### And a logbook
 
@@ -690,8 +680,6 @@ Read the middle clause of that first sentence again. It is doing more work than 
 
 > 🪢 **Mnemonic:** A cordon is a rope across a doorway. It stops people coming in. It does not remove the people already inside.
 
-> 🔭 **Closer Look:** `drain` is not a special maintenance channel either. You can request eviction by calling the Eviction API directly, or programmatically using a client of the API server, like the `kubectl drain` command; this creates an `Eviction` object, which causes the API server to terminate the Pod [source: k8s-docs-api-eviction-2026-08-24]. Using the API to create an Eviction object for a Pod is like performing a policy-controlled `DELETE` operation on the Pod [source: k8s-docs-api-eviction-2026-08-24]. So `drain` is a client that writes objects through the one door — which is §8's whole claim, arriving early.
-
 **One exception, and Chapter 7 §4 already joined these two for you.** Pods that are part of a DaemonSet tolerate being run on an unschedulable Node [source: k8s-docs-nodes-2026-08-23], because the DaemonSet controller automatically adds a `node.kubernetes.io/unschedulable` toleration with a `NoSchedule` effect to DaemonSet Pods [source: k8s-docs-daemonset-2026-08-24]. Chapter 6 taught DaemonSet as one-Pod-per-eligible-node; Chapter 7 taught the built-in condition tolerations and joined them *[cross-bearing: see Ch 7 §4 — the DaemonSet controller's automatic tolerations]* *[cross-bearing: see Ch 6 §7 — DaemonSet and node-local facilities]*. Here is what that join buys you during maintenance.
 
 ### Node conditions
@@ -785,12 +773,6 @@ That is the general shape of the answer to Soundings question 8. Whoever operate
 Which is precisely why the next two sections exist. **§6 is which versions are allowed to disagree. §7 is what you cannot get back.** Those are the two duties that move.
 
 <!-- AUTHOR-REVIEW: the managed/self-hosted duty split is deliberately narrow here and stays narrow. `k8s-docs-setup-tooling-2026-08-23` licenses only the EXISTENCE of a split ("consider which aspects of operating a Kubernetes cluster you want to manage yourself and which you prefer to hand off to a provider"); it does not enumerate sides, and kubernetes.io does not document commercial providers' responsibility models, so no fetch from that doc tree closes it. Recorded as research gap G-8G. Two duties are defensible on the architecture alone and are the only two asserted anywhere in this chapter: upgrade timing (§6) and etcd backup (§7). Do NOT restore a five-item duty list in Soundings A8, §5, or Practice Q13 without a vendor-neutral shared-responsibility source. -->
-
-> **Logbook Entry:** The managed-versus-self-hosted decision is usually argued as a cost question, and cost is rarely what decides it in practice.
->
-> A control plane is not expensive. Three modest machines will run one. What is expensive is the *calendar* attached to it: three minor releases a year, each with its own upgrade window, its own compatibility matrix, its own regression to discover in staging on a Thursday. Plus certificate expiries. Plus etcd backups you have to prove you can actually restore from, which is a different exercise from taking them. Plus the person who has to be reachable while all of that happens.
->
-> Crews that self-host successfully are almost always crews that budgeted for that calendar deliberately, as a named piece of somebody's job. Crews that regret it are usually crews that priced the machines and not the Thursdays. Neither choice is the right one in general; plenty of organizations have excellent reasons to own the whole thing, and regulatory ones are only the most obvious. But the question worth asking out loud before you decide is not *can we run this*, it is *whose watch does this stand on*.
 
 ---
 
@@ -901,8 +883,6 @@ Backing up an etcd cluster can be accomplished in two ways: a built-in snapshot,
 Restoring uses `etcdutl snapshot restore`, which operates directly on the etcd data files; after a restore, the control plane components are restarted against the restored data directory [source: k8s-docs-etcd-backup-2026-08-23].
 
 <!-- AUTHOR-REVIEW: the TLS flags are named above because the backup snapshot lists them. No configuration guidance is given, deliberately: the etcd-access-control snapshot's note states that the source page's TLS configuration guidance was not verbatim-verified in that fetch. Do not expand this into how to configure etcd TLS without a fresh verified fetch. -->
-
-> 🔭 **Closer Look:** Restore is not a command you run against a running cluster. `etcdutl snapshot restore` operates on the data files directly, and the control-plane components come back up against the restored directory afterwards. That is why restoring from a snapshot is a maintenance *event*, with a window, a plan, and somebody watching, rather than an operation you slip in between meetings.
 
 ### The fact that matters more than the commands
 
@@ -1083,24 +1063,6 @@ Chapter 4 §6 established this book's habit of narrowing a claim until it is tru
 9. **Upgrade the API server first**, because nothing may be newer than it.
 10. **`kubectl [command] [TYPE] [NAME] [flags]`** — types case-insensitive and abbreviable, names case-sensitive.
 11. **All objects live in etcd, and access to etcd is equivalent to root permission in the cluster.**
-
-**Common traps.** Each of these catches real candidates. None of them is dressed up with an invented statistic, because nobody publishes one.
-
-| Trap | The correct understanding |
-|---|---|
-| "kubelet must match the API server version" | It must not be *newer*. It may be up to three minors older. Matching is not required |
-| Applying the kubelet skew rule to `kubectl` | Different rule, different number, different shape. kubelet: three, older only. `kubectl`: one, either direction |
-| "Kubernetes supports the last two minor releases" | **Three** |
-| "Everything lives in a namespace" | Nodes, PersistentVolumes and StorageClasses do not. This is why no quota can cap a team's Node consumption |
-| "`cordon` takes the node out of service" | It stops new Pods. It does not move the ones already there. That is `drain` |
-| "Authorization and admission are two words for the same check" | Authorization is any-module-approves and looks at identity, verb and object; admission is any-module-rejects and looks at the object's contents |
-| "`Ready: False` is what an unreachable node reports" | An unreachable node shows `Unknown`. `False` is a node that reported *itself* unhealthy |
-| "`SchedulingDisabled` is a node Condition" | It is a display string. Cordoned nodes are marked Unschedulable in their `spec` |
-| "A ResourceQuota limits how big any one Pod can be" | That is LimitRange. A quota is an aggregate ceiling on the namespace |
-| "A Pod with no resource fields is always valid" | Not in a namespace with a cpu or memory quota. Declare requests or limits, or let a LimitRange declare them for you |
-| "`kubectl` inside a Pod behaves as it does on your laptop" | It detects in-cluster conditions, authenticates as the ServiceAccount, and defaults to that ServiceAccount's namespace |
-| "Resource names are case-insensitive, because resource types are" | Types are. Names are not |
-| "An etcd snapshot on the control-plane node is a backup" | It is a copy that goes down with the thing it was protecting — and, unencrypted, a root-equivalent credential |
 
 ---
 

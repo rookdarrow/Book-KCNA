@@ -387,8 +387,6 @@ A **buildpack** is software that transforms application source code into runnabl
 
 > ⚓ **Worth Securing:** Buildpacks build your application in one base image and ship it on a different one [source: buildpacks-concepts-2026-08-23], and that split is the idea to take from them even if you never use them. The environment that *compiles* your application and the environment that *runs* it do not have to be the same environment, and they usually shouldn't be. Compilers, headers, and build tooling are attack surface that your production image has no use for; a multi-stage build achieves the same separation by hand, so that none of the build tools required to build the application are included in the resulting image [source: docker-docs-multi-stage-2026-08-24]. Buildpacks make that separation structural rather than a discipline you have to remember. The same instinct scales down to base-image choice generally: a small image with minimal dependencies can considerably lower the attack surface [source: docker-docs-build-best-practices-2026-08-24].
 
-> 🔭 **Closer Look:** The final step of a Buildpacks build, export, produces the image with *reproducible* layers [source: buildpacks-concepts-2026-08-23], meaning the same input reliably produces the same layer bytes rather than layers that differ run to run because of timestamps or file ordering. (That gloss on "reproducible" is the author's, not the specification's wording.) The property is deeper than the exam requires, but it's the hinge on which supply-chain verification swings: you cannot meaningfully attest to an artifact whose bytes change when nothing changed. *[cross-bearing: see Ch 12 — signing, attestation, and the software supply chain]*
-
 Supply-chain security, meaning scanning, signing, and bills of materials, is a real concern that attaches to everything in this section, and it is not this chapter's. It gets a full treatment later *[cross-bearing: see Ch 12 — securing the image supply chain]*.
 
 ---
@@ -433,16 +431,6 @@ If you recite one sentence from §1 through §3 cold, recite that one.
 > You should avoid using the `:latest` tag when deploying containers in production, as it is harder to track which version of the image is running and more difficult to roll back properly. Instead, specify a meaningful tag such as `v1.42.0` and/or a digest [source: k8s-docs-images-2026-08-23].
 >
 > That is the documented guidance, and most candidates absorb it as a naming-hygiene rule: untidy, faintly unprofessional, not really *dangerous*. That reading is incomplete, and the incompleteness is the trap. The `:latest` problem has a second half that has nothing to do with naming. **The tag you write also silently determines when Kubernetes will go looking for a new copy of the image.** Same field, second effect, and the caution above doesn't mention it. §6 completes it. *[cross-bearing: see Ch 2 §6 — the tag determines the default pull policy]*
-
-> **Logbook Entry:**
->
-> The failure looks like this from the inside, and it pays to know the shape of it before you meet it.
->
-> A deployment goes out. It behaves badly in a way nobody can reproduce locally. The manifest is checked: unchanged, same commit, same image reference as the version that has been running quietly for three weeks. So the manifest is checked again, this time by two people, out loud, line by line, because the alternative explanations are all worse. It is genuinely unchanged. The reference says `:v2` and it said `:v2` before.
->
-> Someone eventually proposes the rollback, which is when the afternoon turns philosophical. Rolling back to the previous configuration produces the *same reference*, which produces the *same bytes*, which produces the same bad behavior. The rollback rolls back to exactly where you already are. There is a particular quality of silence in a room where four competent people have just realized that the thing they were treating as an identity was a label the whole time.
->
-> Nobody moved the tag maliciously. Somebody upstream rebuilt `:v2` with a dependency bump, which is a completely reasonable thing to do to a tag, because a tag identifies a series. The manifest was never the problem. The mental model was. And the tell, in hindsight, was that we spent an hour proving the manifest hadn't changed instead of one minute asking whether an unchanged manifest guarantees unchanged bytes.
 
 ### Registries, briefly
 
@@ -654,8 +642,6 @@ And the flow that connects them, in three beats: at a high level, an OCI impleme
 >
 > Two three-letter abbreviations. Both involve the word "runtime." Both sit underneath your Pod. They are easy to confuse, and the confusion is not carelessness, since a single component can genuinely participate in both planes at once. CRI-O's own front page says so in one sentence, with each acronym in its correct plane: CRI-O is an implementation of the Kubernetes CRI (Container Runtime Interface) to enable using OCI (Open Container Initiative) compatible runtimes [source: containerd-cri-o-runc-2026-08-24]. The discipline is to ask which *direction* you're looking. Up toward Kubernetes, that's CRI. Sideways toward the rest of the industry, that's OCI. Lay Figure 2-3 and Figure 2-4 side by side; the planes are drawn in the same grammar precisely so you can see that they are different planes.
 
-> 🔭 **Closer Look:** Notice the dates. The OCI was founded in June 2015, and the distribution specification did not reach v1.0 until May 2020 [source: oci-overview-2026-08-23], arriving well after the other two. That ordering tells you something about which problems felt urgent. The industry settled *what an image is* and *what it means to run one* before it formalized *how it moves*. This is depth beyond what the exam asks. What the exam is more likely to ask — again the author's judgment — is which specification governs the registry API, and the answer is the one that arrived last.
-
 runC closes the loop: Docker donated its container runtime, runC, to the OCI to serve as the cornerstone of this new effort [source: oci-overview-2026-08-23]. The company that popularized containers gave away the piece that runs them. That is what an open governance structure is *for*, and it is the same institutional instinct you will meet again when the book turns to how CNCF itself is governed *[cross-bearing: see Ch 17 §2 — CNCF governance and project maturity]*.
 
 ---
@@ -729,8 +715,6 @@ The mechanism, at the depth the exam reaches. Configure the CRI implementation o
 Two levels of indirection, which is the part to hold onto: the Pod names a RuntimeClass, and the RuntimeClass names a handler that was configured on the nodes. The Pod author does not name a runtime. They name a *class of runtime configuration* that a cluster administrator has already established, which is why this works as a self-service mechanism rather than as a way for application teams to request arbitrary runtimes.
 
 A RuntimeClass can also carry scheduling constraints (`nodeSelector`, `tolerations`) so that Pods land on nodes which actually support the handler, and a **Pod overhead** so the scheduler accounts for the runtime's resource cost [source: k8s-docs-runtime-class-2026-08-23]. Both of those are scheduling concepts, and scheduling has its own chapter *[cross-bearing: see Ch 7 — node selection, tolerations, and accounting for overhead]*. Register that they exist; the reasoning behind them arrives later.
-
-> 🔭 **Closer Look:** Kata Containers and gVisor are two genuinely different answers to the same question. Kata uses **hardware virtualization**; gVisor uses a **user-space kernel** [source: k8s-docs-runtime-class-2026-08-23]. Kata's approach is, roughly, borrowing back the isolation model §1 traded away: a real virtualization boundary underneath the workload. gVisor's is to interpose a kernel implementation that is not the host's: gVisor is an application kernel that implements a Linux-like interface and runs in userspace; it intercepts application system calls and acts as the guest kernel, without the need for translation through virtualized hardware, and its Sentry component does not pass system calls through to the host kernel [source: gvisor-docs-what-is-gvisor-2026-09-04]. Different techniques, same goal, different overheads. This is depth: an exam item is far likelier to ask *why RuntimeClass exists* than to ask which sandbox uses which technique. Know the motivation cold; know this as a bonus.
 
 The security guidance is consistent with all of it: to protect compute at runtime, use a container runtime that provides security restrictions [source: k8s-docs-cloud-native-security-2026-08-23]. RuntimeClass is the Kubernetes-shaped way to say *which* one, per workload. Sandboxed runtimes come back as one control among several in the security lifecycle *[cross-bearing: see Ch 12 — runtime protection for compute]*.
 
@@ -871,21 +855,6 @@ And that is the plant. This is the **first** of four times you will see this mov
 4. **`imagePullPolicy` defaults.** IfNotPresent with a digest; Always with `:latest`; Always with no tag; IfNotPresent with any other tag [source: k8s-docs-images-2026-08-23]. Four cases, and an item can give you a reference and ask for the behavior.
 
 5. **The interface-and-implementations pattern itself.** CRI is the first of four published extension points: CRI, CNI, CSI, and API extensions [source: k8s-docs-extending-kubernetes-2026-08-23]. Recognizing the *move*, not just this instance of it, is what Chapter 17 will ask of you.
-
-**Common Traps**
-
-| Trap | Where this chapter defuses it |
-|---|---|
-| "A container image includes the OS kernel" | §2 — derived from §1's sharing model; Bearings #1 Q1 |
-| "You patch a running container" | §2 immutability — the correct process is build a new image, then recreate [source: k8s-docs-containers-2026-08-23]; Bearings #1 Q2 |
-| "OCI is a runtime" | §5 ★ Fixed Point — it is a governance structure publishing three specifications |
-| Conflating OCI with CRI | §5 ⚠ Navigational Hazards. These are easy to confuse: two three-letter abbreviations, both mentioning "runtime," both below your Pod. Ask which direction you're looking |
-| "Docker is the container runtime Kubernetes uses" | §4 🪝 Snag. Also easy to confuse, for historical reasons — "Docker" names four things, and the supported set is defined by CRI conformance [source: k8s-docs-containers-2026-08-23] |
-| "`:latest` is just a naming-hygiene issue" | §3 ⚠ plus §6 — the tag also sets the default pull policy [source: k8s-docs-images-2026-08-23] |
-| "`Always` re-downloads the image every launch" | §6 Dead Reckoning — it re-resolves to a digest and reuses a matching cached image [source: k8s-docs-images-2026-08-23] |
-| "Container isolation strength is fixed" | §7 — RuntimeClass selects it per Pod [source: k8s-docs-runtime-class-2026-08-23] |
-
-Two of these traps are flagged for a specific reason. The OCI/CRI conflation and the Docker-as-runtime shorthand appear here because they are conceptually slippery, not because this book has data on how often they show up. The book does not make frequency claims it cannot support.
 
 ---
 

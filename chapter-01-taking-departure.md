@@ -195,14 +195,11 @@ Two of those facts deserve a moment.
 
 **Two years of validity.** Cloud native tooling moves fast enough that a five-year credential would be a fiction. Two years is honest. Plan for it.
 
-> 🔭 **Closer Look:** Prices and bundles are the most volatile facts in this section and the least load-bearing for your studying. The figures above are as of 2026-08-23. Check the exam page before you buy; if the number has moved, nothing else in this book changes.
-
 Now a disclosure most study guides skip.
 
 **The two numbers everyone quotes are both published — just not where you would look for them.** The passing score is in the Linux Foundation's candidate documentation, on the page "Multiple Choice Exams: Frequently Asked Questions," which states that a score of 75% or above must be earned to pass [source: lf-mc-exam-faq-2026-08-23]. The question count is in the same documentation, on the sibling page "Multiple Choice Exams: Important Instructions," which states that the exam "consists of 60* multiple-choice questions" [source: provenance-kcna-60-questions-2026-08-31]. Both are published for multiple-choice exams **as a class**, and KCNA is placed in that class by its own exam page. Neither figure is on the exam page most candidates read, which states the format, the duration, the eligibility terms, the price, and the domain weights and stops there [source: lf-kcna-exam-page-2026-08-23]. What it does not do is repeat what the candidate documentation already says.
 
 You will nonetheless see "60 questions, 75% to pass" repeated across study sites, videos, and forum threads, stated flatly, as one fact. It is two facts with one pedigree and a shared problem: the certifying body publishes both, in its candidate documentation, for a class of exams — and almost nobody who repeats them has read that documentation or cites it. What travels on repetition is not the numbers. It is the *claim to know where they come from*.
-
 
 > ⚠ **Navigational Hazards**
 >
@@ -427,13 +424,12 @@ You'll meet these throughout. Each one signals a specific kind of content so you
 | ☀️ | Zenith | The moment separate concepts connect |
 | 🗺️→🌊→🌅 | Voyage Progress | Chart → Passage → Dawn: how far the voyage stands |
 
-Four smaller glyphs appear inline, mid-prose, as short asides:
+Three smaller glyphs appear inline, mid-prose, as short asides:
 
 | Glyph | Name | What it signals |
 |---|---|---|
 | ⚓ | Worth Securing | A practitioner's tip worth anchoring |
 | 🪝 | Snag | A specific, common slip — briefer and narrower than ⚠ |
-| 🔭 | Closer Look | Deeper than the exam requires; optional |
 | 🪢 | Mnemonic | A memory hook |
 
 Two sidebar types run longer: **Logbook Entry** (a story from practice) and **Extended Analogy** (a metaphor developed at length). Both are opt-in depth; you can skip either without losing the thread.
@@ -471,14 +467,6 @@ You now have a Soundings score. Use it.
 > 🪝 **Snag:** Your Soundings score is a reading strategy, not a verdict. A 1/8 on Chapter 9's Soundings means "read Chapter 9 carefully" and nothing else. It is not a prediction about the exam, and it is certainly not information about you.
 
 **On study time**, honestly rather than promotionally: this is a beginner-level, ninety-minute, conceptual exam. For someone with general IT literacy and no Kubernetes exposure, a few weeks of consistent evening study is a realistic frame. For someone already working around clusters, considerably less. Anyone quoting you a precise number ("Pass in 14 days!") is guessing, however confidently, because the number depends entirely on what you walk in carrying. What I can tell you is that the material is finite and well-bounded. This is not a credential you grind. It's one you understand.
-
-> **Logbook Entry:** Picture a candidate who sits the KCNA this year having studied hard from a course recorded in 2024.
->
-> They'd done everything right by their own lights: worked through the whole course, drilled the practice sets, built a mental map of the exam. That map had five domains on it. It had a standalone observability domain worth 8% [source: cncf-kcna-curriculum-retired-2026-09-04], and they had studied Prometheus with the thoroughness an 8% standalone domain deserves. They knew the exporters. They knew the scrape model. They could talk about PromQL at a whiteboard.
->
-> They passed. A conceptual exam is forgiving of a misallocated study plan when the underlying facts are sound. But they described the first ten minutes as recalibration, question by question, as it dawned on them that the exam's mass was not where they'd been told it was. Application Delivery kept coming up. They had given it the attention appropriate to 8% of an exam, and it is 16% [source: cncf-kcna-curriculum-retired-2026-09-04].
->
-> Ten minutes of a ninety-minute exam spent recalibrating is over a tenth of your time, and it goes at exactly the moment your composure matters most. That is what §3 of this chapter is for.
 
 ---
 

@@ -346,8 +346,6 @@ Kubernetes was announced publicly at DockerCon in June 2014, reached v1.0 in Jul
 
 The name comes from the Greek word for helmsman or pilot; "K8s" is the numeronym, with eight letters between the K and the s [source: k8s-history-ten-years-2026-08-23]. The brand you're reading did not pick the maritime register to be cute about it. The subject arrived that way.
 
-> 🔭 **Closer Look:** Borg and Omega were two different projects, not one renamed. Borg was the production system; Omega is described as its research successor [source: k8s-history-ten-years-2026-08-23]. Kubernetes inherited from both. This is deeper than the exam requires.
-
 *[cross-bearing: see Ch 17 §1 — the CNCF and the cloud native definition; its governance follows in §2]*
 
 ---
@@ -675,8 +673,6 @@ Concretely, at component altitude. You submit a request describing something tha
 
 Read the verbs. *Notices.* *Selects.* *Records.* *Notices.* At no point does one component instruct another. Each one independently observes a state it cares about, does its own job, and writes the result somewhere everyone can see it.
 
-> 🔭 **Closer Look:** Doesn't a single front end become a bottleneck? The documented answer is that kube-apiserver is designed to scale horizontally: you run several instances and balance traffic between them [source: k8s-docs-cluster-architecture-2026-08-23]. A hub with N interchangeable instances behind a load balancer is architecturally still one door, and operationally is not one machine. This is deeper than the exam requires.
-
 *[cross-bearing: see Ch 8 — the authentication, authorization, and admission gates a request actually passes through on its way in]*
 *[cross-bearing: see Ch 4 — how you write the description that gets submitted]*
 
@@ -955,16 +951,6 @@ That's why §6 was worth more than the eight names, and why the eight names were
 3. **kube-controller-manager: many logical controllers, one binary, one process.** One sentence in the documentation, and the whole distinction rides on it.
 4. **Kubernetes is not a mere orchestration system.** The technical definition of orchestration is execution of a defined workflow: first A, then B, then C. Kubernetes disclaims it in favor of independent, composable control processes.
 5. **What Kubernetes is not.** Not a traditional all-inclusive PaaS. Does not build your source. Does not ship middleware, databases, or caches. Does not mandate logging or configuration solutions.
-
-**Common Traps:**
-
-- **"kube-proxy is required on every node."** — Optional when a network plugin provides equivalent packet forwarding for Services [source: k8s-docs-cluster-architecture-2026-08-23].
-- **"Every cluster has a cloud-controller-manager."** — Absent on premises and in a learning environment on your own PC [source: k8s-docs-cluster-architecture-2026-08-23].
-- **"The controller-manager runs one process per controller."** — Logically separate, but compiled into a single binary and run in a single process [source: k8s-docs-cluster-architecture-2026-08-23].
-- **"Kubernetes is an orchestrator that runs A then B then C."** — That is the technical definition of orchestration, which Kubernetes explicitly disclaims [source: k8s-docs-overview-2026-08-23].
-- **"Kubernetes is a PaaS."** — Not a traditional, all-inclusive PaaS; the PaaS-like features it does offer are optional and pluggable [source: k8s-docs-overview-2026-08-23].
-- **"The scheduler places the Pod on the node."** — The scheduler *selects* a node and notifies the API server of that decision [source: k8s-docs-kube-scheduler-2026-08-23]. The kubelet on that node starts the containers. (How the scheduler chooses is Chapter 7's.)
-- **"The controller does the work."** — A controller usually asks the API server to change something. A different component performs the action.
 
 ---
 

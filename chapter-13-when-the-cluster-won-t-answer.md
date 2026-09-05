@@ -494,7 +494,6 @@ Then read the claim's StorageClass, because **the binding mode inverts the direc
 
 ★ **Fixed Point:** A `Pending` Pod with a `Pending` claim is a **storage** problem under `Immediate` binding and a **scheduling** problem under `WaitForFirstConsumer`. Same two symptoms, opposite direction of cause, and the StorageClass is the only thing that tells you which.
 
-
 ### `Waiting`: scheduled, and unable to start
 
 If the Pod has been placed on a node but its containers are not running, the containers are in the `Waiting` state, and `Waiting` carries a `Reason` field that names the specific problem. The documentation frames the whole category: "If a Pod is stuck in the Waiting state, then it has been scheduled to a worker node, but it can't run on that machine. The most common cause of Waiting pods is a failure to pull the image." [source: k8s-docs-debug-pods-2026-08-23]
@@ -525,8 +524,6 @@ The documented cause list is short: "invalid image name, or pulling from a priva
 That third check is underrated. Pulling the image by hand from a shell on the node, or from your laptop if the registry is reachable from there, collapses the question "is this a Kubernetes problem or a registry problem?" in about five seconds.
 
 The subtle version of this failure involves the pull policy. Recall that if you specify no tag, or the tag `:latest`, the default policy is `Always`, and the kubelet "queries the container image registry to resolve the name to an image digest" on every container launch. [source: k8s-docs-images-2026-08-23] A cached image is like provisions already aboard, but with `Always` the kubelet still has to hail the registry before it will use them. That means a Pod which has been running happily for weeks on a cached image will fail to restart the moment the registry becomes unreachable. A Pod pinned to a specific tag other than `:latest` gets `IfNotPresent` by default and rides out the same registry outage without noticing.
-
-> 🔭 **Closer Look:** `Always` does not mean "download the layers every time." The kubelet resolves the tag to a digest, and "if the kubelet has a container image with that exact digest cached locally, it uses its cached image." [source: k8s-docs-images-2026-08-23] The bandwidth cost is small. The *availability* cost is not: the registry has to answer, and if it doesn't, the container doesn't start.
 
 *[cross-bearing: see Ch 2 §3 — tags and digests]* and *[cross-bearing: see Ch 2 §6 — imagePullPolicy and image pull secrets]*
 
@@ -606,7 +603,6 @@ kubectl get events --sort-by=.metadata.creationTimestamp
 The first form filters events "to only those pertaining to the specified resource" [source: k8s-docs-kubectl-events-2026-08-31]; the second is the quick reference's own recipe for a namespace's events in creation order [source: k8s-docs-kubectl-quick-reference-troubleshooting-2026-09-04]. The second form is the one to reach for when you do not yet know which object is at fault. Events are not sorted usefully by default, and a namespace's event stream read in creation order is a chronology of everything the cluster tried to do recently.
 
 Chapter 6 left you a specific promise here. A Deployment that stalls reports `ProgressDeadlineExceeded`, a condition which says the rollout did not finish in time and says nothing at all about *why*. Several quite different underlying causes produce that identical condition, and Chapter 6 told you there were six of them. Here they are, from the same page Chapter 6 drew on: **insufficient quota, readiness probe failures, image pull errors, insufficient permissions, limit ranges, and application runtime misconfiguration** [source: k8s-docs-deployment-spec-fields-2026-08-24]. Notice how little they have in common. Two are about permission, one is about the registry, one is about the application's own health reporting, and one is about a quota you may not have known existed. A single condition string covers all six, which is exactly why the condition is a starting point and not a diagnosis. The events on the ReplicaSet and on its Pods are where the actual reason lives.
-
 
 Worked through: a Deployment shows `ProgressDeadlineExceeded`. You describe the Deployment and learn only that it gave up waiting. You then find the new ReplicaSet it created (`kubectl describe deployment` names it), describe that, and find it created three Pods. You describe one of those Pods and find its container `Waiting` with `Reason: ImagePullBackOff`, and its events carry the registry's actual refusal: an authentication failure. The rollout stalled because the new image tag was pushed to a registry the cluster has no pull secret for.
 
@@ -887,7 +883,6 @@ This is scoped tightly: "Any Container exceeding a resource limit will be killed
 
 Chapter 5 put the same event a layer lower, saying that when a container exceeds its memory limit **the kernel** may terminate it [source: k8s-docs-resource-management-2026-08-23]. Both are true and they are not in competition: the kernel does the killing, and the kubelet observes the dead container and applies the Pod's `restartPolicy`. When a question asks who *restarts* the container, the answer is the kubelet. When it asks what *killed* it, the answer is the kernel enforcing a limit the kubelet set for it.
 
-
 If a container is OOM-killed repeatedly, the visible signature in `kubectl get pods` becomes `CrashLoopBackOff` — that follows from two sourced facts (a container exceeding its limit is killed and restarted; repeated restarts enter backoff) rather than from a source that states it outright. The layering trips people up: `CrashLoopBackOff` and `OOMKilled` are not alternatives, they are two altitudes of the same event, and `describe` shows you the lower one under the container's last state.
 
 > 🪢 **Mnemonic:** **OOM** is **O**ne container, **O**ver its own limit, **O**n the same node afterward. Eviction is the node's decision about the whole Pod, and the Pod does not come back to that node.
@@ -903,8 +898,6 @@ The outcome is at Pod scope: "During a node-pressure eviction, the kubelet sets 
 <!-- AUTHOR-REVIEW: the rendered ch13-fig05 prints `Reason: Evicted` as a literal API string. The node-pressure snapshot documents the phase transition to `Failed` but states no accompanying `Reason` string, and no snapshot carries the string. Low risk (it is what `kubectl get pods` prints for an evicted Pod), but it is figure text with no source; source it or drop that line at the next render. The chapter prose and Practice Q6 no longer print it. -->
 
 Before the kubelet touches your workloads it tries to help itself: "The kubelet attempts to reclaim node-level resources before it terminates end-user pods. For example, it removes unused container images when disk resources are starved." [source: k8s-docs-node-pressure-eviction-2026-08-31] So an eviction wave usually means the node has already exhausted its own cheap options.
-
-> 🔭 **Closer Look:** Node-pressure eviction and API-initiated eviction are explicitly different things. "Node-pressure eviction is not the same as API-initiated eviction." [source: k8s-docs-node-pressure-eviction-2026-08-31] One is the kubelet acting on local pressure; the other is a request through the API server. It matters here because they behave differently under disruption constraints: the kubelet under pressure "does not respect your configured PodDisruptionBudget or the pod's `terminationGracePeriodSeconds`." [source: k8s-docs-node-pressure-eviction-2026-08-31] A node in trouble stops negotiating.
 
 *[cross-bearing: see Ch 8 §4 — cordon, drain, and taking a node out of service]*
 
@@ -953,14 +946,6 @@ Read that consequence carefully. The Pod is alive, it is consuming its node's re
 The `READY` column in `kubectl get pods` is the tell. `1/1` and `0/1` both print `Running` next to them.
 
 *[cross-bearing: see Ch 5 §7 — liveness, readiness, and startup probes]* and *[cross-bearing: see Ch 9 §4 — readiness and Service endpoint membership]*. From the application side, "is anything even selected" is *[cross-bearing: see Ch 16 §4 — is anything even selected]*.
-
-> **Logbook Entry:** A team once spent most of a day on an intermittent 502 that appeared under load and vanished when they went looking for it. Every Pod was `Running`. The Deployment showed the expected replica count. Nothing had restarted.
->
-> What was happening: under load, one replica's health endpoint took longer than its readiness timeout, failed, and was pulled from the Service. Load redistributed to the remaining replicas, which made *them* slower, so a second one failed readiness, and so on. As soon as the load dropped, every replica recovered, readiness passed again, and all of them rejoined the Service, leaving a system that looked completely healthy by the time anyone finished typing `kubectl get pods`.
->
-> The `READY` column had been telling the story the whole time. Nobody was reading that column, because `STATUS` said `Running` and `Running` reads like *fine*.
->
-> The lesson is small and repeats constantly: on a Pod that is running, `READY` is the more informative column, and a readiness failure leaves no restart count and no crash to find.
 
 <!-- AUTHOR-REVIEW: PodDisruptionBudget is deliberately absent from this section. Per the term ledger, PDB is unowned book-wide (B6 assigned it to Ch 8 §4; shipped Ch 8 contains zero occurrences) and is barred from graded and explanatory text until that one-clause retrofit lands. The Closer Look above quotes the source's own mention of PDB inside a verbatim quotation about what the kubelet does NOT respect, which is the minimum needed for accuracy and does not teach the term. -->
 
@@ -1057,8 +1042,6 @@ crictl logs <id> # that container's logs, read from the runtime directly
 ```
 
 The argument is the whole point: **when the cluster's view and the node's view disagree, `crictl` is how you see the node's view.** A container that `kubectl` cannot account for but `crictl ps` lists is a container the kubelet failed to register, which localizes your problem to the kubelet, not to the workload. A container that neither can see was never started, which is a different problem entirely.
-
-> 🔭 **Closer Look:** `crictl` connects to the runtime through an endpoint, configurable via `--runtime-endpoint`, the `CONTAINER_RUNTIME_ENDPOINT` environment variable, or `/etc/crictl.yaml`. [source: k8s-docs-crictl-2026-08-31] If you skip that configuration, "`crictl` attempts to connect to a list of known endpoints, which might result in an impact to performance." [source: k8s-docs-crictl-2026-08-31]
 
 *[cross-bearing: see Ch 2 §4 — the Container Runtime Interface]* and *[cross-bearing: see Ch 3 §3 — the kubelet]*
 
@@ -1413,21 +1396,6 @@ Diagnosis, in this system, is mostly reading a loop's report and believing it.
 3. **`OOMKilled` versus `Evicted`.** Different trigger (this container's own limit versus the node's pressure), different scope (one container versus the whole Pod), different outcome (restarted in place on the same node versus replaced elsewhere).
 
 4. **`kubectl top` requires metrics-server, which many distributions do not install.** The error is about the cluster's build, not about the workload.
-
-**Common Traps** — ⚠ Navigational Hazards, with what each one costs you:
-
-| Trap | The correct understanding |
-|---|---|
-| Reading `CrashLoopBackOff` as an image problem | It is the opposite signal. The image was fine — that is what "Loop" implies. |
-| `kubectl logs` on a crash-looping Pod returns nothing, so the app is silent | You are reading a container that has not started. `--previous` reads the one that died. |
-| Treating the absence of an event as evidence | Events expire. An empty event list on a Pod that failed hours ago means nothing. |
-| Assuming a *request* protects a container from being killed | The **limit** is what gets you OOM-killed. The **QoS class** — which requests help determine — is what orders eviction. Two different questions. |
-| "BestEffort is safest, because it asks for nothing" | BestEffort is evicted **first**. |
-| `Pending` means something is retrying with looser constraints | Nothing is. `Pending` is a stable, honest report. Go and read the scheduler's events. |
-| Diagnosing an omitted `-c` as an application failure on a multi-container Pod | Confirm which container you read before concluding anything about the application. |
-| Expecting `kubectl` to account for a container the kubelet never registered | That is precisely the case `crictl` exists for. |
-| Assuming a Pod that "won't start" always exists as an object | An admission refusal means there is no Pod at all — the reason is on whatever tried to create it. |
-| Expecting `kubectl logs` to be an archive | It is a live read of a rotating file on a node. An evicted Pod takes its logs with it. |
 
 ---
 

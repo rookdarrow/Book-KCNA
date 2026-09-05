@@ -83,8 +83,10 @@ and nobody was reading them. A `§` list with a gap (`1 2 3 4 5 8`) is a finding
 
 Required with a per-chapter minimum: `☆` Taking Your Bearings (2), `★` Fixed Point (1),
 `—` Dead Reckoning (1). Expected: `🧭` Soundings, `⚠` Navigational Hazards.
-Optional: `🏆` Safe Harbor, `☀️` Zenith, `⚓` Worth Securing, `🪝` Snag, `🔭` Closer Look,
-`🪢` Mnemonic, Logbook Entry, Extended Analogy.
+Optional: `🏆` Safe Harbor, `☀️` Zenith, `⚓` Worth Securing, `🪝` Snag, `🪢` Mnemonic,
+Logbook Entry, Extended Analogy. `🔭` Closer Look was retired from this book on 2026-09-05
+(all 54 blocks cut for page count; they were beyond-exam depth by definition). A chapter
+carries at most one sidebar (Logbook Entry or Extended Analogy).
 
 - The marker must be the **marker form** (`**Dead Reckoning:**`), not a prose mention. Ch 2
   fails on exactly this: it references "§6 Dead Reckoning" inside a table and has no block.

@@ -96,7 +96,6 @@ Throughout this guide, you'll encounter consistent markers that help you navigat
 | ☀️ **Zenith** | A synthesis moment — where several threads resolve into one idea |
 | ⚓ **Worth Securing** | A point worth fastening down before moving on |
 | 🪝 **Snag** | A place the obvious reading is the wrong one |
-| 🔭 **Closer Look** | Deeper than the exam requires, included because it explains the rest |
 | 🪢 **Mnemonic** | A memory hook for something arbitrary |
 | 🚨 **Exam Alert** | The highest-priority facts in the chapter |
 | 🗺️→🌊→🌅 **Voyage Progress** | Chart, Passage, Dawn — how far the voyage stands |

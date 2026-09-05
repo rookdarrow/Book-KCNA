@@ -307,7 +307,6 @@ Chapter 2 left you with a promise: containers are not the unit Kubernetes schedu
 
 **A Pod represents a set of one or more running containers on your cluster** [source: k8s-docs-workloads-2026-08-23] — the documentation's own superlative is that Pods are *the smallest deployable units of computing that you can create and manage in Kubernetes* [source: k8s-docs-pods-2026-08-24]. It is the thing you hand Kubernetes when you want something run: the scheduler watches for newly created **Pods** with no assigned node and finds a node for each one [source: k8s-docs-kube-scheduler-2026-08-23]. You do not hand Kubernetes a container and ask for it to be placed. Chapter 2 already gave you the phrase that follows from this: containers in a Pod are **co-located and co-scheduled** to run on the same node [source: k8s-docs-containers-2026-08-23]. Every node in a cluster runs the containers that form the Pods assigned to that node. The assignment happens at Pod granularity, and the containers come along.
 
-
 That costs something. Everything in a Pod lands on one machine, scales as one thing, and dies as one thing. So the interesting question isn't *what* a Pod is. It's *why the wrapper exists at all*.
 
 ### What every container in a Pod shares
@@ -372,7 +371,6 @@ A Pod can hold more than one container. The question is when it should. Not ever
 
 Pods are used in two main ways [source: k8s-docs-pods-2026-08-24]. Overwhelmingly the most common is **one container per Pod**: the Pod is a thin wrapper around a single container, and that is what you should reach for by default. The other is **multiple tightly-coupled containers** that need to share resources, meaning a main application container plus one or more helpers that supplement or consume it.
 
-
 The decision rule is short, and it falls straight out of §1. There are exactly two mechanisms that make containers in one Pod tightly coupled:
 
 1. **They reach each other over `localhost`**, because they share the Pod's network namespace [source: k8s-docs-network-model-2026-08-23].
@@ -400,8 +398,6 @@ The mechanics are simple. The semantics are what get tested.
 
 **Init containers run before the app containers, in the order they are declared, and each must run to completion successfully before the next one starts** [source: k8s-docs-init-containers-2026-08-24]**.** Only when all of them have succeeded does the kubelet start the Pod's app containers.
 
-
-
 <!-- FIGURE: ch05-fig03-init-containers-sequence -->
 ![Two timelines: on the success path init-1 exits zero then init-2 exits zero, after which app-a and app-b start together in parallel; on the failure path init-2 exits non-zero, restart is governed by restartPolicy, and the app containers are never started](figures/ch05-fig03-init-containers-sequence.svg)
 
@@ -413,7 +409,6 @@ SUCCESS PATH
   [ init-1 ]──exit 0──►[ init-2 ]──exit 0──►┌─[ app-a ]────────►
                                              └─[ app-b ]────────►
    (sequential, one at a time)                (parallel, together)
-
 
 FAILURE PATH
   time ──────────────────────────────────────────────────────►
@@ -650,8 +645,6 @@ A container that reaches `Terminated` doesn't necessarily stay there. What decid
 
 When a container does exit and the policy calls for a restart, the kubelet doesn't retry immediately and forever. **After containers in a Pod exit, the kubelet restarts them with an exponential backoff delay — 10s, 20s, 40s, and so on — capped at five minutes. Once a container has executed for 10 minutes without any problems, the kubelet resets the restart backoff timer for that container** [source: k8s-docs-pod-lifecycle-2026-08-23].
 
-> 🔭 **Closer Look:** The backoff schedule looks like two arbitrary numbers until you see what each one is for. The **five-minute cap** is a floor on how bad things can get: no matter how long a container has been failing, you never wait more than five minutes to find out whether the next attempt works. The **ten-minute reset** is a forgiveness window: a container that has behaved for ten straight minutes has demonstrably recovered, so its history of failures stops counting against it. Cap plus forgiveness. Neither number is magic, but the *shape* — bounded penalty, earned amnesty — is a pattern you'll see again in distributed systems.
-
 ### The worked example Chapter 2 promised
 
 Chapter 2 named a failure and deferred it here: `ImagePullBackOff` *[cross-bearing: see Ch 2 §6 — ImagePullBackOff and where its state is defined]*. It's the cleanest possible demonstration of the phase/state split.
@@ -849,8 +842,6 @@ Two more exist and are specified the same way — `ephemeral-storage` (local eph
 >
 > Note that `m` is perfectly correct — and extremely common — for CPU, where `100m` means one tenth of a core. The suffix isn't wrong; it's wrong *for memory*. Habit carries it across, and nothing in the manifest will stop you.
 
-> 🔭 **Closer Look:** Two details that reward a second look. First, **CPU resource is always specified as an absolute amount, never as a relative amount**: `500m` CPU represents roughly the same amount of computing power whether the container runs on a single-core, dual-core, or 48-core machine [source: k8s-docs-resource-management-2026-08-23]. That's more useful than it first appears. Most capacity intuitions are relative ("give this service a quarter of the box"), and they break the moment the box changes size. A CPU request in Kubernetes is portable across node types by construction. Second, there is a floor on precision: **Kubernetes doesn't allow CPU resources finer than `1m`** [source: k8s-docs-resource-management-2026-08-23]. One thousandth of a core is as small as the vocabulary goes.
-
 There is a fourth movement to this arithmetic, and it is the one the exam names. **Kubernetes classifies every Pod you run into a *quality of service (QoS) class* and uses that classification to influence how the Pod is treated when a node comes under resource pressure** [source: k8s-docs-pod-qos-2026-08-24]. You never set the class directly. It is derived entirely from the shape of the requests and limits you just learned to write:
 
 - **`Guaranteed`** — every container in the Pod has a memory limit and a memory request set equal to each other, and a CPU limit and CPU request set equal to each other. These Pods have the strictest resource bounds and are the least likely to face eviction: guaranteed not to be killed until they exceed their own limits, or until the node has nothing lower-priority left to take first [source: k8s-docs-pod-qos-2026-08-24].
@@ -1022,7 +1013,6 @@ A hull is not cargo. The vessel is the thing that gets a berth, an address, and 
 ```
 -->
 
-
 - **The Pod has an IP, not the container** — because a shared network namespace is what the wrapper exists to provide (§1).
 - **Containers reach each other on `localhost`** — same reason, same namespace (§1, §2).
 - **`restartPolicy` is Pod-level and applies to every container** — because the Pod is the unit (§5).
@@ -1051,21 +1041,7 @@ There's a smaller synthesis hiding inside the larger one, too. §4 noted that a 
 6. **A Pod is scheduled once and never rescheduled** — it is replaced, with a new UID.
 7. **Every Pod has a ServiceAccount**, defaulting to the namespace's `default`, which carries no meaningful permissions.
 
-**Common traps.** Seven recurring misconceptions, and three of them share one root cause:
-
-| Trap | The correct understanding |
-|---|---|
-| Confusing Pod phase with container state | Two vocabularies, two scopes. A Pod has a phase; each container has a state. Neither word set applies at the other's level. |
-| "`Running` means the app is working" | `Running` includes containers that are starting **or restarting**. A crash-looping Pod reports `Running`. |
-| "`restartPolicy` can be set per container" | It's a Pod-level field and applies to all containers. |
-| "A failed Pod is rescheduled to a healthy node" | Pods are never rescheduled. They're deleted and **replaced** by a new Pod with a different UID. |
-| "Liveness and readiness do the same thing" | Liveness kills and restarts. Readiness de-registers from Services and restarts nothing. Opposite consequences. |
-| Forgetting that a startup probe **disables** the others | While a startup probe is configured and hasn't succeeded, liveness and readiness are suppressed. |
-| "Each container in a Pod gets its own IP" | The **Pod** gets one IP, shared by all its containers. |
-
-The first three of those aren't three separate things to memorize. They're one rule: **reading a Pod-scoped signal as though it were container-scoped.** Learn the rule and all three traps close at once.
-
-**One more, from the documentation's own warning:** the memory suffix `m` versus `M`. `400M` is four hundred megabytes; `400m` is four tenths of a byte [source: k8s-docs-resource-management-2026-08-23]. One keystroke, nine orders of magnitude, and a question type that writes itself.
+**From the documentation's own warning:** the memory suffix `m` versus `M`. `400M` is four hundred megabytes; `400m` is four tenths of a byte [source: k8s-docs-resource-management-2026-08-23]. One keystroke, nine orders of magnitude, and a question type that writes itself.
 
 ---
 

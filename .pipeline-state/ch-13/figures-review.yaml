@@ -34,7 +34,7 @@ figures:
     suggested_fix: Strip the stray trailing quotation mark from the arrow label text
       so it reads '...the behavior is still wrong' with no dangling punctuation.
 - anchor_id: ch13-fig02-pod-failure-signature-map
-  status: regenerate
+  status: approved  # 2026-09-05 coordinator review: scheduled-but-Waiting branch no longer labeled Running; promoted
   render_paths:
     svg: figures/ch13-fig02-pod-failure-signature-map.svg
     png: figures/ch13-fig02-pod-failure-signature-map.png
@@ -103,7 +103,7 @@ figures:
       rather than a hierarchy or network.
     suggested_fix: ''
 - anchor_id: ch13-fig05-oomkilled-vs-evicted
-  status: approved  # 2026-09-05: cosmetic label nit recorded in the hint below; author chose not to regenerate approved renders
+  status: approved
   render_paths:
     svg: figures/ch13-fig05-oomkilled-vs-evicted.svg
     png: figures/ch13-fig05-oomkilled-vs-evicted.png
@@ -193,7 +193,7 @@ figures:
     fixed_point_visible_note: ''
     suggested_fix: ''
 - anchor_id: ch13-zenith-read-the-phase-first
-  status: approved  # 2026-09-05: cosmetic label nit recorded in the hint below; author chose not to regenerate approved renders
+  status: approved
   render_paths:
     svg: figures/ch13-zenith-read-the-phase-first.svg
     png: figures/ch13-zenith-read-the-phase-first.png

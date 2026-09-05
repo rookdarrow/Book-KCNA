@@ -415,7 +415,7 @@ This is the largest failure family, and the one where the method pays off hardes
 Every failure in this section shares one property: **no container ever executed.** Nothing ran, so nothing logged, so no amount of log-reading will help you. What separates them is *how far into the start-up sequence the platform got before it stopped*.
 
 <!-- FIGURE: ch13-fig02-pod-failure-signature-map -->
-![A decision tree beginning with the question of whether the Pod object exists; the No branch leads to admission refusal, and the Yes branch splits by phase into Pending, meaning not scheduled, and Running with containers waiting, which fans out into the image-pull, configuration, and image-policy failure reasons](figures/ch13-fig02-pod-failure-signature-map.svg)
+![A decision tree beginning with the question of whether the Pod object exists; the No branch leads to admission refusal, and the Yes branch asks how far start-up got, splitting into not scheduled yet, phase Pending, and scheduled to a node with containers Waiting, which fans out into the image-pull, configuration, and image-policy failure reasons](figures/ch13-fig02-pod-failure-signature-map.svg)
 
 <!-- ASCII-FALLBACK
 ```
@@ -424,13 +424,13 @@ Every failure in this section shares one property: **no container ever executed.
               ┌───────────────┴───────────────┐
               NO                              YES
               │                                │
-    Admission refused it.                 What's the phase?
+    Admission refused it.             How far did start-up get?
     Read the CREATE error,                     │
     not the Pod.                    ┌──────────┴──────────┐
-    (Ch 12 §6)                   Pending                Running
-                                    │                  (containers Waiting)
-                          Not scheduled yet.                 │
-                          Read: describe → Events    Scheduled; can't start.
+    (Ch 12 §6)               Not scheduled yet       Scheduled to a node
+                             (phase Pending)         (containers Waiting)
+                                    │                        │
+                          Read: describe → Events    Can't start.
                           from the scheduler.        Read: container Reason
                                                             │
                               ┌─────────────────────────────┼────────────────────┐
@@ -1361,7 +1361,7 @@ But that is not the shape of what you learned.
                                           ErrImagePull            CrashLoopBackOff
                                           ImagePullBackOff        OOMKilled
                                           ImageInspectError       Evicted
-                                          ErrImageNeverPull       probe failures
+                                          ErrImageNeverPull
                                           CreateContainerConfigError
 
               Nine signatures. One lookup. The key is always the phase.

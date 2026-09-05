@@ -120,16 +120,16 @@ figures:
     a socket into which exactly one conformant CRI runtime plugs — containerd or CRI-O.
     Below the socket, runC, which starts a running process.'
 - anchor_id: ch02-fig03-oci-three-specs
-  source_hash: c6fffa3ebee03946a2f36fcc1f026dc97cf20e3db203dc2ef0317fd77ef829a6
+  source_hash: 09c10ac42f16483169d4fb126c2bd7f9828d1d65026e49986a8b52f59bb3f309
   output_hash:
-    svg: 54274f2adb44a7705cfa3d9c7fba2bdee9659e67a0d5d994ad81052b5a147369
-    png: 8e93e969cd82fbd80581653a20ae9f2fd3237cc52de5d3963af9fdcc17312265
+    svg: 2b3a323ae3603f9e6744a4a846603165ad6c3129af61860b8f3a567a39374ba1
+    png: e7574433bde90d589866fa3765fa05cfe5a29f824bdb237fdf9cb2469553b4bc
   validations:
     label_count:
       result: fail
-      value: 19
+      value: 29
       max: 7
-      reason: 19 labels exceeds working-memory limit of 7
+      reason: 29 labels exceeds working-memory limit of 7
     palette_conformance:
       result: pass
     min_font_size:
@@ -140,11 +140,11 @@ figures:
     max_dimensions:
       result: pass
       value:
-      - 1120
-      - 1388
+      - 2400
+      - 1200
     aspect_ratio:
       result: pass
-      value: 1.24
+      value: 2.0
     grayscale_legibility:
       result: pass
       value: 8

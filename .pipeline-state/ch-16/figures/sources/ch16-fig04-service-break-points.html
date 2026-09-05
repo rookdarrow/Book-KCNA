@@ -1,162 +1,166 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Where a Service Request Actually Breaks</title>
-<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;700&family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Fira+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Where a Service Request Breaks</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;700&family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Fira+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
-    --color-paper:  #F5EFE4;
-    --color-ink:    #0B1E3B;
-    --color-muted:  #1F4A4E;
-    --color-accent: #B58B3E;
+    --paper:  #F5EFE4;
+    --ink:    #0B1E3B;
+    --muted:  #1F4A4E;
+    --soft:   #8A8D90;
+    --accent: #B58B3E;
     --font-slab: 'Roboto Slab', serif;
     --font-sans: 'Fira Sans', sans-serif;
     --font-mono: 'Fira Mono', ui-monospace, monospace;
   }
   body {
     font-family: var(--font-sans);
-    background: var(--color-paper);
-    color: var(--color-ink);
+    background: var(--paper);
+    color: var(--ink);
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 3rem 1.5rem;
+    padding: 3rem 2rem;
   }
-  .frame { max-width: 560px; width: 100%; }
+  .frame { max-width: 1000px; width: 100%; }
   .eyebrow {
     font-family: var(--font-mono);
-    font-size: 14px;
+    font-size: 0.8rem;
     font-weight: 500;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: var(--color-muted);
-    margin-bottom: 0.6rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
   }
   h1 {
     font-family: var(--font-slab);
-    font-size: 1.75rem;
+    font-size: clamp(1.5rem, 2.2vw + 0.75rem, 1.75rem);
     font-weight: 500;
     letter-spacing: -0.01em;
     line-height: 1.2;
-    color: var(--color-ink);
-    margin-bottom: 0.6rem;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
   }
   .subtitle {
     font-family: var(--font-sans);
-    font-size: 16px;
-    font-weight: 400;
-    color: var(--color-muted);
+    font-size: 1rem;
+    color: var(--muted);
     margin-bottom: 1.5rem;
-    line-height: 1.4;
+    max-width: 640px;
   }
-  svg { width: 100%; height: auto; display: block; }
+  svg { width: 100%; display: block; }
+  footer {
+    margin-top: 1.5rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid rgba(11,30,59,0.12);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    color: var(--soft);
+  }
 </style>
 </head>
 <body>
-<div class="frame">
-  <p class="eyebrow">Data Flow · Ch. 16 Services</p>
-  <h1>Where a Service Request Actually Breaks</h1>
-  <p class="subtitle">A Service with no endpoints is working exactly as written — the EndpointSlice is where you find out why.</p>
+<!--
+  Type-fit note: the figure spec labels this "data_flow", but the authored content
+  is a single linear request-path trace (client -> DNS -> Service -> EndpointSlice ->
+  Pod -> port) with break callouts, not a role-scoped multi-lane pipeline. Rendering it
+  against the skill's parametric Data Flow grammar (lanes/steps/chips) would invent
+  organizational lanes that don't exist in the source. Rendered instead as an
+  Architecture-style linear chain with annotation-style callout boxes, per the
+  content-fidelity/topology-preservation instructions, which take precedence here.
 
-  <svg viewBox="0 0 600 748" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch16fig04-title ch16fig04-desc">
-    <title id="ch16fig04-title">Where a Service request breaks along its path</title>
-    <desc id="ch16fig04-desc">A request path runs from client to DNS name to Service to EndpointSlice to Pod to container port, with callouts showing that a name-resolution break happens beside the path, that a selector mismatch or unready Pods empty the EndpointSlice's list upstream, and that a port-to-targetPort mismatch fails the request downstream even though the list is populated.</desc>
+  Aspect-ratio note: preserving the authored left-to-right order (load-bearing for the
+  legend's "upstream / downstream / beside" spatial language) keeps this wider than the
+  3:4 portrait preference. Final ratio is ~1.98:1, inside the 2.5:1 hard limit.
+-->
+<div class="frame">
+  <p class="eyebrow">Ch.16 &middot; Service Troubleshooting</p>
+  <h1>Where a Service Request Breaks</h1>
+  <p class="subtitle">No ready endpoints is the Service working exactly as written &mdash; not a bug.</p>
+
+  <svg viewBox="0 0 912 460" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch16fig04-title ch16fig04-desc">
+    <title id="ch16fig04-title">Service failure break points along the request path</title>
+    <desc id="ch16fig04-desc">A request path runs from client to DNS name to Service to EndpointSlice to Pod to container port; callouts mark where breaks 1, 2, 3, and 4 occur, and a legend distinguishes upstream-of-readiness failures with no ready endpoints from a downstream failure with ready endpoints and a request that still fails, and from never reaching the Service at all.</desc>
     <defs>
-      <marker id="arrow-muted" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-        <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"/>
-      </marker>
-      <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-        <polygon points="0 0, 8 3, 0 6" fill="#B58B3E"/>
-      </marker>
-      <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-        <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"/>
-      </marker>
+      <marker id="arr-flow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"/></marker>
+      <marker id="arr-point" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#0B1E3B"/></marker>
     </defs>
 
-    <rect width="600" height="748" fill="#F5EFE4"/>
+    <rect width="912" height="460" fill="#F5EFE4"/>
 
-    <!-- ============ ARROWS (drawn before boxes) ============ -->
+    <!-- ===== Connectors (drawn before boxes) ===== -->
 
-    <!-- spine chain, top to bottom -->
-    <line x1="120" y1="72"  x2="120" y2="112" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow-muted)"/>
-    <line x1="120" y1="160" x2="120" y2="200" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow-muted)"/>
-    <line x1="120" y1="248" x2="120" y2="288" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow-muted)"/>
-    <line x1="120" y1="336" x2="120" y2="376" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow-muted)"/>
-    <line x1="120" y1="424" x2="120" y2="464" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow-muted)"/>
+    <!-- Primary request-path chain, left to right -->
+    <line x1="120" y1="64" x2="152" y2="64" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arr-flow)"/>
+    <line x1="256" y1="64" x2="288" y2="64" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arr-flow)"/>
+    <line x1="392" y1="64" x2="424" y2="64" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arr-flow)"/>
+    <line x1="568" y1="64" x2="600" y2="64" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arr-flow)"/>
+    <line x1="680" y1="64" x2="712" y2="64" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arr-flow)"/>
 
-    <!-- branch to BREAK 4 (dashed, secondary) -->
-    <line x1="200" y1="136" x2="248" y2="136" stroke="#1F4A4E" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrow-muted)"/>
-    <!-- branch to BREAK 1+2 (focal, solid accent) -->
-    <line x1="200" y1="312" x2="248" y2="312" stroke="#B58B3E" stroke-width="1.2" marker-end="url(#arrow-accent)"/>
-    <!-- branch to BREAK 3 (dashed, secondary) -->
-    <line x1="200" y1="488" x2="248" y2="488" stroke="#1F4A4E" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrow-muted)"/>
+    <!-- Drops to break callouts -->
+    <line x1="204" y1="88" x2="204" y2="128" stroke="#0B1E3B" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr-point)"/>
+    <line x1="496" y1="88" x2="496" y2="128" stroke="#0B1E3B" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr-point)"/>
+    <line x1="784" y1="88" x2="784" y2="128" stroke="#0B1E3B" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr-point)"/>
 
-    <!-- ============ SPINE NODES ============ -->
+    <!-- ===== Request-path chain nodes ===== -->
 
-    <!-- client: input/user treatment -->
-    <rect x="40" y="24" width="160" height="48" rx="6" fill="#F5EFE4"/>
-    <rect x="40" y="24" width="160" height="48" rx="6" fill="rgba(31,74,78,0.10)" stroke="#8A8D90" stroke-width="1"/>
+    <rect x="32" y="40" width="88" height="48" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+    <text x="76" y="69" font-family="'Fira Sans'" font-size="16" font-weight="500" fill="#0B1E3B" text-anchor="middle">client</text>
 
-    <!-- DNS name / Service / EndpointSlice / Pod / container port: backend treatment -->
-    <rect x="40" y="112" width="160" height="48" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"/>
-    <rect x="40" y="200" width="160" height="48" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"/>
-    <rect x="40" y="288" width="160" height="48" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"/>
-    <rect x="40" y="376" width="160" height="48" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"/>
-    <rect x="40" y="464" width="160" height="48" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"/>
+    <rect x="152" y="40" width="104" height="48" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+    <text x="204" y="69" font-family="'Fira Sans'" font-size="16" font-weight="500" fill="#0B1E3B" text-anchor="middle">DNS name</text>
 
-    <!-- one text block for the whole path: it is a single ordered chain, one concept -->
-    <text text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">
-      <tspan x="120" y="54">client</tspan>
-      <tspan x="120" y="142">DNS name</tspan>
-      <tspan x="120" y="230">Service</tspan>
-      <tspan x="120" y="318">EndpointSlice</tspan>
-      <tspan x="120" y="406">Pod</tspan>
-      <tspan x="120" y="494">container port</tspan>
-    </text>
+    <rect x="288" y="40" width="104" height="48" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+    <text x="340" y="69" font-family="'Fira Sans'" font-size="16" font-weight="500" fill="#0B1E3B" text-anchor="middle">Service</text>
 
-    <!-- ============ CALLOUT: BREAK 4 (secondary, dashed) ============ -->
-    <rect x="248" y="80" width="280" height="112" rx="6" fill="#F5EFE4"/>
-    <rect x="248" y="80" width="280" height="112" rx="6" fill="rgba(11,30,59,0.02)" stroke="rgba(11,30,59,0.20)" stroke-width="1" stroke-dasharray="4,3"/>
-    <text font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.10em" fill="#0B1E3B">
-      <tspan x="264" y="108">BREAK 4</tspan>
-      <tspan x="264" y="136" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="400" letter-spacing="normal" fill="#1F4A4E">The name doesn&#8217;t resolve</tspan>
-      <tspan x="264" y="160" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="400" letter-spacing="normal" fill="#1F4A4E">to this Service.</tspan>
-    </text>
+    <rect x="424" y="40" width="144" height="48" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+    <text x="496" y="69" font-family="'Fira Sans'" font-size="16" font-weight="500" fill="#0B1E3B" text-anchor="middle">EndpointSlice</text>
 
-    <!-- ============ CALLOUT: BREAK 1+2 (FOCAL) ============ -->
-    <rect x="248" y="240" width="280" height="144" rx="6" fill="#F5EFE4"/>
-    <rect x="248" y="240" width="280" height="144" rx="6" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"/>
-    <text font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.10em" fill="#0B1E3B">
-      <tspan x="264" y="268">BREAK 1+2</tspan>
-      <tspan x="264" y="296" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" letter-spacing="normal" fill="#B58B3E">LIST EMPTY</tspan>
-      <tspan x="264" y="324" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="400" letter-spacing="normal" fill="#0B1E3B">1 &#183; selector mismatch</tspan>
-      <tspan x="264" y="348" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="400" letter-spacing="normal" fill="#0B1E3B">2 &#183; Pods not Ready</tspan>
-    </text>
+    <rect x="600" y="40" width="80" height="48" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+    <text x="640" y="69" font-family="'Fira Sans'" font-size="16" font-weight="500" fill="#0B1E3B" text-anchor="middle">Pod</text>
 
-    <!-- ============ CALLOUT: BREAK 3 (secondary, dashed) ============ -->
-    <rect x="248" y="428" width="280" height="120" rx="6" fill="#F5EFE4"/>
-    <rect x="248" y="428" width="280" height="120" rx="6" fill="rgba(11,30,59,0.02)" stroke="rgba(11,30,59,0.20)" stroke-width="1" stroke-dasharray="4,3"/>
-    <text font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.10em" fill="#0B1E3B">
-      <tspan x="264" y="456">BREAK 3</tspan>
-      <tspan x="264" y="484" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="400" letter-spacing="normal" fill="#1F4A4E">port &#8800; </tspan><tspan font-family="'Fira Mono', monospace" font-size="16" font-weight="400" letter-spacing="normal" fill="#1F4A4E">targetPort</tspan>
-      <tspan x="264" y="508" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" letter-spacing="normal" fill="#0B1E3B">(list is POPULATED)</tspan>
-    </text>
+    <rect x="712" y="40" width="144" height="48" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+    <text x="784" y="69" font-family="'Fira Sans'" font-size="16" font-weight="500" fill="#0B1E3B" text-anchor="middle">container port</text>
 
-    <!-- ============ LEGEND ============ -->
-    <line x1="40" y1="580" x2="560" y2="580" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
-    <text font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.12em" fill="#1F4A4E">
-      <tspan x="40" y="600">LEGEND</tspan>
-      <tspan x="40" y="628" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" letter-spacing="normal" fill="#0B1E3B">UPSTREAM</tspan><tspan font-family="'Fira Sans', sans-serif" font-size="16" font-weight="400" letter-spacing="normal" fill="#1F4A4E"> of the list &#8212; breaks 1 and 2 &#8594; EMPTY LIST</tspan>
-      <tspan x="40" y="656" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" letter-spacing="normal" fill="#0B1E3B">DOWNSTREAM</tspan><tspan font-family="'Fira Sans', sans-serif" font-size="16" font-weight="400" letter-spacing="normal" fill="#1F4A4E"> of the list &#8212; break 3 &#8594;</tspan>
-      <tspan x="40" y="680" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="400" letter-spacing="normal" fill="#1F4A4E">POPULATED LIST, request still fails</tspan>
-      <tspan x="40" y="708" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" letter-spacing="normal" fill="#0B1E3B">BESIDE</tspan><tspan font-family="'Fira Sans', sans-serif" font-size="16" font-weight="400" letter-spacing="normal" fill="#1F4A4E"> the whole path &#8212; break 4 &#8594;</tspan>
-      <tspan x="40" y="732" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="400" letter-spacing="normal" fill="#1F4A4E">you never reached this Service at all</tspan>
-    </text>
+    <!-- ===== Break callouts ===== -->
+
+    <!-- BREAK 4 — beside the whole path -->
+    <rect x="96" y="128" width="216" height="96" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+    <text x="204" y="154" font-family="'Fira Sans'" font-size="18" font-weight="600" fill="#0B1E3B" letter-spacing="0.04em" text-anchor="middle">BREAK 4</text>
+    <text x="204" y="180" font-family="'Fira Sans'" font-size="14" font-weight="400" fill="#0B1E3B" text-anchor="middle">name doesn't resolve</text>
+    <text x="204" y="201" font-family="'Fira Sans'" font-size="14" font-weight="400" fill="#0B1E3B" text-anchor="middle">to this Service</text>
+
+    <!-- BREAK 1+2 — focal: upstream of readiness, no ready endpoints -->
+    <rect x="372" y="128" width="248" height="164" rx="6" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.5"/>
+    <text x="496" y="154" font-family="'Fira Sans'" font-size="18" font-weight="700" fill="#B58B3E" letter-spacing="0.04em" text-anchor="middle">BREAK 1+2</text>
+    <text x="496" y="178" font-family="'Fira Sans'" font-size="14" font-weight="600" fill="#0B1E3B" letter-spacing="0.06em" text-anchor="middle">NO READY ENDPOINTS</text>
+    <text x="496" y="204" font-family="'Fira Sans'" font-size="14" font-weight="400" fill="#0B1E3B" text-anchor="middle">1 selector mismatch</text>
+    <text x="496" y="225" font-family="'Fira Sans'" font-size="14" font-weight="400" fill="#0B1E3B" text-anchor="middle">&#8594; slice empty</text>
+    <text x="496" y="250" font-family="'Fira Sans'" font-size="14" font-weight="400" fill="#0B1E3B" text-anchor="middle">2 not Ready</text>
+    <text x="496" y="271" font-family="'Fira Sans'" font-size="14" font-weight="400" fill="#0B1E3B" text-anchor="middle">&#8594; ready: false</text>
+
+    <!-- BREAK 3 — downstream of readiness -->
+    <rect x="676" y="128" width="216" height="96" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+    <text x="784" y="154" font-family="'Fira Sans'" font-size="18" font-weight="600" fill="#0B1E3B" letter-spacing="0.04em" text-anchor="middle">BREAK 3</text>
+    <text x="784" y="180" font-family="'Fira Sans'" font-size="14" font-weight="400" fill="#0B1E3B" text-anchor="middle">port &#8800; targetPort</text>
+    <text x="784" y="201" font-family="'Fira Sans'" font-size="14" font-weight="400" fill="#0B1E3B" text-anchor="middle">(endpoints ARE ready)</text>
+
+    <!-- ===== Legend ===== -->
+    <line x1="32" y1="332" x2="880" y2="332" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+    <text x="32" y="348" font-family="'Fira Mono'" font-size="14" font-weight="500" fill="#8A8D90" letter-spacing="0.12em" text-anchor="start">LEGEND</text>
+
+    <text x="32" y="372" font-family="'Fira Sans'" font-size="16" fill="#0B1E3B" text-anchor="start"><tspan font-weight="700">UPSTREAM</tspan> of readiness &#8230; breaks 1 and 2 &#8594; NO READY ENDPOINTS</text>
+    <text x="32" y="400" font-family="'Fira Sans'" font-size="16" fill="#0B1E3B" text-anchor="start"><tspan font-weight="700">DOWNSTREAM</tspan> of readiness &#8230; break 3 &#8594; ENDPOINTS READY, request still fails</text>
+    <text x="32" y="428" font-family="'Fira Sans'" font-size="16" fill="#0B1E3B" text-anchor="start"><tspan font-weight="700">BESIDE</tspan> the whole path &#8230; break 4 &#8594; you never reached this Service at all</text>
   </svg>
+
+  <footer>Fig. 16.4 &middot; Service break points along the request path</footer>
 </div>
 </body>
 </html>

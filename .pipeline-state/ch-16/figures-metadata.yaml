@@ -121,57 +121,16 @@ figures:
     a Node with the host filesystem mounted; it asks whether the machine itself is
     the problem.'
 - anchor_id: ch16-fig04-service-break-points
-  source_hash: d9276995bb4d6319f0ab1aa155aebae6bc0a323a8d3600bf952f5998b48f1fc9
+  source_hash: 789b3ce606a1347fcb9c742a1fb63144b4d2e9ffc40545d91c7c6c7cda2c1a71
   output_hash:
-    svg: 9ee52ebe05a970ca60f8c74293daf69a17efa379f131f5701bf356679df46ada
-    png: 6bc2cf7e8ddac450cbb84d785a33c62faf917a9fc6e889ea399b7576f1be63c9
-  validations:
-    label_count:
-      result: pass
-      value: 0
-      max: 7
-      reason: ''
-    palette_conformance:
-      result: pass
-    min_font_size:
-      result: pass
-      value: 14.0
-      min: 14
-      reason: ''
-    max_dimensions:
-      result: pass
-      value:
-      - 1120
-      - 1398
-    aspect_ratio:
-      result: pass
-      value: 1.25
-    grayscale_legibility:
-      result: pass
-      value: 8
-      reason: ''
-    alt_text_present:
-      result: pass
-      length: 626
-  alt_text: 'A request path runs left to right from client, to DNS name, to Service,
-    to EndpointSlice, to Pod, to container port. Three callouts drop from it. From
-    the DNS name: break four, the name does not resolve to this Service. From the
-    EndpointSlice: breaks one and two, the list is empty, caused either by a selector
-    mismatch or by Pods not being Ready. From the container port: break three, port
-    does not equal targetPort, and here the list is populated. A legend notes that
-    upstream breaks empty the list, the downstream break leaves it populated while
-    the request still fails, and break four means this Service was never reached.'
-- anchor_id: ch16-fig03-portforward-vs-service-path
-  source_hash: 6d186094b01c38af1f1098ec7b8b8bb92fd404c7ddedb56b7c252ca68d4eb304
-  output_hash:
-    svg: f195d233088fe88bd94abb008ef05405ccd6f909f7c3bf1a45b6313a0a041d95
-    png: ee954b262434e7c1995ae604cbdfacabacbb9055199ccc4d136ea488e6106d06
+    svg: 8a5d385fd60b8791728fe220752728c883852770f942793845162e5d549a841a
+    png: 6f7964d0934ff598fd5a56597bfb04276280b77f769827380decc35c0f4458f5
   validations:
     label_count:
       result: fail
-      value: 29
+      value: 19
       max: 7
-      reason: 29 labels exceeds working-memory limit of 7
+      reason: 19 labels exceeds working-memory limit of 7
     palette_conformance:
       result: pass
     min_font_size:
@@ -182,25 +141,67 @@ figures:
     max_dimensions:
       result: pass
       value:
-      - 1280
-      - 1782
+      - 2000
+      - 1008
     aspect_ratio:
       result: pass
-      value: 1.39
+      value: 1.98
     grayscale_legibility:
       result: pass
       value: 8
       reason: ''
     alt_text_present:
       result: pass
-      length: 509
-  alt_text: Two separate request paths. The Service path, travelled by users, runs
-    from client to DNS to the Service's ClusterIP to the service proxy to the Pod's
-    targetPort, annotated with selector and endpoints at the Service and kube-proxy
-    rules at the proxy; all four of section four's break points live on this path.
-    The port-forward path, travelled by the engineer, runs from kubectl to the API
-    server via the pods/portforward subresource and on to the Pod's port. The two
-    paths share no step except the Pod itself.
+      length: 712
+  alt_text: 'A request path runs left to right from client, to DNS name, to Service,
+    to EndpointSlice, to Pod, to container port. Three callouts drop from it. From
+    the DNS name: break four, the name does not resolve to this Service. From the
+    EndpointSlice: breaks one and two, no ready endpoints — a selector mismatch leaves
+    the slice empty, while Pods that are not Ready stay listed with ready false. From
+    the container port: break three, port does not equal targetPort, and here the
+    endpoints are ready. A legend notes that breaks one and two sit upstream of readiness
+    and yield no ready endpoints, break three sits downstream with ready endpoints
+    and a failing request, and break four means this Service was never reached.'
+- anchor_id: ch16-fig03-portforward-vs-service-path
+  source_hash: 9b1bd034611f18d983a611ec3fbcb07721315fe3134ef4baf87b771423f645de
+  output_hash:
+    svg: 38d6e1efc841c8d1b8c31e161da6185feafa8c81054a4c9bbe9490532cc6cb2a
+    png: 0229cf65dd18fbb32a8ab02064f313a23b7bd0891e11894da01c4b348b274406
+  validations:
+    label_count:
+      result: fail
+      value: 26
+      max: 7
+      reason: 26 labels exceeds working-memory limit of 7
+    palette_conformance:
+      result: pass
+    min_font_size:
+      result: pass
+      value: 14.0
+      min: 14
+      reason: ''
+    max_dimensions:
+      result: pass
+      value:
+      - 1840
+      - 2482
+    aspect_ratio:
+      result: pass
+      value: 1.35
+    grayscale_legibility:
+      result: pass
+      value: 8
+      reason: ''
+    alt_text_present:
+      result: pass
+      length: 504
+  alt_text: Two separate request paths. The Service path, traveled by users, runs
+    from client to DNS to the Service's ClusterIP to the service proxy, kube-proxy
+    or its equivalent, to the Pod's targetPort, annotated with selector and endpoints
+    at the Service; all four of section four's break points live on this path. The
+    port-forward path, traveled by the engineer, runs from kubectl to the API server
+    via the pods/portforward subresource and on to the Pod's port. The two paths share
+    no step except the Pod itself.
 - anchor_id: ch16-zenith-mine-or-the-platforms
   source_hash: 1e31fc5b530ded82535b3885415529a8e4190c5015c78acc87384835d7ef4948
   output_hash:

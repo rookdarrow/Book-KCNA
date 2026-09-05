@@ -40,16 +40,16 @@ figures:
     from left to right, labelled with the condition that the Pod is Running and Ready
     and the behavior is still wrong
 - anchor_id: ch13-fig02-pod-failure-signature-map
-  source_hash: 6ebe6d5dc786f88ea52033b83adb18cf3f84bb0daf533fc7b64c6bca399fb697
+  source_hash: 7c8f82fd3ba64bac9afbc2b501c6e8be5d10a798b9487da4efca56580c7e7938
   output_hash:
-    svg: cd0e2946c45c685318de5f8c8ef7d4e32df2ba2d6baa87c4ce104bee2cc1da39
-    png: c6ecf406578db7695005a4669b8b1b7ca55d10249348a1c2ccc701e45ad3ad8c
+    svg: 5d8ed5fb01a065a56ceffc46fc66b1d04905e74073335d9f91d254fb51f9cea8
+    png: 51572dee5b5c6484c9b9b2d4a1c75856e0b357d81ed74d806092a00c29cc259f
   validations:
     label_count:
       result: fail
-      value: 38
+      value: 36
       max: 7
-      reason: 38 labels exceeds working-memory limit of 7
+      reason: 36 labels exceeds working-memory limit of 7
     palette_conformance:
       result: pass
     min_font_size:
@@ -60,22 +60,23 @@ figures:
     max_dimensions:
       result: pass
       value:
-      - 1520
-      - 1748
+      - 1800
+      - 2160
     aspect_ratio:
       result: pass
-      value: 1.15
+      value: 1.2
     grayscale_legibility:
       result: pass
       value: 8
       reason: ''
     alt_text_present:
       result: pass
-      length: 312
+      length: 347
   alt_text: A decision tree beginning with the question of whether the Pod object
-    exists; the No branch leads to admission refusal, and the Yes branch splits by
-    phase into Pending, meaning not scheduled, and Running with containers waiting,
-    which fans out into the image-pull, configuration, and image-policy failure reasons
+    exists; the No branch leads to admission refusal, and the Yes branch asks how
+    far start-up got, splitting into not scheduled yet, phase Pending, and scheduled
+    to a node with containers Waiting, which fans out into the image-pull, configuration,
+    and image-policy failure reasons
 - anchor_id: ch13-fig03-phase-before-logs-flow
   source_hash: 619b5364e51a5f318b31dc87120a31527ec5fd318cbe514f453e53349de80b79
   output_hash:

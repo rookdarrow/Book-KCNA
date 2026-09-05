@@ -77,16 +77,16 @@ figures:
     each box has a downward arrow to a REJECT outcome, and the Admission box has an
     additional arrow labelled REWRITTEN that loops back into the forward path
 - anchor_id: ch08-fig05-quota-vs-limitrange
-  source_hash: 10577c6f19dfab61a87f5e057563dac99361f98c7b248735fd7ae1ce23c9a66c
+  source_hash: 342c6389d2d41d5b829d56980b869b767066993e0e93eb04406497122903344b
   output_hash:
-    svg: 956fd0e59ac16333925440fc3a256c654fdd318d8780beb8b43929a81e1e76dc
-    png: 5c2ba0da5683663a0f860d7c824bac8f792ff8f7b6e0868aca1ceef70da757e8
+    svg: bd64470175c6ada51d46bf2d3a345d20ea585ec491a2adbbfae51103cdce6ab5
+    png: 122d43c1b9a11806647f1f3651aecbcd5dbd280c7ed7ec83bb872b9b6cb5470f
   validations:
     label_count:
-      result: pass
-      value: 7
+      result: fail
+      value: 30
       max: 7
-      reason: ''
+      reason: 30 labels exceeds working-memory limit of 7
     palette_conformance:
       result: pass
     min_font_size:
@@ -97,23 +97,24 @@ figures:
     max_dimensions:
       result: pass
       value:
-      - 1280
-      - 1376
+      - 1240
+      - 1260
     aspect_ratio:
       result: pass
-      value: 1.07
+      value: 1.02
     grayscale_legibility:
       result: pass
       value: 8
       reason: ''
     alt_text_present:
       result: pass
-      length: 341
-  alt_text: 'Two panels compared side by side: on the left, four Pods enclosed in
-    a bordered namespace box with a namespace total bar marked at cap, and a fifth
-    arriving Pod rejected; on the right, four unenclosed Pods each carrying its own
-    minimum and maximum bounds, and a fifth arriving Pod that declares nothing being
-    accepted with defaults filled in'
+      length: 426
+  alt_text: 'Two panels side by side, each enclosed in the same dashed namespace boundary
+    labeled namespace team-atlas. On the left, ResourceQuota: four Pods above a single
+    namespace total bar marked AT CAP, and a fifth arriving Pod REJECTED because the
+    namespace total is reached. On the right, LimitRange: four Pods each carrying
+    its own min and max bound, and a fifth arriving Pod that declares nothing ACCEPTED
+    with defaults filled in.'
 - anchor_id: ch08-fig04-node-lifecycle-cordon-drain
   source_hash: 3c4ce661d9246921e36803befc88106a68967d25f412c313505c73501ab68153
   output_hash:

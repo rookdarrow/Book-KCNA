@@ -114,16 +114,16 @@ figures:
     and the API server alone connects to etcd, with no direct links between any of
     the surrounding components
 - anchor_id: ch03-fig02-control-loop-desired-vs-current
-  source_hash: 536adaf6dca62471cafb1ad82542dd3e97a981b08a7f380ecaa7e482c63a3425
+  source_hash: e7554afef5e2ffd96b658cdf8617e9c065a038d6c2aaff87986ff780e959007d
   output_hash:
-    svg: 161158c01143e7da15619efb0b21cf42166bda9fff1e2e8a8f8dacf85f37f2c7
-    png: abaa6923e6eb4fe961aeb5ceb6aa7a7395eb9d0fa01c6a2af19ab67257beeea9
+    svg: 93919190e101a7ab5cb4c7a21ddb468dd07af6d6c66ff8fc92ba8c5a6abd5b92
+    png: 73daa90cf1dbfe214b23d35e4bf2edf3fdb222fdcb0a3744b12b5984de3216f9
   validations:
     label_count:
       result: fail
-      value: 9
+      value: 18
       max: 7
-      reason: 9 labels exceeds working-memory limit of 7
+      reason: 18 labels exceeds working-memory limit of 7
     palette_conformance:
       result: pass
     min_font_size:
@@ -134,18 +134,20 @@ figures:
     max_dimensions:
       result: pass
       value:
-      - 920
-      - 1204
+      - 1280
+      - 1520
     aspect_ratio:
       result: pass
-      value: 1.31
+      value: 1.19
     grayscale_legibility:
       result: pass
       value: 8
       reason: ''
     alt_text_present:
       result: pass
-      length: 219
-  alt_text: 'A closed four-step cycle with no beginning or end: compare reads desired
-    state and current state, acting to close the gap changes current state, and comparison
-    begins again; captioned no start, no end, no exit condition'
+      length: 346
+  alt_text: A closed control loop with no beginning and no end. Desired state, held
+    in etcd, the store, is observed by a controller; the controller acts to close
+    the gap through the API server, the only door in; the API server changes current
+    state, what is actually true, which the controller observes in turn. Captioned
+    no start, no end, no exit condition.

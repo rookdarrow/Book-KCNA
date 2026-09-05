@@ -76,31 +76,29 @@ figures:
     init-2 exits non-zero, restart is governed by restartPolicy, and the app containers
     are never started'
 - anchor_id: ch05-fig02-pod-phases-and-container-states
-  source_hash: 77eb0e64caebbada23b3ea9d18a3569bbd1dd6bcd12c20805d804c4e3ba57718
+  source_hash: 8894db254e0ec886516121441e15ed8f18dd99cb1bbfb4373470632af29efdc4
   output_hash:
-    svg: 639b411eaba028c86c338eeeedc1f959a02808a756cf1a4e95baee1e9f3dc53d
-    png: 6ace74a70f0ae29698615b2bcb39a1b60f469354598a3e63685af76ad51b62d3
+    svg: ef268c3beca183bdd454ac08d6e84b2064af864c03a58b13eef7e57e8bb89e92
+    png: 6eb7b228ff9430a55fa4dda86fc238d11cef574128f276d5b819519c7f1f508f
   validations:
     label_count:
       result: fail
-      value: 29
+      value: 33
       max: 7
-      reason: 29 labels exceeds working-memory limit of 7
+      reason: 33 labels exceeds working-memory limit of 7
     palette_conformance:
       result: pass
     min_font_size:
       result: pass
-      value: 14.0
-      min: 14
-      reason: ''
+      note: no explicit font-size; renderer default applies
     max_dimensions:
       result: pass
       value:
-      - 1280
-      - 1712
+      - 1360
+      - 2040
     aspect_ratio:
       result: pass
-      value: 1.34
+      value: 1.5
     grayscale_legibility:
       result: pass
       value: 8
@@ -111,7 +109,7 @@ figures:
   alt_text: A Pod box shows five phase values Pending, Running, Succeeded, Failed
     and Unknown, and nested inside it two container boxes each show three states Waiting,
     Running and Terminated; a second panel shows a real instant where the Pod's phase
-    is Running while its helper container's state is Waiting with reason ImagePullBackOff
+    is Running while its helper container's state is Waiting with reason CrashLoopBackOff
 - anchor_id: ch05-fig04-three-probes-compared
   source_hash: 94ae4cd1ae40f980e6d29f351a17ff3774e12e47117d3057b935b41ecd76fd1a
   output_hash:

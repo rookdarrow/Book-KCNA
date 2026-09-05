@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ResourceQuota vs. LimitRange</title>
+<title>ResourceQuota vs LimitRange</title>
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;700&family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Fira+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -11,11 +11,11 @@
     --color-paper:  #F5EFE4;
     --color-ink:    #0B1E3B;
     --color-muted:  #1F4A4E;
-    --color-soft:   #8A8D90;
     --color-accent: #B58B3E;
-    --font-sans: 'Fira Sans', system-ui, sans-serif;
+    --color-soft:   #8A8D90;
     --font-serif: 'Roboto Slab', serif;
-    --font-mono: 'Fira Mono', ui-monospace, monospace;
+    --font-sans:  'Fira Sans', sans-serif;
+    --font-mono:  'Fira Mono', ui-monospace, monospace;
   }
   body {
     font-family: var(--font-sans);
@@ -27,12 +27,12 @@
     justify-content: center;
     padding: 3rem 2rem;
   }
-  .frame { max-width: 680px; width: 100%; }
+  .frame { max-width: 900px; width: 100%; }
   .eyebrow {
     font-family: var(--font-mono);
-    font-size: 0.875rem;
+    font-size: 14px;
     font-weight: 500;
-    letter-spacing: 0.16em;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--color-muted);
     margin-bottom: 0.5rem;
@@ -48,87 +48,114 @@
   }
   .subtitle {
     font-family: var(--font-sans);
-    font-size: 1rem;
+    font-size: 16px;
     color: var(--color-muted);
     margin-bottom: 1.5rem;
-    max-width: 46ch;
+    max-width: 640px;
   }
-  svg { width: 100%; max-width: 640px; height: auto; display: block; margin: 0 auto; }
+  svg { width: 100%; max-width: 620px; display: block; margin: 0 auto; }
 </style>
 </head>
 <body>
 <div class="frame">
-  <p class="eyebrow">Component Diagram · Ch.08 · Fig.05</p>
-  <h1>ResourceQuota vs. LimitRange</h1>
-  <p class="subtitle">Namespace aggregate versus individual object — and what happens when the fifth Pod arrives.</p>
+  <p class="eyebrow">Component Diagram &middot; Ch.08 Fig.05</p>
+  <h1>ResourceQuota vs LimitRange</h1>
+  <p class="subtitle">Same namespace boundary, two different things get counted: one total for the whole namespace, or one bound per Pod.</p>
 
-  <svg viewBox="0 0 640 688" xmlns="http://www.w3.org/2000/svg" role="img"
-       aria-labelledby="ch08-fig05-quota-vs-limitrange-title ch08-fig05-quota-vs-limitrange-desc">
-    <title id="ch08-fig05-quota-vs-limitrange-title">ResourceQuota versus LimitRange, compared by scope</title>
-    <desc id="ch08-fig05-quota-vs-limitrange-desc">Side-by-side comparison: a ResourceQuota namespace boundary holds four Pods at their aggregate cap and rejects a fifth, while an unenclosed LimitRange applies its own minimum and maximum bounds to each Pod individually and fills in defaults for a fifth Pod that declares nothing.</desc>
+  <svg viewBox="0 0 720 732" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-labelledby="ch08-fig05-title ch08-fig05-desc">
+    <title id="ch08-fig05-title">ResourceQuota vs LimitRange, compared by scope</title>
+    <desc id="ch08-fig05-desc">Two panels side by side, each enclosed in the same dashed namespace boundary labeled namespace team-atlas. On the left, ResourceQuota: four Pods above a single namespace total bar marked AT CAP, and a fifth arriving Pod REJECTED because the namespace total is reached. On the right, LimitRange: four Pods each carrying its own min and max bound, and a fifth arriving Pod that declares nothing ACCEPTED with defaults filled in.</desc>
     <defs>
       <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-        <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"/>
-      </marker>
-      <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-        <polygon points="0 0, 8 3, 0 6" fill="#B58B3E"/>
-      </marker>
-      <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
         <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"/>
       </marker>
     </defs>
 
     <rect width="100%" height="100%" fill="#F5EFE4"/>
 
-    <!-- Panel titles -->
-    <text x="168" y="128" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="20" font-weight="600">ResourceQuota</text>
-    <text x="472" y="128" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="20" font-weight="600">LimitRange</text>
+    <!-- ============ HEADERS ============ -->
+    <text x="190" y="64" text-anchor="middle" font-family="'Roboto Slab', serif" font-size="20" font-weight="500" fill="#0B1E3B">ResourceQuota</text>
+    <text x="530" y="64" text-anchor="middle" font-family="'Roboto Slab', serif" font-size="20" font-weight="500" fill="#0B1E3B">LimitRange</text>
 
-    <!-- Left: namespace boundary (focal element) -->
-    <rect x="32" y="168" width="272" height="280" rx="8" fill="rgba(181,139,62,0.05)" stroke="rgba(181,139,62,0.50)" stroke-width="1.2" stroke-dasharray="4,4"/>
-    <rect x="36" y="180" width="264" height="20" rx="2" fill="#F5EFE4"/>
-    <text x="168" y="196" text-anchor="middle" fill="#8A8D90" font-family="'Fira Mono', monospace" font-size="14">namespace: team-atlas — 4 pods</text>
+    <!-- ============ NAMESPACE BOUNDARIES (identical, no accent) ============ -->
+    <rect x="40"  y="104" width="300" height="296" rx="8" fill="rgba(11,30,59,0.02)" stroke="rgba(11,30,59,0.55)" stroke-width="1.2" stroke-dasharray="4,4"/>
+    <rect x="380" y="104" width="300" height="296" rx="8" fill="rgba(11,30,59,0.02)" stroke="rgba(11,30,59,0.55)" stroke-width="1.2" stroke-dasharray="4,4"/>
 
-    <!-- Left: 4 pods (admitted, uniform) -->
-    <rect x="52" y="236" width="104" height="56" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
-    <rect x="180" y="236" width="104" height="56" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
-    <rect x="52" y="312" width="104" height="56" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
-    <rect x="180" y="312" width="104" height="56" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+    <text x="190" y="132" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.10em" fill="#0B1E3B">NAMESPACE: TEAM-ATLAS</text>
+    <text x="530" y="132" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.10em" fill="#0B1E3B">NAMESPACE: TEAM-ATLAS</text>
 
-    <!-- Left: namespace total bar, AT CAP -->
-    <rect x="52" y="400" width="232" height="28" rx="4" fill="#1F4A4E" stroke="#0B1E3B" stroke-width="1"/>
-    <text x="168" y="416" text-anchor="middle" fill="#F5EFE4" font-family="'Fira Sans', sans-serif" font-size="14" font-weight="600" letter-spacing="0.06em">AT CAP</text>
+    <!-- ============ LEFT: four plain Pods ============ -->
+    <g>
+      <rect x="52"  y="160" width="60" height="88" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+      <rect x="124" y="160" width="60" height="88" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+      <rect x="196" y="160" width="60" height="88" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+      <rect x="268" y="160" width="60" height="88" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+      <text x="82"  y="208" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Pod</text>
+      <text x="154" y="208" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Pod</text>
+      <text x="226" y="208" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Pod</text>
+      <text x="298" y="208" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Pod</text>
+    </g>
 
-    <!-- Right: no boundary — caption states the absence -->
-    <text x="472" y="196" text-anchor="middle" fill="#8A8D90" font-family="'Fira Mono', monospace" font-size="14">(no namespace boundary)<tspan x="472" y="216" fill="#0B1E3B" font-weight="500">each pod: min ≤ x ≤ max</tspan></text>
+    <!-- FOCAL: one aggregate bar spanning all four Pods -->
+    <rect x="52" y="280" width="276" height="88" rx="6" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"/>
+    <text x="190" y="316" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">namespace total</text>
+    <text x="190" y="348" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" letter-spacing="0.04em" fill="#0B1E3B">AT CAP</text>
 
-    <!-- Right: 4 pods (unenclosed, each individually bounded) -->
-    <rect x="356" y="236" width="104" height="56" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
-    <rect x="484" y="236" width="104" height="56" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
-    <rect x="356" y="312" width="104" height="56" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
-    <rect x="484" y="312" width="104" height="56" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+    <!-- ============ RIGHT: four Pods, each with its own min/max bound ============ -->
+    <g>
+      <rect x="392" y="160" width="60" height="208" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+      <rect x="464" y="160" width="60" height="208" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+      <rect x="536" y="160" width="60" height="208" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
+      <rect x="608" y="160" width="60" height="208" rx="6" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"/>
 
-    <!-- Right: per-pod bound bracket (graphic, not text) on each of the 4 pods -->
-    <path d="M 104,248 h8 M 108,248 v32 M 104,280 h8" fill="none" stroke="#1F4A4E" stroke-width="1.2"/>
-    <path d="M 232,248 h8 M 236,248 v32 M 232,280 h8" fill="none" stroke="#1F4A4E" stroke-width="1.2"/>
-    <path d="M 104,324 h8 M 108,324 v32 M 104,356 h8" fill="none" stroke="#1F4A4E" stroke-width="1.2"/>
-    <path d="M 232,324 h8 M 236,324 v32 M 232,356 h8" fill="none" stroke="#1F4A4E" stroke-width="1.2"/>
-    <path d="M 408,248 h8 M 412,248 v32 M 408,280 h8" fill="none" stroke="#1F4A4E" stroke-width="1.2"/>
-    <path d="M 536,248 h8 M 540,248 v32 M 536,280 h8" fill="none" stroke="#1F4A4E" stroke-width="1.2"/>
-    <path d="M 408,324 h8 M 412,324 v32 M 408,356 h8" fill="none" stroke="#1F4A4E" stroke-width="1.2"/>
-    <path d="M 536,324 h8 M 540,324 v32 M 536,356 h8" fill="none" stroke="#1F4A4E" stroke-width="1.2"/>
+      <text x="422" y="188" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Pod</text>
+      <text x="494" y="188" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Pod</text>
+      <text x="566" y="188" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Pod</text>
+      <text x="638" y="188" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">Pod</text>
 
-    <!-- Arrows: a 5th Pod arrives, from below, into each panel -->
-    <line x1="168" y1="496" x2="168" y2="448" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
-    <line x1="472" y1="496" x2="472" y2="368" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <!-- FOCAL: min<=x<=max bound drawn inside each Pod -->
+      <rect x="412" y="208" width="20" height="128" rx="6" fill="rgba(181,139,62,0.12)" stroke="#B58B3E" stroke-width="1.2"/>
+      <rect x="484" y="208" width="20" height="128" rx="6" fill="rgba(181,139,62,0.12)" stroke="#B58B3E" stroke-width="1.2"/>
+      <rect x="556" y="208" width="20" height="128" rx="6" fill="rgba(181,139,62,0.12)" stroke="#B58B3E" stroke-width="1.2"/>
+      <rect x="628" y="208" width="20" height="128" rx="6" fill="rgba(181,139,62,0.12)" stroke="#B58B3E" stroke-width="1.2"/>
 
-    <!-- Arriving 5th Pod, both panels (dashed = not yet admitted) -->
-    <rect x="116" y="496" width="104" height="56" rx="6" fill="rgba(11,30,59,0.03)" stroke="rgba(11,30,59,0.25)" stroke-width="1" stroke-dasharray="4,3"/>
-    <rect x="420" y="496" width="104" height="56" rx="6" fill="rgba(11,30,59,0.03)" stroke="rgba(11,30,59,0.25)" stroke-width="1" stroke-dasharray="4,3"/>
+      <text x="422" y="200" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">max</text>
+      <text x="494" y="200" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">max</text>
+      <text x="566" y="200" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">max</text>
+      <text x="638" y="200" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">max</text>
 
-    <!-- Outcomes -->
-    <text x="168" y="584" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="700" letter-spacing="0.04em">REJECTED<tspan x="168" y="608" fill="#8A8D90" font-style="italic" font-weight="400" letter-spacing="normal">the namespace total is reached</tspan></text>
-    <text x="472" y="584" text-anchor="middle" fill="#0B1E3B" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="700" letter-spacing="0.04em">ACCEPTED<tspan x="472" y="608" fill="#8A8D90" font-style="italic" font-weight="400" letter-spacing="normal">declares nothing,</tspan><tspan x="472" y="632" fill="#8A8D90" font-style="italic" font-weight="400" letter-spacing="normal">defaults filled in</tspan></text>
+      <text x="422" y="352" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">min</text>
+      <text x="494" y="352" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">min</text>
+      <text x="566" y="352" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">min</text>
+      <text x="638" y="352" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">min</text>
+    </g>
+
+    <!-- ============ ARRIVAL ARROWS (vertical, into the namespace boundary) ============ -->
+    <line x1="190" y1="496" x2="190" y2="400" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
+    <line x1="530" y1="496" x2="530" y2="400" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+    <!-- ============ ARRIVING 5th POD (real content, not empty placeholders) ============ -->
+    <rect x="52"  y="496" width="276" height="96" rx="6" fill="rgba(11,30,59,0.02)" stroke="#0B1E3B" stroke-width="1" stroke-dasharray="4,3"/>
+    <rect x="392" y="496" width="276" height="96" rx="6" fill="rgba(11,30,59,0.02)" stroke="#0B1E3B" stroke-width="1" stroke-dasharray="4,3"/>
+
+    <text x="190" y="528" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">5th Pod</text>
+    <text x="530" y="528" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="500" fill="#0B1E3B">5th Pod, declares nothing</text>
+
+    <text x="190" y="556" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" letter-spacing="0.04em" fill="#0B1E3B">REJECTED</text>
+    <text x="530" y="556" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" letter-spacing="0.04em" fill="#0B1E3B">ACCEPTED</text>
+
+    <text x="190" y="628" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" fill="#1F4A4E">the namespace total is reached</text>
+    <text x="530" y="628" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" fill="#1F4A4E">defaults filled in</text>
+
+    <!-- ============ LEGEND ============ -->
+    <line x1="40" y1="656" x2="680" y2="656" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"/>
+
+    <rect x="40" y="664" width="16" height="16" rx="2" fill="rgba(11,30,59,0.02)" stroke="rgba(11,30,59,0.55)" stroke-width="1.2" stroke-dasharray="4,4"/>
+    <text x="64" y="676" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.08em" fill="#1F4A4E">NAMESPACE SCOPE</text>
+
+    <rect x="300" y="664" width="16" height="16" rx="2" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"/>
+    <text x="324" y="676" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.08em" fill="#1F4A4E">WHAT'S COUNTED</text>
   </svg>
 </div>
 </body>

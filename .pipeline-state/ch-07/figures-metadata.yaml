@@ -3,31 +3,30 @@ book: kcna
 generated: '2026-09-01T14:56:32+00:00'
 figures:
 - anchor_id: ch07-fig01-filter-score-bind
-  source_hash: bb882acf71f8a79fc66154209f0159a46a7a9ef4df533d00f559d7773147ca39
+  source_hash: c7f2b2dbea4312454f1c0d18031e440b9bb7a3515885f0e8cbfe7d9ef064975a
   output_hash:
-    svg: 78b529ab6a4c38520837f4c6a2cf5ef5bbf358228e49a0f63f7eca9abd43d52e
-    png: aa70d6613062c24582e317829a95f360fbbb366e4ce3b9a4862b0f629b205d8b
+    svg: 105390c7b7d3dba2065be5fa205e12c3e0868e87ee76bc3a4008bb5bd7f6b619
+    png: a71266bf7d99cebacf25802ffd51c626972e9a5818d15b1f1b65c11a7068c77c
   validations:
     label_count:
       result: fail
-      value: 36
+      reason: SVG unparseable
+      value: 0
       max: 7
-      reason: 36 labels exceeds working-memory limit of 7
     palette_conformance:
-      result: pass
+      result: fail
+      reason: SVG unparseable
     min_font_size:
-      result: pass
-      value: 14.0
-      min: 14
-      reason: ''
+      result: fail
+      reason: SVG unparseable
     max_dimensions:
       result: pass
       value:
       - 1520
-      - 2736
+      - 1642
     aspect_ratio:
       result: pass
-      value: 1.8
+      value: 1.08
     grayscale_legibility:
       result: pass
       value: 8

@@ -79,16 +79,16 @@ figures:
     ExternalName is shown separately as a CNAME from my-svc to api.foo.bar.example
     with no cluster IP, no endpoints and no proxying.'
 - anchor_id: ch09-fig03-service-endpointslice-selector-path
-  source_hash: 37e1ec18a6ef8224deaa83c53ccbd3464a85d05efb5bb18c52eb925a8f445ad3
+  source_hash: bd98ae27f683c16bb2bead632da3a3aeddb69f7a9eb5f964610f182b0eb259fe
   output_hash:
-    svg: 45c7b1c26b37016140ed2912e72362c73546dc07f9a8692ba72a994779025cc9
-    png: 2df125503369666603786caac2feb4288fa5388738fdfac1ba394630154a5253
+    svg: 26762deb7873ed82e0101863ea28a72f8a88e2293f28e8f72561ca7aee646353
+    png: eb29af0820dc2c21613011637410bcc44fd80c47e0f51df8d58764e2cd84c6cb
   validations:
     label_count:
       result: fail
-      value: 33
+      value: 39
       max: 7
-      reason: 33 labels exceeds working-memory limit of 7
+      reason: 39 labels exceeds working-memory limit of 7
     palette_conformance:
       result: pass
     min_font_size:
@@ -99,25 +99,27 @@ figures:
     max_dimensions:
       result: pass
       value:
-      - 1280
-      - 1654
+      - 1520
+      - 1384
     aspect_ratio:
       result: pass
-      value: 1.29
+      value: 1.1
     grayscale_legibility:
       result: pass
       value: 8
       reason: ''
     alt_text_present:
       result: pass
-      length: 543
-  alt_text: A Service named database holds the selector app equals db. Four Pods are
-    listed; three carry the label app db and one carries app cache. The three matching
-    Pods send arrows toward a gate labelled Ready. Two Ready Pods pass through into
-    an EndpointSlice containing 10.244.1.7 port 5432 and 10.244.4.2 port 5432. The
-    third matching Pod, not Ready, is stopped at the gate. The cache Pod never matched
-    the selector and sends no arrow. Beneath, the EndpointSlice controller in kube-controller-manager
-    watches Services and Pods and writes the slice.
+      length: 630
+  alt_text: 'A Service named database holds the selector app equals db. Four Pods
+    are listed; three carry the label app db and one carries app cache. The three
+    matching Pods send arrows into an EndpointSlice that lists all three: 10.244.1.7
+    port 5432 ready true, 10.244.4.2 port 5432 ready true, and 10.244.4.9 port 5432
+    ready false. From the slice, the two ready entries pass through a gate labeled
+    Ready to traffic; the ready false entry is stopped at the gate. The cache Pod
+    never matched the selector and is not listed at all. Beneath, the EndpointSlice
+    controller in kube-controller-manager watches Services and Pods and writes the
+    slice.'
 - anchor_id: ch09-fig04-kube-proxy-modes
   source_hash: 8d557292e6c08dc6152a27ef3c9a1750e15b747620d949af9f3bddb17e17977d
   output_hash:

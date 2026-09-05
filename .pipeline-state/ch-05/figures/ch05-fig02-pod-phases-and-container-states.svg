@@ -1,118 +1,125 @@
-<svg viewBox="0 0 816 1092" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch05fig02-title ch05fig02-desc" width="640" height="857">
-      <title id="ch05fig02-title">Pod phase vs. container state</title>
-      <desc id="ch05fig02-desc">A Pod box lists five phase values — Pending, Running, Succeeded, Failed, and Unknown — and contains two independently tracked containers, app and helper, each showing three states — Waiting, Running, and Terminated; a worked-overlay panel shows one real instant where the Pod's phase is Running while its helper container's state is Waiting with reason ImagePullBackOff.</desc>
+<svg viewBox="0 0 600 900" role="img" aria-labelledby="ch05-fig02-title ch05-fig02-desc" xmlns="http://www.w3.org/2000/svg" width="680" height="1020">
+      <title id="ch05-fig02-title">Pod phase versus container state</title>
+      <desc id="ch05-fig02-desc">A Pod box lists five phase values, Pending, Running, Succeeded, Failed and Unknown, with two nested container boxes each showing three states, Waiting, Running and Terminated; a second panel shows a real instant where the Pod's phase is Running while its helper container's state is Waiting with reason CrashLoopBackOff.</desc>
 
       <defs>
         <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
           <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon>
         </marker>
-        <marker id="arrow-soft" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-          <polygon points="0 0, 8 3, 0 6" fill="#8A8D90"></polygon>
+        <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#B58B3E"></polygon>
+        </marker>
+        <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon>
         </marker>
       </defs>
 
-      <rect width="100%" height="100%" fill="#F5EFE4"></rect>
+      <rect width="600" height="900" fill="#F5EFE4"></rect>
 
-      <!-- Pod outer containment -->
-      <rect x="140" y="32" width="536" height="644" rx="8" fill="rgba(11,30,59,0.02)" stroke="#0B1E3B" stroke-width="1.2"></rect>
-      <rect x="156" y="24" width="56" height="16" fill="#F5EFE4"></rect>
-      <text x="184" y="36" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.12em" fill="#0B1E3B">POD</text>
+      <text x="36" y="20" class="eyebrow-svg">Definition — what the API reports</text>
+
+      <!-- ============ PANEL 1: POD definition ============ -->
+      <rect x="20" y="40" width="560" height="564" rx="8" fill="rgba(11,30,59,0.02)" stroke="#0B1E3B" stroke-width="1.2"></rect>
+
+      <rect x="36" y="52" width="72" height="24" rx="2" fill="none" stroke="rgba(11,30,59,0.4)" stroke-width="0.8"></rect>
+      <text x="72" y="68" class="tag-text" text-anchor="middle">POD</text>
+
+      <text x="36" y="104" class="sublabel">status.phase:</text>
+
+      <circle cx="40" cy="140" r="6" fill="#0B1E3B"></circle>
+      <line x1="46" y1="140" x2="60" y2="140" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"></line>
+
+      <rect x="60" y="120" width="104" height="40" rx="8" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="112" y="144" class="node-name" text-anchor="middle">Pending</text>
+
+      <line x1="164" y1="140" x2="188" y2="140" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"></line>
+
+      <rect x="188" y="120" width="104" height="40" rx="8" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="240" y="144" class="node-name" text-anchor="middle">Running</text>
+
+      <line x1="292" y1="140" x2="316" y2="140" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"></line>
+
+      <rect x="316" y="120" width="104" height="40" rx="8" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="368" y="144" class="node-name" text-anchor="middle">Succeeded</text>
+
+      <path d="M240,160 L240,164 Q240,172 248,172 L360,172 Q368,172 368,180 L368,200" fill="none" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"></path>
+
+      <rect x="316" y="200" width="104" height="40" rx="8" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="368" y="224" class="node-name" text-anchor="middle">Failed</text>
+
+      <rect x="460" y="200" width="104" height="40" rx="8" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="512" y="224" class="node-name" text-anchor="middle">Unknown</text>
+
+      <circle cx="176" cy="188" r="4" fill="#0B1E3B"></circle>
+      <rect x="184" y="164" width="48" height="16" rx="2" fill="#F5EFE4"></rect>
+      <text x="208" y="176" class="annot" text-anchor="middle">(any)</text>
+      <path d="M176,188 L504,188 Q512,188 512,196 L512,200" fill="none" stroke="#1F4A4E" stroke-width="1" stroke-dasharray="5,4" marker-end="url(#arrow)"></path>
 
       <!-- container: app -->
-      <rect x="172" y="312" width="472" height="164" rx="8" fill="rgba(11,30,59,0.035)" stroke="#1F4A4E" stroke-width="1"></rect>
-      <rect x="188" y="304" width="172" height="16" fill="#F5EFE4"></rect>
-      <text x="274" y="316" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.1em" fill="#1F4A4E">CONTAINER: APP</text>
+      <rect x="36" y="280" width="528" height="144" rx="8" fill="rgba(11,30,59,0.05)" stroke="#1F4A4E" stroke-width="1"></rect>
+      <text x="52" y="308" class="node-name">container: app</text>
+      <text x="52" y="328" class="sublabel">state:</text>
+
+      <rect x="52" y="340" width="148" height="40" rx="8" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="126" y="364" class="node-name" text-anchor="middle">Waiting</text>
+
+      <line x1="200" y1="360" x2="224" y2="360" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"></line>
+
+      <rect x="224" y="340" width="148" height="40" rx="8" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="298" y="364" class="node-name" text-anchor="middle">Running</text>
+
+      <line x1="372" y1="360" x2="396" y2="360" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"></line>
+
+      <rect x="396" y="340" width="148" height="40" rx="8" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="470" y="364" class="node-name" text-anchor="middle">Terminated</text>
+
+      <text x="126" y="400" class="annot" text-anchor="middle">(+Reason)</text>
+      <text x="298" y="400" class="annot" text-anchor="middle">(+startedAt)</text>
+      <text x="470" y="400" class="annot" text-anchor="middle">(+exitCode)</text>
 
       <!-- container: helper -->
-      <rect x="172" y="508" width="472" height="136" rx="8" fill="rgba(11,30,59,0.035)" stroke="#1F4A4E" stroke-width="1"></rect>
-      <rect x="188" y="500" width="204" height="16" fill="#F5EFE4"></rect>
-      <text x="290" y="512" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.1em" fill="#1F4A4E">CONTAINER: HELPER</text>
+      <rect x="36" y="464" width="528" height="116" rx="8" fill="rgba(11,30,59,0.05)" stroke="#1F4A4E" stroke-width="1"></rect>
+      <text x="52" y="492" class="node-name">container: helper</text>
+      <text x="52" y="512" class="sublabel">state:</text>
 
-      <!-- Worked overlay outer panel -->
-      <rect x="140" y="716" width="536" height="344" rx="8" fill="rgba(31,74,78,0.03)" stroke="#1F4A4E" stroke-width="1"></rect>
-      <rect x="156" y="708" width="172" height="16" fill="#F5EFE4"></rect>
-      <text x="242" y="720" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.12em" fill="#1F4A4E">WORKED OVERLAY</text>
-      <text x="188" y="756" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="16" fill="#1F4A4E">both readings are legitimate</text>
+      <rect x="52" y="524" width="148" height="40" rx="8" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="126" y="548" class="node-name" text-anchor="middle">Waiting</text>
 
-      <!-- Pod snapshot (worked instant) -->
-      <rect x="172" y="788" width="472" height="240" rx="8" fill="rgba(11,30,59,0.02)" stroke="#0B1E3B" stroke-width="1.2"></rect>
-      <rect x="188" y="780" width="56" height="16" fill="#F5EFE4"></rect>
-      <text x="216" y="792" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.12em" fill="#0B1E3B">POD</text>
+      <line x1="200" y1="544" x2="224" y2="544" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"></line>
 
-      <!-- Static labels -->
-      <text x="172" y="72" font-family="'Fira Mono', monospace" font-size="14" fill="#1F4A4E">status.phase</text>
-      <text x="668" y="72" text-anchor="end" font-family="'Fira Mono', monospace" font-size="14" fill="#8A8D90">(any) → Unknown</text>
+      <rect x="224" y="524" width="148" height="40" rx="8" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="298" y="548" class="node-name" text-anchor="middle">Running</text>
 
-      <!-- Connectors: pod phase -->
-      <line x1="308" y1="132" x2="340" y2="132" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
-      <line x1="476" y1="132" x2="508" y2="132" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
-      <line x1="408" y1="168" x2="408" y2="208" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
-      <circle cx="660" cy="84" r="4" fill="#8A8D90"></circle>
-      <path d="M 660 88 L 660 236 Q 660 244 652 244 L 644 244" fill="none" stroke="#8A8D90" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#arrow-soft)"></path>
+      <line x1="372" y1="544" x2="396" y2="544" stroke="#1F4A4E" stroke-width="1" marker-end="url(#arrow)"></line>
 
-      <!-- Connectors: container app -->
-      <line x1="308" y1="388" x2="340" y2="388" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
-      <line x1="476" y1="388" x2="508" y2="388" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+      <rect x="396" y="524" width="148" height="40" rx="8" fill="#ffffff" stroke="#0B1E3B" stroke-width="1"></rect>
+      <text x="470" y="548" class="node-name" text-anchor="middle">Terminated</text>
 
-      <!-- Connectors: container helper -->
-      <line x1="308" y1="584" x2="340" y2="584" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
-      <line x1="476" y1="584" x2="508" y2="584" stroke="#1F4A4E" stroke-width="1.2" marker-end="url(#arrow)"></line>
+      <text x="36" y="618" class="eyebrow-svg">Worked overlay — both readings are legitimate</text>
 
-      <!-- Pod phase chips: row 1 -->
-      <rect x="172" y="96" width="136" height="72" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
-      <text x="240" y="136" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-weight="600" font-size="16" fill="#0B1E3B">Pending</text>
+      <!-- ============ PANEL 2: worked overlay instant ============ -->
+      <rect x="20" y="628" width="560" height="196" rx="8" fill="rgba(11,30,59,0.02)" stroke="#0B1E3B" stroke-width="1.2"></rect>
 
-      <rect x="340" y="96" width="136" height="72" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
-      <text x="408" y="136" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-weight="600" font-size="16" fill="#0B1E3B">Running</text>
+      <text x="36" y="656" class="node-name">POD</text>
+      <rect x="140" y="642" width="176" height="28" rx="4" fill="#B58B3E" fill-opacity="0.10" stroke="#B58B3E" stroke-width="1"></rect>
+      <text x="228" y="661" class="focal-text" text-anchor="middle">phase: Running</text>
 
-      <rect x="508" y="96" width="136" height="72" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
-      <text x="576" y="136" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-weight="600" font-size="16" fill="#0B1E3B">Succeeded</text>
+      <rect x="36" y="684" width="528" height="56" rx="6" fill="rgba(11,30,59,0.05)" stroke="#1F4A4E" stroke-width="1"></rect>
+      <text x="52" y="716" class="node-name">app</text>
+      <text x="200" y="716" class="sublabel">state: Running</text>
 
-      <!-- Pod phase chips: row 2 -->
-      <rect x="340" y="208" width="136" height="72" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
-      <text x="408" y="248" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-weight="600" font-size="16" fill="#0B1E3B">Failed</text>
+      <rect x="36" y="752" width="528" height="56" rx="6" fill="rgba(11,30,59,0.05)" stroke="#1F4A4E" stroke-width="1"></rect>
+      <text x="52" y="784" class="node-name">helper</text>
+      <text x="200" y="784" class="sublabel">state: Waiting</text>
+      <text x="340" y="784" class="sublabel">Reason: CrashLoopBackOff</text>
 
-      <rect x="508" y="208" width="136" height="72" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
-      <text x="576" y="248" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-weight="600" font-size="16" fill="#0B1E3B">Unknown</text>
+      <!-- legend -->
+      <line x1="20" y1="848" x2="580" y2="848" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+      <text x="20" y="864" class="eyebrow-svg">Legend</text>
 
-      <!-- App container state chips -->
-      <rect x="172" y="352" width="136" height="72" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
-      <text x="240" y="392" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-weight="600" font-size="16" fill="#0B1E3B">Waiting</text>
+      <line x1="20" y1="884" x2="44" y2="884" stroke="#1F4A4E" stroke-width="1" stroke-dasharray="5,4"></line>
+      <text x="52" y="888" class="legend-text">(any) → catch-all transition</text>
 
-      <rect x="340" y="352" width="136" height="72" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
-      <text x="408" y="392" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-weight="600" font-size="16" fill="#0B1E3B">Running</text>
-
-      <rect x="508" y="352" width="136" height="72" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
-      <text x="576" y="392" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-weight="600" font-size="16" fill="#0B1E3B">Terminated</text>
-
-      <text x="240" y="444" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#8A8D90">(+Reason)</text>
-      <text x="408" y="444" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#8A8D90">(+startedAt)</text>
-      <text x="576" y="444" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#8A8D90">(+exitCode)</text>
-
-      <!-- Helper container state chips -->
-      <rect x="172" y="548" width="136" height="72" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
-      <text x="240" y="588" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-weight="600" font-size="16" fill="#0B1E3B">Waiting</text>
-
-      <rect x="340" y="548" width="136" height="72" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
-      <text x="408" y="588" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-weight="600" font-size="16" fill="#0B1E3B">Running</text>
-
-      <rect x="508" y="548" width="136" height="72" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
-      <text x="576" y="588" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-weight="600" font-size="16" fill="#0B1E3B">Terminated</text>
-
-      <!-- Worked overlay: focal chip (accent — the one thing to look at first) -->
-      <rect x="188" y="828" width="440" height="64" rx="8" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"></rect>
-      <rect x="204" y="832" width="64" height="16" rx="4" fill="none" stroke="rgba(181,139,62,0.5)" stroke-width="0.8"></rect>
-      <text x="236" y="844" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.1em" fill="#B58B3E">PHASE</text>
-      <text x="408" y="876" text-anchor="middle" font-family="'Fira Mono', monospace" font-weight="700" font-size="16" fill="#0B1E3B">phase: Running</text>
-
-      <!-- Worked overlay: app snapshot -->
-      <rect x="188" y="916" width="160" height="88" rx="6" fill="#F5EFE4" stroke="#1F4A4E" stroke-width="1"></rect>
-      <text x="204" y="940" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.1em" fill="#1F4A4E">APP</text>
-      <text x="204" y="972" font-family="'Fira Mono', monospace" font-weight="700" font-size="16" fill="#0B1E3B">state: Running</text>
-
-      <!-- Worked overlay: helper snapshot -->
-      <rect x="372" y="916" width="256" height="88" rx="6" fill="#F5EFE4" stroke="#1F4A4E" stroke-width="1"></rect>
-      <text x="388" y="940" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.1em" fill="#1F4A4E">HELPER</text>
-      <text x="388" y="968" font-family="'Fira Mono', monospace" font-weight="700" font-size="16" fill="#0B1E3B">state: Waiting</text>
-      <text x="388" y="988" font-family="'Fira Mono', monospace" font-size="14" fill="#8A8D90">Reason: ImagePullBackOff</text>
+      <rect x="340" y="878" width="20" height="12" rx="2" fill="#B58B3E" fill-opacity="0.10" stroke="#B58B3E" stroke-width="1"></rect>
+      <text x="368" y="888" class="legend-text">focal element</text>
     </svg>

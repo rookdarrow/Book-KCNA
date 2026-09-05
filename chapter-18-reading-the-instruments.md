@@ -125,7 +125,7 @@ sections:
     objectives: ["D4.1"]
     requires_figure: true
     figure_anchor: "ch18-fig03-trace-spans-across-services"
-    checkpoint_after: true
+    checkpoint_after: false
 
   - name: "Lines From Everywhere"
     objectives: ["D4.1", "D2.3"]
@@ -168,9 +168,9 @@ soundings_planned:
 # --- Skill v5.3 Part 8: practice-question budget ---
 question_budget:
   soundings: 8
-  taking_your_bearings: 15             # across 3 checkpoints (5 + 5 + 5)
+  taking_your_bearings: 14             # across 2 checkpoints (5 + 9)
   practice_questions: 17
-  total_this_chapter: 40
+  total_this_chapter: 39
 #-- B4's table says 10 Bearings. B4 also says, in the same file, that "the
 #-- 10 is a contract to exceed, not a target to hit," and shipped Ch 13
 #-- (budgeted at 10) carries three checkpoints of six. Eight sections and
@@ -260,7 +260,7 @@ figures_planned:
 
 ## Attention Budget
 
-**Total time: ~125 minutes | Recommended: Split across 2 sessions**
+**Total time: ~122 minutes | Recommended: Split across 2 sessions**
 
 | Section | Time | Attention Cost | Best Time to Study |
 |---|---|---|---|
@@ -271,10 +271,9 @@ figures_planned:
 | ☆ Taking Your Bearings (1) | 6 min | Medium | After brief break |
 | §4 Pulling, Not Being Pushed | 14 min | Medium | When alert |
 | §5 Following One Request | 12 min | High | Peak attention |
-| ☆ Taking Your Bearings (2) | 6 min | Medium | After brief break |
 | §6 Lines From Everywhere | 10 min | Medium | Mid-session |
 | §7 Is the Service Doing What Users Expect | 10 min | Medium | When alert |
-| ☆ Taking Your Bearings (3) | 6 min | Medium | After brief break |
+| ☆ Taking Your Bearings (2) | 11 min | Medium | After brief break |
 | §8 One Question, Four Instruments | 5 min | Low | Anytime |
 | Exam Alert + Practice Questions | 20 min | High | Peak attention |
 
@@ -283,7 +282,7 @@ figures_planned:
 - **Medium:** New concepts requiring focus — study when alert
 - **High:** Abstract or complex material — study at peak attention
 
-*If you only have 15 minutes: read §2 and §7, then take Checkpoint 3. Those two carry two of this chapter's six high-priority exam topics between them, and §7 names the question the other five are all in service of.*
+*If you only have 15 minutes: read §2 and §7, then take Taking Your Bearings #2. Those two carry two of this chapter's six high-priority exam topics between them, and §7 names the question the other five are all in service of.*
 
 ---
 
@@ -333,7 +332,7 @@ Eight questions. None of them requires this chapter; every one is answerable fro
 
 8. **The traffic passes through a proxy the platform injected**, not through code the application team wrote. The proxy sees every request enter and leave, and reports on what it sees. *[cross-bearing: see Ch 17 §5 — a network that knows what it's carrying]*
 
-**If you got 6+ right:** skim. Read §1's distinction carefully, memorize the four signals in §2, and spend your real attention on §4 and §7 — those two carry five of the eleven traps in this chapter's Exam Alert. Take all three checkpoints.
+**If you got 6+ right:** skim. Read §1's distinction carefully, memorize the four signals in §2, and spend your real attention on §4 and §7 — those two carry five of the eleven traps in this chapter's Exam Alert. Take both checkpoints.
 
 **If you got 3–5 right:** read at normal pace. This chapter builds almost entirely on chapters you have already finished, and the questions you missed point at exactly which section will feel like new material rather than extension.
 
@@ -401,14 +400,14 @@ Observability is the other thing. The CNCF's TAG Observability whitepaper draws 
 
 A **known unknown** is a question you have thought of but do not yet have the answer to. *Is the database near capacity?* You knew to ask; you built a graph; the graph tells you. An **unknown unknown** is a question you had not thought to ask until the moment you needed it. *Why did requests from one specific customer's mobile client start failing at 2:10, but only when they hit the region-two cache?* Nobody built that graph. Nobody could have. There are more possible questions of that shape than there are dashboards in the world.
 
-> **★ Fixed Point**
+> ★ **Fixed Point:**
 >
 > **Observability is the ability to ask questions of a running system that you did not plan for in advance — to reason about *unknown unknowns*. Monitoring watches indicators you chose ahead of time — *known unknowns*. The distinction is about what you can ask, not about which tool you bought.**
 
 OpenTelemetry's own framing says the same thing from the other side: observability "lets you understand a system from the outside by letting you ask questions about that system without knowing its inner workings," which is what lets you "troubleshoot and handle novel problems, that is, 'unknown unknowns'" [source: opentelemetry-observability-primer-2026-08-23]. It also helps you answer the question "Why is this happening?" — as opposed to *whether* it is happening, which a dashboard can already tell you.
 
 <!-- FIGURE: ch18-fig01-monitoring-vs-observability -->
-![Two columns above one shared system box. The monitoring column passes through three fixed indicators labelled CPU, memory and 5xx into a dashboard. The observability column runs straight from a question that arrives at 2:10 a.m. into an open query, with no indicator layer in between.](figures/ch18-fig01-monitoring-vs-observability.svg)
+![Two columns above one shared system box. The monitoring column passes through three fixed indicators labeled CPU, memory and 5xx into a dashboard. The observability column runs straight from a question that arrives at 2:10 a.m. into an open query, with no indicator layer in between.](figures/ch18-fig01-monitoring-vs-observability.svg)
 
 <!-- ASCII-FALLBACK
 ```
@@ -455,7 +454,7 @@ The OpenTelemetry docs state the dependency directly: "For a system to be observ
 
 And here is the sharpest available test of whether you have done enough of it:
 
-> **★ Fixed Point**
+> ★ **Fixed Point:**
 >
 > **An application is properly instrumented when developers don't need to add more instrumentation to troubleshoot an issue, because they have all of the information they need** [source: opentelemetry-observability-primer-2026-08-23]**.**
 
@@ -498,7 +497,7 @@ A *signal*, in the ordinary sense of the word, is what you send when you want so
 
 A **signal**, generally, is a system output describing the underlying activity of the platform and the applications on it — something you want to measure at a point in time, or an event moving through a distributed system that you would like to trace [source: opentelemetry-signals-2026-08-23].
 
-> **★ Fixed Point**
+> ★ **Fixed Point:**
 >
 > **OpenTelemetry's Signals page defines FOUR signals: traces, metrics, logs, and baggage** [source: opentelemetry-signals-2026-08-23]**. Candidates reliably name three and drop baggage, because baggage is not itself a measurement — it is contextual information passed between the other signals.**
 
@@ -533,7 +532,7 @@ The **OpenTelemetry Collector** is "a vendor-agnostic implementation of how to r
 Read that second quote slowly, because it contains the architectural idea this whole chapter keeps re-encountering. One set of signals goes *in*. Multiple, swappable backends receive them going *out*. The thing that produces telemetry and the thing that stores it are separate, and either can be replaced without the other noticing.
 
 <!-- FIGURE: ch18-fig02-otel-four-signals -->
-![A wide baggage band spans the top, connected by dashed lines to three boxes below it labelled traces, metrics and logs, which answer where, whether and what. The three converge into an OpenTelemetry Collector that receives, processes and exports to one or more backends.](figures/ch18-fig02-otel-four-signals.svg)
+![A wide baggage band spans the top, connected by dashed lines to three boxes below it labeled traces, metrics and logs, which answer where, whether and what. The three converge into an OpenTelemetry Collector that receives, processes and exports to one or more backends.](figures/ch18-fig02-otel-four-signals.svg)
 
 <!-- ASCII-FALLBACK
 ```
@@ -569,7 +568,7 @@ Read that second quote slowly, because it contains the architectural idea this w
 
 The Collector is deployable "as an agent or collector with support for traces, metrics, and logs" from a single codebase [source: opentelemetry-collector-2026-08-31]: one implementation, several shapes, several signal types.
 
-<!-- AUTHOR-REVIEW: the Collector's pipeline stages (receiver / processor / exporter) are named as a taxonomy in OTel's docs but were NOT captured verbatim in the cached snapshot (see the explicit guardrail in opentelemetry-collector-2026-08-31). This section deliberately uses only the verbatim "receive, process and export" phrasing and does not present the three as named components. If a re-fetch closes manifest gap G-18c, §2 could name them. -->
+Inside it, the route telemetry takes is a **pipeline**, and the project names the pipeline's three parts after the same three verbs: "A set of receivers that collect the data. A series of optional processors that get the data from receivers and process it. A set of exporters which get the data from processors and send it outside the Collector" [source: opentelemetry-collector-components-2026-09-04]. Receiver, processor, exporter — receive, process, export. Nothing to memorize beyond the verbs you already have.
 
 ---
 
@@ -587,7 +586,7 @@ Prometheus "fundamentally stores all data as time series: streams of timestamped
 
 That structure is what makes metrics cheap to keep and cheap to aggregate. You cannot ask "what was the 95th-percentile latency across all of last week" of a pile of log lines without reading all of them. You can ask it of a time series trivially, because the shape of the data was chosen for exactly that question.
 
-### Labels, and the cost of one
+### Metric labels, and the cost of one
 
 Time series are identified by more than a name.
 
@@ -635,7 +634,7 @@ These two coexist. That is worth stating plainly, because candidates who learn t
 >
 > The exam does not test whether you can define metrics-server. It tests whether you know **which side of the boundary a given question falls on**. When you read a scenario, ask one thing: *does answering this require history, alerting, or a metric that isn't CPU or memory?* If yes, that is monitoring-system territory and metrics-server is the wrong answer — no matter how much the words in the question sound like "metrics."
 
-The pipeline itself you have already seen. *[cross-bearing: see Ch 13 §7 — the resource metrics pipeline, figure `ch13-fig04-metrics-pipeline-and-metrics-server`]* Go back and look at it again if it has faded; there is no new diagram here, because there is no new architecture here. There is only a boundary you can now see the far side of.
+The pipeline itself you have already seen. *[cross-bearing: see Ch 13 §7 — the resource metrics pipeline, and the figure that draws it]* Go back and look at it again if it has faded; there is no new diagram here, because there is no new architecture here. There is only a boundary you can now see the far side of.
 
 ---
 
@@ -681,7 +680,7 @@ Five questions. One of them tests material from an earlier chapter — that is d
 - **(a) metrics-server.** Current resource reading, CPU/memory. Exactly its scope.
 - **(b) Monitoring system.** Requires history. metrics-server keeps none.
 - **(c) Monitoring system.** Requires both history *and* an application-level metric that is neither CPU nor memory.
-- **(d) metrics-server.** Current, resource-level, no history required — this is what `kubectl top nodes` reports.
+- **(d) metrics-server.** Current, resource-level, no history required — `kubectl top` territory.
 - **(e) Neither, as posed.** A readiness probe is a yes/no question the kubelet asks, acts on, and discards; it produces no trend and no queryable history. *[cross-bearing: see Ch 5 §7 — three probes, three jobs]* Getting an answer means recording the *consequence* — the endpoint leaving and rejoining the Service, over time — which is monitoring-system work. Health checking is not observability.
 
 The discriminator is the one in the Navigational Hazards box: history, alerting, or a non-resource metric ⇒ monitoring system. And a probe result is not a record at all, so it is on neither side of that boundary until something else writes it down.
@@ -734,7 +733,7 @@ Prometheus reaches out. Your application does not report in. On an interval, the
 
 How does it know what to scrape? "Targets are discovered via **service discovery** or static configuration" [source: prometheus-overview-2026-08-23]. In a Kubernetes cluster this matters enormously, because Pods are not durable and their addresses are not stable *[cross-bearing: see Ch 9 §2 — the address that doesn't last]*. Static configuration would be obsolete before you finished writing it. Service discovery lets Prometheus ask the cluster what exists right now, and scrape that.
 
-> **★ Fixed Point**
+> ★ **Fixed Point:**
 >
 > **Prometheus PULLS. It scrapes metrics from targets over HTTP on an interval; targets are found via service discovery or static configuration** [source: prometheus-overview-2026-08-23]**. Pushing exists only through the Pushgateway, and "the only valid use case for the Pushgateway is for capturing the outcome of a service-level batch job"** [source: prometheus-pushgateway-practices-2026-08-31]**.**
 
@@ -828,9 +827,7 @@ Results are available in the Prometheus UI, and "other programs can fetch the re
 
 > 🪝 **Snag:** Grafana is Grafana Labs' own software — "open source software that enables you to query, visualize, alert on, and explore your metrics, logs, and traces wherever they're stored" [source: grafana-introduction-2026-08-23]. Contrast that with the two projects in this chapter whose own documentation states a CNCF donation outright: Prometheus joined in 2016 [source: prometheus-overview-2026-08-23], and Fluentd was accepted in November 2016 [source: fluentd-architecture-2026-08-31]. Carry the contrast, not a roster. Foundation membership moves, and anything graded on a *current* roster is graded on a moving target. *[cross-bearing: see Ch 17 §2 — sandbox, incubating, graduated, and who decides]*
 
-<!-- AUTHOR-REVIEW: two conventions for the author to settle, neither resolvable inside this chapter.
- (1) SECONDARY OBJECTIVE. §4 and §6 each touch D4.2 (Cloud Native Ecosystem and Principles — Prometheus's and Fluentd's CNCF status, and the project-maturity caveat), which Ch 17 owns. §3 and §6 already declare D2.3 as a secondary objective for exactly this "these are seams" reason; §4 and §6 should declare D4.2 the same way in chapter frontmatter, so question-writing and reconciliation read interleaving rather than untagged drift.
- (2) CROSS-BEARING VS SOURCE TAG. Seven Kubernetes claims in this chapter — probe semantics, metrics-server scope, DaemonSet per-node placement, scheduler placement, the CRI boundary, StatefulSet identity — are carried by a cross-bearing to an already-audited chapter rather than by a [source:] tag. If a pointer to an audited chapter discharges the tagging obligation, record that rule at book level so each chapter's fact audit stops re-raising it. If it does not, those seven need their Ch 2 / Ch 5 / Ch 6 / Ch 7 snapshots pulled into this chapter's bundle. No new research is required either way. -->
+<!-- AUTHOR-REVIEW: one convention for the author to settle, not resolvable inside this chapter. SECONDARY OBJECTIVE: §4 and §6 each touch D4.2 (Cloud Native Ecosystem and Principles — Prometheus's and Fluentd's CNCF status, and the project-maturity caveat), which Ch 17 owns. §3 and §6 already declare D2.3 as a secondary objective for exactly this "these are seams" reason; §4 and §6 should declare D4.2 the same way in chapter frontmatter, so question-writing and reconciliation read interleaving rather than untagged drift. (The cross-bearing-versus-source-tag question this comment once carried is settled: the Term Ownership Ledger's book-level ruling of 2026-08-31 makes a pointer to the owning section the citation for a retrieved claim.) -->
 
 ### Where Prometheus fits, and where it does not
 
@@ -896,7 +893,7 @@ A **trace** — formally a distributed trace — "records the paths taken by req
 
 And the join between them, which is the exam's actual target:
 
-> **★ Fixed Point**
+> ★ **Fixed Point:**
 >
 > **A span is ONE unit of work. A trace is the WHOLE path a request took, and "a trace is made of one or more spans." "The first span represents the root span; each root span represents a request from start to finish"** [source: opentelemetry-observability-primer-2026-08-23]**. Spans beneath the root "provide a more in-depth context of what occurs during a request."**
 
@@ -954,11 +951,11 @@ Spans have to go somewhere.
 
 **Jaeger** is a distributed tracing backend: it "receives tracing telemetry data and provides processing, aggregation, data mining, and visualizations" [source: jaeger-overview-2026-08-23]. It "was originally designed to support the OpenTracing standard," and it is "OpenTelemetry compatible; terminology and concepts map directly between the two data models" [source: jaeger-overview-2026-08-23].
 
-Keep the division of labor explicit, because it is going to matter in three paragraphs' time. OpenTelemetry — **OTel** in the shorthand the figure above uses, and the project's own — is the *instrumentation* side: the APIs and SDKs that produce spans and export them. Jaeger is the *backend*, the thing that receives them, stores them, and draws the picture above. The OTel Collector supports Jaeger as one of its output formats [source: opentelemetry-collector-2026-08-31], which is exactly the arrangement: producer, wire format, consumer, all separable.
+Keep the division of labor explicit, because it is going to matter in three paragraphs' time. OpenTelemetry — **OTel** in the shorthand §2's figure uses, and the project's own — is the *instrumentation* side: the APIs and SDKs that produce spans and export them. Jaeger is the *backend*, the thing that receives them, stores them, and draws the picture above. The OTel Collector supports Jaeger as one of its output formats [source: opentelemetry-collector-2026-08-31], which is exactly the arrangement: producer, wire format, consumer, all separable.
 
 If that shape feels familiar, it should. Prometheus stores and Grafana reads. OTel exports and Jaeger receives. Two different corners of this chapter, same architecture.
 
-<!-- AUTHOR-REVIEW: Jaeger IS cached — `jaeger-overview-2026-08-23`, sourced to jaegertracing.io/docs/latest/ — and draft-v1's note claiming "the corpus has no jaegertracing.io capture" was simply wrong. That note is deleted and the paragraph is now tagged. Jaeger remains deliberately UNGRADED: no Practice, Bearings or Soundings item depends on it, and the question budget is met exactly at 40 (8 + 15 + 17). If the author wants Jaeger graded, the natural slot is one §5 Practice item on the OTel-exports / Jaeger-receives division, taking §5 from 2 items to 3 and the chapter from 17 Practice items to 18. Any such item must NOT grade Jaeger's CNCF maturity level (trap #99), which the snapshot states in frontmatter only. -->
+<!-- AUTHOR-REVIEW: Jaeger is sourced (jaeger-overview-2026-08-23) but deliberately UNGRADED: no Practice, Taking Your Bearings or Soundings item depends on it, and the question budget is met exactly at 39 (8 + 14 + 17). If the author wants Jaeger graded, the natural slot is one §5 Practice item on the OTel-exports / Jaeger-receives division, taking the chapter from 17 Practice items to 18. Any such item must NOT grade Jaeger's CNCF maturity level (trap #99), which the snapshot states in frontmatter only. -->
 
 ### Spans you didn't ask for
 
@@ -1108,7 +1105,7 @@ The user-perspective clause is the part with teeth. "Average CPU across the flee
 
 The SLI is the measurement. The SLO is the *target you commit to* on that measurement. 99.5% of checkout requests under 400ms, over a rolling 30 days — that is an SLO, and it takes an SLI as its input.
 
-> **★ Fixed Point**
+> ★ **Fixed Point:**
 >
 > **An SLI is the MEASUREMENT. An SLO is the OBJECTIVE — a target value for that measurement. The SLI is a number you observe; the SLO is a number you commit to.**
 
@@ -1135,7 +1132,7 @@ If you can instrument only four things on a user-facing system, these are the fo
 **Saturation** — "how 'full' your service is. A measure of your system fraction, emphasizing the resources that are most constrained." And the operational warning: "many systems degrade in performance before they achieve 100% utilization, so having a utilization target is essential" [source: sre-book-four-golden-signals-2026-08-23].
 
 <!-- FIGURE: ch18-fig05-sli-slo-golden-signals -->
-![On the left, an internal frame holds an SLI, measured from the user's perspective, feeding an SLO target; below a labelled boundary, an external frame holds an SLA contract with consequences. On the right, a two-by-two grid of latency, traffic, errors and saturation, with an arrow from latency to saturation marking latency increases as a leading indicator of saturation.](figures/ch18-fig05-sli-slo-golden-signals.svg)
+![On the left, an internal frame holds an SLI, measured from the user's perspective, feeding an SLO target; below a labeled boundary, an external frame holds an SLA contract with consequences. On the right, a two-by-two grid of latency, traffic, errors and saturation, with an arrow from latency to saturation marking latency increases as a leading indicator of saturation.](figures/ch18-fig05-sli-slo-golden-signals.svg)
 
 <!-- ASCII-FALLBACK
 ```
@@ -1239,7 +1236,7 @@ Nine questions on §4 through §7. Two of them reach back into earlier chapters.
 
 **3. B.** "A trace is made of one or more spans. The first span represents the root span" [source: opentelemetry-observability-primer-2026-08-23]. One request, one trace, spans beneath the root for each unit of work. A treats it like a log file, one artifact per service; C inverts containment; D misses that correlation comes from propagated trace and span IDs [source: opentelemetry-context-propagation-2026-08-31], not timestamps.
 
-**4. C.** The discriminator is which side of the code boundary you're on. A client library "makes it easy to directly instrument your code" [source: prometheus-glossary-2026-08-31] — it goes *into* software you can change, ruling out A for PostgreSQL. An exporter is "a binary running alongside the application you want to obtain metrics from" [source: prometheus-glossary-2026-08-31] — right for PostgreSQL, unnecessary beside code you already instrument, ruling out B. D over-generalizes the Pushgateway from *short-lived* to *unmodifiable*; PostgreSQL is long-running and scrapeable. Metrics-server holds current CPU and memory for autoscaling — no history, no application metric — so connection counts and query latency sit outside its scope. *[cross-bearing: see Ch 13 §7]*
+**4. C.** The discriminator is which side of the code boundary you're on. A client library "makes it easy to directly instrument your code" [source: prometheus-glossary-2026-08-31] — it goes *into* software you can change, ruling out A for PostgreSQL. An exporter is "a binary running alongside the application you want to obtain metrics from" [source: prometheus-glossary-2026-08-31] — right for PostgreSQL, unnecessary beside code you already instrument, ruling out B. D over-generalizes the Pushgateway from *short-lived* to *unmodifiable*; PostgreSQL is long-running and scrapeable. As for metrics-server: it holds current CPU and memory for autoscaling — no history, no application metric — so connection counts and query latency sit outside its scope. *[cross-bearing: see Ch 13 §7]*
 
 **5. No.** The mesh proxy sits in the network path and reports on what crosses it — which service called which, how long, what status. Queries *inside* a handler never cross the proxy. This is the zero-code/code-based boundary: zero-code instrumentation provides telemetry "from libraries you use and/or the environment your application runs in" [source: opentelemetry-instrumentation-2026-08-31], but seeing inside a handler requires instrumentation *in* the handler. *[cross-bearing: see Ch 17 §5]*
 
@@ -1383,7 +1380,7 @@ Seventeen questions. Three are interleaved with earlier chapters and tagged. Exp
 
 ---
 
-**Q1.** Which statement best captures the difference between monitoring and observability?
+**1.** Which statement best captures the difference between monitoring and observability?
 
 - A) Observability is what you get when you add distributed tracing to your monitoring stack
 - B) Monitoring detects known unknowns; observability additionally lets you find and reason about unknown unknowns
@@ -1392,7 +1389,7 @@ Seventeen questions. Three are interleaved with earlier chapters and tagged. Exp
 
 ---
 
-**Q2.** By OpenTelemetry's stated definition, an application is properly instrumented when:
+**2.** By OpenTelemetry's stated definition, an application is properly instrumented when:
 
 - A) It emits at least the four golden signals
 - B) It has been onboarded to a CNCF-graduated observability backend
@@ -1401,7 +1398,7 @@ Seventeen questions. Three are interleaved with earlier chapters and tagged. Exp
 
 ---
 
-**Q3.** Which is the complete list of signals OpenTelemetry currently supports?
+**3.** Which is the complete list of signals OpenTelemetry currently supports?
 
 - A) Traces, metrics, logs
 - B) Traces, metrics, logs, baggage
@@ -1410,7 +1407,7 @@ Seventeen questions. Three are interleaved with earlier chapters and tagged. Exp
 
 ---
 
-**Q4.** Baggage is best described as:
+**4.** Baggage is best described as:
 
 - A) An attribute automatically attached to every span in a trace
 - B) A separate key-value store propagated between services, carrying contextual data that the other signals can incorporate
@@ -1419,7 +1416,7 @@ Seventeen questions. Three are interleaved with earlier chapters and tagged. Exp
 
 ---
 
-**Q5.** A dashboard shows a Pod at "85% CPU utilization." That percentage is calculated against:
+**5.** A dashboard shows a Pod at "85% CPU utilization." That percentage is calculated against:
 
 - A) The node's total allocatable CPU
 - B) The container's CPU limit
@@ -1428,7 +1425,7 @@ Seventeen questions. Three are interleaved with earlier chapters and tagged. Exp
 
 ---
 
-**Q6.** *[retrieval: ch5]* A Deployment's Pod template declares no CPU requests. An HPA targets 60% CPU utilization for that Deployment. What happens?
+**6.** *[retrieval: ch5]* A Deployment's Pod template declares no CPU requests. An HPA targets 60% CPU utilization for that Deployment. What happens?
 
 - A) The HPA scales against the node's allocatable CPU, divided by Pod count
 - B) The HPA treats the Pod as 0% utilized and scales it down to the minimum replica count
@@ -1437,7 +1434,7 @@ Seventeen questions. Three are interleaved with earlier chapters and tagged. Exp
 
 ---
 
-**Q7.** *[retrieval: ch13]* Your team needs to answer: "What was the memory usage of the `payments` Deployment at 3 a.m. last Tuesday, and did it correlate with the error spike?" The cluster runs metrics-server. What is required?
+**7.** *[retrieval: ch13]* Your team needs to answer: "What was the memory usage of the `payments` Deployment at 3 a.m. last Tuesday, and did it correlate with the error spike?" The cluster runs metrics-server. What is required?
 
 - A) Nothing further; `kubectl top` with a timestamp flag answers this
 - B) A monitoring system with time-series storage — metrics-server retains no history and does not collect application error metrics
@@ -1446,7 +1443,7 @@ Seventeen questions. Three are interleaved with earlier chapters and tagged. Exp
 
 ---
 
-**Q8.** How does the Prometheus server obtain metrics from an instrumented, long-running application?
+**8.** How does the Prometheus server obtain metrics from an instrumented, long-running application?
 
 - A) The application POSTs metrics to Prometheus on an interval
 - B) Prometheus scrapes an HTTP endpoint on the application, on an interval
@@ -1455,7 +1452,7 @@ Seventeen questions. Three are interleaved with earlier chapters and tagged. Exp
 
 ---
 
-**Q9.** Which scenario is the documented, valid use of the Pushgateway?
+**9.** Which scenario is the documented, valid use of the Pushgateway?
 
 - A) A high-traffic web API that prefers outbound connections to inbound ones
 - B) A nightly database-maintenance batch job, not tied to a specific machine, whose outcome must be recorded
@@ -1464,7 +1461,7 @@ Seventeen questions. Three are interleaved with earlier chapters and tagged. Exp
 
 ---
 
-**Q10.** A company needs an exact count of every API call for per-customer invoicing. What does the Prometheus documentation say about this use case?
+**10.** A company needs an exact count of every API call for per-customer invoicing. What does the Prometheus documentation say about this use case?
 
 - A) It is well suited; counters are the canonical Prometheus use case
 - B) It becomes suitable once the scrape interval is reduced to one second
@@ -1473,7 +1470,7 @@ Seventeen questions. Three are interleaved with earlier chapters and tagged. Exp
 
 ---
 
-**Q11.** Which statement about Prometheus's storage architecture is correct?
+**11.** Which statement about Prometheus's storage architecture is correct?
 
 - A) It requires a clustered backend such as Cassandra for durability
 - B) Each server is standalone and does not depend on network storage or other remote services, so it works when other infrastructure is broken
@@ -1482,7 +1479,7 @@ Seventeen questions. Three are interleaved with earlier chapters and tagged. Exp
 
 ---
 
-**Q12.** Which correctly describes the relationship between traces and spans?
+**12.** Which correctly describes the relationship between traces and spans?
 
 - A) A span contains one or more traces; the first trace is the root trace
 - B) A trace contains one or more spans; the first span is the root span, representing the request from start to finish
@@ -1491,7 +1488,7 @@ Seventeen questions. Three are interleaved with earlier chapters and tagged. Exp
 
 ---
 
-**Q13.** A request crosses six microservices. How do the spans emitted by service six come to be associated with the trace begun at service one?
+**13.** A request crosses six microservices. How do the spans emitted by service six come to be associated with the trace begun at service one?
 
 - A) The tracing backend correlates them by comparing timestamps after ingestion
 - B) Each service includes a trace ID and span ID in the context passed to the next, which uses those values to create a span belonging to the same trace
@@ -1500,7 +1497,7 @@ Seventeen questions. Three are interleaved with earlier chapters and tagged. Exp
 
 ---
 
-**Q14.** *[retrieval: ch6]* A logging agent must run on every node, including nodes added after deployment. Which workload resource is correct?
+**14.** *[retrieval: ch6]* A logging agent must run on every node, including nodes added after deployment. Which workload resource is correct?
 
 - A) A Deployment with `replicas` equal to the current node count
 - B) A StatefulSet with one ordinal per node
@@ -1509,7 +1506,7 @@ Seventeen questions. Three are interleaved with earlier chapters and tagged. Exp
 
 ---
 
-**Q15.** Which correctly describes the relationship between Fluentd and Fluent Bit?
+**15.** Which correctly describes the relationship between Fluentd and Fluent Bit?
 
 - A) Fluent Bit is a fork of Fluentd maintained by a different foundation
 - B) Fluent Bit is a lightweight telemetry agent and a sub-project of Fluentd, created for constrained environments; both are commonly deployed as node-level agents
@@ -1518,7 +1515,7 @@ Seventeen questions. Three are interleaved with earlier chapters and tagged. Exp
 
 ---
 
-**Q16.** A team commits: "99.95% of search requests will return in under 200ms, measured monthly." No penalty is attached. This statement is:
+**16.** A team commits: "99.95% of search requests will return in under 200ms, measured monthly." No penalty is attached. This statement is:
 
 - A) An SLA, because it is a public commitment
 - B) An SLI, because it describes a measurement
@@ -1527,7 +1524,7 @@ Seventeen questions. Three are interleaved with earlier chapters and tagged. Exp
 
 ---
 
-**Q17.** Which are the four golden signals of monitoring?
+**17.** Which are the four golden signals of monitoring?
 
 - A) Rate, errors, duration, saturation
 - B) Latency, traffic, errors, saturation
@@ -1538,88 +1535,88 @@ Seventeen questions. Three are interleaved with earlier chapters and tagged. Exp
 
 ### Answers and Explanations
 
-**Q1 — B.**
+**1 — B.**
 - **A** is wrong, and it is the tool-acquisition misconception: the belief that observability is a product you bolt on. Adding traces to a stack nobody can query freely produces more telemetry, not more observability. The posture is upstream of the tool — a Prometheus deployment with rich labels and an ad-hoc query language is doing observability work, and a pile of unqueryable traces is not.
 - **B** is correct. "Monitoring is called a system that can detect known unknowns — as opposed to observability which emphasizes being able to find and reason about unknown unknowns as well" [source: cncf-tag-observability-whitepaper-2026-08-31].
 - **C** is wrong: the split is not by layer. You can monitor an application and observe infrastructure.
 - **D** is wrong and inverts things if anything — monitoring is defined by "displaying **real-time** quantitative data" [source: sre-book-monitoring-definitions-2026-08-31], and observability is not restricted to historical questions.
 
-**Q2 — C.** "An application is properly instrumented when developers don't need to add more instrumentation to troubleshoot an issue, because they have all of the information they need" [source: opentelemetry-observability-primer-2026-08-23].
+**2 — C.** "An application is properly instrumented when developers don't need to add more instrumentation to troubleshoot an issue, because they have all of the information they need" [source: opentelemetry-observability-primer-2026-08-23].
 - **A** is wrong: the golden signals are a monitoring prioritization heuristic, not an instrumentation completeness bar.
 - **B** is wrong: a backend stores telemetry; it does not produce it. Instrumentation is upstream of any backend.
 - **D** is tempting because it names the right four things, but emitting all four signals thinly still fails the test. The bar is *sufficiency for troubleshooting*, not signal-type coverage.
 
-**Q3 — B.** OpenTelemetry's Signals page lists traces, metrics, logs, and baggage [source: opentelemetry-signals-2026-08-23].
+**3 — B.** OpenTelemetry's Signals page lists traces, metrics, logs, and baggage [source: opentelemetry-signals-2026-08-23].
 - **A** is the three-signal answer commonly given. It is the OTel primer's *passing* list, not the Signals page's list.
 - **C** is the CNCF TAG Observability whitepaper's five-signal enumeration — metrics, logs, traces, profiles and dumps [source: cncf-tag-observability-whitepaper-2026-08-31]. A genuinely different taxonomy from a different document, and the reason §2's Snag warned you to check *which* authority a question names. This one names OpenTelemetry.
 - **D** is wrong: alerts are an output of a monitoring system acting on metrics, not a signal type.
 
-**Q4 — B.** Baggage is "contextual information that is passed between signals" [source: opentelemetry-signals-2026-08-23] — a key-value store letting you "propagate any data you like alongside context" [source: opentelemetry-baggage-2026-08-31].
+**4 — B.** Baggage is "contextual information that is passed between signals" [source: opentelemetry-signals-2026-08-23] — a key-value store letting you "propagate any data you like alongside context" [source: opentelemetry-baggage-2026-08-31].
 - **A** is precisely the misconception the OTel docs pre-empt: "baggage is a separate key-value store and is unassociated with attributes on spans, metrics, or logs without explicitly adding them" [source: opentelemetry-baggage-2026-08-31]. Adding baggage to a span is a deliberate act.
 - **C** is wrong: buffering is a Collector implementation concern, not what baggage is.
 - **D** is wrong: baggage propagates across service boundaries and is independent of any one log record.
 
-**Q5 — C.** "The controller calculates the utilization value as a percentage of the equivalent resource request on the containers in each Pod" [source: k8s-docs-hpa-utilization-vs-requests-2026-08-31].
+**5 — C.** "The controller calculates the utilization value as a percentage of the equivalent resource request on the containers in each Pod" [source: k8s-docs-hpa-utilization-vs-requests-2026-08-31].
 - **A** is wrong: node capacity is not the denominator for Pod utilization.
 - **B** is the most common wrong answer, because limits are the more memorable number. Requests are what the Pod asked for, and requests are the denominator.
 - **D** is wrong: a ResourceQuota caps namespace-wide consumption *[cross-bearing: see Ch 8 §3 — dividing a shared cluster]*; it is not an input to per-Pod utilization.
 
-**Q6 — C.** "If some of the Pod's containers do not have the relevant resource request set, CPU utilization for the Pod will not be defined and the autoscaler will not take any action for that metric" [source: k8s-docs-hpa-utilization-vs-requests-2026-08-31].
+**6 — C.** "If some of the Pod's containers do not have the relevant resource request set, CPU utilization for the Pod will not be defined and the autoscaler will not take any action for that metric" [source: k8s-docs-hpa-utilization-vs-requests-2026-08-31].
 - **A** is wrong: node allocatable is never the denominator for Pod CPU utilization.
 - **B** is the sharpest distractor here, because "no data" and "zero" feel interchangeable and they are not. The controller does not compute a low value; it computes no value, and therefore takes no action *on that metric*. A Pod scaled to minimum and a Pod the autoscaler is ignoring look different in production and are graded differently on paper.
 - **D** is wrong: a Pod with no resource requests is admitted normally. (A LimitRange may *default* a request at admission time [source: k8s-docs-limit-range-2026-08-24], a separate mechanism acting before the Pod exists, not the HPA improvising a denominator. *[cross-bearing: see Ch 8 §3 — dividing a shared cluster]*)
 
-**Q7 — B.** The question needs two things metrics-server does not provide: **history** and a **non-resource metric** (error counts). *[cross-bearing: see Ch 13 §7 — numbers nobody collects by default]*
+**7 — B.** The question needs two things metrics-server does not provide: **history** and a **non-resource metric** (error counts). *[cross-bearing: see Ch 13 §7 — numbers nobody collects by default]*
 - **A** is wrong: no such flag exists, and `kubectl top` reports current readings by design.
 - **C** is wrong and is the trap for someone who thinks retention is a tuning knob. metrics-server is scoped to current resource readings for autoscaling; historical retention is not a setting it withholds.
 - **D** is wrong: metrics-server registers with the aggregation layer to serve `metrics.k8s.io`; that is how it is reached, not a history feature.
 
-**Q8 — B.** "Time series collection happens via a pull model over HTTP" [source: prometheus-overview-2026-08-23], with targets found by service discovery or static configuration.
+**8 — B.** "Time series collection happens via a pull model over HTTP" [source: prometheus-overview-2026-08-23], with targets found by service discovery or static configuration.
 - **A** is the single most common Prometheus misconception. Applications expose; Prometheus fetches.
 - **C** inverts the exporter's arrow, which is worth being precise about because exporters *are* real and *are* how much of the ecosystem works. An exporter is "a binary running alongside the application you want to obtain metrics from" [source: prometheus-glossary-2026-08-31]: it **exposes** an endpoint that Prometheus scrapes, exactly as a client library does. It is also the wrong mechanism here, because an exporter is for software you did not write, and this application is instrumented.
 - **D** is wrong: the CRI is the kubelet↔runtime boundary *[cross-bearing: see Ch 2 §4 — the container runtime interface]* and has nothing to do with Prometheus.
 
-**Q9 — B.** "The only valid use case for the Pushgateway is for capturing the outcome of a service-level batch job," where service-level means "not semantically related to a specific machine or job instance" [source: prometheus-pushgateway-practices-2026-08-31]. A nightly maintenance job is exactly this: too short-lived to be scraped, and not tied to one instance.
+**9 — B.** "The only valid use case for the Pushgateway is for capturing the outcome of a service-level batch job," where service-level means "not semantically related to a specific machine or job instance" [source: prometheus-pushgateway-practices-2026-08-31]. A nightly maintenance job is exactly this: too short-lived to be scraped, and not tied to one instance.
 - **A** is wrong: a long-running web API *can* be scraped, which disqualifies it. Preference is not a criterion.
 - **C** is wrong: the Pushgateway "persists the most recent push" [source: prometheus-glossary-2026-08-31]; it is not a delivery-guarantee mechanism.
 - **D** is wrong: network topology is a routing problem, not a Pushgateway use case. Its documentation recommends it only "in certain limited cases" [source: prometheus-pushgateway-practices-2026-08-31].
 
-**Q10 — C.** "If you need 100% accuracy, such as for per-request billing, Prometheus is not a good choice as the collected data will likely not be detailed and complete enough" [source: prometheus-overview-2026-08-23] — the documentation's own example.
+**10 — C.** "If you need 100% accuracy, such as for per-request billing, Prometheus is not a good choice as the collected data will likely not be detailed and complete enough" [source: prometheus-overview-2026-08-23] — the documentation's own example.
 - **A** is the answer given by someone matching on "counting requests" and missing "exact."
 - **B** targets the belief that sampling more often converges on completeness. It does not. Scraping observes *state* at intervals, not events; a counter that advanced four hundred times between two scrapes is still one difference, however short the interval. The trade is deliberate — "Prometheus values reliability" [source: prometheus-overview-2026-08-23] — not a tuning oversight.
 - **D** is wrong twice: the Pushgateway is for batch-job outcomes, not per-request events, and routing events through it would not make sampling exact.
 
-**Q11 — B.** "No reliance on distributed storage — single server nodes are autonomous" [source: prometheus-overview-2026-08-23], and "each Prometheus server is standalone, not depending on network storage or other remote services, so you can rely on it when other parts of your infrastructure are broken" [source: prometheus-overview-2026-08-23]. Independence is a deliberate reliability choice.
+**11 — B.** "No reliance on distributed storage — single server nodes are autonomous" [source: prometheus-overview-2026-08-23], and "each Prometheus server is standalone, not depending on network storage or other remote services, so you can rely on it when other parts of your infrastructure are broken" [source: prometheus-overview-2026-08-23]. Independence is a deliberate reliability choice.
 - **A** inverts the design.
 - **C** is wrong: Prometheus stores scraped samples locally and has nothing to do with etcd *[cross-bearing: see Ch 3 §2 — the control plane]*.
 - **D** is wrong: the API server stores API objects, not time series, and using it as a metrics store would be catastrophic for the control plane.
 
-**Q12 — B.** "A trace is made of one or more spans. The first span represents the root span; each root span represents a request from start to finish" [source: opentelemetry-observability-primer-2026-08-23].
+**12 — B.** "A trace is made of one or more spans. The first span represents the root span; each root span represents a request from start to finish" [source: opentelemetry-observability-primer-2026-08-23].
 - **A** inverts the containment, which is exactly the confusion the question tests.
 - **C** is wrong: they name different things — one unit of work versus the whole path.
 - **D** is wrong on "exactly one per service." A single service commonly emits several spans for one request (the handler, a database call, a cache lookup), and "one or more" is the documented relationship.
 
-**Q13 — B.** "Service A includes a trace ID and a span ID as part of the context. Service B uses these values to create a new span that belongs to the same trace" [source: opentelemetry-context-propagation-2026-08-31]. This is context propagation, which "allows traces to build causal information about a system across services that are arbitrarily distributed across process and network boundaries" [source: opentelemetry-context-propagation-2026-08-31].
+**13 — B.** "Service A includes a trace ID and a span ID as part of the context. Service B uses these values to create a new span that belongs to the same trace" [source: opentelemetry-context-propagation-2026-08-31]. This is context propagation, which "allows traces to build causal information about a system across services that are arbitrarily distributed across process and network boundaries" [source: opentelemetry-context-propagation-2026-08-31].
 - **A** is the *pre-tracing* approach and its failure is why tracing exists. Timestamp correlation across six independently clocked services under concurrent load is unreliable at best.
 - **C** is wrong: there is no central registry; the correlation rides in-band with the request.
 - **D** is wrong: a mesh may *inject* headers, but the mechanism is still in-band propagation of a trace ID with the request, not central assignment from a pool.
 
-**Q14 — C.** A DaemonSet's contract is one Pod per node, maintained as nodes join and leave. *[cross-bearing: see Ch 6 §7 — one per node, and work that ends]* Kubernetes names this shape for logging directly: a node-level agent runs on every node, typically as a DaemonSet [source: k8s-docs-logging-architecture-2026-08-23].
+**14 — C.** A DaemonSet's contract is one Pod per node, maintained as nodes join and leave. *[cross-bearing: see Ch 6 §7 — one per node, and work that ends]* Kubernetes names this shape for logging directly: a node-level agent runs on every node, typically as a DaemonSet [source: k8s-docs-logging-architecture-2026-08-23].
 - **A** is wrong on two counts: the scheduler does not guarantee one Pod per node, and the replica count goes stale the moment the cluster scales.
 - **B** is wrong: StatefulSets provide stable ordinal identity *[cross-bearing: see Ch 6 §6 — when Pods are not interchangeable]*, not per-node placement.
 - **D** is wrong: a CronJob runs work that ends. Log collection is continuous, and reconciling coverage on a timer reinvents, badly, what a controller already does.
 
-**Q15 — B.** Fluent Bit is "an open source telemetry agent," created in 2014 "as a lightweight log processor, developed by the Fluentd team at Treasure Data for constrained environments such as embedded Linux"; it is "a sub-project of Fluentd," and both "are commonly deployed on Kubernetes as node-level logging agents (DaemonSets)" [source: fluent-bit-overview-2026-08-23].
+**15 — B.** Fluent Bit is "an open source telemetry agent," created in 2014 "as a lightweight log processor, developed by the Fluentd team at Treasure Data for constrained environments such as embedded Linux"; it is "a sub-project of Fluentd," and both "are commonly deployed on Kubernetes as node-level logging agents (DaemonSets)" [source: fluent-bit-overview-2026-08-23].
 - **A** is wrong: sub-project, not fork, and both sit under the CNCF.
 - **C** inverts them. Fluentd is the parent and heavier — "30-40MB of memory" for a vanilla instance [source: fluentd-architecture-2026-08-31].
 - **D** is wrong: the shared prefix reflects a real parent-child relationship.
 
-**Q16 — C.** A target value on a measurement, with no consequence attached. Apply the test: "ask 'what happens if the SLOs aren't met?': if there is no explicit consequence, then you are almost certainly looking at an SLO" [source: sre-book-service-level-objectives-2026-08-31].
+**16 — C.** A target value on a measurement, with no consequence attached. Apply the test: "ask 'what happens if the SLOs aren't met?': if there is no explicit consequence, then you are almost certainly looking at an SLO" [source: sre-book-service-level-objectives-2026-08-31].
 - **A** is wrong: an SLA is a contract "that includes consequences of meeting (or missing) the SLOs they contain" [source: sre-book-service-level-objectives-2026-08-31]. Publicity is not what makes an SLA; consequences are.
 - **B** is wrong but close, and worth being precise about. The **SLI** is the underlying measurement — the proportion of search requests returning under 200ms. The statement quoted adds a *target* and a *window*, which is what makes it an objective.
 - **D** is wrong: the error budget is the allowance of unreliability this objective leaves room for [source: sre-book-error-budgets-2026-08-31], not the objective itself.
 
-**Q17 — B.** "The four golden signals of monitoring are latency, traffic, errors, and saturation" [source: sre-book-four-golden-signals-2026-08-23].
+**17 — B.** "The four golden signals of monitoring are latency, traffic, errors, and saturation" [source: sre-book-four-golden-signals-2026-08-23].
 - **A** mixes RED's rate/errors/duration [source: red-method-tom-wilkie-2026-08-31] with the golden signals' saturation. Plausible, and wrong.
 - **C** is the USE method's three terms — utilization, saturation, errors [source: use-method-brendan-gregg-2026-08-31] — with latency appended. USE is a *resource*-oriented methodology; the golden signals are a user-facing-service list.
 - **D** names the four OpenTelemetry signals [source: opentelemetry-signals-2026-08-23], which are signal *types*, not monitoring priorities. Two different fours, and the exam will happily offer you the wrong one.
@@ -1665,6 +1662,8 @@ You started at Chapter 1 with a curriculum that had moved under everyone's feet,
 
 That is the last new thing this book has to teach you. Everything from here is consolidation.
 
+🗺️ Chart → **🌊 Passage** → 🌅 Dawn
+
 ---
 
 ## The Voyage Ahead
@@ -1673,7 +1672,7 @@ Chapter 19 does not add material. It re-sees what you already have.
 
 You have learned this book domain by domain, because that is how the exam is structured and because knowledge has to enter in some order. But that is not how it will be *tested*. A question does not announce which chapter it came from. It describes a situation and asks what is true, and answering it well means holding several chapters at once: the control loop from Chapter 3, the operator pattern from Chapter 6, and the GitOps agent from Chapter 15 turn out to be one idea seen three times, and a question can approach it from any of them.
 
-So the next chapter runs the book the other way. Nine cross-cutting themes traced through twenty chapters. The confusion pairs that cost points, each with a question that discriminates between them. Ninety minutes of pacing, and what to do with a question you do not immediately know. A map of where the weight actually is, checked against your own Soundings and Bearings history rather than against a generic study plan. How to use The Lodestar in the last hour before you sit down. And a dated plan for the final week.
+So the next chapter runs the book the other way. Nine cross-cutting themes traced through twenty chapters. The confusion pairs that cost points, each with a question that discriminates between them. Ninety minutes of pacing, and what to do with a question you do not immediately know. A map of where the weight actually is, checked against your own Soundings and Taking Your Bearings history rather than against a generic study plan. How to use The Lodestar in the last hour before you sit down. And a dated plan for the final week.
 
 You have the instruments. Chapter 19 is the last stretch of open water before you sit down.
 

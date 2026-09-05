@@ -3,20 +3,7 @@ book: kcna
 generated: '2026-09-01T14:56:33+00:00'
 figures:
 - anchor_id: ch07-fig01-filter-score-bind
-  status: regenerate
-  regenerate_hint: 'Second pass. Keep the three-column FILTER / SCORE / BIND layout and the tight highlight box around node-c only (that part is now right). Restore the two arrows the previous render dropped: inside BIND, a bold brass ASSIGNS arrow pointing DOWN from kube-scheduler to kube-apiserver with the label ASSIGNS beside it; and in the separate lower panel, a STARTS arrow from 'kubelet on node-c' down to 'container runtime -> containers'. The legend already names ASSIGNS as the focal element, so the arrow must exist. Nothing else changes.'
-  render_paths:
-    svg: figures/ch07-fig01-filter-score-bind.svg
-    png: figures/ch07-fig01-filter-score-bind.png
-  source_path: figures/sources/ch07-fig01-filter-score-bind.html
-  validation_results:
-    label_count: fail
-    palette_conformance: pass
-    min_font_size: pass
-    max_dimensions: pass
-    aspect_ratio: pass
-    grayscale_legibility: pass
-    alt_text_present: pass
+  status: approved  # 2026-09-04 coordinator review: render matches the chapter; promoted to figures/ and applied
   regenerate_hint: 'Two fixes. (1) In the SCORE stage the winner highlight must enclose
     only the ''node-c 91'' row: in the last render its box extended down through the
     ''node-e 68'' row, which made node-e look struck out, and node-e is a valid, lower-scored
@@ -27,6 +14,18 @@ figures:
     separate moment, separate arrow'' divider plus the kubelet-on-node-c panel beneath.
     Brass only on the thick kube-scheduler -> kube-apiserver ASSIGNS arrow inside
     BIND and on its legend entry; every other arrow teal. No type below 14px.'
+  render_paths:
+    svg: figures/ch07-fig01-filter-score-bind.svg
+    png: figures/ch07-fig01-filter-score-bind.png
+  source_path: figures/sources/ch07-fig01-filter-score-bind.html
+  validation_results:
+    label_count: fail
+    palette_conformance: fail
+    min_font_size: fail
+    max_dimensions: pass
+    aspect_ratio: pass
+    grayscale_legibility: pass
+    alt_text_present: pass
   review_notes: '2026-09-04 chapter audit: regenerate requested; see regenerate_hint.'
   last_applied_hash: null
   ai_review:

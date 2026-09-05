@@ -307,6 +307,9 @@ This chapter teaches the ones you can control from a Pod spec or a node label: r
 **Binding** is what happens next, and it is not what most people assume. The scheduler notifies the API server about its decision, and *that* is what the word binding names [source: k8s-docs-kube-scheduler-2026-08-23].
 
 <!-- FIGURE: ch07-fig01-filter-score-bind -->
+![Three-stage scheduler pipeline: FILTER keeps three of five nodes, SCORE ranks them with node-c highest at 91, BIND draws an arrow from kube-scheduler to kube-apiserver. A separate, unconnected panel below shows the kubelet on node-c starting containers.](figures/ch07-fig01-filter-score-bind.svg)
+
+<!-- ASCII-FALLBACK
 ```
    UNBOUND POD
    ┌───────────────┐
@@ -335,6 +338,7 @@ This chapter teaches the ones you can control from a Pod spec or a node label: r
                      │  container runtime → containers    │
                      └────────────────────────────────────┘
 ```
+-->
 
 Look at where the third arrow goes. The scheduler's arrow lands on the **API server**, not on node-c. Nothing in the scheduler ever touches a container. The kubelet on the chosen node is what starts anything, and it does so because it saw the recorded decision. Not because the scheduler told it to.
 

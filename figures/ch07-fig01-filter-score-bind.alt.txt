@@ -1,0 +1,1 @@
+Three-stage scheduler pipeline: FILTER keeps three of five nodes, SCORE ranks them with node-c highest at 91, BIND draws an arrow from kube-scheduler to kube-apiserver. A separate, unconnected panel below shows the kubelet on node-c starting containers.

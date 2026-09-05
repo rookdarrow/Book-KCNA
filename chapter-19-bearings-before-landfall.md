@@ -13,7 +13,7 @@ prereq_factor: "heavy"
 # Section numbers are BINDING. §3 and §5 are pinned by published cross-bearings
 # already shipped in chapter-01-taking-departure.md (lines 215 and 452).
 sections:
-  - name: "Nine Threads Through Twenty Chapters"
+  - name: "Nine Threads Through Eighteen Chapters"
     objectives: ["D1.1", "D1.2", "D1.3", "D1.4", "D2.1", "D2.2", "D2.3", "D2.4", "D3.1", "D3.2", "D4.1", "D4.2", "D4.3"]
     requires_figure: true
     figure_anchor: "ch19-fig01-cross-domain-integration-map"
@@ -59,7 +59,7 @@ soundings_planned:
 # --- Skill v5.3 Part 8: practice-question budget (from B4 length-budget.md) ---
 question_budget:
   soundings: 5
-  taking_your_bearings: 5              # across 2 checkpoints (3 + 2) — see note
+  taking_your_bearings: 5             # across 2 checkpoints (3 + 2)
   practice_questions: 10
   total_this_chapter: 20
 
@@ -138,15 +138,15 @@ This is a synthesis chapter, so the Soundings changes shape. You are not measuri
 <details>
 <summary>Answers + readiness rubric</summary>
 
-**1.** No answer key; this is self-report. Note the trap: an *untimed* full-length attempt tells you almost nothing about pacing, and pacing is a distinct failure mode from knowledge. The Linux Foundation publishes 90 minutes for its multiple-choice exams [source: lf-mc-exam-faq-2026-08-31], and the timer cannot be paused, even through a connection fault [source: lf-handbook2-taking-the-exam-2026-08-31].
+1. No answer key; this is self-report. Note the trap: an *untimed* full-length attempt tells you almost nothing about pacing, and pacing is a distinct failure mode from knowledge. The Linux Foundation publishes 90 minutes for its multiple-choice exams [source: lf-mc-exam-faq-2026-08-31], and the timer cannot be paused, even through a connection fault [source: lf-handbook2-taking-the-exam-2026-08-31].
 
-**2.** No answer key. If you named a domain but not a plan, count this as half. §4 turns the plan half into something concrete.
+2. No answer key. If you named a domain but not a plan, count this as half. §4 turns the plan half into something concrete.
 
-**3.** No full derivation here; that is §2's work, and handing it over now would spend the discrimination before you have drilled it. Note only this much: access modes are node-count semantics, not permission semantics, and one of the four ⚠ Navigational Hazards in §2 exists precisely because the English misleads. If you hesitated on this one, §2's storage rows and the hazard block are your center of gravity. The underlying mechanism is at *[cross-bearing: see Ch 11 §4 — access modes and reclaim policies]*.
+3. No full derivation here; that is §2's work, and handing it over now would spend the discrimination before you have drilled it. Note only this much: access modes are node-count semantics, not permission semantics, and one of the four ⚠ Navigational Hazards in §2 exists precisely because the English misleads. If you hesitated on this one, §2's storage rows and the hazard block are your center of gravity. The underlying mechanism is at *[cross-bearing: see Ch 11 §4 — access modes and reclaim policies]*.
 
-**4.** No answer key here either. §1 supplies the list, and the point of asking first is that you try to generate it before you see it.
+4. No answer key here either. §1 supplies the list, and the point of asking first is that you try to generate it before you see it.
 
-**5.** No answer key. If you cannot name your failure mode, that is itself the finding.
+5. No answer key. If you cannot name your failure mode, that is itself the finding.
 
 ---
 
@@ -156,7 +156,7 @@ This is a synthesis chapter, so the Soundings changes shape. You are not measuri
 
 **3–4 — one to two more weeks.** You are close. §4 tells you where those weeks go: not "review everything," but the specific chapters your own checkpoint history flags.
 
-**0–2 — four or more weeks, and not a re-read.** Rereading the book front to back is the least efficient thing you could do with four weeks. §4 plus your own Bearings scores will name five or six chapters. Work those, then re-run this Soundings.
+**0–2 — four or more weeks, and not a re-read.** Rereading the book front to back is the least efficient thing you could do with four weeks. §4 plus your own Taking Your Bearings scores will name five or six chapters. Work those, then re-run this Soundings.
 
 </details>
 
@@ -191,8 +191,6 @@ By the end of this chapter, you'll be able to:
 
 ## ☀️ §1 — Nine Threads Through Eighteen Chapters
 
-<!-- AUTHOR-REVIEW: The B6 section skeleton titles this section "Nine Threads Through Twenty Chapters." That count is wrong on both readings — the threads trace Chapters 2 through 18 (seventeen chapters), and the book has eighteen content chapters before this one. The body prose says "eighteen chapters" consistently. Retitled here to match the body. Recommend the skeleton entry be corrected rather than the prose. -->
-
 A book organized by exam domain serves the exam, not the material. Kubernetes did not grow four domains. It grew a handful of ideas that got applied over and over, in different subsystems, by different SIGs, across a decade. The exam blueprint cuts across those ideas at right angles.
 
 So we cut the other way now. A coastline surveyed on a north–south run and the same coastline surveyed east–west produce two charts that do not look much alike, and a navigator wants both. Nine threads, each one named, then traced through the chapters that build it. Nothing here is new. Everything here you have read. What is new is the *axis*.
@@ -225,7 +223,7 @@ Read this section with one question running: **when I meet this pattern in a que
 
 The three tiers are a reading aid, not doctrine. **Structural** threads describe how the cluster is built. **Interface** threads describe how its parts are joined and extended. **Policy** threads describe what is permitted. Density is the thing to notice: threads 1, 3 and 5 touch the most chapters, and they are correspondingly the most likely to appear in a question whose stem never names them.
 
-<!-- AUTHOR-REVIEW: This grid was rebuilt from the nine thread paths in the prose below, not traced from the draft-v1 ASCII, which was not column-aligned (two rows were a column short) and disagreed with the prose in four places. Two consequences the figure spec `ch19-fig01-cross-domain-integration-map` must absorb before render: (1) the density sentence now names threads 1, 3 and 5, which tie at six or more chapters — the spec's AUTHOR-REVIEW item 1 flagged the old sentence as contradicting the data, and this is the resolution; (2) thread 5 now includes Ch 16 §4, which the section skeleton assigns "application-side Service debugging: selector/label mismatch." That addition is substantively correct and it closes the spec's AUTHOR-REVIEW item 2 — Ch 16 no longer renders as an empty row. Total marks are now 41, not the 40 the spec records. The spec needs a re-sync pass. -->
+<!-- AUTHOR-REVIEW (audit 2026-09-04): the rendered figure ch19-fig01 disagrees with the grid above and with the thread paths below on three threads. Render thread 1 omits Ch 4. Render thread 3 marks Ch 6, 9, 12, 15 and 16 and omits Ch 11, 13, 17 and 18. Render thread 5 marks Ch 15 where the path says Ch 16. The grid and the prose paths are the authority (41 marks; threads 1, 3 and 5 are the densest at 6, 6 and 7 chapters). The figure spec needs re-syncing to them before the next render. The alt text remains correct. -->
 
 ### Thread 1 — The control loop
 
@@ -250,13 +248,13 @@ That last one is worth dwelling on, because it converts four memorized rows into
 | **RoleBinding** (namespaced) | Grants the Role's permissions **in that namespace** | Grants the ClusterRole's permissions **but only in the binding's namespace** |
 | **ClusterRoleBinding** (cluster-scoped) | **Not valid** — a namespaced Role cannot be granted cluster-wide | Grants the ClusterRole's permissions **cluster-wide** |
 
-You do not memorize this table. You derive it: a binding can never grant more scope than it has itself, and a namespaced Role can never escape its namespace. Both facts follow from Chapter 4.
+You do not memorize this table. You derive it: a binding can never grant more scope than it has itself, and a namespaced Role can never escape its namespace. Both facts follow from Chapter 4. The documentation states the load-bearing case in one sentence: "a RoleBinding can reference a ClusterRole and bind that ClusterRole to the namespace of the RoleBinding" [source: k8s-docs-rbac-rolebinding-clusterrole-2026-09-04].
 
 ### Thread 3 — An object without its component does nothing
 
 This is the pattern the book has hammered hardest, and it is the one most likely to be worth points on the day.
 
-> **★ Fixed Point**
+> ★ **Fixed Point:**
 >
 > **An object without its component does nothing.**
 >
@@ -319,7 +317,7 @@ Two numbers, five consequences. This is a thread worth being able to trace out l
 
 RBAC and NetworkPolicy were built by different SIGs for different problems, and they share one semantic exactly.
 
-**Both are purely additive. Neither has a deny rule.** In RBAC, permissions accumulate across every binding that names you; nothing subtracts. In NetworkPolicy, a Pod that no policy selects is fully open, a Pod that any policy selects is restricted to the union of what its policies allow, and there is no rule that says "block this."
+**Both are purely additive. Neither has a deny rule.** In RBAC, permissions are "purely additive" and there are no deny rules, in the documentation's own words [source: k8s-docs-rbac-2026-08-23]; they accumulate across every binding that names you, and nothing subtracts. In NetworkPolicy, a Pod that no policy selects is "non-isolated" and fully open, a Pod that any policy selects is restricted to the union of what its policies allow, and "Network policies do not conflict; they are additive" [source: k8s-docs-network-policies-2026-08-23]. There is no rule that says "block this."
 
 Path: **Ch 10 §6** establishes it for NetworkPolicy *[cross-bearing: see Ch 10 §6 — allowing, never denying]* → **Ch 12 §3** establishes it for RBAC → **Ch 12 §9** names them as one shared semantic.
 
@@ -335,30 +333,30 @@ Do not memorize the paths. The paths are here so you can *check* your recall, no
 
 Three questions. All three are cross-chapter by construction — that is what a synthesis checkpoint is.
 
-**Q1.** A cluster administrator installs a CustomResourceDefinition for a `BackupSchedule` resource. Users can create `BackupSchedule` objects successfully — `kubectl get backupschedules` returns them. No backups ever run. Name the pattern this is an instance of, and name two other places in this book where the same pattern appears. `[retrieval: ch3, ch6, ch10, ch13, ch17]`
+**1.** A cluster administrator installs a CustomResourceDefinition for a `BackupSchedule` resource. Users can create `BackupSchedule` objects successfully — `kubectl get backupschedules` returns them. No backups ever run. Name the pattern this is an instance of, and name two other places in this book where the same pattern appears. `[retrieval: ch3, ch6, ch10, ch13, ch17]`
 
-**Q2.** A `RoleBinding` in namespace `payments` references a `ClusterRole` named `secret-reader`. What permissions does the subject receive, and where? Derive your answer from a distinction established in Chapter 4 rather than recalling the matrix. `[retrieval: ch4, ch12]`
+**2.** A `RoleBinding` in namespace `payments` references a `ClusterRole` named `secret-reader`. What permissions does the subject receive, and where? Derive your answer from a distinction established in Chapter 4 rather than recalling the matrix. `[retrieval: ch4, ch12]`
 
-**Q3.** A Pod is stuck in `Pending`. A colleague suggests checking `kubectl logs`. Explain why that is the wrong instrument, and name the **confusion pair** that tells you which field to read instead. `[retrieval: ch5, ch7, ch13]`
+**3.** A Pod is stuck in `Pending`. A colleague suggests checking `kubectl logs`. Explain why that is the wrong instrument, and name the **confusion pair** that tells you which field to read instead. `[retrieval: ch5, ch7, ch13]`
 
 ---
 
 **Answers with Explanations:**
 
-**Q1 — The absent-component pattern: an object without its component does nothing.**
+**1 — The absent-component pattern: an object without its component does nothing.**
 
 A CRD defines a new resource *kind*. It does not supply anything that acts on instances of that kind. Without an operator or controller watching for `BackupSchedule` objects, creating one stores a record in etcd and nothing else. The API accepted it; nothing reconciled it.
 
 Two other appearances (any two of these count):
 - An **Ingress** object with no Ingress controller installed (Ch 10 §3)
-- A **NetworkPolicy** on a CNI plugin that does not implement policy (Ch 10 §7)
+- A **NetworkPolicy** on a CNI plugin that does not implement policy (Ch 10 §6)
 - **`kubectl top`** failing because metrics-server is not installed (Ch 13 §7)
 - The **VerticalPodAutoscaler**, which is an add-on rather than built in (Ch 17 §7)
 - A **PersistentVolumeClaim** with no CSI driver to provision against (Ch 11 §5)
 
 If you answered "the CRD is broken" or "the CRD needs a schema," you are diagnosing the object when the missing thing is the component. That is exactly the reflex this pattern exists to replace.
 
-**Q2 — Permissions from the ClusterRole, but only inside `payments`.**
+**2 — Permissions from the ClusterRole, but only inside `payments`.**
 
 The derivation: a RoleBinding is a namespaced object. A namespaced object cannot grant anything outside its own namespace, because that is what "namespaced" means (Ch 4 §3). So even though `secret-reader` is a ClusterRole — defined once, cluster-scoped, reusable — binding it with a RoleBinding confines its grant to that RoleBinding's namespace.
 
@@ -366,9 +364,9 @@ This is the single most useful RBAC pattern in practice, incidentally: define a 
 
 If you answered "cluster-wide secret read access," you inverted the rule. The scope of the *grant* is set by the binding, not by the role. If you couldn't answer without the table, that is the finding: go back to Ch 4 §3 and make sure the scope distinction is solid, because the matrix rests entirely on it.
 
-**Q3 — Because `Pending` means no container has started, so there are no logs to read.**
+**3 — Because `Pending` means no container has started, so there are no logs to read.**
 
-A Pod in `Pending` has been accepted by the API server but has not been scheduled onto a node, or has been scheduled and its images have not been pulled. In the unscheduled case no container exists anywhere. `kubectl logs` asks the kubelet on the Pod's node for container output; there is no node and no container.
+A Pod in `Pending` has been accepted by the API server but has not been scheduled onto a node, or has been scheduled and its images have not been pulled; the phase covers both the wait to be scheduled and the time spent downloading images [source: k8s-docs-pod-lifecycle-2026-08-23]. In the unscheduled case no container exists anywhere. `kubectl logs` asks the kubelet on the Pod's node for container output; there is no node and no container.
 
 The pair is **Pod phase versus container state** (Ch 5 §5), the first row of §2's Domain 1 table. The phase tells you where in the lifecycle the Pod is, and the phase determines which instrument is even applicable. Read the phase first, then `kubectl describe` for events and conditions. For a `Pending` Pod the scheduler's message about why no node was feasible is the actual diagnostic *[cross-bearing: see Ch 13 §2 — diagnosing a Pod that will not start]*.
 
@@ -433,25 +431,15 @@ The card below is a *selection*: the highest-value pairs, sized to be drilled in
 ```
 -->
 
-<!-- AUTHOR-REVIEW — research gaps, consolidated. A cluster of rows below states Kubernetes semantics that no snapshot in this chapter's 31-file corpus covers. None is likely to be wrong; all are unverifiable as the corpus stands, and several are load-bearing (they carry checkpoint questions, Practice items, or Exam Alert entries). One targeted research pass closes the whole list. In priority order, by what depends on them:
-
-  1. `kubernetes.io/docs/reference/access-authn-authz/rbac/` — retires the four-way binding matrix (§1 thread 2 AND the D2 table), the additive/no-deny semantics (thread 9, Exam Alert #3, Practice item 5), and the view/edit/admin descriptions. Highest leverage snapshot on the list.
-  2. `kubernetes.io/docs/concepts/services-networking/network-policies/` — sources the isolation-vs-non-isolation rule (thread 9), the both-ends rule, and the default-behavior row. Also required to verify Practice item 2, whose stem was rebuilt this pass.
-  3. The Ingress concept page — sources "frozen, not deprecated" and the default-IngressClass behavior. Both are load-bearing: frozen/deprecated carries a full checkpoint question (Q4), and the second-default-IngressClass claim is one of only four ⚠ Navigational Hazards.
-  4. The Pod lifecycle page — sources the `Running` phase definition (which draft-v1 stated imprecisely; see the D1 row) and the three probe semantics, which carry Practice item 6.
-  5. The CNCF graduation-criteria / project-stages page — sources the Sandbox → Incubating → Graduated ladder, which §5 and the Exam Alert both direct the reader to drill.
-  6. One pass covering the ConfigMap/Secret page, the Helm chart-structure docs, and the OpenTelemetry traces page retires the remaining low-risk group: base64-not-encryption, the workload-controller discriminators, OCI-vs-CRI scope, headless/broken/selectorless Service, `charts/` vs chart repository, `templates/` holding Go templates, Argo CD `OutOfSync` semantics, and the definition of a span.
--->
-
 ### Domain 1 — Kubernetes Fundamentals (Ch 2–8)
 
 | Pair | The one-line test | The tell in a stem |
 |---|---|---|
-| **Pod phase vs container state** | Phase describes the whole Pod's position in its lifecycle; state describes one container right now. `Running` as a phase means the Pod is bound to a node, all its containers have been created, and at least one is running or starting. | A stem that says a Pod is `Running` and something is still broken is testing this. `Running` is a lifecycle position, not a health verdict. |
-| **liveness vs readiness vs startup** | Liveness failing **restarts** the container. Readiness failing **removes it from Service endpoints**, no restart. Startup **suspends the other two** until the app has finished booting. | A slow-starting app being killed repeatedly is a startup-probe question. Traffic reaching a not-yet-ready Pod is a readiness question. |
+| **Pod phase vs container state** | Phase describes the whole Pod's position in its lifecycle; state describes one container right now. `Running` as a phase means the Pod is bound to a node, all its containers have been created, and at least one is running, starting, or restarting [source: k8s-docs-pod-lifecycle-2026-08-23]. | A stem that says a Pod is `Running` and something is still broken is testing this. `Running` is a lifecycle position, not a health verdict. |
+| **liveness vs readiness vs startup** | Liveness failing **restarts** the container. Readiness failing **removes it from Service endpoints**, no restart. Startup **suspends the other two** until the app has finished booting [source: k8s-docs-pod-probes-2026-09-04]. | A slow-starting app being killed repeatedly is a startup-probe question. Traffic reaching a not-yet-ready Pod is a readiness question. |
 | **labels vs annotations** | Does anything *select* on it? Labels are selectable; annotations are not. Annotations hold arbitrary metadata for tools and humans. | If a stem describes attaching information that a controller must match on, it must be a label. |
 | **image tag vs digest** | Mutable pointer, or identity? A tag can be moved to point at a different image tomorrow. A digest is the content hash and cannot be moved without becoming a different digest. | A stem about two clusters pulling "the same image" and getting different bytes is a tag question. A stem about a signature binding to something specific is a digest question. *[cross-bearing: see Ch 2 §3 — registries, tags, and digests]* |
-| **ConfigMap vs Secret** | Would you mind seeing this value in a log or a `describe` output? If yes, it's a Secret. But Secret is base64-*encoded*, not encrypted, and encryption at rest is a separate cluster decision. | An option claiming Secrets are "encrypted by default" is wrong. *[cross-bearing: see Ch 12 §4 — Secrets are not encrypted]* |
+| **ConfigMap vs Secret** | Would you mind seeing this value in a log or a `describe` output? If yes, it's a Secret. But Secret data is base64-*encoded* [source: k8s-api-ref-secret-v1-2026-08-24], not encrypted: Secrets are "by default, stored unencrypted" in etcd, and encryption at rest is a separate cluster decision [source: k8s-docs-secret-2026-08-23]. | An option claiming Secrets are "encrypted by default" is wrong. *[cross-bearing: see Ch 12 §4 — Secrets are not encrypted]* |
 | **namespace vs label for separating versions** | Namespace is a *scope* boundary (names, quota, policy). Label is a *selection* attribute. Separating v1 from v2 within one app is a label job; separating tenants or environments is a namespace job. | A stem about two versions needing different resource quotas has moved from label territory into namespace territory. |
 | **ResourceQuota vs LimitRange** | Total, or default? ResourceQuota caps a namespace's *aggregate* consumption. LimitRange sets *per-object* defaults and bounds, so a container that declares nothing still gets numbers. | "The namespace has used its whole CPU allowance" is quota. "Pods here default to 100m if unspecified" is LimitRange. *[cross-bearing: see Ch 8 §3 — dividing a shared cluster]* |
 | **Deployment vs StatefulSet** | Does replica 0 need to *be* replica 0 — stable name, stable identity, ordered startup? If yes, StatefulSet. If replicas are interchangeable, Deployment. | The distinction is **identity**, not "does it write to disk." A stateless app can use a StatefulSet; a database can be run under a Deployment badly. |
@@ -473,12 +461,12 @@ The card below is a *selection*: the highest-value pairs, sized to be drilled in
 | **ClusterIP vs NodePort vs LoadBalancer** | Reachable from where? ClusterIP: inside the cluster only. NodePort: any node's IP at a fixed port. LoadBalancer: an external address the provider allocates. Each type *includes* the ones below it. | "Should not be reachable from outside" points at ClusterIP. The inclusion property is what a stem about "also still reachable internally" is checking. |
 | **headless vs broken vs selectorless Service** | Headless is `clusterIP: None` **on purpose**: you want the individual Pod addresses, not one virtual IP. Broken is a selector matching nothing. Selectorless is deliberate too: you manage endpoints yourself. | Headless plus StatefulSet is the stable-DNS-name pattern. A Service with no endpoints and a selector present is broken, not headless. |
 | **Ingress object vs Ingress controller** | The record versus the thing that acts on it. This is thread 3. | An Ingress that "exists but routes nothing" is always the controller. |
-| **Ingress frozen vs deprecated** | **Frozen** means feature-complete and still supported: no new features, but it works and is not going away on a schedule. **Deprecated** would mean scheduled for removal. Ingress is frozen; Gateway API is where new work happens. | An option saying Ingress is deprecated or removed is wrong. |
-| **NetworkPolicy default behavior** | Ask: *is this Pod selected by any policy?* No policy selects it → fully open. Any policy selects it → restricted to the union of what its policies allow. | "Default deny" is achieved by *selecting* Pods with a policy that allows nothing, not by a deny rule. |
-| **NetworkPolicy needs both ends** | For traffic A→B to flow when both are restricted, A needs egress permitting B **and** B needs ingress permitting A. | A stem where one policy was written and traffic still fails is usually the other end. |
-| **RBAC has no deny** | Permissions are the union of every binding naming you. Nothing subtracts. | A "deny" verb in an option is testing whether you imported firewall intuitions. |
-| **The four-way binding matrix** | Derive it. The binding's scope sets the grant's scope; a namespaced Role cannot be granted cluster-wide. | See §1 thread 2. |
-| **view / edit / admin** | `view` reads (but not Secrets). `edit` writes workloads. `admin` adds the ability to manage RBAC **within a namespace**. None of them is `cluster-admin`. | A stem about someone who can grant permissions to others in one namespace is `admin`. |
+| **Ingress frozen vs deprecated** | **Frozen** means feature-complete and still supported: no new features, but it works and is not going away on a schedule. **Deprecated** would mean scheduled for removal. Ingress is frozen: the project "has no plans to remove Ingress," but it "will have no further changes or updates" [source: k8s-docs-ingress-2026-08-23]. Gateway API is where new work happens. | An option saying Ingress is deprecated or removed is wrong. |
+| **NetworkPolicy default behavior** | Ask: *is this Pod selected by any policy?* No policy selects it → "non-isolated," fully open. Any policy selects it → restricted to the union of what its policies allow [source: k8s-docs-network-policies-2026-08-23]. | "Default deny" is achieved by *selecting* Pods with a policy that allows nothing, not by a deny rule. |
+| **NetworkPolicy needs both ends** | For traffic A→B to flow when both are restricted, A needs egress permitting B **and** B needs ingress permitting A; "If either side does not allow the connection, it will not happen" [source: k8s-docs-network-policies-depth-2026-08-24]. | A stem where one policy was written and traffic still fails is usually the other end. |
+| **RBAC has no deny** | Permissions are the union of every binding naming you. Nothing subtracts [source: k8s-docs-rbac-2026-08-23]. | A "deny" verb in an option is testing whether you imported firewall intuitions. |
+| **The four-way binding matrix** | Derive it. The binding's scope sets the grant's scope; a namespaced Role cannot be granted cluster-wide [source: k8s-docs-rbac-rolebinding-clusterrole-2026-09-04]. | See §1 thread 2. |
+| **view / edit / admin** | `view` reads (but not Secrets). `edit` reads and writes most objects in a namespace but cannot view or modify roles and role bindings. `admin` adds "the ability to create roles and role bindings within the namespace" [source: k8s-docs-rbac-2026-08-23]. None of them is `cluster-admin`. | A stem about someone who can grant permissions to others in one namespace is `admin`. |
 | **PV vs PVC** | Supply versus demand. The PV is the piece of storage that exists; the PVC is the request a workload makes. Administrators think in PVs; developers write PVCs. | A Pod references a **PVC**, never a PV directly. |
 | **RWO vs RWOP** | `ReadWriteOnce` = read-write by **a single node**, and multiple Pods on that node can share it. `ReadWriteOncePod` = read-write by **a single Pod, cluster-wide** [source: k8s-docs-persistent-volumes-depth-2026-08-25]. | The intuitive misreading of "Once" as "one Pod" is exactly what RWOP exists to name. |
 | **Retain / Delete / Recycle** | `Retain` keeps the volume and its data after the claim goes, requiring manual reclamation. `Delete` removes both the PV object and the backing storage. `Recycle` is **deprecated** [source: k8s-docs-persistent-volumes-depth-2026-08-25]. | Defaults differ by origin: `Retain` for manually created PVs, `Delete` for dynamically provisioned ones [source: k8s-api-ref-persistentvolume-v1-2026-08-25]. |
@@ -492,12 +480,12 @@ The card below is a *selection*: the highest-value pairs, sized to be drilled in
 | Pair | The one-line test | The tell in a stem |
 |---|---|---|
 | **chart vs release vs revision** | Chart = the package. Release = one *installed instance* of it, with a name. Revision = a numbered version *of that release*, incrementing on each upgrade. | Installing the same chart twice gives two releases. Upgrading one release gives it a second revision. |
-| **`charts/` directory vs chart repository** | `charts/` is a **directory inside a chart** holding its subcharts, which are dependencies vendored in. A chart repository is a **remote place charts are fetched from**. Same word, completely different scope. | "Where do dependencies live?" is `charts/`. "Where did this chart come from?" is a repository. |
+| **`charts/` directory vs chart repository** | `charts/` is a **directory inside a chart** holding its subcharts, which are dependencies vendored in [source: helm-charts-2026-08-31]. A chart repository is a **remote place charts are fetched from**: "an HTTP server that houses an `index.yaml` file and optionally some packaged charts" [source: helm-chart-repository-2026-08-31]. Same word, completely different scope. | "Where do dependencies live?" is `charts/`. "Where did this chart come from?" is a repository. |
 | **Kustomize overlay vs Helm template** | Patch, or render? Kustomize starts from a base that is already a valid, applicable manifest and patches it per environment. Helm starts from a template that is not a manifest until values are rendered into it. | If the un-customized files could be applied as-is, it is Kustomize. If they contain `{{ }}` and cannot, it is Helm. *[cross-bearing: see Ch 14 §6 — which one, when]* |
 | **`kubectl rollout undo` vs `helm rollback`** | Whose history is being rewound? `rollout undo` walks a **Deployment's** revision history, inside Kubernetes. `helm rollback` takes a **release** name and a revision number and rolls that release back to that revision [source: helm-rollback-cli-2026-08-31]. Different histories, different scopes, same English word. | A stem mentioning a release name and a revision number is Helm. A stem about a Deployment's previous ReplicaSet is `rollout undo`. |
 | **rolling / Recreate / blue-green / canary** | What happens to the old version? Rolling replaces it incrementally. Recreate stops it all first. Blue-green runs both and switches traffic at once. Canary sends a fraction of traffic to the new one and watches. | "Zero downtime, no spare capacity available" points at rolling. "The two versions must never be live simultaneously" points at Recreate. Ch 15 §2 owns the vocabulary; Ch 6 §4 owns the mechanics. |
 | **GitOps: push vs pull** | Where do the credentials live? Push: an external CI system holds cluster credentials and reaches in. Pull: an agent inside the cluster holds them and reaches out to Git. | The whole blast-radius argument turns on this. GitOps is pull. |
-| **`OutOfSync` = drift, not error** | It reports a **difference** between the repository and the cluster. Something changed on one side. That is a status, not a failure. | A stem treating `OutOfSync` as an error state is testing whether you know it is a comparison result. |
+| **`OutOfSync` = drift, not error** | It reports a **difference** between the repository and the cluster. Something changed on one side. That is a status, not a failure; Argo CD's own documentation notes that an application can be `OutOfSync` "even immediately after a successful Sync operation" [source: argocd-diffing-outofsync-2026-08-31]. | A stem treating `OutOfSync` as an error state is testing whether you know it is a comparison result. |
 | **troubleshooting scope: platform vs application** | Is the Pod running the way Kubernetes intended? If not, platform. If it is running fine and the app misbehaves, application. | This is the Ch 13 / Ch 16 split. `Running` plus wrong output means you have crossed into application scope. |
 | **which instrument, by layer** | The layer picks the instrument, and the phase tells you the layer. Platform-layer questions are answered by `kubectl describe`, events, and node conditions. Application-layer questions are answered by `logs`, `exec`, ephemeral containers, and `port-forward`. | A stem where the Pod is `Running` and the suggested tool is `describe` has crossed layers in one direction; a stem where the Pod is `Pending` and the suggested tool is `logs` has crossed in the other. *[cross-bearing: see Ch 16 §3 — getting inside, and adding what isn't there]* |
 
@@ -508,16 +496,16 @@ The card below is a *selection*: the highest-value pairs, sized to be drilled in
 | **mesh control plane vs cluster control plane** | Whose control plane? The cluster's is kube-apiserver, etcd, scheduler, controller-manager. A mesh's is a separate thing configuring proxies. | The word alone is ambiguous; the stem's subject disambiguates. |
 | **sidecar vs ambient mode** | Proxy per **Pod**, or per **node**? Ambient mode uses "a per-node Layer 4 (L4) proxy, and optionally a per-namespace Layer 7 (L7) proxy" [source: istio-ambient-mode-2026-08-31]. | Both are the same mesh with the same engine — the waypoint proxy "is a deployment of the Envoy proxy; the same engine that Istio uses for its sidecar data plane mode" [source: istio-ambient-mode-2026-08-31]. They are two arrangements, not two products. A stem asserting "a service mesh requires sidecars" is wrong. |
 | **Knative Serving vs Eventing** | Serving is HTTP request-driven: it "manages the complete lifecycle of stateless HTTP services, including deployment, routing, and automatic scaling (including scale to zero)" [source: knative-overview-2026-08-23]. Eventing is asynchronous: "a CloudEvents-over-HTTP asynchronous routing layer" [source: knative-overview-2026-08-23]. | Request in, response out → Serving. Event produced somewhere, consumed elsewhere, producers and consumers decoupled → Eventing. |
-| **maturity-level ordering** | Sandbox → Incubating → Graduated. Entry, growing, proven. | The levels are the durable fact; which specific project sits at which level changes and is not a reliable memorization target. |
+| **maturity-level ordering** | Sandbox → Incubating → Graduated. Entry, growing, proven [source: cncf-project-maturity-levels-2026-08-23]. | The levels are the durable fact; which specific project sits at which level changes and is not a reliable memorization target. |
 | **TOC vs Governing Board** | Technical or business? The Governing Board is "responsible for marketing and other business oversight and budget decisions" [source: cncf-charter-governance-bodies-2026-08-31]. The TOC facilitates "defining and maintaining the technical vision" [source: cncf-charter-governance-bodies-2026-08-31]. | Money and marketing → Board. Technical direction → TOC. |
 | **End User TAB vs TOC** | Advises, or holds the vision? The End User TAB "serve[s] as the voice of End Users in the CNCF community, advance[s] topics of concern to End Users, and raise[s] awareness about the needs and perspectives of end users" [source: cncf-charter-governance-bodies-2026-08-31]. The TOC holds the technical vision. | An option that has the TAB approving, blocking, or deciding anything is wrong — it advances topics and raises awareness; it does not decide. |
 | **SIG vs Working Group vs Committee** | SIGs are ongoing and topic-owning. Working Groups are "time bounded" and cross SIG lines [source: k8s-sig-list-and-groups-2026-08-31]. Committees have closed membership and do not always operate in the open [source: k8s-community-governance-2026-08-23]. | Note there are exactly three Committees — Code of Conduct, Security Response, and Steering [source: k8s-sig-list-and-groups-2026-08-31] — and Steering holds overall project governance while chartering the other two [source: k8s-community-governance-2026-08-23]. |
 | **TAG vs SIG** | TAGs are CNCF-level: "the primary organizational units within the CNCF that oversee and coordinate interests across projects" [source: cncf-tags-current-structure-2026-08-31]. SIGs are Kubernetes-project-level. Different organizations, different scope. | These are easy to confuse for a documented reason: CNCF's groups were originally called SIGs. The TOC "approved the creation of SIGs, later to be renamed Technical Advisory Groups" [source: cncf-tags-current-structure-2026-08-31]. The shared origin is why the names collide. |
 | **horizontal vs vertical scaling** | More replicas, or bigger ones? Horizontal adds Pods. Vertical adjusts the resources of existing ones. | "Handle more concurrent requests" is usually horizontal. "This Pod keeps hitting its memory limit" is vertical. |
-| **HPA built-in vs VPA add-on** | HPA is part of the core API. The VPA "doesn't come with Kubernetes by default, but is a a[sic]n add-on that you or a cluster administrator may need to deploy" [source: k8s-docs-autoscaling-and-vpa-2026-08-31], and additionally requires metrics-server installed [source: k8s-docs-autoscaling-and-vpa-2026-08-31]. | This is thread 3 in Domain 4 clothing, and the absent component fails at a *different layer* here. With Ingress, the object is accepted and nothing happens. With VPA, the API rejects the kind outright, because without the add-on the CRD does not exist. Same pattern, two symptom shapes. |
+| **HPA built-in vs VPA add-on** | HPA is part of the core API. The VPA "doesn't come with Kubernetes by default" and is an add-on that you or a cluster administrator deploy [source: k8s-docs-autoscaling-and-vpa-2026-08-31], and it additionally requires metrics-server installed [source: k8s-docs-autoscaling-and-vpa-2026-08-31]. | This is thread 3 in Domain 4 clothing, and the absent component fails at a *different layer* here. With Ingress, the object is accepted and nothing happens. With VPA, the API rejects the kind outright, because without the add-on the CRD does not exist. Same pattern, two symptom shapes. |
 | **workload vs node autoscaling** | HPA/VPA/KEDA change *workloads*. Cluster Autoscaler and Karpenter change the *cluster* — "Scaling the cluster infrastructure normally means adding or removing nodes" [source: k8s-docs-autoscaling-and-vpa-2026-08-31]. | The trigger for node autoscaling is Pods that "can't be scheduled on existing Nodes" [source: k8s-docs-node-autoscaling-2026-08-31], which is thread 8 arriving from the other direction. |
 | **observability vs monitoring** | New questions or known ones? Monitoring watches things you decided in advance to watch. Observability is whether you can ask a question you did not anticipate. | Health probes are neither: they are health checking, and a stem conflating probes with observability is testing that boundary. |
-| **span vs trace** | One hop, or the whole journey? A span is a single unit of work; a trace is the tree of spans following one request across services. | Traces are one of OpenTelemetry's signals, alongside metrics, logs, and baggage [source: opentelemetry-signals-2026-08-23]. |
+| **span vs trace** | One hop, or the whole journey? A span "represents a unit of work or operation" [source: opentelemetry-observability-primer-2026-08-23]; a trace is the tree of spans following one request across services. | Traces are one of OpenTelemetry's signals, alongside metrics, logs, and baggage [source: opentelemetry-signals-2026-08-23]. |
 | **SLI vs SLO vs SLA** | Measure, target, or consequence? An SLI is "a carefully defined quantitative measure of some aspect of the level of service." An SLO is "a target value or range of values for a service level that is measured by an SLI." An SLA is "an explicit or implicit contract with your users that includes consequences of meeting (or missing) the SLOs they contain" [source: sre-book-service-level-objectives-2026-08-31]. | The clean test: *"what happens if the SLOs aren't met?": if there is no explicit consequence, then you are almost certainly looking at an SLO"* [source: sre-book-service-level-objectives-2026-08-31]. |
 | **Prometheus pull vs Pushgateway** | Prometheus scrapes targets. The Pushgateway is "an intermediary service which allows you to push metrics from jobs which cannot be scraped" [source: prometheus-pushgateway-practices-2026-08-31], and its use is deliberately narrow: "The only valid use case for the Pushgateway is for capturing the outcome of a service-level batch job" [source: prometheus-pushgateway-practices-2026-08-31]. | Options offering the Pushgateway for a long-running service, or for a job tied to one specific machine, are ruled out by the source itself. |
 
@@ -551,9 +539,9 @@ One more word that is not a homonym but behaves like one: **plugin** is never us
 >
 > **`storageClassName: ""` does not mean "use the default."** It means *no class*: bind only to a PV that also has no class. It is an explicit opt-*out* [source: k8s-docs-persistent-volumes-depth-2026-08-25]. Omitting the field entirely is the thing that engages default behavior.
 >
-> **A second default IngressClass does not give you more coverage.** Two defaults is an ambiguous configuration, not a redundant one. The rule to hold is that "default" is a singular role.
+> **A second default IngressClass does not give you more coverage.** With more than one IngressClass marked default, the admission controller refuses to create any new Ingress that does not name its `ingressClassName`; the fix is to ensure at most one carries the marking [source: k8s-docs-ingress-default-ingressclass-2026-09-04]. Two defaults is a broken configuration, not a redundant one. The rule to hold is that "default" is a singular role.
 >
-> **`Running` does not mean "the application works."** It means the Pod was bound to a node, all its containers were created, and at least one is running or starting. The app inside may be crashing, misconfigured, returning 500s, or not listening on the port the Service targets. Phase is a lifecycle position, not a health verdict.
+> **`Running` does not mean "the application works."** It means the Pod was bound to a node, all its containers were created, and at least one is running, starting, or restarting [source: k8s-docs-pod-lifecycle-2026-08-23]. A container in a crash loop therefore leaves its Pod in `Running`. The app inside may be crashing, misconfigured, returning 500s, or not listening on the port the Service targets. Phase is a lifecycle position, not a health verdict.
 
 > 🪢 **Mnemonic:** For the four hazards: **Once is a node, empty is nothing, one default only, Running is not working.**
 
@@ -563,17 +551,17 @@ One more word that is not a homonym but behaves like one: **plugin** is never us
 
 Two questions. Supply the **discriminator**, not the definition. If your answer reads like a dictionary entry, it will not survive the clock.
 
-**Q4.** A colleague says: "Our Ingress is deprecated, so we need to migrate to Gateway API before our next upgrade or traffic will break." Identify every error in that sentence, and give the one-line discriminator for the pair being collapsed. `[retrieval: ch10]`
+**4.** A colleague says: "Our Ingress is deprecated, so we need to migrate to Gateway API before our next upgrade or traffic will break." Identify every error in that sentence, and give the one-line discriminator for the pair being collapsed. `[retrieval: ch10]`
 
-**Q5.** You're handed a stem containing the word "revision" and four options. Two options describe Kubernetes objects, two describe Helm concepts, so the ambiguity is *cross-tool*, not internal to either one. Before reading any option closely, what single question resolves which family the stem belongs to? Then state the same for "rollback." `[retrieval: ch6, ch14]`
+**5.** You're handed a stem containing the word "revision" and four options. Two options describe Kubernetes objects, two describe Helm concepts, so the ambiguity is *cross-tool*, not internal to either one. Before reading any option closely, what single question resolves which family the stem belongs to? Then state the same for "rollback." `[retrieval: ch6, ch14]`
 
 ---
 
 **Answers with Explanations:**
 
-**Q4 — Two errors. Ingress is frozen, not deprecated; and nothing breaks on upgrade.**
+**4 — Two errors. Ingress is frozen, not deprecated; and nothing breaks on upgrade.**
 
-*Frozen* means feature-complete and still supported: the API is stable, it continues to work, and new development happens in Gateway API instead. *Deprecated* would mean scheduled for removal with a migration deadline. Those are different commitments and Ingress carries the first one.
+*Frozen* means feature-complete and still supported: the API is stable, it continues to work, and new development happens in Gateway API instead. The project's own note is that Ingress "is generally available and subject to the stability guarantees for GA APIs" and that it "has no plans to remove Ingress" [source: k8s-docs-ingress-2026-08-23]. *Deprecated* would mean scheduled for removal with a migration deadline. Those are different commitments and Ingress carries the first one.
 
 The discriminator: **frozen means no new features; deprecated means an end date.** A frozen API is safe to keep using; a deprecated one is a countdown.
 
@@ -581,7 +569,7 @@ The second error follows: because Ingress is not deprecated, there is no upgrade
 
 If you caught "deprecated" but not "traffic will break," you got half. The practical consequence is the half that shows up in a stem about planning.
 
-**Q5 — For "revision": *whose* history? For "rollback": *whose* history is being rewound?**
+**5 — For "revision": *whose* history? For "rollback": *whose* history is being rewound?**
 
 It is the same question both times, which is the useful part.
 
@@ -617,7 +605,7 @@ The Linux Foundation allows **90 minutes** for its multiple-choice exams [source
 
 ### The rule
 
-> **★ Fixed Point**
+> ★ **Fixed Point:**
 >
 > **Read the question count off the screen. Divide the clock by it. Reach the end of the paper at roughly 60% of your total time, and hold the remaining 40% in reserve.**
 >
@@ -627,19 +615,13 @@ This is stated as a rule rather than a seconds-per-question number on purpose. T
 
 > ⚓ **Worth Securing:** The 60-question and 75% figures are published: in the Linux Foundation's *candidate handbook*, for multiple-choice exams as a class, not on the KCNA product page you probably read first [source: provenance-kcna-60-questions-2026-08-31]. That gap between where a fact lives and where a candidate looks is why the numbers circulate for years looking unsourced. Read the handbook, not just the product page.
 
-### What the reserve is for depends on the interface
+### What the console lets you do
 
-The Linux Foundation does not publish how its multiple-choice exam console behaves: whether you can skip a question, mark one for review, navigate back, or change an answer you have already given. That silence is not an oversight in this book's research; it is confirmed absent on four separate official pages, each of which documents the exam in detail and says nothing about question navigation [source: lf-mc-exam-important-instructions-2026-08-31] [source: lf-mc-exam-faq-2026-08-31] [source: lf-exam-rules-and-policies-2026-08-31] [source: lf-handbook2-taking-the-exam-2026-08-31].
+The Linux Foundation documents the multiple-choice exam interface in its candidate handbook, and the handbook's exam-code table places KCNA in the multiple-choice column, so this is the console you will see [source: lf-exam-user-interface-exam-codes-2026-08-31]. You move between questions with Previous and Next buttons. You can flag an item for later review; flagged items are highlighted on a Review Screen, and you can return to any of them and change your answer. After the final item you are prompted to review the exam, and the Review Screen carries the Finish Exam button [source: lf-examui-multiple-choice-2026-08-31]. Like the question count and the passing score, none of this is on the KCNA product page; it is published for multiple-choice exams as a class, in the handbook.
 
-So establish it yourself, on the tutorial screen, before the clock matters. Look for a flag or mark control, and look for whether the console will let you move backward. Thirty seconds of checking buys you the shape of the next ninety minutes.
+So the reserve is a genuine second pass. You return to the questions you flagged, with the whole paper behind you, and you can change what you wrote. Two cautions come from the same page. There is a Pause Exam control for requesting a break, and using it does not stop the timer [source: lf-examui-multiple-choice-2026-08-31]; a break is purchased with exam minutes. And the exam ends when the timer runs out or when you click Finish Exam, whichever comes first [source: lf-examui-multiple-choice-2026-08-31], so do not click Finish with flagged items outstanding and time still on the clock.
 
-**If you can navigate back**, the reserve is a genuine second pass: you return to the questions you marked, in the order you marked them.
-
-**If you cannot**, the reserve is a margin instead. It is the extra time you can afford to spend on a hard question *in place*, one at a time, without running out. You are still finishing the sweep at 60%; you are simply spending the balance as you go rather than at the end.
-
-Either way the failure mode the rule guards against is identical, and it is the one that actually costs people the exam: spending four minutes on question nine.
-
-<!-- AUTHOR-REVIEW: The console's navigation behavior is the single highest-value missing snapshot for this chapter, and §3 has been rewritten to degrade gracefully in its absence rather than instruct the reader in a procedure that may not be executable. If a Linux Foundation or PSI BRIDGE source documenting the multiple-choice interface can be located and cached, this subsection collapses to two sentences and the ★ Fixed Point can name the flag control directly. Until then the hedge stands, because there is no scratch paper to fall back on and a memorized procedure that turns out to be unavailable is worse than no procedure. -->
+The failure mode the rule guards against is the one that actually costs people the exam: spending four minutes on question nine.
 
 ### The first pass
 
@@ -647,15 +629,15 @@ Three categories, decided fast:
 
 **Know it.** Answer, move. Do not re-read to confirm. Confirmation on a question you knew is the single largest source of time leakage on a timed exam, and it almost never changes the answer.
 
-**Can get it.** Two options survive, and you can see the discriminator if you think for twenty seconds. Give it the twenty seconds. If it resolves, answer and move. If it does not, pick the more likely one, mark it if the console allows, and move.
+**Can get it.** Two options survive, and you can see the discriminator if you think for twenty seconds. Give it the twenty seconds. If it resolves, answer and move. If it does not, pick the more likely one, flag it, and move.
 
-**Don't know it.** Answer anyway. Reason it through rather than taking it on faith: a question you leave blank scores zero with certainty, so putting an answer in cannot score worse *unless* there is a penalty for a wrong answer, and the Linux Foundation does not publish one in either direction. Given a certain zero against an uncertain penalty, answer. Then mark it and move immediately. Do not sit with it. The cost of sitting is that you spend three minutes on one question and then rush four you would have got.
+**Don't know it.** Answer anyway. Reason it through rather than taking it on faith: a question you leave blank scores zero with certainty, so putting an answer in cannot score worse *unless* there is a penalty for a wrong answer, and the Linux Foundation's published scoring rules are silent on any such penalty [source: lf-exam-scoring-and-notification-2026-08-31]. Given a certain zero against an unstated penalty, answer. Then flag it and move immediately. Do not sit with it. The cost of sitting is that you spend three minutes on one question and then rush four you would have got.
 
-Always leave an answer even when you mark. A marked question with an answer already in it is a question you can improve; a marked blank is a question you can lose to the clock.
+Always leave an answer even when you flag. A flagged question with an answer already in it is a question you can improve; a flagged blank is a question you can lose to the clock.
 
 ### The second pass
 
-Your marked questions, in the order you marked them. Two things have changed since you first saw them:
+Your flagged questions, in the order you flagged them. Two things have changed since you first saw them:
 
 You have read the whole exam, and later questions sometimes disambiguate earlier ones: a stem that names a concept precisely can tell you which sense an earlier ambiguous stem meant. And you are no longer under first-pass momentum, so you can afford the full discriminator procedure from §2.
 
@@ -667,21 +649,21 @@ They have different fixes, which is why they are worth separating.
 
 **Re-reading stems.** You read the question, read it again, then read it a third time before touching an option. Fix: read once, carefully, then go to the options. If the options reveal you missed something, you can come back, but you will usually find that reading the options *is* what clarifies the stem.
 
-**Refusing to leave a question unresolved.** You will not move on, so you spend four minutes fighting one item. Fix: a navigator who takes a bearing, cannot resolve it, and comes back when the light is better has not given up on the fix; they have waited until the fix was possible. Marking is that, and nothing more.
+**Refusing to leave a question unresolved.** You will not move on, so you spend four minutes fighting one item. Fix: a navigator who takes a bearing, cannot resolve it, and comes back when the light is better has not given up on the fix; they have waited until the fix was possible. Flagging is that, and nothing more.
 
-**Re-litigating settled answers.** You keep returning to questions you already answered confidently. Fix: the reserve is for the ones you marked. If you did not mark it, you do not revisit it.
+**Re-litigating settled answers.** You keep returning to questions you already answered confidently. Fix: the reserve is for the ones you flagged. If you did not flag it, you do not revisit it.
 
 <!-- FIGURE: ch19-fig03-exam-day-pacing -->
-![Ninety-minute exam timeline split at fifty-four minutes; the longer first-pass segment answers and flags every question, and the shorter reserved second-pass segment revisits only flagged ones](figures/ch19-fig03-exam-day-pacing.svg)
+![Ninety-minute exam timeline split at fifty-four minutes; the longer first-pass segment answers every question and flags the hard ones, and the shorter reserved second-pass segment revisits only flagged ones](figures/ch19-fig03-exam-day-pacing.svg)
 
 <!-- ASCII-FALLBACK
 ```
   0                              54 min                        90 min
   ├───────────── FIRST PASS ───────┼────── RESERVE ──────────────┤
   │                                │                             │
-  │  every question, once          │  the ones you marked        │
+  │  every question, once          │  the ones you flagged       │
   │  answer everything             │  full discriminator work    │
-  │  mark the hard ones            │  change only with a reason  │
+  │  flag the hard ones            │  change only with a reason  │
   │                                │                             │
   │  rate = 0.6 × clock ÷ count    │  reserve = 0.4 × clock      │
   │                                │                             │
@@ -709,7 +691,7 @@ Do not skip this. The value is in the filling-in, not the reading. You are going
 
 Go back through the book and record your **Soundings score** and your **Taking Your Bearings scores** for each chapter. Then complete this:
 
-| Domain | Weight | Chapters | Your worst Bearings score in this range | Which chapter | Hours you've spent here |
+| Domain | Weight | Chapters | Your worst Taking Your Bearings score in this range | Which chapter | Hours you've spent here |
 |---|---|---|---|---|---|
 | D1 Kubernetes Fundamentals | 44% | 2–8 | | | |
 | D2 Container Orchestration | 28% | 9–13 | | | |
@@ -724,15 +706,13 @@ If the answer is no, and for most readers it is no, that gap is your study plan.
 
 **Community and Collaboration is the competency easiest to leave until it is too late.** It sits inside Cloud Native Architecture (Chapter 17 §2 and §8) and it is the material a reader who ran short of time will have stopped before. The reasons are in the material itself: it is institutional rather than technical, it is name-dense, and it does not *feel* examinable in the way a `kubectl` behavior does. It is examinable. It is on the published curriculum as one of Cloud Native Architecture's three competencies [source: cncf-kcna-curriculum-pdf-2026-08-23].
 
-Here is the argument for spending an hour there, stated as arithmetic rather than as a claim about how often it is tested. Cloud Native Architecture is 12% of the exam, split across three competencies, so Community and Collaboration is roughly a twenty-fifth of the paper. What makes it worth the hour is not its share but its *shape*: the material is finite and bounded. Governance bodies and their remits, SIGs versus Working Groups versus Committees, the project lifecycle, the maturity levels. There is no depth to plumb. An hour covers a large fraction of the whole competency. An hour spent adding nuance to a Domain 1 topic you already score well on covers a much smaller fraction of a much larger surface, at a much lower marginal return.
+Here is the argument for spending an hour there, stated as arithmetic rather than as a claim about how often it is tested. Cloud Native Architecture is 12% of the exam, split across three competencies whose relative weights CNCF does not publish; if they are even, Community and Collaboration is roughly a twenty-fifth of the paper. What makes it worth the hour is not its share but its *shape*: the material is finite and bounded. Governance bodies and their remits, SIGs versus Working Groups versus Committees, the project lifecycle, the maturity levels. There is no depth to plumb. An hour covers a large fraction of the whole competency. An hour spent adding nuance to a Domain 1 topic you already score well on covers a much smaller fraction of a much larger surface, at a much lower marginal return.
 
-**The 2025-11-24 blueprint change is a study-allocation hazard, not just a historical fact.** The KCNA exam was updated no earlier than November 24, 2025 [source: lf-kcna-program-changes-2026-08-23], and the change was not cosmetic: Cloud Native Application Delivery is now 16%, and observability was "rolled under Cloud Native Architecture" [source: lf-kcna-program-changes-2026-08-23] rather than being its own domain.
+**The 2025-11-24 blueprint change is a study-allocation hazard, not just a historical fact.** The KCNA exam was updated no earlier than November 24, 2025 [source: lf-kcna-program-changes-2026-08-23], and the change was not cosmetic: Cloud Native Application Delivery doubled, from 8% to 16% [source: cncf-kcna-curriculum-retired-2026-09-04], and observability was "rolled under Cloud Native Architecture" [source: lf-kcna-program-changes-2026-08-23] rather than being its own domain.
 
 The practical consequence: **third-party study material produced before that date allocates its coverage against a blueprint that no longer exists.** If your practice questions came from a bank that still treats observability as a domain in its own right, your sense of where the points are is wrong. And the rule for which blueprint you are tested against is unambiguous: "Any KCNA exam taken after the updated release will test on the new set of Domains and Competencies," and "The only date that matters is the date you sit for the exam" [source: lf-kcna-program-changes-2026-08-23]. Not your purchase date, not your first attempt, not your retake status.
 
-> 🪝 **Snag:** Check the copyright date on every non-CNCF resource you're using. The tell is where observability sits: if your material lists it as a **domain in its own right**, with its own weight, rather than as a competency under Cloud Native Architecture, that material predates the change.
-
-<!-- AUTHOR-REVIEW: draft-v1 stated the retired blueprint had five domains and named the retired domain "Cloud Native Observability." Both details are removed here. The only source in the corpus for either is `provenance-kcna-60-questions-2026-08-23`, which is headed "DO NOT CITE THE CONTENTS OF THIS FILE AS FACT," and the authoritative file `cncf-curriculum-repo-kcna-versions-2026-08-23` records the retired weights as an explicit OPEN GAP with the instruction "DO NOT draft the retired weights from memory or from third-party study guides." The tell above is rewritten to rest only on what IS sourced — that observability moved under Cloud Native Architecture. Closing this properly is cheap and would benefit the whole book: retrieve `old-versions/KCNA_Curriculum old.pdf` (raw URL is in the versions snapshot) and cache the retired domain list. -->
+> 🪝 **Snag:** Check the copyright date on every non-CNCF resource you're using. The tell is where observability sits: if your material lists it as a **domain in its own right**, with its own weight, rather than as a competency under Cloud Native Architecture, that material predates the change. The retired blueprint had five domains: Kubernetes Fundamentals 46%, Container Orchestration 22%, Cloud Native Architecture 16%, Cloud Native Observability 8%, and Cloud Native Application Delivery 8% [source: cncf-kcna-curriculum-retired-2026-09-04]. If those are the numbers in front of you, put the material down.
 
 ### Where the next block of hours goes
 
@@ -750,8 +730,7 @@ What is *not* on that list: re-reading chapters you scored well on. It feels lik
 
 ## ⚪ §5 — Using The Lodestar
 
-`the-lodestar.md` ships with this book, at the repository root. It is the one-page reference: the concentrated form of everything worth having in front of you in the hour before you sit down, and nothing else.
-
+`the-lodestar.md` ships with this book as its back-of-book reference. It is one page: the concentrated form of everything worth having in front of you in the hour before you sit down, and nothing else.
 
 ### What is in it
 
@@ -766,6 +745,8 @@ What is *not* on that list: re-reading chapters you scored well on. It feels lik
 **Exam-day pacing.** The §3 rule in one line, because it must be executable from memory and there is no scratch paper.
 
 **Governance and institutional vocabulary.** The Board/TOC split, the End User TAB's advisory role, SIG/WG/Committee, maturity levels. This is the Domain 4 material most likely to have gone soft, and it is the cheapest to refresh because it is bounded.
+
+**The one sentence.** *An object without its component does nothing*, standing alone at the end with five instances under it. Neither lookup nor drill: it is the thing to carry in.
 
 ### How to use it in the last hour
 
@@ -847,7 +828,7 @@ Kept short deliberately. §2 is the trap section, and repeating it here would wa
 
 1. **The absent-component pattern, in its exact form:** *an object without its component does nothing.* It converts at least five separate gotchas — Ingress, NetworkPolicy, CSI, metrics-server, VPA — into one rule you apply on sight.
 2. **The RBAC four-way binding matrix, derived rather than memorized.** The binding's scope sets the grant's scope. Everything else falls out of Chapter 4's namespaced/cluster-scoped distinction.
-3. **Additive, allow-only, no deny.** One semantic shared by RBAC and NetworkPolicy, built independently by two different groups.
+3. **Additive, allow-only, no deny.** One semantic shared by RBAC and NetworkPolicy, built independently by two different groups [source: k8s-docs-rbac-2026-08-23] [source: k8s-docs-network-policies-2026-08-23].
 4. **The version-skew numbers:** kubelet up to three minor versions back and never newer, kubectl within one either way, three supported minor releases [source: k8s-version-skew-policy-2026-08-31].
 5. **Community and Collaboration vocabulary.** Bounded, finite material, so an hour covers a large fraction of the whole competency, and it is the competency most likely to have been skipped.
 
@@ -855,8 +836,8 @@ Kept short deliberately. §2 is the trap section, and repeating it here would wa
 
 - **`ReadWriteOnce`** reads as "one Pod." It is one *node* [source: k8s-docs-persistent-volumes-depth-2026-08-25]. `ReadWriteOncePod` is the one that means one Pod.
 - **`storageClassName: ""`** reads as "use the default." It means *no class* [source: k8s-docs-persistent-volumes-depth-2026-08-25].
-- **A second default IngressClass** reads as broader coverage. It is ambiguity.
-- **`Running`** reads as "the application works." It means bound to a node, all containers created, at least one running or starting. Nothing more.
+- **A second default IngressClass** reads as broader coverage. It means no new Ingress can be created without an explicit `ingressClassName` [source: k8s-docs-ingress-default-ingressclass-2026-09-04].
+- **`Running`** reads as "the application works." It means bound to a node, all containers created, at least one running, starting, or restarting [source: k8s-docs-pod-lifecycle-2026-08-23]. Nothing more.
 
 ---
 
@@ -968,9 +949,9 @@ D) Cluster credentials live inside the cluster, and the agent reaches out to Git
 
 **2 — A. The installed CNI plugin does not implement NetworkPolicy.**
 
-This is the absent-component pattern (thread 3) in Domain 2 clothing. The NetworkPolicy object is valid and accepted by the API server; nothing enforces it unless the installed CNI plugin implements policy. Creating the object is half the transaction, and the symptom of the missing half is precisely this: traffic that the policy should have blocked flowing anyway.
+This is the absent-component pattern (thread 3) in Domain 2 clothing. The NetworkPolicy object is valid and accepted by the API server; nothing enforces it unless the installed CNI plugin implements policy, and "Creating a NetworkPolicy resource without a controller that implements it will have no effect" [source: k8s-docs-network-policies-depth-2026-08-24]. Creating the object is half the transaction, and the symptom of the missing half is precisely this: traffic that the policy should have blocked flowing anyway.
 
-**B is wrong** and is the most instructive distractor: NetworkPolicy is additive and allow-only, with no deny rule at all. There is nothing to add for `tier=batch`; the policy already restricts the backend to frontend traffic *if it is enforced*. If you picked B, thread 9 is soft; go back to Ch 10 §6 and Ch 12 §3. **C is wrong.** `podSelector` alone covers same-namespace sources; `namespaceSelector` is for crossing namespaces. **D is wrong.** The batch Pods are not selected by any policy, so their egress is unrestricted regardless. The both-ends rule applies only when *both* ends are selected by policies.
+**B is wrong** and is the most instructive distractor: NetworkPolicy is additive and allow-only, with no deny rule at all [source: k8s-docs-network-policies-2026-08-23]. There is nothing to add for `tier=batch`; the policy already restricts the backend to frontend traffic *if it is enforced*. If you picked B, thread 9 is soft; go back to Ch 10 §6 and Ch 12 §3. **C is wrong.** `podSelector` alone covers same-namespace sources; `namespaceSelector` is for crossing namespaces. **D is wrong.** What the frontend Pods may send has no bearing on whether the *batch* Pods can reach the backend, and neither the frontend nor the batch Pods are selected by any policy, so their egress is unrestricted regardless. The both-ends rule applies only when *both* ends of a connection are selected by policies [source: k8s-docs-network-policies-depth-2026-08-24].
 
 *Chapters: 10 (NetworkPolicy semantics, absent-component pattern), 9 (CNI as the pluggable interface).*
 
@@ -992,7 +973,7 @@ The charter is explicit on both halves. The Governing Board is "responsible for 
 
 **5 — D. Pods in every namespace, including `web`.**
 
-RBAC is purely additive (thread 9). The ClusterRoleBinding grants `pod-reader` cluster-wide. The RoleBinding grants the same permissions within `web`. The union is cluster-wide. Nothing constrains, nothing subtracts.
+RBAC is purely additive (thread 9); there are no deny rules [source: k8s-docs-rbac-2026-08-23]. The ClusterRoleBinding grants `pod-reader` cluster-wide. The RoleBinding grants the same permissions within `web`. The union is cluster-wide. Nothing constrains, nothing subtracts.
 
 **A is wrong** and is the trap: a narrower binding does not limit a broader one. Bindings only ever add. **B is wrong** in the opposite direction: it imagines a precedence rule, where the narrower binding somehow overrides inside its own namespace. RBAC has no precedence because it has no deny; with nothing that subtracts, there is nothing for precedence to arbitrate. **C is wrong** for the same underlying reason: no deny means no conflicts to resolve.
 
@@ -1002,9 +983,9 @@ Note also what the ServiceAccount's own namespace (`ci`) did in this question: n
 
 **6 — A. Removed from Service endpoints, no restart.**
 
-Readiness governs endpoint membership. A failing readiness probe removes the Pod from the Service's EndpointSlice so it stops receiving traffic, and the container keeps running. That is the whole design: a Pod that is alive but not ready to serve should be quietly taken out of rotation rather than killed.
+Readiness governs whether traffic is sent. When a readiness probe fails, "the EndpointSlice controller removes the Pod's IP address from the EndpointSlices" [source: k8s-docs-pod-probes-2026-09-04], so the Pod stops receiving traffic while the container keeps running. That is the whole design: a Pod that is alive but not ready to serve should be quietly taken out of rotation rather than killed. Chapter 16 refines what that removal looks like from inside the slice, where the endpoint stays listed and is marked not ready, so service proxies skip it *[cross-bearing: see Ch 16 §4 — is anything even selected]*.
 
-**B is wrong**, and it is the finest discrimination in the item: it has the endpoint effect right and then imports the restart from liveness. A partial collapse is harder to catch than a total one, which is why it is here. **C is wrong.** Restarting on failure is *liveness*, and collapsing the two probes entirely is the Domain 1 discrimination this item exists to test. **D is wrong.** A rollout can stall waiting on readiness, but nothing automatically rolls back on a probe failure.
+**B is wrong**, and it is the finest discrimination in the item: it has the endpoint effect right and then imports the restart from liveness. A partial collapse is harder to catch than a total one, which is why it is here. **C is wrong.** Restarting on failure is *liveness* [source: k8s-docs-pod-probes-2026-09-04], and collapsing the two probes entirely is the Domain 1 discrimination this item exists to test. **D is wrong.** A rollout can stall waiting on readiness, but nothing automatically rolls back on a probe failure.
 
 *Chapters: 5 (probes), 9 (readiness gating endpoint membership).*
 
@@ -1012,7 +993,7 @@ Readiness governs endpoint membership. A failing readiness probe removes the Pod
 
 The scope is the whole release. `helm rollback` takes "the name of a release" and "a revision (version) number" [source: helm-rollback-cli-2026-08-31] and rolls that release back to that revision.
 
-**A is wrong** and is the homonym trap: `kubectl rollout undo` rewinds one Deployment's history, not the release's. If the chart also changed a ConfigMap, a Service, and an Ingress, those stay wrong. **B is wrong.** Reinstalling loses release history and is destructive where a rollback is not. **D is wrong.** `templates/` contains Go templates, not rendered manifests; you cannot apply them directly.
+**A is wrong** and is the homonym trap: `kubectl rollout undo` rewinds one Deployment's history, not the release's. If the chart also changed a ConfigMap, a Service, and an Ingress, those stay wrong. **B is wrong.** Reinstalling loses release history and is destructive where a rollback is not. **D is wrong.** `templates/` is "a directory of templates that, when combined with values, will generate valid Kubernetes manifest files" [source: helm-charts-2026-08-31]; they are not manifests until rendered, and you cannot apply them directly.
 
 *Chapters: 6 (`rollout undo`), 14 (chart/release/revision, `helm rollback`).*
 
@@ -1020,7 +1001,7 @@ The scope is the whole release. `helm rollback` takes "the name of a release" an
 
 When the bound PVC is deleted under `Retain`, the PV "still exists and the volume is considered 'released'" but "is not yet available for another claim because the previous claimant's data remains on the volume" [source: k8s-docs-persistent-volumes-depth-2026-08-25]. Reclaiming it is a manual, deliberate act. That is the entire point of `Retain`: it protects data by refusing to silently recycle.
 
-**A is wrong.** The PV can be reused, after manual reclamation. **C is wrong.** `volumeName` binds a PVC to a named PV but does not change the PV's phase; a `Released` volume still will not bind. **D is wrong**, and it repays a careful read because it inverts one of the four hazards: `storageClassName: ""` on a PV means it binds only to a PVC that *also* explicitly sets `""`, not to one that omits the field. Omitting the field is what engages default behavior [source: k8s-docs-persistent-volumes-depth-2026-08-25].
+**A is wrong.** The PV can be reused, after manual reclamation. **C is wrong.** `volumeName` binds a PVC to a named PV but does not change the PV's phase; a `Released` volume still will not bind. **D is wrong**, and it repays a careful read because it inverts one of the four hazards: `storageClassName: ""` on a PV means it binds only to a PVC that *also* requests no class. A PVC that merely omits the field is handed to the cluster's default-class behavior instead, which depends on whether the DefaultStorageClass admission plugin is on [source: k8s-docs-persistent-volumes-depth-2026-08-25].
 
 *Chapters: 11 (PV phases, reclaim policies), 13 (Pending as a diagnostic starting point).*
 
@@ -1054,7 +1035,7 @@ This is the pull model, and it is thread 7 — identity — doing the security w
 | **Additive, no deny** | RBAC and NetworkPolicy share one semantic. A "deny" option is testing for imported firewall intuitions. |
 | **Discriminators, not definitions** | Two definitions side by side is what caused the collapse. One test separates them. |
 | **The four hazards** | Once is a node, empty is nothing, one default only, Running is not working. |
-| **Pacing** | Read the count, divide, reach the end at 60%, hold 40% back. No scratch paper, so it must be memorable. Check on the tutorial screen what the console lets you do with the reserve. |
+| **Pacing** | Read the count, divide, reach the end at 60%, hold 40% back. No scratch paper, so it must be memorable. The console lets you flag an item and come back to change it, so the reserve is a real second pass. |
 | **Weight allocation** | 44/28/16/12. Spend hours where your worst score meets the largest weight — usually not where you want to. |
 | **Community and Collaboration** | Bounded, finite material, so an hour covers a large share of it, and it is the competency most frequently skipped. |
 | **The last week** | Consolidate, don't acquire. A new source in the final 48 hours adds anxiety, not knowledge. |
@@ -1068,6 +1049,8 @@ You have read every chapter, and now you have read the book a second time along 
 Here is what is actually true about where you are. You are not carrying nine hundred facts, and you were never going to. You are carrying nine patterns, a set of discriminators, four weights, and one pacing rule — a load small enough to hand up on deck in the dark, which is the entire reason this chapter re-cut the book instead of summarizing it.
 
 Everything from here is calibration.
+
+🗺️ Chart → 🌊 Passage → **🌅 Dawn**
 
 ---
 

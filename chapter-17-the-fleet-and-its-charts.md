@@ -151,7 +151,7 @@ sections:
     objectives: ["D4.2"]
     requires_figure: true
     figure_anchor: "ch17-fig03-mesh-data-vs-control-plane"
-    checkpoint_after: true
+    checkpoint_after: false
 
   - name: "Code Without a Server to Put It On"
     objectives: ["D4.2"]
@@ -197,18 +197,16 @@ soundings_planned:
 
 #-- Skill Part 8: practice-question budget ------------------------------
 #-- B4 allocated 8 / 10 / 21 = 39; the arc outline raised Bearings to
-#-- 12-15 across three checkpoints. This outline sets 16, which is ONE
-#-- above the arc band, for the arithmetic reason Ch 16 documented and
-#-- which binds harder here: this chapter sits AT the 25% retrieval
-#-- ceiling, and 16 is the smallest count that lets retrieval land at
-#-- EXACTLY 25.0% across three checkpoints of >= 5. At 15 the ceiling
-#-- lands on 3.75 and must be rounded past or under it; at 12 the three
-#-- checkpoints fall below the skill's 5-question floor. New total 45.
+#-- 12-15 across the pre-merge layout (one checkpoint more than today's),
+#-- and this outline set 16 so that retrieval landed at exactly
+#-- 25.0% (the arithmetic Ch 16 documented). The 2026-09-03 checkpoint
+#-- merge reduced the chapter to two checkpoints, 6 + 8 = 14, which is
+#-- what question_budget below records. Total this chapter: 43.
 question_budget:
   soundings: 8
-  taking_your_bearings: 16             # across 3 checkpoints (6 + 5 + 5)
+  taking_your_bearings: 14             # across 2 checkpoints (6 + 8)
   practice_questions: 21
-  total_this_chapter: 45
+  total_this_chapter: 43
 
 #-- Concept / objective / command tagging -------------------------------
 #-- Per the Ch 13 AUTHOR-REVIEW housekeeping note carried forward by
@@ -291,15 +289,11 @@ figures_planned:
 
 **Domain Weight: 12% | Complexity: Mixed | Novelty: Moderate**
 
-<!-- AUTHOR-REVIEW: The 12% above is the published weight of Domain 4, Cloud Native Architecture [source: cncf-kcna-certification-page-2026-08-23]. This chapter carries roughly 7 of those 12 points and Chapter 18 carries the rest; that 7/5 split is this book's authored allocation, not a CNCF figure. CNCF publishes four domain weights and no sub-competency weights. Per outline Open Question 12 and B1 gap G33, the metadata line above must show 12%, and the allocation disclosure must appear in prose — it does, in Why This Chapter Matters.
-
-SECOND, ADDED AT REVISION: the Dead Reckoning block below states that Domain 4 has three competencies and names them (Cloud Native Ecosystem and Principles; Cloud Native Community and Collaboration; Cloud Native Observability). No cached snapshot supports the count or the names — cncf-kcna-certification-page-2026-08-23 publishes the four domain names and weights and nothing below that level, and the KCNA curriculum document (github.com/cncf/curriculum) is still an open research gap, tracked as G33. The competency names are how this book organizes the domain; if the curriculum repo is later cached, tag them or restate them to match. -->
-
 ---
 
 ## Attention Budget
 
-**Total time: ~155 minutes | Recommended: Split across 2 or 3 sessions**
+**Total time: ~151 minutes | Recommended: Split across 2 or 3 sessions**
 
 | Section | Time | Attention Cost | Best Time to Study |
 |---|---|---|---|
@@ -311,11 +305,10 @@ SECOND, ADDED AT REVISION: the Dead Reckoning block below states that Domain 4 h
 | ☆ Taking Your Bearings (1) | 8 min | Medium | After a short break |
 | §4 Every Place Kubernetes Lets You In | 12 min | High | Peak attention |
 | §5 A Network That Knows What It's Carrying | 14 min | High | Peak attention |
-| ☆ Taking Your Bearings (2) | 7 min | Medium | After a short break |
 | §6 Code Without a Server to Put It On | 8 min | Medium | Mid-session |
 | §7 Four Things That Scale | 10 min | Medium | Mid-session |
 | §8 How the Project Actually Runs, and How You'd Join | 12 min | Low | Anytime — but do not skip |
-| ☆ Taking Your Bearings (3) | 7 min | Medium | After a short break |
+| ☆ Taking Your Bearings (2) | 11 min | Medium | After a short break |
 | §9 One Pluggability Story | 4 min | Low | Read it awake |
 | Exam Alert, Practice Questions, Chapter Summary | 30 min | High | A separate sitting |
 
@@ -326,7 +319,7 @@ SECOND, ADDED AT REVISION: the Dead Reckoning block below states that Domain 4 h
 
 *If you only have 15 minutes: read §4, then §9. Together they are the chapter's spine.*
 
-*The natural split point is after Taking Your Bearings 2. §1 through §5 are the ecosystem's vocabulary; §6 through §9 are its shape. If you want a third session, take the Practice Questions on their own. Twenty-one items after two hours of reading is not a fair test of anything.*
+*The natural split point is after §5. §1 through §5 are the ecosystem's vocabulary; §6 through §9 are its shape. If you want a third session, take the Practice Questions on their own. Twenty-one items after two hours of reading is not a fair test of anything.*
 
 ---
 
@@ -368,19 +361,19 @@ Before reading this chapter, try these questions. Your score determines how to a
 
 *[cross-bearing: see Ch 2 §4 — the container runtime interface]*, *[cross-bearing: see Ch 9 §1 — four rules and a plugin]*, *[cross-bearing: see Ch 11 §5 — who actually provides the storage]*.
 
-**2.** Open-ended, and almost everyone gets this partly wrong, which is the point. Hold whatever sentence you wrote. §1 opens with the published definition verbatim, and you will be able to measure your answer against it word for word.
+2. Open-ended, and almost everyone gets this partly wrong, which is the point. Hold whatever sentence you wrote. §1 opens with the published definition verbatim, and you will be able to measure your answer against it word for word.
 
-**3.** Three. The project maintains release branches for the most recent three minor releases [source: k8s-release-cycle-and-cadence-2026-08-31]. If you had this cold, Chapter 8 §6 stuck. If you did not, §8 repairs it, and pairs it with the fact that explains it.
+3. Three. The project maintains release branches for the most recent three minor releases [source: k8s-release-cycle-and-cadence-2026-08-31]. If you had this cold, Chapter 8 §6 stuck. If you did not, §8 repairs it, and pairs it with the fact that explains it.
 
-**4.** A sidecar is a second container in the same Pod, running alongside the main application container. It shares the Pod's network namespace, meaning it reaches the main container on `localhost`, and it can share the Pod's volumes. *[cross-bearing: see Ch 5 §2 — more than one container aboard]*.
+4. A sidecar is a second container in the same Pod, running alongside the main application container. It shares the Pod's network namespace, meaning it reaches the main container on `localhost`, and it can share the Pod's volumes. *[cross-bearing: see Ch 5 §2 — more than one container aboard]*.
 
-**5.** The HorizontalPodAutoscaler object is created successfully. Nothing scales. The HPA needs the Metrics API to read utilization from, and on a cluster with no metrics-server, or any equivalent implementation, nothing is serving it. The object exists; the component that would act on it does not. *[cross-bearing: see Ch 13 §7 — numbers nobody collects by default]*.
+5. The HorizontalPodAutoscaler object is created successfully. Nothing scales. The HPA needs the Metrics API to read utilization from, and on a cluster with no metrics-server, or any equivalent implementation, nothing is serving it. The object exists; the component that would act on it does not. *[cross-bearing: see Ch 13 §7 — numbers nobody collects by default]*.
 
-**6.** `Pending`. And its continued existence is a standing, machine-readable statement that the cluster is short of somewhere to put work. *[cross-bearing: see Ch 7 §2 — what makes a node feasible]*.
+6. `Pending`. And its continued existence is a standing, machine-readable statement that the cluster is short of somewhere to put work. *[cross-bearing: see Ch 7 §2 — what makes a node feasible]*.
 
-**7.** The primary durable unit is a **SIG**, a Special Interest Group. A group formed to work across several of them is a **Working Group**. If you got the first and guessed at the second, you scored exactly what most readers score here, and §8 is where the guess becomes knowledge.
+7. The primary durable unit is a **SIG**, a Special Interest Group. A group formed to work across several of them is a **Working Group**. If you got the first and guessed at the second, you scored exactly what most readers score here, and §8 is where the guess becomes knowledge.
 
-**8.** Nothing, by default. TLS terminates at the Ingress and the traffic continues to the Pod in the clear. NetworkPolicy can say who may talk to whom, but it cannot encrypt anything. *[cross-bearing: see Ch 10 §7 — what NetworkPolicy cannot do]*. Hold onto this one; §5 is about the layer that closes that gap.
+8. Nothing, by default. TLS terminates at the Ingress and the traffic continues to the Pod in the clear. NetworkPolicy can say who may talk to whom, but it cannot encrypt anything. *[cross-bearing: see Ch 10 §7 — what NetworkPolicy cannot do]*. Hold onto this one; §5 is about the layer that closes that gap.
 
 ---
 
@@ -408,7 +401,7 @@ Four times now you have watched Kubernetes define an interface and hand the impl
 
 Chapter 2 §8 promised you this would feel like recognition rather than a fourth list. Keeping that promise is this chapter's job, and there is only one way to keep it: you have to arrive already holding all four. If Soundings question 1 was uncomfortable, that is worth ten minutes of back-reading before you continue.
 
-> **Dead Reckoning:** This chapter covers Domain 4 of the KCNA curriculum, Cloud Native Architecture, which is 12% of the exam [source: cncf-kcna-certification-page-2026-08-23]. Domain 4 has three competencies. Observability belongs to Chapter 18. This chapter carries the other two: Cloud Native Ecosystem and Principles, and Cloud Native Community and Collaboration. It is the only chapter in this book that carries two whole competencies, which is why it is also the longest. CNCF publishes weights for the four domains and does not publish weights for the competencies inside them. The split of Domain 4's points between this chapter and the next is this book's judgment, not a published figure.
+> **Dead Reckoning:** This chapter covers Domain 4 of the KCNA curriculum, Cloud Native Architecture, which is 12% of the exam [source: cncf-kcna-certification-page-2026-08-23]. Domain 4 has three competencies. Observability belongs to Chapter 18. This chapter carries the other two: Cloud Native Ecosystem and Principles, and Cloud Native Community and Collaboration [source: cncf-kcna-curriculum-pdf-2026-08-23]. It is the only chapter in this book that carries two whole competencies, which is why it is also the longest. CNCF publishes weights for the four domains and does not publish weights for the competencies inside them. The split of Domain 4's points between this chapter and the next is this book's judgment, not a published figure.
 
 There is an identity shift buried in that dry paragraph, and it deserves naming. Up to here you have been a competent user of somebody else's software. This chapter puts you inside the community that produces it: a community with a published definition of its own terms, a graduation ladder its projects climb, a technical committee that decides what belongs, a contributor ladder that anyone reading this could start climbing on a Tuesday afternoon, and a release train that explains why the version numbers behave the way Chapter 8 said they do.
 
@@ -465,14 +458,14 @@ The definition does four distinct things, and pulling them apart makes it far ea
 
 **The characteristics clause.** This is the part the exam can quote at you, so it is the part to know verbatim.
 
-> **★ Fixed Point**
+> ★ **Fixed Point:**
 >
 > Cloud native is characterized by **loosely coupled systems** that interoperate in a manner that is **secure, resilient, manageable, sustainable, and observable**.
 
 Five characteristics, attached to loosely coupled systems. Not five characteristics floating free. The loose coupling is the spine, and the five are what a loosely coupled system has to manage to be worth having. Each one is a real requirement with teeth:
 
 <!-- FIGURE: ch17-fig01-cloud-native-definition-characteristics -->
-![A single root box labelled LOOSELY COUPLED SYSTEMS branches down to five characteristics: secure, resilient, manageable, sustainable, and observable, each with a short explanatory gloss beneath it](figures/ch17-fig01-cloud-native-definition-characteristics.svg)
+![A single root box labeled LOOSELY COUPLED SYSTEMS branches down to five characteristics: secure, resilient, manageable, sustainable, and observable, each with a short explanatory gloss beneath it](figures/ch17-fig01-cloud-native-definition-characteristics.svg)
 
 <!-- ASCII-FALLBACK
 ```
@@ -518,7 +511,7 @@ The CNCF hosts hundreds of projects. Some of them are running production traffic
 
 ### The three rungs
 
-> **★ Fixed Point**
+> ★ **Fixed Point:**
 >
 > **Sandbox → Incubating → Graduated**, in that order.
 >
@@ -533,7 +526,7 @@ Read those three descriptions as claims about *evidence*, not about quality. A S
 There is a fourth word you will meet if you browse cncf.io, and it is not a rung. **Archived**, "inactive or low activity projects that are no longer supported" [source: cncf-toc-project-lifecycle-process-2026-08-31], is where projects land when nobody is maintaining them any more. Projects do not climb to it. The three-rung progression is correct as a progression, and Archived is the exit.
 
 <!-- FIGURE: ch17-fig05-cncf-maturity-levels -->
-![An ascending three-step staircase labelled Sandbox at the bottom, Incubating in the middle, and Graduated at the top, each step captioned with what that level asserts, with a separate detached note explaining that Archived is not a rung](figures/ch17-fig05-cncf-maturity-levels.svg)
+![An ascending three-step staircase labeled Sandbox at the bottom, Incubating in the middle, and Graduated at the top, each step captioned with what that level asserts, with a separate detached note explaining that Archived is not a rung](figures/ch17-fig05-cncf-maturity-levels.svg)
 
 <!-- ASCII-FALLBACK
 ```
@@ -630,7 +623,7 @@ Read that list slowly and you will notice something: it is roughly the table of 
 
 Entries are also tagged by the TAG that owns them, which is the connective tissue between the two halves of this section: the governance structure and the map are the same structure, seen from different sides.
 
-<!-- AUTHOR-REVIEW: cost management — FinOps, OpenCost, Kubecost — is deliberately omitted from this chapter. The Landscape's own categories do not name a cost layer, `opencost-overview-2026-08-23.md` sits unused in the corpus, and the KCNA curriculum's D4 sub-objectives are not enumerated in any cached source (gap G33), so this is a judgment call rather than a sourced exclusion. If reversed, the minimal home is one ungraded clause beside the Landscape's Observability and Analysis category above. Recorded so the decision is visible rather than silent. -->
+<!-- AUTHOR-REVIEW: cost management (FinOps, OpenCost, Kubecost) is deliberately omitted from this chapter. The Landscape's own categories do not name a cost layer; the current KCNA curriculum (cncf-kcna-curriculum-pdf-2026-08-23) names competencies only and no cost topic; and the retired five-domain curriculum (cncf-kcna-curriculum-retired-2026-09-04) filed "Cost Management" under Cloud Native Observability, which is Chapter 18's competency, not this chapter's. `opencost-overview-2026-08-23.md` sits unused in the corpus. If reversed, the minimal home is one ungraded clause beside the Landscape's Observability and Analysis category above. Recorded so the decision is visible rather than silent. -->
 
 *[cross-bearing: see Ch 2 §5 — the Open Container Initiative]*, which is a different standards body with an overlapping mission and is worth keeping distinct in your head. And *[cross-bearing: see Ch 15 §6 — the other agent]*, where you last met a Graduated project being named as such.
 
@@ -744,7 +737,7 @@ D) Image immutability applies to containers; immutable infrastructure applies on
 
 - **A is wrong.** No specific technology is required. Service meshes and declarative APIs appear in the technology list, which the definition explicitly calls non-exhaustive.
 - **B is wrong**, and it is wrong in the most instructive possible way. The definition's very first sentence names "public, private, hybrid cloud." Reading *cloud native* as *public cloud* is the single most common misconception about the term, and the definition rules it out in its opening sentence.
-- **C is correct** — verbatim from the definition's second sentence [source: cncf-cloud-native-definition-2026-08-23].
+- **C is correct** — the definition's second sentence, its five adjectives recast as adverbs [source: cncf-cloud-native-definition-2026-08-23].
 - **D is wrong** for the same reason as A. Microservices are listed as a typical component, not a requirement, and the glossary elsewhere argues that a monolith can be the right choice.
 
 **2. A.** Straight from the projects page: Incubating projects are "used successfully in production by a small number of users with a healthy pool of contributors" [source: cncf-project-maturity-levels-2026-08-23]. **B** is Sandbox: experimental, bleeding edge, not widely tested. **C** is Graduated: stable, widely adopted, production ready. **D** is Archived, which is not a rung on the ladder at all but the terminal state for projects that are no longer maintained.
@@ -836,7 +829,7 @@ This section puts those four side by side. It does not redefine any of them; eac
 
 ### The judgment, stated as a judgment
 
-> **★ Fixed Point**
+> ★ **Fixed Point:**
 >
 > At every one of the four pluggable interfaces — **CRI, CNI, CSI, and CRDs** — Kubernetes defines an interface and hands the implementation to somebody else.
 
@@ -885,8 +878,6 @@ Both are defensible, and the documentation is the reason: "API extensions" is th
 
 One more, which is a genuinely useful detail rather than a completeness note: Helm charts have a `crds/` directory precisely because a chart that ships custom resources has to install the definitions before the objects that use them [source: helm-crd-best-practices-2026-08-31]. The packaging format had to grow a special case for the extension mechanism. *[cross-bearing: see Ch 14 §6 — which one, when]*.
 
-<!-- AUTHOR-REVIEW: the Helm `crds/` claim in the paragraph above, and the Practice question built on it, are carried by cross-bearing to Ch 14 §6 rather than by a source tag — no Helm snapshot exists in this chapter's cached corpus. Ch 14 §6 owns the fact per the section skeleton, so the pointer is correct in kind, but a graded question is thinner support than a cross-reference usually has to bear. Either tag it to whatever helm.sh snapshot Ch 14 uses (cheapest, if that snapshot is in the full sources/ tree), or open a research gap for the Helm chart-structure documentation. -->
-
 That is the map. §9 says what it means.
 
 ---
@@ -909,7 +900,7 @@ The glossary is specific about what makes this hard without a mesh. Once you hav
 
 And then the payoff sentence, which contains the whole point:
 
-> **★ Fixed Point**
+> ★ **Fixed Point:**
 >
 > Service meshes add reliability, observability, and security features uniformly across all services across a cluster **without requiring code changes**. Before service meshes, that functionality had to be encoded into every single service, becoming a potential source of bugs and technical debt.
 >
@@ -929,7 +920,7 @@ Istio names three reasons you would want one [source: istio-service-mesh-2026-08
 
 This is the most dangerous piece of vocabulary in the chapter, and it is dangerous for an honest reason: the two things share a name because they genuinely do the same *kind* of job, at different layers.
 
-> **★ Fixed Point**
+> ★ **Fixed Point:**
 >
 > A mesh's **data plane** is the set of proxies that mediate and control all network communication between services. A mesh's **control plane** is what manages and configures those proxies.
 >
@@ -1035,7 +1026,7 @@ The consequence it names is lateral movement: if an attacker takes one trusted d
 
 Now go back to Soundings question 8. TLS terminates at the Ingress. The traffic continues to the Pod unencrypted. NetworkPolicy can say *who may reach whom*, and cannot encrypt a single byte *[cross-bearing: see Ch 10 §7 — what NetworkPolicy cannot do]*. That unprotected leg, inside the perimeter, between components that trust each other because they are both inside, is precisely the vulnerability the glossary is describing.
 
-**Mutual TLS** is the mesh's answer. Istio's stated security goals are three, and they read as a direct response to that gap: "Security by default: no changes needed to application code and infrastructure; Defense in depth: integrate with existing security systems to provide multiple layers of defense; Zero-trust network: build security solutions on distrusted networks" [source: istio-security-mtls-identity-2026-08-31].
+**Mutual TLS (mTLS)** is the mesh's answer. Istio's stated security goals are three, and they read as a direct response to that gap: "Security by default: no changes needed to application code and infrastructure; Defense in depth: integrate with existing security systems to provide multiple layers of defense; Zero-trust network: build security solutions on distrusted networks" [source: istio-security-mtls-identity-2026-08-31].
 
 The mechanism has three named components: a **Certificate Authority** for key and certificate management; a **configuration API server** that distributes authentication policies, authorization policies, and secure naming information to the proxies; and **sidecar and perimeter proxies** acting as Policy Enforcement Points [source: istio-security-mtls-identity-2026-08-31].
 
@@ -1060,7 +1051,7 @@ This is the boundary question, and you have been walking toward it since Chapter
 
 The honest summary: Service gives you a name, NetworkPolicy gives you a fence, and a mesh gives you a *conversation you can inspect and trust*. The glossary is candid that the sidecar model "uses more computing resources and becomes more complex to manage as your system grows" [source: cncf-glossary-service-mesh-2026-08-31], which is the pressure ambient mode is responding to.
 
-> 🔭 **Closer Look:** **Istio** and **Linkerd** are the two most widely deployed meshes in the CNCF ecosystem. This section teaches Istio's model because it is the most widely documented, and because the sidecar/ambient split is the fact most likely to be tested. At associate tier, know what a mesh *is* and what it *buys*, not how to configure one. If you find yourself learning the names of a mesh's own custom resources, you have gone past the exam.
+> 🔭 **Closer Look:** **Istio** and **Linkerd** are the two service meshes you are most likely to meet by name, and both are CNCF Graduated projects [source: cncf-project-maturity-levels-2026-08-23]. This section teaches Istio's model because it is the most widely documented, and because the sidecar/ambient split is the fact most likely to be tested. At associate tier, know what a mesh *is* and what it *buys*, not how to configure one. If you find yourself learning the names of a mesh's own custom resources, you have gone past the exam.
 
 *[cross-bearing: see Ch 9 §6 — the component that makes it real]* and *[cross-bearing: see Ch 12 §4 — secrets are not encrypted]*, both of which are the same lesson in different clothes: the object is not the mechanism, and encoding is not encryption.
 
@@ -1096,7 +1087,7 @@ It has three components, and they answer genuinely different questions.
 
 **Knative Serving** is "an HTTP-triggered autoscaling container runtime that manages the complete lifecycle of stateless HTTP services, including deployment, routing, and automatic scaling (including scale to zero)" [source: knative-overview-2026-08-23]. Synchronous. A request arrives, something serves it.
 
-**Knative Eventing** is "a CloudEvents-over-HTTP asynchronous routing layer that provides infrastructure for consuming and producing events, enabling loose coupling between event producers and consumers" [source: knative-overview-2026-08-23]. **CloudEvents** is itself a CNCF project: a specification for describing event data in a common way, so that an event emitted by one system can be understood by another without a bespoke adapter between them. Asynchronous. Something happened; interested parties get told.
+**Knative Eventing** is "a CloudEvents-over-HTTP asynchronous routing layer that provides infrastructure for consuming and producing events, enabling loose coupling between event producers and consumers" [source: knative-overview-2026-08-23]. **CloudEvents** is itself a CNCF Graduated project [source: cncf-project-maturity-levels-2026-08-23]: a specification for describing event data in a common way, so that an event emitted by one system can be understood by another without a bespoke adapter between them. Asynchronous. Something happened; interested parties get told.
 
 **Knative Functions** "leverages Serving and Eventing to provide a simplified experience for building and deploying stateless functions" [source: knative-overview-2026-08-23]. It is built on the other two rather than being a third independent thing.
 
@@ -1104,7 +1095,7 @@ It has three components, and they answer genuinely different questions.
 
 Now the correction this whole section exists for.
 
-> **★ Fixed Point**
+> ★ **Fixed Point:**
 >
 > Serverless workloads on Kubernetes are still **containers in Pods**. Knative "builds on the Kubernetes Pod abstraction," and Serving and Eventing "are implemented as Kubernetes Custom Resource Definitions (CRDs)" [source: knative-overview-2026-08-23].
 >
@@ -1135,7 +1126,7 @@ Zero. Not one idle replica riding at anchor, burning memory in case somebody sho
    ----                ---------------         -------
 
    Knative Service     Knative Service         Knative Service
-   replicas: 0    -->  replicas: 0 -> N   -->  replicas: N
+   replicas: 0    ==>  replicas: 0 -> N   ==>  replicas: N
                        (KPA scales up)
 
    ( nothing            +------------+          +------------+
@@ -1153,7 +1144,7 @@ Zero. Not one idle replica riding at anchor, burning memory in case somebody sho
               TRAFFIC STOPS                          |
               -------------                          v
                                                 +------------+
-   Knative Service        <-- KPA scales down --|  replicas  |
+   Knative Service        <== KPA scales down ==|  replicas  |
    replicas: 0                                  |   N -> 0   |
                                                 +------------+
 
@@ -1182,7 +1173,7 @@ All four of those debts come due in this section.
 
 Start with the distinction the documentation itself leads with, because everything else hangs off it.
 
-> **★ Fixed Point**
+> ★ **Fixed Point:**
 >
 > **Horizontal** scaling changes the **number** of replicas. **Vertical** scaling changes the **resources** available to each replica.
 >
@@ -1326,7 +1317,7 @@ Hold "transparent and accessible" in mind. In a moment you will meet the one gro
 
 ### SIGs, Working Groups, and Committees
 
-> **★ Fixed Point**
+> ★ **Fixed Point:**
 >
 > - A **SIG (Special Interest Group)** is the primary, **durable**, topic-focused unit. Members from multiple companies, common purpose of advancing the project on a specific topic.
 > - A **Working Group** is **time-bounded** and **crosses SIG lines**. Formed for a topic in scope for Kubernetes that spans multiple SIGs.
@@ -1413,17 +1404,15 @@ Look at those two numbers together. Three releases a year. Three maintained bran
 
 Roughly a year. And the source confirms it independently, on the same page: "Kubernetes 1.19 and newer receive approximately 1 year of patch support" [source: k8s-release-cycle-and-cadence-2026-08-31].
 
-> **★ Fixed Point**
+> ★ **Fixed Point:**
 >
 > **Three minor releases a year**, **three supported minor versions**, and **roughly one year of patch support** are not three facts. They are one fact stated three ways. Three releases per year × three maintained branches ≈ one year — and because the documentation states that year independently, you can *derive* the support window instead of memorizing it.
 
 Chapter 8 §6 warned you that the version-skew numbers were the most forgettable material in the book, and it was right: they are three unrelated-looking integers. They are much harder to forget once they are one relationship. *[cross-bearing: see Ch 8 §6 — versions that are allowed to disagree]*, and *[cross-bearing: see Ch 13 §6 — versions that don't agree]* for what happens when the window is violated.
 
-**SIG Release** is the group that makes this happen — and this is where Chapter 8's fifteen weeks go *[cross-bearing: see Ch 8 §6 — release cadence and supported versions]*. Three minor releases a year, roughly one every fifteen weeks, is not an arbitrary rhythm: it is the length of a cycle that has to accommodate enhancement freeze, code freeze, testing and the staffing of the release roles below. Its charter lists "Production of Kubernetes releases on a reliable schedule" as its first responsibility, along with defining and staffing release roles, driving the development and release processes, and "managing the creation of release specific artifacts, including: Code branches, Binary artifacts, Container Images, Release notes" [source: k8s-release-cycle-and-cadence-2026-08-31].
+**SIG Release** is the group that makes this happen — and this is where Chapter 8's fifteen weeks go *[cross-bearing: see Ch 8 §6 — release cadence and supported versions]*. Three minor releases a year, roughly one every fifteen weeks [source: k8s-releases-cadence-2026-08-23], is not an arbitrary rhythm: it is the length of a cycle that has to accommodate enhancement freeze, code freeze, testing and the staffing of the release roles below. Its charter lists "Production of Kubernetes releases on a reliable schedule" as its first responsibility, along with defining and staffing release roles, driving the development and release processes, and "managing the creation of release specific artifacts, including: Code branches, Binary artifacts, Container Images, Release notes" [source: k8s-release-cycle-and-cadence-2026-08-31].
 
 The cycle itself has three phases — **Enhancement Definition, Implementation, Stabilization** — with an **Enhancements Freeze** around week 4, **Code Freeze** starting around week 12 and running about two weeks, during which "only critical bug fixes are accepted into the release codebase," and a post-release phase from week 14 [source: k8s-release-cycle-and-cadence-2026-08-31].
-
-<!-- AUTHOR-REVIEW: an older cached snapshot (k8s-releases-cadence-2026-08-23) states the cadence as "approximately every 15 weeks." The current release-cycle page says "approximately three times per year" and describes a cycle whose post-release phase begins at week 14+. This section teaches the three-times-a-year formulation, which is current, sourced, and the half the exam would test. Flagged so a later stage does not "correct" it toward the 15-week figure. -->
 
 ### KEPs: how a change becomes a change
 
@@ -1446,7 +1435,7 @@ The Kubernetes contributor ladder has four rungs [source: k8s-community-membersh
 | **Member** | Active contributor in the community | Sponsored by 2 reviewers; multiple contributions to the project |
 | **Reviewer** | Review contributions from other members | History of review and authorship in a subproject |
 | **Approver** | Approve acceptance of contributions | Highly experienced active reviewer and contributor to a subproject |
-| **Subproject Owner** | Set direction and priorities for a subproject | Demonstrated responsibility and excellent technical judgement |
+| **Subproject Owner** | Set direction and priorities for a subproject | Demonstrated responsibility and excellent technical judgment |
 
 The Member requirements in full: two-factor authentication enabled on your GitHub account; multiple contributions "enough to demonstrate an ongoing and long-term commitment to the project"; subscribed to the dev mailing list; read the contributor guide; **sponsored by 2 reviewers from different companies**; and open a membership request issue [source: k8s-community-membership-ladder-2026-08-23].
 
@@ -1456,11 +1445,9 @@ Notice what is and is not on that list. There is no employer requirement. No sen
 
 > **Logbook Entry:** The most common misconception about contributing to a project this size is that the work is all deep systems programming, and that a first contribution has to be impressive.
 >
-> It does not. SIG Docs exists. So does SIG Contributor Experience [source: k8s-sig-list-and-groups-2026-08-31]. In my experience, a great many people on the contributor ladder got their first merged PR by fixing documentation that was wrong, or by writing a test for a code path that had none, or by reproducing a bug report that a maintainer did not have the environment to reproduce.
+> It does not. SIG Docs exists. So does SIG Contributor Experience [source: k8s-sig-list-and-groups-2026-08-31]. The same roster that names the groups publishes each one's meeting schedule beside its chairs and contact channels, and SIG Docs' schedule includes a monthly New Contributor Meet and Greet [source: k8s-sig-list-meetings-2026-09-04]. In my experience, a great many people on the contributor ladder got their first merged PR by fixing documentation that was wrong, or by writing a test for a code path that had none, or by reproducing a bug report that a maintainer did not have the environment to reproduce.
 >
 > The reason this matters for an exam chapter, and not just as encouragement: the project's own stated principle is that "work and collaboration should be done in public" [source: k8s-community-governance-2026-08-23], and the fastest way to stop finding "SIG, Working Group, Committee, Steering" abstract is to go and watch some of that work happen. Forty-five minutes spent following a group of engineers arguing about a KEP will do more for your retention of this section than reading it three times.
-
-<!-- AUTHOR-REVIEW: an earlier draft of this Logbook Entry and of the SIG paragraph above claimed that every SIG holds a public meeting on a public calendar, and that such a meeting is available "this week." Neither cached snapshot supports it: k8s-community-governance-2026-08-23 gives the transparency principle, and k8s-sig-list-and-groups-2026-08-31 gives the roster without the meeting-schedule columns that the upstream sig-list.md carries. Softened to the sourced principle. To restore the stronger, more useful invitation, re-fetch sig-list.md capturing the per-SIG meeting schedules. -->
 
 The CNCF side has its own on-ramps, and they are distinct from the Kubernetes ones. **LFX Mentorship** is "a mentoring initiative by the Linux Foundation"; **Google Summer of Code** is "a mentoring program for the open source beginners"; **Outreachy** is "a mentoring initiative for the communities traditionally underrepresented in tech" [source: cncf-mentoring-and-community-groups-2026-08-31]. The foundation also "supports the worldwide community of the Cloud Native Community Groups (CNCGs)" [source: cncf-mentoring-and-community-groups-2026-08-31]: "free, volunteer-run meetups on the CNCF community platform, including Kubernetes Community Days" [source: cncf-landscape-and-community-2026-08-23].
 
@@ -1488,9 +1475,7 @@ The KCNA "is a pre-professional certification designed for candidates interested
 
 The shape of that ladder matters because the *format* changes, not just the difficulty. KCNA is "online and multiple-choice." **CKA** is "a performance-based exam where candidates interact with the command line to solve real-world challenges." **CKAD** is "a hands-on, command-line environment." **CKS** is "performance-based" [source: cncf-kcna-certification-page-2026-08-23].
 
-CNCF also offers **KCSA**, the Kubernetes and Cloud Native Security Associate, and the Cloud Native Network Function certification [source: cncf-who-we-are-2026-08-23].
-
-<!-- AUTHOR-REVIEW: cncf-who-we-are-2026-08-23 gives the acronym KCSA inside a list of credentials and does not expand it; the expansion above ("Kubernetes and Cloud Native Security Associate") is standard and almost certainly correct but is not in the cached corpus. The book's acronym register requires expansion at first use, so it stands here. Tag it to the CNCF certification overview page on the next research pass, or drop the expansion if the register is relaxed. No snapshot states KCSA's exam format, which is why the Mnemonic below scopes its claim to CKA/CKAD/CKS. -->
+CNCF also offers **KCSA**, the Kubernetes and Cloud Native Security Associate [source: lf-cloud-native-certification-catalog-2026-08-23], and the Cloud Native Network Function certification [source: cncf-who-we-are-2026-08-23].
 
 > 🪢 **Mnemonic:** **KCNA is the only one on this ladder — CKA, CKAD, CKS — you can pass by knowing things.** Everything above it requires doing things, at a terminal, against a live cluster, under time pressure. That is not a reason to underrate this exam. It is the reason the vocabulary you are building here has to be solid before you go on, because at the next tier nobody gives you four options to pick from.
 
@@ -1568,11 +1553,11 @@ D) They are wrong — Knative builds on the Pod abstraction and ships as CRDs, s
 
 **3. B.** NetworkPolicy is an allow-list: it decides which connections are permitted, not whether they're encrypted, and nothing described here encrypts the pod-to-pod leg. A misreads NetworkPolicy's job entirely. C is the misconception this question targets: TLS terminated at the Ingress means that connection ended there — what continues to the Pod is new, and by default plaintext. D invents a requirement the Kubernetes network model doesn't make. Closing this gap is exactly what a service mesh's mTLS is for.
 
-**4. C.** Istio's own framing: the data plane is the proxies that mediate service-to-service traffic; the control plane manages and configures those proxies [source: istio-service-mesh-2026-08-23]. B is the vocabulary collision worth flagging — kube-apiserver and etcd are the *cluster's* control plane, a different structure at a different layer. A mesh's control plane distributes policy to proxies; the cluster's reconciles objects.
+**4. C.** Istio's own framing: the data plane is the proxies that mediate service-to-service traffic; the control plane manages and configures those proxies [source: istio-service-mesh-2026-08-23]. A swaps the two jobs. D is wrong: they are two components with two jobs, not one component under two names. B is the vocabulary collision worth flagging — kube-apiserver and etcd are the *cluster's* control plane, a different structure at a different layer. A mesh's control plane distributes policy to proxies; the cluster's reconciles objects.
 
 **5. C.** KEDA scales on external events — queue depth among them — and its `Cron` scaler covers scheduled capacity changes: one tool, both requirements, moving the replica count [source: k8s-docs-autoscaling-and-vpa-2026-08-31]. A is wrong on both halves: VPA moves resources per replica, not replica count, and reacts to observed usage, not queue depth or schedule. B is wrong — Cluster Autoscaler reacts to unschedulable Pods, with no view of a queue. D is the near-miss: the HPA scales natively on CPU/memory or custom metrics, but queue-driven scaling isn't native, and schedules aren't its concern at all.
 
-**6. A.** Committees "do not have open membership and do not always operate in the open" — Steering forms them for topics requiring discretion, such as Security or Code of Conduct [source: k8s-community-governance-2026-08-23]. B inverts the relationship: SIGs are the topic-scoped unit, and Working Groups are the ones that cross SIG lines. D confuses organizations — SIGs, Working Groups, and Committees are all Kubernetes bodies; CNCF's equivalent units are TAGs.
+**6. A.** Committees "do not have open membership and do not always operate in the open" — Steering forms them for topics requiring discretion, such as Security or Code of Conduct [source: k8s-community-governance-2026-08-23]. B inverts the relationship: SIGs are the topic-scoped unit, and Working Groups are the ones that cross SIG lines. C picks the wrong axis: durability is what defines a SIG, and what sets a Committee apart is closed membership, not lifespan. D confuses organizations — SIGs, Working Groups, and Committees are all Kubernetes bodies; CNCF's equivalent units are TAGs.
 
 **7. B.** The project maintains release branches for the most recent three minor versions, ships roughly three releases a year, and gives 1.19+ about a year of patch support [source: k8s-release-cycle-and-cadence-2026-08-31]. Two versions behind puts 1.35 at the end of its window. A misreads "three releases" as "three years" — the three attaches to minor versions, not years. C understates it: three branches are maintained, not one. D is wrong about the upstream project, which publishes explicit end-of-life dates regardless of what a managed provider layers on top.
 
@@ -1592,6 +1577,7 @@ D) They are wrong — Knative builds on the Pod abstraction and ships as CRDs, s
 ✓ Why three releases a year and three supported versions are one fact
 ✓ The contributor ladder, its actual entry requirements, and the certification ladder above this exam
 
+---
 
 ## ☀️ §9 — One Pluggability Story
 
@@ -1602,7 +1588,7 @@ Here is what you were actually looking at.
 Kubernetes is not a system that happens to be extensible in four places. It is a system built on the premise that **it should not be the one implementing the parts that vary**.
 
 <!-- FIGURE: ch17-zenith-one-pluggability-story -->
-![Two halves: on the left, a box reading Kubernetes defines what must be true connected by one arrow labelled the socket to a box reading somebody else supplies the thing; on the right, a plain list of CRI, CNI, CSI and CRDs with their chapter references, captioned four instances, not four decisions](figures/ch17-zenith-one-pluggability-story.svg)
+![Two halves: on the left, a box reading Kubernetes defines what must be true connected by one arrow labeled the socket to a box reading somebody else supplies the thing; on the right, a plain list of CRI, CNI, CSI and CRDs with their chapter references, captioned four instances, not four decisions](figures/ch17-zenith-one-pluggability-story.svg)
 
 <!-- ASCII-FALLBACK
 ```
@@ -1629,11 +1615,7 @@ Kubernetes is not a system that happens to be extensible in four places. It is a
 
 *The same vocabulary as the extension-points map, one altitude higher — and altitude, to a navigator, is not a metaphor for importance. It is the angle you take on a fixed body to learn where you actually are.*
 
-<!-- AUTHOR-REVIEW: two figure-anchor notes forwarded from the image-spec stage, neither of them blocking.
-
-(1) This anchor is `ch17-zenith-one-pluggability-story`, with no `figMM` segment. The image-spec stage flagged it as non-conforming to `ch{NN}-fig{MM}-{slug}`. It is in fact valid: structural-contract.yaml's `anchor_id_pattern` is `^ch\d{2}-(fig\d{2}|zenith)-[a-z0-9-]+$`, which explicitly sanctions the zenith form, and structural lint passes on it. Left as written — the anchor is the join key into image-specs.md and renaming it would have to happen in both files in one commit for no gain.
-
-(2) The chapter's figure numbers are contiguous (fig01-fig07, no gaps, no duplicates) but appear out of reading order: 01, 05, 02, 03, 07, 04, 06, zenith. Any reader-facing numbering derived from document position will disagree with the anchor IDs. Author's call: renumber the anchors to match reading order (touching draftand image-specs together), or suppress printed figure numbers for this chapter. -->
+<!-- AUTHOR-REVIEW: one figure-anchor note forwarded from the image-spec stage, not blocking. The chapter's figure numbers are contiguous (fig01 to fig07, no gaps, no duplicates) but appear out of reading order: 01, 05, 02, 03, 07, 04, 06, zenith. Any reader-facing numbering derived from document position will disagree with the anchor IDs. Author's call: renumber the anchors to match reading order (touching draft and image-specs together), or suppress printed figure numbers for this chapter, as the italic captions currently do. -->
 
 Consider what it would have taken to do this the other way. Kubernetes ships a container runtime, and then every hardening requirement, every compliance regime, every sandboxed-isolation need becomes a feature request against the Kubernetes codebase. Kubernetes ships a network implementation, and every network fabric on earth becomes a patch somebody has to get merged. Kubernetes ships storage drivers, and the project maintains code for every array, appliance and cloud volume service in existence. Kubernetes ships a fixed set of object kinds, and the only way to model your database is to convince the API reviewers your database belongs in Kubernetes.
 
@@ -1687,9 +1669,7 @@ That is the pluggability story, and it is one story.
 | Confusing Pod autoscaling with node autoscaling | HPA, VPA and KEDA scale **workloads**. Cluster Autoscaler and Karpenter scale the **node pool**. |
 | "KEDA is a CPU autoscaler" | KEDA is event-driven — queue depth and similar external signals — plus schedule-based scaling through its Cron scaler. |
 | Giving Karpenter a CNCF maturity level | No official source assigns it one. It is sponsored by Kubernetes SIG Autoscaling. |
-| Expecting Observability as its own domain | The current blueprint has four domains — Kubernetes Fundamentals 44%, Container Orchestration 28%, Cloud Native Application Delivery 16%, Cloud Native Architecture 12% [source: cncf-kcna-certification-page-2026-08-23]. Observability is not one of them; it is competency material inside Cloud Native Architecture. Much third-party prep still targets an older, five-domain split. |
-
-<!-- AUTHOR-REVIEW: the trap row above previously read "Container Orchestration rose to 28%, and Application Delivery doubled to 16%," and The Voyage Ahead previously asserted that Observability was a standalone domain "with its own weight" under the old blueprint. Both are comparative claims resting on the PRE-CHANGE five-domain weights (46/22/16/8/8), and the only file in this corpus carrying those numbers is provenance-kcna-60-questions-2026-08-23.md — a syndicated community post whose own header reads "DO NOT CITE THE CONTENTS OF THIS FILE AS FACT" and which records the old blueprint as "NOT independently sourced." Both passages are now narrowed to what cncf-kcna-certification-page-2026-08-23 supports: the four current domains and their weights, and Observability's absence from that list. Chapter 1 § "The Curriculum That Moved Under Everyone's Feet" carries the blueprint-change narrative for the reader; this chapter points there rather than restating figures it cannot source. To restore the comparative framing, close research gap G33 by caching github.com/cncf/curriculum's KCNA version history. -->
+| Expecting Observability as its own domain | The current blueprint has four domains — Kubernetes Fundamentals 44%, Container Orchestration 28%, Cloud Native Application Delivery 16%, Cloud Native Architecture 12% [source: cncf-kcna-certification-page-2026-08-23]. Observability is not one of them; it is competency material inside Cloud Native Architecture. Under the retired five-domain blueprint it was a domain of its own, weighted 8%, and Cloud Native Application Delivery carried 8% rather than today's 16% [source: cncf-kcna-curriculum-retired-2026-09-04]. Much third-party prep still targets that older split. |
 
 ---
 
@@ -1699,147 +1679,147 @@ Twenty-one questions. Several deliberately cross domain boundaries. That is how 
 
 ---
 
-**Q1.** The CNCF Cloud Native Definition v1.1 states that cloud native is characterized by loosely coupled systems that interoperate in a manner that is:
+**1.** The CNCF Cloud Native Definition v1.1 states that cloud native is characterized by loosely coupled systems that interoperate in a manner that is:
 
 A) Scalable, portable, automated, distributed, and containerized
 B) Declarative, immutable, ephemeral, elastic, and stateless
 C) Secure, resilient, manageable, sustainable, and observable
 D) Reliable, available, performant, secure, and cost-effective
 
-**Q2.** An engineering director claims their on-premises platform "cannot be cloud native, because it isn't in a cloud." What does the published definition say?
+**2.** An engineering director claims their on-premises platform "cannot be cloud native, because it isn't in a cloud." What does the published definition say?
 
 A) The definition's first sentence names "public, private, hybrid cloud," so an on-premises platform can absolutely be cloud native
 B) The director is right — cloud native by definition requires a public cloud provider
 C) The definition is silent on where workloads run, so the question cannot be settled from the document
 D) On-premises platforms can be cloud native only if they run a conformant Kubernetes distribution
 
-**Q3.** According to the CNCF definition, what do cloud native techniques allow engineers to do when combined with robust automation?
+**3.** According to the CNCF definition, what do cloud native techniques allow engineers to do when combined with robust automation?
 
 A) Eliminate the need for operations staff
 B) Guarantee zero downtime during deployments
 C) Reduce infrastructure cost by a measurable percentage
 D) Make high-impact changes frequently and predictably with minimal toil and clear separation of concerns
 
-**Q4.** A project is described as CNCF Sandbox. Which statement is supported?
+**4.** A project is described as CNCF Sandbox. Which statement is supported?
 
 A) It is stable, widely adopted, and production ready
 B) It is experimental, not yet widely tested in production, and on the bleeding edge
 C) It is used successfully in production by a small number of users
 D) It has completed the TOC's due diligence and adopter interviews
 
-**Q5.** Which describes the relationship between the CNCF Governing Board and the Technical Oversight Committee?
+**5.** Which describes the relationship between the CNCF Governing Board and the Technical Oversight Committee?
 
 A) The TOC sets the CNCF's scope; the Governing Board approves projects within it
 B) Both bodies vote jointly on every project application before it is accepted
 C) The Governing Board is elected by the TOC and reports to it on technical matters
 D) The Governing Board handles business oversight and budget and sets the CNCF's scope; the TOC defines the technical vision and approves projects within that scope
 
-**Q6.** A candidate studying from a 2023 guide memorizes the CNCF TAGs as: App Delivery, Contributor Strategy, Environmental Sustainability, Network, Observability, Runtime, Security, and Storage. What is the problem?
+**6.** A candidate studying from a 2023 guide memorizes the CNCF TAGs as: App Delivery, Contributor Strategy, Environmental Sustainability, Network, Observability, Runtime, Security, and Storage. What is the problem?
 
 A) TAGs were restructured in 2025; the current five are Developer Experience, Infrastructure, Operational Resilience, Security and Compliance, and Workloads Foundation
 B) Nothing — that is the current list
 C) Those are Kubernetes SIGs, not CNCF TAGs
 D) TAGs were abolished and their functions moved to the End User TAB
 
-**Q7.** The CNCF glossary argues that a well-designed monolith "can uphold lean principles by being the simplest way to get an application up and running." What is the reasoning?
+**7.** The CNCF glossary argues that a well-designed monolith "can uphold lean principles by being the simplest way to get an application up and running." What is the reasoning?
 
 A) Monoliths outperform microservices once a system reaches production scale
 B) Microservices reduce total system complexity, so they only pay off on very large teams
 C) Microservices increase operational overhead, and building a microservices-based app before it has proven valuable may be premature spending of engineering effort
 D) Monoliths are easier to make immutable, since there is only one artifact to replace
 
-**Q8.** A cluster needs support for a storage array whose vendor Kubernetes has never heard of. What does Kubernetes provide, and what does the vendor provide?
+**8.** A cluster needs support for a storage array whose vendor Kubernetes has never heard of. What does Kubernetes provide, and what does the vendor provide?
 
 A) Kubernetes provides a volume plugin compiled into the Kubernetes codebase, which the vendor configures
 B) The vendor submits a patch to the Kubernetes codebase for each release
 C) Kubernetes provides a device plugin framework the vendor registers against
 D) Kubernetes provides the Container Storage Interface — a published specification — and the vendor writes a CSI driver implementing it
 
-**Q9.** `[retrieval: ch6]` A team needs the kube-apiserver to recognize and store a new object kind, served through the standard API so `kubectl get` works, without running any additional API server process. Which mechanism, and which of the four pluggable interfaces does it represent?
+**9.** `[retrieval: ch6]` A team needs the kube-apiserver to recognize and store a new object kind, served through the standard API so `kubectl get` works, without running any additional API server process. Which mechanism, and which of the four pluggable interfaces does it represent?
 
 A) The API aggregation layer; it is the fourth pluggable interface
 B) A CustomResourceDefinition; it is the fourth pluggable interface
 C) A mutating admission webhook; it is not one of the four
 D) A scheduler plugin; it is the fourth pluggable interface
 
-**Q10.** `[retrieval: ch14]` Why do Helm charts have a dedicated `crds/` directory rather than placing CustomResourceDefinitions in `templates/` with everything else?
+**10.** `[retrieval: ch14]` Why do Helm charts have a dedicated `crds/` directory rather than placing CustomResourceDefinitions in `templates/` with everything else?
 
 A) CRDs cannot be templated, for security reasons
 B) CRDs are cluster-scoped, and Helm cannot manage cluster-scoped objects from templates
 C) A chart that ships custom resources must install their definitions before the objects that use them, which is an ordering problem the packaging format had to solve explicitly
 D) The directory is deprecated and exists only for backwards compatibility with Helm 2
 
-**Q11.** The defining property of a service mesh, per both the CNCF glossary and Istio's own documentation, is that it adds reliability, observability and security features uniformly across services:
+**11.** The defining property of a service mesh, per both the CNCF glossary and Istio's own documentation, is that it adds reliability, observability and security features uniformly across services:
 
 A) Without requiring code changes
 B) With a small, well-documented set of application code changes and a mesh-aware client library
 C) Only for services written in languages the mesh supplies an SDK for
 D) Only for north-south traffic entering the cluster from outside
 
-**Q12.** `[retrieval: ch10]` A cluster enforces strict default-deny NetworkPolicy and terminates TLS at the Ingress. Which security gap does adding a service mesh with mTLS close?
+**12.** `[retrieval: ch10]` A cluster enforces strict default-deny NetworkPolicy and terminates TLS at the Ingress. Which security gap does adding a service mesh with mTLS close?
 
 A) It prevents unauthorized Pods from opening connections to a backend Service
 B) It encrypts the contents of Secrets as stored in etcd, closing the at-rest gap
 C) It replaces NetworkPolicy, which becomes unnecessary once identity is verified per request
-D) It encrypts and mutually authenticates service-to-service traffic inside the cluster — including the previously plaintext leg from the Ingress to the Pod, which is exactly the trusted-interior weakness zero trust names when it says trust is a vulnerability
+D) It encrypts and mutually authenticates service-to-service traffic inside the cluster, including the previously plaintext leg from the Ingress to the Pod
 
-**Q13.** Which statement about Istio's ambient mode is correct?
+**13.** Which statement about Istio's ambient mode is correct?
 
 A) It removes Envoy from the architecture entirely, replacing it with ztunnel at every layer
 B) It uses a per-node L4 proxy called ztunnel, with optional per-namespace L7 waypoint proxies that are deployments of Envoy
 C) It is a competing product to Istio from a different project
 D) It requires every Pod in the cluster to migrate away from sidecars simultaneously
 
-**Q14.** Knative Serving and Knative Eventing answer different questions. Which pairing is correct?
+**14.** Knative Serving and Knative Eventing answer different questions. Which pairing is correct?
 
 A) Serving handles asynchronous events; Eventing handles synchronous HTTP
 B) Serving runs the workload; Eventing is the autoscaler that scales it to and from zero
 C) Serving is an HTTP-triggered autoscaling container runtime including scale to zero; Eventing is a CloudEvents-over-HTTP asynchronous routing layer
 D) Serving is for stateful workloads; Eventing is for stateless ones
 
-**Q15.** How does Knative relate to Kubernetes?
+**15.** How does Knative relate to Kubernetes?
 
 A) Knative is Kubernetes-based, builds on the Pod abstraction, and Serving and Eventing are implemented as CustomResourceDefinitions
 B) Knative replaces the Kubernetes control plane with its own scheduler and API server
 C) Knative runs containers outside of Pods, which is what makes scale to zero possible
 D) Knative is a fork of Kubernetes maintained separately by the CNCF
 
-**Q16.** `[retrieval: ch13]` A HorizontalPodAutoscaler is created targeting a Deployment. The object is accepted, but the replica count never changes regardless of load. `kubectl top pods` returns an error. What is the most likely cause?
+**16.** `[retrieval: ch13]` A HorizontalPodAutoscaler is created targeting a Deployment. The object is accepted, but the replica count never changes regardless of load. `kubectl top pods` returns an error. What is the most likely cause?
 
 A) The Deployment's selector is misconfigured, so the HPA cannot find its Pods
 B) The HPA requires a VerticalPodAutoscaler to be installed alongside it
 C) The HPA control loop runs only once, at object creation
 D) Nothing is serving the Metrics API the HPA reads from — metrics-server is not installed
 
-**Q17.** `[retrieval: ch7]` Pods are stuck in `Pending` because no existing node can satisfy their resource requests. Which component addresses this, and what does it do?
+**17.** `[retrieval: ch7]` Pods are stuck in `Pending` because no existing node can satisfy their resource requests. Which component addresses this, and what does it do?
 
 A) The HorizontalPodAutoscaler, by reducing the replica count until the remaining Pods fit
 B) The VerticalPodAutoscaler, by lowering the Pods' resource requests until they are schedulable
 C) A node autoscaler — Cluster Autoscaler or Karpenter — by provisioning new nodes to accommodate unschedulable Pods
 D) The scheduler, by preempting lower-priority Pods until room appears
 
-**Q18.** Which correctly pairs each autoscaler with the axis it moves?
+**18.** Which correctly pairs each autoscaler with the axis it moves?
 
 A) HPA → replica count; KEDA → replica count; VPA → resources per replica; Cluster Autoscaler → node pool
 B) HPA → resources per replica; VPA → replica count; KEDA → node pool; Cluster Autoscaler → node pool
 C) HPA → replica count; VPA → resources per replica; KEDA → node pool; Cluster Autoscaler → node pool
 D) All four move the replica count, differing only in what triggers them
 
-**Q19.** `[retrieval: ch8]` The Kubernetes project ships approximately three minor releases per year and maintains release branches for the most recent three minor releases. What follows, and which group runs it?
+**19.** `[retrieval: ch8]` The Kubernetes project ships approximately three minor releases per year and maintains release branches for the most recent three minor releases. What follows, and which group runs it?
 
 A) Each release is supported for approximately three years; SIG Architecture runs the process
 B) Each release receives approximately one year of patch support — the two facts are the same fact — and SIG Release runs the process
 C) Each release is supported only until the next one ships; the Steering Committee runs the process
 D) Support duration varies by release and no single group is responsible for it
 
-**Q20.** An engineer has six merged pull requests to the Kubernetes project, two-factor authentication enabled on their GitHub account, and a subscription to the dev mailing list. Two reviewers, both employed by the same company as the engineer, offer to sponsor their membership. What still stands between them and Member status?
+**20.** An engineer has six merged pull requests to the Kubernetes project, two-factor authentication enabled on their GitHub account, and a subscription to the dev mailing list. Two reviewers, both employed by the same company as the engineer, offer to sponsor their membership. What still stands between them and Member status?
 
 A) Nothing — they meet every stated requirement, and the membership request issue is a formality
 B) Having reviewed or merged at least twenty substantial pull requests
 C) A nomination from a subproject owner
 D) Sponsorship by two reviewers **from different companies**
 
-**Q21.** A candidate who passes the KCNA plans to continue with CKA, CKAD, and CKS. What changes about the exams as they move up that ladder?
+**21.** A candidate who passes the KCNA plans to continue with CKA, CKAD, and CKS. What changes about the exams as they move up that ladder?
 
 A) The domain weights shift toward administration, but the format stays online multiple-choice throughout
 B) Each later exam adds a short hands-on section alongside a longer multiple-choice section
@@ -1850,71 +1830,71 @@ D) The later exams remain multiple-choice but are proctored in person at a testi
 
 ### Answers and Explanations
 
-**Q1 — C.** Verbatim from the definition [source: cncf-cloud-native-definition-2026-08-23]. **A** is a plausible-sounding list of cloud native buzzwords, none of which appear in the characteristics clause. **B** mixes real cloud native concepts, declarative and immutable are both in the *technology* list, with ones the definition does not name as characteristics at all. **D** is a list of general software quality attributes; "sustainable" and "observable" are the two that distinguish the real answer, and they are the two people most often drop.
+**1 — C.** Verbatim from the definition [source: cncf-cloud-native-definition-2026-08-23]. **A** is a plausible-sounding list of cloud native buzzwords, none of which appear in the characteristics clause. **B** mixes real cloud native concepts, declarative and immutable are both in the *technology* list, with ones the definition does not name as characteristics at all. **D** is a list of general software quality attributes; "sustainable" and "observable" are the two that distinguish the real answer, and they are the two people most often drop.
 
-**Q2 — A.** "public, private, hybrid cloud" appears in the definition's first sentence [source: cncf-cloud-native-definition-2026-08-23]. **B** is the misconception the definition preemptively rules out. **C** is wrong — the definition is explicit, not silent. **D** invents a requirement the definition does not make; a platform's conformance to a Kubernetes distribution standard has nothing to do with whether it meets this definition.
+**2 — A.** "public, private, hybrid cloud" appears in the definition's first sentence [source: cncf-cloud-native-definition-2026-08-23]. **B** is the misconception the definition preemptively rules out. **C** is wrong — the definition is explicit, not silent. **D** invents a requirement the definition does not make; a platform's conformance to a Kubernetes distribution standard has nothing to do with whether it meets this definition.
 
-**Q3 — D.** The definition's closing clause: techniques combined with robust automation "allow engineers to make high-impact changes frequently and predictably with minimal toil and clear separation of concerns" [source: cncf-cloud-native-definition-2026-08-23]. **A** overclaims: "minimal toil" is not "no operations staff." **B** promises a guarantee no architecture provides. **C** invents a cost claim the definition does not make.
+**3 — D.** The definition's closing clause: techniques combined with robust automation "allow engineers to make high-impact changes frequently and predictably with minimal toil and clear separation of concerns" [source: cncf-cloud-native-definition-2026-08-23]. **A** overclaims: "minimal toil" is not "no operations staff." **B** promises a guarantee no architecture provides. **C** invents a cost claim the definition does not make.
 
-**Q4 — B.** Sandbox projects are "experimental projects not yet widely tested in production, on the bleeding edge of technology" [source: cncf-project-maturity-levels-2026-08-23]. **A** is Graduated. **C** is Incubating. **D** is the trap worth understanding: the due-diligence and adopter-interview process is what a project completes to *leave* Sandbox [source: cncf-toc-project-lifecycle-process-2026-08-31]. A Sandbox project has not been through it.
+**4 — B.** Sandbox projects are "experimental projects not yet widely tested in production, on the bleeding edge of technology" [source: cncf-project-maturity-levels-2026-08-23]. **A** is Graduated. **C** is Incubating. **D** is the trap worth understanding: the due-diligence and adopter-interview process is what a project completes to *leave* Sandbox [source: cncf-toc-project-lifecycle-process-2026-08-31]. A Sandbox project has not been through it.
 
-**Q5 — D.** The Board is "responsible for marketing and other business oversight and budget decisions" [source: cncf-charter-governance-bodies-2026-08-31]; the TOC defines "the technical vision" and approves "new projects within the scope of the CNCF set by the Governing Board" [source: cncf-toc-and-tags-2026-08-23]. **A** inverts the relationship exactly, a common error because "Technical Oversight Committee" sounds more senior than "Board." **B** invents a joint process; project votes are the TOC's. **C** invents a reporting line that runs backwards.
+**5 — D.** The Board is "responsible for marketing and other business oversight and budget decisions" [source: cncf-charter-governance-bodies-2026-08-31]; the TOC defines "the technical vision" and approves "new projects within the scope of the CNCF set by the Governing Board" [source: cncf-toc-and-tags-2026-08-23]. **A** inverts the relationship exactly, a common error because "Technical Oversight Committee" sounds more senior than "Board." **B** invents a joint process; project votes are the TOC's. **C** invents a reporting line that runs backwards.
 
-**Q6 — A.** The restructuring was approved by the TOC and announced in May 2025 [source: cncf-tags-current-structure-2026-08-31]. **B** is the trap for anyone studying from pre-2025 material, and the old list is still all over blog posts and courses. **C** confuses the two organizations, though the confusion has a real historical root, since CNCF's groups were originally called SIGs before being renamed TAGs. **D** is fabricated; the End User TAB is a distinct body with a distinct role.
+**6 — A.** The restructuring was approved by the TOC and announced in May 2025 [source: cncf-tags-current-structure-2026-08-31]. **B** is the trap for anyone studying from pre-2025 material, and the old list is still all over blog posts and courses. **C** confuses the two organizations, though the confusion has a real historical root, since CNCF's groups were originally called SIGs before being renamed TAGs. **D** is fabricated; the End User TAB is a distinct body with a distinct role.
 
-**Q7 — C.** The glossary states that devolving an application into microservices "increases its operational overhead," and that "crafting a microservices-based app before it has proven valuable may be premature spending of engineering effort. If the application yields no value, that effort becomes wasted" [source: cncf-glossary-microservices-monoliths-coupling-2026-08-31].
+**7 — C.** The glossary states that devolving an application into microservices "increases its operational overhead," and that "crafting a microservices-based app before it has proven valuable may be premature spending of engineering effort. If the application yields no value, that effort becomes wasted" [source: cncf-glossary-microservices-monoliths-coupling-2026-08-31].
 
 - **A is wrong.** The argument is about *timing and cost*, not raw performance at scale, and the microservices entry's own scaling complaint runs the other way.
 - **B is the misconception worth catching.** Microservices do not reduce total complexity; the glossary says the operational surface "increase[s] by order of magnitude." What they redistribute is *who* carries which complexity.
 - **D invents a connection** between monoliths and immutability that the glossary does not make; immutable infrastructure is orthogonal to how many services you have.
 
-**Q8 — D.** CSI is a published interface; storage vendors implement drivers against it *(Ch 11 §5)*. The specification's own stated objective is to "enable storage vendors (SP) to develop a plugin once and have it work across a number of container orchestration (CO) systems" [source: csi-spec-objective-2026-08-25], which is worth noticing: CSI is not a Kubernetes feature vendors happen to use, it is a cross-orchestrator standard Kubernetes implements.
+**8 — D.** CSI is a published interface; storage vendors implement drivers against it *(Ch 11 §5)*. The specification's own stated objective is to "enable storage vendors (SP) to develop a plugin once and have it work across a number of container orchestration (CO) systems" [source: csi-spec-objective-2026-08-25], which is worth noticing: CSI is not a Kubernetes feature vendors happen to use, it is a cross-orchestrator standard Kubernetes implements.
 
 - **A describes storage code living inside the Kubernetes codebase**, which is exactly what a published interface exists to avoid.
 - **B is the same error, stated more explicitly.** The whole benefit is that vendors ship on their own schedule without touching Kubernetes.
 - **C is a real mechanism for a different problem:** device plugins advertise hardware resources to the kubelet [source: k8s-docs-api-aggregation-and-device-plugins-2026-08-31], not storage volumes.
 
-**Q9 — B.** A CustomResourceDefinition makes the kube-apiserver recognize new kinds of object, with the API server handling storage and serving [source: k8s-docs-api-aggregation-and-device-plugins-2026-08-31], and CRDs are the fourth of this book's four pluggable interfaces *(Ch 6 §8)*.
+**9 — B.** A CustomResourceDefinition makes the kube-apiserver recognize new kinds of object, with the API server handling storage and serving [source: k8s-docs-api-aggregation-and-device-plugins-2026-08-31], and CRDs are the fourth of this book's four pluggable interfaces *(Ch 6 §8)*.
 
 - **A names a real mechanism that fails the stated constraint.** The aggregation layer proxies to a service you run, so you would be running an additional API server, precisely what the question rules out. Taking Your Bearings 2 asked this same distinction from the other direction, where aggregation was the right answer; the constraint in the stem is what separates them.
 - **C is not an API-creation mechanism at all.** A mutating webhook modifies objects that already have a kind.
 - **D is a scheduling extension**, at a different layer entirely.
 
-**Q10 — C.** A chart shipping custom resources must install the CRDs before the objects using them; `crds/` exists to solve that ordering *[cross-bearing: see Ch 14 §6 — which one, when]*. **A** is wrong: the constraint is ordering, not security. **B** is wrong; Helm manages cluster-scoped objects routinely. **D** is fabricated.
+**10 — C.** A chart shipping custom resources must install the CRDs before the objects using them; `crds/` exists to solve that ordering, because "the declaration must be registered before any resources of that CRDs kind(s) can be used" [source: helm-crd-best-practices-2026-08-31]. *[cross-bearing: see Ch 14 §6 — which one, when]*. **A** is wrong: the constraint is ordering, not security. **B** is wrong; Helm manages cluster-scoped objects routinely. **D** is fabricated.
 
-**Q11 — A.** The CNCF glossary: mesh features are added "uniformly across all services across a cluster without requiring code changes" [source: cncf-glossary-service-mesh-2026-08-31]. Istio: "without code changes" [source: istio-service-mesh-2026-08-23]. **B** negates the defining property, and it is the option a reader who has only met SDK-based tracing will reach for. **C** is wrong, and is why the proxy model exists at all — Envoy's own documentation says it "works with any application language" [source: envoy-what-is-envoy-2026-08-31]. **D** inverts the traffic direction; a mesh's distinctive contribution is east-west, service-to-service.
+**11 — A.** The CNCF glossary: mesh features are added "uniformly across all services across a cluster without requiring code changes" [source: cncf-glossary-service-mesh-2026-08-31]. Istio: "without code changes" [source: istio-service-mesh-2026-08-23]. **B** negates the defining property, and it is the option a reader who has only met SDK-based tracing will reach for. **C** is wrong, and is why the proxy model exists at all — Envoy's own documentation says it "works with any application language" [source: envoy-what-is-envoy-2026-08-31]. **D** inverts the traffic direction; a mesh's distinctive contribution is east-west, service-to-service.
 
-**Q12 — D.** NetworkPolicy permits and denies connections; it cannot encrypt *(Ch 10 §7)*. TLS terminated at the Ingress ends there. mTLS between workloads closes exactly that gap, with mutual authentication of workload identity [source: istio-security-mtls-identity-2026-08-31], and the reason it matters is the zero-trust principle that "trust is a vulnerability," where an attacker inside a trusted perimeter can move laterally through everything that trusts it [source: cncf-glossary-zero-trust-architecture-2026-08-31].
+**12 — D.** NetworkPolicy permits and denies connections; it cannot encrypt *(Ch 10 §7)*. TLS terminated at the Ingress ends there. mTLS between workloads closes exactly that gap, with mutual authentication of workload identity [source: istio-security-mtls-identity-2026-08-31], and the reason it matters is the zero-trust principle that "trust is a vulnerability," where an attacker inside a trusted perimeter can move laterally through everything that trusts it [source: cncf-glossary-zero-trust-architecture-2026-08-31].
 
 - **A is what NetworkPolicy already does**; the question asks what the mesh *adds*.
 - **B confuses transit with rest.** Encryption at rest is a separate control on etcd *(Ch 12 §4)*, and data does not stay encrypted because it was encrypted somewhere else. Each hop and each resting place needs its own control.
 - **C overclaims.** Mesh and NetworkPolicy are complementary, and many clusters run both — Istio names defense in depth among its own security goals [source: istio-security-mtls-identity-2026-08-31].
 
-**Q13 — B.** Ambient mode "implements its features using a per-node Layer 4 (L4) proxy, and optionally a per-namespace Layer 7 (L7) proxy"; ztunnel is "a purpose-built, per-node proxy"; and the waypoint proxy "is a deployment of the Envoy proxy; the same engine that Istio uses for its sidecar data plane mode" [source: istio-ambient-mode-2026-08-31]. **A** is the trap, and it is half-right in a way that makes it tempting: ambient removes *sidecars* and does introduce a purpose-built proxy, but only at L4. The L7 waypoint is Envoy. **C** is wrong; ambient is an Istio mode, documented by the Istio project. **D** is contradicted directly: sidecar and ambient Pods "can co-exist within the same mesh."
+**13 — B.** Ambient mode "implements its features using a per-node Layer 4 (L4) proxy, and optionally a per-namespace Layer 7 (L7) proxy"; ztunnel is "a purpose-built, per-node proxy"; and the waypoint proxy "is a deployment of the Envoy proxy; the same engine that Istio uses for its sidecar data plane mode" [source: istio-ambient-mode-2026-08-31]. **A** is the trap, and it is half-right in a way that makes it tempting: ambient removes *sidecars* and does introduce a purpose-built proxy, but only at L4. The L7 waypoint is Envoy. **C** is wrong; ambient is an Istio mode, documented by the Istio project. **D** is contradicted directly: sidecar and ambient Pods "can co-exist within the same mesh."
 
-**Q14 — C.** Serving is "an HTTP-triggered autoscaling container runtime… including scale to zero"; Eventing is "a CloudEvents-over-HTTP asynchronous routing layer" [source: knative-overview-2026-08-23].
+**14 — C.** Serving is "an HTTP-triggered autoscaling container runtime… including scale to zero"; Eventing is "a CloudEvents-over-HTTP asynchronous routing layer" [source: knative-overview-2026-08-23].
 
 - **A swaps them**, which is the error a reader who knows both names but not their jobs will make.
 - **B is the near-miss.** Serving *is* the thing that autoscales — the Knative Pod Autoscaler is part of Serving [source: knative-serving-autoscaling-2026-08-31] — so this option splits one component into two. Eventing is not an autoscaler; it routes events.
 - **D inverts a stated property.** Knative Serving manages "the complete lifecycle of stateless HTTP services" [source: knative-overview-2026-08-23]; *stateless* is Serving's own description of its workloads, not Eventing's. Neither component is distinguished by statefulness.
 
-**Q15 — A.** Knative "builds on the Kubernetes Pod abstraction," and Serving and Eventing "are implemented as Kubernetes Custom Resource Definitions (CRDs)" [source: knative-overview-2026-08-23]. **B** and **D** both assert replacement or forking; Knative does neither, and is built out of Kubernetes' own extension mechanism. **C** is the "serverless means no containers" misconception in mechanical dress: the containers are in Pods at every populated step of the cycle, which is exactly what makes scale-to-zero a lifecycle property rather than an architectural one.
+**15 — A.** Knative "builds on the Kubernetes Pod abstraction," and Serving and Eventing "are implemented as Kubernetes Custom Resource Definitions (CRDs)" [source: knative-overview-2026-08-23]. **B** and **D** both assert replacement or forking; Knative does neither, and is built out of Kubernetes' own extension mechanism. **C** is the "serverless means no containers" misconception in mechanical dress: the containers are in Pods at every populated step of the cycle, which is exactly what makes scale-to-zero a lifecycle property rather than an architectural one.
 
-**Q16 — D.** The HPA reads from the Metrics API, which metrics-server serves as a cluster addon and reference implementation [source: k8s-docs-resource-metrics-pipeline-2026-08-31]. The failing `kubectl top` is the giveaway; it consumes the same API *(Ch 13 §7)*. **A** would cause different symptoms: the Deployment itself would fail to manage its Pods, not merely fail to scale, and `kubectl top` would still work. **B** is fabricated; the two autoscalers are independent, though both need the Metrics API. **C** contradicts the documented behavior — the HPA runs "as a control loop that runs intermittently (it is not a continuous process)" [source: k8s-docs-hpa-2026-08-24], which means periodically, not once.
+**16 — D.** The HPA reads from the Metrics API, which metrics-server serves as a cluster addon and reference implementation [source: k8s-docs-resource-metrics-pipeline-2026-08-31]. The failing `kubectl top` is the giveaway; it consumes the same API *(Ch 13 §7)*. **A** would cause different symptoms: the Deployment itself would fail to manage its Pods, not merely fail to scale, and `kubectl top` would still work. **B** is fabricated; the two autoscalers are independent, though both need the Metrics API. **C** contradicts the documented behavior — the HPA runs "as a control loop that runs intermittently (it is not a continuous process)" [source: k8s-docs-hpa-2026-08-24], which means periodically, not once.
 
-**Q17 — C.** "If there are Pods in a cluster that can't be scheduled on existing Nodes, new Nodes can be automatically added to the cluster — *provisioned* — to accommodate the Pods" [source: k8s-docs-node-autoscaling-2026-08-31]. **A** is backwards; shrinking the workload to fit the cluster is not scaling to meet demand. **B** describes something the VPA does not do: it adjusts resources based on observed usage, not to satisfy the scheduler, and it is an add-on besides. **D** misuses preemption: preemption evicts lower-priority Pods to make room *(Ch 7 §2)*, which relocates the shortage rather than resolving it, and does nothing when there is no lower-priority work to evict.
+**17 — C.** "If there are Pods in a cluster that can't be scheduled on existing Nodes, new Nodes can be automatically added to the cluster — *provisioned* — to accommodate the Pods" [source: k8s-docs-node-autoscaling-2026-08-31]. **A** is backwards; shrinking the workload to fit the cluster is not scaling to meet demand. **B** describes something the VPA does not do: it adjusts resources based on observed usage, not to satisfy the scheduler, and it is an add-on besides. **D** misuses preemption: preemption evicts lower-priority Pods to make room *(Ch 7 §2)*, which relocates the shortage rather than resolving it, and does nothing when there is no lower-priority work to evict.
 
-**Q18 — A.** HPA and KEDA move the replica count on different triggers, observed utilization versus external events. VPA moves per-replica resources. Cluster Autoscaler moves the node pool [source: k8s-docs-autoscaling-and-vpa-2026-08-31], [source: k8s-docs-node-autoscaling-2026-08-31]. **B** swaps horizontal and vertical, the most common error in this material, and misfiles KEDA on top of it. **C** is the trap for a reader who has learned that KEDA is "the external one" and filed it with the cloud-provider autoscalers; KEDA scales workloads, not machines. **D** collapses a genuine distinction: the KEDA/HPA axis overlap is real, but VPA and the node autoscalers move genuinely different things.
+**18 — A.** HPA and KEDA move the replica count on different triggers, observed utilization versus external events. VPA moves per-replica resources. Cluster Autoscaler moves the node pool [source: k8s-docs-autoscaling-and-vpa-2026-08-31], [source: k8s-docs-node-autoscaling-2026-08-31]. **B** swaps horizontal and vertical, the most common error in this material, and misfiles KEDA on top of it. **C** is the trap for a reader who has learned that KEDA is "the external one" and filed it with the cloud-provider autoscalers; KEDA scales workloads, not machines. **D** collapses a genuine distinction: the KEDA/HPA axis overlap is real, but VPA and the node autoscalers move genuinely different things.
 
-**Q19 — B.** "Kubernetes releases currently happen approximately three times per year"; the project "maintains release branches for the most recent three minor releases"; and "Kubernetes 1.19 and newer receive approximately 1 year of patch support" [source: k8s-release-cycle-and-cadence-2026-08-31]. Three per year, three maintained, roughly a year: one fact, three ways. SIG Release owns "production of Kubernetes releases on a reliable schedule" [source: k8s-release-cycle-and-cadence-2026-08-31]. **A** misreads three versions as three years and misassigns the SIG. **C** understates the window badly; that would be about four months. **D** is wrong on both halves — the project publishes explicit end-of-life dates and a named group runs the process.
+**19 — B.** "Kubernetes releases currently happen approximately three times per year"; the project "maintains release branches for the most recent three minor releases"; and "Kubernetes 1.19 and newer receive approximately 1 year of patch support" [source: k8s-release-cycle-and-cadence-2026-08-31]. Three per year, three maintained, roughly a year: one fact, three ways. SIG Release owns "production of Kubernetes releases on a reliable schedule" [source: k8s-release-cycle-and-cadence-2026-08-31]. **A** misreads three versions as three years and misassigns the SIG. **C** understates the window badly; that would be about four months. **D** is wrong on both halves — the project publishes explicit end-of-life dates and a named group runs the process.
 
-**Q20 — D.** The Member requirements include being "sponsored by 2 reviewers (from different companies)" [source: k8s-community-membership-ladder-2026-08-23]. Two sponsors from the same employer as the candidate satisfies the count and fails the constraint, and the constraint is deliberate, a structural check against any single company manufacturing members.
+**20 — D.** The Member requirements include being "sponsored by 2 reviewers (from different companies)" [source: k8s-community-membership-ladder-2026-08-23]. Two sponsors from the same employer as the candidate satisfies the count and fails the constraint, and the constraint is deliberate, a structural check against any single company manufacturing members.
 
 - **A is wrong** on the requirement, and also skips a step: the candidate must open a membership request issue in kubernetes/org. That is a real action, not a formality.
 - **B is the Reviewer rung.** Twenty substantial reviewed or merged PRs, plus primary reviewer on at least five, plus three months as a Member.
 - **C is the Approver rung.** Nomination by a subproject owner comes two rungs above Member.
 
-**Q21 — C.** KCNA is described as "online and multiple-choice"; CKA is "a performance-based exam where candidates interact with the command line to solve real-world challenges"; CKAD is "a hands-on, command-line environment"; CKS is "performance-based" [source: cncf-kcna-certification-page-2026-08-23]. The format is what changes.
+**21 — C.** KCNA is described as "online and multiple-choice"; CKA is "a performance-based exam where candidates interact with the command line to solve real-world challenges"; CKAD is "a hands-on, command-line environment"; CKS is "performance-based" [source: cncf-kcna-certification-page-2026-08-23]. The format is what changes.
 
 - **A gets it exactly backwards.** Domain weights differ per exam, but the format change is the headline: everything above KCNA on this ladder is performance-based.
 - **B invents a hybrid** that none of the three exams uses.
@@ -1952,13 +1932,15 @@ You have finished the largest chapter in this book, and the one that reaches fur
 
 More concretely: the phrase Chapter 1 refused to define is defined. The pattern Chapter 2 promised would feel like recognition has been collected and named. The unschedulable Pod Chapter 7 left sitting in `Pending` has something watching it. The unencrypted leg Chapter 10 identified and declined to fix has a fix. The version numbers Chapter 8 warned were forgettable are now one relationship instead of three integers. And the material Chapter 1 said technically strong candidates skip — you did not skip it.
 
+🗺️ Chart → **🌊 Passage** → 🌅 Dawn
+
 ---
 
 ## The Voyage Ahead
 
 Domain 4 has one competency left, and it is the one people are most surprised to find there.
 
-Observability is not one of the four domains on the current blueprint — Kubernetes Fundamentals, Container Orchestration, Cloud Native Application Delivery, and Cloud Native Architecture [source: cncf-kcna-certification-page-2026-08-23]. It is competency material inside Cloud Native Architecture, which is where Chapter 18 will take it up. *[cross-bearing: see Ch 1 — The Curriculum That Moved Under Everyone's Feet]* for what changed and when, and for why so much third-party prep still teaches a different split.
+Observability is not one of the four domains on the current blueprint — Kubernetes Fundamentals, Container Orchestration, Cloud Native Application Delivery, and Cloud Native Architecture [source: cncf-kcna-certification-page-2026-08-23]. Under the retired five-domain blueprint it was a domain of its own, weighted 8% [source: cncf-kcna-curriculum-retired-2026-09-04]. Today it is competency material inside Cloud Native Architecture, which is where Chapter 18 will take it up. *[cross-bearing: see Ch 1 — The Curriculum That Moved Under Everyone's Feet]* for what changed and when, and for why so much third-party prep still teaches a different split.
 
 That placement sounds like a demotion and is not, because the question observability answers has only got harder as systems have got more loosely coupled.
 

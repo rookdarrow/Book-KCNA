@@ -1,1 +1,1 @@
-A single root box labelled LOOSELY COUPLED SYSTEMS branches down to five characteristics: secure, resilient, manageable, sustainable, and observable, each with a short explanatory gloss beneath it
+A single root box labeled LOOSELY COUPLED SYSTEMS branches down to five characteristics: secure, resilient, manageable, sustainable, and observable, each with a short explanatory gloss beneath it

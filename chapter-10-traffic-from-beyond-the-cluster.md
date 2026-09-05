@@ -76,7 +76,7 @@ sections:
     objectives: ["D2.1"]
     requires_figure: true
     figure_anchor: "ch10-fig03-gateway-api-role-split"
-    checkpoint_after: true
+    checkpoint_after: false
   - name: "Allowing, Never Denying"
     objectives: ["D2.1", "D2.2"]
     requires_figure: true
@@ -120,9 +120,9 @@ soundings_planned:
 #-- Chapter total 35 -> 40.
 question_budget:
   soundings: 8
-  taking_your_bearings: 15             # across 3 checkpoints (5 + 5 + 5)
-  practice_questions: 17
-  total_this_chapter: 40
+  taking_your_bearings: 14             # across 2 checkpoints (5 + 9)
+  practice_questions: 19
+  total_this_chapter: 41
 
 #-- Concept / objective / command tagging --------------------------------
 kb_tags:
@@ -198,19 +198,15 @@ figures_planned:
 # Chapter 10: Traffic from Beyond the Cluster
 ## *"Frozen, superseded, and inert without a controller"*
 
-<!-- AUTHOR-REVIEW: The subtitle's "superseded" is supported but untagged — `k8s-docs-network-model-2026-08-23` writes "The Gateway API (or its predecessor, Ingress)". A `[source:]` tag cannot live in the subtitle without breaking the structural contract's subtitle pattern, and this pass may not retitle the section, so the tag belongs at §5 where the Gateway/Ingress relationship is taught. Flagged here so it is not lost between passes. -->
-
 **Domain: Container Orchestration (competency: Networking) | Domain weight: 28% [source: cncf-kcna-curriculum-pdf-2026-08-23] | Complexity: Mixed | Novelty: Moderate**
 
 > *The 28% figure is CNCF's published weight for the whole Container Orchestration domain. The published curriculum gives four domain-level percentages and nothing finer — no weight is attached to Networking, or to any other competency [source: cncf-kcna-curriculum-pdf-2026-08-23]. This book's allocation of that 28% across its Part III chapters is therefore the author's, derived from curriculum breadth rather than from any published figure. See the front matter's weight-allocation disclosure.*
-
-<!-- AUTHOR-REVIEW: The prior wording — "CNCF publishes no per-competency weights" — asserted a universal negative about CNCF's publication practice that the cached corpus cannot establish; absence of finer weights in one snapshot is not absence across CNCF's publications. Narrowed to what `cncf-kcna-curriculum-pdf-2026-08-23` actually attests. To restore the stronger claim, the corpus needs a snapshot of the Linux Foundation KCNA exam/registration page — it currently holds no exam-logistics source at all. The same gap governs the Exam Alert's "the exam's question distribution is not published". -->
 
 ---
 
 ## Attention Budget
 
-**Total time: ~125 minutes | Recommended: Split across 2 sessions**
+**Total time: ~123 minutes | Recommended: Split across 2 sessions**
 
 | Section | Time | Attention Cost | Best Time to Study |
 |---|---|---|---|
@@ -221,10 +217,9 @@ figures_planned:
 | ☆ Taking Your Bearings #1 | 6 min | Medium | After a brief break |
 | §4 Frozen, Not Deprecated | 6 min | Medium | Peak attention |
 | §5 Roles, Not Just Routes | 12 min | High | Peak attention |
-| ☆ Taking Your Bearings #2 | 6 min | Medium | After a brief break |
 | §6 Allowing, Never Denying | 14 min | High | **Start of session 2** |
 | §7 What NetworkPolicy Cannot Do | 8 min | Medium | Mid-session |
-| ☆ Taking Your Bearings #3 | 6 min | High | After a brief break |
+| ☆ Taking Your Bearings #2 | 11 min | Medium | After a brief break |
 | §8 Nothing Happens Without a Controller | 5 min | Low | Anytime |
 | Exam Alert + Practice Questions | 25 min | High | Fresh session |
 
@@ -235,7 +230,7 @@ figures_planned:
 
 **The session split goes between §5 and §6.** This chapter is two chapters wearing one number: an API-generations arc (§1–§5) and a policy arc (§6–§7), joined at §8. §6 asks you to unlearn a firewall instinct you have probably held for a decade, and it will land better on a fresh head than on a tired one. The split puts roughly 66 minutes before the break and 58 after it, the last 25 of which are the Exam Alert and the practice set. Take those as a third sitting if the second runs long.
 
-*If you only have 15 minutes: read §6. It is the section most likely to overturn something you currently believe, and believing it costs you points. If you have 35, add §3 and §4 and take Taking Your Bearings #3 — the controller rule, the freeze, and the policy defaults, plus the checkpoint that tests the hardest of the three.*
+*If you only have 15 minutes: read §6. It is the section most likely to overturn something you currently believe, and believing it costs you points. If you have 35, add §3 and §4 and take Taking Your Bearings #2 — the controller rule, the freeze, and the policy defaults, plus the checkpoint that tests the two hardest of the three.*
 
 ---
 
@@ -267,12 +262,11 @@ Before reading this chapter, try these eight questions. Your score determines ho
 <details>
 <summary>Click for answers + reading strategy</summary>
 
-1. **The `Host` header, available only after the TCP connection is established and the request has been sent** `[source: k8s-docs-gateway-api-depth-2026-08-24]`. The client's DNS lookup resolved the name to an address before any traffic moved; the name itself travels inside the request. (HTTPS carries an earlier tell in the **SNI (Server Name Indication)** field of the TLS handshake — traffic for several hostnames can be multiplexed on a single port that way, where the proxy terminating TLS supports SNI `[source: k8s-docs-ingress-depth-2026-08-24]` — but the routing decision is conventionally made on the `Host` header.)
+1. **The `Host` header, available only after the TCP connection is established and the request has been sent** [source: k8s-docs-gateway-api-depth-2026-08-24]. The client's DNS lookup resolved the name to an address before any traffic moved; the name itself travels inside the request. (HTTPS carries an earlier tell in the **SNI (Server Name Indication)** field of the TLS handshake — traffic for several hostnames can be multiplexed on a single port that way, where the proxy terminating TLS supports SNI [source: k8s-docs-ingress-depth-2026-08-24] — but the routing decision is conventionally made on the `Host` header.)
 
 2. **`Service.Type=LoadBalancer`** *[cross-bearing: see Ch 9 §3 — the Service type ladder]*. Fifty of them costs fifty external addresses, fifty provisioned load balancers, fifty line items on a cloud bill, and fifty things to configure, monitor, and eventually decommission.
 
-
-3. **None of them.** None of them reads HTTP. Three of the four operate on addresses and ports; the fourth, ExternalName, is a DNS alias with no proxying set up at all `[source: k8s-docs-service-2026-08-23]`. `/checkout` and `/catalog` are bytes inside an HTTP request, and nothing in Chapter 9 opens the request to look.
+3. **None of them.** None of them reads HTTP. Three of the four operate on addresses and ports; the fourth, ExternalName, is a DNS alias with no proxying set up at all [source: k8s-docs-service-2026-08-23]. `/checkout` and `/catalog` are bytes inside an HTTP request, and nothing in Chapter 9 opens the request to look.
 
 4. Most likely **dropped**, and **the deny wins**. That is how ordinary packet-filtering firewalls behave, and it is a sound instinct nearly everywhere.
 
@@ -282,7 +276,7 @@ Before reading this chapter, try these eight questions. Your score determines ho
 
 7. Something has to be able to restrict Pod-to-Pod reachability. Since the CNI plugin is what actually moves the packets, enforcement would have to live down there, wherever the packets themselves are handled.
 
-8. **At the reverse proxy or load balancer at the edge**, which holds the certificate and private key. The application server behind it receives plain HTTP `[source: k8s-docs-ingress-depth-2026-08-24]`.
+8. **At the reverse proxy or load balancer at the edge**, which holds the certificate and private key. The application server behind it receives plain HTTP [source: k8s-docs-ingress-depth-2026-08-24].
 
 ---
 
@@ -363,7 +357,6 @@ Two words from ordinary industry vocabulary that this book has not used yet. The
 
 This chapter does one of each. §1 through §5 are about north-south. §6 and §7 are about east-west.
 
-
 > 🪢 **Mnemonic:** *North-south goes through the wall; east-west stays inside it.* §1–§5 is the wall. §6–§7 is inside.
 
 ### The edge router
@@ -374,7 +367,7 @@ The Kubernetes documentation is explicit that in most common deployments, **the 
 
 Naming it here means that when §3 tells you an Ingress controller may fulfill an Ingress "usually with a load balancer, though it may also configure your edge router," you already know what that clause is about.
 
-The same terminology block gives the vocabulary for everything else in this chapter, and it should all be familiar: a **node** is a worker machine, part of a cluster; the **cluster network** is the set of links, logical or physical, that carry communication within a cluster according to the Kubernetes networking model; a **Service** identifies a set of Pods using label selectors and is assumed to have a virtual IP routable only within the cluster network [source: k8s-docs-ingress-depth-2026-08-24]. That last clause is the whole problem in one line. The addresses Chapter 9 gave you work beautifully inside the harbour wall, and mean nothing beyond it.
+The same terminology block gives the vocabulary for everything else in this chapter, and it should all be familiar: a **node** is a worker machine, part of a cluster; the **cluster network** is the set of links, logical or physical, that carry communication within a cluster according to the Kubernetes networking model; a **Service** identifies a set of Pods using label selectors and is assumed to have a virtual IP routable only within the cluster network [source: k8s-docs-ingress-depth-2026-08-24]. That last clause is the whole problem in one line. The addresses Chapter 9 gave you work beautifully inside the harbor wall, and mean nothing beyond it.
 
 ### What comes next, and the first thing worth knowing about it
 
@@ -497,7 +490,7 @@ Compare the two manifests side by side. They put the same number of Services beh
 > ★ **Fixed Point:** **Simple fanout** splits by *path* at one host. **Name-based virtual hosting** splits by *host* at one address. Both put many Services behind one IP; they differ only in what the rule reads.
 
 <!-- FIGURE: ch10-fig02-ingress-fanout-and-name-based-hosts -->
-![Two stacked panels comparing Ingress routing. In the upper panel, two HTTP requests share the host shop.example.com but differ by path; a single IP address 203.0.113.10 feeds a box labelled 'reads: path' that forks to a catalog Service and a checkout Service. In the lower panel, two requests share the path slash but differ by host; the same IP address feeds a box labelled 'reads: host' that forks to a shop Service and a blog Service. The matched fragment of each request is underlined.](figures/ch10-fig02-ingress-fanout-and-name-based-hosts.svg)
+![Two stacked panels comparing Ingress routing. In the upper panel, two HTTP requests share the host shop.example.com but differ by path; a single IP address 203.0.113.10 feeds a box labeled 'reads: path' that forks to a catalog Service and a checkout Service. In the lower panel, two requests share the path slash but differ by host; the same IP address feeds a box labeled 'reads: host' that forks to a shop Service and a blog Service. The matched fragment of each request is underlined.](figures/ch10-fig02-ingress-fanout-and-name-based-hosts.svg)
 
 <!-- ASCII-FALLBACK
 ```
@@ -572,7 +565,7 @@ DNS turns a name into an address **before any traffic moves.** A client that wan
 
 Virtual hosting sorts traffic that has **already arrived** at a single address, by reading the name back out of the request. The client that resolved `shop.example.com` and the client that resolved `blog.example.com` got the *same* address from DNS. They are both now talking to the same socket on the same machine. The only thing distinguishing them is the `Host` header they each sent, and something at that address has to open the request and read it.
 
-> ⚠ **Navigational Hazards:** DNS gave you the address. Virtual hosting decides what happens *after* you have used it. Same hostname, two different jobs, on opposite sides of the connection. This is the confusion Chapter 9 warned you about by name, and the reason it warned you is that a reader who has them merged will spend §5's request flow wondering why the resolver appears twice. Once you are inside, virtual hosting is the harbourmaster deciding which berth you take.
+> ⚠ **Navigational Hazards:** DNS gave you the address. Virtual hosting decides what happens *after* you have used it. Same hostname, two different jobs, on opposite sides of the connection. This is the confusion Chapter 9 warned you about by name, and the reason it warned you is that a reader who has them merged will spend §5's request flow wondering why the resolver appears twice. Once you are inside, virtual hosting is the harbormaster deciding which berth you take.
 
 ### The fields, briefly
 
@@ -612,7 +605,7 @@ Not "less effect." Not "reduced functionality." None. The manifests in §2 are c
 
 ### What an Ingress controller is
 
-**An Ingress controller is responsible for fulfilling the Ingress, usually with a load balancer, though it may also configure your edge router or additional frontends to help handle the traffic** [source: k8s-docs-ingress-depth-2026-08-24]. There it is: §1's edge router, doing its job in a sentence you can now read without stopping. For an Ingress to work in your cluster, **there must be an ingress controller running**, and you need to select at least one and make sure it is set up [source: k8s-docs-ingress-controllers-2026-08-24].
+**An Ingress controller is responsible for fulfilling the Ingress, usually with a load balancer, though it may also configure your edge router or additional frontends to help handle the traffic** [source: k8s-docs-ingress-depth-2026-08-24]. There it is: §1's edge router, doing its job in a sentence you can now read without stopping. For an Ingress to work in your cluster, **there must be an Ingress controller running**, and you need to select at least one and make sure it is set up [source: k8s-docs-ingress-controllers-2026-08-24].
 
 Notice the structure of what you just read. The Ingress object is a *description of desired routing.* The controller is a control loop that reads that description and makes something in the real world match it. That is Chapter 3's control loop, unchanged and by now familiar: desired state in an object, a controller watching, reality dragged toward the description *[cross-bearing: see Ch 3 §6 — the control loop and the controller pattern]*. Recognizing it here should cost you nothing, which is the point of having learned it once properly.
 
@@ -639,7 +632,7 @@ Now a third: an Ingress with no controller.
 
 "You must have a controller" raises an obvious follow-up: *which one, if there are two?*
 
-You may deploy any number of ingress controllers in a cluster, using **ingress class** to tell them apart [source: k8s-docs-ingress-controllers-2026-08-24]. Ingresses can be implemented by different controllers, often with different configuration, so **each Ingress should specify which controller it is intended to use** — done with the **`ingressClassName`** field on the Ingress, which references an **IngressClass** resource that carries additional configuration including the name of the controller that should implement the class [source: k8s-docs-ingress-depth-2026-08-24].
+You may deploy any number of Ingress controllers in a cluster, using **IngressClass** to tell them apart [source: k8s-docs-ingress-controllers-2026-08-24]. Ingresses can be implemented by different controllers, often with different configuration, so **each Ingress should specify which controller it is intended to use** — done with the **`ingressClassName`** field on the Ingress, which references an **IngressClass** resource that carries additional configuration including the name of the controller that should implement the class [source: k8s-docs-ingress-depth-2026-08-24].
 
 ```yaml
 apiVersion: networking.k8s.io/v1
@@ -654,7 +647,7 @@ spec:
     name: external-lb
 ```
 
-If you do not specify an IngressClass on an Ingress and your cluster has **exactly one** IngressClass marked as default, Kubernetes applies that default [source: k8s-docs-ingress-controllers-2026-08-24]. You mark one as default by setting the `ingressclass.kubernetes.io/is-default-class` annotation to the string `"true"` [source: k8s-docs-ingress-controllers-2026-08-24]. If more than one IngressClass carries that marking, an Ingress that omits `ingressClassName` cannot be created at all; the resolution is to ensure at most one is marked default [source: k8s-docs-ingress-depth-2026-08-24]. Some ingress controllers work even without a default IngressClass defined; even so, the Kubernetes project still recommends that you define one [source: k8s-docs-ingress-depth-2026-08-24].
+If you do not specify an IngressClass on an Ingress and your cluster has **exactly one** IngressClass marked as default, Kubernetes applies that default [source: k8s-docs-ingress-controllers-2026-08-24]. You mark one as default by setting the `ingressclass.kubernetes.io/is-default-class` annotation to the string `"true"` [source: k8s-docs-ingress-controllers-2026-08-24]. If more than one IngressClass carries that marking, an Ingress that omits `ingressClassName` cannot be created at all; the resolution is to ensure at most one is marked default [source: k8s-docs-ingress-default-ingressclass-2026-09-04]. Some Ingress controllers work even without a default IngressClass defined; even so, the Kubernetes project still recommends that you define one [source: k8s-docs-ingress-depth-2026-08-24].
 
 ### The honest note
 
@@ -714,13 +707,11 @@ Nothing here is a mistake on your colleague's part. The manifest is correct, the
 
 **4. An IngressClass marked as the cluster default. A second one carrying the same marking does not widen the net — it removes it, and the Ingress can no longer be created at all.**
 
-Setting the `ingressclass.kubernetes.io/is-default-class` annotation to the string `"true"` on an IngressClass makes it the cluster default, and new Ingresses that do not specify an `ingressClassName` are assigned that class [source: k8s-docs-ingress-depth-2026-08-24]. The condition is **exactly one**. If more than one IngressClass is marked default, an Ingress that omits `ingressClassName` cannot be created; the resolution is to ensure at most one carries the marking [source: k8s-docs-ingress-depth-2026-08-24].
+Setting the `ingressclass.kubernetes.io/is-default-class` annotation to the string `"true"` on an IngressClass makes it the cluster default, and new Ingresses that do not specify an `ingressClassName` are assigned that class [source: k8s-docs-ingress-depth-2026-08-24]. The condition is **exactly one**. If more than one IngressClass is marked default, an Ingress that omits `ingressClassName` cannot be created; the resolution is to ensure at most one carries the marking [source: k8s-docs-ingress-default-ingressclass-2026-09-04].
 
 The instinct to correct: more defaults feels like more coverage. It is the opposite. Two defaults do not give an unclassed Ingress two chances to be adopted. They take away the one chance it had, because the cluster now has no way to choose.
 
 Worth holding next to question 3. Both are the same failure in the end, an object that never reaches a controller. But this one fails at the moment you apply it, and that one applies cleanly and then quietly does nothing. Only one of them tells you.
-
-<!-- AUTHOR-REVIEW: B1.4 was repointed off reference-specification drift (P9 tests that better, and §3 teaches it in prose) onto IngressClass and the default-class mechanism, per the question-quality audit — IngressClass otherwise reaches only one question in the chapter. The item assumes §3 states the consequence of a second default: an Ingress omitting `ingressClassName` can no longer be created. That fact is in k8s-docs-ingress-depth-2026-08-24 and verified by the fact-accuracy audit, but if §3's prose stops at the annotation and the single-default assignment, add the one clause there rather than softening the question. -->
 
 **5. `[retrieval: ch3]` An object without its component does nothing.** The two Chapter 9 instances: a `type: LoadBalancer` Service on a cluster with no load balancer to provision one, and a Service whose selector matches no Pods.
 
@@ -806,7 +797,7 @@ The obvious next question is what "use Gateway instead" actually means. §5.
 
 ## 🟡 §5 — Roles, Not Just Routes
 
-The temptation is to open with three resource names. Resist it. The resource names are a *consequence*; taught in the wrong order they become three arbitrary things to memorise instead of one idea with three parts.
+The temptation is to open with three resource names. Resist it. The resource names are a *consequence*; taught in the wrong order they become three arbitrary things to memorize instead of one idea with three parts.
 
 ### The idea
 
@@ -839,7 +830,7 @@ Now the resource model reads as a consequence rather than a list. Gateway API ha
 ### The mapping, which is the whole design
 
 <!-- FIGURE: ch10-fig03-gateway-api-role-split -->
-![Three stacked ownership bands. The top band, infrastructure provider, contains a GatewayClass box. The middle band, cluster operator, contains a Gateway box joined upward to GatewayClass by an edge labelled 'exactly 1'. The bottom band, application developer, contains three HTTPRoute boxes joined upward to the Gateway by edges labelled 'many, parentRefs'. A caption notes the bands are ownership boundaries, not runtime layers.](figures/ch10-fig03-gateway-api-role-split.svg)
+![Three stacked ownership bands. The top band, infrastructure provider, contains a GatewayClass box. The middle band, cluster operator, contains a Gateway box joined upward to GatewayClass by an edge labeled 'exactly 1'. The bottom band, application developer, contains three HTTPRoute boxes joined upward to the Gateway by edges labeled 'many, parentRefs'. A caption notes the bands are ownership boundaries, not runtime layers.](figures/ch10-fig03-gateway-api-role-split.svg)
 
 <!-- ASCII-FALLBACK
 ```
@@ -917,8 +908,6 @@ spec:
 
 Look at what those two manifests do and do not contain. The Gateway names its class and declares its listeners and which namespaces may attach routes; it says nothing about `/login`. The HTTPRoute names its parent Gateway under **`parentRefs`**, declares its hostnames and path matches and backends; it says nothing about ports, protocols, or which load balancer implementation is underneath. The seam between them is exactly the seam between the two roles.
 
-<!-- AUTHOR-REVIEW: the phrase "an HTTPRoute attaches to a Gateway via parentRefs" is this book's gloss. The current source page attests `parentRefs` only inside the example manifest, not in a prose sentence of that form (the extractor flagged this explicitly). The mechanism is sourced by the manifest; the wording is ours. -->
-
 And compare that HTTPRoute against §2's fanout Ingress. Same requirement, expressed in a different vocabulary: one host, a path match, a backend Service and port. This is not a new routing model to learn from scratch; it is the shapes you already know, redistributed across resources that belong to different owners.
 
 > ⚓ **Worth Securing:** The role split *is* the innovation. Two things are documented. Ingress controllers frequently use annotations to configure behavior [source: k8s-docs-ingress-depth-2026-08-24], and Gateway API kinds support common cases such as header-based matching and traffic weighting "that were only possible in Ingress by using custom annotations" [source: k8s-docs-gateway-api-depth-2026-08-24]. The reading that joins them — that so much real-world configuration ended up in annotations *because* Ingress put infrastructure choice, cluster policy, and application routing into one object that one team had to own — is this book's, not the documentation's.
@@ -936,7 +925,7 @@ Concrete, end to end, for a Gateway implemented as a reverse proxy [source: k8s-
 
 Step 2 and step 3 are the §2 distinction, drawn in the specification's own hand. DNS does its work and finishes; the `Host` header does its work afterward, on a connection that has already arrived. One question is asked across open water, before anything moves; the other is asked at the quayside, of something already tied up alongside.
 
-And step 3 is Soundings question 1's answer, seven sections later. You worked out that a server distinguishing two hostnames on one address has to read the `Host` header, from ordinary web experience, before this chapter started. Here is the same mechanism in a Kubernetes specification, doing the same job under a different name. That is usually how this material goes: the priors were right, the vocabulary is new.
+And step 3 is Soundings question 1's answer, five sections later. You worked out that a server distinguishing two hostnames on one address has to read the `Host` header, from ordinary web experience, before this chapter started. Here is the same mechanism in a Kubernetes specification, doing the same job under a different name. That is usually how this material goes: the priors were right, the vocabulary is new.
 
 ### The other design principles
 
@@ -957,15 +946,13 @@ Having just been told to prefer Gateway API, the obvious next question is whethe
 *[cross-bearing: see Ch 9 §7 — the client's resolver, which appears here as one step in a flow rather than as a topic]*
 *[cross-bearing: see Ch 17 §4 — CRDs as one of the four pluggable interfaces, of which this is a conspicuous instance]*
 
-<!-- AUTHOR-REVIEW: the fact-accuracy audit flagged "the four pluggable interfaces" as an untagged claim that no cached snapshot enumerates (the extending-Kubernetes page lists six extension points and five infrastructure plugins, with CRDs filed separately under API extensions). The phrase is a book coinage owned by Ch 17 §4, and the BINDING term ledger fixes the set as CRI + CNI + CSI + CRDs — so the cross-bearing above is correct as written and takes no source tag. The internal contradiction the audit found is in The Voyage Ahead ("you have collected two now"), which counts CRDs out; that section, not this one, is where the count needs repairing. -->
-
 ---
 
 ## 🔵 §6 — Allowing, Never Denying
 
 One piece of housekeeping before we get under way, and it is not politeness.
 
-**The word `ingress` is about to mean something completely different, and capitalisation is the tell.** For four sections, `Ingress` has meant an API object and the controller that fulfills it. From here to the end of §7, lowercase `ingress` means **a direction of traffic**: inbound, as opposed to `egress`, outbound. NetworkPolicy has nothing to do with the Ingress object. If you carry the old meaning into this section, you will spend §7 trying to work out how the Ingress controller fits in, and it does not.
+**The word `ingress` is about to mean something completely different, and capitalization is the tell.** For four sections, `Ingress` has meant an API object and the controller that fulfills it. From here to the end of §7, lowercase `ingress` means **a direction of traffic**: inbound, as opposed to `egress`, outbound. NetworkPolicy has nothing to do with the Ingress object. If you carry the old meaning into this section, you will spend §7 trying to work out how the Ingress controller fits in, and it does not.
 
 Good. Now the object.
 
@@ -975,7 +962,7 @@ Good. Now the object.
 
 Note what that rules out. This is **network reachability**: who may open a connection to whom, at layer 3 or 4, and nothing else. It is not the boundary between a workload and the host it runs on. Chapter 2 already told you those were different axes, and it told you on a graded question *[cross-bearing: see Ch 2 §7 — RuntimeClass, and workload-to-host isolation as a separate concern]*. The other axis of Pod security has its own chapter *[cross-bearing: see Ch 12 §5 — what a Pod may do to its node]*.
 
-And note the layer. §1 spent five sections climbing to layer 7 to read hostnames and paths. This section is back down at 3 and 4, reading addresses and ports. Different problem, different altitude.
+And note the layer. This chapter spent five sections climbing to layer 7 to read hostnames and paths. This section is back down at 3 and 4, reading addresses and ports. Different problem, different altitude.
 
 ### Three identifiers, and two selectors doing different jobs
 
@@ -1046,7 +1033,7 @@ There are **two sorts of isolation for a Pod: isolation for egress, and isolatio
 
 Reply traffic for allowed connections is implicitly allowed in both directions [source: k8s-docs-network-policies-depth-2026-08-24], which is to say the mechanism is connection-aware, not packet-by-packet, and you do not need a return rule.
 
-Now collect the debt from Soundings question 4. You almost certainly answered *dropped* and *the deny wins*, because that is how ordinary firewalls work and it is a good instinct nearly everywhere else. Kubernetes is the other way around on both counts. **A Pod starts fully open in both directions, and becomes restricted only because some policy went looking for it and found it.** Nothing is closed until something selects it. This is open water rather than a walled harbour: it stays open until somebody declares a restricted zone and puts you inside it.
+Now collect the debt from Soundings question 4. You almost certainly answered *dropped* and *the deny wins*, because that is how ordinary firewalls work and it is a good instinct nearly everywhere else. Kubernetes is the other way around on both counts. **A Pod starts fully open in both directions, and becomes restricted only because some policy went looking for it and found it.** Nothing is closed until something selects it. This is open water rather than a walled harbor: it stays open until somebody declares a restricted zone and puts you inside it.
 
 > ★ **Fixed Point:** **By default a Pod is non-isolated in both directions.** It becomes isolated for a direction only when some NetworkPolicy both **selects it** and names that direction in `policyTypes` [source: k8s-docs-network-policies-depth-2026-08-24]. No policy means no restriction.
 
@@ -1063,7 +1050,7 @@ There is **no deny rule.** None. The API has no syntax for one. Two policies sel
 > ★ **Fixed Point:** **Policies are additive and never conflict. There is no deny rule** [source: k8s-docs-network-policies-depth-2026-08-24]. Two policies produce the union of what they permit. Removing access means removing the grant, not adding a denial.
 
 <!-- FIGURE: ch10-fig04-networkpolicy-additive-selectors -->
-![Two NetworkPolicy stanzas, A and B, both selecting Pods labelled role equals db, one permitting ingress from app equals web and the other from app equals batch. Heavy edges run from both stanzas to a single Pod box, and a single arrow runs from that Pod to a rounded blob labelled permitted set containing app equals web plus app equals batch, glossed as one set with two grants. A fourth box labelled app equals other sits unconnected, annotated as not denied but simply never granted.](figures/ch10-fig04-networkpolicy-additive-selectors.svg)
+![Two NetworkPolicy stanzas, A and B, both selecting Pods labeled role equals db, one permitting ingress from app equals web and the other from app equals batch. Heavy edges run from both stanzas to a single Pod box, and a single arrow runs from that Pod to a rounded blob labeled permitted set containing app equals web plus app equals batch, glossed as one set with two grants. A fourth box labeled app equals other sits unconnected, annotated as not denied but simply never granted.](figures/ch10-fig04-networkpolicy-additive-selectors.svg)
 
 <!-- ASCII-FALLBACK
 ```
@@ -1095,7 +1082,7 @@ Note what is *not* in that figure: any mark of denial. No barrier, no crossed-ou
 
 **For a connection from a source Pod to a destination Pod to be allowed, both the egress policy on the source Pod and the ingress policy on the destination Pod need to allow the connection. If either side does not allow the connection, it will not happen** [source: k8s-docs-network-policies-depth-2026-08-24].
 
-This is the rule that costs practitioners the most time, because a policy that is perfectly correct in isolation is only ever half of a working configuration. You write an egress policy on `frontend` permitting traffic to `api`, you verify the YAML, you apply it, and nothing connects, because `api` has an ingress policy that never heard of `frontend`. Two harbours, two authorities: clearance to depart is not permission to enter, and a vessel holding only one of them stays at anchor.
+This is the rule that costs practitioners the most time, because a policy that is perfectly correct in isolation is only ever half of a working configuration. You write an egress policy on `frontend` permitting traffic to `api`, you verify the YAML, you apply it, and nothing connects, because `api` has an ingress policy that never heard of `frontend`. Two harbors, two authorities: clearance to depart is not permission to enter, and a vessel holding only one of them stays at anchor.
 
 > ★ **Fixed Point:** **Both ends must allow it.** The source Pod's egress policy *and* the destination Pod's ingress policy [source: k8s-docs-network-policies-depth-2026-08-24].
 
@@ -1127,7 +1114,7 @@ No `ingress` list. No `egress` list. Every Pod in the namespace selected, both d
 
 And because the model is additive, the reverse also works: an explicit allow-all is a policy with `podSelector: {}` and a single empty rule, `ingress: [{}]`, which permits everything to everything even if other policies have caused some Pods to be treated as isolated [source: k8s-docs-network-policies-depth-2026-08-24]. Union semantics cut both ways: you cannot subtract, and neither can anybody else.
 
-The documentation puts the whole model in one sentence worth memorising: **a Pod will accept all traffic by default; however, once a NetworkPolicy is created for a Pod, the Pod will reject any traffic that is not allowed by any NetworkPolicy — and other Pods in the namespace that are not selected by any NetworkPolicy will continue to accept all traffic** [source: k8s-docs-network-policies-depth-2026-08-24].
+The documentation puts the whole model in one sentence worth memorizing: **a Pod will accept all traffic by default; however, once a NetworkPolicy is created for a Pod, the Pod will reject any traffic that is not allowed by any NetworkPolicy — and other Pods in the namespace that are not selected by any NetworkPolicy will continue to accept all traffic** [source: k8s-docs-network-policies-depth-2026-08-24].
 
 ### The two exceptions
 
@@ -1167,7 +1154,7 @@ When an Ingress does nothing, **requests fail.** The site is down, somebody's mo
 
 When a NetworkPolicy does nothing, **traffic flows exactly as it did before.** `kubectl get networkpolicy` shows the object. `kubectl describe` shows the rules, correctly parsed and neatly formatted. Everything you can observe about the object says it is fine, and the observable behavior of an unenforced policy is *identical* to the observable behavior of a perfectly enforced policy against traffic nobody happens to be sending. There is no signal. There is nothing to notice. One failure fires a flare; the other is an uncharted rock, and nothing on the surface says it is there.
 
-That is not a documented claim; the source states the plugin dependency and the no-effect consequence and stops there. The characterisation of the failure as *silent*, and as harder to detect than a broken Ingress, is this book's reasoning about what those two documented facts imply. Hold the two apart: the dependency is sourced, the inference about detectability is ours. We think it is sound, it is the most valuable thing in this chapter, and it is still an inference.
+That is not a documented claim; the source states the plugin dependency and the no-effect consequence and stops there. The characterization of the failure as *silent*, and as harder to detect than a broken Ingress, is this book's reasoning about what those two documented facts imply. Hold the two apart: the dependency is sourced, the inference about detectability is ours. We think it is sound, it is the most valuable thing in this chapter, and it is still an inference.
 
 > ⚠ **Navigational Hazards:** *"I applied a NetworkPolicy, so that traffic is blocked"* is only true if something is enforcing it. Verify that your network plugin supports NetworkPolicy before you rely on one, and test the restriction from somewhere the policy could actually govern rather than trusting the object's existence. The object existing is a fact about etcd.
 
@@ -1175,11 +1162,11 @@ Nothing about this is careless. You wrote a correct policy, the API accepted it,
 
 ### Where else could it possibly live?
 
-You can reason your way to this dependency rather than memorising it.
+You can reason your way to this dependency rather than memorizing it.
 
 Chapter 9 taught that Kubernetes **defines** the network model but provides none of the machinery that satisfies it: a CNI network plugin is required to implement the model, and it does the actual work of wiring Pods onto a network *[cross-bearing: see Ch 9 §1 — CNI and the Kubernetes network model]*. CNI is one of the interfaces where Kubernetes hands off to an implementation — and it is the container runtime, not the kubelet, that loads the plugin: CNI management was removed from the kubelet in Kubernetes 1.24 [source: k8s-docs-network-plugins-2026-08-24].
 
-So if the plugin is what moves the packets, **where else could enforcement possibly live?** Nowhere. The dependency is not an oversight or an inconvenience. It is the only place in the stack where the machinery to enforce a layer-3/4 rule exists.
+So if the network plugin is what moves the packets, **where else could enforcement possibly live?** Nowhere. The dependency is not an oversight or an inconvenience. It is the only place in the stack where the machinery to enforce a layer-3/4 rule exists.
 
 If you reasoned to something like this in Soundings question 7, you derived the *dependency* before the chapter stated it. Not the consequence — the silence is the part you had no way to predict — but the dependency itself, which is the half that makes the other half inevitable. Notice that.
 
@@ -1200,11 +1187,11 @@ If you reasoned to something like this in Soundings question 7, you derived the 
 > - The ability to explicitly deny policies.
 > - The ability to prevent loopback or incoming host traffic. Pods cannot block localhost access, nor can they block access from their resident node.
 >
-> The documentation notes that some of these may be achievable through operating-system components such as SELinux, OpenVSwitch or IPTables, through layer-7 technologies such as ingress controllers and service mesh implementations, or through admission controllers [source: k8s-docs-network-policies-depth-2026-08-24].
+> The documentation notes that some of these may be achievable through operating-system components such as SELinux, OpenVSwitch or IPTables, through layer-7 technologies such as Ingress controllers and service mesh implementations, or through admission controllers [source: k8s-docs-network-policies-depth-2026-08-24].
 
 Ten items. Three of them earn a sentence each, because they are the ones you will actually reach for.
 
-**No TLS.** Anything TLS related is out of scope, and the documentation says outright to use a service mesh or ingress controller for it [source: k8s-docs-network-policies-depth-2026-08-24]. §2 already told you that terminating TLS at the Ingress leaves the leg from Ingress to Pod in cleartext. NetworkPolicy will not encrypt it either. That gap has an owner *[cross-bearing: see Ch 17 §5 — service mesh, mTLS, and what a mesh adds inside the cluster]*.
+**No TLS.** Anything TLS related is out of scope, and the documentation says outright to use a service mesh or Ingress controller for it [source: k8s-docs-network-policies-depth-2026-08-24]. §2 already told you that terminating TLS at the Ingress leaves the leg from Ingress to Pod in cleartext. NetworkPolicy will not encrypt it either. That gap has an owner *[cross-bearing: see Ch 17 §5 — service mesh, mTLS, and what a mesh adds inside the cluster]*.
 
 **No targeting Services by name.** Policies select Pods. You can target Pods or namespaces by label, which the documentation calls a viable workaround [source: k8s-docs-network-policies-depth-2026-08-24], but you cannot write `allow traffic to the checkout Service`. This is surprising after nine chapters in which nearly everything has been Service-shaped, and it is the item on this list a reader is most likely to reach for by reflex.
 
@@ -1216,7 +1203,7 @@ Two objects. Four sections apart. Nothing in common except a failure mode.
 
 ---
 
-## ☆ Taking Your Bearings #2 — from Ingress to Gateway, and what NetworkPolicy permits once you're inside
+## ☆ Taking Your Bearings #2 — from Ingress to Gateway API, and what NetworkPolicy permits once you're inside
 
 Nine questions on §4 through §7. One of them reaches back into an earlier chapter.
 
@@ -1232,7 +1219,7 @@ Nine questions on §4 through §7. One of them reaches back into an earlier chap
 
 **6.** 🔵 A Pod in namespace `prod` has no NetworkPolicy selecting it anywhere in the cluster. What inbound and outbound traffic is permitted?
 
-**7.** 🟡 **⚠️ This one is intentionally hard. Struggle is the point.** Two NetworkPolicies select the same Pod. Policy A permits inbound traffic from `app: web`. Policy B permits inbound traffic from `app: batch`. What is permitted, and could a third policy be written to forbid `app: web`? If not, what would you write to close every Pod in the namespace to all inbound traffic?
+**7.** 🟡 ⚠ **This one is intentionally hard. Struggle is the point.** Two NetworkPolicies select the same Pod. Policy A permits inbound traffic from `app: web`. Policy B permits inbound traffic from `app: batch`. What is permitted, and could a third policy be written to forbid `app: web`? If not, what would you write to close every Pod in the namespace to all inbound traffic?
 
 **8.** 🟡 Pod `frontend` has an egress policy permitting traffic to `app: api`. Pod `api` has an ingress policy permitting traffic only from `app: admin`. Can `frontend` reach `api`?
 
@@ -1242,9 +1229,9 @@ Nine questions on §4 through §7. One of them reaches back into an earlier chap
 
 **Answers with Explanations:**
 
-**1. False, on both counts.** Ingress has not been deprecated, and there are no plans to remove it [source: k8s-docs-ingress-depth-2026-08-24]. What has been said is narrower: it will not be developed further, and the project recommends Gateway instead [source: k8s-docs-ingress-depth-2026-08-24]. That is a recommendation, not a removal notice. "No longer developed" *feels* like deprecation, and that feeling pulls readers toward the wrong verdict. Deprecation in Kubernetes is a formally defined process with published removal timelines [source: k8s-docs-deprecation-policy-2026-08-24], and the project did not invoke it here. The stability half matters because it removes any migration emergency; the no-development half matters because it caps future capability.
+**1. False, on both counts.** Ingress has not been deprecated, and there are no plans to remove it [source: k8s-docs-ingress-depth-2026-08-24]. What has been said is narrower: it will not be developed further, and the project recommends Gateway API instead [source: k8s-docs-ingress-depth-2026-08-24]. That is a recommendation, not a removal notice. "No longer developed" *feels* like deprecation, and that feeling pulls readers toward the wrong verdict. Deprecation in Kubernetes is a formally defined process with published removal timelines [source: k8s-docs-deprecation-policy-2026-08-24], and the project did not invoke it here. The stability half matters because it removes any migration emergency; the no-development half matters because it caps future capability.
 
-**2. GatewayClass — infrastructure provider. Gateway — cluster operator. HTTPRoute — application developer** [source: k8s-docs-gateway-api-depth-2026-08-24]. Asked as a mapping, not a list — the mapping *is* the design. The three names without the three roles means you've memorised the consequence, missed the cause. One precision the answer key insists on: "cluster operator" here is a role — a team running the cluster — not the operator pattern. The word does double duty in Kubernetes vocabulary, and this is the one place in the book where both senses are in play.
+**2. GatewayClass — infrastructure provider. Gateway — cluster operator. HTTPRoute — application developer** [source: k8s-docs-gateway-api-depth-2026-08-24]. Asked as a mapping, not a list — the mapping *is* the design. The three names without the three roles means you've memorized the consequence, missed the cause. One precision the answer key insists on: "cluster operator" here is a role — a team running the cluster — not the operator pattern. The word does double duty in Kubernetes vocabulary, and this is the one place in the book where both senses are in play.
 
 **3. Exactly one GatewayClass. Many Routes** [source: k8s-docs-gateway-api-depth-2026-08-24]. The wrong answer to watch for is Ingress-shaped: one object there carries both the entry point and every routing rule, so it's natural to expect a Gateway to work the same way. It doesn't. Routes attach from outside, and — per question 2 — they belong to a different role than the Gateway does.
 
@@ -1256,7 +1243,7 @@ Nine questions on §4 through §7. One of them reaches back into an earlier chap
 
 **7. Inbound from both `app: web` and `app: batch` — the lists combine additively.** No: there is no deny rule, so nothing can subtract a permission; removing access means removing the grant. Network policies do not conflict — connections allowed in a direction are the union of what applicable policies allow [source: k8s-docs-network-policies-depth-2026-08-24], and explicit deny is on the published out-of-scope list [source: k8s-docs-network-policies-depth-2026-08-24]. The model has no subtraction operator: permissions compose by union only, order is irrelevant, and the only way to reduce what's permitted is to change what grants it. To close the namespace: a policy selecting every Pod (an empty `podSelector` selects them all [source: k8s-docs-network-policies-depth-2026-08-24]), naming `Ingress`, offering no `from` entries. The union of an empty set of grants is empty. Denial is reached by selecting broadly and granting nothing — never by forbidding.
 
-**8. No.** A connection needs both the source's egress policy and the destination's ingress policy to allow it; if either side doesn't, it fails [source: k8s-docs-network-policies-depth-2026-08-24]. `frontend`'s egress is correct and irrelevant on its own — `api` never granted it anything. A clearance to depart isn't a clearance to enter; the far harbour issues its own.
+**8. No.** A connection needs both the source's egress policy and the destination's ingress policy to allow it; if either side doesn't, it fails [source: k8s-docs-network-policies-depth-2026-08-24]. `frontend`'s egress is correct and irrelevant on its own — `api` never granted it anything. A clearance to depart isn't a clearance to enter; the far harbor issues its own.
 
 **9. Either the network plugin doesn't implement NetworkPolicy, so the resource has no effect at all — or the traffic falls under an unconditional exception: a Pod cannot block access to itself, and traffic to and from its own node is always allowed** [source: k8s-docs-network-policies-depth-2026-08-24]. The object may be perfect and still inert — a move most troubleshooting instincts don't make, since the reflex is to re-read the YAML. A policy that isn't enforced looks exactly like a policy enforced against traffic nobody is sending. There's no observable difference.
 
@@ -1273,6 +1260,7 @@ Nine questions on §4 through §7. One of them reaches back into an earlier chap
 ✓ Both ends must allow it
 ✓ The plugin dependency, and the ten things the API cannot do
 
+---
 
 ## ☀️ §8 — Nothing Happens Without a Controller
 
@@ -1288,9 +1276,9 @@ Write either one perfectly. Apply it successfully. Watch `kubectl get` return it
 >
 > You have now seen this four times, and two of the four were your own from last chapter.
 >
-> A `type: LoadBalancer` Service with no provider to fulfill it. A Service whose selector matched no Pods. An Ingress with no controller. A NetworkPolicy on a plugin that does not implement one.
+> A `type: LoadBalancer` Service with no provider to fulfill it. A Service whose selector matched no Pods. An Ingress with no controller. A NetworkPolicy on a network plugin that does not implement one.
 >
-> Chapter 3 gave you the sentence — *an object without its component does nothing* — and told you that you would meet it four more times. This is where that debt comes due in full.
+> Chapter 3 gave you the sentence — *an object without its component does nothing* — and told you that you would meet it four more times. Two of those four are now behind you, and the count you have been keeping yourself — the instances you have personally watched fail — stands at four.
 >
 > But the rule is not a fact about Ingress, and it is not a fact about NetworkPolicy. It is a fact about **what a Kubernetes object is**, which you have held since Chapter 4 without necessarily seeing where it led.
 >
@@ -1302,8 +1290,7 @@ A chart drawn perfectly is still a chart. Somebody has to stand the watch.
 
 You did not need the book to tell you this, incidentally. Soundings question 6 asked you to write down Chapter 3's rule and name a place you had met it, and if you answered that question you had already assembled most of the argument. The four instances are yours; the sentence was handed to you seven chapters ago.
 
-<!-- AUTHOR-REVIEW: the Ch 3 §6 cross-bearing below nests *why* and *that* inside the convention's own italic span, which breaks emphasis in most renderers and departs from the ratified `*[cross-bearing: see Ch N §M — brief topic]*` form. Structural lint passes it. Recommend recasting the topic without inner emphasis, or dropping the trailing clause. Not changed here — no diagnostic finding names it. -->
-*[cross-bearing: see Ch 3 §6 — the control loop, which is *why* this is true rather than merely *that* it is]*
+*[cross-bearing: see Ch 3 §6 — the control loop, which is why this is true rather than merely that it is]*
 *[cross-bearing: see Ch 4 §1 — the declarative model, and the object as an artifact of intent]*
 
 > ⚓ **Worth Securing:** You now own a question you can ask about anything: **what is watching this, and is it installed?**
@@ -1313,7 +1300,7 @@ You did not need the book to tell you this, incidentally. Soundings question 6 a
 > It also works on objects this book never mentions, which is the actual return on this chapter.
 
 <!-- FIGURE: ch10-zenith-nothing-without-a-controller -->
-![Four side-by-side panels, each with three rows. The top row names a valid object: a LoadBalancer Service, a Service with an empty selector, an Ingress with host and path rules, and a NetworkPolicy with a pod selector. The middle row of each panel shows a dashed, ghosted box naming an absent component — provider, matching Pods, Ingress controller, network plugin — each marked none. The bottom row reads nothing in all four panels; the fourth panel adds the words and nothing tells you. A caption reads: an object without its component does nothing.](figures/ch10-zenith-nothing-without-a-controller.svg)
+![Four panels in a two-by-two grid, each with three rows. The top row names a valid object: a Service of type LoadBalancer, a Service with an empty selector, an Ingress with host and path rules, and a NetworkPolicy with a pod selector, each marked valid with a check. The middle row of each panel is a dashed, grayed box naming the absent component — provider, matching Pods, Ingress controller, network plugin — each marked none. The bottom row reads nothing in all four panels; in the fourth panel that row is highlighted and adds the words and nothing tells you. A caption reads: an object without its component does nothing. A legend keys a solid outline to valid, a dashed outline to absent, and the highlight to silent.](figures/ch10-zenith-nothing-without-a-controller.svg)
 
 <!-- ASCII-FALLBACK
 ```
@@ -1343,7 +1330,9 @@ Look at the fourth panel one more time. Three of these announce themselves. One 
 
 🏆 **Safe Harbor** — Chapter 10 complete. You crossed the boundary from moving packets to reading requests, met the API that does it and the one that supersedes it, went back down two layers to restrict traffic inside the cluster, and collected a rule that will outlast every object in this chapter.
 
-🗺️ → 🌊 → 🌅 — *Part III: passage. Two chapters of the network behind you.*
+🗺️ Chart → **🌊 Passage** → 🌅 Dawn
+
+*Part III: passage. Two chapters of the network behind you.*
 
 ---
 
@@ -1383,9 +1372,7 @@ Look at the fourth panel one more time. Three of these announce themselves. One 
 | "NetworkPolicy can target a Service" | It selects Pods. Targeting Services by name is explicitly out of scope. |
 | "An Ingress controller and a NetworkPolicy plugin are unrelated concerns" | Functionally unrelated. Structurally identical — which is §8. |
 
-**A note on frequency.** Every trap above is a real point of confusion, drawn from the documentation's own emphases and from what the material makes easy to get wrong. What this book will not tell you is how often any of them appears on the exam. The published curriculum gives four domain weights and nothing finer [source: cncf-kcna-curriculum-pdf-2026-08-23] — no question counts, no per-competency split, nothing that would let anyone honestly attach a number to a single trap. Inventing one would be worse than saying nothing.
-
-<!-- AUTHOR-REVIEW: The stronger negative claim in the prior draft — that "the exam's question distribution is not published" anywhere — cannot be verified against the cached corpus, which holds no exam-logistics snapshot at all (no question count, duration, passing score, or distribution). The sentence has been narrowed to what `cncf-kcna-curriculum-pdf-2026-08-23` actually supports: the curriculum publishes four domain-level percentages and nothing finer. Restoring the broader claim requires a research gap for the Linux Foundation KCNA exam/registration page. -->
+**A note on frequency.** Every trap above is a real point of confusion, drawn from the documentation's own emphases and from what the material makes easy to get wrong. What this book will not tell you is how often any of them appears on the exam. The published curriculum gives four domain weights and nothing finer [source: cncf-kcna-curriculum-pdf-2026-08-23] — no question counts, no per-competency split, nothing that would let anyone honestly attach a number to a single trap — and the Linux Foundation's own exam page states no question count either [source: lf-kcna-exam-page-2026-08-23]. Inventing one would be worse than saying nothing.
 
 ---
 
@@ -1421,14 +1408,14 @@ B) Simple fanout; the rule is reading the HTTP URI — the path.
 C) A single-service Ingress; the rule reads nothing, because `defaultBackend` sends everything to one Service.
 D) Name-based virtual hosting; the rule is reading the path, because a `host` is present.
 
-**5.** 🟡 An Ingress path is configured with `pathType: Prefix` and `path: /aaa/bb`. A request arrives for `/aaa/bbb`. Does it match?
+**5.** 🔵 An Ingress carries a `tls` section naming a Secret, and a client connects over HTTPS. Under the Ingress API's own model, where does the TLS connection terminate, and what does the backend Service receive?
 
-A) Yes — `bb` is a prefix of `bbb`, and that is what `Prefix` means.
-B) No — `Prefix` matches element by element, and `bb` and `bbb` are different elements.
-C) No — `Prefix` matches only the configured path itself and nothing longer.
-D) Undeterminable from the manifest, because `pathType` semantics are left to the controller.
+A) At the Pod — the Ingress passes the encrypted stream through untouched, so the backend receives TLS.
+B) At the ingress point — the certificate and private key come from the Secret, and traffic onward to the Service and its Pods is in cleartext.
+C) At the ingress point, after which the same Secret is used to re-encrypt to the backend, so the backend also receives TLS.
+D) Nowhere — an Ingress cannot carry HTTPS, so TLS requires `Service.Type=LoadBalancer`.
 
-**6.** ⚪ A cluster runs one Ingress controller. An engineer applies an Ingress manifest with no `ingressClassName` field. Under what condition does it still get handled?
+**6.** ⚪ A cluster runs one Ingress controller. An engineer applies an Ingress manifest with no `ingressClassName` field. Under what condition does Kubernetes assign it an IngressClass anyway?
 
 A) Whenever at least one IngressClass exists in the cluster.
 B) When exactly one IngressClass is marked as default, by the `ingressclass.kubernetes.io/is-default-class` annotation set to `"true"`.
@@ -1458,8 +1445,8 @@ D) That it is no longer being developed, and therefore deprecated by definition.
 
 **10.** 🔵 You are choosing an API for external HTTP routing on a system being designed today. Which does the Kubernetes project recommend, and does that recommendation mean the other one will stop working?
 
-A) Gateway. Yes — Ingress will be removed once Gateway API reaches GA.
-B) Gateway. No — Ingress is GA, carries the GA stability guarantees, and has no removal plans.
+A) Gateway API. Yes — Ingress is scheduled for removal now that Gateway API is stable.
+B) Gateway API. No — Ingress is GA, carries the GA stability guarantees, and has no removal plans.
 C) Ingress, because it is GA and Gateway API is not present in a default cluster.
 D) Neither; the project is explicitly neutral between the two.
 
@@ -1484,7 +1471,7 @@ B) No outbound traffic — declaring one direction isolates both.
 C) Outbound traffic only to Pods in the same namespace.
 D) Outbound traffic only to the peers named in the policy's `ingress` list, applied in reverse.
 
-**14.** 🟡 Namespace `prod` contains Pods `web`, `api`, and `db`. One NetworkPolicy exists: it selects `db` and permits ingress from `app: api`. It declares no egress rules. Can `web` reach `db`? Can `web` reach `api`? Can `db` reach an external address?
+**14.** 🟡 Namespace `prod` contains Pods `web`, `api`, and `db`. One NetworkPolicy exists: it selects `db` and permits ingress from `app: api`. It declares no egress rules and does not set `policyTypes`. Can `web` reach `db`? Can `web` reach `api`? Can `db` reach an external address?
 
 A) No · Yes · Yes
 B) No · No · Yes
@@ -1500,10 +1487,10 @@ D) Apply a policy selecting `app: legacy` with `policyTypes: [Egress]` and an em
 
 **16.** 🟡 `[retrieval: ch4]` A single NetworkPolicy carries a selector at the top of its `spec` and further selectors underneath `ingress.from`. Which chooses what — and what happens to the policy's effect on a Pod if someone relabels that Pod out from under the top-level selector?
 
-A) The top-level `podSelector` chooses the Pods the policy governs; the selectors under `ingress.from` choose peers. Relabelling drops the Pod out of the policy's subjects, leaving it non-isolated — less restricted, not more.
-B) The top-level `podSelector` chooses the Pods the policy governs; the selectors under `ingress.from` choose peers. Relabelling drops the Pod out of every policy, and a Pod outside every policy receives nothing.
-C) The selectors under `ingress.from` choose the Pods the policy governs; the top-level `podSelector` chooses peers. Relabelling changes nothing about the policy's subjects.
-D) All the selectors choose peers; the policy governs the whole namespace. Relabelling narrows the peer set.
+A) The top-level `podSelector` chooses the Pods the policy governs; the selectors under `ingress.from` choose peers. Relabeling drops the Pod out of the policy's subjects, leaving it non-isolated — less restricted, not more.
+B) The top-level `podSelector` chooses the Pods the policy governs; the selectors under `ingress.from` choose peers. Relabeling drops the Pod out of every policy, and a Pod outside every policy receives nothing.
+C) The selectors under `ingress.from` choose the Pods the policy governs; the top-level `podSelector` chooses peers. Relabeling changes nothing about the policy's subjects.
+D) All the selectors choose peers; the policy governs the whole namespace. Relabeling narrows the peer set.
 
 **17.** 🔵 A NetworkPolicy has been applied. The policy is correct as written, and traffic it should be blocking is still flowing. Three of the four explanations below are ones this chapter has given you. Which is the one that **cannot** be the explanation?
 
@@ -1514,19 +1501,17 @@ D) The policy targets the destination Service rather than the Pods behind it, so
 
 **18.** 🟡 `[retrieval: ch3]` Name the rule Chapter 3 gave you about objects and components, and every instance of it you have met in this book so far.
 
-A) *An object without its component does nothing.* Instances: a `type: LoadBalancer` Service with no provider to fulfill it (Ch 9 §3); a Service whose selector matches no Pods (Ch 9 §4); an Ingress with no Ingress controller (Ch 10 §3); a NetworkPolicy on a plugin that does not implement NetworkPolicy (Ch 10 §7).
-B) *An object without its component does nothing.* Instances: an Ingress with no Ingress controller, and a NetworkPolicy on a plugin that does not implement NetworkPolicy.
+A) *An object without its component does nothing.* Instances: a `type: LoadBalancer` Service with no provider to fulfill it (Ch 9 §3); a Service whose selector matches no Pods (Ch 9 §4); an Ingress with no Ingress controller (Ch 10 §3); a NetworkPolicy on a network plugin that does not implement NetworkPolicy (Ch 10 §7).
+B) *An object without its component does nothing.* Instances: an Ingress with no Ingress controller, and a NetworkPolicy on a network plugin that does not implement NetworkPolicy.
 C) *An object takes effect once the API server has admitted it.* Instances: the four above.
-D) *An object without its component does nothing.* Instances: a `type: LoadBalancer` Service with no provider; an Ingress with no controller; a NetworkPolicy on an unsupporting plugin; an Ingress whose `pathType` does not match the request path.
-
----
+D) *An object without its component does nothing.* Instances: a `type: LoadBalancer` Service with no provider; an Ingress with no controller; a NetworkPolicy on an unsupporting network plugin; an Ingress whose `pathType` does not match the request path.
 
 **19.** ⚪ A cluster runs a frontend Pod that receives requests from users on the internet and, to serve them, calls a backend Pod in the same cluster. Which describes the two flows, and which of this chapter's mechanisms governs each?
 
-A) Both are north-south; Ingress governs the first, NetworkPolicy the second
-B) The user-to-frontend flow is north-south and is governed by Ingress; the frontend-to-backend flow is east-west and is governed by NetworkPolicy
-C) The user-to-frontend flow is east-west and is governed by Ingress; the frontend-to-backend flow is north-south and is governed by NetworkPolicy
-D) Both are east-west, because both flows terminate inside the cluster
+A) Both are north-south; Ingress governs the first, NetworkPolicy the second.
+B) The user-to-frontend flow is north-south and is governed by Ingress; the frontend-to-backend flow is east-west and is governed by NetworkPolicy.
+C) The user-to-frontend flow is east-west and is governed by Ingress; the frontend-to-backend flow is north-south and is governed by NetworkPolicy.
+D) Both are east-west, because both flows terminate inside the cluster.
 
 ---
 
@@ -1578,13 +1563,13 @@ A fanout configuration routes traffic from a single IP address to more than one 
 
 **5. B.**
 
-`Prefix` matching is done on a **path element by path element** basis, and the documentation gives this exact case: `Prefix` with path `/aaa/bb` against request path `/aaa/bbb` is **not** a match [source: k8s-docs-ingress-depth-2026-08-24]. The elements are compared as whole labels. That `bb` happens to be a string prefix of `bbb` is irrelevant.
+You secure an Ingress by specifying a Secret that contains a TLS private key and certificate; the Ingress resource supports a single TLS port, 443, and **assumes TLS termination at the ingress point — traffic to the Service and its Pods is in cleartext** [source: k8s-docs-ingress-depth-2026-08-24]. The Secret must carry keys named `tls.crt` and `tls.key` [source: k8s-docs-ingress-depth-2026-08-24]. The certificate lives in the cluster; the backend never sees it.
 
-*Why A is wrong:* this is the misconception the rule exists to prevent, and the documentation heads it off explicitly — if the last element of the path is a substring of the last element in the request path, it is not a match [source: k8s-docs-ingress-depth-2026-08-24].
+*Why A is wrong:* pass-through is not the model the Ingress API describes. Naming a Secret under `tls` is an instruction to terminate, and the documentation says where: at the ingress point.
 
-*Why C is wrong:* it over-corrects. `Prefix` does match longer request paths — `/aaa/bb/cc` matches — provided every configured element matches a whole element of the request.
+*Why C is wrong:* nothing in the Ingress API re-encrypts the onward leg. The documentation's word for that leg is *cleartext*, and encrypting it is a different problem with a different owner *[cross-bearing: see Ch 17 §5 — what a service mesh adds inside the cluster]*.
 
-*Why D is wrong:* controllers do vary in documented ways, but this is not one of them. `Prefix` semantics are pinned by the specification with a worked example. Reaching for "it depends on the controller" where the spec is explicit is the caveat from §3 applied somewhere it does not belong.
+*Why D is wrong:* Ingress exposes HTTP **and HTTPS** routes [source: k8s-docs-ingress-depth-2026-08-24]. HTTPS is half of its remit, not an exclusion from it; what an Ingress cannot carry is other protocols.
 
 **6. B.**
 
@@ -1602,7 +1587,7 @@ Note the "exactly one." The condition is not "at least one."
 
 An Ingress controller is responsible for fulfilling the Ingress, usually with a load balancer, though it may also configure your edge router or additional frontends [source: k8s-docs-ingress-depth-2026-08-24]. That is Chapter 3's control-loop shape with the nouns filled in: desired state recorded in an object, a controller watching, external reality reconciled toward the description.
 
-The value of the item is in converting a memorised component name into a recognized instance of a pattern.
+The value of the item is in converting a memorized component name into a recognized instance of a pattern.
 
 *Why B is wrong:* the controller reads the Services to learn where to send traffic. It does not modify them. Reversing this makes the Ingress sound like a mutation of the Service layer rather than a layer above it.
 
@@ -1616,7 +1601,7 @@ Both are the same structural failure. Only creating an Ingress resource has no e
 
 The difference is what reaches you. A website that does not load is a report; nobody has to go looking. Traffic that flows when a policy says it should not produces no report from anyone, because the only party who would notice is the traffic you were trying to stop.
 
-*One clarification on provenance:* the two "no effect" facts are documented. The characterisation of the second failure as the harder one to detect is this book's reasoning about what those two facts imply, not a documented claim.
+*One clarification on provenance:* the two "no effect" facts are documented. The characterization of the second failure as the harder one to detect is this book's reasoning about what those two facts imply, not a documented claim.
 
 *Why A is wrong:* structurally identical, operationally not. Treating them as the same failure is what leaves the second one running for months.
 
@@ -1634,7 +1619,7 @@ Operationally, the first half means there is no migration emergency for what you
 
 *Why C is wrong:* it drops the no-development half. "Fully supported" is true; "actively developed" is the part the announcement specifically denies.
 
-*Why D is wrong:* it fuses the two halves into a conclusion neither supports. No longer being developed says nothing about removal. GA APIs may be marked deprecated, but must not be removed within a major version of Kubernetes [source: k8s-docs-ingress-depth-2026-08-24] — and Ingress has not been marked deprecated in the first place.
+*Why D is wrong:* it fuses the two halves into a conclusion neither supports. No longer being developed says nothing about removal. GA APIs may be marked deprecated, but must not be removed within a major version of Kubernetes [source: k8s-docs-deprecation-policy-2026-08-24] — and Ingress has not been marked deprecated in the first place.
 
 Offering only one of A or C would teach the other, which is why a well-built item offers both.
 
@@ -1642,7 +1627,7 @@ Offering only one of A or C would teach the other, which is why a well-built ite
 
 The Kubernetes project recommends using Gateway instead of Ingress [source: k8s-docs-ingress-depth-2026-08-24]. It simultaneously states that Ingress is GA, carries the GA stability guarantees, and has no removal plans [source: k8s-docs-ingress-depth-2026-08-24]. Both facts are true at once and point in different directions, and holding both is the skill this section tests. The practical reading — that the recommendation bites hardest on work being designed today, and least on work already running — is this book's gloss, not the project's wording.
 
-*Why A is wrong:* Ingress is already GA and already guaranteed. There is no removal event waiting on Gateway API's maturity.
+*Why A is wrong:* Ingress is already GA and already guaranteed. No removal is scheduled, and Gateway API's maturity does not create one.
 
 *Why C is wrong:* GA status is not a recommendation, and installation friction is not either. Gateway API arrives as custom resources rather than in a default cluster [source: k8s-docs-gateway-api-depth-2026-08-24], which is a real operational cost — and it is a separate question from what the project recommends.
 
@@ -1667,8 +1652,6 @@ The exercise is worth doing because it shows Gateway API is not a new routing mo
 A Gateway references exactly one GatewayClass, and Routes attach to Gateways rather than the other way round, so a single Gateway carries many [source: k8s-docs-gateway-api-depth-2026-08-24].
 
 The cardinality is the kind of detail multiple-choice exams reach for, and it also encodes the role split. One GatewayClass per Gateway, because the infrastructure provider defines one kind of thing and the cluster operator instantiates it. Many Routes per Gateway, because many application teams share one entry point without asking each other's permission — which is the problem the three-role design was drawn to solve.
-
-<!-- AUTHOR-REVIEW: the "exactly one GatewayClass" half is stated directly by the snapshot. The "many Routes" half is the reading §5 gives of the resource model rather than a counted statement in the source; Stage 2 note #10 flagged the same wording drift in §5 and left it. If a later pass tightens §5's phrasing, tighten this key to match. -->
 
 *Why B is wrong:* it inverts both. A Gateway that could reference many classes would have no defined infrastructure behind it, and a Gateway limited to one Route would reproduce exactly the per-Service cost problem §1 opened with.
 
@@ -1720,7 +1703,7 @@ Relabel a Pod out from under the top-level selector and the policy stops selecti
 
 That consequence is worth sitting with, because it runs against the instinct. Editing a label — usually the safest change anyone makes — can make a Pod **less** restricted, and nothing about the operation announces that it has done so.
 
-*Why B is wrong:* it has the mechanism right and the consequence exactly backwards. A Pod selected by no policy is not closed; it is open. This is trap #48 arriving through a side door, and if you chose B, that is the reflex to name.
+*Why B is wrong:* it has the mechanism right and the consequence exactly backwards. A Pod selected by no policy is not closed; it is open. This is the non-isolated-by-default trap arriving through a side door, and if you chose B, that is the reflex to name.
 
 *Why C is wrong:* it inverts the two positions. Under that reading, the peers would be governed and the governed Pods would be permitted — which would make every policy in the chapter mean the opposite of what it says.
 
@@ -1747,7 +1730,7 @@ The discriminating move here is rejecting a candidate that sounds like a policy 
 - A `type: LoadBalancer` Service on a cluster with no provider to fulfill it (Ch 9 §3).
 - A Service whose selector matches no Pods (Ch 9 §4).
 - An Ingress with no Ingress controller (Ch 10 §3) [source: k8s-docs-ingress-depth-2026-08-24].
-- A NetworkPolicy on a plugin that does not implement NetworkPolicy (Ch 10 §7) [source: k8s-docs-network-policies-depth-2026-08-24].
+- A NetworkPolicy on a network plugin that does not implement NetworkPolicy (Ch 10 §7) [source: k8s-docs-network-policies-depth-2026-08-24].
 
 If you produced all four, §8's argument is one you assembled rather than one you were handed, and the question you take forward from it — *what is watching this, and is it installed?* — is a tool rather than a slogan.
 
@@ -1798,14 +1781,11 @@ The pairing is also the chapter's own map: §1–§5 is one direction, §6–§7
 | **Out of scope** | No TLS, no Service-name targeting, no logging, no explicit deny, no loopback blocking, and five more. |
 | **The rule** | An object without its component does nothing. Four instances of the pattern so far. Ask: *what is watching this, and is it installed?* |
 
-
-<!-- AUTHOR-REVIEW: The `pathType` row drops "Longest match wins; `Exact` breaks ties" per curriculum-alignment R3, which authorizes the three values, required-ness, and the element-wise example only. If the §2 pass declines the matching cut at the precedence rule, restore the clause here so the two do not disagree. -->
-
 ---
 
 ## The Voyage Ahead
 
-You have spent two chapters on the network, and you have been treating one thing as a given the entire time: that a Pod which restarts is a Pod that starts over. Chapter 5 said it directly — Pods are cattle, replaced rather than repaired — and Chapters 6 through 10 have quietly depended on it. A Service can point at an interchangeable set of backends precisely because they *are* interchangeable.
+You have spent two chapters on the network, and you have been treating one thing as a given the entire time: that a Pod which restarts is a Pod that starts over. Chapter 5 said it directly — a Pod is replaced rather than repaired — and Chapters 6 through 10 have quietly depended on it. A Service can point at an interchangeable set of backends precisely because they *are* interchangeable.
 
 Chapter 11 is where that assumption runs out.
 
@@ -1813,25 +1793,9 @@ Some workloads write things down. A database has a disk, and the contents of tha
 
 It also closes a loop this book left open on purpose. Chapter 6 introduced StatefulSet and told you it was about stable *identity*, not about writing to disk, and then admitted the explanation was incomplete and would stay that way until storage arrived. Storage arrives in Chapter 11, and the second half of that answer arrives with it: what a per-replica volume claim is, and why it outlives not just the Pod but the rescheduling.
 
-<!-- AUTHOR-REVIEW: The fact-accuracy audit flagged this next paragraph twice — the "four
-     pluggable interfaces" claim was untagged, and the draft's count ("you have collected two
-     now") contradicted §5's cross-bearing naming CRDs as one of the four. One of the fixes the
-     audit offered was to drop CRDs from the set and repoint §5 at API extensions. That fix is
-     declined here, because both binding contracts fix the set the other way: the B6 section
-     skeleton assigns CRI to Ch 2 §4, CNI to Ch 9 §1, CSI to Ch 11 §5 and CRDs to Ch 6 §8 as the
-     four, and the B7 canonical-forms row names "the four pluggable interfaces" as this book's own
-     phrase for exactly that set, noting that shipped Ch 2 §4 already points at that wording. §5's
-     cross-bearing therefore stands unedited and this section was corrected instead: the count is
-     now three-of-four collected, which is what a reader who met CRDs in Ch 6 actually holds. The
-     grouping is now owned as the book's rather than the documentation's, and the documentation's
-     larger and differently-cut map is tagged. No snapshot in the corpus enumerates a canonical
-     set of four; if the exam is calibrated against one, that remains a research gap. Note also
-     that this is the chapter's third distinct "four" (§3 and §8 carry the absent-component-
-     pattern count) — hence the full phrase rather than a bare number here. -->
-
 And you will meet the last of the four pluggable interfaces. You have three of them already, collected one chapter at a time: CRI at the container runtime in Chapter 2, CRDs at the API itself in Chapter 6, CNI at the network last chapter. If you counted along with Chapter 9 and arrived at two, you were counting something narrower and counting it correctly — that chapter was tallying the times Kubernetes *hands the work to somebody else*, which CRI and CNI both do and CRDs do not. This is the wider set: the four places the project publishes an interface and lets you supply what sits behind it. Chapter 11 brings CSI, at storage, and that closes the set. By the time Chapter 17 gathers all four in one place, the shape should be familiar enough that the gathering feels like recognition rather than instruction.
 
-One caution about that number, since this chapter has made a point of separating what a source says from what we have concluded from it. *The four pluggable interfaces* is this book's phrase and this book's grouping. The documentation's own map of where Kubernetes can be extended is larger than ours and cut differently: six extension points, five plugin types under infrastructure alone, and custom resources filed under a different heading entirely [source: k8s-docs-extending-kubernetes-2026-08-23]. Chapter 17 sets both maps side by side *[cross-bearing: see Ch 17 §4 — the four pluggable interfaces, collected]*. What makes our four a set is a judgement rather than a heading: at each of them, Kubernetes defines an interface and hands the implementation to somebody else. The judgement is ours. The four interfaces are real, and each one is sourced where you met it.
+One caution about that number, since this chapter has made a point of separating what a source says from what we have concluded from it. *The four pluggable interfaces* is this book's phrase and this book's grouping. The documentation's own map of where Kubernetes can be extended is larger than ours and cut differently: six extension points, five plugin types under infrastructure alone, and custom resources filed under a different heading entirely [source: k8s-docs-extending-kubernetes-2026-08-23]. Chapter 17 sets both maps side by side *[cross-bearing: see Ch 17 §4 — the four pluggable interfaces, collected]*. What makes our four a set is a judgment rather than a heading: at each of them, Kubernetes defines an interface and hands the implementation to somebody else. The judgment is ours. The four interfaces are real, and each one is sourced where you met it.
 
 One last thing to carry across the chapter boundary. You will meet several objects in Chapter 11 that describe storage without providing any, and at least one arrangement where a claim sits unbound because the thing that would satisfy it has not been installed.
 

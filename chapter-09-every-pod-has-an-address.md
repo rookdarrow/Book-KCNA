@@ -69,7 +69,7 @@ sections:
     objectives: ["D2.1"]
     requires_figure: false
     figure_anchor: null
-    checkpoint_after: true
+    checkpoint_after: false
   - name: "The Component That Makes It Real"
     objectives: ["D2.1"]
     requires_figure: true
@@ -111,8 +111,8 @@ soundings_planned:
 #-- the shape shipped by Chapters 3-8. Chapter total 39 -> 44.
 question_budget:
   soundings: 8
-  taking_your_bearings: 15             # across 3 checkpoints (5 + 5 + 5)
-  practice_questions: 21
+  taking_your_bearings: 13             # across 2 checkpoints (5 + 8)
+  practice_questions: 23
   total_this_chapter: 44
 
 #-- Concept / objective / command tagging --------------------------------
@@ -196,7 +196,7 @@ figures_planned:
 
 ## Attention Budget
 
-**Total time: ~100 minutes | Recommended: Split across 2 sessions**
+**Total time: ~99 minutes | Recommended: Split across 2 sessions**
 
 | Section | Time | Attention Cost | Best Time to Study |
 |---|---|---|---|
@@ -206,10 +206,9 @@ figures_planned:
 | ☆ Taking Your Bearings #1 | 6 min | Medium | After brief break |
 | §4 — The List Behind the Name | 12 min | Medium | Mid-session |
 | §5 — When You Don't Want a Single Address | 9 min | Medium | Mid-session |
-| ☆ Taking Your Bearings #2 | 6 min | Medium | After brief break |
 | §6 — The Component That Makes It Real | 7 min | Low | Anytime |
 | §7 — Names, and Where They Resolve | 14 min | **High** | Peak attention |
-| ☆ Taking Your Bearings #3 | 6 min | Medium | After brief break |
+| ☆ Taking Your Bearings #2 | 10 min | Medium | After brief break |
 | §8 — A Query With a Name | 5 min | Low | Anytime |
 
 
@@ -218,9 +217,9 @@ figures_planned:
 - **Medium:** New concepts requiring focus—study when alert
 - **High:** Abstract or complex material—study at peak attention (morning for most people)
 
-**Recommended session split:** stop after ☆ Taking Your Bearings #2. That gives you the model, the abstraction, and the backends in one sitting; the implementation, the names, and the synthesis in the next. It also puts §3 and §7, the chapter's two densest recall blocks, in different sessions. Two hard passages, taken on separate watches. That matters more than it sounds like it should.
+**Recommended session split:** stop at the end of §5, before §6. That gives you the model, the abstraction, and the backends in one sitting; the implementation, the names, the second checkpoint, and the synthesis in the next. It also puts §3 and §7, the chapter's two densest recall blocks, in different sessions. Two hard passages, taken on separate watches. That matters more than it sounds like it should.
 
-*If you only have 15 minutes: read §3's type ladder and §7's record shapes, then take ☆ Taking Your Bearings #3. On this book's judgment, that is where this chapter's exam points concentrate. §1 is the most important section for understanding what Kubernetes networking actually is, and it is the least likely to be tested directly. Those two facts do not coincide, and there is no point pretending they do.*
+*If you only have 15 minutes: read §3's type ladder and §7's record shapes, then take ☆ Taking Your Bearings #2. On this book's judgment, that is where this chapter's exam points concentrate. §1 is the most important section for understanding what Kubernetes networking actually is, and it is the least likely to be tested directly. Those two facts do not coincide, and there is no point pretending they do.*
 
 ---
 
@@ -262,22 +261,13 @@ Before reading this chapter, try these questions. Your score determines how to a
 
 5. `<service-name>.<namespace-name>.svc.cluster.local` [source: k8s-docs-namespaces-2026-08-23]. A bare `database` from inside `payments` resolves to the `database` Service **in `payments`** — the caller's own namespace. It never sees the one in `billing`.
 
-<!-- AUTHOR-REVIEW: The question-quality audit flags this answer as a spoiler FAIL — it
-     discloses both factual halves of the §7 ★ Fixed Point (the name form, and the bare-name
-     rule) before the chapter starts. It cannot be fixed here. Both facts are genuine Chapter 4
-     prerequisites, and §7 itself says so, which makes Soundings rule 2 (must be answerable
-     from prerequisites) and rule 3 (must not reveal a Fixed Point) unsatisfiable at the same
-     time for this item. The audit's ratified remedy is to leave question 5 as written and
-     rewrite the §7 Fixed Point so its claim rests on the DNS search-list mechanism — the one
-     part this Soundings withholds. That edit belongs to the §7 pass, not this one. -->
-
 6. **The receiving process sees the NAT device's address, not the original sender's.** That makes source-based authorization, rate-limiting, audit logging, and debugging harder — anything that wanted to know *who* actually called.
 
 7. **Reason:** pluggability. Different environments have genuinely different networking requirements, and a single built-in implementation would be wrong for most of them. **Cost:** nothing works out of the box; you must choose and install something before the platform functions at all.
 
 8. Port forwarding on a firewall or router (**you** supply the box); a cloud load balancer with a public address (**the provider** supplies it); a reverse proxy on a bastion host (**you**); a tunnel service (**the provider**). Any two, with the ownership answered.
 
-**If you got 6+ right:** Skim this chapter. Read §3 and §7 properly — they carry the memorizable material — and read every ★ Fixed Point and ⚠ Navigational Hazards callout. Then take all three ☆ Taking Your Bearings checkpoints, because the traps in this chapter are traps for people who already know some networking.
+**If you got 6+ right:** Skim this chapter. Read §3 and §7 properly — they carry the memorizable material — and read every ★ Fixed Point and ⚠ Navigational Hazards callout. Then take both ☆ Taking Your Bearings checkpoints, because the traps in this chapter are traps for people who already know some networking.
 
 **If you got 3–5 right:** Read at normal pace. This chapter is calibrated for you.
 
@@ -299,9 +289,7 @@ Part III of this book opens with this chapter. Chapter 8 closed by naming what P
 
 One thing to hold as you read, because it will not make sense until the end. **There is exactly one object in this chapter, and it does not do anything.** That is a strange claim to make about the object that the entirety of Kubernetes networking rests on, and you should not accept it yet. §8 is where it gets paid off.
 
-> **Dead Reckoning:** The Kubernetes network model requires that every Pod have a unique cluster-wide IP, that all Pods be able to reach all other Pods directly without NAT or proxies, and that node agents be able to reach the Pods on their node [source: k8s-docs-network-model-2026-08-23]. Kubernetes defines that model. A CNI network plugin implements it [source: k8s-docs-extending-kubernetes-2026-08-23]. A Service is an API object that provides a stable, long-lived IP address or hostname for a set of Pods that changes over time [source: k8s-docs-network-model-2026-08-23]. Its default type is ClusterIP [source: k8s-docs-service-2026-08-23]. Its current backends are recorded in EndpointSlice objects, maintained by a controller [source: k8s-docs-network-model-2026-08-23]. kube-proxy programs each node to intercept traffic to the Service's address [source: k8s-docs-virtual-ips-kube-proxy-2026-08-23]. Cluster DNS publishes the address under a name [source: k8s-docs-dns-pod-service-2026-08-23].
-
-<!-- AUTHOR-REVIEW: The CNI clause above was narrowed from "Kubernetes does not implement any of that" to the strength k8s-docs-extending-kubernetes-2026-08-23 actually supports — that a CNI plugin implements pod networking — matching the §1 Fixed Point. The snapshot lists CNI among Kubernetes' infrastructure extension points but states no exclusive negative, so the stronger "implements none of it" form is not sourceable here. The stronger normative form ("a CNI plugin is *required* to implement the Kubernetes network model") is available from k8s-docs-network-plugins-2026-08-24, which Stage 2 fetched but which is not present in sources/. Strengthen here, in §1, and in Exam Alert item 12 together once that snapshot lands. -->
+> **Dead Reckoning:** The Kubernetes network model requires that every Pod have a unique cluster-wide IP, that all Pods be able to reach all other Pods directly without NAT or proxies, and that node agents be able to reach the Pods on their node [source: k8s-docs-network-model-2026-08-23]. Kubernetes defines that model. A CNI network plugin is required to implement it [source: k8s-docs-network-plugins-2026-08-24] [source: k8s-docs-extending-kubernetes-2026-08-23]. A Service is an API object that provides a stable, long-lived IP address or hostname for a set of Pods that changes over time [source: k8s-docs-network-model-2026-08-23]. Its default type is ClusterIP [source: k8s-docs-service-2026-08-23]. Its current backends are recorded in EndpointSlice objects, maintained by a controller [source: k8s-docs-network-model-2026-08-23]. kube-proxy programs each node to intercept traffic to the Service's address [source: k8s-docs-virtual-ips-kube-proxy-2026-08-23]. Cluster DNS publishes the address under a name [source: k8s-docs-dns-pod-service-2026-08-23].
 
 **Stakes, stated plainly.** This is roughly seven points on our authored allocation, inside a domain worth 28% [source: cncf-kcna-curriculum-pdf-2026-08-23]. What that number understates is structural: within this book, Networking is the competency the others lean on. Chapter 10 cannot explain Ingress without the Service-type ladder from §3. Chapter 13 cannot explain Service troubleshooting without the endpoint list from §4. You will be back here.
 
@@ -339,7 +327,7 @@ Kubernetes networking is specified as a small set of requirements. Not a mechani
 **Rule 4.** **Agents on a node** — system daemons, the kubelet — can communicate with all Pods on that node [source: k8s-docs-network-model-2026-08-23].
 
 <!-- FIGURE: ch09-fig01-network-model-four-rules -->
-![Two worker nodes side by side, each containing Pods labelled with 10.244.x.x addresses. One Pod contains two containers joined over localhost. Direct lines connect a Pod to another Pod on the same node, to a Pod on the other node, and to the local kubelet, with no intermediate device on any line.](figures/ch09-fig01-network-model-four-rules.svg)
+![Two worker nodes side by side, each containing Pods labeled with 10.244.x.x addresses. One Pod contains two containers joined over localhost. Direct lines connect a Pod to another Pod on the same node, to a Pod on the other node, and to the local kubelet, with no intermediate device on any line.](figures/ch09-fig01-network-model-four-rules.svg)
 
 <!-- ASCII-FALLBACK
 ```
@@ -387,7 +375,7 @@ That is not an aesthetic preference. It is the reason the rest of this chapter c
 
 Everything above is a specification. It describes what must be true, and says nothing about how.
 
-Pod networking is implemented by a **network plugin**, and the interface it plugs into is **CNI, the Container Network Interface** — listed among Kubernetes' infrastructure extension points alongside CSI for storage, CRI for container runtimes, and device plugins for custom hardware [source: k8s-docs-extending-kubernetes-2026-08-23]. CNI plugins are **binary plugins**: Kubernetes executes them as external binaries rather than linking them in [source: k8s-docs-extending-kubernetes-2026-08-23].
+Pod networking is implemented by a **network plugin**, and the interface it plugs into is **CNI, the Container Network Interface** — listed among Kubernetes' infrastructure extension points alongside CSI for storage, CRI for container runtimes, and device plugins for custom hardware [source: k8s-docs-extending-kubernetes-2026-08-23]. CNI plugins are **binary plugins**: Kubernetes executes them as external binaries rather than linking them in [source: k8s-docs-extending-kubernetes-2026-08-23] — and on each node it is the container runtime that must be configured to load them [source: k8s-docs-network-plugins-2026-08-24].
 
 That published list runs longer than four [source: k8s-docs-extending-kubernetes-2026-08-23], and this book does not follow it item for item. What it follows is **the four pluggable interfaces**: CRI for runtimes, CNI for networking, CSI for storage, and CRDs for object types Kubernetes does not ship. *[cross-bearing: see Ch 2 §4 — CRI, CNI, CSI and CRDs as the four pluggable interfaces]*. That section named CNI and pointed you here. This is the second of the four; Chapter 17 collects all of them *[cross-bearing: see Ch 17 §4 — the four pluggable interfaces, collected]*.
 
@@ -396,11 +384,9 @@ Which network plugin? That is a genuine choice with genuine consequences. **Cali
 
 ★ **Fixed Point:** Kubernetes **defines** the network model. A **CNI network plugin is required to implement** it. The four rules above are requirements the plugin satisfies, not machinery Kubernetes provides [source: k8s-docs-network-plugins-2026-08-24] [source: k8s-docs-extending-kubernetes-2026-08-23].
 
-<!-- AUTHOR-REVIEW: fact-accuracy F4 — "cluster networking plugins commonly ship as DaemonSets" is untagged in the paragraph below. No cached snapshot describes any plugin's deployment shape; k8s-docs-cluster-addons-2026-08-24 lists Calico, Cilium and Flannel with installation links and says nothing about packaging. Two fixes: (a) is CLOSED and unavailable — checked 2026-08-30, shipped Ch 6 line 890 asserts "Cluster networking plugins ship as DaemonSets" with no [source:] tag at all, so there is nothing to propagate and attribution to Ch 6 would not discharge the sourcing obligation anyway; (b) fetch kubernetes.io/docs/concepts/workloads/controllers/daemonset/, whose "Use cases" section covers cluster networking daemons directly, and which Chapter 6 likely wants cached regardless. Retained rather than cut because it is a retrieval of shipped Ch 6 material and the per-node reasoning is the paragraph's payoff. Build nothing further on it until it is tagged. -->
+Chapter 6 noted in passing that cluster networking plugins commonly ship as DaemonSets, one Pod on every node — Flannel's own deployment manifest, for one, is described by the project as a DaemonSet to deploy the flannel Pod on each node [source: flannel-docs-kubernetes-2026-09-04]. At the time that was an isolated fact about DaemonSets; now it is a satisfying one. A DaemonSet ensures that all, or some, nodes run a copy of a Pod [source: k8s-docs-daemonset-2026-08-24], and a thing that must configure networking on every node is exactly a thing that wants one copy per node. *[cross-bearing: see Ch 6 §7 — DaemonSets and per-node infrastructure]*
 
-Chapter 6 noted in passing that cluster networking plugins commonly ship as DaemonSets, one Pod on every node. At the time that was an isolated fact about DaemonSets; now it is a satisfying one. A thing that must configure networking on every node is exactly a thing that wants one copy per node. *[cross-bearing: see Ch 6 §7 — DaemonSets and per-node infrastructure]*
-
-> 🔭 **Closer Look:** The model is a *requirement*, not a description of a mechanism, and that is why implementations differ so widely. The three plugins named above already span overlay and non-overlay networks, with or without BGP, native routing or encapsulation, and an eBPF-based data plane [source: k8s-docs-cluster-addons-2026-08-24]. Those are genuinely different pieces of engineering, and every one of them satisfies the same four rules. An application inside the cluster cannot tell which one it is running on: the model is the contract, and it is the same contract underneath all of them. That last part is the point. Deeper than the exam requires.
+> 🔭 **Closer Look:** The model is a *requirement*, not a description of a mechanism, and that is why implementations differ so widely. The three network plugins named above already span overlay and non-overlay networks, with or without BGP, native routing or encapsulation, and an eBPF-based data plane [source: k8s-docs-cluster-addons-2026-08-24]. Those are genuinely different pieces of engineering, and every one of them satisfies the same four rules. An application inside the cluster cannot tell which one it is running on: the model is the contract, and it is the same contract underneath all of them. That last part is the point. Deeper than the exam requires.
 
 One practical consequence, and it retrieves last chapter at exactly one chapter's distance: a node whose network is not correctly configured reports the **`NetworkUnavailable`** condition — `True` if the network for the node is not correctly configured [source: k8s-docs-nodes-2026-08-23]. You met the node condition list in Chapter 8 *[cross-bearing: see Ch 8 §4 — node conditions]*. This is the shortest demonstration available that the plugin is not a footnote.
 
@@ -426,7 +412,7 @@ Generalize it, in the documentation's own framing, because the exam's framing of
 
 The set of Pods running at one moment can be different from the set running a moment later [source: k8s-docs-service-2026-08-23]. That is the problem. Notice what it is *not*: not a failure mode, not a bug, not a degraded state to be recovered from. It is the normal condition of a system that replaces workloads freely.
 
-A chart names the harbour, never the ships riding in it. That is exactly why the chart is still good next season.
+A chart names the harbor, never the ships riding in it. That is exactly why the chart is still good next season.
 
 The answer is an object.
 
@@ -461,7 +447,7 @@ There are four Service types. Three of them are layers of the same mechanism. On
 **LoadBalancer** exposes the Service externally using an external load balancer [source: k8s-docs-service-2026-08-23]. It is the outermost rung, the one that puts an address in *front* of the cluster rather than inside it.
 
 <!-- FIGURE: ch09-fig02-service-types-ladder -->
-![Three concentric labelled frames: ClusterIP innermost reachable inside the cluster only and the default type, NodePort around it reachable from any node address and port, LoadBalancer outermost reachable from the internet via a provider-supplied load balancer. Below a heavy double-ruled separator marked not on the ladder, ExternalName is shown separately as a CNAME from my-svc to api.foo.bar.example with no cluster IP, no endpoints and no proxying.](figures/ch09-fig02-service-types-ladder.svg)
+![Three concentric labeled frames: ClusterIP innermost reachable inside the cluster only and the default type, NodePort around it reachable from any node address and port, LoadBalancer outermost reachable from the internet via a provider-supplied load balancer. Below a heavy double-ruled separator marked not on the ladder, ExternalName is shown separately as a CNAME from my-svc to api.foo.bar.example with no cluster IP, no endpoints and no proxying.](figures/ch09-fig02-service-types-ladder.svg)
 
 <!-- ASCII-FALLBACK
 ```
@@ -496,7 +482,7 @@ There are four Service types. Three of them are layers of the same mechanism. On
 ```
 -->
 
-★ **Fixed Point:** The ladder types are **additive**. NodePort and LoadBalancer are both supersets of ClusterIP [source: k8s-docs-service-ports-2026-08-24], and the case the documentation spells out is the one to memorize: **a NodePort Service also has a cluster IP — Kubernetes sets one up, exactly as if you had requested `type: ClusterIP`** [source: k8s-docs-service-2026-08-23]. Asking for a higher rung never removes the rungs below it.
+★ **Fixed Point:** The ladder types are **additive**. To implement a LoadBalancer Service, Kubernetes typically starts by making the changes equivalent to a NodePort Service [source: k8s-docs-service-loadbalancer-2026-09-04], and the case the documentation spells out most plainly is the one to memorize: **a NodePort Service also has a cluster IP — Kubernetes sets one up, exactly as if you had requested `type: ClusterIP`** [source: k8s-docs-service-2026-08-23]. Asking for a higher rung never removes the rungs below it.
 
 
 ### The one that is not on the ladder
@@ -608,7 +594,7 @@ The model states it directly — Pods can communicate with each other directly, 
 
 *Why the tempting wrong answers are wrong:*
 - **"The sending node's IP"** would be correct in almost any non-Kubernetes cluster, which is exactly why it's the trap. Node-to-node forwarding with source rewriting is the normal arrangement elsewhere. It is forbidden here.
-- **"A translated address from the pod network's NAT pool"** assumes cross-node traffic must be translated. It must not be. §1's third rule forbids address translation between Pods outright [source: k8s-docs-network-model-2026-08-23], and that prohibition binds every plugin equally: whatever a plugin does internally to carry a packet from one node to another, the receiver still sees the sender's own address. Reason from the rule, not from a guess about how any particular plugin moves the bytes.
+- **"A translated address from the pod network's NAT pool"** assumes cross-node traffic must be translated. It must not be. §1's third rule forbids address translation between Pods outright [source: k8s-docs-network-model-2026-08-23], and that prohibition binds every network plugin equally: whatever a plugin does internally to carry a packet from one node to another, the receiver still sees the sender's own address. Reason from the rule, not from a guess about how any particular plugin moves the bytes.
 
 **2. No — they share one port space. Over `localhost`. One address.**
 
@@ -622,11 +608,7 @@ Every container in a Pod shares the network namespace, including the IP address 
 
 To make the node port available, Kubernetes sets up a cluster IP address, the same as if you had requested a Service of `type: ClusterIP` [source: k8s-docs-service-2026-08-23].
 
-Say the rule at the level of the ladder rather than as a fact about NodePort, because the shape is what makes the types easy to hold: **a type that adds reachability keeps what the type beneath it already provided.** The documentation states that shape explicitly for NodePort over ClusterIP [source: k8s-docs-service-2026-08-23], and records NodePort and LoadBalancer alike as supersets of ClusterIP [source: k8s-docs-service-ports-2026-08-24] — so the full ladder reads LoadBalancer over NodePort over ClusterIP. Hold it in that form and you carry one rule instead of three separate facts — and Chapter 10's argument for Ingress, "one external address per Service, and that does not scale," becomes available to you without further work.
-
-<!-- AUTHOR-REVIEW: This answer previously read "LoadBalancer implies NodePort implies ClusterIP." The cached Service snapshot documents additivity for NodePort over ClusterIP only; its LoadBalancer entry is a single sentence describing external exposure and saying nothing about cluster IPs or node ports. RESOLVED 2026-08-30 (integration gate): the snapshot landed as sources/k8s-docs-service-ports-2026-08-24.md and the full three-rung statement is restored here, in §3's Fixed Point, and in the figure annotation, in one pass.
-
-The same fetch covers answer 5's "Indefinitely." That a provider-less LoadBalancer Service waits forever follows from the cached "Kubernetes does not directly offer a load balancing component," but no cached snapshot describes the observable pending state, so the wording is left as the book's own entailment rather than presented as documented. -->
+Say the rule at the level of the ladder rather than as a fact about NodePort, because the shape is what makes the types easy to hold: **a type that adds reachability keeps what the type beneath it already provided.** The documentation states that shape explicitly for NodePort over ClusterIP [source: k8s-docs-service-2026-08-23], and again for LoadBalancer over NodePort: implementing a LoadBalancer Service typically starts with the changes equivalent to requesting a NodePort Service, and the cloud-controller-manager then points the external load balancer at that node port [source: k8s-docs-service-loadbalancer-2026-09-04] — so the full ladder reads LoadBalancer over NodePort over ClusterIP. Hold it in that form and you carry one rule instead of three separate facts — and Chapter 10's argument for Ingress, "one external address per Service, and that does not scale," becomes available to you without further work.
 
 **4. Every Pod is replaced, and each replacement has a different address. A Service gives the client one address that does not change while the set behind it does.**
 
@@ -674,7 +656,7 @@ A Service has a selector. The selector is a query. Somebody has to run the query
 **Four.** Anything that needs to know a Service's current backends reads the **EndpointSlices**, not the selector. The selector is the question. The EndpointSlice is the written-down answer.
 
 <!-- FIGURE: ch09-fig03-service-endpointslice-selector-path -->
-![A Service named database holds the selector app equals db. Four Pods are listed; three carry the label app db and one carries app cache. The three matching Pods send arrows toward a gate labelled Ready. Two Ready Pods pass through into an EndpointSlice containing 10.244.1.7 port 5432 and 10.244.4.2 port 5432. The third matching Pod, not Ready, is stopped at the gate. The cache Pod never matched the selector and sends no arrow. Beneath, the EndpointSlice controller in kube-controller-manager watches Services and Pods and writes the slice.](figures/ch09-fig03-service-endpointslice-selector-path.svg)
+![A Service named database holds the selector app equals db. Four Pods are listed; three carry the label app db and one carries app cache. The three matching Pods send arrows toward a gate labeled Ready. Two Ready Pods pass through into an EndpointSlice containing 10.244.1.7 port 5432 and 10.244.4.2 port 5432. The third matching Pod, not Ready, is stopped at the gate. The cache Pod never matched the selector and sends no arrow. Beneath, the EndpointSlice controller in kube-controller-manager watches Services and Pods and writes the slice.](figures/ch09-fig03-service-endpointslice-selector-path.svg)
 
 <!-- ASCII-FALLBACK
 ```
@@ -725,6 +707,8 @@ That quotation is where the older name surfaces. The *endpoints controller* remo
 
 *[cross-bearing: see Ch 5 §7 — readiness probes]*. That section told you what a readiness probe does. This one tells you where it does it: in the EndpointSlice.
 
+One reading note on the figure above. It draws the gate on the *traffic* path, so the Pod that is not Ready is shown stopped short of the slice. In the API object itself that Pod is still listed — the slice references every Pod the selector matches — with its endpoint's `ready` condition set to `false` [source: k8s-docs-endpointslices-2026-08-24]. What the gate governs is traffic, not membership.
+
 ★ **Fixed Point:** **selector → EndpointSlice → traffic.** The selector proposes; readiness disposes. Matching the selector is what puts a Pod **in** the EndpointSlice — the slice references *all* the Pods the selector matches [source: k8s-docs-endpointslices-2026-08-24]. Being **Ready** is what makes its endpoint eligible to **receive traffic**. Readiness does not remove the endpoint; it disqualifies it *[cross-bearing: see Ch 16 §4 — is anything even selected]*.
 
 Three chapters converge on that sentence, and it is worth naming the convergence. Chapter 5 gave you the probe. Chapter 6 relied on the mechanism without explaining it: the reason a bad release cannot take a Service down mid-rollout is that a new Pod which never reports Ready never joins the endpoint list, so traffic never reaches it, so the rollout stalls instead of the service failing. Chapter 9 is where the wiring becomes visible. *[cross-bearing: see Ch 6 §4 — why a failed rollout does not take the Service down]*
@@ -739,13 +723,13 @@ But — and this is the interesting half — **any endpoints that represent the 
 
 So the list is not a boolean membership test. It carries state, and note where that state lives. The Pod has a `Ready` condition; the Pod's *entry in the slice* has a `ready` status of its own [source: k8s-docs-pod-termination-2026-08-24]. A terminating Pod stays on the list, marked, so that anything watching can distinguish "gone" from "going," which is what lets in-flight connections drain rather than being severed.
 
-> 🔭 **Closer Look:** If traffic draining on a terminating Pod is needed, actual readiness can be checked as a condition called `serving` [source: k8s-docs-pod-termination-2026-08-24]. That is the distinction between "should get new traffic" and "can still handle traffic it already has." Deeper than the exam requires, and the reason graceful shutdown works at all rather than merely being promised.
+> 🔭 **Closer Look:** The EndpointSlice API records three conditions on each endpoint — `ready`, `serving` and `terminating`. `serving` maps to the Pod's `Ready` condition; `terminating` is set the moment the Pod is marked for deletion; and `ready` is essentially a shortcut for "`serving` and not `terminating`" [source: k8s-docs-endpointslices-2026-08-24]. So if traffic draining on a terminating Pod is needed, actual readiness can be checked as the condition called `serving` [source: k8s-docs-pod-termination-2026-08-24]. That is the distinction between "should get new traffic" and "can still handle traffic it already has." Deeper than the exam requires, and the reason graceful shutdown works at all rather than merely being promised.
 
 ### Looking at the list
 
 You can inspect it directly:
 
-```
+```bash
 kubectl get endpointslices -l kubernetes.io/service-name=<service-name>
 ```
 
@@ -756,10 +740,6 @@ Two causes. That is the whole diagnostic content of this section, and it is stat
 > 🪝 **Snag:** A Service with no endpoints is not a broken Service. It is a correct Service whose selector currently matches nothing — or, in the case the diagnostic pages describe, one whose matching Pods are not Ready and so are serving nothing. Those are **two different bugs, and they live in two different files** — one is a mismatch between the Service's selector and the Pod template's labels; the other is an application that isn't passing its own health check. Confusing them costs you an afternoon, because you spend it editing the wrong YAML.
 
 One more clause, closing a Chapter 7 loop. That chapter argued that a Service's backends landing on distinct nodes is what makes it resilient rather than merely load-balanced. Now you can see why the argument was necessary: the endpoint list is *just a list*. It has no opinion about where its endpoints are. Topology is the scheduler's problem, which is where you solved it. *[cross-bearing: see Ch 7 §5 — spreading replicas across failure domains]*
-
-<!-- AUTHOR-REVIEW: outline § Open questions #4 — status changed, action still blocked. Stage 2 DID complete the EndpointSlice fetch (kubernetes.io/docs/concepts/services-networking/endpoint-slices/) on 2026-08-24, but its snapshot was never written to ../Book-KCNA/sources/ — the write was refused, and the body survives only inside research-manifest.md §2. So `k8s-docs-endpointslices-2026-08-24` cannot be cited from here without inventing a tag for a file that does not exist. Every claim in this section therefore still rests on five landed snapshots in combination. Still deliberately NOT asserted: why slices rather than one list, the default endpoints-per-slice limit, and ready/serving/terminating as THE documented condition set (the three names appear above only where k8s-docs-pod-termination-2026-08-24 states them individually). Once the snapshot lands on disk, apply curriculum-audit R4: state the three conditions as a documented set and give §4 the full chain — readiness probe -> Pod Ready -> EndpointSlice serving -> (absent termination) ready. Keep publishNotReadyAddresses out; it is a real exception to the readiness gate and would undercut the Fixed Point above. Keep the endpoints-per-slice limit and --max-endpoints-per-slice out of the body entirely. -->
-
-<!-- AUTHOR-REVIEW: cross-bearing targets corrected this pass against the B6 section skeleton and B7 term ledger, both BINDING: readiness probes Ch 5 §6 -> §7 (skeleton pins probe definitions to Ch 5 §7 and names that pin in its own Ch 9 §4 entry); selection-versus-ownership Ch 6 §2 -> §3 (ownerReferences is owned by Ch 6 §3); failure-domain spreading Ch 7 §7 -> §5 (§7 is that chapter's Zenith; topologySpreadConstraints is §5); empty-endpoint troubleshooting Ch 13 §3 -> Ch 16 §4 (the skeleton names "empty EndpointSlice" under Ch 16 §4 explicitly, and that section's entry back-refers to Ch 9 §4 — a reciprocal pair). ONE POINTER LEFT UNRESOLVED: "Ch 3 §3 — the controllers inside kube-controller-manager". The skeleton places kube-controller-manager in Ch 3 §2 (The Control Plane) and node components in §3, which argues for §2; but the B7 ledger records EndpointSlice as first appearing in shipped Ch 3 §3, and the curriculum-alignment audit refers to this back-bearing as landing at §3. Needs a look at shipped Ch 3 to settle which section actually enumerates the controllers. Not changed on inference. -->
 
 ### The case that closes the section
 
@@ -843,7 +823,7 @@ A control loop. Watching objects, comparing to actual state, reconciling. You ha
 
 Here is the consequence that reframes everything before it.
 
-**Nothing is listening on a cluster IP.** No process is bound to it. There is no host at that address, no socket, no server. It exists only as a rule, replicated on every node, that says: *packets addressed here go to one of those addresses instead.* That is not a separate fact to memorise. It follows directly from what the documentation says kube-proxy does, which is **capture traffic to the Service's `clusterIP` and port, and redirect that traffic to one of the Service's endpoints** [source: k8s-docs-virtual-ips-kube-proxy-2026-08-23]. Capture and redirect. Nothing in that sentence binds a socket.
+**Nothing is listening on a cluster IP.** No process is bound to it. There is no host at that address, no socket, no server. It exists only as a rule, replicated on every node, that says: *packets addressed here go to one of those addresses instead.* That is not a separate fact to memorize. It follows directly from what the documentation says kube-proxy does, which is **capture traffic to the Service's `clusterIP` and port, and redirect that traffic to one of the Service's endpoints** [source: k8s-docs-virtual-ips-kube-proxy-2026-08-23]. Capture and redirect. Nothing in that sentence binds a socket.
 
 <!-- FIGURE: ch09-fig04-kube-proxy-modes -->
 ![Above a node boundary, kube-proxy watches a Service object holding cluster IP 10.96.0.42 and an EndpointSlice holding two Pod addresses with port 5432, and programs rules below the boundary. Inside worker-3, a frontend Pod sends traffic to 10.96.0.42, drawn as a dashed empty box marked nothing is here — no process, no socket. The traffic descends through a heavy rules layer listing modes iptables as default, IPVS, nftables and Windows kernelspace, then is readdressed to two backend Pods, one local and one on worker-11.](figures/ch09-fig04-kube-proxy-modes.svg)
@@ -883,7 +863,7 @@ This is also why §3's ExternalName exclusion makes sense from the other side. A
 
 > ⚓ **Worth Securing:** Nothing is listening on a cluster IP. It is not a host, not a process, not a port on a machine. It is a rule on every node that **captures** traffic to that address and **redirects** it elsewhere [source: k8s-docs-virtual-ips-kube-proxy-2026-08-23]. Once that lands properly, roughly half of the confusing behavior in Kubernetes networking stops being confusing — including why the node-level tools you would ordinarily reach for show you nothing bound at that address, and why "a Service is a load balancer" was never quite right.
 
-★ **Fixed Point:** kube-proxy implements the virtual IP mechanism for **every Service type except ExternalName**, by watching **Service and EndpointSlice** objects and programming each node. Modes: **iptables (the default)**, IPVS, nftables on Linux; **kernelspace** on Windows.
+★ **Fixed Point:** kube-proxy implements the virtual IP mechanism for **every Service type except ExternalName**, by watching **Service and EndpointSlice** objects and programming each node. Modes: **iptables (the default)**, IPVS (IP Virtual Server), nftables on Linux; **kernelspace** on Windows.
 
 ### The modes
 
@@ -904,9 +884,9 @@ One closing beat, and it is a nice one because it reaches back to §1.
 
 **If you use a network plugin that implements packet forwarding for Services by itself, and provides equivalent behavior to kube-proxy, then you do not need to run kube-proxy on the nodes in your cluster** [source: k8s-docs-cluster-architecture-2026-08-23]. Cilium is a named example: it **can act as a replacement for kube-proxy** [source: k8s-docs-cluster-addons-2026-08-24].
 
-So the plugin that implements the network model can also implement the Service data plane. Which is a good inoculation against reading kube-proxy as load-bearing architecture. It is one implementation of one job, and that job can be done elsewhere.
+So the network plugin that implements the network model can also implement the Service data plane. Which is a good inoculation against reading kube-proxy as load-bearing architecture. It is one implementation of one job, and that job can be done elsewhere.
 
-> 🔭 **Closer Look:** kube-proxy is optional. A plugin like Cilium can do the same work in its own eBPF data plane (see the glossary) [source: k8s-docs-cluster-addons-2026-08-24]. If you meet a cluster running no kube-proxy at all, nothing is missing. Deeper than the exam requires, but useful the first time you see it and assume something is wrong.
+> 🔭 **Closer Look:** kube-proxy is optional. A network plugin like Cilium can do the same work in its own eBPF data plane (see the glossary) [source: k8s-docs-cluster-addons-2026-08-24]. If you meet a cluster running no kube-proxy at all, nothing is missing. Deeper than the exam requires, but useful the first time you see it and assume something is wrong.
 
 *[cross-bearing: see Ch 17 §5 — a service mesh moves this interception into a sidecar or an ambient layer]*
 
@@ -967,7 +947,7 @@ That is it. That is the entire mechanism. It is not special-case Kubernetes beha
 
 ★ **Fixed Point:** A bare name resolves in the client Pod's **own namespace only** — **because that namespace is in the Pod's DNS search list**. This is not a Kubernetes special case; it is ordinary DNS search-domain resolution, which is also why crossing a namespace boundary requires the full `<service>.<namespace>.svc.<cluster-domain>`.
 
-> ⚠ **Navigational Hazards:** The bare name is the single most common cross-namespace mistake, and it fails in the worst available way. If **no** Service of that name exists in the caller's namespace, you get a resolution failure — annoying, but obvious, and you'll fix it in a minute. If a Service of that **same name** exists in the caller's namespace, the lookup **succeeds**, and your application connects to the wrong thing. No error. No timeout. No log line. Just the wrong database, answering questions it shouldn't have been asked. This is why the FQDN rule is worth memorising rather than looking up.
+> ⚠ **Navigational Hazards:** The bare name is the single most common cross-namespace mistake, and it fails in the worst available way. If **no** Service of that name exists in the caller's namespace, you get a resolution failure — annoying, but obvious, and you'll fix it in a minute. If a Service of that **same name** exists in the caller's namespace, the lookup **succeeds**, and your application connects to the wrong thing. No error. No timeout. No log line. Just the wrong database, answering questions it shouldn't have been asked. This is why the FQDN rule is worth memorizing rather than looking up.
 
 > 🪢 **Mnemonic:** *service, namespace, svc, cluster.local.* Four labels, always in that order. The two in the middle are the ones people reverse under pressure — and note that `svc` is a literal, not an abbreviation of anything in your cluster.
 
@@ -1027,10 +1007,6 @@ Note the shape, because it is the same shape by which an individual StatefulSet 
 
 One boundary worth marking before Chapter 10. What you have just learned is **DNS-based service discovery**: mapping a name to an address, in the ordinary DNS sense. Chapter 10 introduces **name-based virtual hosting**: routing HTTP traffic to multiple host names at the same IP address [source: k8s-docs-ingress-2026-08-23]. Both involve hostnames, and they sit on opposite sides of the connection. One turns a name into an address before any traffic moves; the other sorts traffic that has already arrived at a single address. Conflating them makes Chapter 10 considerably harder than it needs to be. *[cross-bearing: see Ch 10 §2 — name-based virtual hosting]*
 
-<!-- AUTHOR-REVIEW: outline explicitly scopes out CoreDNS Corefile configuration, custom nameservers, stub domains, and CoreDNS plugins. The dns-cluster-addon snapshot's own note records the rest of that page as out of scope. Nothing on cluster DNS customization appears above; that omission is deliberate, not a gap. -->
-
-<!-- AUTHOR-REVIEW: cross-bearing targets in this section were retargeted to conform to the BINDING B6 section skeleton, which no diagnostic flagged. Changes: `Ch 3 §6` -> `Ch 3 §4` (skeleton: Ch 3 §4 is "Addons, and What Else Is Optional"; §6 is the control loop); `Ch 4 §6` -> `Ch 4 §3` (skeleton: Ch 4 §3 "Where a Name Lives" owns namespaces; §6 is the chapter synthesis); `Ch 6 §5` -> `Ch 6 §6` (skeleton: Ch 6 §6 "When Pods Are Not Interchangeable" owns StatefulSet identity; §5 is "Every Rollout Is a Revision"); `Ch 10 §3` -> `Ch 10 §2` (skeleton: Ch 10 §2 "Routing by Host and Path" owns name-based virtual hosting; §3 owns Ingress controllers). The draft's back-pointers appear to be consistently off against the skeleton chapter-wide, not only in this section -- recommend a chapter-wide pointer sweep at the integration-check stage, and revert here if the skeleton's extraction is what is wrong rather than the draft. -->
-
 ---
 
 ## ☆ Taking Your Bearings #2 — Services, Endpoints, and the Names That Find Them
@@ -1053,7 +1029,7 @@ Eight questions on §4 through §7 — what's behind a Service's name, what move
 
 8. 🟡 Two Services in the same namespace: `db-a` is a normal Service, `db-b` is headless. A client resolves `db-a.prod.svc.cluster.local` and `db-b.prod.svc.cluster.local`. Describe what each lookup returns, and how many answers the client gets.
 
-> ⚠️ **Question 3 is intentionally challenging.** Your instinct will be to look at the network. The answer is in two YAML files. If you struggle with it, that struggle is the point.
+> **Question 3 is intentionally challenging.** Your instinct will be to look at the network. The answer is in two YAML files. If you struggle with it, that struggle is the point.
 
 ---
 
@@ -1073,11 +1049,11 @@ A Ready Pod is added to the load-balancing pools of matching Services; a failed 
 
 **4. `clusterIP: None` means no virtual IP is allocated; DNS returns the Pod addresses directly — the right choice for a StatefulSet. For the external database: a selectorless Service backed by manually managed EndpointSlices, or `type: ExternalName`. The difference is proxying.**
 
-StatefulSets require a headless Service for Pod network identity, because members that aren't interchangeable need names that aren't either [source: k8s-docs-service-2026-08-23; k8s-docs-statefulset-2026-08-24] *[cross-bearing: see Ch 6 §6 — StatefulSet and stable identity]*. "The IP allocation failed" is wrong — `None` is a value someone typed, not an absence. For the database, both configurations satisfy the requirement but differ in what the client experiences: a **selectorless Service** puts a cluster IP in the path — traffic is intercepted on the node and redirected out. **ExternalName** resolves to a CNAME and connects directly; Kubernetes is never in the path, so TLS names and the source address the database sees both differ [source: k8s-docs-service-2026-08-23].
+StatefulSets require a headless Service for Pod network identity, because members that aren't interchangeable need names that aren't either [source: k8s-docs-service-2026-08-23; k8s-docs-statefulset-2026-08-24] *[cross-bearing: see Ch 6 §6 — StatefulSet and stable identity]*. "The IP allocation failed" is wrong — `None` is a value someone typed, not an absence. For the database, both configurations satisfy the requirement but differ in what the client experiences: a **selectorless Service** puts a cluster IP in the path — traffic is intercepted on the node and redirected out. **ExternalName** resolves to a CNAME and the client connects directly, under the vendor's own hostname rather than the in-cluster name; Kubernetes is never in the path [source: k8s-docs-service-2026-08-23].
 
 **5. kube-proxy. It does not implement ExternalName. It watches Service and EndpointSlice objects. Modes: iptables (default on Linux), IPVS, and nftables, plus kernelspace on Windows. A cluster running none means the network plugin implements Service forwarding itself.**
 
-[source: k8s-docs-virtual-ips-kube-proxy-2026-08-23]. "It watches Services and Pods" is the close, consequential wrong answer: kube-proxy reads the *computed* EndpointSlice, not raw Pods — that's the EndpointSlice controller's job (Q1). A plugin like Cilium can provide equivalent packet forwarding and replace kube-proxy entirely [source: k8s-docs-cluster-architecture-2026-08-23; k8s-docs-cluster-addons-2026-08-24]. Note what this doesn't claim: nothing about which mode is faster or scales better. The documentation states the list and the substitution, not relative performance — so neither does this book.
+[source: k8s-docs-virtual-ips-kube-proxy-2026-08-23]. "It watches Services and Pods" is the close, consequential wrong answer: kube-proxy reads the *computed* EndpointSlice, not raw Pods — that's the EndpointSlice controller's job (Q1). A network plugin like Cilium can provide equivalent packet forwarding and replace kube-proxy entirely [source: k8s-docs-cluster-architecture-2026-08-23; k8s-docs-cluster-addons-2026-08-24]. Note what this doesn't claim: nothing about which mode is faster or scales better. The documentation states the list and the substitution, not relative performance — so neither does this book.
 
 **6. Nothing. The cluster IP is virtual — no process is bound to it.**
 
@@ -1125,7 +1101,7 @@ Walk it back through, in the chapter's own order.
 **From §1.** And underneath all of it, none of the actual packet-moving is Kubernetes' work at all. Kubernetes defines the network model; a CNI plugin implements it [source: k8s-docs-extending-kubernetes-2026-08-23] — which is the second instance of an arrangement you first met in Chapter 2, where CRI does the same thing for container runtimes. *[cross-bearing: see Ch 2 §4 — CRI as the first pluggable interface]*
 
 <!-- FIGURE: ch09-zenith-stable-name-over-churn -->
-![A single unchanging banner reads database.production.svc.cluster.local and cluster IP 10.96.0.42. Beneath it, four time-step boxes labelled t0 through t3 each hold three Pods, drawn with different generation glyphs and different address fragments; no Pod or address from t0 remains at t3. Below, a chain reads query on the label app equals db, then answer as an EndpointSlice, then publish, fanning out to three consumers: the rules layer from section six, the endpoint list from section four, and the DNS record from section seven. The caption reads three readers, one answer, one question that never changed.](figures/ch09-zenith-stable-name-over-churn.svg)
+![A single unchanging banner reads database.production.svc.cluster.local and cluster IP 10.96.0.42. Beneath it, four time-step boxes labeled t0 through t3 each hold three Pods, drawn with different generation glyphs and different address fragments; no Pod or address from t0 remains at t3. Below, a chain reads query on the label app equals db, then answer as an EndpointSlice, then publish, fanning out to three consumers: the rules layer from section six, the endpoint list from section four, and the DNS record from section seven. The caption reads three readers, one answer, one question that never changed.](figures/ch09-zenith-stable-name-over-churn.svg)
 
 <!-- ASCII-FALLBACK
 ```
@@ -1165,7 +1141,7 @@ That is what makes churn survivable. And it is why the abstraction is a declarat
 
 The claim is a slogan, and slogans need narrowing until they're true.
 
-§3's type ladder and §7's record shapes are **not** consequences of this architecture. They are facts about an API, decisions somebody made about what to call things and how many layers to stack. You cannot derive "NodePort also allocates a cluster IP" from "a Service is a label query," and you cannot derive `_port-name._port-protocol.` from anything at all. Those you memorise, the same as anyone.
+§3's type ladder and §7's record shapes are **not** consequences of this architecture. They are facts about an API, decisions somebody made about what to call things and how many layers to stack. You cannot derive "NodePort also allocates a cluster IP" from "a Service is a label query," and you cannot derive `_port-name._port-protocol.` from anything at all. Those you memorize, the same as anyone.
 
 Everything else in this chapter, you can rebuild from §1's model plus the observation above. That is a genuinely useful ratio, and it is worth knowing which side of the line each fact sits on before you spend study time on it.
 
@@ -1190,32 +1166,15 @@ Chapter 10 crosses that boundary properly: one address serving many services, ro
 1. **Every Pod gets a unique cluster-wide IP**, and all Pods reach all Pods **without NAT and without proxies** — same node or across nodes [source: k8s-docs-network-model-2026-08-23].
 2. **The Pod holds the IP; its containers share it** and communicate over `localhost` [source: k8s-docs-pods-2026-08-24].
 3. **ClusterIP is the default** Service type, and is reachable only from inside the cluster [source: k8s-docs-service-2026-08-23].
-4. **NodePort also allocates a cluster IP** — the documentation is explicit that Kubernetes sets one up "the same as if you had requested a Service of type: ClusterIP" [source: k8s-docs-service-2026-08-23].
+4. **NodePort also allocates a cluster IP** — the documentation is explicit that Kubernetes sets one up "the same as if you had requested a Service of type: ClusterIP" [source: k8s-docs-service-2026-08-23]. The rule generalizes up the ladder: a LoadBalancer Service starts from the changes equivalent to a NodePort Service [source: k8s-docs-service-loadbalancer-2026-09-04]. The types are additive.
 5. **Kubernetes does not provide a load balancer.** You supply one, or integrate with a cloud provider [source: k8s-docs-service-2026-08-23].
 6. **ExternalName is a CNAME with no proxying of any kind** [source: k8s-docs-service-2026-08-23].
 7. **`clusterIP: None` is deliberate** — DNS returns the Pod addresses directly [source: k8s-docs-service-2026-08-23].
 8. **A Service without a selector is a supported pattern**, backed by manually managed EndpointSlices [source: k8s-docs-service-2026-08-23].
 9. **`<service>.<namespace>.svc.<cluster-domain>`**, and a **bare name resolves in the local namespace only** [source: k8s-docs-dns-pod-service-2026-08-23] [source: k8s-docs-namespaces-2026-08-23].
 10. **kube-proxy implements the virtual IP for every type except ExternalName**; **iptables is the default mode** [source: k8s-docs-virtual-ips-kube-proxy-2026-08-23].
-11. **A Pod must be Ready to be an endpoint** [source: k8s-docs-pod-lifecycle-2026-08-23].
+11. **A Pod must be Ready for its endpoint to receive traffic** — a matching Pod that is not Ready stays listed in the EndpointSlice, marked not ready [source: k8s-docs-pod-lifecycle-2026-08-23] [source: k8s-docs-endpointslices-2026-08-24].
 12. **Kubernetes defines the network model; a CNI network plugin is required to implement it** [source: k8s-docs-network-plugins-2026-08-24].
-
-<!-- AUTHOR-REVIEW: two items narrowed relative to draft-v1, both awaiting fetches that §1 and §3 are also waiting on.
-
-     (a) Item 4 previously read "the types are additive", which generalizes the rule to LoadBalancer. The cached Service
-     snapshot documents the cluster-IP allocation for NodePort only ("To make the node port available, Kubernetes sets up
-     a cluster IP address, the same as if you had requested a Service of type: ClusterIP"); its LoadBalancer entry is a
-     single sentence about external exposure and says nothing about the rungs beneath it. The general form is very likely
-     correct but is not in the corpus. Restore it once the `type: LoadBalancer` subsection of
-     kubernetes.io/docs/concepts/services-networking/service/ is cached in full. Same fetch resolves the "waits
-     indefinitely" claim in §3.
-
-     (b) Item 12 previously read "and implements none of it". The cited snapshot supports the positive half — CNI is
-     listed among Kubernetes' infrastructure extension points "to implement pod networking" — but states no exclusive
-     negative. This now mirrors §1's Fixed Point wording exactly, which is the form §1 already holds itself to. Restore
-     the stronger claim, and the stronger normative form ("a CNI plugin is required"), when the network-plugins page
-     fetch lands. The Dead Reckoning block in "Why This Chapter Matters" carries the same overreach and needs the same
-     treatment. -->
 
 ---
 
@@ -1229,11 +1188,11 @@ Chapter 10 crosses that boundary properly: one address serving many services, ro
 | "LoadBalancer means Kubernetes provides a load balancer" | It provides none. You supply one | §3 Fixed Point, Bearings #1 item 5 |
 | "ExternalName proxies traffic" | CNAME only. No proxying of any kind | §3 Navigational Hazards, Bearings #1 item 5 |
 | "A headless Service is a broken Service" | `clusterIP: None` is a value somebody typed | §5 Fixed Point, Bearings #2 item 4 |
-| "A Service without a selector is invalid" | Supported pattern, used for external backends | §5, Bearings #2 item 5 |
-| "A bare service name works across namespaces" | Local namespace only — and it may succeed *wrongly* | §7 Navigational Hazards, Bearings #3 item 4 |
-| "Something is listening on the cluster IP" | Nothing is. It's a forwarding rule, not a socket | §6 Worth Securing, Bearings #3 item 2 |
-| "kube-proxy is required" | Optional, if the plugin does equivalent forwarding | §6 Closer Look, Bearings #3 item 3 |
-| "Headless Services have no DNS record" | Same name form; different answer | §7, Bearings #3 item 5 |
+| "A Service without a selector is invalid" | Supported pattern, used for external backends | §5, Bearings #2 item 4 |
+| "A bare service name works across namespaces" | Local namespace only — and it may succeed *wrongly* | §7 Navigational Hazards, Bearings #2 item 7 |
+| "Something is listening on the cluster IP" | Nothing is. It's a forwarding rule, not a socket | §6 Worth Securing, Bearings #2 item 6 |
+| "kube-proxy is required" | Optional, if the network plugin does equivalent forwarding | §6 Closer Look, Bearings #2 item 5 |
+| "Headless Services have no DNS record" | Same name form; different answer | §7, Bearings #2 item 8 |
 | "A Service with no endpoints is broken" | Correct Service; selector matches nothing, or Pods not Ready | §4 Snag, Bearings #2 item 3 |
 | "A terminating Pod leaves the Service instantly" | Retained with `ready: false`, so traffic drains | §4 Closer Look |
 | "Kubernetes ships the network" | It defines the *requirements*; a CNI plugin is required to implement them | §1 Fixed Point |
@@ -1318,8 +1277,6 @@ B) `type: ExternalName` with `externalName: analytics.vendor.example`
 C) `type: LoadBalancer` with an annotation naming the vendor
 D) A headless Service with `externalName` set
 
-<!-- AUTHOR-REVIEW: the curriculum-alignment audit (R5/R7) asks for one further §3 item on Service port mechanics — `port` / `targetPort` / `nodePort` and the `--service-node-port-range` default. It is not written, because the snapshot that would source it (`k8s-docs-service-ports-2026-08-24`) does not exist in ../Book-KCNA/sources/ — Stage 2 fetched it but could not write it, and its body survives only inside research-manifest.md §3. The §3 prose carries the matching AUTHOR-REVIEW block for the same reason. Add the question here, after Q8, once R1 lands the snapshot and §3 teaches the fields. -->
-
 ---
 
 **9.** **[retrieval: ch4]** A Pod carries labels that a ReplicaSet selects on and labels that a Service selects on. Someone edits one of those labels. Name both consequences, and say whether the two controllers coordinate.
@@ -1344,7 +1301,7 @@ D) In cluster DNS, written by CoreDNS
 
 A) The Pod's `status.phase`; a failing probe moves the Pod to `Failed`
 B) The Service's `spec.selector`; a failing probe removes the Pod's labels from it
-C) The EndpointSlice; a failing probe removes the Pod's address from the Service's endpoints
+C) The EndpointSlice; a failing probe marks the Pod's endpoint not ready, so it stops receiving traffic
 D) The node's iptables rules; a failing probe causes kube-proxy to drop packets to the Pod
 
 ---
@@ -1358,7 +1315,7 @@ D) The Pods are in a different namespace from the Service, or the Service was cr
 
 ---
 
-**13.** A colleague reports: "I created the Service, it has a cluster IP and a DNS record, but nothing responds and there are zero endpoints." What is the correct characterisation?
+**13.** A colleague reports: "I created the Service, it has a cluster IP and a DNS record, but nothing responds and there are zero endpoints." What is the correct characterization?
 
 A) The Service failed to create properly and should be deleted and recreated
 B) Nothing is wrong with the Service — it is being reconciled correctly against a set that is currently empty
@@ -1474,8 +1431,6 @@ Network plugins use CNI, the Container Network Interface, to implement pod netwo
 
 **A** inverts the relationship — CNI is an interface, not an implementation. **C** invents an API object. **D** confuses two unrelated components: kube-proxy programs node rules via OS APIs, and has nothing to do with CNI.
 
-<!-- AUTHOR-REVIEW: option B and this explanation previously named the kubelet as the executor of CNI plugin binaries. Dropped per curriculum-alignment R3. The cached general page (k8s-docs-extending-kubernetes-2026-08-23) supports "Kubernetes executes external binaries" and mentions the kubelet; Stage 2 recorded that a more specific and more recent page states CNI management was removed from the kubelet in Kubernetes 1.24, with the container runtime loading the plugins. That page is not on disk (see the §1 AUTHOR-REVIEW block), so this item names no executor rather than naming a superseded one. §1's prose still carries the older wording and should be brought into line by the pass that owns it. -->
-
 **4. B.**
 
 ClusterIP exposes the Service on a cluster-internal IP, makes it reachable only from within the cluster, and is the default used if you don't explicitly specify a type [source: k8s-docs-service-2026-08-23].
@@ -1494,9 +1449,7 @@ Kubernetes does not directly offer a load balancing component; you must provide 
 
 **A** is the trap. **B** is wrong because the object is entirely valid — validity and effect are different questions. **D** invents a fallback that would be surprising and undocumented behavior.
 
-Nothing here is broken and nothing needs fixing. The Service exists and is reconciled; only its external address is absent.
-
-<!-- AUTHOR-REVIEW: this explanation previously closed by asserting that such a Service "still has a cluster IP and, per the additive rule, a node port," and that it remains usable from inside the cluster and from the nodes. Narrowed per fact-accuracy F2. The cached Service snapshot documents additivity for NodePort only ("To make the node port available, Kubernetes sets up a cluster IP address, the same as if you had requested a Service of type: ClusterIP"); its LoadBalancer entry is a single sentence that says nothing about the rungs beneath it. The keyed answer's "waits indefinitely" is likewise entailed by the sourced premise rather than stated by any snapshot (W2). Both are resolved by the same targeted re-fetch of the type: LoadBalancer subsection; restore the fuller wording once it lands. -->
+Nothing here is broken and nothing needs fixing. The Service exists and is reconciled; only its external address is absent. Load-balancer creation is documented as asynchronous, with the result published in the Service's `.status.loadBalancer` field once a provider supplies one [source: k8s-docs-service-loadbalancer-2026-09-04]; with no provider, that field simply never fills. The Service still has its cluster IP and — because a LoadBalancer Service is built from the changes equivalent to a NodePort Service [source: k8s-docs-service-loadbalancer-2026-09-04] — a node port too, so it remains reachable from inside the cluster and through the nodes.
 
 **7. C.**
 
@@ -1524,7 +1477,7 @@ Kubernetes automatically manages EndpointSlice objects to provide information ab
 
 **11. C.**
 
-If a readiness probe fails, the endpoints controller removes the Pod's IP address from the endpoints of all Services that match the Pod [source: k8s-docs-pod-lifecycle-2026-08-23]; a Pod's `Ready` condition means it should be added to the load balancing pools of all matching Services [source: k8s-docs-pod-termination-2026-08-24].
+If a readiness probe fails, the endpoints controller removes the Pod's IP address from the endpoints of all Services that match the Pod [source: k8s-docs-pod-lifecycle-2026-08-23]; a Pod's `Ready` condition means it should be added to the load balancing pools of all matching Services [source: k8s-docs-pod-termination-2026-08-24]. In the EndpointSlice API that shows up as the endpoint's `ready` condition going `false` while the endpoint stays listed [source: k8s-docs-endpointslices-2026-08-24] — the form §4's Fixed Point gave you: readiness disqualifies the endpoint rather than deleting it.
 
 **A** is a real and important distinction: a failing readiness probe does *not* change the Pod's phase, kill it, or restart it. That's the liveness probe's job. The Pod keeps running, keeps being counted by its controller, and simply stops receiving traffic. **B** would mean readiness edits your Service, which it does not. **D** describes a downstream effect (kube-proxy reprograms rules because the slice changed) as though it were the mechanism.
 
@@ -1564,7 +1517,7 @@ A Service used with a corresponding set of EndpointSlice objects and without a s
 
 **D** is the plan most teams actually propose, and it is worth understanding why it loses to C rather than merely being wrong. Today it behaves exactly like A: a CNAME with no proxying [source: k8s-docs-service-2026-08-23], so the connection semantics still change on migration day. And the swap is a visible cutover, which is the thing the requirement was written to avoid. C keeps one name, one cluster IP, and one proxying path throughout; the only thing that changes is the contents of a slice.
 
-The migration itself follows from the two facts above rather than from any documented procedure: add the selector, and the controller takes over the slice you had been writing by hand. Clients notice nothing.
+The migration itself follows from the two facts above rather than from any documented procedure: add the selector, and the controller starts writing a slice of its own from the Pods it now matches; retire the one you had been maintaining by hand. Clients notice nothing.
 
 **16. B.**
 
@@ -1624,7 +1577,7 @@ This is the only question in the set that tests the method rather than a fact, a
 
 **A** is a node-level answer to a cluster-level question. It describes one implementation kube-proxy happens to use on Linux today, and the mode is configurable and the component itself optional [source: k8s-docs-cluster-architecture-2026-08-23], so the method fails on the first cluster that does it differently.
 
-**C** assumes the plugin is where every networking answer lives. It is where the *model* is implemented, but Services, endpoints and names are API-level and are the same whichever plugin you installed.
+**C** assumes the CNI plugin is where every networking answer lives. It is where the *model* is implemented, but Services, endpoints and names are API-level and are the same whichever plugin you installed.
 
 **D** stops one step short, and stops in the same place question 10's option D did: DNS publishes answers, it does not compute them. Naming the publisher without naming the loop behind it leaves you able to read the current state and unable to explain why it is what it is.
 
@@ -1646,7 +1599,7 @@ A Service maps any incoming `port` to a `targetPort`, so a client connecting on 
 | **Service** | A stable, long-lived address for a set of Pods **that is expected to change**. An object, not a running thing |
 | **ClusterIP** | The **default** type. Inside the cluster only |
 | **NodePort** | Every node's IP at a static port — **and also a cluster IP** |
-| **LoadBalancer** | Exposed externally by a load balancer **the provider supplies. Kubernetes supplies none** |
+| **LoadBalancer** | Built **on top of NodePort**, and so of ClusterIP. Exposed externally by a load balancer **the provider supplies. Kubernetes supplies none** |
 | **ExternalName** | A **CNAME**. Not on the ladder. **No proxying of any kind** |
 | **Selector** | The **question**. A query over Pod labels |
 | **EndpointSlice** | The **written-down answer**, maintained by the EndpointSlice controller |
@@ -1661,16 +1614,6 @@ A Service maps any incoming `port` to a `targetPort`, so a client connecting on 
 | **Bare name** | **Local namespace only.** May succeed against the wrong Service |
 | **The Zenith** | A Service is a **label query with a name**. Three loops publish its answer in three formats |
 
-<!-- AUTHOR-REVIEW: LoadBalancer row narrowed per the fact-accuracy finding on
-     additivity. The cached `k8s-docs-service-2026-08-23` snapshot documents the
-     cluster-IP allocation for NodePort only ("Kubernetes sets up a cluster IP
-     address, the same as if you had requested a Service of type: ClusterIP"); its
-     LoadBalancer entry is one sentence and says nothing about a cluster IP or a node
-     port. Restore "on top of NodePort" here, in §3's Fixed Point, in the Exam Alert
-     and in the Common Traps table together — not piecemeal — once the targeted
-     re-fetch of the Service page's `type: LoadBalancer` subsection lands in sources/.
-     The "Kubernetes supplies none" half is separately sourced and stands as written. -->
-
 
 ---
 
@@ -1680,7 +1623,7 @@ You arrived at this chapter able to run workloads and unable to connect them. Yo
 
 That is the inside of the cluster accounted for. Domain 2's Networking competency runs wider than one chapter — traffic arriving from outside, and the policy that decides which of it is allowed, is Chapter 10's work — but Chapters 10, 13 and 16 all stand on what you just finished.
 
-**Voyage Progress:** 🗺️ → 🌊 **Ch 9 of 20** → 🌅
+🗺️ Chart → **🌊 Passage** → 🌅 Dawn
 
 ---
 

@@ -117,7 +117,7 @@ sections:
     objectives: ["D3.2", "D2.3"]
     requires_figure: true
     figure_anchor: "ch16-fig03-portforward-vs-service-path"
-    checkpoint_after: true
+    checkpoint_after: false
 
   - name: "When Each Replica Is Its Own"
     objectives: ["D3.2"]
@@ -151,20 +151,16 @@ soundings_planned:
     - "What is actually inside a minimal image, and what a shell would require (Ch 2 §2)"
 
 #-- Skill Part 8: practice-question budget ------------------------------
-#-- B4 allocated 8 / 10 / 15 = 33. Bearings raised to 16 across three
-#-- checkpoints (6+5+5), the Ch 12 and Ch 13 precedent. Reason is the same
-#-- as Ch 13's and doubly binding here, because this chapter sits AT the
-#-- 25% retrieval ceiling rather than below it: 16 is the smallest count
-#-- that lets retrieval land at EXACTLY 25% across three checkpoints of
-#-- >= 5. At B4's 10, a 25% target rounds to 2.5 and the ceiling cannot be
-#-- hit cleanly; at 12 it lands (3/12) but forces two checkpoints across
-#-- eight sections, leaving §6-§8 with no retrieval practice at all.
-#-- Practice stays at B4's 15 — B4 records 15 as the book's floor and
-#-- names this chapter and Ch 13 as the two that sit on it. New total 39.
+#-- B4 allocated 8 / 10 / 15 = 33. Drafting raised Bearings to 16 (6+5+5);
+#-- the 2026-09-03 checkpoint merge left two checkpoints carrying 14 (6 + 8). Four of the 14 are retrieval-tagged (28.6%, above
+#-- the arc outline's 25% ceiling; recorded at the 2026-09-04 audit, not
+#-- changed there). Practice runs 17 after revision added Q16 and Q17 (B4
+#-- floor is 15). Actual total 8 + 14 + 17 = 39; the question_budget block
+#-- below is maintained by the central pass.
 question_budget:
   soundings: 8
-  taking_your_bearings: 16             # across 3 checkpoints (6 + 5 + 5)
-  practice_questions: 15
+  taking_your_bearings: 14             # across 2 checkpoints (6 + 8)
+  practice_questions: 17
   total_this_chapter: 39
 
 #-- Concept / objective / command tagging -------------------------------
@@ -198,6 +194,8 @@ kb_tags:
     - "headless-service-dns-names"
     - "local-development-loop"
     - "in-cluster-only-reproduction"
+    - "termination-message"
+    - "silently-dropped-manifest-field"
   commands:
     - "kubectl-logs-c-init-container"
     - "kubectl-exec"
@@ -217,10 +215,6 @@ figures_planned:
   - "ch16-zenith-mine-or-the-platforms"
 ---
 
-<!-- AUTHOR-REVIEW (revision stage — frontmatter): draft-v1 carries no YAML frontmatter block; it opens directly at the H1. The curriculum-alignment audit flags this as load-bearing: unless this chapter's file carries `objectives: ["D3.2", "D2.3"]`, a substantial slice of D2.3 that Ch 13 explicitly deferred here ends the book with no owning chapter. No frontmatter is added at revision, because a later stage may inject one and two YAML blocks would be worse than none. **Confirm before the integration gate** which stage materializes it, and that it carries both objective IDs plus the `kb_tags.concepts` additions this revision introduces: `termination-message`, `silently-dropped-manifest-field`. -->
-
-<!-- AUTHOR-REVIEW (revision stage — chapter-wide sourcing policy): the fact-accuracy audit found nine tagged claims whose cited passage is absent from the *packed* snapshot corpus, because packing truncated eleven Kubernetes pages at their first code fence. Those tags are retained, because each snapshot's own frontmatter asserts the passage is on disk. Claims re-tagged or added at revision that fall in the same category — the `Init:N/M` status vocabulary, the `-c` flag form, the profile names, the three `debug-service` quotes, the `--` argument boundary, the `debug node/` description, and the port-forward TCP-only note — are tagged the same way rather than left bare. **Re-run the fact-accuracy audit against the untruncated snapshot files before print.** Genuine research gaps — where no snapshot exists at all — are flagged individually below and are NOT tagged. -->
-
 # Chapter 16: Your Application, Their Cluster
 ## *"Four questions that separate your bug from theirs"*
 
@@ -233,7 +227,7 @@ figures_planned:
 
 ## Attention Budget
 
-**Total time: ~82 minutes | Recommended: Single session, or split after §5**
+**Total time: ~80 minutes | Recommended: Single session, or split after §5**
 
 | Section | Time | Attention Cost | Best Time to Study |
 |---|---|---|---|
@@ -243,10 +237,9 @@ figures_planned:
 | ☆ Taking Your Bearings (1) | 6 min | Medium | After a brief break |
 | §4 Is Anything Even Selected | 12 min | High | Peak attention |
 | §5 Bypassing the Service on Purpose | 7 min | Low | Anytime |
-| ☆ Taking Your Bearings (2) | 5 min | Medium | After a brief break |
 | §6 When Each Replica Is Its Own | 7 min | Medium | Mid-session |
 | §7 Before You Ship It | 5 min | Low | Anytime |
-| ☆ Taking Your Bearings (3) | 5 min | Medium | After a brief break |
+| ☆ Taking Your Bearings (2) | 8 min | Medium | After a brief break |
 | §8 Mine, or the Platform's | 3 min | Low | Anytime |
 
 **Attention Cost Key:**
@@ -328,9 +321,7 @@ There is also a shift in who you are while you use them. Chapter 13's reader sto
 
 > **Dead Reckoning:** When a Pod is `Running` and `Ready` and the application is still wrong, the platform's own signals keep reporting "fine," because from the platform's point of view everything is. The diagnostic surface you need is inside the container, in the Service that routes to it, and in the configuration the process actually read. The platform inspects none of those on your behalf. The tools for reaching them are `kubectl exec`, `kubectl debug`, `kubectl port-forward`, and `kubectl get endpointslices`. Each answers a different question. Knowing which question you are asking is most of the work.
 
-The stakes are specific. Cloud Native Application Delivery is 16% of the KCNA exam [source: cncf-kcna-curriculum-pdf-2026-08-23], and Debugging is one of its two competencies. The competency is not flag syntax. It is which verb answers which question, and no glossary can teach you that: the verbs are only distinguishable by the question each one is for.
-
-<!-- AUTHOR-REVIEW (revision stage — research gap, HIGHEST PRIORITY of the untagged claims): draft-v1 asserted here that "that domain doubled from the previous blueprint" and that prep material was "written against the old five-domain shape." Both claims are CUT. `cncf-kcna-curriculum-pdf-2026-08-23` documents only the current four-domain shape (44/28/16/12) and says nothing about any prior blueprint; the five-domain history traces to B1, a book artifact rather than a dated snapshot, and this chapter's own convention tags weight claims to snapshots. Restore only if an archived/retired KCNA curriculum PDF or a dated CNCF changelog is cached, or tag explicitly to B1. This is exam-structure advice a reader will act on when choosing study material. -->
+The stakes are specific. Cloud Native Application Delivery is 16% of the KCNA exam [source: cncf-kcna-curriculum-pdf-2026-08-23], and Debugging is one of its two competencies. That weight doubled when the curriculum changed: the retired five-domain blueprint gave the domain 8% [source: cncf-kcna-curriculum-retired-2026-09-04], and the current four-domain one gives it 16% [source: cncf-kcna-curriculum-pdf-2026-08-23], so study material built against the older shape gives this material half the attention it now earns. The competency is not flag syntax. It is which verb answers which question, and no glossary can teach you that: the verbs are only distinguishable by the question each one is for.
 
 ## What You'll Learn
 
@@ -375,7 +366,7 @@ Everything after this section is one of four questions, asked in an order chosen
 **Is it configured?** — Which appears twice, deliberately. Read on.
 
 <!-- FIGURE: ch16-fig01-application-scope-triage -->
-![A tree diagram. An arrow labelled 'from Chapter 13, platform scope discharged' enters a single box labelled 'Application scope: this book, this chapter, your problem'. Below the box, four branches fan out to four questions: is it running (section 2), is it healthy and configured (section 3), is it reachable (sections 4 then 5), and is it per-replica (section 6).](figures/ch16-fig01-application-scope-triage.svg)
+![A tree diagram. An arrow labeled 'from Chapter 13, platform scope discharged' enters a root box labeled 'Application scope: this book, this chapter, your problem'. From the root, a bracket connects to four question boxes stacked to its right: Running? (section 2), Healthy? Configured? (section 3), Reachable? (sections 4 then 5), and Per-replica? (section 6). A legend identifies the root and the triage questions and reads: top to bottom, each question eliminates ground before the next.](figures/ch16-fig01-application-scope-triage.svg)
 
 <!-- ASCII-FALLBACK
 ```
@@ -424,7 +415,7 @@ Start with the Pod's status, which tells you which init container you are lookin
 kubectl get pod <pod-name>
 ```
 
-The `STATUS` column carries a specific vocabulary for this case [source: k8s-docs-debug-init-containers-2026-08-31]. A Pod mid-sequence reports `Init:N/M` — N init containers complete out of M total. A Pod whose init container is failing reports `Init:Error` or `Init:CrashLoopBackOff`. That is already a lot of information: `Init:1/3` tells you the first one succeeded and you should be looking at the second.
+The `STATUS` column carries a specific vocabulary for this case [source: k8s-docs-debug-init-containers-2026-09-04]. A Pod mid-sequence reports `Init:N/M` — *"The Pod has `M` Init Containers, and `N` have completed so far"* [source: k8s-docs-debug-init-containers-2026-09-04]. A Pod whose init container is failing reports `Init:Error` (*"An Init Container has failed to execute"*) or `Init:CrashLoopBackOff` (*"An Init Container has failed repeatedly"*) [source: k8s-docs-debug-init-containers-2026-09-04]. That is already a lot of information: `Init:1/3` tells you the first one succeeded and you should be looking at the second.
 
 The Pod's phase is `Pending` throughout, with the `Initialized` condition false — *"a Pod that is initializing is in the `Pending` state but should have a condition `Initialized` set to false"* [source: k8s-docs-init-containers-2026-08-24] *[cross-bearing: see Ch 5 §5 — Pod phase and container state]*. This is why "read the phase first" alone does not finish the job here. Every Pod in this state has the same phase, and the discriminating detail is in the status string and the container list.
 
@@ -438,7 +429,7 @@ Here is where people lose time:
 kubectl logs <pod-name>
 ```
 
-This returns nothing useful. The plain form targets the Pod's app container, and the app container has not started, so there is nothing to print. What you need is the `-c` flag naming the specific init container [source: k8s-docs-debug-init-containers-2026-08-31]:
+This returns nothing useful. The plain form targets the Pod's app container, and the app container has not started, so there is nothing to print. What you need is the `-c` flag naming the specific init container — *"Pass the Init Container name along with the Pod name to access its logs"* [source: k8s-docs-debug-init-containers-2026-09-04]:
 
 ```
 kubectl logs <pod-name> -c <init-container-name>
@@ -446,9 +437,7 @@ kubectl logs <pod-name> -c <init-container-name>
 
 The `-c` flag is not new to you *[cross-bearing: see Ch 13 §3 — reading logs from a multi-container Pod]*; what is new is that here it is not optional. A multi-container Pod at least gives you *a* log stream when you omit `-c`. An initializing Pod gives you an error or an empty result, and the reader who reads that as "the init container isn't logging anything" has just concluded something false about a container that is loudly complaining into a stream nobody asked for.
 
-> 🪝 **Snag:** `kubectl logs <pod>` on a Pod stuck in init tells you nothing, and the nothing is misleading. Always name the init container with `-c`. If you don't know its name, `kubectl describe pod <pod>` is where the init containers and their states are listed.
-
-<!-- AUTHOR-REVIEW (revision stage): draft-v1's Snag claimed `kubectl describe pod` lists init containers "in order, along with each one's state and exit code." The exit-code and ordering specifics are not in any packed snapshot — `k8s-docs-debug-pods-2026-08-23` mentions `describe` only generically. Softened to "listed." The detail is very likely on the untruncated `debug-init-containers` page; verify and restore with a tag if so. -->
+> 🪝 **Snag:** `kubectl logs <pod>` on a Pod stuck in init tells you nothing, and the nothing is misleading. Always name the init container with `-c`. If you don't know its name, `kubectl describe pod <pod>` lists the init containers in order, each with its state, its reason, its exit code, and its restart count [source: k8s-docs-debug-init-containers-2026-09-04].
 
 ### The three ways an init container is wrong
 
@@ -462,11 +451,9 @@ The tell is an `Init:0/1` Pod that has sat there for twenty minutes with no erro
 
 > ⚓ **Worth Securing:** Write init containers as though they will run five times, because eventually they will. Idempotency is not a nicety here; it is a correctness requirement imposed by the restart semantics. If your init container's job is "create X," its actual job is "ensure X exists."
 
-**Configuration errors visible at init.** Init containers are frequently where a config problem first becomes visible, because the init container is usually the first thing that reads the mounted configuration. A ConfigMap key that does not exist, a Secret whose value is base64-decoded into something the wrong shape, a mount path that collides with something in the image: these surface as an init container exiting non-zero with a message that names the actual problem *[cross-bearing: see Ch 4 §4 — ConfigMaps and Secrets]*.
+**Configuration errors visible at init.** This one is practitioner observation rather than documented behavior. Init containers are frequently where a config problem first becomes visible, because the init container is usually the first thing that reads the mounted configuration. A ConfigMap key that does not exist, a Secret whose value is base64-decoded into something the wrong shape, a mount path that collides with something in the image: these surface as an init container exiting non-zero with a message that names the actual problem *[cross-bearing: see Ch 4 §4 — ConfigMaps and Secrets]*.
 
 That last point is worth dwelling on, because it is the good news in this section. A config error caught at init gives you a clean, specific, non-mysterious failure with the reason printed in a log. The *same* config error that gets past init, because the value is present but wrong, becomes §3's problem, and §3's problem is much harder.
-
-<!-- AUTHOR-REVIEW (revision stage — recorded research gap, manifest Gaps item 3): the *Debug Init Containers* page covers ONLY status-reading and log access. Its own `scope_note` states it "does NOT cover init-container ordering deadlocks, idempotency/re-run hazards, or ConfigMap/Secret mount failures at init." Of the three failure modes above: **idempotency IS sourced** (`k8s-docs-init-containers-2026-08-24`, re-run semantics, cited). **The ordering deadlock is authored synthesis** — it is a sound deduction from three separately sourced facts (init containers block app-container start; a Pod is not Ready until init succeeds; readiness gates endpoint membership), and the prose above now presents it as a consequence of the sequencing rules rather than as documented behavior. **Config-errors-at-init is authorial and the weaker of the two** — `k8s-docs-determine-reason-pod-failure-2026-08-31` carries `config-errors-visible-at-init` in its concept tags but its transcribed body is termination-message material. Either source it properly or mark it as practitioner analysis before print. It reaches graded text at Practice Q17. -->
 
 <!-- FIGURE: ch16-fig05-init-sequence-debug-points -->
 ![A left-to-right sequence of three init containers followed by the app containers. Beneath each, the Pod status it produces: Init:0/3 under the first init container, Init:1/3 under the second, Init:2/3 under the third, and Running under the app containers. Below, the commands for reading init container logs, and three failure signatures paired with their causes: stuck with no error means an ordering deadlock, failing only on restart means non-idempotency, and exiting non-zero means a configuration error.](figures/ch16-fig05-init-sequence-debug-points.svg)
@@ -514,7 +501,7 @@ The docs describe it exactly this way: *"This page shows how to use `kubectl exe
 kubectl exec -it <pod-name> -c <container-name> -- /bin/sh
 ```
 
-The double dash matters. Everything after `--` is the command run inside the container; everything before it belongs to kubectl [source: k8s-docs-get-shell-running-container-2026-08-31]. Omit it and kubectl will try to interpret your command's flags as its own.
+The double dash matters: *"The double dash (`--`) separates the arguments you want to pass to the command from the kubectl arguments."* [source: k8s-docs-get-shell-running-container-2026-09-04] Everything after `--` is the command run inside the container; everything before it belongs to kubectl. Omit it and kubectl will try to interpret your command's flags as its own.
 
 What you are actually doing in there, most of the time, is answering the second half of the second question: **is it configured the way you think?** Not "does the ConfigMap say what I meant"; you can read the ConfigMap from outside. The question is what the *process* got. Environment variables can be shadowed, mounted files can be masked by another mount, a default in the application code can quietly win over an empty string, and a value can be correct in the manifest and absent in the container because a mount path was one character off.
 
@@ -530,8 +517,6 @@ That third one catches more bugs than the other two combined. A directory that i
 
 > 🪝 **Snag:** There is a second way the manifest and reality disagree, and `exec` cannot see this one at all, because the field never reached the server. *"Often a section of the pod description is nested incorrectly, or a key name is typed incorrectly, and so the key is ignored"* [source: k8s-docs-debug-pods-2026-08-23]. The apply succeeded. Nothing errored. The field is simply absent from what the API server stored, and the container is faithfully running the spec that actually exists rather than the one you wrote. The move is a round trip: apply, then read back what the server kept and compare it against your file. The docs prescribe exactly that, comparing `kubectl get pods/mypod -o yaml` against the original [source: k8s-docs-debug-pods-2026-08-23].
 
-<!-- AUTHOR-REVIEW (revision stage — coverage fix, curriculum Finding 1): the second Snag above is NEW. §1 promises "is it configured" is answered in two places; draft-v1's §3 delivered only the runtime half (env shadowing, mount masking), leaving the API-side half — a silently dropped field — untaught, though it is a distinct signature that `exec` provably cannot reach. Sourced. NOTE: the same snapshot passage also names the `--validate` flag; that flag's behavior has moved across kubectl releases, so only the version-stable round-trip comparison is taught here. Verify `--validate`'s current form against a fresh snapshot before adding it. Add `silently-dropped-manifest-field` to `kb_tags.concepts`. -->
-
 ### The image with nothing in it
 
 Now the problem.
@@ -546,11 +531,9 @@ exec: "/bin/sh": stat /bin/sh: no such file or directory
 
 There is no shell. There is no `cat`, no `ls`, no `env` binary, no package manager to install one with. The image contains your application binary, the libraries it links against, and nothing else. This is a **distroless** image, and it is not a mistake. It is a deliberate hardening choice. The Kubernetes documentation is direct about the trade: *"…distroless images enable you to deploy minimal container images that reduce attack surface and exposure to bugs and vulnerabilities. Since distroless images do not include a shell or any debugging utilities, it's difficult to troubleshoot distroless images using `kubectl exec` alone."* [source: k8s-docs-ephemeral-containers-concept-2026-08-31]
 
-<!-- AUTHOR-REVIEW: "distroless" is used throughout this section and has no owner in the term ledger and no ambient-tier row. It reaches graded text in this chapter's Practice Questions. Queue a glossary entry and an acronym-register row at the glossary build. -->
-
 Your first instinct is probably right and also unavailable: add a second container to the Pod with the tools in it. You cannot.
 
-> **★ Fixed Point**
+> ★ **Fixed Point:**
 >
 > **You cannot add a container to a Pod once the Pod has been created.** The Pod's container list is fixed at creation. That single fact is the entire reason ephemeral containers exist as a separate mechanism, and it is the fact worth carrying into a question about them.
 
@@ -580,9 +563,7 @@ Read those five together and the design intent is obvious: this is an instrument
 kubectl debug -it <pod-name> --image=busybox:1.28 --target=<container-name>
 ```
 
-`--target` names the container you want the debug container to be able to see into. The principle behind it is sourced: *"When using ephemeral containers, it's helpful to enable process namespace sharing so you can view processes in other containers."* [source: k8s-docs-ephemeral-containers-concept-2026-08-31] Without a shared view of the target's processes, an ephemeral container is a separate process tree in the same Pod, and most of what you wanted to inspect is invisible from it.
-
-<!-- AUTHOR-REVIEW (revision stage — research gap + quote-attachment fix, fact audit WARN-5): draft-v1 asserted specific `--target` behavior ("puts the debug container in the target container's process namespace") and supported it with the process-namespace-sharing quote, which is about the mechanism generally, not about that flag. The quote is verbatim and correctly tagged; it was attached to the wrong claim. Rewritten so the quote supports the principle it actually states. The flag's own behavior is documented on no cached page — verify against the untruncated generated CLI reference (`k8s-docs-kubectl-debug-reference-2026-08-31`), whose flag table should carry a `--target` description, and restore the specific claim with a tag if so. -->
+`--target` names the container you want the debug container to be able to see into: *"The `--target` parameter targets the process namespace of another container."* [source: k8s-docs-debug-running-pod-2026-09-04] The principle behind it: *"When using ephemeral containers, it's helpful to enable process namespace sharing so you can view processes in other containers."* [source: k8s-docs-ephemeral-containers-concept-2026-08-31] Without a shared view of the target's processes, an ephemeral container is a separate process tree in the same Pod, and most of what you wanted to inspect is invisible from it. One caveat the docs attach: the container runtime has to support it, and where it does not, *"the Ephemeral Container may not be started, or it may be started with an isolated process namespace so that `ps` does not reveal processes in other containers"* [source: k8s-docs-debug-running-pod-2026-09-04].
 
 That is one of three shapes. The other two answer different questions.
 
@@ -596,7 +577,7 @@ kubectl debug <pod-name> -it --image=ubuntu --share-processes --copy-to=<new-pod
 
 The documentation's framing: *"Sometimes Pod configuration options make it difficult to troubleshoot in certain situations. For example, you can't run `kubectl exec` to troubleshoot your container if your container image does not include a shell or if your application crashes on startup. In these situations you can use `kubectl debug` to create a copy of the Pod with configuration values changed to aid debugging."* [source: k8s-docs-kubectl-debug-copy-node-profiles-2026-08-31]
 
-> **★ Fixed Point**
+> ★ **Fixed Point:**
 >
 > **`--copy-to` makes a copy. The original Pod is not touched — and that is the feature, not a limitation.** You get a new Pod with whatever changes you need (a different command, an extra container, a shell as the entrypoint) while the broken Pod keeps running exactly as it was, still serving traffic, still available for the platform team to look at, still in the state that produced the bug.
 
@@ -604,9 +585,7 @@ This is the part most readers get backwards on first encounter. The mental model
 
 The copy is also the answer to a case `exec` can never handle: a container that crashes on startup. There is no running process to enter, and by the time you type the command it is gone again. Copy the Pod, change the entrypoint to a shell, and now you have a container built from the same image, with the same config, that sits still while you look at it.
 
-> ⚓ **Worth Securing:** A copy is a real Pod. It consumes resources and it will sit there until you delete it. Clean up after yourself — `kubectl delete pod <copy-name>`.
-
-<!-- AUTHOR-REVIEW (revision stage): draft-v1's Worth Securing continued with a claim that a copy may inherit the original's labels and start receiving live traffic, hedged as "some copy modes strip labels for exactly this reason; check what yours did." No cached page documents label handling for `kubectl debug --copy-to`, and the hedge named nothing checkable while pushing verification onto the reader. Cut. If the untruncated CLI reference pins the actual behavior, restore it as a flat statement with a tag rather than a hedge. -->
+> ⚓ **Worth Securing:** A copy is a real Pod. It consumes resources and it will sit there until you delete it. Clean up after yourself — `kubectl delete pod <copy-name>`. One detail that matters on a shared cluster: by default the copy is created *without* the original Pod's labels — the `--keep-labels` flag exists to opt back in, described as *"If true, keep the original pod labels"* [source: k8s-docs-kubectl-debug-reference-2026-09-04] — so a Service selecting the original's labels does not pick the copy up, and the copy does not start receiving live traffic.
 
 ### `kubectl debug node/`: stepping back over the line
 
@@ -616,7 +595,7 @@ The third shape targets a node rather than a Pod:
 kubectl debug node/<node-name> -it --image=ubuntu
 ```
 
-This creates a Pod on the target node with access to the node's filesystem and host namespaces [source: k8s-docs-kubectl-debug-copy-node-profiles-2026-08-31]. It is genuinely useful and it is, unmistakably, the moment you step back across the boundary §1 drew. A node is not application scope. If you find yourself reaching for `debug node/`, you have either concluded that the fault is platform-side — in which case the right move is usually to hand it to whoever owns the platform, with the evidence you gathered — or you *are* the person who owns the platform, wearing a different hat.
+This creates a Pod on the target node with access to the node's filesystem and host namespaces: *"The root filesystem of the Node will be mounted at `/host`"* and *"the container runs in the host IPC, Network, and PID namespaces"* [source: k8s-docs-debug-running-pod-2026-09-04]. It is genuinely useful and it is, unmistakably, the moment you step back across the boundary §1 drew. A node is not application scope. If you find yourself reaching for `debug node/`, you have either concluded that the fault is platform-side — in which case the right move is usually to hand it to whoever owns the platform, with the evidence you gathered — or you *are* the person who owns the platform, wearing a different hat.
 
 Which makes it an argument for the boundary rather than an exception to it. The tool exists, it is on the same documentation page as the others, and the reason it feels out of place here is that it *is* out of place here. Notice the feeling. It is the boundary doing its job. Node-level diagnosis, including the node-local tooling below the Kubernetes API, belongs to the platform-scope chapter *[cross-bearing: see Ch 13 §5 — when the node is the problem]*.
 
@@ -626,17 +605,13 @@ Which makes it an argument for the boundary rather than an exception to it. The 
 >
 > You have RBAC permission to run `kubectl debug`. You run it. It fails — not with a permissions error on the verb, but with a rejection from admission control. This is not a bug and it is not RBAC.
 >
-> The ephemeral container you are injecting is a container in that namespace, and Pod Security Admission enforces the namespace's standard against containers *[cross-bearing: see Ch 12 §6 — three levels, three modes]*. In a namespace enforcing the `restricted` standard, a debug image that wants to run as root, or wants elevated capabilities, or wants host namespace access, has asked for more than the namespace permits. A container that would not be allowed to exist there does not become allowed by being ephemeral.
+> The ephemeral container you are injecting is a container in that namespace, and Pod Security Admission *"places requirements on a Pod's Security Context and other related fields according to the three levels defined by the Pod Security Standards"* [source: k8s-docs-pod-security-admission-2026-08-31] *[cross-bearing: see Ch 12 §6 — three levels, three modes]*. Those Standards name ephemeral containers explicitly: the restricted fields for each control cover `spec.containers[*]`, `spec.initContainers[*]`, and `spec.ephemeralContainers[*]` alike, including `securityContext.privileged` and, under `restricted`, `securityContext.runAsNonRoot` [source: k8s-docs-pod-security-standards-2026-09-04]. In a namespace enforcing the `restricted` standard, a debug image that wants to run as root, or wants elevated capabilities, or wants host namespace access, has asked for more than the namespace permits. A container that would not be allowed to exist there does not become allowed by being ephemeral.
 >
 > This is an easy failure to misread as "I don't have permission to debug." You do. The *container you asked for* doesn't meet the namespace's standard. Try a debug image that runs as non-root, or ask the namespace's owner what the enforcement level is.
 
-<!-- AUTHOR-REVIEW (revision stage — research gap, SECOND-HIGHEST PRIORITY): this Hazard's claim — that ephemeral containers are subject to Pod Security Admission enforcement — has NO cached snapshot behind it. There is no PSA or Pod Security Standards page in this chapter's corpus, and `k8s-docs-ephemeral-containers-concept-2026-08-31` lists the API-level restrictions on ephemeral containers while saying nothing about admission. The claim rests on the book's own Ch 12 §6, which owns PSA, plus the general principle that admission gates containers; the cross-bearing now carries that weight explicitly. Draft-v1 additionally called this "the single most likely way `kubectl debug` fails on a cluster you do not own" — that superlative is CUT as unsupported. **Cache `https://kubernetes.io/docs/concepts/security/pod-security-admission/` and `.../pod-security-standards/` before print.** This claim anchors a Hazard, is re-tested as Practice Q9, and Q9's correct answer depends on it entirely. -->
-
 ### Debug profiles
 
-`kubectl debug` also accepts a `--profile` flag that sets a bundle of security-related properties on the debug container: whether it runs privileged, whether it gets host namespaces, and so on. The available profile names include `general`, `baseline`, `restricted`, `netadmin`, and `sysadmin`, with `general` as the default in the generated CLI reference [source: k8s-docs-kubectl-debug-reference-2026-08-31].
-
-<!-- AUTHOR-REVIEW: the two cached snapshots disagree. k8s-docs-kubectl-debug-reference-2026-08-31 (generated CLI reference) lists five profiles with `general` as default; k8s-docs-kubectl-debug-copy-node-profiles-2026-08-31 (the task page) lists six including `legacy` and names `legacy` as default. The generated reference is produced from the kubectl binary and is treated as authoritative here, but the conflict is real and version-dependent. The list above is deliberately introduced with "include" rather than presented as complete, and NO graded item in this chapter turns on the profile names — deliberately, per the outline's ruling to soften rather than assert. The profile *shape* (a privilege preset, and asking for more than the namespace allows is what triggers the admission refusal above) IS taught below and is tested obliquely in Practice Q9's option C rationale. Revision stage: confirm against a single dated snapshot before print. -->
+`kubectl debug` also accepts a `--profile` flag that sets a bundle of security-related properties on the debug container: *"specific properties such as securityContext are set, allowing for adaptation to various scenarios"* [source: k8s-docs-debug-running-pod-2026-09-04]. The generated CLI reference for the current release lists five profiles — `general`, `baseline`, `restricted`, `netadmin`, and `sysadmin` — with `general` as the default [source: k8s-docs-kubectl-debug-reference-2026-09-04]. The task page still documents a sixth, `legacy`, as the default in earlier releases and marks it for deprecation [source: k8s-docs-debug-running-pod-2026-09-04]. The default, in other words, has moved between releases; do not memorize it.
 
 The shape to remember, rather than the list: a profile is a preset for how much privilege the debug container asks for, and asking for more than the namespace allows is what triggers the admission refusal in the Hazard above. The `restricted` profile exists as the low-privilege end of that range, which is the end you want in a namespace enforcing the restricted standard.
 
@@ -651,7 +626,7 @@ The shape to remember, rather than the list: a profile is a preset for how much 
       └───────────────────────────────────────┘
       ASKS: "what does the running process see right now?"
 
-  (B) --copy-to — a NEW Pod, original untouched
+  (B) COPY-TO — a NEW Pod, original untouched
       ┌─── Pod (running, untouched) ───┐   ┌─── Pod-copy ────────┐
       │  [app: crashing on startup]    │   │  [app: entrypoint   │
       │                                │   │        replaced]    │
@@ -792,7 +767,7 @@ kubectl get endpointslices -l kubernetes.io/service-name=<service-name>
 
 That label is not arbitrary. Every EndpointSlice the control plane creates for a Service carries a `kubernetes.io/service-name` label, and the docs say it exists precisely to enable *"simple lookups of all EndpointSlices belonging to a Service"* [source: k8s-docs-endpointslices-2026-08-24] *[cross-bearing: see Ch 9 §4 — the list behind the name]*. And the interpretation is direct, from the docs: *"Make sure that the endpoints in the EndpointSlices match up with the number of pods that you expect to be members of your service. If they don't, the Service's selector probably does not match the Pods' labels, or the Pods are not Ready."* [source: k8s-docs-debug-pods-2026-08-23]
 
-> **★ Fixed Point**
+> ★ **Fixed Point:**
 >
 > **A Service with no *ready* endpoints is not broken. It is working exactly as written, and finding nothing it is willing to send traffic to.** There are two causes, and they live in two different files: the selector does not match the Pod labels, or the Pods match but are not Ready.
 
@@ -802,7 +777,7 @@ That distinction is the whole diagnostic value of the reading. The Service objec
 
 So: a selector that matches nothing leaves the slice with no endpoints at all. Readiness that is failing leaves the endpoints exactly where they are, marked not ready, and service proxies skip them. Same practical outcome for your traffic; two different readings on the screen, and the difference is the diagnosis.
 
-<!-- AUTHOR-REVIEW (revision stage — CONTRADICTED-claim fix, fact audit): draft-v1 stated in six places that a not-ready Pod is *removed* from the endpoint list and that both causes produce an "empty list" — including in a graded stem (Checkpoint 2 Q1) that asserted zero endpoints alongside three selector-matching Pods, a state the cited API does not produce. That is the pre-EndpointSlice `Endpoints` behavior, where not-ready addresses landed in `notReadyAddresses`. All six sites are corrected here to "no ready endpoints," with the empty-vs-`ready:false` split now doing diagnostic work rather than being flattened. The tagged `debug-pods` quote is unaffected — it licenses the two-cause diagnosis, not the empty-list gloss. FIGURE ch16-fig04 BELOW HAS CHANGED and its image-specs entry needs re-syncing. -->
+<!-- AUTHOR-REVIEW (figure, still open at the 2026-09-04 audit): the rendered ch16-fig04 (SVG/PNG dated 2026-09-01) still labels breaks 1+2 as LIST EMPTY and its legend says upstream breaks empty the list. The prose above and the corrected ASCII-FALLBACK below say otherwise: a selector mismatch leaves the slice empty, but Pods that match and are not Ready stay in the slice marked ready:false. The image-specs entry must be re-synced to the ASCII below and the figure re-rendered; the alt text describes the current render and must be rewritten when the render changes. -->
 
 ### Four break points, and two of them are not about the list
 
@@ -838,7 +813,7 @@ Here is where the section has to be careful, because four things can break a req
 
 **Break 1 — selector/label mismatch.** The Service's `spec.selector` and the Pod template's `metadata.labels` are written in two different places, frequently in two different files, and they drift. Someone renames `app: web` to `app: web-frontend` in the Deployment and does not touch the Service. Everything applies cleanly. Nothing errors. The slice goes empty and stays that way.
 
-The docs are blunt about how ordinary this is: *"Make sure that the Pods you ran are actually selected by the Service"* [source: k8s-docs-debug-service-2026-08-31]. Check both sides:
+The docs treat it as a routine check — *"Now let's check that the Pods you ran are actually being selected by the Service"* — and name the signature: *"If the `ENDPOINTS` column is `<none>`, you should check that the `spec.selector` field of your Service actually selects for `metadata.labels` values on your Pods. A common mistake is to have a typo or other error"* [source: k8s-docs-debug-service-2026-09-04]. Check both sides:
 
 ```
 kubectl describe service <service-name>        # what does it select?
@@ -854,7 +829,7 @@ This is the quiet one, and it is quiet because the Pods look alive. `kubectl get
 
 **Break 3 — `port` vs `targetPort`.** Now a different failure shape entirely. The selector matches. The Pods are ready. The endpoints are ready. And requests still fail, because the Service is delivering traffic to a port nothing is listening on.
 
-`port` is the port the Service is reachable at; `targetPort` is the port on the Pod that traffic is forwarded to, and it is the one that has to match what the container actually binds *[cross-bearing: see Ch 9 §3 — four ways to be reachable]*. The docs put the question directly: *"Is the Service correct?"* and *"Is the Service defined correctly?"* [source: k8s-docs-debug-service-2026-08-31], with the port pairing as one of the things being asked about.
+`port` is the port the Service is reachable at; `targetPort` is *"the port on the container to send traffic to"* [source: k8s-docs-service-ports-2026-08-24], and it is the one that has to match what the container actually binds *[cross-bearing: see Ch 9 §3 — four ways to be reachable]*. The docs' checklist under *"Is the Service defined correctly?"* asks it in one line: *"Is the `targetPort` correct for your Pods (some Pods use a different port than the Service)?"* [source: k8s-docs-debug-service-2026-09-04]
 
 ```yaml
 spec:
@@ -864,8 +839,6 @@ spec:
 ```
 
 If the container listens on 8080 and `targetPort` says 80, everything selects correctly and every request lands on a closed port.
-
-<!-- AUTHOR-REVIEW (revision stage — sourcing note): the term ledger assigns `port`/`targetPort` to Ch 9 §3, so this section glosses and points rather than defining, and the definition's source burden sits with Ch 9. That resolves the fact audit's finding that no packed snapshot defines either field: `k8s-docs-debug-service-2026-08-31` lists `port-versus-targetport` in `concepts_covered` but its packed body ends before the passage. Verify Ch 9 §3 carries a tag for the definition; if it does not, cache `https://kubernetes.io/docs/concepts/services-networking/service/`. The pairing is graded here at Checkpoint 2 Q2, Practice Q11 and Practice Q13. -->
 
 **Break 4 — the name.** And the fourth one is not about this Service at all: the DNS name the client is using does not resolve to the Service you have been staring at. A typo in the namespace, a name that resolves in the client's own namespace to something else, a hardcoded name from a different environment. Normal Services get a record *"of the form my-svc.my-namespace.svc.cluster-domain.example"*, and *"by default, a client Pod's DNS search list includes the Pod's own namespace"*, so a short name resolves relative to the *client's* namespace, not the service's [source: k8s-docs-dns-pod-service-2026-08-23] *[cross-bearing: see Ch 9 §7 — names, and where they resolve]*.
 
@@ -918,7 +891,7 @@ So: your Service call fails. You port-forward straight to a Pod behind that Serv
 
 The instinct at this moment is relief — *the app is fine.* And that instinct, left alone, is where the diagnosis stops being useful, because "the app is fine" is not a conclusion. It is half of one.
 
-> **★ Fixed Point**
+> ★ **Fixed Point:**
 >
 > **A working `port-forward` beside a failing Service call does not mean the application is fine. It means the application is fine *and the Service path is not.*** It is a narrowing step, not a clean bill of health — and the thing it narrows to is exactly the four break points in §4.
 
@@ -930,7 +903,7 @@ And the negative case is just as informative. If the port-forward *also* fails �
 
 > ⚓ **Worth Securing:** Note which port you forwarded to. `kubectl port-forward pod/x 8080:80` reaches container port 80. If the container is listening on 8080 and you happened to forward to 8080, you have accidentally routed around break 3 as well, and a successful port-forward on the *right* port while the Service points at the *wrong* one is precisely the `port`/`targetPort` signature. Forward to the port the container claims to use, then compare that number against the `targetPort` the Service declares — `kubectl describe service <name>` prints it.
 
-One clarifying note on scope: `port-forward` is a diagnostic here, and only a diagnostic. It is not how applications reach each other in a cluster and it is not an exposure mechanism; the Service and Ingress machinery for that belongs to earlier chapters *[cross-bearing: see Ch 9 §6 — the component that makes it real]*. Also: it is TCP only, and it terminates when you stop the command [source: k8s-docs-port-forward-2026-08-31].
+One clarifying note on scope: `port-forward` is a diagnostic here, and only a diagnostic. It is not how applications reach each other in a cluster and it is not an exposure mechanism; the Service machinery for that is Chapter 9's *[cross-bearing: see Ch 9 §6 — the component that makes it real]*, and exposure from outside the cluster is Chapter 10's. Also: *"`kubectl port-forward` is implemented for TCP ports only"* [source: k8s-docs-port-forward-2026-09-04], and it terminates when you stop the command.
 
 ---
 
@@ -952,11 +925,9 @@ So the first move is not to investigate. It is to find out which replica you are
 kubectl get pods -l app.kubernetes.io/name=MyApp
 ```
 
-The docs give exactly this form for listing a StatefulSet's Pods by label [source: k8s-docs-debug-statefulset-2026-08-31]. Look at the whole list before you pick one. A single unhealthy ordinal among healthy siblings is a completely different diagnosis from all three being unhealthy: the first says something is wrong with that replica's *state*, the second says something is wrong with the *workload*.
+The docs give exactly this form for listing a StatefulSet's Pods by label [source: k8s-docs-debug-statefulset-2026-09-04]. Look at the whole list before you pick one. A single unhealthy ordinal among healthy siblings is a completely different diagnosis from all three being unhealthy: the first says something is wrong with that replica's *state*, the second says something is wrong with the *workload*.
 
-The docs also flag one specific case worth knowing: a Pod in `Unknown` or `Terminating` state can block the StatefulSet controller from making progress, because the controller's ordering guarantees mean it will wait rather than proceed past an uncertain replica [source: k8s-docs-debug-statefulset-2026-08-31]. A StatefulSet that seems frozen mid-rollout usually has one Pod in one of those states, and the freeze is the controller obeying its own rules *[cross-bearing: see Ch 6 §6 — when Pods are not interchangeable]*.
-
-<!-- AUTHOR-REVIEW: the Kubernetes "Debug a StatefulSet" page is a stub — it contains only the label-selector listing form and the Unknown/Terminating pointer, and nothing on per-replica PVC debugging, ordinal-specific triage, or headless-Service peer DNS. The remainder of this section is built from the Ch 6 and Ch 11 snapshots (k8s-docs-statefulset-2026-08-24, k8s-docs-statefulset-storage-2026-08-25) plus the DNS snapshot. Flagged so the fact-accuracy audit knows the sourcing is indirect by necessity, not by oversight. Note also that the snapshot's frontmatter simultaneously claims the page is complete AND describes an Unknown/Terminating pointer not present in the packed text — if that pointer is genuinely absent on disk, the paragraph above becomes a research gap. -->
+The docs also flag one specific case worth knowing: *"If you find that any Pods listed are in `Unknown` or `Terminating` state for an extended period of time, refer to the Deleting StatefulSet Pods task for instructions on how to deal with them."* [source: k8s-docs-debug-statefulset-2026-09-04] The reason such a Pod matters more here than in a Deployment is the controller's ordering guarantees: *"Before a scaling operation is applied to a Pod, all of its predecessors must be Running and Ready"* and *"Before a Pod is terminated, all of its successors must be completely shut down"* [source: k8s-docs-statefulset-2026-08-24]. A StatefulSet that seems frozen mid-rollout usually has one Pod in one of those states, and the freeze is the controller obeying its own rules *[cross-bearing: see Ch 6 §6 — when Pods are not interchangeable]*.
 
 ### The state that survives everything you try
 
@@ -994,8 +965,6 @@ kubectl exec -it web-1 -- nslookup web-2.nginx
 
 > 🪝 **Snag:** A headless Service is required for a StatefulSet's network identity, and **you are responsible for creating it** — *"StatefulSets currently require a Headless Service to be responsible for the network identity of the Pods. You are responsible for creating this Service"* [source: k8s-docs-statefulset-2026-08-24]. Which means a `serviceName` pointing at a Service nobody created leaves you with Pods that run and cannot find each other, and nothing in a Pod's own status says why.
 
-<!-- AUTHOR-REVIEW (revision stage): the second half of the Snag above — what actually happens when the named Service does not exist — is INFERENCE, not documented behavior, and is now phrased as a consequence rather than as a fact. `k8s-docs-statefulset-2026-08-24` establishes the requirement and the creation responsibility (quoted, verified) but says nothing about the missing-Service case. Source it or leave it as inference. -->
-
 The unifying point across all three: for a StatefulSet, "which replica" is a question you have to answer before any of the other four questions mean anything.
 
 ---
@@ -1018,8 +987,6 @@ Some things about your application exist only in the cluster. Not "are easier in
 
 Everything else — your business logic, your parsing, your request handling, your math — usually reproduces locally just fine, and reproducing it there is much faster than reproducing it in a cluster.
 
-<!-- AUTHOR-REVIEW (revision stage — recorded research gap, manifest Gaps item 2 / Notes item 5): the five-item dividing line above is AUTHORIAL SYNTHESIS and is this section's entire teaching payload. `k8s-docs-local-debugging-telepresence-2026-08-31`'s own scope_warning states the page "does NOT contain any general discussion of which failures are or are not reproducible locally — that framing, which is Ch 16 section 7's actual subject, is NOT sourced here." Each individual item IS established by an earlier chapter (Ch 12 for tokens, Ch 9 for DNS and Service routing, Ch 8 for admission, Ch 4 for injected config), and every one carries a cross-bearing to its owner. Flagged for parity with §6, which flagged the equivalent situation. No prose change recommended — the content is right and follows the outline's depth ruling. This reaches graded text at Practice Q15 and Bearings 3 Q4/Q5. -->
-
 > ⚓ **Worth Securing:** Before you build a local reproduction, ask one question: *does the failing behavior depend on anything the cluster supplies?* If yes, a local reproduction will either fail to reproduce the bug or reproduce a different one, and either outcome is worse than not trying, because both are misleading. That question takes ten seconds and routinely saves an afternoon.
 
 ### The pattern that resolves it
@@ -1033,8 +1000,6 @@ That last clause is the whole pattern in one line: your process, their cluster's
 Telepresence is one instance of the pattern and the one the Kubernetes docs happen to document. The tooling in this space changes; the pattern does not. Learn the shape — a local process, proxied into the cluster's network and configuration — and you will recognize whichever tool is current when you need one.
 
 > 🔭 **Closer Look:** There is also a fourth option worth naming, which is running a small local cluster — kind, minikube, or k3s — rather than proxying into a shared one *[cross-bearing: see Ch 8 §5 — who owns the control plane]*. That gets you real cluster DNS, real ServiceAccounts, real admission, and real Services, on your laptop. What it does *not* get you is *their* cluster's config, *their* webhooks, and *their* network policy, so it reproduces the class of bug, not the instance. Useful for "does my manifest work at all," not for "why does it fail in staging."
-
-<!-- AUTHOR-REVIEW (revision stage — minor research gap): the three tool names above are not in any cached snapshot; the Telepresence page names exactly one third-party tool. Low severity — kind and minikube are documented on `https://kubernetes.io/docs/tasks/tools/` if a tag is wanted; k3s is not a Kubernetes-project tool and would need separate treatment. Alternative is to drop the names and keep the pattern. Kept as written because Ch 8 §5 already names all three. -->
 
 That closes the practical arc. Four questions, five tools, one boundary, and one thing left to say about why the boundary was the point all along.
 
@@ -1077,9 +1042,9 @@ Eight questions on §4 through §7. Three of them reach back into earlier chapte
 - A) A node-level fault on whichever node `db-1` keeps landing on
 - B) Corrupt or unexpected state on `db-1`'s PersistentVolumeClaim, which survives every deletion
 - C) The StatefulSet's image is broken and needs to be repulled
-- D) An admission webhook is rejecting `db-1` specifically
+- D) A validating admission webhook is rejecting `db-1` specifically
 
-**6.** `[retrieval: ch11]` Chapter 11 taught what happens to a StatefulSet's PersistentVolumeClaim when a replica is rescheduled or deleted. What is the default — is the claim retained or removed — and why does that default make a failing replica's storage worth investigating before you delete the Pod again?
+**6.** `[retrieval: ch11]` Chapter 11 taught what happens to a StatefulSet's PersistentVolumeClaim when a replica is deleted (`whenDeleted`) or scaled away (`whenScaled`). What is the default retention policy for each case?
 
 - A) `Delete` for both
 - B) `Retain` for both
@@ -1126,7 +1091,7 @@ Eight questions on §4 through §7. Three of them reach back into earlier chapte
 
 **If you scored 0–3:** Re-read **§4**, **§6**, and **Chapter 9 §4** ("the list behind the name") — most misses at this checkpoint trace back to that chapter's model, not this one's. If question 6 was among the misses, add **Chapter 11 §6** on the retention policy.
 
-**If you scored 4–6:** Re-read the why-wrong for whatever you missed, and check whether it clusters around reachability (1–4) or identity/storage (5–8) — the two halves fail for different reasons.
+**If you scored 4–6:** Re-read the why-wrong for whatever you missed, and check whether it clusters around reachability (1–4) or identity, storage, and reproduction (5–8) — the two halves fail for different reasons.
 
 ---
 
@@ -1143,6 +1108,10 @@ Eight questions on §4 through §7. Three of them reach back into earlier chapte
 
 🏆 **Safe Harbor reached** — the practical material of this chapter is behind you. One section remains, and it is about what the last two chapters were actually for.
 
+🗺️ Chart → **🌊 Passage** → 🌅 Dawn
+
+---
+
 ## ☀️ §8 — Mine, or the Platform's
 
 Here is the thing that has been true since Chapter 13 opened and has not been said outright until now.
@@ -1154,7 +1123,7 @@ Chapter 13 taught you to read the phase first, and the phase's last and most val
 Same move. Different altitude.
 
 <!-- FIGURE: ch16-zenith-mine-or-the-platforms -->
-![A symmetrical diagram divided by a heavy vertical line. On the left, platform scope from Chapter 13: phase, then conditions, then events, then logs, then node. On the right, application scope from Chapter 16: is it running, is it healthy, is it reachable, is it configured, and which replica. Below each column, a long arrow points inward toward the centre line, each labelled narrowing. At the centre, the caption reads: the boundary, this line is the method.](figures/ch16-zenith-mine-or-the-platforms.svg)
+![A symmetrical diagram divided by a heavy vertical line. On the left, platform scope from Chapter 13: phase, then conditions, then events, then logs, then node. On the right, application scope from Chapter 16: is it running, is it healthy, is it reachable, is it configured, and which replica. Below each column, a long arrow points inward toward the center line, each labeled narrowing. At the center, the caption reads: the boundary, this line is the method.](figures/ch16-zenith-mine-or-the-platforms.svg)
 
 <!-- ASCII-FALLBACK
 ```
@@ -1207,7 +1176,7 @@ The chapter title is "Your Application, Their Cluster." Both halves are true at 
 | Confusing `port` with `targetPort` | `targetPort` is the port the container listens on. A mismatch produces a Service that selects perfectly and routes into nothing. |
 | Reading a Service with no ready endpoints as a broken Service | The Service is correct and finding nothing it will send traffic to. Two different bugs, two different files, and the slice tells you which: empty means selector, not-ready means readiness [source: k8s-docs-endpointslices-2026-08-24]. |
 | Believing a not-ready Pod is removed from its EndpointSlice | It is included and marked not ready. Matching Pods are in the slice regardless of readiness; readiness disqualifies an endpoint rather than deleting it [source: k8s-docs-endpointslices-2026-08-24]. |
-| Running plain `kubectl logs` on a Pod stuck in init | You get nothing useful. Name the init container with `-c` [source: k8s-docs-debug-init-containers-2026-08-31]. |
+| Running plain `kubectl logs` on a Pod stuck in init | You get nothing useful. Name the init container with `-c` [source: k8s-docs-debug-init-containers-2026-09-04]. |
 | Assuming a rescheduled StatefulSet replica comes back with empty storage | The PVC follows the identity and is retained by default [source: k8s-docs-statefulset-storage-2026-08-25]. A corrupt write survives every restart you try, which is exactly why it impersonates a platform fault. |
 | Assuming `kubectl debug` always succeeds if you have RBAC for it | A debug container is a container. Under `restricted` enforcement, admission can refuse it *[cross-bearing: see Ch 12 §6 — three levels, three modes]*. |
 | Treating D3 Debugging as a different subject from D2 Troubleshooting | The split is *scope*, not tooling. A question tagged to one may test the other's commands, because the commands do not respect the domain boundary — only the questions do. |
@@ -1216,119 +1185,119 @@ The chapter title is "Your Application, Their Cluster." Both halves are true at 
 
 ## Practice Questions
 
-**Q1.** An application's Pod is `Running`, `1/1 Ready`, has zero restarts, and sits on a node reporting no adverse conditions. The application returns stale data. Three other Deployments in the namespace are unaffected. Which is the correct first move?
+**1.** An application's Pod is `Running`, `1/1 Ready`, has zero restarts, and sits on a node reporting no adverse conditions. The application returns stale data. Three other Deployments in the namespace are unaffected. Which is the correct first move?
 
 A) File a platform ticket; every application-side signal is clean
 B) Treat it as application scope and begin the four triage questions
 C) Delete the Pod to force a reschedule onto a different node
 D) Check node conditions across the whole cluster before deciding
 
-**Q2.** You are on a cluster where you cannot list nodes or read events in `kube-system`. A single workload of yours is failing while everything else in your namespace runs normally. What does §1's addition to the scope test say you should do?
+**2.** You are on a cluster where you cannot list nodes or read events in `kube-system`. A single workload of yours is failing while everything else in your namespace runs normally. What does §1's addition to the scope test say you should do?
 
 A) Escalate immediately, because the scope test cannot be completed without node access
 B) Make the application-scope case from the evidence you can gather, and be ready to show it if you later need the platform team
 C) Assume platform scope by default, since the unverifiable half is the platform's
 D) Request node access before starting any diagnosis
 
-**Q3.** A Pod reports `STATUS: Init:2/4`. What is true?
+**3.** A Pod reports `STATUS: Init:2/4`. What is true?
 
 A) Two init containers have completed and the third is running or failing
 B) Two of four app containers have started
 C) Two init containers failed and two remain
 D) The Pod is `Running` with two containers ready
 
-**Q4.** An init container runs `git clone` into a mounted volume. The workload deploys successfully. After the Pod is evicted and rescheduled, it will not start. What is the most likely cause?
+**4.** An init container runs `git clone` into a mounted volume. The workload deploys successfully. After the Pod is evicted and rescheduled, it will not start. What is the most likely cause?
 
 A) The volume failed to reattach on the new node
 B) The init container is not idempotent — the clone target already exists
 C) The git repository became unreachable
 D) Init containers are skipped on rescheduled Pods, so setup never ran
 
-**Q5.** A Pod sits at `Init:0/1` for twenty minutes. No errors, no restarts, and the init container's log reads `waiting for service endpoint...`. The Service it is waiting on selects only this workload's Pods. What is happening?
+**5.** A Pod sits at `Init:0/1` for twenty minutes. No errors, no restarts, and the init container's log reads `waiting for service endpoint...`. The Service it is waiting on selects only this workload's Pods. What is happening?
 
 A) A DNS failure is preventing the lookup
 B) An ordering deadlock — the init container waits for an endpoint that only this Pod could provide
 C) The init container image is being pulled slowly
 D) The readiness probe on the init container is failing
 
-**Q6.** You need to inspect the filesystem of a running container built from a distroless image. Which is correct?
+**6.** You need to inspect the filesystem of a running container built from a distroless image. Which is correct?
 
 A) `kubectl exec -it <pod> -- /bin/sh`
 B) `kubectl debug -it <pod> --image=busybox --target=<container>`
 C) `kubectl logs <pod> --previous`
 D) `kubectl cp <pod>:/ ./local-copy`
 
-**Q7.** Which statement about ephemeral containers is correct?
+**7.** Which statement about ephemeral containers is correct?
 
 A) They may define a readinessProbe to report when the debug tooling is ready
 B) They may set resource requests so the debug session is guaranteed CPU
 C) They cannot be removed or changed once added to a Pod
 D) They are automatically restarted if the debug process exits
 
-**Q8.** An application container crashes immediately on startup, before you can exec into it. Which `kubectl debug` shape is designed for this case?
+**8.** An application container crashes immediately on startup, before you can exec into it. Which `kubectl debug` shape is designed for this case?
 
 A) An ephemeral container injected into the running Pod
 B) `--copy-to`, creating a copy of the Pod with the entrypoint changed
 C) `debug node/<node>` to inspect the host
 D) None — a crashing container cannot be debugged with `kubectl debug`
 
-**Q9.** You run `kubectl debug` in a namespace enforcing the `restricted` Pod Security Standard, using a debug image that runs as root. The command is refused. You have verified you hold RBAC permission for the operation. What happened?
+**9.** You run `kubectl debug` in a namespace enforcing the `restricted` Pod Security Standard, using a debug image that runs as root. The command is refused. You have verified you hold RBAC permission for the operation. What happened?
 
 A) RBAC permissions do not cover the ephemeral containers subresource separately
 B) The debug container was rejected by admission, because it is a container and must meet the namespace's enforced standard
 C) `kubectl debug` is disabled in namespaces with Pod Security Admission enabled
 D) The node lacked capacity for an additional container
 
-**Q10.** `kubectl get endpointslices -l kubernetes.io/service-name=web` returns a slice with zero endpoints. `kubectl get pods -l <the Service's selector>` returns no Pods at all. What is the cause?
+**10.** `kubectl get endpointslices -l kubernetes.io/service-name=web` returns a slice with zero endpoints. `kubectl get pods -l <the Service's selector>` returns no Pods at all. What is the cause?
 
 A) The Pods are running but not Ready
 B) The Service's selector does not match any Pod's labels
 C) `targetPort` does not match the container's listening port
 D) The EndpointSlice controller is not running
 
-**Q11.** A Service's EndpointSlice holds three endpoints, all of them ready. Requests to the Service time out. Which break point is most likely?
+**11.** A Service's EndpointSlice holds three endpoints, all of them ready. Requests to the Service fail with connection refused. Which break point is most likely?
 
 A) A selector/label mismatch
 B) The client is resolving a DNS name that does not point at this Service
 C) A `port`/`targetPort` mismatch delivering traffic to a closed port
 D) The EndpointSlice controller has stopped reconciling
 
-**Q12.** `[retrieval: ch9]` A Service `cache` in namespace `data` has three ready endpoints. A client Pod in namespace `web` calls `http://cache:6379` and gets nothing. What is the most likely cause?
+**12.** `[retrieval: ch9]` A Service `cache` in namespace `data` has three ready endpoints. A client Pod in namespace `web` calls `http://cache:6379` and gets nothing. What is the most likely cause?
 
 A) The Service's Pods are not Ready
 B) The short name resolves relative to the client's namespace, so `cache` resolves in `web`, not `data`
 C) `port` and `targetPort` are mismatched
 D) Redis requires a headless Service
 
-**Q13.** `[retrieval: ch9]` A Service `web` declares `port: 80` and `targetPort: 80`. Requests through the Service fail. You run `kubectl port-forward pod/web-7f4d 8080:8080` and the application answers correctly on your local port 8080. What have you established?
+**13.** `[retrieval: ch9]` A Service `web` declares `port: 80` and `targetPort: 80`. Requests through the Service fail. You run `kubectl port-forward pod/web-7f4d 8080:8080` and the application answers correctly on your local port 8080. What have you established?
 
 A) The application is healthy and the Service is correctly configured
 B) The container is listening on 8080, so the Service's `targetPort` of 80 delivers traffic to a closed port
 C) The Pod is not Ready, so its endpoint was never a valid target
 D) Nothing — port-forward and the Service path deliver traffic identically
 
-**Q14.** `[retrieval: ch11]` A three-replica StatefulSet has one replica, `queue-0`, that fails on start. You delete it; the recreated `queue-0` fails identically. `queue-1` and `queue-2` are healthy. What should you investigate first?
+**14.** `[retrieval: ch11]` A three-replica StatefulSet has one replica, `queue-0`, that fails on start. You delete it; the recreated `queue-0` fails identically. `queue-1` and `queue-2` are healthy. What should you investigate first?
 
 A) The Pod template, since all replicas share it
 B) The contents of `queue-0`'s PersistentVolumeClaim, which survived the deletion
 C) The node `queue-0` was scheduled onto
 D) The StatefulSet's image tag
 
-**Q15.** A bug reproduces only in the cluster. The failing code path reads a config value mounted from a ConfigMap, and you suspect the mounted value differs from what the manifest declares. Which approach actually tests the hypothesis?
+**15.** A bug reproduces only in the cluster. The failing code path reads a config value mounted from a ConfigMap, and you suspect the mounted value differs from what the manifest declares. Which approach actually tests the hypothesis?
 
 A) Copy the ConfigMap's declared value into a local environment variable and run the app locally
 B) Exec into the running container and read the mounted file directly
 C) Re-apply the ConfigMap and restart the Deployment
 D) Reproduce in a local kind cluster using the same manifests
 
-**Q16.** Three workloads owned by three different teams are all failing, and every one of them is on the same node; Pods rescheduled off that node recover immediately. You hold cluster-admin. Which move fits the evidence?
+**16.** Three workloads owned by three different teams are all failing, and every one of them is on the same node; Pods rescheduled off that node recover immediately. You hold cluster-admin. Which move fits the evidence?
 
 A) `kubectl debug <pod> --image=busybox --target=<container>` against one of the failing Pods
 B) `kubectl debug <pod> --copy-to=<pod>-debug --image=ubuntu`
 C) `kubectl debug node/<node> -it --image=ubuntu`
 D) `kubectl port-forward` to one of the failing Pods
 
-**Q17.** Two workloads have the same class of bug: a wrong value for a key their configuration depends on. Workload A's Pod is stuck at `Init:0/1`, its init container exiting non-zero and printing the offending key's name. Workload B's Pod is `Running`, `1/1 Ready`, and returns wrong answers. Which is the harder diagnosis, and why?
+**17.** Two workloads have the same class of bug: a wrong value for a key their configuration depends on. Workload A's Pod is stuck at `Init:0/1`, its init container exiting non-zero and printing the offending key's name. Workload B's Pod is `Running`, `1/1 Ready`, and returns wrong answers. Which is the harder diagnosis, and why?
 
 A) A — a Pod that will not start gives you nothing to inspect
 B) B — the value was present and read cleanly, so nothing failed and no signal names the problem
@@ -1339,99 +1308,97 @@ D) A — an init container's logs are not retrievable until the Pod reaches `Run
 
 **Answers with Explanations:**
 
-**Q1 — B.** Every element of the mechanical test resolves to application scope: running, ready, stable, confined to one workload, no adverse platform signal.
+**1 — B.** Every element of the mechanical test resolves to application scope: running, ready, stable, confined to one workload, no adverse platform signal.
 
 - **A is wrong** because "application-side signals are clean" is a misreading. Those signals are *platform* signals reporting on your workload, and their cleanliness is what hands the problem to you.
 - **C is wrong** — deleting a Pod to see what happens is the reflex the four questions exist to replace. Stale data is not a placement problem, and you would have destroyed the state you needed to inspect.
 - **D is wrong** because a fault confined to one workload is already answered by the scope test; a cluster-wide node sweep is effort spent on the half you have already eliminated.
 
-**Q2 — B.** The addition is that the boundary is also a statement about what you can see, and the practical response is to build the application-scope case from available evidence.
+**2 — B.** The addition is that the boundary is also a statement about what you can see, and the practical response is to build the application-scope case from available evidence.
 
 - **A is wrong** — the test completes fine here. Confinement to one workload plus clean workload-level signals is sufficient.
 - **C is wrong** and is the failure mode this guidance exists to prevent: defaulting to "must be the platform" whenever you cannot check something. That reasoning would make every fault platform-scope on a restricted cluster.
 - **D is wrong** — waiting on an access request before diagnosing is how a fifteen-minute problem becomes a two-day one.
 
-**Q3 — A.** `Init:N/M` counts *completed init containers* out of the total [source: k8s-docs-debug-init-containers-2026-08-31]. `Init:2/4` means two are done and the third is where your attention belongs.
+**3 — A.** `Init:N/M` counts *completed init containers* out of the total [source: k8s-docs-debug-init-containers-2026-09-04]. `Init:2/4` means two are done and the third is where your attention belongs.
 
 - **B is wrong** — the counter refers to init containers only. App containers have not started; the Pod is still `Pending`.
 - **C is wrong** — the status does not count failures, and a failing init container reports `Init:Error` or `Init:CrashLoopBackOff` instead.
 - **D is wrong** — *"a Pod that is initializing is in the `Pending` state but should have a condition `Initialized` set to false"* [source: k8s-docs-init-containers-2026-08-24] *[cross-bearing: see Ch 5 §5 — Pod phase and container state]*.
 
-**Q4 — B.** A clone into a directory that already contains a clone fails. Every init container runs again on every Pod start [source: k8s-docs-init-containers-2026-08-24], and the volume persisted across the reschedule, so the second run hits a populated target.
+**4 — B.** A clone into a directory that already contains a clone fails. Every init container runs again on every Pod start [source: k8s-docs-init-containers-2026-08-24], and the volume persisted across the reschedule, so the second run hits a populated target.
 
 - **A is possible but is not the *most likely* given the stated sequence**, and the discriminator is available: a volume reattachment failure produces a Pod stuck on mounting with events saying so, not a Pod whose init container ran and exited non-zero.
 - **C is possible in principle** but would have been equally likely on the first deploy. Nothing in the timeline points at the repository.
 - **D is a factual error** — init containers run on every start, which is the entire reason B is the answer.
 
-**Q5 — B.** The circular wait. The init container blocks until the Service has a ready endpoint; the Service cannot have one until this Pod's app container is ready; the app container cannot start until the init container exits. Perfectly stable, no error, waits indefinitely.
+**5 — B.** The circular wait. The init container blocks until the Service has a ready endpoint; the Service cannot have one until this Pod's app container is ready; the app container cannot start until the init container exits. Perfectly stable, no error, waits indefinitely.
 
 - **A is wrong** — a DNS failure produces resolution errors in the log, not a calm "waiting" message.
 - **C is wrong** — an image pull in progress reports `Init:ImagePullBackOff` or a pulling event, and the init container's log would not exist yet *[cross-bearing: see Ch 13 §2 — pods that never start]*.
 - **D is wrong** on its facts: regular init containers *"do not support the `lifecycle`, `livenessProbe`, `readinessProbe`, or `startupProbe` fields"* [source: k8s-docs-init-containers-2026-08-24].
 
-**Q6 — B.** A distroless image has no shell to exec into, so the move is to inject an ephemeral container that *does* have tools, targeting the container you want to inspect [source: k8s-docs-ephemeral-containers-concept-2026-08-31].
+**6 — B.** A distroless image has no shell to exec into, so the move is to inject an ephemeral container that *does* have tools, targeting the container you want to inspect [source: k8s-docs-ephemeral-containers-concept-2026-08-31].
 
 - **A is wrong** — that is the command that fails, and the failure is why this whole section exists.
 - **C is wrong** — `logs --previous` returns the previous container instance's output. Useful for a crash loop, useless for inspecting a filesystem.
-- **D is wrong** for a reason worth carrying: `kubectl cp` copies files *out* of the container rather than giving you a live view of the running process, and it also depends on tooling inside the image that a distroless image does not have.
+- **D is wrong** for a reason worth carrying: `kubectl cp` copies files *out* of the container rather than giving you a live view of the running process, and it depends on tooling inside the image that a distroless image does not have — the reference is explicit: *"Requires that the 'tar' binary is present in your container image. If 'tar' is not present, 'kubectl cp' will fail."* [source: k8s-docs-kubectl-cp-reference-2026-09-04]
 
-<!-- AUTHOR-REVIEW (revision stage — research gap in graded text): draft-v1's Q6 option D rationale rested entirely on the claim that `kubectl cp` requires `tar` in the container image. No `kubectl cp` snapshot exists in this chapter's corpus. The rationale now leads with the live-view distinction, which the section establishes, and carries the tooling dependency as a secondary clause without naming the binary. Cache `https://kubernetes.io/docs/reference/kubectl/generated/kubectl_cp/` and restore the specific claim with a tag, or leave as written. -->
-
-**Q7 — C.** *"Like regular containers, you may not change or remove an ephemeral container after you have added it to a Pod."* [source: k8s-docs-ephemeral-containers-concept-2026-08-31]
+**7 — C.** *"Like regular containers, you may not change or remove an ephemeral container after you have added it to a Pod."* [source: k8s-docs-ephemeral-containers-concept-2026-08-31]
 
 - **A is wrong** — probes are explicitly disallowed, because ephemeral containers may not have ports [source: k8s-docs-ephemeral-containers-concept-2026-08-31].
 - **B is wrong** — *"Pod resource allocations are immutable, so setting `resources` is disallowed."* [source: k8s-docs-ephemeral-containers-concept-2026-08-31]
 - **D is wrong** — they *"will never be automatically restarted"* [source: k8s-docs-ephemeral-containers-concept-2026-08-31], which is one of the reasons they are unsuitable for building applications.
 
-**Q8 — B.** *"you can't run `kubectl exec` to troubleshoot your container if your container image does not include a shell or if your application crashes on startup. In these situations you can use `kubectl debug` to create a copy of the Pod with configuration values changed to aid debugging."* [source: k8s-docs-kubectl-debug-copy-node-profiles-2026-08-31] Copy it, replace the entrypoint, and now the container sits still.
+**8 — B.** *"you can't run `kubectl exec` to troubleshoot your container if your container image does not include a shell or if your application crashes on startup. In these situations you can use `kubectl debug` to create a copy of the Pod with configuration values changed to aid debugging."* [source: k8s-docs-kubectl-debug-copy-node-profiles-2026-08-31] Copy it, replace the entrypoint, and now the container sits still.
 
 - **A is wrong** — an ephemeral container needs a Pod to attach to, and while the Pod exists, the *target container* is gone again before you can look at it.
 - **C is wrong** — the node is not the problem, and that shape steps across the scope boundary for no reason.
 - **D is wrong** — this is exactly the case `--copy-to` was built for.
 
-**Q9 — B.** An ephemeral container is a container in that namespace, and admission enforces the namespace's standard against it. A root-running debug image has asked for more than `restricted` permits *[cross-bearing: see Ch 12 §6 — three levels, three modes]*.
+**9 — B.** An ephemeral container is a container in that namespace, and admission enforces the namespace's standard against it; the Standards' restricted fields name `spec.ephemeralContainers[*].securityContext.runAsNonRoot` alongside the regular and init container fields [source: k8s-docs-pod-security-standards-2026-09-04]. A root-running debug image has asked for more than `restricted` permits *[cross-bearing: see Ch 12 §6 — three levels, three modes]*.
 
 - **A is wrong** — the stem states RBAC is verified, and the refusal comes from a later gate. Authentication, then authorization, then admission *[cross-bearing: see Ch 8 §2 — three gates and a logbook]*.
 - **C is wrong** — a debug container that *meets* the standard is admitted normally. That is what the profile mechanism is for: a `--profile` is a preset for how much privilege the debug container asks for, and asking for less is what gets you through the gate.
 - **D is wrong** — a capacity problem produces a scheduling failure with a distinct signature, not an admission refusal.
 
-**Q10 — B.** The label query returned nothing, which means no Pod carries the labels the Service selects. Nothing matched, so nothing was placed in the slice.
+**10 — B.** The label query returned nothing, which means no Pod carries the labels the Service selects. Nothing matched, so nothing was placed in the slice.
 
 - **A is wrong,** and this is the discriminator the section is built on. Not-ready Pods would still *appear* in a label query and would still be *in the slice*, marked not ready [source: k8s-docs-endpointslices-2026-08-24]. Zero endpoints alongside zero matching Pods is the selector's signature, not readiness'.
 - **C is wrong** — a port mismatch does not affect slice membership at all. It is downstream of readiness.
 - **D is wrong** and is the reflexive platform-blame answer. The empty slice is the controller reporting correctly that nothing matched.
 
-**Q11 — C.** Three ready endpoints means selection and readiness are both fine. The remaining candidate on that path is the port pairing: traffic arriving at a port nothing is bound to.
+**11 — C.** Three ready endpoints means selection and readiness are both fine. The remaining candidate on that path is the port pairing: traffic arriving at a port nothing is bound to.
 
 - **A is wrong** — a selector mismatch leaves the slice with no endpoints, and the stem says there are three.
 - **B is wrong,** and it is the option that survives the stem's facts longest, which is why it is here. But the stem places you at the Service you are querying and reading endpoints from; a name resolving somewhere else means you never reached *this* Service, and the endpoints you are looking at would be irrelevant rather than informative. Break 4 is a failure to arrive, not a failure at the destination.
 - **D is wrong** — a stalled controller would leave a stale or empty slice, not a correct one.
 
-**Q12 — B.** A short name resolves through the client's search domains, which include the client's own namespace [source: k8s-docs-dns-pod-service-2026-08-23]. From `web`, `cache` means `cache.web.svc.cluster.local`, which is not the Service in question *[cross-bearing: see Ch 9 §7 — names, and where they resolve]*.
+**12 — B.** A short name resolves through the client's search domains, which include the client's own namespace [source: k8s-docs-dns-pod-service-2026-08-23]. From `web`, `cache` means `cache.web.svc.cluster.local`, which is not the Service in question *[cross-bearing: see Ch 9 §7 — names, and where they resolve]*.
 
 - **A is wrong** — the stem states three ready endpoints, ruling readiness out.
 - **C is wrong** — a port mismatch produces a connection failure against a real target, a different signature from a name that resolves elsewhere or not at all.
 - **D is wrong** — a headless Service is for per-Pod DNS identity; a Redis client reaching a single ClusterIP Service needs no such thing.
 
-**Q13 — B.** The port numbers are the whole story. The container answers on 8080, so 8080 is what it binds; the Service declares `targetPort: 80`, so every request through the Service is delivered to a closed port. Read the Service's declared `targetPort` with `kubectl describe service web` and compare it against the port you just forwarded to successfully. When those two numbers disagree and the forward works, you are looking at break 3 *[cross-bearing: see Ch 9 §3 — four ways to be reachable]*.
+**13 — B.** The port numbers are the whole story. The container answers on 8080, so 8080 is what it binds; the Service declares `targetPort: 80`, so every request through the Service is delivered to a closed port. Read the Service's declared `targetPort` with `kubectl describe service web` and compare it against the port you just forwarded to successfully. When those two numbers disagree and the forward works, you are looking at break 3 *[cross-bearing: see Ch 9 §3 — four ways to be reachable]*.
 
 - **A is wrong,** and it is the §5 trap in its most seductive form: a successful port-forward feels like an all-clear. Users travel the Service path, which you have just shown is broken.
 - **C is wrong** — readiness would keep the Pod out of the Service path but has no effect on a port-forward, so it cannot explain a working forward. It also does not explain the port asymmetry, which is the actual evidence in the stem.
 - **D is wrong** — port-forward is an API-server operation on the `pods/portforward` subresource [source: k8s-docs-port-forward-authorization-2026-08-31] and does not travel the Service path at all. If the two were equivalent, both would have failed.
 
-**Q14 — B.** The PVC survives Pod deletion by default and reattaches to the recreated replica [source: k8s-docs-statefulset-storage-2026-08-25]. Deterministic failure confined to one ordinal, immune to restart, is the surviving-state signature.
+**14 — B.** The PVC survives Pod deletion by default and reattaches to the recreated replica [source: k8s-docs-statefulset-storage-2026-08-25]. Deterministic failure confined to one ordinal, immune to restart, is the surviving-state signature.
 
 - **A is wrong** — a Pod template problem would fail all three replicas, and two are healthy.
 - **C is wrong** — the replacement Pod is not guaranteed to land on the same node, so a node fault would not track the ordinal so faithfully.
 - **D is wrong** — the image is shared by all three replicas.
 
-**Q15 — B.** The hypothesis is that the mounted value differs from the declared one. The only way to test it is to read what is actually mounted, in the running container.
+**15 — B.** The hypothesis is that the mounted value differs from the declared one. The only way to test it is to read what is actually mounted, in the running container.
 
 - **A is wrong** and is the most instructive distractor: copying the *declared* value locally tests your assumption rather than the system. If the declared and mounted values differ, this reproduces the wrong one and passes.
 - **C is wrong** — restarting may make the symptom vanish without ever telling you what was wrong, which means the next occurrence starts from zero.
 - **D is wrong** for the same reason as A, at larger scale: a local cluster with the same manifests reproduces what the manifests *say*, not what the target cluster's mount actually produced.
 
-**Q16 — C.** The scope test has already spoken: the fault is not confined to one workload, and it tracks a machine rather than an application *[cross-bearing: see Ch 13 §1 — whose problem is this, and what to read first]*. `debug node/` is the shape built for the host, and cluster-admin is what makes it available to you.
+**16 — C.** The scope test has already spoken: the fault is not confined to one workload, and it tracks a machine rather than an application *[cross-bearing: see Ch 13 §1 — whose problem is this, and what to read first]*. `debug node/` is the shape built for the host, and cluster-admin is what makes it available to you.
 
 - **A is wrong** — an ephemeral container inspects one container's view of one Pod. Three teams' workloads failing together is the signature that sends you across the boundary, not deeper into one of them.
 - **B is wrong** for the same reason, with an added defect: the copy may be scheduled somewhere else entirely, taking it away from the only thing the evidence implicates.
@@ -1439,13 +1406,11 @@ D) A — an init container's logs are not retrievable until the Pod reaches `Run
 
 *Worth noticing about this question: the correct answer is the one this chapter spends a section arguing is out of scope. That is not a contradiction. `debug node/` is correct here precisely because the evidence has already moved you across the line, and on a cluster you did not own, the equally correct move would be handing the same evidence to whoever does *[cross-bearing: see Ch 13 §5 — when the node is the problem]*.*
 
-**Q17 — B.** Same class of bug, two entirely different signatures, which is exactly why this chapter answers "is it configured" in two separate places. Workload A failed loudly and named the problem. Workload B read a value that was present and well-formed and simply wrong, so nothing errored, no probe fired, and no status string is going to tell you anything.
+**17 — B.** Same class of bug, two entirely different signatures, which is exactly why this chapter answers "is it configured" in two separate places. Workload A failed loudly and named the problem. Workload B read a value that was present and well-formed and simply wrong, so nothing errored, no probe fired, and no status string is going to tell you anything.
 
-- **A is wrong,** and it inverts the difficulty. A failing init container is the *easy* case: it exits non-zero, prints the reason, and `kubectl logs <pod> -c <init-name>` retrieves it [source: k8s-docs-debug-init-containers-2026-08-31].
+- **A is wrong,** and it inverts the difficulty. A failing init container is the *easy* case: it exits non-zero, prints the reason, and `kubectl logs <pod> -c <init-name>` retrieves it [source: k8s-docs-debug-init-containers-2026-09-04].
 - **C is wrong** — if both produced the same signature, §2 and §3 would be one section. The whole doubling in §1's table exists because they do not.
-- **D is wrong** on its facts: an init container's logs are readable with `-c` while the Pod is still `Pending`, which is the entire point of that flag in this context [source: k8s-docs-debug-init-containers-2026-08-31].
-
-<!-- AUTHOR-REVIEW (revision stage — question-set changes, for the question-quality re-audit): Practice now runs 17 items rather than 15. Q13 was RE-AIMED (draft-v1's Q13 was a reworded duplicate of Bearings 2 Q3 — same scenario, same correct answer, same four concepts; it now tests the §5 port-number trap and interleaves §4, closing the `describe service` coverage gap the Exam Alert names). Q16 and Q17 are NEW, closing the two coverage gaps the question-quality audit ranked highest: `kubectl debug node/` appeared only as a distractor despite the Exam Alert promising all three shapes, and config-errors-visible-at-init was untested though the other two init failure modes each carried two items. Q11's duplicate distractor (readiness, collapsing with the selector option) was replaced by break 4. Retrieval tags added to Q12, Q13 and Q14, meeting the outline's floor of three Practice items whose answer lives in a shipped chapter; 3/17 = 17.6%, under the 25% ceiling. Debug *profiles* remain untested by design — the two snapshots conflict on the profile set, so only the shape is taught, and it is exercised in Q9's option C rationale rather than in a stem. Revisit if the source conflict resolves. -->
+- **D is wrong** on its facts: an init container's logs are readable with `-c` while the Pod is still `Pending`, which is the entire point of that flag in this context [source: k8s-docs-debug-init-containers-2026-09-04].
 
 ---
 

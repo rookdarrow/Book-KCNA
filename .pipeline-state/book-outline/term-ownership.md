@@ -68,7 +68,7 @@ Ch 1's sections were unnumbered at draft time (B6 Collision #1). **Numbered 2026
 | Containerization | Ch 2 §1 | Ch 2 §1 | — |
 | Virtual machine / VM | Ch 2 §1 (by contrast) | Ch 2 §1 | — |
 | Hypervisor | Ch 2 §1 | Ch 2 §1 | — |
-| Linux namespace (the kernel primitive) | Ch 2 §1 | Ch 2 §1 | — |
+| Linux namespace (the kernel primitive) | **unowned** | Ch 2 §1 (only as "shared Linux network namespace", a Pod forward plant) | — *(audit 2026-09-04: Ch 2 §1 never defines the kernel primitive; Ch 2's other namespace sense is the registry namespace at §3)* |
 | cgroup (control group) | Ch 2 §1 | Ch 2 §1 | — |
 | Process isolation | Ch 2 §1 | Ch 2 §1 | — |
 | Container image | Ch 2 §2 | Ch 2 §1 | — |
@@ -106,27 +106,27 @@ Ch 1's sections were unnumbered at draft time (B6 Collision #1). **Numbered 2026
 | Term | Defined by | First appears | Earlier chapters must |
 |---|---|---|---|
 | Bare-metal / virtualization / container deployment era | Ch 3 §1 | Ch 3 §1 | — |
-| IaaS · PaaS · SaaS | Ch 3 §1 | Ch 3 §1 | — |
+| IaaS · PaaS · SaaS | Ch 3 §1 (PaaS only, named and expanded); IaaS and SaaS **unowned** | Ch 3 §1 (PaaS) | — *(audit 2026-09-04: IaaS and SaaS appear nowhere in Ch 3 — glossary-only unless Ch 17 takes them)* |
 | Orchestration / orchestrator | Ch 3 §1 | Ch 1 | name only, always with a pointer |
 | Kubernetes | Ch 3 §1 | Ch 1 | name only, always with a pointer |
 | K8s (the abbreviation) | Ch 3 §1 | Ch 1 | — |
 | Borg | Ch 3 §1 | Ch 3 §1 | — |
-| Cluster | Ch 3 §1 | Ch 1 | name only, always with a pointer |
+| Cluster | Ch 3 §2 | Ch 1 | name only, always with a pointer *(audit 2026-09-04: the defining sentence — "A Kubernetes cluster consists of a control plane plus a set of worker machines, called nodes" — is in §2, not §1)* |
 | Control plane — **the cluster's** | Ch 3 §2 | Ch 3 §2 | — · homonym, see Canonical forms |
 | kube-apiserver / API server | Ch 3 §2 | Ch 3 §2 | — |
 | etcd | Ch 3 §2 | Ch 3 §2 | — |
-| kube-scheduler | Ch 3 §2 | Ch 3 §2 | — |
+| kube-scheduler | Ch 3 §2 | Ch 1 §1 (as "the scheduler") | name only, always with a pointer *(audit 2026-09-04: Ch 1 §1 names it in the same sentence as Pod; a pointer to Ch 3 §2 is now present there)* |
 | kube-controller-manager | Ch 3 §2 | Ch 3 §2 | — |
 | cloud-controller-manager | Ch 3 §2 | Ch 3 §2 | — |
-| Node / worker node | Ch 3 §3 | Ch 2 §4 | gloss in one clause + pointer |
+| Node / worker node | Ch 3 §2 (definition); §3 covers what runs on it | Ch 2 §4 | gloss in one clause + pointer *(audit 2026-09-04: defined in the same §2 sentence as Cluster; §3 is the component treatment)* |
 | kubelet | Ch 3 §3 | Ch 2 §4 | gloss in one clause + pointer |
 | kube-proxy | Ch 3 §3 | Ch 3 §3 | — |
 | Node registration | Ch 3 §3 | Ch 3 §3 | — |
 | Addon (cluster addon) | Ch 3 §4 | Ch 3 §4 | — |
-| Network plugin (**as an addon**; as an interface, Ch 9 §1) | Ch 3 §4 | Ch 3 §3 | — |
+| Network plugin (**as an addon**; as an interface, Ch 9 §1) | named only — Ch 3 §4 mentions it solely as the kube-proxy optionality trigger | Ch 3 §3 | — *(audit 2026-09-04: §4's addon examples are DNS, Dashboard, Container Resource Monitoring and logging; the network plugin is not taught as an addon)* |
 | Kubernetes Dashboard | Ch 3 §4 | Ch 3 §4 | — |
 | The API server as sole mutator of cluster state | Ch 3 §5 | Ch 3 §2 | — |
-| Watch (the API primitive) | Ch 3 §5 | Ch 3 §5 | — |
+| Watch (the API primitive) | Ch 3 §5 (the "watching, not telling" concept only); the API primitive is **unowned** | Ch 3 §5 | — *(audit 2026-09-04: §5 teaches watching as a coordination pattern and never names the watch verb)* |
 | **Control loop** | Ch 3 §6 | Ch 3 §6 | — |
 | Controller | Ch 3 §6 | Ch 3 §2 | gloss in one clause + pointer |
 | Reconciliation | Ch 3 §6 | Ch 3 §6 | — |
@@ -139,12 +139,12 @@ Ch 1's sections were unnumbered at draft time (B6 Collision #1). **Numbered 2026
 |---|---|---|---|
 | Declarative | Ch 4 §1 | Ch 1 | name only, always with a pointer |
 | Imperative | Ch 4 §1 (by contrast) | Ch 4 §1 | — |
-| Object (Kubernetes object) | Ch 4 §1 | Ch 3 §5 | gloss in one clause + pointer |
-| Resource / API resource | Ch 4 §1 | Ch 3 §5 | gloss in one clause + pointer |
+| Object (Kubernetes object) | Ch 4 §1 | Ch 3 §2 | gloss in one clause + pointer *(audit 2026-09-04: first glossed at Ch 3 §2 — "an object, for now, is a stored description of something that should exist" — not §5)* |
+| Resource / API resource | **unowned** — Ch 4 uses "resource" and "resource type" throughout but never defines the term | Ch 3 §6 | gloss in one clause + pointer *(audit 2026-09-04: first named at Ch 3 §6 ("Kubernetes resource type"), not §5. Ch 4 §1 does not define it: add one sourced sentence there — k8s-docs-custom-resources-2026-08-23 carries "A resource is an endpoint in the Kubernetes API that stores a collection of API objects of a certain kind" — or re-row as glossary/ambient; author's call)* |
 | `kubectl apply` | Ch 4 §1 | Ch 4 §1 | — |
 | Manifest | Ch 4 §2 | Ch 4 §1 | — |
 | `apiVersion` · `kind` · `metadata` | Ch 4 §2 | Ch 4 §2 | — |
-| API group · API version | Ch 4 §2 | Ch 4 §2 | — |
+| API group · API version | Ch 4 §2 (`apiVersion` only); **API group unowned** | Ch 4 §2 | — *(audit 2026-09-04: "API group" appears nowhere in Ch 4; the book's only use is a bare "API groups" at Ch 13 §6 — add the sentence at Ch 4 §2, move ownership to Ch 8 §1, or route to the glossary; author's call)* |
 | **`spec` vs `status`** | Ch 4 §2 | Ch 3 §6 | gloss in one clause + pointer |
 | `data` (the ConfigMap/Secret exception to `spec`) | Ch 4 §2 | Ch 4 §2 | — |
 | Namespace — **the Kubernetes object** | Ch 4 §3 | Ch 3 §2 | gloss in one clause + pointer · homonym with Linux namespace, see Canonical forms |
@@ -154,39 +154,39 @@ Ch 1's sections were unnumbered at draft time (B6 Collision #1). **Numbered 2026
 | Secret (the object; hardening is Ch 12 §4) | Ch 4 §4 | Ch 2 §3 | name only, always with a pointer |
 | Secret type | Ch 4 §4 | Ch 4 §4 | — |
 | base64 (encoding, not protection) | Ch 4 §4 | Ch 4 §4 | — |
-| `stringData` | Ch 4 §4 | Ch 4 §4 | — |
+| `stringData` | **unowned** | — | — *(audit 2026-09-04: not used in Ch 4 — glossary-only, or add one sentence sourced to k8s-docs-secret-config-file-2026-08-24, which quotes it)* |
 | **Label** — the Kubernetes label | Ch 4 §5 | Ch 4 §2 | — · homonym with Prometheus label, see Canonical forms |
 | Annotation | Ch 4 §5 | Ch 4 §5 | — |
 | **Label selector** | Ch 4 §5 | Ch 4 §5 | — |
 | Equality-based selector · set-based selector | Ch 4 §5 | Ch 4 §5 | — |
 | Field selector | Ch 4 §5 (name + scope only); glossary owns the definition | Ch 4 §5 | — |
-| `ownerReferences` | Ch 6 §3 | Ch 4 §5 | name only, always with a pointer |
+| `ownerReferences` | Ch 6 §3 | Ch 6 §3 | — *(audit 2026-09-04: not used in Ch 4 or Ch 5; the Ch 4 §5 first appearance was never true in shipped text)* |
 
 ## Ch 5 — The Smallest Vessel  [SHIPPED]
 
 | Term | Defined by | First appears | Earlier chapters must |
 |---|---|---|---|
-| **Pod** | Ch 5 §1 | Ch 2 §4 | gloss in one clause + pointer |
+| **Pod** | Ch 5 §1 | Ch 1 §1 | gloss in one clause + pointer *(audit 2026-09-04: Ch 1 §1 names it bare in "how the scheduler decides where a Pod goes"; a pointer to Ch 5 §1 is now present there)* |
 | PodSpec | Ch 5 §1 | Ch 3 §3 | gloss in one clause + pointer |
 | Shared network namespace (the Pod's) | Ch 5 §1 | Ch 5 §1 | — |
 | Pod IP | Ch 9 §1 | Ch 5 §1 | gloss in one clause + pointer |
 | Co-location / shared fate | Ch 5 §1 | Ch 5 §1 | — |
 | Multi-container Pod | Ch 5 §2 | Ch 5 §1 | — |
 | **Sidecar** (the Pod shape; the mesh proxy is Ch 17 §5) | Ch 5 §2 | Ch 5 §2 | — |
-| Adapter · ambassador (container shapes) | Ch 5 §2 | Ch 5 §2 | — |
+| Adapter · ambassador (container shapes) | **unowned** | — | — *(audit 2026-09-04: not used in Ch 5 — §2 teaches the two-mechanism coupling test and the sidecar only; glossary-only, or reassign)* |
 | Init container | Ch 5 §3 | Ch 5 §2 | — |
-| `restartPolicy` (`Always`/`OnFailure`/`Never`) | Ch 5 §4 | Ch 5 §4 | — |
-| Restart backoff (the exponential mechanism) | Ch 5 §4 | Ch 5 §4 | — |
-| Cattle, not pets | Ch 5 §4 | Ch 5 §4 | — |
+| `restartPolicy` (`Always`/`OnFailure`/`Never`) | Ch 5 §5 | Ch 5 §2 | — *(audit 2026-09-04: the definition and the three values sit in §5 "restartPolicy, and what turns Terminated back into Running"; the field is named earlier in Why This Chapter Matters, in §2's sidecar clause, and in §3 for the init-failure case with a forward pointer to §5. §4 contains no restart material)* |
+| Restart backoff (the exponential mechanism) | Ch 5 §5 | Ch 5 §5 | — *(audit 2026-09-04: the 10s/20s/40s, five-minute cap, ten-minute reset passage is in §5)* |
+| Cattle, not pets | **unowned** | — | — *(audit 2026-09-04: not used in Ch 5 — "cattle" has zero occurrences; §4's framing is "replace, don't repair")* |
 | **Pod phase** (`Pending`/`Running`/`Succeeded`/`Failed`/`Unknown`) | Ch 5 §5 | Ch 5 §4 | — |
 | **Container state** (`Waiting`/`Running`/`Terminated`) | Ch 5 §5 | Ch 2 §6 | name only, always with a pointer |
 | `Reason` (the container-state field) | Ch 5 §5 | Ch 2 §6 | name only, always with a pointer |
 | `ImagePullBackOff` — **diagnosis** | Ch 13 §2 | Ch 2 §6 | name only, always with a pointer · ⚑2 |
-| ServiceAccount — **the object and Pod identity** | Ch 5 §6 | Ch 3 §3 | name only, always with a pointer |
+| ServiceAccount — **the object and Pod identity** | Ch 5 §6 | Ch 3 §2 | name only, always with a pointer *(audit 2026-09-04: first named in Ch 3 §2's controller list, not §3)* |
 | `default` ServiceAccount | Ch 5 §6 | Ch 5 §6 | — |
 | TokenRequest | Ch 5 §6 | Ch 5 §6 | — |
 | Projected token volume | Ch 5 §6 | Ch 5 §6 | — |
-| `automountServiceAccountToken` | Ch 5 §6 | Ch 5 §6 | — |
+| `automountServiceAccountToken` | **unowned** | — | — *(audit 2026-09-04: not used in Ch 5 — §6 stops at four facts and the credential in one sentence; glossary-only)* |
 | Liveness probe | Ch 5 §7 | Ch 5 §5 | — |
 | Readiness probe | Ch 5 §7 | Ch 5 §5 | — |
 | Startup probe | Ch 5 §7 | Ch 5 §7 | — |
@@ -206,10 +206,10 @@ Ch 1's sections were unnumbered at draft time (B6 Collision #1). **Numbered 2026
 | **Deployment** | Ch 6 §1 | Ch 2 | name only, always with a pointer |
 | Ownership chain (Deployment → ReplicaSet → Pod) | Ch 6 §1 | Ch 6 §1 | — |
 | `.spec.replicas` | Ch 6 §2 | Ch 6 §1 | — |
-| `kubectl scale` | Ch 6 §2 | Ch 6 §2 | — |
+| `kubectl scale` | Ch 6 §2 | Ch 4 §1 | gloss in one clause + pointer *(audit 2026-09-04: Ch 4 §1 and §6 gloss it as "updates the size of a workload", and Ch 4 Practice Q6 grades it)* |
 | Horizontal scaling vs vertical scaling | Ch 6 §2 | Ch 6 §2 | — |
-| HPA (HorizontalPodAutoscaler) — **the concept, one sentence** | Ch 6 §2 | Ch 3 | name only, always with a pointer |
-| `ownerReferences` | Ch 6 §3 | Ch 4 §5 | name only, always with a pointer |
+| HPA (HorizontalPodAutoscaler) — **the concept, one sentence** | Ch 6 §2 | Ch 6 §2 | — *(audit 2026-09-04: not named in Ch 3 — its §1 feature table says only "automatically based on CPU usage" — nor in Ch 4–5. Ch 6 §2 as shipped gives it a four-sentence paragraph plus a Summary row, sourced and pointing to Ch 13 and Ch 17; "one sentence" is the plan, not what shipped)* |
+| `ownerReferences` | Ch 6 §3 | Ch 6 §3 | — *(audit 2026-09-04: not used in Ch 4 or Ch 5; the Ch 4 §5 first appearance was never true in shipped text)* |
 | Adoption · orphaning | Ch 6 §3 | Ch 6 §3 | — |
 | Selector immutability | Ch 6 §3 | Ch 6 §3 | — |
 | Cascading deletion | Ch 6 §3 | Ch 6 §3 | — |
@@ -239,9 +239,9 @@ Ch 1's sections were unnumbered at draft time (B6 Collision #1). **Numbered 2026
 | **Filter → score → bind** | Ch 7 §1 | Ch 7 §1 | — |
 | **Binding — the scheduler's** | Ch 7 §1 | Ch 7 §1 | — · homonym with RoleBinding and PV binding, see Canonical forms |
 | Random tie-break | Ch 7 §1 | Ch 7 §1 | — |
-| Feasible node | Ch 7 §2 | Ch 7 §1 | — |
+| Feasible node | Ch 7 §2 | Ch 7 §1 | — *(audit 2026-09-04: the bolded definitional sentence — "nodes that meet a Pod's scheduling requirements are called **feasible nodes**" — is in §1; §2 is the treatment. Ownership stays at §2)* |
 | Capacity · **Allocatable** | Ch 7 §2 | Ch 7 §2 | — |
-| `Unschedulable` (the condition) | Ch 7 §2 | Ch 7 §2 | — |
+| `Unschedulable` (the condition) | **unowned** | Ch 7 §4 (as the `node.kubernetes.io/unschedulable` taint) | — *(audit 2026-09-04: no chapter defines the `PodScheduled=False / Unschedulable` Pod condition — Ch 7 uses "unschedulable" only as an adjective and as the taint name, Ch 8 uses "Unschedulable" for the Node `spec.unschedulable` field, Ch 13 never names it, and k8s-docs-pod-lifecycle-2026-08-23 carries no "PodScheduled" text to source it from. Reassign to Ch 13 §2 with a one-clause retrofit and a new snapshot, or demote to glossary; author's call)* |
 | PriorityClass | Ch 7 §2 (name + scope only); glossary owns the definition | Ch 7 §2 | — · appears in the Ch 7 answer key, so **not** glossary-only |
 | Preemption | Ch 7 §2 (name + scope only); glossary owns the definition | Ch 7 §2 | — · same constraint |
 | Node label | Ch 7 §3 | Ch 4 §5 | — |
@@ -270,7 +270,7 @@ Ch 1's sections were unnumbered at draft time (B6 Collision #1). **Numbered 2026
 | In-cluster authentication | Ch 8 §1 | Ch 8 §1 | — |
 | **Authentication → authorization → admission** (the three gates) | Ch 8 §2 | Ch 3 §5 | gloss in one clause + pointer |
 | Admission controller | Ch 8 §2 | Ch 8 §2 | — |
-| Mutating vs validating admission webhook | Ch 8 §2 | Ch 6 §8 | name only, always with a pointer |
+| Mutating vs validating admission webhook | Ch 8 §2 | Ch 8 §2 | — *(audit 2026-09-04: zero occurrences of "webhook" in Ch 6 or Ch 7; the pair is defined and sourced at Ch 8 §2, which the glossary-queue entry can cite)* |
 | Audit / audit log / audit policy | Ch 8 §2 | Ch 8 §2 | — |
 | ResourceQuota | Ch 8 §3 | Ch 8 §3 | — |
 | LimitRange | Ch 8 §3 | Ch 8 §3 | — |
@@ -296,24 +296,24 @@ Ch 1's sections were unnumbered at draft time (B6 Collision #1). **Numbered 2026
 | **Pod IP** | Ch 9 §1 | Ch 5 §1 | gloss in one clause + pointer |
 | NAT-free pod-to-pod traffic | Ch 9 §1 | Ch 9 §1 † | — |
 | NAT (Network Address Translation) | Ch 9 §1 (gloss); glossary owns the expansion | Ch 9 §1 † | — |
-| **CNI (Container Network Interface)** | Ch 9 §1 | Ch 2 §5 | name only, always with a pointer |
-| CNI plugin | Ch 9 §1 | Ch 2 §5 | name only, always with a pointer |
+| **CNI (Container Network Interface)** | Ch 9 §1 | Ch 2 §4 | name only, always with a pointer *(audit 2026-09-04: Ch 2 §4 names and expands CNI and points at Ch 9 §1)* |
+| CNI plugin | Ch 9 §1 | Ch 2 §4 | name only, always with a pointer *(audit 2026-09-04: same Ch 2 §4 passage as CNI)* |
 | Calico · Cilium · Flannel (as CNI implementations) | Ch 9 §1 | Ch 9 §1 † | — |
 | **Service** (the Kubernetes object) | **Ch 9 §2** | Ch 1 | name only, always with a pointer · ⚑5 |
 | ClusterIP | Ch 9 §2 | Ch 9 §2 † | — |
-| Virtual IP / VIP | Ch 9 §2 | Ch 9 §2 † | — |
+| Virtual IP / VIP | Ch 9 §6 | Ch 9 *What You'll Learn*, then §5 | — *(audit 2026-09-04: the mechanism is defined under §6 "The cluster IP is virtual"; §2 says only "stable address")* |
 | `port` · `targetPort` · `nodePort` | Ch 9 §3 | Ch 9 §3 † | — |
 | NodePort | Ch 9 §3 | Ch 9 §3 † | — |
 | LoadBalancer (Service type) | Ch 9 §3 | Ch 9 §3 † | — |
 | ExternalName | Ch 9 §3 | Ch 9 §3 † | — |
 | Service selector | Ch 9 §4 | Ch 4 §5 | name only, always with a pointer |
-| **EndpointSlice** | Ch 9 §4 | Ch 3 §3 | name only, always with a pointer |
+| **EndpointSlice** | Ch 9 §4 | Ch 3 §2 | name only, always with a pointer *(audit 2026-09-04: first named in Ch 3 §2's controller list, not §3)* |
 | Endpoints (the legacy object) | **orphan — see Part 2** | — | do not use; the *controller*'s two names are reconciled at Ch 9 §4 |
 | Headless Service (`clusterIP: None`) | Ch 9 §5 | Ch 6 §6 | name only, always with a pointer |
 | Service without selectors | Ch 9 §5 | Ch 9 §5 † | — |
 | Readiness gating endpoint membership | Ch 9 §4 | Ch 5 §7 | gloss in one clause + pointer |
 | Service proxy | Ch 9 §6 | Ch 3 §3 | gloss in one clause + pointer |
-| kube-proxy modes (iptables · IPVS · nftables · userspace) | Ch 9 §6 | Ch 9 §6 † | — |
+| kube-proxy modes (iptables · IPVS · nftables · kernelspace on Windows) | Ch 9 §6 | Ch 9 §6 † | — *(audit 2026-09-04: userspace is not a documented mode per k8s-docs-virtual-ips-kube-proxy-2026-08-23; Ch 9 Practice Q16 uses it as a distractor)* |
 | **CoreDNS** | Ch 9 §7 | Ch 3 §4 | name only, always with a pointer |
 | Cluster DNS | Ch 9 §7 | Ch 3 §4 | name only, always with a pointer |
 | A / AAAA record · SRV record | Ch 9 §7 | Ch 9 §7 † | — |
@@ -364,8 +364,8 @@ Ch 1's sections were unnumbered at draft time (B6 Collision #1). **Numbered 2026
 | `downwardAPI` volume | Ch 11 §1 | Ch 11 §1 † | — |
 | **PersistentVolume / PV** | Ch 11 §2 | Ch 4 §3 | name only, always with a pointer · ⚑6 |
 | **PersistentVolumeClaim / PVC** | Ch 11 §2 | Ch 6 §6 | name only, always with a pointer |
-| PV phase (`Available`/`Bound`/`Released`/`Failed`) | Ch 11 §2 | Ch 11 §2 † | — |
-| Binding — **the PV/PVC sense** | Ch 11 §2 | Ch 11 §2 † | — · homonym, see Canonical forms |
+| PV phase (`Available`/`Bound`/`Released`/`Failed`; a fifth, `Pending`, exists) | Ch 11 §2 | Ch 11 §2 † | — *(audit 2026-09-04: the v1 API reference (k8s-api-ref-persistentvolume-v1-2026-08-25) enumerates `Pending` and the concept page (k8s-docs-persistent-volumes-phase-2026-09-04) names it for newly created volumes; Ch 11 §2 teaches four and hedges the fifth in a Snag)* |
+| Binding — **the PV/PVC sense** | Ch 11 §2 | Ch 11 §2 † | — · homonym, see Canonical forms *(audit 2026-09-04: §2 marks the second sense with a pointer to Ch 7 §1, satisfying the rule)* |
 | **StorageClass** | Ch 11 §3 | Ch 4 §3 | name only, always with a pointer · ⚑6 |
 | Static vs dynamic provisioning | Ch 11 §3 | Ch 11 §3 † | — |
 | Provisioner | Ch 11 §3 | Ch 11 §3 † | — |
@@ -386,9 +386,9 @@ Ch 1's sections were unnumbered at draft time (B6 Collision #1). **Numbered 2026
 | Cloud native security lifecycle (develop / distribute / deploy / runtime) | Ch 12 §1 | Ch 12 §1 † | — |
 | ServiceAccount **as an RBAC subject** | Ch 12 §2 | Ch 5 §6 | — · the object itself is Ch 5 §6 |
 | Subject (RBAC subject) | Ch 12 §2 | Ch 12 §2 † | — |
-| User · group (as external identities) | Ch 12 §2 | Ch 8 §2 | name only, always with a pointer |
+| User · group (as external identities) | Ch 12 §2 | Ch 8 §2 | name only, always with a pointer *(audit 2026-09-04: the Ch 8 §2 pointer to Ch 12 §2 is now present)* |
 | Service account token | Ch 12 §2 | Ch 5 §6 | gloss in one clause + pointer |
-| JWT · OIDC | Ch 12 §2 (name + scope only); glossary owns the definitions | Ch 8 §2 | name only, always with a pointer |
+| JWT · OIDC | Ch 12 §2 (name + scope only); glossary owns the definitions | Ch 8 §2 | name only, always with a pointer *(audit 2026-09-04: before this pass neither term appeared in §2 — OIDC only inside §7's Sigstore flow; §2 now names OpenID Connect as an authentication method and JWT as the token format, both tagged k8s-docs-authentication-2026-09-04, so the glossary anchors resolve)* |
 | **RBAC (Role-Based Access Control)** | **Ch 12 §3** | Ch 4 §4 | name only, always with a pointer · ⚑7 |
 | Role · ClusterRole | Ch 12 §3 | Ch 12 §3 † | — |
 | RoleBinding · ClusterRoleBinding | Ch 12 §3 | Ch 12 §3 † | — |
@@ -435,7 +435,7 @@ Ch 1's sections were unnumbered at draft time (B6 Collision #1). **Numbered 2026
 | `kubectl describe` | Ch 13 §3 | Ch 8 §4 | — |
 | `kubectl events` | Ch 13 §3 | Ch 13 §3 † | — |
 | `kubectl logs` · `--previous` · `-c` · `--all-containers` | Ch 13 §3 | Ch 13 §3 † | — |
-| **`CrashLoopBackOff`** | Ch 13 §4 | Ch 5 §4 | name only, always with a pointer |
+| **`CrashLoopBackOff`** | Ch 13 §4 | Ch 5 §5 | name only, always with a pointer *(audit 2026-09-04: first appears in §5's worked-example figure and Taking Your Bearings #2 Q1, with a Ch 13 §4 pointer; §4 has no restart material. Ch 13 §4's cross-bearing now points at Ch 5 §5)* |
 | **`OOMKilled`** — the signature | Ch 13 §4 | Ch 5 §8 | — · Ch 5 §8 owns the mechanism and already defers |
 | **`Evicted`** · node-pressure eviction | Ch 13 §4 | Ch 5 §8 | name only, always with a pointer |
 | Eviction order by QoS class | Ch 13 §4 | Ch 5 §8 | gloss in one clause + pointer |
@@ -457,8 +457,8 @@ Ch 1's sections were unnumbered at draft time (B6 Collision #1). **Numbered 2026
 | **Chart** | Ch 14 §2 | Ch 1 | name only, always with a pointer |
 | `Chart.yaml` · `values.yaml` · `templates/` · `charts/` · `crds/` | Ch 14 §2 | Ch 14 §2 † | — |
 | `NOTES.txt` · `_helpers.tpl` | Ch 14 §2 | Ch 14 §2 † | — |
-| Subchart | Ch 14 §2 | Ch 14 §2 † | — |
-| Go template (in the Helm sense) | Ch 14 §2 | Ch 14 §2 † | — |
+| Subchart | Ch 14 §2 | Ch 14 §2 | — *(audit 2026-09-04: shipped and tagged helm-template-subcharts-and-globals-2026-09-04)* |
+| Go template (in the Helm sense) | Ch 14 §2 | Ch 14 §2 | — *(audit 2026-09-04: shipped and tagged helm-template-functions-and-pipelines-2026-09-04)* |
 | **Release** (Helm) | Ch 14 §3 | Ch 14 §2 † | — · homonym with Kubernetes release, see Canonical forms |
 | **Revision — the Helm sense** | Ch 14 §3 | Ch 14 §3 † | — · homonym with Ch 6 §5, see Canonical forms |
 | `helm install` · `helm upgrade` | Ch 14 §3 | Ch 14 §3 † | — |
@@ -489,16 +489,16 @@ Ch 1's sections were unnumbered at draft time (B6 Collision #1). **Numbered 2026
 | **GitOps** | Ch 15 §3 | Ch 1 | name only, always with a pointer |
 | **OpenGitOps and the four principles** | Ch 15 §3 | Ch 15 §3 † | — |
 | Blast radius (of delivery credentials) | Ch 15 §3 | Ch 15 §3 † | — |
-| **Argo CD** | Ch 15 §4 | Ch 15 §3 † | — |
+| **Argo CD** | Ch 15 §4 | Ch 3 §5 | name only, always with a pointer *(audit 2026-09-04: Ch 3 §5 names it, tagged argocd-overview-2026-08-23, as the controller that watches a repository outside the cluster; Ch 15 names it again in Why This Chapter Matters / Dead Reckoning before §4 defines it)* |
 | `Application` (the Argo CD custom resource) | Ch 15 §4 | Ch 15 §4 † | — |
-| Source of truth | Ch 15 §4 | Ch 15 §3 † | — |
+| Source of truth | Ch 15 §3 | Ch 15 §3 | — *(audit 2026-09-04: introduced and disposed of in §3 — "What 'the truth' means", the Navigational Hazards on the repository not replacing etcd, and the CNCF glossary quote; §4 does not define it)* |
 | `Synced` · **`OutOfSync`** | Ch 15 §4 | Ch 15 §4 † | — |
 | Sync operation · self-heal | Ch 15 §4 | Ch 15 §4 † | — |
-| Drift · drift detection | Ch 15 §4 | Ch 15 §4 † | — |
+| Drift · drift detection | Ch 15 §3 | Ch 15 §3 | — *(audit 2026-09-04: the OpenGitOps glossary definition of drift is given in §3 under principle 4; §4 only uses the term)* |
 | Rollback by revert | Ch 15 §4 | Ch 15 §4 † | — |
 | Sync hook (`PreSync`/`Sync`/`PostSync`) | Ch 15 §5 | Ch 15 §5 † | — |
 | Sync wave | Ch 15 §5 | Ch 15 §5 † | — |
-| **Flux** | Ch 15 §6 | Ch 15 §6 † | — |
+| **Flux** | Ch 15 §6 | Ch 15 *Why This Chapter Matters* (Dead Reckoning, tagged) | — *(audit 2026-09-04: §6 is where it is defined, not where it first appears)* |
 | Flux controller set (source · kustomize · helm · notification) | Ch 15 §6 | Ch 15 §6 † | — |
 | Multi-cluster delivery | Ch 15 §6 | Ch 15 §6 † | — |
 
@@ -508,14 +508,16 @@ Ch 1's sections were unnumbered at draft time (B6 Collision #1). **Numbered 2026
 |---|---|---|---|
 | **The four triage questions** (running / healthy / reachable / configured) | Ch 16 §1 | Ch 16 §1 † | — |
 | Init-container debugging | Ch 16 §2 | Ch 16 §2 † | — · the init sequence is Ch 5 §3 |
-| `kubectl exec` | Ch 16 §3 | Ch 3 | name only, always with a pointer |
+| Termination message (`/dev/termination-log`, surfaced in Pod status) | Ch 16 §2 | Ch 16 §2 | — *(audit 2026-09-04: row added — §2 defines it in bold with two tagged quotations from k8s-docs-determine-reason-pod-failure-2026-08-31, and the Summary table carries it)* |
+| `Init:N/M` status vocabulary (`Init:Error`, `Init:CrashLoopBackOff`) | Ch 16 §2 | Ch 16 §2 | — *(audit 2026-09-04: row added — §2 defines it and Practice Q3 grades it; Ch 5 §5 and Ch 13 §2 do not use it today and must name-with-pointer if they ever do)* |
+| `kubectl exec` | Ch 16 §3 | Ch 4 §1 | name only, always with a pointer *(audit 2026-09-04: not named in Ch 3 — §5 says "attaching to a running container", the docs' wording; first named at Ch 4 §1, which carries a pointer to Ch 16 §3)* |
 | **Distroless image** (and the debugging problem it creates) | Ch 16 §3 | Ch 2 | name only, always with a pointer |
 | **Ephemeral container** | Ch 16 §3 | Ch 16 §3 † | — |
 | **`kubectl debug`** · debug profile · `--copy-to` | Ch 16 §3 | Ch 16 §3 † | — |
 | `kubectl debug node/` | Ch 16 §3 | Ch 16 §3 † | — |
 | Selector/label mismatch (as a Service failure) | Ch 16 §4 | Ch 16 §4 † | — |
 | Empty EndpointSlice (as a symptom) | Ch 16 §4 | Ch 16 §4 † | — |
-| **`kubectl port-forward`** | Ch 16 §5 | Ch 3 | name only, always with a pointer |
+| **`kubectl port-forward`** | Ch 16 §5 | Ch 3 §5 (as "port-forwarding") | name only, always with a pointer *(audit 2026-09-04: Ch 3 §5 uses the docs' wording and its pointer goes to Ch 13, not Ch 16 §5 — accept the Ch 13 pointer or re-point it; author's call)* |
 | Local development loop | Ch 16 §7 | Ch 16 §7 † | — |
 
 ## Ch 17 — The Fleet and Its Charts  [PLANNED]
@@ -525,7 +527,7 @@ Ch 1's sections were unnumbered at draft time (B6 Collision #1). **Numbered 2026
 | **Cloud native** (CNCF definition v1.1, verbatim) | **Ch 17 §1** | Ch 1 | name only, always with a pointer · ⚑4 |
 | The named characteristics of cloud native systems | Ch 17 §1 | Ch 17 §1 † | — |
 | **CNCF — as an institution** | Ch 17 §1 | Ch 1 | name only, always with a pointer · the exam-sponsor sense is Ch 1 |
-| **Project maturity level** (Sandbox · Incubating · Graduated · Archived) | Ch 17 §2 | Ch 17 §2 † | — · homonym with sandboxed runtime, see Canonical forms |
+| **Project maturity level** (Sandbox · Incubating · Graduated · Archived) | Ch 17 §2 | Ch 2 (Practice answer keys, "CNCF graduated projects") · Ch 9 §1 ("Graduated level") | name only, always with a pointer · homonym with sandboxed runtime, see Canonical forms *(audit 2026-09-04: both shipped uses precede Ch 17 §2 and neither carries a pointer)* |
 | CNCF project lifecycle | Ch 17 §2 | Ch 17 §2 † | — |
 | Governing Board | Ch 17 §2 | Ch 17 §2 † | — |
 | TOC (Technical Oversight Committee) | Ch 17 §2 | Ch 17 §2 † | — |
@@ -538,7 +540,7 @@ Ch 1's sections were unnumbered at draft time (B6 Collision #1). **Numbered 2026
 | **Immutable infrastructure** | Ch 17 §3 | Ch 17 §3 † | — · distinct from image immutability, Ch 2 §2 |
 | Declarative API (as a cloud native characteristic) | Ch 17 §3 | Ch 4 §1 | — |
 | **Extension point** | Ch 17 §4 | Ch 2 §4 | name only, always with a pointer |
-| API aggregation / aggregation layer | Ch 17 §4 | Ch 17 §4 † | — |
+| API aggregation / aggregation layer | Ch 17 §4 | Ch 6 §8 | name only, always with a pointer *(audit 2026-09-04: Ch 6 §8 names "API-server aggregation" in prose, in a Closer Look with a Ch 17 §4 pointer, and in Practice Q18; Ch 14 §1 names the aggregation layer as metrics-server's install requirement; Ch 13 never uses the term)* |
 | Device plugin | Ch 17 §4 | Ch 17 §4 † | — |
 | **Service mesh** | Ch 17 §5 | Ch 5 §2 | name only, always with a pointer *(Ch 5 already points forward)* |
 | **Data plane** | Ch 17 §5 | Ch 5 §2 | name only, always with a pointer |
@@ -547,14 +549,15 @@ Ch 1's sections were unnumbered at draft time (B6 Collision #1). **Numbered 2026
 | Sidecar proxy | Ch 17 §5 | Ch 5 §2 | name only, always with a pointer |
 | **mTLS (mutual TLS)** | Ch 17 §5 | Ch 4 | name only, always with a pointer |
 | **Zero trust** | Ch 17 §5 | Ch 17 §5 † | — |
-| Ambient mesh (sidecar-less) | Ch 17 §5 | Ch 17 §5 † | — |
+| Ambient mode (sidecar-less; Istio's own term) | Ch 17 §5 | Ch 17 §5 † | — *(audit 2026-09-04: headword renamed from "Ambient mesh" — Ch 17 uses "ambient mode" throughout and "ambient mesh" nowhere)* |
 | Istio · Linkerd | Ch 17 §5 | Ch 17 §5 † | — |
-| **Serverless** | Ch 17 §6 | Ch 3 | name only, always with a pointer |
-| FaaS (Functions as a Service) | Ch 17 §6 | Ch 17 §6 † | — |
+| **Serverless** | Ch 17 §6 | Ch 17 §1 | — *(audit 2026-09-04: not used in Ch 3 or any chapter before Ch 17; first named inside the CNCF definition quoted at Ch 17 §1, defined at §6)* |
+| FaaS (Functions as a Service) | **unowned** | — | — *(audit 2026-09-04: not used in Ch 17 — neither "FaaS" nor "Functions as a Service" appears, and cncf-glossary-serverless-2026-08-31 does not use it either; glossary-only)* |
 | **Knative** · Serving · Eventing · Functions | Ch 17 §6 | Ch 17 §6 † | — |
 | **Scale to zero** | Ch 17 §6 | Ch 17 §6 † | — |
-| Autoscaling (the landscape) | Ch 17 §7 | Ch 6 §2 | — · the HPA concept is Ch 6 §2 |
-| **VPA (VerticalPodAutoscaler)** | Ch 17 §7 | Ch 17 §7 † | — |
+| CloudEvents | named at Ch 17 §6 as a CNCF Graduated project (tagged cncf-project-maturity-levels-2026-08-23); glossary entry needed | Ch 17 §6 | — *(audit 2026-09-04: row added — Ch 17 §6 now makes a sourced maturity claim about it)* |
+| Autoscaling (the landscape) | Ch 17 §7 | Ch 6 §2 | — · the HPA concept is Ch 6 §2 *(audit 2026-09-04: Ch 18's reader-facing utilization pointers go to Ch 5 §8 and Ch 13 §7, correctly — do not redirect them to Ch 17 §7; only Ch 18's frontmatter Soundings topics cite Ch 17 §7)* |
+| **VPA (VerticalPodAutoscaler)** | Ch 17 §7 | Ch 3 §4 | name only, always with a pointer *(audit 2026-09-04: named with a pointer to Ch 17 at Ch 3 §4 (line 613) and Ch 10 §3 (line 666))* |
 | **Cluster Autoscaler** | Ch 17 §7 | Ch 17 §7 † | — |
 | **Karpenter** | Ch 17 §7 | Ch 17 §7 † | — |
 | **KEDA** | Ch 17 §7 | Ch 17 §7 † | — |
@@ -575,18 +578,22 @@ Ch 1's sections were unnumbered at draft time (B6 Collision #1). **Numbered 2026
 | **Monitoring** | Ch 18 §1 | Ch 1 | name only, always with a pointer |
 | Unknown unknowns vs known unknowns | Ch 18 §1 | Ch 18 §1 † | — |
 | Instrumentation | Ch 18 §1 | Ch 18 §1 † | — |
+| Code-based vs zero-code instrumentation | Ch 18 §1 | Ch 18 §1 | — *(audit 2026-09-04: row added — defined in §1 "Instrumentation is the precondition", retrieved in §5 "Spans you didn't ask for", graded in Practice Q5 and Taking Your Bearings #2 Q5)* |
 | Telemetry | Ch 18 §1 | Ch 18 §1 † | — |
 | **Health checking ≠ observability** | Ch 18 §1 | Ch 18 §1 † | — · probes are Ch 5 §7 |
-| **OpenTelemetry / OTel** | Ch 18 §2 | Ch 18 §2 † | — |
+| **OpenTelemetry / OTel** | Ch 18 §2 | Ch 1 §3 | name only, always with a pointer *(audit 2026-09-04: Ch 1 §3 names it — "Prometheus, OpenTelemetry, the difference between metrics and traces" — with a pointer to Ch 18 §2)* |
 | Signal (the OTel sense) | Ch 18 §2 | Ch 18 §2 † | — |
-| Trace · metric · log · **baggage** | Ch 18 §2 | Ch 18 §2 † | — |
+| Trace · metric · log · **baggage** | Ch 18 §2 | Ch 1 §3 (as "metrics and traces") | name only, always with a pointer *(audit 2026-09-04: same Ch 1 §3 sentence as OpenTelemetry, pointer present; baggage itself first appears at Ch 18 §2)* |
 | OTel Collector | Ch 18 §2 | Ch 18 §2 † | — |
+| Receiver · processor · exporter (Collector pipeline) | Ch 18 §2 (named, one sentence) | Ch 18 §2 | — *(audit 2026-09-04: row added — named with a tag, opentelemetry-collector-components-2026-09-04)* |
 | Time series | Ch 18 §3 | Ch 18 §3 † | — |
+| Sample (a Prometheus timestamped value) | Ch 18 §3 | Ch 18 §3 | — *(audit 2026-09-04: row added — defined in bold with a quotation in the shipped text)* |
 | **Metric label** · cardinality | Ch 18 §3 | Ch 18 §3 † | — · homonym with Kubernetes label, see Canonical forms |
 | **Utilization relative to requests** | Ch 18 §3 | Ch 18 §3 † | — |
 | **metrics-server vs a monitoring system** | Ch 18 §3 | Ch 18 §3 † | — · metrics-server itself is Ch 13 §7 |
 | **Prometheus** | Ch 18 §4 | Ch 1 | name only, always with a pointer |
 | Pull / scrape model | Ch 18 §4 | Ch 18 §4 † | — |
+| Scrape target (a Prometheus **target**) | Ch 18 §4 | Ch 18 §4 | — *(audit 2026-09-04: row added — §4 defines the target as "the definition of an object to scrape", quoted from the Prometheus glossary)* |
 | Service discovery (Prometheus sense) | Ch 18 §4 | Ch 18 §4 † | — |
 | Exporter | Ch 18 §4 | Ch 18 §4 † | — |
 | Client library (instrumentation) | Ch 18 §4 | Ch 18 §4 † | — |
@@ -606,7 +613,7 @@ Ch 1's sections were unnumbered at draft time (B6 Collision #1). **Numbered 2026
 | Reliability | Ch 18 §7 | Ch 18 §7 † | — |
 | **SLI (Service Level Indicator)** | Ch 18 §7 | Ch 18 §7 † | — |
 | **SLO (Service Level Objective)** | Ch 18 §7 | Ch 18 §7 † | — |
-| SLA (Service Level Agreement) | Ch 18 §7 (one clause, by contrast) | Ch 18 §7 † | — · see **Orphans** |
+| SLA (Service Level Agreement) | Ch 18 §7 | Ch 18 §7 | — · see **Orphans** *(audit 2026-09-04: shipped §7 gives a full definition — the SRE-book "what happens if the SLOs aren't met?" discrimination test, a Snag and a Mnemonic — and SLA is the keyed distractor in Taking Your Bearings #2 Q8 and Practice Q16; do not trim it back to a clause)* |
 | Error budget | Ch 18 §7 | Ch 18 §7 † | — |
 | **The four golden signals** (latency · traffic · errors · saturation) | Ch 18 §7 | Ch 18 §7 † | — |
 | RED method · USE method | Ch 18 §7 | Ch 18 §7 † | — |
@@ -620,8 +627,8 @@ Ch 19 owns no new technical vocabulary. It owns the reader-facing apparatus of t
 | Cross-cutting theme (as an organizing device) | Ch 19 §1 | Ch 19 §1 † | — |
 | Confusion pair | Ch 19 §2 | Ch 19 §2 † | — |
 | Discriminating question | Ch 19 §2 | Ch 19 §2 † | — |
-| Flagging and skipping (exam mechanics) | Ch 19 §3 | Ch 1 | gloss in one clause + pointer |
-| The second pass | Ch 19 §3 | Ch 19 §3 † | — |
+| Flagging and skipping (exam mechanics) | Ch 19 §3 | Ch 1 | gloss in one clause + pointer *(audit 2026-09-04: shipped — §3 defines flag, Review Screen, Finish Exam and Pause Exam from lf-examui-multiple-choice-2026-08-31)* |
+| The second pass | Ch 19 §3 | Ch 19 §3 | — *(audit 2026-09-04: shipped and tagged lf-examui-multiple-choice-2026-08-31; projected mark cleared)* |
 | Using The Lodestar | Ch 19 §5 | Ch 1 | — · the artifact itself is named in Ch 1 |
 
 ## Ambient technical vocabulary — no teaching chapter
@@ -653,7 +660,7 @@ An index of surface forms, not a second ownership claim. Every acronym the book 
 | A/B | (not an acronym — A/B testing) | Ch 15 §2 |
 | ABAC | Attribute-Based Access Control | glossary-only — see **Orphans** |
 | API | Application Programming Interface | ambient |
-| CA | Cluster Autoscaler | Ch 17 §7 |
+| CA | Cluster Autoscaler | **unowned** — *(audit 2026-09-04: the book never abbreviates Cluster Autoscaler; the only "CA" sense Ch 17 carries is Istio's Certificate Authority at §5, written out in full — drop the row or re-point it at the glossary build)* |
 | CD | Continuous Delivery / Continuous Deployment | Ch 15 §3 |
 | CI | Continuous Integration | Ch 15 §3 |
 | CIDR | Classless Inter-Domain Routing | Ch 10 §6 |
@@ -668,11 +675,11 @@ An index of surface forms, not a second ownership claim. Every acronym the book 
 | CSI | Container Storage Interface | Ch 11 §5 |
 | CVE | Common Vulnerabilities and Exposures | Ch 12 §7 |
 | DNS | Domain Name System | ambient / Ch 9 §7 |
-| FaaS | Functions as a Service | Ch 17 §6 |
+| FaaS | Functions as a Service | **unowned** — *(audit 2026-09-04: not used in Ch 17; glossary-only)* |
 | FQDN | Fully Qualified Domain Name | Ch 9 §7 |
 | GPU | Graphics Processing Unit | ambient |
 | HPA | HorizontalPodAutoscaler | Ch 6 §2 |
-| IaaS | Infrastructure as a Service | Ch 3 §1 |
+| IaaS | Infrastructure as a Service | glossary-only — *(audit 2026-09-04: not used in Ch 3)* |
 | IPVS | IP Virtual Server | Ch 9 §6 |
 | JWT | JSON Web Token | Ch 12 §2 |
 | K8s | Kubernetes (numeronym) | Ch 3 §1 |
@@ -682,7 +689,7 @@ An index of surface forms, not a second ownership claim. Every acronym the book 
 | KEP | Kubernetes Enhancement Proposal | Ch 17 §8 |
 | L4 / L7 | OSI Layer 4 / Layer 7 | Ch 10 §1 |
 | LTS | Long-Term Support | glossary-only — see **Orphans** |
-| mTLS | mutual Transport Layer Security | Ch 17 §5 |
+| mTLS | mutual TLS (Transport Layer Security) | Ch 17 §5 *(audit 2026-09-04: expansion aligned with Ch 17 §5's "Mutual TLS (mTLS)")* |
 | NAT | Network Address Translation | Ch 9 §1 |
 | OCI | Open Container Initiative | Ch 2 §5 |
 | OIDC | OpenID Connect | Ch 12 §2 |
@@ -705,7 +712,7 @@ An index of surface forms, not a second ownership claim. Every acronym the book 
 | RWO | ReadWriteOnce | Ch 11 §4 |
 | RWOP | ReadWriteOncePod | Ch 11 §4 |
 | RWX | ReadWriteMany | Ch 11 §4 |
-| SaaS | Software as a Service | Ch 3 §1 |
+| SaaS | Software as a Service | glossary-only — *(audit 2026-09-04: not used in Ch 3)* |
 | SBOM | Software Bill of Materials | Ch 12 §7 |
 | SemVer | Semantic Versioning | Ch 8 §6 |
 | SIG | Special Interest Group | Ch 17 §8 |
@@ -719,17 +726,18 @@ An index of surface forms, not a second ownership claim. Every acronym the book 
 | TOC | Technical Oversight Committee | Ch 17 §2 |
 | TUF | The Update Framework | Ch 12 §7 |
 | USE | Utilization, Saturation, Errors | Ch 18 §7 |
-| VIP | Virtual IP | Ch 9 §2 |
+| VIP | Virtual IP | Ch 9 §6 *(audit 2026-09-04)* |
 | VM | Virtual Machine | Ch 2 §1 |
 | VPA | VerticalPodAutoscaler | Ch 17 §7 |
-| WG | Working Group | Ch 17 §8 |
+| W3C | World Wide Web Consortium | ambient *(audit 2026-09-04: row added — used unexpanded at Ch 18 §5, "W3C TraceContext specification"; a proper name, but the register's rule is every acronym expanded once)* |
+| WG | Working Group | Ch 17 §8 *(audit 2026-09-04: Ch 17 never abbreviates it; the book's only "WG" is Ch 19 §5's "SIG/WG/Committee", unexpanded — expand there or treat the row as glossary-only; author's call)* |
 
 ---
 
 > **Acronym-register debt recorded 2026-08-30 (Ch 9 integration gate).** Four acronyms first
 > appear in Ch 9 and are absent from the register below: **CNAME**, **BGP**, **eBPF**, and
 > **IPVS** (registered, but unexpanded at its first appearance in the book, which is Ch 9 §6).
-> Expand IPVS in place at Ch 9 §6 and add all four to the register at the glossary build.
+> Expand IPVS in place at Ch 9 §6 and add all four to the register at the glossary build. *(audit 2026-09-04: IPVS is now expanded at Ch 9 §6 — that debt is discharged; the register additions remain for the glossary build.)*
 > eBPF additionally needs its glossary entry written — Ch 9 now names it twice with a
 > "see the glossary" pointer, and its Practice Q16 distractor was rebuilt from taught
 > material so that no graded item depends on it, per this ledger's own ruling.
@@ -743,7 +751,7 @@ An index of surface forms, not a second ownership claim. Every acronym the book 
 > tier. Defensible as ambient for this reader, but it currently sits in graded text with no
 > lookup path: assign it to the ambient tier or give it a glossary entry. Lowest priority.
 
-> **Glossary debt recorded 2026-08-30 (Ch 11 integration gate).** Six terms need entries at the glossary build: **NFS** (Network File System), **LUN** (Logical Unit Number), **iSCSI**, **EBS** (Elastic Block Store), **finalizer**, and **`CSIDriver`**. NFS, LUN and EBS are now expanded at first use in Ch 11; NFS in particular carries two graded Practice items (Q7, Q11) and had never been spelled out anywhere in the book. iSCSI appears only inside quoted documentation, so it needs a register row rather than an in-text expansion.
+> **Glossary debt recorded 2026-08-30 (Ch 11 integration gate).** Six terms need entries at the glossary build: **NFS** (Network File System), **LUN** (Logical Unit Number), **iSCSI**, **EBS** (Elastic Block Store), **finalizer**, and **`CSIDriver`**. NFS, LUN and EBS are now expanded at first use in Ch 11; NFS in particular carries two graded Practice items (Q7, Q11) and had never been spelled out anywhere in the book. iSCSI appears only inside quoted documentation, so it needs a register row rather than an in-text expansion. *(audit 2026-09-04: add **`tmpfs`** — used five times in Ch 11 §1/§7, explained inline as "a RAM-backed filesystem" — and **`FlexVolume`**, named at §5 as the deprecated predecessor of CSI; both reach reader-facing prose with no lookup path.)*
 
 > ⛑ **BOOK-LEVEL CONVENTION, ratified 2026-08-30 at the Ch 8 gate: state the pattern, never the count.**
 > Running ordinals across chapters have now caused two collisions in this book, both of which reached shipped text and had to be repaired at a later chapter's gate:
@@ -753,7 +761,7 @@ An index of surface forms, not a second ownership claim. Every acronym the book 
 >
 > **The rule for every chapter from 12 on:** name the pattern and say it is the same one, but do **not** assert a running ordinal ("the fourth time", "the sixth control loop", "you now have three of four") unless the count is fixed by a closed set the reader can see in front of them — the four pluggable interfaces, the four domains. Ch 6's two-altitudes framing and Ch 15 §7's payoff are the only sanctioned control-loop count in the book, and no chapter may add to it.
 
-> **Glossary queue and stale rows recorded 2026-08-30 (Ch 8 gate).** Needed at the glossary build: mutating/validating admission webhook, CIDR (also expand in place at Ch 8 §4), kubelet TLS bootstrapping, hugepages, Eviction API. `context` is now defined in Ch 8 §1 and no longer owes one.
+> **Glossary queue and stale rows recorded 2026-08-30 (Ch 8 gate).** Needed at the glossary build: mutating/validating admission webhook *(audit 2026-09-04: now defined and sourced at Ch 8 §2, which the entry can cite)*, CIDR *(audit 2026-09-04: expanded in place at Ch 8 §4 — that half of the debt is closed; the glossary entry remains)*, kubelet TLS bootstrapping, hugepages, Eviction API. `context` is now defined in Ch 8 §1 and no longer owes one.
 > Rows this ledger gets wrong, recorded so no later stage "corrects" a chapter toward them: **node registration** is not taught in Ch 3 — Ch 8 §4 is the de facto owner and should keep it; **`kubectl describe`** first appears in Ch 5, not Ch 8 §4; **mutating vs validating admission webhook** does not appear in Ch 6 at all (zero occurrences of "webhook"); **CIDR**'s first reader-facing use is Ch 8 §4, not Ch 10 §6.
 
 > **Glossary debt recorded 2026-08-31 (Ch 13 gate).** **static Pod** and **mirror Pod** are absent from Ch 1-12 and first appear in Ch 13 Practice Q13's distractor D, where the answer key refutes it with a sourced quotation. **Ruling: the distractor stays.** This is not the Ch 9 eBPF case -- there the ledger had explicitly ruled the term out of graded text and the book defined it nowhere, so the distractor was rebuilt. Here the key teaches both terms inline with a source and targets a real belief about hidden containers. What they lack is a lookup path: add glossary entries for both at the glossary build, plus a register row. Also queued from this chapter: `crictl`, `ProgressDeadlineExceeded`.
@@ -765,13 +773,13 @@ An index of surface forms, not a second ownership claim. Every acronym the book 
 >   the very instruction "Name the pattern, because you will retrieve it by name." Row fixed;
 >   Ch 6, Ch 13 and Ch 17 aligned; the phrase is now identical in all 24 uses. This is the
 >   clearest case in the commission of a ledger defect propagating into shipped text.
-> - `VPA | First appears Ch 17 §7` is wrong: VPA first appears in shipped Ch 3 (line 606) and
->   again in Ch 10 (lines 678, 1811).
+> - `VPA | First appears Ch 17 §7` is wrong: VPA first appears in shipped Ch 3 §4 (line 613) and
+>   again in Ch 10 §3 (line 666) and §8 (line 1298). *(audit 2026-09-04: row fixed; line numbers current as of this audit.)*
 > - Headword **"Ambient mesh (sidecar-less)" → "ambient mode"** — Istio's own documented term
->   and what the sources say. Ch 17 uses "ambient mode" 11× and is correct; the ledger was not.
-> - The **FaaS** register row is orphaned.
+>   and what the sources say. Ch 17 uses "ambient mode" 11× and is correct; the ledger was not. *(audit 2026-09-04: row fixed.)*
+> - The **FaaS** register row is orphaned. *(audit 2026-09-04: ledger row and register row marked unowned.)*
 > - **CKAD** and **CKS** are now expanded at Ch 17 §8. **SIG** is first used unexpanded at Ch 8
->   line 861 — a pre-existing Ch 8 debt. **CloudEvents** needs a glossary entry and register row.
+>   line 861 — a pre-existing Ch 8 debt *(audit 2026-09-04: now expanded at Ch 8 §6 — debt closed)*. **CloudEvents** needs a glossary entry and register row *(audit 2026-09-04: ledger row added in the Ch 17 block; the glossary entry is still owed)*.
 
 > ⛑ **BOOK-LEVEL RULING, ratified 2026-08-31 at the Ch 18 gate: a cross-bearing to the owning chapter discharges the `[source:]` obligation for a retrieved claim.**
 > Ch 18 §4's AUTHOR-REVIEW asked for this and correctly noted there is no later content chapter to defer it to. The rule, in three parts:
@@ -781,6 +789,8 @@ An index of surface forms, not a second ownership claim. Every acronym the book 
 > 3. This does **not** apply to a claim the owning chapter itself left untagged. Those stay gaps wherever they appear.
 >
 > Applies to the seven Kubernetes claims Ch 18 §4 raised (probe semantics, metrics-server scope, DaemonSet placement, scheduler placement, the CRI boundary, StatefulSet identity), all of which are owned and tagged in Ch 2/5/6/7 and correctly pointered here. **Fact-accuracy stages should stop re-raising this class.**
+
+> **Glossary queue recorded 2026-09-04 (chapter audits).** From Ch 16: **distroless image** — defined at Ch 16 §3, graded in Practice Q6/Q7 and the Exam Alert; needs a glossary entry and a register-style lookup row. **`kubectl cp`** — appears only as Ch 16 Practice Q6 distractor D, refuted with a sourced quotation (the same shape as the Ch 13 static-Pod ruling); queue an entry. From Ch 17: **CloudEvents** (ledger row added in the Ch 17 block; entry still owed). From Ch 18: **W3C** is now in the register as ambient. Ch 10's **reverse proxy** debt is unchanged — still 7 uses, no glossary entry.
 
 # Part 2 — Orphans
 
@@ -816,6 +826,8 @@ Do not route this to the glossary alone. B1 does not list PDB among the blocking
 Not named in the lineup or the skeleton; the skeleton gives Ch 18 §7 only SLI, SLO, error budgets, and the golden signals. SLA is the near-universal third member of that acronym family and the natural distractor in any SLI/SLO item.
 
 **Recommendation: Ch 18 §7 owns it as a one-clause contrast** — the externally committed, contractual number, as against the internally chosen SLO and the measured SLI. **Not glossary-only:** it will appear in Ch 18 and Ch 20 answer keys as a wrong option, and a distractor the reader cannot look up is a badly built distractor.
+
+*(audit 2026-09-04: shipped Ch 18 §7 went further than one clause — a full definition with the SRE-book discrimination test, a Snag and a Mnemonic — and the ledger row now records that. Do not trim it back.)*
 
 ### ABAC (Attribute-Based Access Control) — **glossary-only**
 
@@ -871,14 +883,14 @@ These are the pairs most likely to produce a reader who thinks they have met a t
 
 | Headword | Sense A (owner) | Sense B (owner) | Rule |
 |---|---|---|---|
-| **namespace** | Linux namespace — the kernel isolation primitive (Ch 2 §1) | Namespace — the Kubernetes object (Ch 4 §3) | Sense A is always written **"Linux namespace"**, lowercase, never bare after Ch 2 §1. Sense B is capitalized **"Namespace"** when it means the object, lowercase "namespace" when it means the scope. Ch 4 §3 must open by disposing of the collision explicitly. A third, unrelated sense exists in Ch 2 §3 (the Snag on bare image names): the **registry namespace**, `library` in `docker.io/library/busybox`. Write it as "registry namespace" on every use so it collides with neither. *(audit 2026-09-04)* |
+| **namespace** | Linux namespace — the kernel isolation primitive (Ch 2 §1) | Namespace — the Kubernetes object (Ch 4 §3) | Sense A is always written **"Linux namespace"**, lowercase, never bare after Ch 2 §1. Sense B is capitalized **"Namespace"** when it means the object, lowercase "namespace" when it means the scope. Ch 4 §3 must open by disposing of the collision explicitly. A third, unrelated sense exists in Ch 2 §3 (the Snag on bare image names): the **registry namespace**, `library` in `docker.io/library/busybox`. Write it as "registry namespace" on every use so it collides with neither. *(audit 2026-09-04: registry-namespace sense recorded; Ch 2 now conforms. Shipped Ch 2 never defines sense A — its one "Linux network namespace" at §1 is a Pod forward plant — so the "Ch 4 §3 must open by disposing of the collision" clause had nothing to dispose of, and Ch 4 §3 was left as is)* |
 | **control plane** | The cluster's control plane (Ch 3 §2) | A service mesh's control plane (Ch 17 §5) | Sense B is always **"the mesh's control plane"** or **"the service mesh control plane"** on first use in Ch 17 §5, and the section must say in one clause that this is a different control plane from Ch 3 §2's. Bare "control plane" always means sense A. |
 | **sandbox** | Sandboxed runtime — gVisor, Kata (Ch 2 §7) | CNCF **Sandbox** — the maturity level (Ch 17 §2) | Sense A is **"sandboxed runtime"**, adjectival, never the bare noun. Sense B is capitalized **"Sandbox"** and always appears alongside at least one sibling level (Incubating, Graduated). A confusion-pair row in Ch 19 §2. |
 | **revision** | Deployment revision (Ch 6 §5) | Helm release revision (Ch 14 §3) | Sense B is always **"release revision"** or **"Helm revision"**, never bare, and Ch 14 §3 owns the explicit contrast. |
-| **rollback** | `kubectl rollout undo` (Ch 6 §5) | `helm rollback` (Ch 14 §3) | Never write bare "rollback" where either could be meant. Ch 14 §3 owns the statement that these are different mechanisms wearing the same word. A third sense — GitOps rollback-by-revert (Ch 15 §4) — is always written **"rollback by revert"**. |
+| **rollback** | `kubectl rollout undo` (Ch 6 §5) | `helm rollback` (Ch 14 §3) | Never write bare "rollback" where either could be meant. Ch 14 §3 owns the statement that these are different mechanisms wearing the same word. A third sense — GitOps rollback by revert (Ch 15 §4) — is always written **"rollback by revert"**, unhyphenated, as Ch 14 §3 and Ch 15 §4 now do throughout. *(audit 2026-09-04)* |
 | **label** | Kubernetes label (Ch 4 §5) | Prometheus metric label (Ch 18 §3) | Sense B is always **"metric label"** on first use in Ch 18 §3 and in any sentence where a Kubernetes object is also present. |
 | **request** | Resource request (Ch 5 §8) | API request (Ch 8 §2) | Sense A is **"resource request"** in any sentence that also discusses the API server. Sense B is **"API request"** in any sentence that also discusses scheduling or QoS. Bare "request" is permitted only where the section's whole subject makes it unambiguous. |
-| **binding** | Scheduler binding (Ch 7 §1) | PV/PVC binding (Ch 11 §2) | Neither may be written bare outside its own chapter. `RoleBinding`/`ClusterRoleBinding` (Ch 12 §3) are object names, always in code style, and are never shortened to "binding". |
+| **binding** | Scheduler binding (Ch 7 §1) | PV/PVC binding (Ch 11 §2) | Neither may be written bare outside its own chapter. `RoleBinding`/`ClusterRoleBinding` (Ch 12 §3) are object names, always in code style. **Sanctioned exception:** inside Ch 12, from §3's explicit disambiguation onward ("Inside this section, a bare 'binding' means the RBAC object and nothing else"), a bare "binding" means the RBAC object — the chapter's Fixed Point ("The binding determines the scope of the grant"), Mnemonic ("Binding says where"), Hazards, Summary rows and some twenty prose uses depend on it. Outside Ch 12 the object names are never shortened to "binding". *(audit 2026-09-04)* |
 | **release** | A Kubernetes release — a minor version (Ch 8 §6) | A Helm release — an installed chart instance (Ch 14 §3) | Sense B is **"Helm release"** on first use in each Ch 14/15 section. Sense A is "Kubernetes release" or "minor release". |
 | **Service** | The Kubernetes Service object (Ch 9 §2) | A Knative Service (Ch 17 §6) | Sense B is always **"Knative Service"**, never bare. Generic English "service" (a running application) stays lowercase and is avoided wherever a Kubernetes Service is in the same paragraph. |
 | **immutable** | Image immutability (Ch 2 §2) | Immutable infrastructure (Ch 17 §3) | Sense B is always the full two-word phrase **"immutable infrastructure"**. Ch 17 §3 back-bears to Ch 2 §2 rather than re-deriving. |

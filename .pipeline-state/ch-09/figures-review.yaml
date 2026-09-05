@@ -60,7 +60,8 @@ figures:
       with its own CNAME diagram below.
     suggested_fix: ''
 - anchor_id: ch09-fig03-service-endpointslice-selector-path
-  status: regenerate
+  status: approved  # 2026-09-05 coordinator review: slice lists all three matching Pods with ready true/true/false; STOPPED AT GATE label moved clear of the gate box in the HTML source; promoted
+  regenerate_hint: "Third pass; the content is now right and must not change: the EndpointSlice lists all three matching Pods with ready true, true and false, the Ready gate passes two to TRAFFIC and stops the third, the cache Pod is excluded, the controller writes the slice. One layout defect to fix: the label STOPPED AT GATE for the ready-false row is clipped at the right edge of the canvas behind the gate box. Place that label fully inside the canvas, either under the gate box or as a short caption beneath the ready-false row, and widen the canvas margin so nothing is cut off. Nothing else changes."
   render_paths:
     svg: figures/ch09-fig03-service-endpointslice-selector-path.svg
     png: figures/ch09-fig03-service-endpointslice-selector-path.png
@@ -104,7 +105,7 @@ figures:
       ''FOCAL — READINESS GATE'' entry.'
     suggested_fix: ''
 - anchor_id: ch09-fig04-kube-proxy-modes
-  status: approved  # 2026-09-05: cosmetic label nit recorded in the hint below; author chose not to regenerate approved renders
+  status: approved
   render_paths:
     svg: figures/ch09-fig04-kube-proxy-modes.svg
     png: figures/ch09-fig04-kube-proxy-modes.png

@@ -656,7 +656,7 @@ A Service has a selector. The selector is a query. Somebody has to run the query
 **Four.** Anything that needs to know a Service's current backends reads the **EndpointSlices**, not the selector. The selector is the question. The EndpointSlice is the written-down answer.
 
 <!-- FIGURE: ch09-fig03-service-endpointslice-selector-path -->
-![A Service named database holds the selector app equals db. Four Pods are listed; three carry the label app db and one carries app cache. The three matching Pods send arrows toward a gate labeled Ready. Two Ready Pods pass through into an EndpointSlice containing 10.244.1.7 port 5432 and 10.244.4.2 port 5432. The third matching Pod, not Ready, is stopped at the gate. The cache Pod never matched the selector and sends no arrow. Beneath, the EndpointSlice controller in kube-controller-manager watches Services and Pods and writes the slice.](figures/ch09-fig03-service-endpointslice-selector-path.svg)
+![A Service named database holds the selector app equals db. Four Pods are listed; three carry the label app db and one carries app cache. The three matching Pods send arrows into an EndpointSlice that lists all three: 10.244.1.7 port 5432 ready true, 10.244.4.2 port 5432 ready true, and 10.244.4.9 port 5432 ready false. From the slice, the two ready entries pass through a gate labeled Ready to traffic; the ready false entry is stopped at the gate. The cache Pod never matched the selector and is not listed at all. Beneath, the EndpointSlice controller in kube-controller-manager watches Services and Pods and writes the slice.](figures/ch09-fig03-service-endpointslice-selector-path.svg)
 
 <!-- ASCII-FALLBACK
 ```

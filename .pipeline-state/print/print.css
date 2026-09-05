@@ -35,9 +35,9 @@ hr { border: 0; border-top: 1px solid #ccc; margin: 1.5em 20%; }
 
 /* Print interior. Type is set smaller than the screen PDF: a 6x9 measure needs it. */
 body { font-family: "Fira Sans", -apple-system, "Segoe UI", sans-serif;
-       font-size: 10.5pt; line-height: 1.45; color: #16202e;
+       font-size: 10pt; line-height: 1.32; color: #16202e;
        -webkit-hyphens: auto; hyphens: auto; }
-h1 { page-break-before: always; break-before: page; font-size: 20pt; color: #0B1E3B;
+h1 { page-break-before: always; break-before: page; font-size: 19pt; color: #0B1E3B;
      border-bottom: 2px solid #B58B3E; padding-bottom: 5pt; }
 h1:first-of-type { page-break-before: avoid; break-before: avoid; }
 h2 { font-size: 14pt; color: #0B1E3B; margin-top: 15pt; }
@@ -63,5 +63,5 @@ pre > code.sourceCode > span { display: inline !important; }
 
 table { font-size: 9pt; width: 100%; table-layout: fixed; }
 td, th { overflow-wrap: break-word; word-break: break-word; }
-img { max-width: 100%; height: auto; max-height: 8.4in; }
+img { max-width: 100%; height: auto; max-height: 5.64in; }
 a { color: #1F4A4E; text-decoration: none; word-break: break-all; }

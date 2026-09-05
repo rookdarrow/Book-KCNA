@@ -96,7 +96,6 @@ Throughout this guide, you'll encounter consistent markers that help you navigat
 | ☀️ **Zenith** | A synthesis moment — where several threads resolve into one idea |
 | ⚓ **Worth Securing** | A point worth fastening down before moving on |
 | 🪝 **Snag** | A place the obvious reading is the wrong one |
-| 🔭 **Closer Look** | Deeper than the exam requires, included because it explains the rest |
 | 🪢 **Mnemonic** | A memory hook for something arbitrary |
 | 🚨 **Exam Alert** | The highest-priority facts in the chapter |
 | 🗺️→🌊→🌅 **Voyage Progress** | Chart, Passage, Dawn — how far the voyage stands |
@@ -702,14 +701,11 @@ Two of those facts deserve a moment.
 
 **Two years of validity.** Cloud native tooling moves fast enough that a five-year credential would be a fiction. Two years is honest. Plan for it.
 
-> 🔭 **Closer Look:** Prices and bundles are the most volatile facts in this section and the least load-bearing for your studying. The figures above are as of 2026-08-23. Check the exam page before you buy; if the number has moved, nothing else in this book changes.
-
 Now a disclosure most study guides skip.
 
 **The two numbers everyone quotes are both published — just not where you would look for them.** The passing score is in the Linux Foundation's candidate documentation, on the page "Multiple Choice Exams: Frequently Asked Questions," which states that a score of 75% or above must be earned to pass [source: lf-mc-exam-faq-2026-08-23]. The question count is in the same documentation, on the sibling page "Multiple Choice Exams: Important Instructions," which states that the exam "consists of 60* multiple-choice questions" [source: provenance-kcna-60-questions-2026-08-31]. Both are published for multiple-choice exams **as a class**, and KCNA is placed in that class by its own exam page. Neither figure is on the exam page most candidates read, which states the format, the duration, the eligibility terms, the price, and the domain weights and stops there [source: lf-kcna-exam-page-2026-08-23]. What it does not do is repeat what the candidate documentation already says.
 
 You will nonetheless see "60 questions, 75% to pass" repeated across study sites, videos, and forum threads, stated flatly, as one fact. It is two facts with one pedigree and a shared problem: the certifying body publishes both, in its candidate documentation, for a class of exams — and almost nobody who repeats them has read that documentation or cites it. What travels on repetition is not the numbers. It is the *claim to know where they come from*.
-
 
 > ⚠ **Navigational Hazards**
 >
@@ -934,13 +930,12 @@ You'll meet these throughout. Each one signals a specific kind of content so you
 | ☀️ | Zenith | The moment separate concepts connect |
 | 🗺️→🌊→🌅 | Voyage Progress | Chart → Passage → Dawn: how far the voyage stands |
 
-Four smaller glyphs appear inline, mid-prose, as short asides:
+Three smaller glyphs appear inline, mid-prose, as short asides:
 
 | Glyph | Name | What it signals |
 |---|---|---|
 | ⚓ | Worth Securing | A practitioner's tip worth anchoring |
 | 🪝 | Snag | A specific, common slip — briefer and narrower than ⚠ |
-| 🔭 | Closer Look | Deeper than the exam requires; optional |
 | 🪢 | Mnemonic | A memory hook |
 
 Two sidebar types run longer: **Logbook Entry** (a story from practice) and **Extended Analogy** (a metaphor developed at length). Both are opt-in depth; you can skip either without losing the thread.
@@ -978,14 +973,6 @@ You now have a Soundings score. Use it.
 > 🪝 **Snag:** Your Soundings score is a reading strategy, not a verdict. A 1/8 on Chapter 9's Soundings means "read Chapter 9 carefully" and nothing else. It is not a prediction about the exam, and it is certainly not information about you.
 
 **On study time**, honestly rather than promotionally: this is a beginner-level, ninety-minute, conceptual exam. For someone with general IT literacy and no Kubernetes exposure, a few weeks of consistent evening study is a realistic frame. For someone already working around clusters, considerably less. Anyone quoting you a precise number ("Pass in 14 days!") is guessing, however confidently, because the number depends entirely on what you walk in carrying. What I can tell you is that the material is finite and well-bounded. This is not a credential you grind. It's one you understand.
-
-> **Logbook Entry:** Picture a candidate who sits the KCNA this year having studied hard from a course recorded in 2024.
->
-> They'd done everything right by their own lights: worked through the whole course, drilled the practice sets, built a mental map of the exam. That map had five domains on it. It had a standalone observability domain worth 8% [source: cncf-kcna-curriculum-retired-2026-09-04], and they had studied Prometheus with the thoroughness an 8% standalone domain deserves. They knew the exporters. They knew the scrape model. They could talk about PromQL at a whiteboard.
->
-> They passed. A conceptual exam is forgiving of a misallocated study plan when the underlying facts are sound. But they described the first ten minutes as recalibration, question by question, as it dawned on them that the exam's mass was not where they'd been told it was. Application Delivery kept coming up. They had given it the attention appropriate to 8% of an exam, and it is 16% [source: cncf-kcna-curriculum-retired-2026-09-04].
->
-> Ten minutes of a ninety-minute exam spent recalibrating is over a tenth of your time, and it goes at exactly the moment your composure matters most. That is what §3 of this chapter is for.
 
 ---
 
@@ -1489,8 +1476,6 @@ A **buildpack** is software that transforms application source code into runnabl
 
 > ⚓ **Worth Securing:** Buildpacks build your application in one base image and ship it on a different one [source: buildpacks-concepts-2026-08-23], and that split is the idea to take from them even if you never use them. The environment that *compiles* your application and the environment that *runs* it do not have to be the same environment, and they usually shouldn't be. Compilers, headers, and build tooling are attack surface that your production image has no use for; a multi-stage build achieves the same separation by hand, so that none of the build tools required to build the application are included in the resulting image [source: docker-docs-multi-stage-2026-08-24]. Buildpacks make that separation structural rather than a discipline you have to remember. The same instinct scales down to base-image choice generally: a small image with minimal dependencies can considerably lower the attack surface [source: docker-docs-build-best-practices-2026-08-24].
 
-> 🔭 **Closer Look:** The final step of a Buildpacks build, export, produces the image with *reproducible* layers [source: buildpacks-concepts-2026-08-23], meaning the same input reliably produces the same layer bytes rather than layers that differ run to run because of timestamps or file ordering. (That gloss on "reproducible" is the author's, not the specification's wording.) The property is deeper than the exam requires, but it's the hinge on which supply-chain verification swings: you cannot meaningfully attest to an artifact whose bytes change when nothing changed. *[cross-bearing: see Ch 12 — signing, attestation, and the software supply chain]*
-
 Supply-chain security, meaning scanning, signing, and bills of materials, is a real concern that attaches to everything in this section, and it is not this chapter's. It gets a full treatment later *[cross-bearing: see Ch 12 — securing the image supply chain]*.
 
 ---
@@ -1535,16 +1520,6 @@ If you recite one sentence from §1 through §3 cold, recite that one.
 > You should avoid using the `:latest` tag when deploying containers in production, as it is harder to track which version of the image is running and more difficult to roll back properly. Instead, specify a meaningful tag such as `v1.42.0` and/or a digest [source: k8s-docs-images-2026-08-23].
 >
 > That is the documented guidance, and most candidates absorb it as a naming-hygiene rule: untidy, faintly unprofessional, not really *dangerous*. That reading is incomplete, and the incompleteness is the trap. The `:latest` problem has a second half that has nothing to do with naming. **The tag you write also silently determines when Kubernetes will go looking for a new copy of the image.** Same field, second effect, and the caution above doesn't mention it. §6 completes it. *[cross-bearing: see Ch 2 §6 — the tag determines the default pull policy]*
-
-> **Logbook Entry:**
->
-> The failure looks like this from the inside, and it pays to know the shape of it before you meet it.
->
-> A deployment goes out. It behaves badly in a way nobody can reproduce locally. The manifest is checked: unchanged, same commit, same image reference as the version that has been running quietly for three weeks. So the manifest is checked again, this time by two people, out loud, line by line, because the alternative explanations are all worse. It is genuinely unchanged. The reference says `:v2` and it said `:v2` before.
->
-> Someone eventually proposes the rollback, which is when the afternoon turns philosophical. Rolling back to the previous configuration produces the *same reference*, which produces the *same bytes*, which produces the same bad behavior. The rollback rolls back to exactly where you already are. There is a particular quality of silence in a room where four competent people have just realized that the thing they were treating as an identity was a label the whole time.
->
-> Nobody moved the tag maliciously. Somebody upstream rebuilt `:v2` with a dependency bump, which is a completely reasonable thing to do to a tag, because a tag identifies a series. The manifest was never the problem. The mental model was. And the tell, in hindsight, was that we spent an hour proving the manifest hadn't changed instead of one minute asking whether an unchanged manifest guarantees unchanged bytes.
 
 ### Registries, briefly
 
@@ -1756,8 +1731,6 @@ And the flow that connects them, in three beats: at a high level, an OCI impleme
 >
 > Two three-letter abbreviations. Both involve the word "runtime." Both sit underneath your Pod. They are easy to confuse, and the confusion is not carelessness, since a single component can genuinely participate in both planes at once. CRI-O's own front page says so in one sentence, with each acronym in its correct plane: CRI-O is an implementation of the Kubernetes CRI (Container Runtime Interface) to enable using OCI (Open Container Initiative) compatible runtimes [source: containerd-cri-o-runc-2026-08-24]. The discipline is to ask which *direction* you're looking. Up toward Kubernetes, that's CRI. Sideways toward the rest of the industry, that's OCI. Lay Figure 2-3 and Figure 2-4 side by side; the planes are drawn in the same grammar precisely so you can see that they are different planes.
 
-> 🔭 **Closer Look:** Notice the dates. The OCI was founded in June 2015, and the distribution specification did not reach v1.0 until May 2020 [source: oci-overview-2026-08-23], arriving well after the other two. That ordering tells you something about which problems felt urgent. The industry settled *what an image is* and *what it means to run one* before it formalized *how it moves*. This is depth beyond what the exam asks. What the exam is more likely to ask — again the author's judgment — is which specification governs the registry API, and the answer is the one that arrived last.
-
 runC closes the loop: Docker donated its container runtime, runC, to the OCI to serve as the cornerstone of this new effort [source: oci-overview-2026-08-23]. The company that popularized containers gave away the piece that runs them. That is what an open governance structure is *for*, and it is the same institutional instinct you will meet again when the book turns to how CNCF itself is governed *[cross-bearing: see Ch 17 §2 — CNCF governance and project maturity]*.
 
 ---
@@ -1831,8 +1804,6 @@ The mechanism, at the depth the exam reaches. Configure the CRI implementation o
 Two levels of indirection, which is the part to hold onto: the Pod names a RuntimeClass, and the RuntimeClass names a handler that was configured on the nodes. The Pod author does not name a runtime. They name a *class of runtime configuration* that a cluster administrator has already established, which is why this works as a self-service mechanism rather than as a way for application teams to request arbitrary runtimes.
 
 A RuntimeClass can also carry scheduling constraints (`nodeSelector`, `tolerations`) so that Pods land on nodes which actually support the handler, and a **Pod overhead** so the scheduler accounts for the runtime's resource cost [source: k8s-docs-runtime-class-2026-08-23]. Both of those are scheduling concepts, and scheduling has its own chapter *[cross-bearing: see Ch 7 — node selection, tolerations, and accounting for overhead]*. Register that they exist; the reasoning behind them arrives later.
-
-> 🔭 **Closer Look:** Kata Containers and gVisor are two genuinely different answers to the same question. Kata uses **hardware virtualization**; gVisor uses a **user-space kernel** [source: k8s-docs-runtime-class-2026-08-23]. Kata's approach is, roughly, borrowing back the isolation model §1 traded away: a real virtualization boundary underneath the workload. gVisor's is to interpose a kernel implementation that is not the host's: gVisor is an application kernel that implements a Linux-like interface and runs in userspace; it intercepts application system calls and acts as the guest kernel, without the need for translation through virtualized hardware, and its Sentry component does not pass system calls through to the host kernel [source: gvisor-docs-what-is-gvisor-2026-09-04]. Different techniques, same goal, different overheads. This is depth: an exam item is far likelier to ask *why RuntimeClass exists* than to ask which sandbox uses which technique. Know the motivation cold; know this as a bonus.
 
 The security guidance is consistent with all of it: to protect compute at runtime, use a container runtime that provides security restrictions [source: k8s-docs-cloud-native-security-2026-08-23]. RuntimeClass is the Kubernetes-shaped way to say *which* one, per workload. Sandboxed runtimes come back as one control among several in the security lifecycle *[cross-bearing: see Ch 12 — runtime protection for compute]*.
 
@@ -1973,21 +1944,6 @@ And that is the plant. This is the **first** of four times you will see this mov
 4. **`imagePullPolicy` defaults.** IfNotPresent with a digest; Always with `:latest`; Always with no tag; IfNotPresent with any other tag [source: k8s-docs-images-2026-08-23]. Four cases, and an item can give you a reference and ask for the behavior.
 
 5. **The interface-and-implementations pattern itself.** CRI is the first of four published extension points: CRI, CNI, CSI, and API extensions [source: k8s-docs-extending-kubernetes-2026-08-23]. Recognizing the *move*, not just this instance of it, is what Chapter 17 will ask of you.
-
-**Common Traps**
-
-| Trap | Where this chapter defuses it |
-|---|---|
-| "A container image includes the OS kernel" | §2 — derived from §1's sharing model; Bearings #1 Q1 |
-| "You patch a running container" | §2 immutability — the correct process is build a new image, then recreate [source: k8s-docs-containers-2026-08-23]; Bearings #1 Q2 |
-| "OCI is a runtime" | §5 ★ Fixed Point — it is a governance structure publishing three specifications |
-| Conflating OCI with CRI | §5 ⚠ Navigational Hazards. These are easy to confuse: two three-letter abbreviations, both mentioning "runtime," both below your Pod. Ask which direction you're looking |
-| "Docker is the container runtime Kubernetes uses" | §4 🪝 Snag. Also easy to confuse, for historical reasons — "Docker" names four things, and the supported set is defined by CRI conformance [source: k8s-docs-containers-2026-08-23] |
-| "`:latest` is just a naming-hygiene issue" | §3 ⚠ plus §6 — the tag also sets the default pull policy [source: k8s-docs-images-2026-08-23] |
-| "`Always` re-downloads the image every launch" | §6 Dead Reckoning — it re-resolves to a digest and reuses a matching cached image [source: k8s-docs-images-2026-08-23] |
-| "Container isolation strength is fixed" | §7 — RuntimeClass selects it per Pod [source: k8s-docs-runtime-class-2026-08-23] |
-
-Two of these traps are flagged for a specific reason. The OCI/CRI conflation and the Docker-as-runtime shorthand appear here because they are conceptually slippery, not because this book has data on how often they show up. The book does not make frequency claims it cannot support.
 
 ---
 
@@ -2724,8 +2680,6 @@ Kubernetes was announced publicly at DockerCon in June 2014, reached v1.0 in Jul
 
 The name comes from the Greek word for helmsman or pilot; "K8s" is the numeronym, with eight letters between the K and the s [source: k8s-history-ten-years-2026-08-23]. The brand you're reading did not pick the maritime register to be cute about it. The subject arrived that way.
 
-> 🔭 **Closer Look:** Borg and Omega were two different projects, not one renamed. Borg was the production system; Omega is described as its research successor [source: k8s-history-ten-years-2026-08-23]. Kubernetes inherited from both. This is deeper than the exam requires.
-
 *[cross-bearing: see Ch 17 §1 — the CNCF and the cloud native definition; its governance follows in §2]*
 
 ---
@@ -3053,8 +3007,6 @@ Concretely, at component altitude. You submit a request describing something tha
 
 Read the verbs. *Notices.* *Selects.* *Records.* *Notices.* At no point does one component instruct another. Each one independently observes a state it cares about, does its own job, and writes the result somewhere everyone can see it.
 
-> 🔭 **Closer Look:** Doesn't a single front end become a bottleneck? The documented answer is that kube-apiserver is designed to scale horizontally: you run several instances and balance traffic between them [source: k8s-docs-cluster-architecture-2026-08-23]. A hub with N interchangeable instances behind a load balancer is architecturally still one door, and operationally is not one machine. This is deeper than the exam requires.
-
 *[cross-bearing: see Ch 8 — the authentication, authorization, and admission gates a request actually passes through on its way in]*
 *[cross-bearing: see Ch 4 — how you write the description that gets submitted]*
 
@@ -3333,16 +3285,6 @@ That's why §6 was worth more than the eight names, and why the eight names were
 3. **kube-controller-manager: many logical controllers, one binary, one process.** One sentence in the documentation, and the whole distinction rides on it.
 4. **Kubernetes is not a mere orchestration system.** The technical definition of orchestration is execution of a defined workflow: first A, then B, then C. Kubernetes disclaims it in favor of independent, composable control processes.
 5. **What Kubernetes is not.** Not a traditional all-inclusive PaaS. Does not build your source. Does not ship middleware, databases, or caches. Does not mandate logging or configuration solutions.
-
-**Common Traps:**
-
-- **"kube-proxy is required on every node."** — Optional when a network plugin provides equivalent packet forwarding for Services [source: k8s-docs-cluster-architecture-2026-08-23].
-- **"Every cluster has a cloud-controller-manager."** — Absent on premises and in a learning environment on your own PC [source: k8s-docs-cluster-architecture-2026-08-23].
-- **"The controller-manager runs one process per controller."** — Logically separate, but compiled into a single binary and run in a single process [source: k8s-docs-cluster-architecture-2026-08-23].
-- **"Kubernetes is an orchestrator that runs A then B then C."** — That is the technical definition of orchestration, which Kubernetes explicitly disclaims [source: k8s-docs-overview-2026-08-23].
-- **"Kubernetes is a PaaS."** — Not a traditional, all-inclusive PaaS; the PaaS-like features it does offer are optional and pluggable [source: k8s-docs-overview-2026-08-23].
-- **"The scheduler places the Pod on the node."** — The scheduler *selects* a node and notifies the API server of that decision [source: k8s-docs-kube-scheduler-2026-08-23]. The kubelet on that node starts the containers. (How the scheduler chooses is Chapter 7's.)
-- **"The controller does the work."** — A controller usually asks the API server to change something. A different component performs the action.
 
 ---
 
@@ -4004,8 +3946,6 @@ And one warning, stated by the documentation in its own alarmed voice:
 
 The verb you will use to submit a record is `kubectl apply`, which applies a configuration change to a resource from a file or standard input [source: k8s-docs-kubectl-overview-2026-08-23]. That sentence is the entire treatment `apply` gets in this chapter. You cannot teach a record of intent without showing how a record gets filed, so `apply` appears here; the full command surface, its verbs, its flags, how it authenticates, belongs to Chapter 8 *[cross-bearing: see Ch 8 — kubectl, in full]*.
 
-> 🔭 **Closer Look:** The three techniques differ in one thing that matters more than syntax: **where the record of what you wanted lives.** With an imperative command it lives only in the cluster, which is why the documentation says the technique gives you no history. With object configuration it lives in a file, which can go into source control, be reviewed before it is pushed, and serve as a template for the next object [source: k8s-docs-object-management-2026-08-24]. The trade-off is stated just as plainly in the other direction: object configuration requires a basic understanding of the object schema and the additional step of writing a YAML file. Nothing here is free, and the documentation does not pretend otherwise.
-
 One precision note before we go on, because the chapter subtitle is a slogan and slogans overclaim. Kubernetes accepts plenty of imperative instruction. `kubectl delete` deletes. `kubectl scale` updates the size of a workload. `kubectl exec` executes a command inside a running container and has no declarative reading at all [source: k8s-docs-kubectl-overview-2026-08-23] *[cross-bearing: see Ch 16 §3 — getting inside a running container]*. The accurate claim is narrower and more interesting than the slogan: **the objects are declarations, and the imperative commands work by changing declarations.** We will make that precise in §6. For now, hold the narrow version.
 
 > **Extended Analogy:** Think about the papers a vessel files before departure.
@@ -4146,8 +4086,6 @@ Put the pieces together. You have a file. You have a verb. You have a component 
 *Figure: one declaration, in sequence, over time. The loop at the bottom never terminates. That is not a diagram convention; it is the actual behavior. Compare this to Chapter 3's request-path figure, which showed which components talk to the API server; this one shows what happens to a single object after they do.*
 
 Nothing in that path is a command. You submitted a description; the API server stored it; a controller noticed it; the controller acted; the result was reported back into the same object you wrote. The object is the medium and the message both.
-
-> 🔭 **Closer Look:** Notice where the controller gets its information. It does not receive a message from you, and it does not receive one from `kubectl`. It watches the API server. This is why the same declaration can be applied by a person at a terminal, a CI pipeline, or a tool that reconciles from a Git repository, and the cluster behaves identically in all three cases. The cluster cannot tell the difference and does not care. That indifference is a design choice with consequences we will pick up much later *[cross-bearing: see Ch 15 — the same declaration, kept in a repository]*.
 
 One more command earns a mention here, because it converts a memorization problem into a lookup one: `kubectl explain` gets documentation for resources [source: k8s-docs-kubectl-overview-2026-08-23]. The four top-level fields you now know are the map. `kubectl explain` is how you read the territory inside `spec` for any resource type you have not memorized, which at associate tier is most of them, and that is fine.
 
@@ -4347,12 +4285,6 @@ One practical consequence worth carrying: if you configure a Secret through a ma
 The documentation follows its caution with four steps to take in order to use Secrets safely: enable Encryption at Rest for Secrets; enable or configure RBAC rules with least-privilege access to Secrets; restrict Secret access to specific containers; and consider using external Secret store providers [source: k8s-docs-secret-2026-08-23].
 
 Every one of those four is Chapter 12's, and this section is going to hand them over without teaching a single one. That restraint is deliberate: the material above is alarming enough that the pull toward "and here's how to fix it" is strong, but Chapter 12 is where encryption at rest, least-privilege access rules, and the broader security posture get the room they need *[cross-bearing: see Ch 12 — hardening Secrets, and the access-control model behind it]*. A Secret is a strongbox stowed in the same hold as everything else. The lock is Chapter 12's; this chapter is only telling you the box did not ship with one fitted.
-
-> 🔭 **Closer Look:** The third item in that caution, *anyone authorized to create a Pod in a namespace can read any Secret in that namespace, including indirectly via a Deployment*, inverts an intuition, and it repays turning over slowly.
->
-> You might reasonably assume that "can read Secrets" and "can create workloads" are separate permissions to be granted separately. They are separate permissions, and granting the second effectively grants the first: a Pod you create can mount any Secret in its namespace, and once mounted, its contents are yours to print. There is no way to create a Pod without that being true, because handing Secrets to Pods is what Secrets are for.
->
-> The practical consequence is that permission to create Pods in a namespace is, in security terms, a Secrets question, and nothing in the name of the permission says so. This is exactly the thread Chapter 12 picks up.
 
 ### Types of Secret
 
@@ -4679,21 +4611,6 @@ One more time, precisely, because §1 promised it and because slogans deserve au
 5. **Labels versus annotations:** identifying, constrained, and selectable, versus non-identifying, unconstrained, and not.
 6. **ConfigMap versus Secret:** a difference of intent and handling, not of encryption. Base64 is an encoding.
 7. **What a declaration actually is:** the objects are declarations, and the imperative commands work by changing declarations.
-
-**Common Traps**
-
-| Trap | Correct understanding |
-|---|---|
-| Using a namespace to separate two versions of the same software | Use labels within one namespace. Namespaces scope names; labels partition sets [source: k8s-docs-namespaces-2026-08-23] |
-| "Everything lives in a namespace" | Nodes, PersistentVolumes, StorageClasses, and namespaces themselves do not [source: k8s-docs-namespaces-2026-08-23] |
-| "`kube-public` is enforced as publicly readable" | The public aspect is only a convention, not a requirement [source: k8s-docs-namespaces-2026-08-23] |
-| Confusing labels with annotations | Labels identify and can be selected on; annotations record and cannot [source: k8s-docs-annotations-2026-08-24] |
-| "ConfigMaps hold config; Secrets hold *secure* config" | Secrets are stored unencrypted by default [source: k8s-docs-secret-2026-08-23]. The difference is treatment, not cryptography |
-| "The value is base64, so it's protected" | Base64 is not an encryption method and provides no additional confidentiality over plain text [source: k8s-docs-secrets-good-practices-2026-08-24] |
-| Assuming a ConfigMap change reaches a running container instantly | Environment variables need a Pod restart; a volume mount is refreshed eventually, on the kubelet's periodic sync, and never via `subPath`; only the API-reading path sees the change as it happens [source: k8s-docs-configmap-mounted-updates-2026-09-04] [source: k8s-docs-volumes-2026-08-23] |
-| "An immutable ConfigMap can be un-marked" | It cannot be reverted. Delete and recreate [source: k8s-docs-configmap-2026-08-23] |
-| Forgetting the ConfigMap size ceiling | 1 MiB [source: k8s-docs-configmap-2026-08-23] |
-| Referencing a ConfigMap across namespaces | The Pod and the ConfigMap must be in the same namespace [source: k8s-docs-configmap-2026-08-23] |
 
 Six of those ten live in §4, which is why that section carries the chapter's densest warning block and its highest attention cost. If you are budgeting revision time, §4 is where it goes.
 
@@ -5327,7 +5244,6 @@ Chapter 2 left you with a promise: containers are not the unit Kubernetes schedu
 
 **A Pod represents a set of one or more running containers on your cluster** [source: k8s-docs-workloads-2026-08-23] — the documentation's own superlative is that Pods are *the smallest deployable units of computing that you can create and manage in Kubernetes* [source: k8s-docs-pods-2026-08-24]. It is the thing you hand Kubernetes when you want something run: the scheduler watches for newly created **Pods** with no assigned node and finds a node for each one [source: k8s-docs-kube-scheduler-2026-08-23]. You do not hand Kubernetes a container and ask for it to be placed. Chapter 2 already gave you the phrase that follows from this: containers in a Pod are **co-located and co-scheduled** to run on the same node [source: k8s-docs-containers-2026-08-23]. Every node in a cluster runs the containers that form the Pods assigned to that node. The assignment happens at Pod granularity, and the containers come along.
 
-
 That costs something. Everything in a Pod lands on one machine, scales as one thing, and dies as one thing. So the interesting question isn't *what* a Pod is. It's *why the wrapper exists at all*.
 
 ### What every container in a Pod shares
@@ -5392,7 +5308,6 @@ A Pod can hold more than one container. The question is when it should. Not ever
 
 Pods are used in two main ways [source: k8s-docs-pods-2026-08-24]. Overwhelmingly the most common is **one container per Pod**: the Pod is a thin wrapper around a single container, and that is what you should reach for by default. The other is **multiple tightly-coupled containers** that need to share resources, meaning a main application container plus one or more helpers that supplement or consume it.
 
-
 The decision rule is short, and it falls straight out of §1. There are exactly two mechanisms that make containers in one Pod tightly coupled:
 
 1. **They reach each other over `localhost`**, because they share the Pod's network namespace [source: k8s-docs-network-model-2026-08-23].
@@ -5420,8 +5335,6 @@ The mechanics are simple. The semantics are what get tested.
 
 **Init containers run before the app containers, in the order they are declared, and each must run to completion successfully before the next one starts** [source: k8s-docs-init-containers-2026-08-24]**.** Only when all of them have succeeded does the kubelet start the Pod's app containers.
 
-
-
 <!-- FIGURE: ch05-fig03-init-containers-sequence -->
 ![Two timelines: on the success path init-1 exits zero then init-2 exits zero, after which app-a and app-b start together in parallel; on the failure path init-2 exits non-zero, restart is governed by restartPolicy, and the app containers are never started](figures/ch05-fig03-init-containers-sequence.svg)
 
@@ -5433,7 +5346,6 @@ SUCCESS PATH
   [ init-1 ]──exit 0──►[ init-2 ]──exit 0──►┌─[ app-a ]────────►
                                              └─[ app-b ]────────►
    (sequential, one at a time)                (parallel, together)
-
 
 FAILURE PATH
   time ──────────────────────────────────────────────────────►
@@ -5670,8 +5582,6 @@ A container that reaches `Terminated` doesn't necessarily stay there. What decid
 
 When a container does exit and the policy calls for a restart, the kubelet doesn't retry immediately and forever. **After containers in a Pod exit, the kubelet restarts them with an exponential backoff delay — 10s, 20s, 40s, and so on — capped at five minutes. Once a container has executed for 10 minutes without any problems, the kubelet resets the restart backoff timer for that container** [source: k8s-docs-pod-lifecycle-2026-08-23].
 
-> 🔭 **Closer Look:** The backoff schedule looks like two arbitrary numbers until you see what each one is for. The **five-minute cap** is a floor on how bad things can get: no matter how long a container has been failing, you never wait more than five minutes to find out whether the next attempt works. The **ten-minute reset** is a forgiveness window: a container that has behaved for ten straight minutes has demonstrably recovered, so its history of failures stops counting against it. Cap plus forgiveness. Neither number is magic, but the *shape* — bounded penalty, earned amnesty — is a pattern you'll see again in distributed systems.
-
 ### The worked example Chapter 2 promised
 
 Chapter 2 named a failure and deferred it here: `ImagePullBackOff` *[cross-bearing: see Ch 2 §6 — ImagePullBackOff and where its state is defined]*. It's the cleanest possible demonstration of the phase/state split.
@@ -5869,8 +5779,6 @@ Two more exist and are specified the same way — `ephemeral-storage` (local eph
 >
 > Note that `m` is perfectly correct — and extremely common — for CPU, where `100m` means one tenth of a core. The suffix isn't wrong; it's wrong *for memory*. Habit carries it across, and nothing in the manifest will stop you.
 
-> 🔭 **Closer Look:** Two details that reward a second look. First, **CPU resource is always specified as an absolute amount, never as a relative amount**: `500m` CPU represents roughly the same amount of computing power whether the container runs on a single-core, dual-core, or 48-core machine [source: k8s-docs-resource-management-2026-08-23]. That's more useful than it first appears. Most capacity intuitions are relative ("give this service a quarter of the box"), and they break the moment the box changes size. A CPU request in Kubernetes is portable across node types by construction. Second, there is a floor on precision: **Kubernetes doesn't allow CPU resources finer than `1m`** [source: k8s-docs-resource-management-2026-08-23]. One thousandth of a core is as small as the vocabulary goes.
-
 There is a fourth movement to this arithmetic, and it is the one the exam names. **Kubernetes classifies every Pod you run into a *quality of service (QoS) class* and uses that classification to influence how the Pod is treated when a node comes under resource pressure** [source: k8s-docs-pod-qos-2026-08-24]. You never set the class directly. It is derived entirely from the shape of the requests and limits you just learned to write:
 
 - **`Guaranteed`** — every container in the Pod has a memory limit and a memory request set equal to each other, and a CPU limit and CPU request set equal to each other. These Pods have the strictest resource bounds and are the least likely to face eviction: guaranteed not to be killed until they exceed their own limits, or until the node has nothing lower-priority left to take first [source: k8s-docs-pod-qos-2026-08-24].
@@ -6042,7 +5950,6 @@ A hull is not cargo. The vessel is the thing that gets a berth, an address, and 
 ```
 -->
 
-
 - **The Pod has an IP, not the container** — because a shared network namespace is what the wrapper exists to provide (§1).
 - **Containers reach each other on `localhost`** — same reason, same namespace (§1, §2).
 - **`restartPolicy` is Pod-level and applies to every container** — because the Pod is the unit (§5).
@@ -6071,21 +5978,7 @@ There's a smaller synthesis hiding inside the larger one, too. §4 noted that a 
 6. **A Pod is scheduled once and never rescheduled** — it is replaced, with a new UID.
 7. **Every Pod has a ServiceAccount**, defaulting to the namespace's `default`, which carries no meaningful permissions.
 
-**Common traps.** Seven recurring misconceptions, and three of them share one root cause:
-
-| Trap | The correct understanding |
-|---|---|
-| Confusing Pod phase with container state | Two vocabularies, two scopes. A Pod has a phase; each container has a state. Neither word set applies at the other's level. |
-| "`Running` means the app is working" | `Running` includes containers that are starting **or restarting**. A crash-looping Pod reports `Running`. |
-| "`restartPolicy` can be set per container" | It's a Pod-level field and applies to all containers. |
-| "A failed Pod is rescheduled to a healthy node" | Pods are never rescheduled. They're deleted and **replaced** by a new Pod with a different UID. |
-| "Liveness and readiness do the same thing" | Liveness kills and restarts. Readiness de-registers from Services and restarts nothing. Opposite consequences. |
-| Forgetting that a startup probe **disables** the others | While a startup probe is configured and hasn't succeeded, liveness and readiness are suppressed. |
-| "Each container in a Pod gets its own IP" | The **Pod** gets one IP, shared by all its containers. |
-
-The first three of those aren't three separate things to memorize. They're one rule: **reading a Pod-scoped signal as though it were container-scoped.** Learn the rule and all three traps close at once.
-
-**One more, from the documentation's own warning:** the memory suffix `m` versus `M`. `400M` is four hundred megabytes; `400m` is four tenths of a byte [source: k8s-docs-resource-management-2026-08-23]. One keystroke, nine orders of magnitude, and a question type that writes itself.
+**From the documentation's own warning:** the memory suffix `m` versus `M`. `400M` is four hundred megabytes; `400m` is four tenths of a byte [source: k8s-docs-resource-management-2026-08-23]. One keystroke, nine orders of magnitude, and a question type that writes itself.
 
 ---
 
@@ -6907,14 +6800,6 @@ A ReplicaSet identifies new Pods to acquire using its selector: if a Pod has no 
 
 The documentation's own advice for the template is blunt: be careful not to overlap with the selectors of other controllers, lest they try to adopt this Pod [source: k8s-docs-replicaset-2026-08-24].
 
-> **Logbook Entry:** Overlapping selectors fail in two directions, and neither direction announces itself as a configuration mistake, which is what makes them expensive.
->
-> Somebody ships a second workload and copies the first one's manifest as a starting point, including its labels. Neither controller is misconfigured in any way the API can see; each one's template agrees with its own selector, which is all the API validates. But each is now querying for Pods the other created. The documented consequence is adoption: a Pod that matches a selector and has no controller owning it is immediately acquired, and if that acquisition puts the acquirer over its desired count, the Pod is immediately terminated [source: k8s-docs-replicaset-2026-08-24].
->
-> Then somebody notices the collision and fixes it the obvious way, by editing one of the selectors. That is the other direction. Pods the edited controller used to claim stop matching it, and nothing is left holding them — the unintentional orphaning the DaemonSet page warns about, and the reason a DaemonSet forbids the edit outright [source: k8s-docs-daemonset-2026-08-24].
->
-> The prevention is a single habit, and it costs nothing: give every workload one label that is genuinely unique to it, and never hand-write a selector by copying somebody else's.
-
 *[cross-bearing: see Ch 9 — a Service selects its backends with the same mechanism, which is a different controller reading the same labels]*
 *[cross-bearing: see Ch 12 — deleting a workload does not delete everything it referenced]*
 
@@ -7061,7 +6946,6 @@ The other strategy is the contrast that makes the first one legible. With `Recre
                           └── ZERO AVAILABLE ─┘
                ────────────────────────────────────────▶ time
                    all old killed        then new created
-
 
   RollingUpdate
     available  ██████████▓▓▓▓▓▓▓▓▓░░░░░░░░░░░░██████████
@@ -7404,8 +7288,6 @@ Chapter 2 showed you the move: Kubernetes defines an interface and lets the ecos
 
 Four sockets, one pattern. Collecting them into a single statement about what kind of system Kubernetes is belongs later, when you have met all four in their own contexts. *[cross-bearing: see Ch 17 — CRI, CNI, CSI and CRDs, resolved into one story]*
 
-> 🔭 **Closer Look:** CRDs are not the only route to a custom API. The other is API-server aggregation, which offers more flexibility at the cost of writing and operating more of the API machinery yourself [source: k8s-docs-custom-resources-2026-08-23]. For this book's purposes: CRD is the common path, aggregation is the rarer one, and knowing that both exist is enough. *[cross-bearing: see Ch 17 §4 — the aggregation layer, among the other extension points]*
-
 *[cross-bearing: see Ch 14 — why Helm charts have a `crds/` directory]*
 *[cross-bearing: see Ch 15 — a delivery tool that is, structurally, a controller acting on custom resources]*
 
@@ -7505,7 +7387,6 @@ Take Chapter 3's control loop, the one you retrieved in Soundings question 7 and
                                   │
                                   └──────▶ (and again, forever)
 
-
    Change only what you plug into DESIRED STATE, and you have
    named every controller in this chapter:
 
@@ -7548,19 +7429,6 @@ Which returns you to the title. Nobody sails one Pod, not because a single Pod i
 6. **`RollingUpdate` is the default strategy; `maxSurge` and `maxUnavailable` both default to 25%; `Recreate` kills all old Pods before creating any new one** [source: k8s-docs-deployment-2026-08-23] [source: k8s-docs-deployment-spec-fields-2026-08-24].
 7. **A revision is created if and only if the Pod template changes.** Scaling does not create one [source: k8s-docs-deployment-2026-08-23].
 8. **A CRD alone stores structured data; a CRD plus a custom controller is the operator pattern** [source: k8s-docs-custom-resources-2026-08-23].
-
-**Common traps.**
-
-| Trap | The correction |
-|---|---|
-| "StatefulSet is for apps that write to disk" | The property is interchangeability. Deployment Pods can write to disk. |
-| "Use a DaemonSet to run several copies" | A DaemonSet expresses *per node*, not a number. Six copies is a Deployment. |
-| "Job and CronJob are two ways to schedule work" | A Job runs once. A CronJob *creates Jobs*. Same relationship as Deployment → ReplicaSet. |
-| "Scaling creates a revision" | Only a `.spec.template` change does. |
-| `maxSurge` and `maxUnavailable` transposed | Surge bounds *total*. Unavailable bounds *available*. Surge rounds up, unavailable rounds down. |
-| "`Recreate` is a mistake" | It is a supported strategy with a stated cost. Choosing it deliberately is correct engineering. |
-| "Installing a CRD makes something happen" | It defines a noun. Nothing acts on it until a controller exists. |
-| "`revisionHistoryLimit: 0` just tidies up" | It also removes the ability to undo the next rollout. |
 
 **The single most useful thing to internalize:** all three of the resource-selection traps are the same error. People choose a workload resource by what the application *is* rather than by how its Pods need to be *managed*. Run Figure 6.5's questions in order (does the work end, must it run on every node, are the Pods interchangeable) and you cannot arrive at any of the three.
 
@@ -8239,8 +8107,6 @@ The filtering step finds the set of nodes where it is feasible to schedule the P
 
 Note the word. Requests. Not limits: the kubelet enforces limits on the running container, and it does that after placement, on a node that has already been chosen [source: k8s-docs-resource-management-2026-08-23]. And not observed usage either. As the next few paragraphs show, a request is spent the moment it is granted, whatever the container does with it afterwards.
 
-> 🔭 **Closer Look:** `PodFitsResources` is named in the documentation as *an example* of a filter, not as the only one [source: k8s-docs-kube-scheduler-2026-08-23]. Resources are one feasibility test among several; §3 and §4 add more, and §6 covers the fact that the whole filter set is configurable. Don't walk away from this section thinking capacity is the only thing that can make a node infeasible.
-
 ### Now the part that surprises everyone
 
 When you specify a resource request for a container, the kube-scheduler uses that information to decide which node to place the Pod on, and the kubelet **reserves at least the request amount** of that resource specifically for that container to use [source: k8s-docs-resource-management-2026-08-23].
@@ -8654,8 +8520,6 @@ Same cluster, same six nodes, same two zones, same rule text. Change one label k
 >
 > **Inter-Pod rules are evaluated against the labels of Pods that are *already placed*, within a topology domain defined by a node label (`topologyKey`). The domain is the part people forget — it is a variable, not a synonym for "node."**
 
-> 🔭 **Closer Look:** The documentation states the cost of these rules without explaining it: *"Inter-pod affinity and anti-affinity require substantial amounts of processing which can slow down scheduling in large clusters significantly. We do not recommend using them in clusters larger than several hundred nodes"* [source: k8s-docs-assign-pod-node-depth-2026-08-24]. The explanation below is mine rather than theirs, and it is the obvious one. To decide whether a single node is feasible, the scheduler now has to know what's already running everywhere else in the domain: the answer for node-a depends on the contents of node-b. That's a fundamentally different cost shape from "does this node have 4 GiB free." This is a sharp tool. It is not free.
-
 ### Topology spread constraints
 
 Anti-affinity can say "not in the same domain." What people usually *want* is "distributed fairly evenly, and tell me how much unevenness you'll tolerate." That's a different requirement, and it has a purpose-built mechanism.
@@ -8897,23 +8761,7 @@ One last thing to notice, and then we'll stop. The scheduler watches for newly c
 8. **A toleration permits; it does not attract.**
 9. **`nodeName` bypasses the scheduler**, overrules `nodeSelector` and affinity, and fails rather than waiting.
 
-**Common Traps**
-
 You met the first of these in Chapter 3, where it was defused explicitly and you were told it would come back *[cross-bearing: see Ch 3 §2 — the control plane]*. Here's the piece Chapter 3 held back.
-
-| Trap | The correction |
-|---|---|
-| "The scheduler places the Pod on the node." | It notifies the API server. The kubelet on the chosen node is what starts containers. |
-| "The scheduler picks the single best node, deterministically." | Ties are broken at random [source: k8s-docs-kube-scheduler-2026-08-23]. |
-| "An unschedulable Pod errors out." | It remains unscheduled until the scheduler is able to place it [source: k8s-docs-kube-scheduler-2026-08-23]. |
-| "A failed Pod is rescheduled to a healthy node." | A Pod is never rescheduled to a different node; it is replaced by a new Pod with a different UID [source: k8s-docs-pod-lifecycle-2026-08-23]. |
-| "A toleration schedules the Pod onto the tainted node." | Tolerations allow scheduling but don't guarantee it — the scheduler still evaluates every other parameter [source: k8s-docs-taints-tolerations-2026-08-23]. **The most durable error in this material.** |
-| "`NoSchedule` evicts the Pods already running." | It doesn't. Pods currently running are not evicted [source: k8s-docs-taints-tolerations-2026-08-23]. Only `NoExecute` does. |
-| "Node affinity moves a Pod when the node's labels change." | `IgnoredDuringExecution` — the Pod continues to run [source: k8s-docs-assign-pod-node-2026-08-23]. |
-| "`PreferNoSchedule` means never." | It's a preference; the control plane will try to avoid the node but it is not guaranteed [source: k8s-docs-taints-tolerations-2026-08-23]. |
-| "`nodeSelector` and affinity are two syntaxes for the same power." | Affinity adds soft rules and five operators `nodeSelector` cannot express [source: k8s-docs-assign-pod-node-2026-08-23]. |
-| "A Pod with `nodeName` set that doesn't fit will wait." | It fails, with a reason such as `OutOfmemory` [source: k8s-docs-assign-pod-node-depth-2026-08-24]. The one failure here that isn't `Pending`. |
-
 ---
 
 ## Practice Questions
@@ -9142,8 +8990,6 @@ The next time you see a Pod stuck in `Pending`, you will not wonder whether some
 *One chapter left before Part III.*
 
 > *"You cannot move a berth once it is assigned. You can only be careful about what you said before it was."*
-
-
 
 
 
@@ -9612,14 +9458,6 @@ And here is the property that makes them a genuinely different kind of thing rat
 
 > ⚠ **Navigational Hazards:** Authorization and admission are not two names for the same check, and the sharpest proof is that they disagree about what counts as a decision. **Authorization is any-module-approves:** if any module authorizes the request, it proceeds; only if all modules deny is it refused [source: k8s-docs-controlling-access-2026-08-24]. **Admission is any-module-rejects:** unlike authentication and authorization modules, if any admission controller module rejects, the request is immediately rejected [source: k8s-docs-controlling-access-2026-08-24]. One gate is a vote you can win with a single supporter; the next is a veto any participant can exercise. A request can be fully authenticated, entirely authorized, and still be refused — or quietly rewritten — at the third gate.
 
-> 🔭 **Closer Look:** Admission controllers act on requests that create, modify, delete, or connect to (proxy) an object. They do not act on requests that merely read objects [source: k8s-docs-controlling-access-2026-08-24] — reads bypass the admission control layer entirely [source: k8s-docs-admission-controllers-2026-08-24]. So the whole of this gate is invisible to `kubectl get`, which is deeper than the exam requires and explains a great deal of otherwise-baffling behavior the first time you install a policy engine.
-
-> **Extended Analogy:** Think of a working commercial harbor rather than a locked building. A vessel arriving is met first by a pilot boat, whose only question is *which vessel is this*: papers, registration, identity. That is authentication. It has no view on your business here.
->
-> Once identified, the harbormaster consults the berth allocations: is this vessel entitled to a berth in this harbor today? That is authorization. The harbormaster does not open a single crate. The question is about standing, not about cargo.
->
-> Then, and only then, the customs officer comes aboard. This one *does* open crates. She may find something prohibited and turn the whole vessel around. But she has a third option the other two lack: she may say the vessel can dock provided a particular container stays sealed, or provided a declaration is completed and attached before unloading. The vessel proceeds — altered. That is admission control, and the third option is the entire reason it is a separate office rather than one more line on the harbormaster's form.
-
 ### Two admission controllers you have already met
 
 This is not an abstraction you have to take on faith. You have seen it work twice.
@@ -9629,8 +9467,6 @@ Chapter 7 introduced the **NodeRestriction** admission plugin, which prevents th
 And the Pod Security Standards are enforced by the built-in Pod Security Admission controller [source: k8s-docs-pod-security-standards-2026-08-23]. That is one clause and no more; Chapter 12 owns the three profiles and the three modes *[cross-bearing: see Ch 12 §6 — Pod Security Standards and Pod Security Admission]*. What matters here is the derivation: when you meet Pod Security Admission four chapters from now, you will not be learning a new kind of thing. You will be learning one instance of the third gate.
 
 The same is true of §3's material, arriving next. ResourceQuota is an admission controller that observes the incoming request and ensures that it does not violate any of the constraints enumerated in the ResourceQuota object [source: k8s-docs-admission-controllers-2026-08-24], and LimitRanger does the same for the constraints in a LimitRange object [source: k8s-docs-admission-controllers-2026-08-24]. Neither is a separate subsystem with its own enforcement path; both take effect at this gate.
-
-> 🔭 **Closer Look:** Dynamic admission control means the cluster calls out to a webhook *you* supplied — a mutating webhook or a validating webhook, with one built-in admission controller for each kind [source: k8s-docs-admission-controllers-2026-08-24]. Kubernetes makes synchronous HTTP requests to a remote service, a webhook backend, and the documentation is candid that this adds a potential point of failure [source: k8s-docs-extending-kubernetes-2026-08-23]. Which is to say: once you install a validating webhook, your webhook being down is a thing that can stop your cluster accepting requests.
 
 ### And a logbook
 
@@ -9841,8 +9677,6 @@ Read the middle clause of that first sentence again. It is doing more work than 
 
 > 🪢 **Mnemonic:** A cordon is a rope across a doorway. It stops people coming in. It does not remove the people already inside.
 
-> 🔭 **Closer Look:** `drain` is not a special maintenance channel either. You can request eviction by calling the Eviction API directly, or programmatically using a client of the API server, like the `kubectl drain` command; this creates an `Eviction` object, which causes the API server to terminate the Pod [source: k8s-docs-api-eviction-2026-08-24]. Using the API to create an Eviction object for a Pod is like performing a policy-controlled `DELETE` operation on the Pod [source: k8s-docs-api-eviction-2026-08-24]. So `drain` is a client that writes objects through the one door — which is §8's whole claim, arriving early.
-
 **One exception, and Chapter 7 §4 already joined these two for you.** Pods that are part of a DaemonSet tolerate being run on an unschedulable Node [source: k8s-docs-nodes-2026-08-23], because the DaemonSet controller automatically adds a `node.kubernetes.io/unschedulable` toleration with a `NoSchedule` effect to DaemonSet Pods [source: k8s-docs-daemonset-2026-08-24]. Chapter 6 taught DaemonSet as one-Pod-per-eligible-node; Chapter 7 taught the built-in condition tolerations and joined them *[cross-bearing: see Ch 7 §4 — the DaemonSet controller's automatic tolerations]* *[cross-bearing: see Ch 6 §7 — DaemonSet and node-local facilities]*. Here is what that join buys you during maintenance.
 
 ### Node conditions
@@ -9936,12 +9770,6 @@ That is the general shape of the answer to Soundings question 8. Whoever operate
 Which is precisely why the next two sections exist. **§6 is which versions are allowed to disagree. §7 is what you cannot get back.** Those are the two duties that move.
 
 <!-- AUTHOR-REVIEW: the managed/self-hosted duty split is deliberately narrow here and stays narrow. `k8s-docs-setup-tooling-2026-08-23` licenses only the EXISTENCE of a split ("consider which aspects of operating a Kubernetes cluster you want to manage yourself and which you prefer to hand off to a provider"); it does not enumerate sides, and kubernetes.io does not document commercial providers' responsibility models, so no fetch from that doc tree closes it. Recorded as research gap G-8G. Two duties are defensible on the architecture alone and are the only two asserted anywhere in this chapter: upgrade timing (§6) and etcd backup (§7). Do NOT restore a five-item duty list in Soundings A8, §5, or Practice Q13 without a vendor-neutral shared-responsibility source. -->
-
-> **Logbook Entry:** The managed-versus-self-hosted decision is usually argued as a cost question, and cost is rarely what decides it in practice.
->
-> A control plane is not expensive. Three modest machines will run one. What is expensive is the *calendar* attached to it: three minor releases a year, each with its own upgrade window, its own compatibility matrix, its own regression to discover in staging on a Thursday. Plus certificate expiries. Plus etcd backups you have to prove you can actually restore from, which is a different exercise from taking them. Plus the person who has to be reachable while all of that happens.
->
-> Crews that self-host successfully are almost always crews that budgeted for that calendar deliberately, as a named piece of somebody's job. Crews that regret it are usually crews that priced the machines and not the Thursdays. Neither choice is the right one in general; plenty of organizations have excellent reasons to own the whole thing, and regulatory ones are only the most obvious. But the question worth asking out loud before you decide is not *can we run this*, it is *whose watch does this stand on*.
 
 ---
 
@@ -10052,8 +9880,6 @@ Backing up an etcd cluster can be accomplished in two ways: a built-in snapshot,
 Restoring uses `etcdutl snapshot restore`, which operates directly on the etcd data files; after a restore, the control plane components are restarted against the restored data directory [source: k8s-docs-etcd-backup-2026-08-23].
 
 <!-- AUTHOR-REVIEW: the TLS flags are named above because the backup snapshot lists them. No configuration guidance is given, deliberately: the etcd-access-control snapshot's note states that the source page's TLS configuration guidance was not verbatim-verified in that fetch. Do not expand this into how to configure etcd TLS without a fresh verified fetch. -->
-
-> 🔭 **Closer Look:** Restore is not a command you run against a running cluster. `etcdutl snapshot restore` operates on the data files directly, and the control-plane components come back up against the restored directory afterwards. That is why restoring from a snapshot is a maintenance *event*, with a window, a plan, and somebody watching, rather than an operation you slip in between meetings.
 
 ### The fact that matters more than the commands
 
@@ -10234,24 +10060,6 @@ Chapter 4 §6 established this book's habit of narrowing a claim until it is tru
 9. **Upgrade the API server first**, because nothing may be newer than it.
 10. **`kubectl [command] [TYPE] [NAME] [flags]`** — types case-insensitive and abbreviable, names case-sensitive.
 11. **All objects live in etcd, and access to etcd is equivalent to root permission in the cluster.**
-
-**Common traps.** Each of these catches real candidates. None of them is dressed up with an invented statistic, because nobody publishes one.
-
-| Trap | The correct understanding |
-|---|---|
-| "kubelet must match the API server version" | It must not be *newer*. It may be up to three minors older. Matching is not required |
-| Applying the kubelet skew rule to `kubectl` | Different rule, different number, different shape. kubelet: three, older only. `kubectl`: one, either direction |
-| "Kubernetes supports the last two minor releases" | **Three** |
-| "Everything lives in a namespace" | Nodes, PersistentVolumes and StorageClasses do not. This is why no quota can cap a team's Node consumption |
-| "`cordon` takes the node out of service" | It stops new Pods. It does not move the ones already there. That is `drain` |
-| "Authorization and admission are two words for the same check" | Authorization is any-module-approves and looks at identity, verb and object; admission is any-module-rejects and looks at the object's contents |
-| "`Ready: False` is what an unreachable node reports" | An unreachable node shows `Unknown`. `False` is a node that reported *itself* unhealthy |
-| "`SchedulingDisabled` is a node Condition" | It is a display string. Cordoned nodes are marked Unschedulable in their `spec` |
-| "A ResourceQuota limits how big any one Pod can be" | That is LimitRange. A quota is an aggregate ceiling on the namespace |
-| "A Pod with no resource fields is always valid" | Not in a namespace with a cpu or memory quota. Declare requests or limits, or let a LimitRange declare them for you |
-| "`kubectl` inside a Pod behaves as it does on your laptop" | It detects in-cluster conditions, authenticates as the ServiceAccount, and defaults to that ServiceAccount's namespace |
-| "Resource names are case-insensitive, because resource types are" | Types are. Names are not |
-| "An etcd snapshot on the control-plane node is a backup" | It is a copy that goes down with the thing it was protecting — and, unencrypted, a root-equivalent credential |
 
 ---
 
@@ -10728,7 +10536,6 @@ figures_planned:
 | ☆ Taking Your Bearings #2 | 10 min | Medium | After brief break |
 | §8 — A Query With a Name | 5 min | Low | Anytime |
 
-
 **Attention Cost Key:**
 - **Low:** Concrete, familiar concepts—study anytime
 - **Medium:** New concepts requiring focus—study when alert
@@ -10898,12 +10705,9 @@ That published list runs longer than four [source: k8s-docs-extending-kubernetes
 
 Which network plugin? That is a genuine choice with genuine consequences. **Calico** is a networking and network policy provider supporting overlay and non-overlay networks, with or without BGP. **Cilium** provides a flat Layer 3 network with an eBPF-based data plane (see the glossary), in either native routing or overlay mode, and is a CNCF project at the Graduated level. **Flannel** is an overlay network provider [source: k8s-docs-cluster-addons-2026-08-24]. There are many more.
 
-
 ★ **Fixed Point:** Kubernetes **defines** the network model. A **CNI network plugin is required to implement** it. The four rules above are requirements the plugin satisfies, not machinery Kubernetes provides [source: k8s-docs-network-plugins-2026-08-24] [source: k8s-docs-extending-kubernetes-2026-08-23].
 
 Chapter 6 noted in passing that cluster networking plugins commonly ship as DaemonSets, one Pod on every node — Flannel's own deployment manifest, for one, is described by the project as a DaemonSet to deploy the flannel Pod on each node [source: flannel-docs-kubernetes-2026-09-04]. At the time that was an isolated fact about DaemonSets; now it is a satisfying one. A DaemonSet ensures that all, or some, nodes run a copy of a Pod [source: k8s-docs-daemonset-2026-08-24], and a thing that must configure networking on every node is exactly a thing that wants one copy per node. *[cross-bearing: see Ch 6 §7 — DaemonSets and per-node infrastructure]*
-
-> 🔭 **Closer Look:** The model is a *requirement*, not a description of a mechanism, and that is why implementations differ so widely. The three network plugins named above already span overlay and non-overlay networks, with or without BGP, native routing or encapsulation, and an eBPF-based data plane [source: k8s-docs-cluster-addons-2026-08-24]. Those are genuinely different pieces of engineering, and every one of them satisfies the same four rules. An application inside the cluster cannot tell which one it is running on: the model is the contract, and it is the same contract underneath all of them. That last part is the point. Deeper than the exam requires.
 
 One practical consequence, and it retrieves last chapter at exactly one chapter's distance: a node whose network is not correctly configured reports the **`NetworkUnavailable`** condition — `True` if the network for the node is not correctly configured [source: k8s-docs-nodes-2026-08-23]. You met the node condition list in Chapter 8 *[cross-bearing: see Ch 8 §4 — node conditions]*. This is the shortest demonstration available that the plugin is not a footnote.
 
@@ -10988,7 +10792,6 @@ There are four Service types. Three of them are layers of the same mechanism. On
    does not remove the inner ones — a NodePort Service still has
    its cluster IP, and a LoadBalancer Service has both.
 
-
    ════════════════════════════════════════════════════════════
    NOT ON THE LADDER. NOT A FOURTH RING. SEPARATE MECHANISM.
    ════════════════════════════════════════════════════════════
@@ -11000,7 +10803,6 @@ There are four Service types. Three of them are layers of the same mechanism. On
 -->
 
 ★ **Fixed Point:** The ladder types are **additive**. To implement a LoadBalancer Service, Kubernetes typically starts by making the changes equivalent to a NodePort Service [source: k8s-docs-service-loadbalancer-2026-09-04], and the case the documentation spells out most plainly is the one to memorize: **a NodePort Service also has a cluster IP — Kubernetes sets one up, exactly as if you had requested `type: ClusterIP`** [source: k8s-docs-service-2026-08-23]. Asking for a higher rung never removes the rungs below it.
-
 
 ### The one that is not on the ladder
 
@@ -11034,7 +10836,6 @@ Four lines, not a flowchart. Definitions and additivity are more testable than t
 - You need a fixed port on every node, usually because something in front of the cluster will target it → **NodePort**.
 - You have a cloud provider that will hand you an external address → **LoadBalancer**.
 - You want an in-cluster name for something that isn't in the cluster at all → **ExternalName**.
-
 
 ### The three port numbers
 
@@ -11240,8 +11041,6 @@ But — and this is the interesting half — **any endpoints that represent the 
 
 So the list is not a boolean membership test. It carries state, and note where that state lives. The Pod has a `Ready` condition; the Pod's *entry in the slice* has a `ready` status of its own [source: k8s-docs-pod-termination-2026-08-24]. A terminating Pod stays on the list, marked, so that anything watching can distinguish "gone" from "going," which is what lets in-flight connections drain rather than being severed.
 
-> 🔭 **Closer Look:** The EndpointSlice API records three conditions on each endpoint — `ready`, `serving` and `terminating`. `serving` maps to the Pod's `Ready` condition; `terminating` is set the moment the Pod is marked for deletion; and `ready` is essentially a shortcut for "`serving` and not `terminating`" [source: k8s-docs-endpointslices-2026-08-24]. So if traffic draining on a terminating Pod is needed, actual readiness can be checked as the condition called `serving` [source: k8s-docs-pod-termination-2026-08-24]. That is the distinction between "should get new traffic" and "can still handle traffic it already has." Deeper than the exam requires, and the reason graceful shutdown works at all rather than merely being promised.
-
 ### Looking at the list
 
 You can inspect it directly:
@@ -11403,8 +11202,6 @@ One closing beat, and it is a nice one because it reaches back to §1.
 
 So the network plugin that implements the network model can also implement the Service data plane. Which is a good inoculation against reading kube-proxy as load-bearing architecture. It is one implementation of one job, and that job can be done elsewhere.
 
-> 🔭 **Closer Look:** kube-proxy is optional. A network plugin like Cilium can do the same work in its own eBPF data plane (see the glossary) [source: k8s-docs-cluster-addons-2026-08-24]. If you meet a cluster running no kube-proxy at all, nothing is missing. Deeper than the exam requires, but useful the first time you see it and assume something is wrong.
-
 *[cross-bearing: see Ch 17 §5 — a service mesh moves this interception into a sidecar or an ambient layer]*
 
 ---
@@ -11519,8 +11316,6 @@ Note the shape, because it is the same shape by which an individual StatefulSet 
 > | `hostname.subdomain.namespace.svc.cluster-domain.example` (requires `hostname` + `subdomain` set, and a headless Service named for the subdomain) | That Pod, by a stable name |
 >
 > Record types are A and/or AAAA depending on the IP family, except SRV records, which are SRV. Cluster DNS is served by CoreDNS, launched automatically by the addon manager. Pod DNS configuration is written by the kubelet. A bare service name resolves within the client Pod's own namespace because that namespace is in the Pod's default DNS search list. [source: k8s-docs-dns-pod-service-2026-08-23] [source: k8s-docs-dns-cluster-addon-2026-08-24]
-
-> 🔭 **Closer Look:** A Pod's `dnsPolicy` field controls how its DNS is configured. `ClusterFirst` — any query that does not match the configured cluster domain suffix is forwarded to an upstream nameserver — **is the default policy if `dnsPolicy` is not explicitly specified** [source: k8s-docs-dns-pod-service-2026-08-23]. Also available: `Default` (inherit resolution config from the node), `ClusterFirstWithHostNet` (for Pods running with `hostNetwork`), and `None`, where the Pod ignores DNS settings from the Kubernetes environment and all settings come from the `dnsConfig` field [source: k8s-docs-dns-pod-service-2026-08-23]. Note the trap in the naming: the value called `Default` is *not* the default. Deeper than the exam requires — but if you ever meet a Pod that can't resolve cluster names at all, this field is where to look.
 
 One boundary worth marking before Chapter 10. What you have just learned is **DNS-based service discovery**: mapping a name to an address, in the ordinary DNS sense. Chapter 10 introduces **name-based virtual hosting**: routing HTTP traffic to multiple host names at the same IP address [source: k8s-docs-ingress-2026-08-23]. Both involve hostnames, and they sit on opposite sides of the connection. One turns a name into an address before any traffic moves; the other sorts traffic that has already arrived at a single address. Conflating them makes Chapter 10 considerably harder than it needs to be. *[cross-bearing: see Ch 10 §2 — name-based virtual hosting]*
 
@@ -11694,25 +11489,6 @@ Chapter 10 crosses that boundary properly: one address serving many services, ro
 12. **Kubernetes defines the network model; a CNI network plugin is required to implement it** [source: k8s-docs-network-plugins-2026-08-24].
 
 ---
-
-**Common Traps** — every one of these is a documented mistake with a specific correct answer, which is to say every one is a hazard somebody has already run onto and marked. Don't let the wrong version be the one that's fresh when you sit down.
-
-| The trap | The correction | Where it's defused |
-|---|---|---|
-| "Pods need NAT or a proxy to reach Pods on other nodes" | Direct, no NAT, no proxy — that's rule 3 | §1, Bearings #1 item 1 |
-| "Each container in a Pod gets its own IP" | The **Pod** has the address; containers share it | §1 Snag, Bearings #1 item 2 |
-| "NodePort replaces ClusterIP" | NodePort **also** allocates a cluster IP | §3 Fixed Point, Bearings #1 item 3 |
-| "LoadBalancer means Kubernetes provides a load balancer" | It provides none. You supply one | §3 Fixed Point, Bearings #1 item 5 |
-| "ExternalName proxies traffic" | CNAME only. No proxying of any kind | §3 Navigational Hazards, Bearings #1 item 5 |
-| "A headless Service is a broken Service" | `clusterIP: None` is a value somebody typed | §5 Fixed Point, Bearings #2 item 4 |
-| "A Service without a selector is invalid" | Supported pattern, used for external backends | §5, Bearings #2 item 4 |
-| "A bare service name works across namespaces" | Local namespace only — and it may succeed *wrongly* | §7 Navigational Hazards, Bearings #2 item 7 |
-| "Something is listening on the cluster IP" | Nothing is. It's a forwarding rule, not a socket | §6 Worth Securing, Bearings #2 item 6 |
-| "kube-proxy is required" | Optional, if the network plugin does equivalent forwarding | §6 Closer Look, Bearings #2 item 5 |
-| "Headless Services have no DNS record" | Same name form; different answer | §7, Bearings #2 item 8 |
-| "A Service with no endpoints is broken" | Correct Service; selector matches nothing, or Pods not Ready | §4 Snag, Bearings #2 item 3 |
-| "A terminating Pod leaves the Service instantly" | Retained with `ready: false`, so traffic drains | §4 Closer Look |
-| "Kubernetes ships the network" | It defines the *requirements*; a CNI plugin is required to implement them | §1 Fixed Point |
 
 **The most valuable one on that list** is "something is listening on the cluster IP." It has one clean correct answer, and that answer follows directly from what kube-proxy is documented to do: configure the node to *capture* traffic addressed to the Service's cluster IP and port, and *redirect* that traffic to one of the Service's endpoints [source: k8s-docs-virtual-ips-kube-proxy-2026-08-23]. Capture-and-redirect requires nothing bound to that address, which is exactly why nothing is bound to it. Believing the wrong version makes roughly half of Kubernetes networking incomprehensible, including several things Chapter 10 will assume you understand.
 
@@ -12130,7 +11906,6 @@ A Service maps any incoming `port` to a `targetPort`, so a client connecting on 
 | **Service DNS** | `<service>.<namespace>.svc.<cluster-domain>` — cluster IP for normal, **all Pod IPs for headless** |
 | **Bare name** | **Local namespace only.** May succeed against the wrong Service |
 | **The Zenith** | A Service is a **label query with a name**. Three loops publish its answer in three formats |
-
 
 ---
 
@@ -12672,7 +12447,6 @@ Compare the two manifests side by side. They put the same number of Services beh
    Host: shop.example.com                    │ checkout Service │
         ▲▲▲▲▲▲▲▲▲                            └──────────────────┘
 
-
            NAME-BASED VIRTUAL HOSTING — split by HOST
 
    GET / HTTP/1.1                            ┌──────────────────┐
@@ -13105,8 +12879,6 @@ Having just been told to prefer Gateway API, the obvious next question is whethe
 
 **Instead of Gateway API resources being natively implemented by Kubernetes, the specifications are defined as Custom Resources supported by a wide range of implementations.** You install the Gateway API CRDs, or follow the installation instructions of your selected implementation [source: k8s-docs-gateway-api-depth-2026-08-24]. The docs describe Gateway API as "an add-on containing API kinds" [source: k8s-docs-gateway-api-depth-2026-08-24], and the cluster addon list carries it among the networking entries [source: k8s-docs-cluster-addons-2026-08-24].
 
-> 🔭 **Closer Look:** The API the project names as Ingress's successor [source: k8s-docs-network-model-2026-08-23] is not built into the API server the way Ingress is. It arrives as custom resources *[cross-bearing: see Ch 6 §8 — custom resources and CustomResourceDefinitions]*. That is deeper than the exam requires, and it is a rather good demonstration of Chapter 6's claim that the extension mechanism is powerful enough to build first-class-looking APIs on top of. The successor to a built-in API is, structurally, an extension.
-
 *[cross-bearing: see Ch 9 §7 — the client's resolver, which appears here as one step in a flow rather than as a topic]*
 *[cross-bearing: see Ch 17 §4 — CRDs as one of the four pluggable interfaces, of which this is a conspicuous instance]*
 
@@ -13361,8 +13133,6 @@ Ten items. Three of them earn a sentence each, because they are the ones you wil
 
 **No explicit deny.** §6 taught additivity as a *property* of the model: policies grant, and the model has no subtraction operator. The out-of-scope list states that same architectural fact as a *limitation* — the ability to explicitly deny is simply not in the API [source: k8s-docs-network-policies-depth-2026-08-24]. Same fact, met from the side you will actually encounter it on. You go looking for a deny rule, and there is not one.
 
-> 🔭 **Closer Look:** "No targeting of services by name" is stranger than it looks, and it follows directly from §6. A policy selects Pods. A Service is a stable name in front of a set of Pods that *changes*; that is the entire reason Chapter 9 gave you Services. Selecting the Service would mean selecting a moving target through an indirection that the policy layer, sitting at layer 3/4 on Pod IPs, does not have access to. The restriction is a consequence of the architecture, not an omission from the API. Deeper than the exam requires.
-
 Two objects. Four sections apart. Nothing in common except a failure mode.
 
 ---
@@ -13516,25 +13286,6 @@ Look at the fourth panel one more time. Three of these announce themselves. One 
 10. **NetworkPolicies are implemented by the network plugin.** No supporting plugin, no effect.
 11. **GatewayClass / Gateway / HTTPRoute**, mapped to infrastructure provider / cluster operator / application developer. Exactly one GatewayClass per Gateway; many Routes.
 12. **Node-local traffic is always allowed, and a Pod cannot block access to itself.**
-
-**Common Traps** — each one has a specific wrong belief behind it, and the correction is the thing to carry into the exam room.
-
-| The trap | The correction |
-|---|---|
-| "Creating an Ingress object exposes the app" | Only creating an Ingress resource has no effect. A controller must be running. |
-| "Ingress can expose any protocol" | HTTP and HTTPS only. Everything else goes back to NodePort or LoadBalancer. |
-| "Ingress is deprecated and will be removed" | Frozen. GA, guaranteed, no removal plans — and no further development. |
-| "All Ingress controllers behave identically" | Ideally they fit the reference specification. In reality they operate slightly differently. |
-| "Creating a NetworkPolicy secures the cluster" | Only if the network plugin implements NetworkPolicy. Otherwise: no effect, no signal. |
-| "A Pod with no NetworkPolicy is closed by default" | Backwards. Non-isolated in both directions until something selects it. |
-| "One NetworkPolicy can deny what another allows" | There is no deny rule. Policies combine by union. |
-| "Only one end needs to permit the connection" | Both. Source's egress *and* destination's ingress. |
-| "NetworkPolicy can block node-local or self traffic" | Neither. Both exceptions are unconditional. |
-| "NetworkPolicy can do TLS / name targeting / logging / explicit deny" | All four are on the published out-of-scope list. |
-| "Virtual hosting is just DNS" | Opposite sides of the connection. DNS resolves before traffic moves; virtual hosting sorts traffic that has arrived. |
-| "Gateway API is a rename of Ingress" | Different API, different resource model, built around a different organizing principle. |
-| "NetworkPolicy can target a Service" | It selects Pods. Targeting Services by name is explicitly out of scope. |
-| "An Ingress controller and a NetworkPolicy plugin are unrelated concerns" | Functionally unrelated. Structurally identical — which is §8. |
 
 **A note on frequency.** Every trap above is a real point of confusion, drawn from the documentation's own emphases and from what the material makes easy to get wrong. What this book will not tell you is how often any of them appears on the exam. The published curriculum gives four domain weights and nothing finer [source: cncf-kcna-curriculum-pdf-2026-08-23] — no question counts, no per-competency split, nothing that would let anyone honestly attach a number to a single trap — and the Linux Foundation's own exam page states no question count either [source: lf-kcna-exam-page-2026-08-23]. Inventing one would be worse than saying nothing.
 
@@ -14426,8 +14177,6 @@ Here is the mechanism. Read it twice; it prefigures §6. The Pod spec carries a 
 
 Naming is deterministic: *the name is a combination of the Pod name and volume name, with a hyphen (-) in the middle* [source: k8s-docs-ephemeral-volumes-2026-08-25]. A Pod named `my-app` with a volume named `scratch-volume` produces a PVC named `my-app-scratch-volume`.
 
-> 🔭 **Closer Look:** That deterministic naming has a sharp edge the documentation calls out explicitly. A Pod named `pod-a` with volume `scratch` and a Pod named `pod` with volume `a-scratch` both compute to the PVC name `pod-a-scratch` [source: k8s-docs-ephemeral-volumes-2026-08-25]. Kubernetes detects the conflict: a PVC is only used for an ephemeral volume if it was created for that Pod, checked via the ownership relationship, and *an existing PVC is not overwritten or modified* [source: k8s-docs-ephemeral-volumes-2026-08-25]. But detection is not resolution: *without the right PVC, the Pod cannot start* [source: k8s-docs-ephemeral-volumes-2026-08-25]. Below KCNA depth; recorded because it is the kind of thing that costs someone an afternoon.
-
 **`subPath`** is not a volume type at all. It is a mount modifier, and it earns its place here because of one exception Chapter 4 named in a single clause and left for this chapter to explain.
 
 The general mechanism first: *sometimes, it is useful to share one volume for multiple uses in a single Pod. The `volumeMounts[*].subPath` property specifies a sub-path inside the referenced volume instead of its root* [source: k8s-docs-volumes-csi-and-subpath-2026-08-25]. One PVC, mounted into a MySQL container at its `mysql` subdirectory and into a PHP container at its `html` subdirectory: two containers, two mount points, one underlying volume.
@@ -14803,10 +14552,6 @@ Read that list of constraints again: resource requirements, node selectors, affi
 
 The `local` volume documentation makes the same argument independently, which is a good sign that it is the real reason rather than a rationalization: *when using local volumes, it is recommended to create a StorageClass with `volumeBindingMode` set to `WaitForFirstConsumer`. Delaying volume binding ensures that the PersistentVolumeClaim binding decision will also be evaluated with any other node constraints the Pod may have, such as node resource requirements, node selectors, Pod affinity, and Pod anti-affinity* [source: k8s-docs-volume-types-depth-2026-08-25].
 
-> 🔭 **Closer Look:** `WaitForFirstConsumer` sits above the depth this book judges KCNA to require. CNCF publishes the Storage competency as a single word and nothing more; this book's domain analysis reads that word as centering on the three-way distinction between PersistentVolume, PersistentVolumeClaim, and StorageClass, not on tuning binding modes. What you should carry forward from this subsection is the consequence, not the field name: **volume binding can wait on scheduling, because binding a volume before the scheduler has picked a node can bind it somewhere the Pod cannot go.** If you remember that sentence and forget `volumeBindingMode` entirely, you have taken the right thing.
->
-> Two operational notes for the day you meet this in a real cluster. First, the mode is not universally supported: *the following plugins support `WaitForFirstConsumer` with dynamic provisioning: CSI volumes, provided that the specific CSI driver supports this* [source: k8s-docs-storage-classes-2026-08-25]. Second, it interacts badly with one particular shortcut: *if you choose to use `WaitForFirstConsumer`, do not use `nodeName` in the Pod spec to specify node affinity. If `nodeName` is used in this case, the scheduler will be bypassed and PVC will remain in `pending` state* [source: k8s-docs-storage-classes-2026-08-25]. Bypass the scheduler *[cross-bearing: see Ch 7 §6 — overruling the scheduler]* and you have removed the very consumer the binding was waiting for.
-
 ---
 
 ## 🔵 §4 — Access Modes and What Happens After
@@ -15006,18 +14751,6 @@ You have now seen the pattern three times: an Ingress without a controller, a Ne
 
 That is the same light, the fourth time. And once you have seen it four times, you stop asking "is the object there?" and start asking "is the *component* there?", which is the question Chapter 10 said you would know to ask.
 
-> 🔭 **Closer Look: CSI migration**
->
-> CNCF publishes the Storage competency as a single word. This book's reading of it puts CSI at recall depth: name the storage interface, say what it is for, and stop there. What follows goes deeper than that reading requires, and is here for the day you meet it in a cluster rather than on a test.
->
-> The in-tree plugins did not vanish when CSI arrived; they were migrated behind it. *The `CSIMigration` feature directs operations against existing in-tree plugins to corresponding CSI plugins (which are expected to be installed and configured). As a result, operators do not have to make any configuration changes to existing Storage Classes, PersistentVolumes, or PersistentVolumeClaims (referring to in-tree plugins) when transitioning to a CSI driver that supersedes an in-tree plugin* [source: k8s-docs-volumes-csi-and-subpath-2026-08-25].
->
-> The compatibility promise is unusually strong: *existing PVs created by an in-tree volume plugin can still be used in the future without any configuration changes, even after the migration to CSI is completed for that volume type, and even after you upgrade to a version of Kubernetes that doesn't have compiled-in support for that kind of storage* [source: k8s-docs-volumes-csi-and-subpath-2026-08-25]. Your manifests keep working; the machinery underneath them was replaced. *The actual storage management now happens through the CSI driver* [source: k8s-docs-volumes-csi-and-subpath-2026-08-25].
->
-> The operations CSI covers: *provisioning/delete, attach/detach, mount/unmount, and resizing of volumes* [source: k8s-docs-volumes-csi-and-subpath-2026-08-25]. That list is the storage lifecycle, and it maps cleanly onto everything §2 through §4 described.
-
-> 🪝 **Snag:** CSI is an interface, not a product. There is no "CSI storage" you can buy or deploy, any more than there is "CNI networking." What you deploy is a *driver*, written by whoever owns the storage it speaks to, each implementing the same contract against different hardware. The CSI project's own list of production drivers runs past a hundred entries, every one registered under a name that says whose it is: `ebs.csi.aws.com` for AWS EBS, `rbd.csi.ceph.com` for Ceph RBD, `csi.vsphere.vmware.com` for VMware vSphere [source: kubernetes-csi-docs-drivers-2026-09-04]. A question that treats CSI as a storage system rather than as the interface storage systems implement is testing exactly this confusion.
-
 ---
 
 ## 🔵 §6 — Pods That Are Not Interchangeable, Revisited
@@ -15123,14 +14856,6 @@ Now the part that costs people real money.
 The reason is stated as a deliberate choice rather than an oversight: *deleting and/or scaling a StatefulSet down will not delete the volumes associated with the StatefulSet. This is done to ensure data safety, which is generally more valuable than an automatic purge of all related StatefulSet resources* [source: k8s-docs-statefulset-2026-08-24].
 
 Read that as a judgment call, because that is what it is. Kubernetes chose the failure mode where the hold stays full of cargo nobody remembers loading over the failure mode where one command puts a database over the side. Given the two, it chose correctly. But it means the cleanup is yours, and nobody will remind you.
-
-> 🔭 **Closer Look: the retention policy field**
->
-> That default is configurable. *The optional `.spec.persistentVolumeClaimRetentionPolicy` field controls if and how PVCs are deleted during the lifecycle of a StatefulSet* [source: k8s-docs-statefulset-storage-2026-08-25], with two independently settable policies: `whenDeleted`, which *configures the volume retention behavior that applies when the StatefulSet is deleted*, and `whenScaled`, which *configures the volume retention behavior that applies when the replica count of the StatefulSet is reduced* [source: k8s-docs-statefulset-storage-2026-08-25]. Each takes `Delete` or `Retain`, and `Retain` is the default for both [source: k8s-docs-statefulset-storage-2026-08-25].
->
-> One boundary to know: these policies apply only to *voluntary* removal. *If a Pod associated with a StatefulSet fails due to node failure, and the control plane creates a replacement Pod, the StatefulSet retains the existing PVC. The existing volume is unaffected, and the cluster will attach it to the node where the new Pod is about to launch* [source: k8s-docs-statefulset-storage-2026-08-25]. A node dying is not a scale-down. Your data does not get cleaned up because a machine crashed.
-
-> 🪝 **Snag:** There is a mechanism elsewhere in this chapter that does the *opposite*, and the contrast is worth holding. A **generic ephemeral volume** also creates a PVC per Pod, and *when the Pod is deleted, the Kubernetes garbage collector deletes the PVC, which then usually triggers deletion of the volume because the default reclaim policy of storage classes is to delete volumes* [source: k8s-docs-ephemeral-volumes-2026-08-25]. Two mechanisms, both creating one claim per Pod, with exactly opposite deletion behavior. The difference is intent: an ephemeral volume is scratch space that happens to be provisioned like real storage, and a StatefulSet's claim is real storage that happens to be created by a controller.
 
 ---
 
@@ -15317,18 +15042,6 @@ Go back to the epigraph. *The cargo does not belong to the crew. It was aboard b
 3. **Reclaim policy, and where the decision was made.** Retain / Delete / Recycle(deprecated). Dynamically provisioned volumes inherit the class's policy, which defaults to `Delete` [source: k8s-docs-persistent-volumes-depth-2026-08-25]; manually created PVs default to `Retain` [source: k8s-api-ref-persistentvolume-v1-2026-08-25].
 
 4. **Static vs dynamic provisioning, and the two conditions dynamic requires.** The claim must request a class **and** the administrator must have created and configured that class for provisioning [source: k8s-docs-persistent-volumes-2026-08-23].
-
-**Common Traps** — these are documented targets in this book's domain analysis, not merely things that are easy to confuse:
-
-| Trap | Correction |
-|---|---|
-| "A PVC binds to any PV that's big enough" | Binding is exclusive and one-to-one, and an unmatched claim stays unbound **indefinitely** [source: k8s-docs-persistent-volumes-2026-08-23] |
-| Reversing PV and PVC | PV is supply, PVC is demand, Pods reference **claims** [source: k8s-docs-persistent-volumes-2026-08-23] |
-| "ReadWriteOnce means one Pod" | It means one **node**; multiple Pods on that node may share it. RWOP is the one-Pod mode [source: k8s-docs-persistent-volumes-depth-2026-08-25] |
-| "Deleting a PVC always keeps the data" | Dynamic volumes inherit the class's policy, defaulting to **Delete** [source: k8s-docs-persistent-volumes-depth-2026-08-25] |
-| "Retain means the PV is immediately reusable" | It becomes `Released`, not `Available`; manual reclamation takes three steps and a new PV object [source: k8s-docs-persistent-volumes-depth-2026-08-25] |
-| Expecting `Recycle` to be live | Deprecated; use dynamic provisioning [source: k8s-docs-persistent-volumes-depth-2026-08-25] |
-| "Class `\"\"` uses the default class" | It **disables dynamic provisioning** for that claim [source: k8s-docs-persistent-volumes-2026-08-23] |
 
 **Two more that are worth knowing** — both are sourced facts and both are common mistakes, though they have not been assessed for exam frequency the way the seven above have:
 
@@ -16107,7 +15820,6 @@ The whole thing at once, then, with a few controls plotted on both.
                                           │            │            │
                                         ACCESS      COMPUTE      STORAGE
 
-
    THE LAYERS — where a control acts
    ─────────────────────────────────────────────────────────────────
 
@@ -16120,7 +15832,6 @@ The whole thing at once, then, with a few controls plotted on both.
    │  │  └────────────────────────────────────────┘   │   │
    │  └───────────────────────────────────────────────┘   │
    └──────────────────────────────────────────────────────┘
-
 
    FIVE CONTROLS, PLOTTED ON BOTH
    ─────────────────────────────────────────────────────────────────
@@ -16154,8 +15865,6 @@ What Chapter 5 could not tell you is the contrast that makes ServiceAccounts int
 Read that twice. Kubernetes has no User object. There is no `kubectl create user`. A human identity arrives at the API server from *outside the cluster*, and Kubernetes' job is to validate the claim, extract a username and a set of groups, and hand those strings to the next gate. It stores nothing. Usernames are just strings, and *"it is up to you as a cluster administrator to configure the authentication modules so that authentication produces usernames in the format you want"* [source: k8s-docs-rbac-depth-2026-08-31]. Groups likewise are strings, supplied by the authenticator, with the `system:` prefix reserved [source: k8s-docs-rbac-depth-2026-08-31]. The authenticators themselves are pluggable — *"Kubernetes uses client certificates, bearer tokens, or an authenticating proxy to authenticate API requests through authentication plugins"* [source: k8s-docs-authentication-2026-09-04] — and one of the bearer-token methods is OpenID Connect, which is how a cluster accepts identities issued by an external provider [source: k8s-docs-authentication-2026-09-04]. Which method a cluster uses is an administrator's choice; what every method produces is the same pair of strings.
 
 That asymmetry surprises people: in-cluster identities are objects, human identities are not. It is the reason ServiceAccounts get their own section while users get a paragraph. Human identity is somebody else's system. Workload identity is Kubernetes'.
-
-> 🔭 **Closer Look:** ServiceAccounts get names prefixed with `system:serviceaccount:` and belong to groups prefixed with `system:serviceaccounts:` [source: k8s-docs-rbac-depth-2026-08-31]. Singular for the account, plural for the group. That one-character difference is real, and it is exactly the sort of thing that is unpleasant to debug at 3 a.m.
 
 ### The default account, and what it can do
 
@@ -16332,7 +16041,6 @@ Those two questions are independent, which is why there are four objects rather 
    │  or ClusterRole     │  ◀── either ──   │  FORCED             │
    └─────────────────────┘                  └─────────────────────┘
 
-
    THE SECOND, INDEPENDENT QUESTION
    ─────────────────────────────────────────
 
@@ -16346,7 +16054,6 @@ Those two questions are independent, which is why there are four objects rather 
    ┌──────────────┐    ┌─────────────────────┐
    │ RoleBinding  │    │ ClusterRoleBinding  │
    └──────────────┘    └─────────────────────┘
-
 
    THE FOUR COMBINATIONS FALL OUT
    ─────────────────────────────────────────
@@ -16619,8 +16326,6 @@ Note the scope carefully. *"This task covers encryption for resource data stored
 
 So the honest accounting of what encryption at rest gives you. It protects the object **as written to etcd**, which closes route two, the etcd-access and etcd-backup route, and closes it well. It does nothing whatsoever about routes one and three, because a caller the API server has authorized gets the object decrypted, in full, as normal. The lock is on the box; it says nothing about who is handed the box. That is not a shortcoming; it is the definition of the control. But an engineer who enables encryption at rest and believes the Secrets problem is now solved has closed one of three doors and stopped counting.
 
-> 🔭 **Closer Look:** This is also the moment to draw a line you will need in a later chapter. **Encryption at rest and encryption in transit are separate decisions with separate mechanisms.** At rest is about bytes sitting in storage. In transit is about bytes moving across a network: TLS between components, and, at the workload layer, mutual TLS between services. Enabling one says nothing about the other. *[cross-bearing: see Ch 17 §5 — a network that knows what it's carrying]*
-
 ### The four hardening steps
 
 Chapter 4 enumerated four things and deferred all of them. Here they are, in the documentation's own ordering:
@@ -16840,14 +16545,12 @@ The levels are the §5 fields with names on them. What each actually checks:
                 (restricted imposes every baseline requirement,
                  plus the rows below the line, so it admits fewer Pods)
 
-
    THE MODES — what happens when a check fails
    ══════════════════════════════════════════════════════════════════
 
            enforce  ──▶  the Pod is REJECTED
            audit    ──▶  recorded in the audit log; the Pod runs
            warn     ──▶  user-facing warning; the Pod runs
-
 
    APPLIED PER NAMESPACE, BY LABEL
    ══════════════════════════════════════════════════════════════════
@@ -16864,8 +16567,6 @@ The levels are the §5 fields with names on them. What each actually checks:
 -->
 
 The rows in that figure are the Baseline and Restricted controls this chapter grades on, not the complete published list. Baseline forbids `privileged`, the host namespaces (`hostNetwork`, `hostPID`, `hostIPC`), `hostPath` volumes, and unconfined seccomp, and restricts `hostPort` and added capabilities to known lists. Restricted adds every Baseline requirement plus: volumes limited to a safe list; `allowPrivilegeEscalation: false`; `runAsNonRoot: true`; `runAsUser` non-zero or unset; seccomp explicitly `RuntimeDefault` or `Localhost`; and capabilities dropping `ALL` with only `NET_BIND_SERVICE` addable back [source: k8s-docs-pod-security-standards-profiles-2026-08-31].
-
-> 🔭 **Closer Look:** The Restricted capability rule rewards a precise reading: drop must include `ALL`, and add is limited to `undefined/nil` or `NET_BIND_SERVICE` [source: k8s-docs-pod-security-standards-profiles-2026-08-31]. `NET_BIND_SERVICE` is the exception because binding a port below 1024 is a common legitimate reason a container wants a scrap of root's authority, and refusing it would break otherwise-conformant images for no security gain.
 
 There is no fourth level between Privileged and Baseline, and the FAQ explains why: *"The three profiles defined here have a clear linear progression from most secure (Restricted) to least secure (Privileged), and cover a broad set of workloads. Privileges required above the Baseline policy are typically very application specific, so we do not offer a standard profile in this niche"* [source: k8s-docs-pod-security-standards-profiles-2026-08-31].
 
@@ -17349,30 +17050,7 @@ That is not memorized. It is derived, and it will survive the next curriculum ch
 
 6. **Three PSS levels × three PSA modes, applied per namespace by label.** Level = what is checked. Mode = what happens.
 
-**Common Traps**
-
 These are the specific wrong answers this material produces. Every one of them is a wrong answer somebody has confidently written down.
-
-| The trap | The correct understanding |
-|---|---|
-| RBAC has deny rules | Purely additive. Removing access means removing the grant. [source: k8s-docs-rbac-2026-08-23] |
-| ClusterRole is only for cluster-scoped resources | Two of its three documented uses are about namespaced resources — bound into one namespace, or across all. [source: k8s-docs-rbac-2026-08-23] |
-| The four combinations must be memorized | They derive from one boundary. The binding sets the scope. |
-| A binding can be retargeted | It cannot, after creation. Delete and recreate. [source: k8s-docs-rbac-2026-08-23] |
-| `view` can read Secrets | It cannot — nor roles nor bindings. Reading Secrets is transitively becoming a ServiceAccount. [source: k8s-docs-rbac-depth-2026-08-31] |
-| `edit` can manage RBAC in its namespace | It cannot; `admin` can. [source: k8s-docs-rbac-2026-08-23] |
-| `cluster-admin` always means the whole cluster | In a RoleBinding it is scoped to that namespace. [source: k8s-docs-rbac-2026-08-23] |
-| Removing every binding revokes anyone's access | Not for `system:masters` — that membership bypasses RBAC entirely and cannot be revoked by removing bindings. [source: k8s-docs-rbac-good-practices-2026-08-31] |
-| Only `get` on Secrets reveals them | `list` and `watch` reveal the contents of every Secret in scope. [source: k8s-docs-rbac-good-practices-2026-08-31] |
-| Secrets are encrypted | Unencrypted in etcd by default; encryption at rest is opt-in and is a control-plane configuration. [source: k8s-docs-secret-2026-08-23] |
-| An RBAC audit showing no `get secrets` means Secrets are safe | Pod creation in the namespace reads any Secret in it, including via a Deployment. [source: k8s-docs-secret-2026-08-23] |
-| Token Secrets are current best practice | TokenRequest, short-lived and rotating, since v1.22. [source: k8s-docs-service-accounts-2026-08-23] |
-| Pod Security levels and admission modes are the same axis | Levels say what is checked; modes say what happens. Independent. `[inferred]` |
-| PodSecurityPolicy is a current control | Removed in v1.25; superseded by Pod Security Admission. [source: k8s-docs-pod-security-policy-removed-2026-09-04] |
-| A signature covers the tag you signed | It resolves to the digest. Tags are mutable; signatures are not. [source: notary-project-signing-digest-2026-08-31] |
-| A valid signature means the artifact is current | It means the bytes came from the signer. Freshness, ordering and key compromise are what TUF addresses. [source: tuf-overview-2026-08-31] |
-| Falco prevents the behavior it detects | It observes and alerts. It does not block. [source: falco-overview-2026-08-23] |
-
 One row above carries an `[inferred]` marker: the level/mode confusion. That mark means the row describes something *easy to confuse*, not something anyone has published as *frequently tested*. The distinction matters. This book will tell you when material is high-yield by reasoning about the published objectives, and it will not manufacture a statistic to make the point land harder.
 
 ---
@@ -18231,7 +17909,6 @@ Then read the claim's StorageClass, because **the binding mode inverts the direc
 
 ★ **Fixed Point:** A `Pending` Pod with a `Pending` claim is a **storage** problem under `Immediate` binding and a **scheduling** problem under `WaitForFirstConsumer`. Same two symptoms, opposite direction of cause, and the StorageClass is the only thing that tells you which.
 
-
 ### `Waiting`: scheduled, and unable to start
 
 If the Pod has been placed on a node but its containers are not running, the containers are in the `Waiting` state, and `Waiting` carries a `Reason` field that names the specific problem. The documentation frames the whole category: "If a Pod is stuck in the Waiting state, then it has been scheduled to a worker node, but it can't run on that machine. The most common cause of Waiting pods is a failure to pull the image." [source: k8s-docs-debug-pods-2026-08-23]
@@ -18262,8 +17939,6 @@ The documented cause list is short: "invalid image name, or pulling from a priva
 That third check is underrated. Pulling the image by hand from a shell on the node, or from your laptop if the registry is reachable from there, collapses the question "is this a Kubernetes problem or a registry problem?" in about five seconds.
 
 The subtle version of this failure involves the pull policy. Recall that if you specify no tag, or the tag `:latest`, the default policy is `Always`, and the kubelet "queries the container image registry to resolve the name to an image digest" on every container launch. [source: k8s-docs-images-2026-08-23] A cached image is like provisions already aboard, but with `Always` the kubelet still has to hail the registry before it will use them. That means a Pod which has been running happily for weeks on a cached image will fail to restart the moment the registry becomes unreachable. A Pod pinned to a specific tag other than `:latest` gets `IfNotPresent` by default and rides out the same registry outage without noticing.
-
-> 🔭 **Closer Look:** `Always` does not mean "download the layers every time." The kubelet resolves the tag to a digest, and "if the kubelet has a container image with that exact digest cached locally, it uses its cached image." [source: k8s-docs-images-2026-08-23] The bandwidth cost is small. The *availability* cost is not: the registry has to answer, and if it doesn't, the container doesn't start.
 
 *[cross-bearing: see Ch 2 §3 — tags and digests]* and *[cross-bearing: see Ch 2 §6 — imagePullPolicy and image pull secrets]*
 
@@ -18343,7 +18018,6 @@ kubectl get events --sort-by=.metadata.creationTimestamp
 The first form filters events "to only those pertaining to the specified resource" [source: k8s-docs-kubectl-events-2026-08-31]; the second is the quick reference's own recipe for a namespace's events in creation order [source: k8s-docs-kubectl-quick-reference-troubleshooting-2026-09-04]. The second form is the one to reach for when you do not yet know which object is at fault. Events are not sorted usefully by default, and a namespace's event stream read in creation order is a chronology of everything the cluster tried to do recently.
 
 Chapter 6 left you a specific promise here. A Deployment that stalls reports `ProgressDeadlineExceeded`, a condition which says the rollout did not finish in time and says nothing at all about *why*. Several quite different underlying causes produce that identical condition, and Chapter 6 told you there were six of them. Here they are, from the same page Chapter 6 drew on: **insufficient quota, readiness probe failures, image pull errors, insufficient permissions, limit ranges, and application runtime misconfiguration** [source: k8s-docs-deployment-spec-fields-2026-08-24]. Notice how little they have in common. Two are about permission, one is about the registry, one is about the application's own health reporting, and one is about a quota you may not have known existed. A single condition string covers all six, which is exactly why the condition is a starting point and not a diagnosis. The events on the ReplicaSet and on its Pods are where the actual reason lives.
-
 
 Worked through: a Deployment shows `ProgressDeadlineExceeded`. You describe the Deployment and learn only that it gave up waiting. You then find the new ReplicaSet it created (`kubectl describe deployment` names it), describe that, and find it created three Pods. You describe one of those Pods and find its container `Waiting` with `Reason: ImagePullBackOff`, and its events carry the registry's actual refusal: an authentication failure. The rollout stalled because the new image tag was pushed to a registry the cluster has no pull secret for.
 
@@ -18624,7 +18298,6 @@ This is scoped tightly: "Any Container exceeding a resource limit will be killed
 
 Chapter 5 put the same event a layer lower, saying that when a container exceeds its memory limit **the kernel** may terminate it [source: k8s-docs-resource-management-2026-08-23]. Both are true and they are not in competition: the kernel does the killing, and the kubelet observes the dead container and applies the Pod's `restartPolicy`. When a question asks who *restarts* the container, the answer is the kubelet. When it asks what *killed* it, the answer is the kernel enforcing a limit the kubelet set for it.
 
-
 If a container is OOM-killed repeatedly, the visible signature in `kubectl get pods` becomes `CrashLoopBackOff` — that follows from two sourced facts (a container exceeding its limit is killed and restarted; repeated restarts enter backoff) rather than from a source that states it outright. The layering trips people up: `CrashLoopBackOff` and `OOMKilled` are not alternatives, they are two altitudes of the same event, and `describe` shows you the lower one under the container's last state.
 
 > 🪢 **Mnemonic:** **OOM** is **O**ne container, **O**ver its own limit, **O**n the same node afterward. Eviction is the node's decision about the whole Pod, and the Pod does not come back to that node.
@@ -18640,8 +18313,6 @@ The outcome is at Pod scope: "During a node-pressure eviction, the kubelet sets 
 <!-- AUTHOR-REVIEW: the rendered ch13-fig05 prints `Reason: Evicted` as a literal API string. The node-pressure snapshot documents the phase transition to `Failed` but states no accompanying `Reason` string, and no snapshot carries the string. Low risk (it is what `kubectl get pods` prints for an evicted Pod), but it is figure text with no source; source it or drop that line at the next render. The chapter prose and Practice Q6 no longer print it. -->
 
 Before the kubelet touches your workloads it tries to help itself: "The kubelet attempts to reclaim node-level resources before it terminates end-user pods. For example, it removes unused container images when disk resources are starved." [source: k8s-docs-node-pressure-eviction-2026-08-31] So an eviction wave usually means the node has already exhausted its own cheap options.
-
-> 🔭 **Closer Look:** Node-pressure eviction and API-initiated eviction are explicitly different things. "Node-pressure eviction is not the same as API-initiated eviction." [source: k8s-docs-node-pressure-eviction-2026-08-31] One is the kubelet acting on local pressure; the other is a request through the API server. It matters here because they behave differently under disruption constraints: the kubelet under pressure "does not respect your configured PodDisruptionBudget or the pod's `terminationGracePeriodSeconds`." [source: k8s-docs-node-pressure-eviction-2026-08-31] A node in trouble stops negotiating.
 
 *[cross-bearing: see Ch 8 §4 — cordon, drain, and taking a node out of service]*
 
@@ -18690,14 +18361,6 @@ Read that consequence carefully. The Pod is alive, it is consuming its node's re
 The `READY` column in `kubectl get pods` is the tell. `1/1` and `0/1` both print `Running` next to them.
 
 *[cross-bearing: see Ch 5 §7 — liveness, readiness, and startup probes]* and *[cross-bearing: see Ch 9 §4 — readiness and Service endpoint membership]*. From the application side, "is anything even selected" is *[cross-bearing: see Ch 16 §4 — is anything even selected]*.
-
-> **Logbook Entry:** A team once spent most of a day on an intermittent 502 that appeared under load and vanished when they went looking for it. Every Pod was `Running`. The Deployment showed the expected replica count. Nothing had restarted.
->
-> What was happening: under load, one replica's health endpoint took longer than its readiness timeout, failed, and was pulled from the Service. Load redistributed to the remaining replicas, which made *them* slower, so a second one failed readiness, and so on. As soon as the load dropped, every replica recovered, readiness passed again, and all of them rejoined the Service, leaving a system that looked completely healthy by the time anyone finished typing `kubectl get pods`.
->
-> The `READY` column had been telling the story the whole time. Nobody was reading that column, because `STATUS` said `Running` and `Running` reads like *fine*.
->
-> The lesson is small and repeats constantly: on a Pod that is running, `READY` is the more informative column, and a readiness failure leaves no restart count and no crash to find.
 
 <!-- AUTHOR-REVIEW: PodDisruptionBudget is deliberately absent from this section. Per the term ledger, PDB is unowned book-wide (B6 assigned it to Ch 8 §4; shipped Ch 8 contains zero occurrences) and is barred from graded and explanatory text until that one-clause retrofit lands. The Closer Look above quotes the source's own mention of PDB inside a verbatim quotation about what the kubelet does NOT respect, which is the minimum needed for accuracy and does not teach the term. -->
 
@@ -18794,8 +18457,6 @@ crictl logs <id> # that container's logs, read from the runtime directly
 ```
 
 The argument is the whole point: **when the cluster's view and the node's view disagree, `crictl` is how you see the node's view.** A container that `kubectl` cannot account for but `crictl ps` lists is a container the kubelet failed to register, which localizes your problem to the kubelet, not to the workload. A container that neither can see was never started, which is a different problem entirely.
-
-> 🔭 **Closer Look:** `crictl` connects to the runtime through an endpoint, configurable via `--runtime-endpoint`, the `CONTAINER_RUNTIME_ENDPOINT` environment variable, or `/etc/crictl.yaml`. [source: k8s-docs-crictl-2026-08-31] If you skip that configuration, "`crictl` attempts to connect to a list of known endpoints, which might result in an impact to performance." [source: k8s-docs-crictl-2026-08-31]
 
 *[cross-bearing: see Ch 2 §4 — the Container Runtime Interface]* and *[cross-bearing: see Ch 3 §3 — the kubelet]*
 
@@ -19150,21 +18811,6 @@ Diagnosis, in this system, is mostly reading a loop's report and believing it.
 3. **`OOMKilled` versus `Evicted`.** Different trigger (this container's own limit versus the node's pressure), different scope (one container versus the whole Pod), different outcome (restarted in place on the same node versus replaced elsewhere).
 
 4. **`kubectl top` requires metrics-server, which many distributions do not install.** The error is about the cluster's build, not about the workload.
-
-**Common Traps** — ⚠ Navigational Hazards, with what each one costs you:
-
-| Trap | The correct understanding |
-|---|---|
-| Reading `CrashLoopBackOff` as an image problem | It is the opposite signal. The image was fine — that is what "Loop" implies. |
-| `kubectl logs` on a crash-looping Pod returns nothing, so the app is silent | You are reading a container that has not started. `--previous` reads the one that died. |
-| Treating the absence of an event as evidence | Events expire. An empty event list on a Pod that failed hours ago means nothing. |
-| Assuming a *request* protects a container from being killed | The **limit** is what gets you OOM-killed. The **QoS class** — which requests help determine — is what orders eviction. Two different questions. |
-| "BestEffort is safest, because it asks for nothing" | BestEffort is evicted **first**. |
-| `Pending` means something is retrying with looser constraints | Nothing is. `Pending` is a stable, honest report. Go and read the scheduler's events. |
-| Diagnosing an omitted `-c` as an application failure on a multi-container Pod | Confirm which container you read before concluding anything about the application. |
-| Expecting `kubectl` to account for a container the kubelet never registered | That is precisely the case `crictl` exists for. |
-| Assuming a Pod that "won't start" always exists as an object | An admission refusal means there is no Pod at all — the reason is on whatever tried to create it. |
-| Expecting `kubectl logs` to be an archive | It is a live read of a rotating file on a node. An evicted Pod takes its logs with it. |
 
 ---
 
@@ -19775,12 +19421,6 @@ CNCF publishes the competency name, "Application Delivery," and publishes nothin
 
 So the topic list in this chapter is authored inference. It comes from what the ecosystem actually uses to solve the problem the competency names, and from the fact that a domain called Application Delivery with no coverage of how applications are packaged would be a strange thing indeed. It is, I think, clearly the right call. But you should know it is a call. In practice this means one rule holds throughout: nothing in this chapter is described as "frequently tested" or "commonly appears," because nobody outside the exam authority knows that. Where two things are genuinely easy to confuse, I will say so, and that claim stands on its own.
 
-> **Logbook Entry:** Every operations team eventually accumulates the directory. You know the one. It is called `k8s/` or `deploy/` or, in the most honest cases, `yaml/`. Inside it there is `deployment.yaml`, and beside that `deployment-staging.yaml`, and beside *that* `deployment-prod-final-v2-USE-THIS-ONE.yaml`, whose name is a small monument to the moment somebody realized the naming scheme had stopped working and did not have time to fix it.
->
-> There is usually a `README` too, and the README usually contains a numbered list, and step 4 of that list usually says something like "change the image tag and the ingress host, then apply in this order." Step 4 is the whole problem, written down by somebody who could see it clearly and had no vocabulary for it.
->
-> This is not incompetence. It is what happens when a perfectly good technique, declarative object configuration, is asked to do a job one size larger than the job it was designed for. The directory is the correct answer to "how do I describe what should be running." It is the wrong answer to "how do I give this to someone else."
-
 ---
 
 ## What You'll Learn
@@ -19866,7 +19506,6 @@ The one that matters most, and the one that is easiest to miss because it does n
 You cannot give somebody a directory of manifests and expect them to install it without reading it. They have to read it, because the parts they need to change are not marked, and the order is in the README, and the README might be out of date. Every installation is a small act of comprehension — which is, again, a poor thing to leave for the next watch. And this time the note *is* the delivery mechanism.
 
 This is why "install metrics-server" is an *apply a file of objects* operation rather than a command. The project's own instruction is exactly that: `kubectl apply -f` against a published `components.yaml` [source: metrics-server-install-2026-08-31]. It also needs the API server's aggregation layer enabled, because it exposes the Metrics API through the API server rather than beside it [source: metrics-server-install-2026-08-31] *[cross-bearing: see Ch 17 §4 — the four pluggable interfaces, collected]* — a requirement on the cluster that no manifest can satisfy for you, and so one more line for the README. It is one indivisible apply because there is no unit smaller than "all of those files, plus the knowledge of which parts are yours to change."
-
 
 > 🪝 **Snag:** It is tempting to read these four as one problem, "manifests are messy." They are not one problem, and the difference shows up on exam-shaped questions. Environment variation is about *what varies*. Ordering is about *sequence*. Versioning is about *identity over time*. Distribution is about *handing it to a stranger*. A tool can solve some and not others, and §6 is entirely about which solves which.
 
@@ -19970,7 +19609,6 @@ Two entries in `templates/` are not manifests. `NOTES.txt` is an optional plain-
 A directory containing any charts upon which this chart depends [source: helm-charts-2026-08-23]. A chart nested inside another chart this way is a **subchart**: charts can have dependencies, called subcharts, that have their own values and templates [source: helm-template-subcharts-and-globals-2026-09-04].
 
 This solves a real problem: your application chart needs a Redis, and somebody has already written a good Redis chart, so you depend on theirs instead of writing your own. A chart in there is still a chart, which means it still has templates, which means it is still a source of objects: installing the parent creates a single Helm release, and that one release creates the objects of the parent and of its dependencies together [source: helm-charts-2026-08-31].
-
 
 > 🪝 **Snag:** `charts/` is not a chart repository. It is a directory *inside a chart* holding the charts that chart depends on. A chart repository is something else entirely: an HTTP server, out on the network, which §4 covers. The two share a word and share nothing else, and this is one of the genuinely easy confusions in this material. If you take one thing from this figure, take that annotation.
 
@@ -20154,7 +19792,6 @@ Charts are versioned according to SemVer 2, and a version number is required on 
 
 `Chart.yaml` separately carries `appVersion`, documented as "the version of the app that this contains" [source: helm-charts-2026-08-31] — the version of the *application the chart installs*. These move independently, and Helm says so outright: **"Note that the `appVersion` field is not related to the `version` field"** [source: helm-charts-2026-08-31]. It is informational, and has no impact on chart version calculations [source: helm-charts-2026-08-31]. You can ship chart 4.1.2 and 4.1.3 that both install nginx 1.25.3, because what changed between them was the chart. You can ship chart 5.0.0 that installs nginx 1.26.0, where both changed at once.
 
-
 > 🪢 **Mnemonic:** **Version is the box; `appVersion` is what's in the box.** You can redesign the box without changing the contents, and you can change the contents without redesigning the box. If a question gives you two numbers and asks which one the chart maintainer bumps when they fix a template typo, it is the box.
 
 ---
@@ -20211,7 +19848,6 @@ D) Neither; template fixes are not versioned changes
 **4. A.** `kubectl rollout undo` undoes a previous rollout [source: k8s-docs-kubectl-rollout-2026-08-24], and it does so by reverting the Pod template; the controller then reconciles toward it in the ordinary way *[cross-bearing: see Ch 6 §5 — every rollout is a revision]*. **B is wrong**: rolling back a Deployment restores a previous *template*, not a previous replica count — scaling is a separate operation, `kubectl scale` *[cross-bearing: see Ch 6 §2 — a loop you can watch working]*, and scaling a Deployment does not even create a revision [source: k8s-docs-deployment-2026-08-23]. **C is wrong**, and this is the distractor worth dwelling on: the multi-object scope belongs to `helm rollback`, not to `kubectl rollout undo`, and mixing them up is exactly the confusion §3 exists to prevent. **D describes `kubectl rollout pause`**, a different subcommand entirely [source: k8s-docs-kubectl-rollout-2026-08-24].
 
 **5. B.** The chart's own version tracks the packaging; `appVersion` tracks the application the chart installs, and they move independently — Helm states that `appVersion` "is not related to the `version` field" [source: helm-charts-2026-08-31]. **A inverts the two.** **C is wrong**: nothing requires them to move together, and requiring it would force meaningless application-version bumps for template fixes. **D is wrong**: charts are versioned according to SemVer 2 and a version is required [source: helm-glossary-2026-08-31], so any published change gets one.
-
 
 **If you scored 0–2:** Re-read **§3** before continuing. Not the whole chapter — §3. The chart/release/revision split is what §5 and §6 are built on, and if it has not landed yet, the Kustomize contrast will read as a second set of vocabulary rather than as a contrast.
 
@@ -20308,10 +19944,6 @@ Either way, the patch targets an object by identity: its group, version, kind, a
 **Generators.** `configMapGenerator` generates ConfigMap resources, `secretGenerator` generates Secret resources, and `generatorOptions` controls their behavior [source: kubectl-book-kustomization-fields-2026-08-31].
 
 These build ConfigMaps and Secrets from literal values or from files on disk, rather than requiring you to hand-author the object with its `data` map. Given that ConfigMaps and Secrets are precisely the objects that vary most between environments *[cross-bearing: see Ch 4 §4 — configuration kept outside the image]*, having overlays generate them is more than a convenience: it puts the most environment-specific objects in the layer that is *about* environment specificity.
-
-> 🔭 **Closer Look:** The field list also contains `helmCharts`, described as a Helm chart inflation generator [source: kubectl-book-kustomization-fields-2026-08-31]. Kustomize can take a Helm chart, render it, and treat the rendered output as resources to patch. The two tools are not mutually exclusive at the mechanical level, whatever the arguments online suggest; §6 returns to this. Well past what the exam requires, but a useful thing to know exists the first time you see it in somebody's repository.
->
-> The list also carries both `bases` and `resources`, which overlap — `bases` is described as "add resources from a kustomization dir" [source: kubectl-book-kustomization-fields-2026-08-31]. Kustomizations you meet in the wild will use either, and modern ones tend to list the base under `resources`.
 
 ### The move that is actually different
 
@@ -20472,7 +20104,6 @@ D) Nothing; `kubectl top` works on any conformant cluster and the failure indica
 
 **5. B.** In a declarative system there is no installer; installation is applying objects somebody wrote — the project publishes a `components.yaml` and tells you to `kubectl apply -f` it [source: metrics-server-install-2026-08-31] *[cross-bearing: see Ch 13 §7 — metrics-server and the resource metrics pipeline]*. What this chapter added is the word for the packaged form of "objects somebody wrote" — the project also offers metrics-server as a Helm chart [source: metrics-server-install-2026-08-31], which is failure four answered. **A is wrong**: metrics-server is a separate component, not a feature gate, which is why `kubectl top` fails on a bare cluster in the first place. **C is wrong**: metrics-server collects resource metrics from the kubelets and exposes them through the API server [source: metrics-server-install-2026-08-31]; the kubelets are already on every node, and nothing new is installed there. **D is wrong**, and it is the misconception Chapter 13 named. `kubectl top` failing on a cluster without metrics-server is expected behavior, not a fault.
 
-
 **If you scored 0–2:** Re-read **§5**, then the decision table in **§6**. The most common cause of a low score here is reading Kustomize as "Helm with different syntax," which makes every comparison question a coin flip.
 
 **Checkpoint: You've Now Mastered**
@@ -20555,20 +20186,6 @@ High-priority *for this chapter's material*, on the reasoning given in Why This 
 2. **`charts/` is not a chart repository.** `charts/` is a directory inside a chart holding its dependencies [source: helm-charts-2026-08-23]. A chart repository is an HTTP server housing packaged charts [source: helm-chart-repository-2026-08-31].
 3. **Helm is a package manager, not a template engine** [source: helm-homepage-2026-08-31]. Templating is one mechanism inside it. Kustomize solves the same problem with no templating at all [source: kustomize-overview-2026-08-23], which is the cleanest available proof that templating was never the definition.
 4. **Kustomize is built into kubectl** as `apply -k` [source: kustomize-overview-2026-08-23], and is template-free. Nothing to install; nothing rendered.
-
-**Common Traps**
-
-| The trap | The correct understanding |
-|---|---|
-| "Helm is a templating engine" | It is a package manager [source: helm-homepage-2026-08-31]. Chart → values → templates → **Helm release**. Templating is a means; the unit is the point. |
-| Using "chart" and "release" interchangeably | One chart installs many times, each creating a separately named release, upgradable and rolled back independently [source: helm-charts-2026-08-23]. |
-| Reading `charts/` as a chart repository | `charts/` holds dependency charts *inside* a chart [source: helm-charts-2026-08-23]. A repository is an HTTP server managed with `helm repo` [source: helm-chart-repository-2026-08-31]. |
-| Assuming `helm rollback` runs `kubectl rollout undo` underneath | Different unit, different scope. `helm rollback` takes a release name [source: helm-rollback-cli-2026-08-31]; `kubectl rollout undo` takes one workload [source: k8s-docs-kubectl-rollout-2026-08-24]. |
-| Reading chart version as the version of the software | The chart has its own SemVer version, required on every chart [source: helm-glossary-2026-08-31]. `appVersion` is the application's. They move independently. |
-| Assuming Kustomize needs an engine installed | It is in kubectl [source: kustomize-overview-2026-08-23]. `kubectl apply -k` works on a stock installation. |
-| Assuming an overlay edits or copies its base | It does neither — customization happens *without forking the originals* [source: kustomize-overview-2026-08-23]. |
-| Expecting a chart upgrade to upgrade its CRDs | There is no support for upgrading or deleting CRDs with Helm [source: helm-crd-best-practices-2026-08-31]. The release upgrades; the CRD does not. |
-| **"You have to run Tiller"** | **Helm 3 removed Tiller entirely** — "one of the first decisions we made regarding Helm 3 was to completely remove Tiller" [source: helm-changes-since-helm2-2026-08-31]. Material that describes installing or securing Tiller is describing a Helm that no longer exists. |
 
 That last row deserves a sentence of its own, because it connects to something Chapter 1 warned you about. Tiller was Helm 2's in-cluster component, introduced so that multiple people could interact with the same set of releases; with RBAC enabled by default from Kubernetes 1.6, locking it down for production became difficult to manage, and the permissive default configuration could grant users a far broader range of permissions than intended [source: helm-changes-since-helm2-2026-08-31]. Helm 3 removed it, storing release records in Kubernetes directly and evaluating permissions through your kubeconfig instead [source: helm-changes-since-helm2-2026-08-31].
 
@@ -21100,7 +20717,6 @@ figures_planned:
 > *"Every deploy is a claim about what should be true. Most of them are never checked again."*
 > — Lodestar Ledgers
 
-
 ---
 
 ## 🧭 Soundings
@@ -21177,7 +20793,6 @@ That is genuinely uncomfortable, and it should be said plainly rather than sold.
 In my experience, practitioners who make this shift describe the same two feelings in sequence: first that it is slower, then that they cannot go back.
 
 The stakes here were banked in Chapter 1, and one clause will do: this domain doubled in the 2025-11-24 blueprint revision. Chapter 14 cashed the first half. This is the second.
-
 
 **About what CNCF actually publishes.** Chapter 14 made this statement at length and it covers this chapter too, so one back-bearing rather than a repetition: the published curriculum gives two competency names under this domain and no list of topics beneath either *[cross-bearing: see Ch 14 — Why This Chapter Matters]*. What supports the inference that GitOps belongs here is positive rather than speculative. Argo and Flux are both CNCF **graduated** projects [source: cncf-project-maturity-levels-2026-08-23], and OpenGitOps is a CNCF project at the Sandbox level [source: cncf-project-opengitops-2026-09-04]. A CNCF exam asking about application delivery is asking about the delivery model CNCF's own graduated projects implement. That is the basis. It is a good one, and it is honest about being an inference.
 
@@ -21396,8 +21011,6 @@ A/B testing appears in Argo's documentation not as a rollout strategy but as a u
 
 Nothing in this chapter's questions turns on A/B testing.
 
-> 🔭 **Closer Look:** One vocabulary note, for readers with a good memory. Chapter 6 called these "release strategies" *[cross-bearing: see Ch 6 §4 — changing the fleet under way]*. This book's headword is **deployment strategy**, and the reason is crowding: "release" already carries two other meanings here, a Kubernetes minor version and a Helm release *[cross-bearing: see Ch 14 §3 — chart, release, revision]*. Three senses of one word across two adjacent chapters is one too many. Both phrases name the same thing; if you meet "release strategy" in the field, it is this.
-
 ---
 
 ## ☆ Taking Your Bearings 1: The Application, and the Shapes of a Release
@@ -21496,7 +21109,6 @@ Now the question this section exists for. An artifact has been built. Something 
     │
    the key lives OUT HERE
 
-
   PULL
                     ┌ ─ ─ ─ cluster boundary ─ ─ ─ ─ ─ ─ ─ ─ ─ ┐
    ┌──────────┐     │  ┌─────────┐                             │
@@ -21590,8 +21202,6 @@ The project is unusually explicit that this precision was deliberate: *"The word
 OpenGitOps names the thing this catches. **Drift** is *"when a system's actual state has moved or is in the process of moving away from the desired state…"* [source: opengitops-glossary-2026-08-31] — the ellipsis is the snapshot's, and the definition it carries is partial. **Reconciliation** is *"the process of ensuring the actual state of a system matches its desired state"* [source: opengitops-glossary-2026-08-31].
 
 CNCF's own glossary entry for GitOps names drift first among the problems the practice addresses, alongside failed deployments, inconsistent environments, and difficulty tracking historical changes [source: cncf-glossary-gitops-2026-08-31].
-
-> 🔭 **Closer Look:** "GitOps" names Git, but the principles do not require it. OpenGitOps says so: *"many version control systems can be used in GitOps as long as they meet those two basic requirements and teams use them in a conformant manner"* [source: opengitops-1-0-announcement-2026-08-31]. The announcement does not restate which two requirements it means; on this book's reading they are principle 2's immutability and complete version history, which is the only pair the principles state about the store itself. Git is, in practice, the overwhelmingly common choice. The definition is about the properties, not the tool.
 
 ### One thing GitOps does not do
 
@@ -21933,8 +21543,6 @@ Flux's documented model is per cluster. The bootstrap command *"deploys the Flux
 
 The trade is §3's blast-radius argument at a larger scale, and it remains this book's argument rather than a documented finding: a single control point gives you one console to reason about and one component whose compromise reaches every destination it holds credentials for. Per-cluster agents give you isolation and no unified view.
 
-> 🔭 **Closer Look:** Argo and Flux are both CNCF **graduated** projects [source: cncf-project-maturity-levels-2026-08-23], the maturity tier CNCF describes as stable, widely adopted, and production ready [source: cncf-project-maturity-levels-2026-08-23]. What the levels *mean* is Chapter 17's subject, and that is the durable thing to know *[cross-bearing: see Ch 17 §2 — sandbox, incubating, graduated, and who decides]*. The roster of which projects currently hold which level is dated data that changes; do not memorize it.
-
 ---
 
 ## ☆ Taking Your Bearings #2 — Push, Pull, Ordering, and the Other Agent
@@ -22063,7 +21671,6 @@ Now move it. Take the desired state out of etcd and put it in a Git repository.
 
 **Figure 15.7 — The control loop, pointed at a repository.** Lay this beside Chapter 3's control-loop figure and the point is that it is the same loop. The controller sits in the same place, the API server is still the only door in, and the arrows run in the same directions. One box changed contents.
 
-
 Look at what did *not* move.
 
 **The API server is still the only mutator.** The agent writes to the cluster the way everything else does: as an API client, through authentication, authorization, and admission *[cross-bearing: see Ch 3 §5 — the only door in]*.
@@ -22141,22 +21748,6 @@ Ten seconds is about right.
 **4. Deployment strategy vocabulary versus Deployment fields.** `RollingUpdate` and `Recreate` are values on a Deployment [source: argo-rollouts-strategies-2026-08-23]. Blue/green and canary are patterns implemented by tooling above it.
 
 ---
-
-**Common Traps** — these are distinctions that are easy to confuse, and they are the ones this material rewards getting right.
-
-| The trap | The correct understanding |
-|---|---|
-| "GitOps means running CI from Git" | GitOps is four principles about *desired state*. Continuous integration is not one of them, and the cluster does not care who built the artifact. |
-| Assuming a pipeline pushes to the cluster | Principle 3 is explicit: agents **pull** desired-state declarations from the source [source: opengitops-principles-v1-2026-08-31]. Push-based CD is not GitOps, whatever its manifests are stored in. |
-| Treating reconciliation as a deploy-time event | Principle 4 is **continuous** and indefinite, the same property that makes a ReplicaSet recreate a Pod you deleted last Tuesday. |
-| "Every GitOps agent reverts manual changes" | Flux does, promptly [source: flux-concepts-2026-08-31]. Argo CD, by default, does not — *"changes that are made to the live cluster will not trigger automated sync"* [source: argocd-auto-sync-policy-2026-09-04]. Same principles, opposite defaults. |
-| "`OutOfSync` means the sync failed" | Sync status and sync *operation* status are two different fields answering two different questions [source: argocd-core-concepts-2026-08-31]. An application can be `OutOfSync` immediately after a successful sync [source: argocd-diffing-outofsync-2026-08-31]. |
-| "Argo CD only deploys plain YAML" | Kustomize applications, Helm charts, Jsonnet, plain YAML/JSON directories, and custom config-management plugins [source: argocd-overview-2026-08-23]. |
-| "Argo CD can only track a branch" | Branches, tags, or a **pinned Git commit** [source: argocd-tracking-strategies-2026-08-31]. |
-| Assuming a GitOps agent writes to the datastore directly | It is an API client like any other, subject to authentication, authorization, and admission. Chapter 3's claim about the only door in is not suspended *[cross-bearing: see Ch 3 §5 — the only door in]*. |
-| Assuming a delivery agent needs no identity because it is "infrastructure" | It is a Pod with a ServiceAccount and, by default, cluster-admin-level grants [source: argocd-security-cluster-credentials-2026-08-31] — one of the highest-value subjects in the cluster. |
-| Collapsing the third rollback into one of the first two | `rollout undo` restores a Pod template. `helm rollback` returns a Helm release to a prior release revision. **Rollback by revert** changes a commit and lets the agent reconcile. Three mechanisms, one word. |
-| Assuming a Deployment can express blue/green or canary by itself | Both need something above the Deployment; canary additionally needs traffic splitting and metric analysis [source: argo-rollouts-strategies-2026-08-23]. |
 
 ---
 
@@ -22872,8 +22463,6 @@ That last point is worth dwelling on, because it is the good news in this sectio
 
 There is one more diagnostic surface here worth knowing. A container can write to a **termination message** file at `/dev/termination-log`, and Kubernetes surfaces the contents in the Pod's status [source: k8s-docs-determine-reason-pod-failure-2026-08-31]. The docs describe the purpose plainly: *"Termination messages provide a way for containers to write information about fatal events to a location where it can be easily retrieved and surfaced by tools like dashboards and monitoring software."* [source: k8s-docs-determine-reason-pod-failure-2026-08-31] For an init container that fails in a way that logs don't capture well, writing a one-line reason to the termination log makes the failure legible from `kubectl describe` alone.
 
-> 🔭 **Closer Look:** The same source notes that in most cases, information you put in a termination message should also be written to the general Kubernetes logs [source: k8s-docs-determine-reason-pod-failure-2026-08-31]. The termination message is a summary surfaced in status, not a replacement for logging.
-
 ---
 
 ## 🔵 §3 — Getting Inside, and Adding What Isn't There
@@ -23348,8 +22937,6 @@ Your application writes a corrupt record. `web-2` starts failing. You delete `we
 >
 > The diagnostic tell that separates this from a genuine platform fault: **it is deterministic and it is confined to one ordinal.** A platform problem would not preferentially afflict `web-2` and leave `web-0` and `web-1` untouched across repeated rescheduling.
 
-> 🔭 **Closer Look:** `.spec.persistentVolumeClaimRetentionPolicy` has two settings — `whenDeleted` and `whenScaled` — each accepting `Delete` or `Retain`, with `Retain` the default for both [source: k8s-docs-statefulset-storage-2026-08-25]. A workload configured with `whenScaled: Delete` behaves differently on scale-down than the default described above. Check the StatefulSet's actual policy before you reason about what a deletion did; the default is only the default.
-
 ### Peers that find each other by name
 
 The third difference is discovery. A StatefulSet uses a headless Service to give each Pod its own DNS name *[cross-bearing: see Ch 9 §5 — when you don't want a single address]*, and the form is `$(podname).$(governing service domain)` — for example `web-0.nginx.default.svc.cluster.local` [source: k8s-docs-statefulset-2026-08-24]. Replicas use these names to find each other: a database forming a cluster, a queue electing a leader, a cache building a ring.
@@ -23397,8 +22984,6 @@ The Kubernetes documentation describes the motivation exactly: *"Kubernetes appl
 That last clause is the whole pattern in one line: your process, their cluster's dependencies. The list above stops being a list of things you cannot reproduce, because you are not reproducing them. You are using the real ones.
 
 Telepresence is one instance of the pattern and the one the Kubernetes docs happen to document. The tooling in this space changes; the pattern does not. Learn the shape — a local process, proxied into the cluster's network and configuration — and you will recognize whichever tool is current when you need one.
-
-> 🔭 **Closer Look:** There is also a fourth option worth naming, which is running a small local cluster — kind, minikube, or k3s — rather than proxying into a shared one *[cross-bearing: see Ch 8 §5 — who owns the control plane]*. That gets you real cluster DNS, real ServiceAccounts, real admission, and real Services, on your laptop. What it does *not* get you is *their* cluster's config, *their* webhooks, and *their* network policy, so it reproduces the class of bug, not the instance. Useful for "does my manifest work at all," not for "why does it fail in staging."
 
 That closes the practical arc. Four questions, five tools, one boundary, and one thing left to say about why the boundary was the point all along.
 
@@ -23563,22 +23148,6 @@ The chapter title is "Your Application, Their Cluster." Both halves are true at 
 3. **`kubectl debug` has three shapes.** Inject into the running Pod; `--copy-to` a copy; `node/` for the host. Each answers a different question and they are not interchangeable.
 
 4. **No ready endpoints has two causes** — selector mismatch, or Pods not Ready — and they live in two different files [source: k8s-docs-debug-pods-2026-08-23]. The slice distinguishes them: a mismatch leaves it empty, while a readiness failure leaves the endpoints in place and marked not ready [source: k8s-docs-endpointslices-2026-08-24].
-
-**Common Traps:**
-
-| Trap | The correct understanding |
-|---|---|
-| Assuming `kubectl exec ... -- sh` works on any container | It requires a shell *in the image*. A distroless image has none, which is the whole reason ephemeral containers exist [source: k8s-docs-ephemeral-containers-concept-2026-08-31]. |
-| Expecting `kubectl debug` to repair the broken Pod | It adds a process to look with, or makes a copy to experiment on. It fixes nothing, and an ephemeral container cannot be removed once added [source: k8s-docs-ephemeral-containers-concept-2026-08-31]. |
-| Reading `--copy-to` as "debug the running Pod" | It is the opposite. The original is untouched, which is precisely the point on a workload you did not deploy. |
-| Treating a working `port-forward` as proof the application is fine | It proves the application is fine **and** the Service path is not. Narrowing step, not clean bill of health. |
-| Confusing `port` with `targetPort` | `targetPort` is the port the container listens on. A mismatch produces a Service that selects perfectly and routes into nothing. |
-| Reading a Service with no ready endpoints as a broken Service | The Service is correct and finding nothing it will send traffic to. Two different bugs, two different files, and the slice tells you which: empty means selector, not-ready means readiness [source: k8s-docs-endpointslices-2026-08-24]. |
-| Believing a not-ready Pod is removed from its EndpointSlice | It is included and marked not ready. Matching Pods are in the slice regardless of readiness; readiness disqualifies an endpoint rather than deleting it [source: k8s-docs-endpointslices-2026-08-24]. |
-| Running plain `kubectl logs` on a Pod stuck in init | You get nothing useful. Name the init container with `-c` [source: k8s-docs-debug-init-containers-2026-09-04]. |
-| Assuming a rescheduled StatefulSet replica comes back with empty storage | The PVC follows the identity and is retained by default [source: k8s-docs-statefulset-storage-2026-08-25]. A corrupt write survives every restart you try, which is exactly why it impersonates a platform fault. |
-| Assuming `kubectl debug` always succeeds if you have RBAC for it | A debug container is a container. Under `restricted` enforcement, admission can refuse it *[cross-bearing: see Ch 12 §6 — three levels, three modes]*. |
-| Treating D3 Debugging as a different subject from D2 Troubleshooting | The split is *scope*, not tooling. A question tagged to one may test the other's commands, because the commands do not respect the domain boundary — only the questions do. |
 
 ---
 
@@ -24426,10 +23995,6 @@ The process itself is more concrete than most people expect. A project applies b
 
 That is not a rubber stamp. It is a months-long evidence-gathering exercise in which strangers are asked, on the record, whether they actually run the thing.
 
-> 🔭 **Closer Look:** The exact numbers, for the curious, and not exam material: the adopter interview form asks for **five to seven adopters**, the internal TOC comment period runs about **one week**, the public comment period **two weeks**, and the vote requires a **two-thirds supermajority** of the TOC [source: cncf-toc-project-lifecycle-process-2026-08-31]. Learn the shape of the process; the numerals are the TOC's operating detail, not the blueprint's.
-
-> 🔭 **Closer Look:** The lifecycle document says "Incubation" where the projects page says "Incubating": one names the process, the other names the level. This book uses **Incubating** throughout, matching the projects page and the level name. If you see both forms in the wild, they refer to the same rung.
-
 ### Who decides what, and why the split matters
 
 The CNCF has more than one governing body, and the exam cares about which does what. The clean version comes straight from the foundation's charter.
@@ -24534,8 +24099,6 @@ You can only replace a piece *whole* if the piece is small and independently dep
 Take any one away and the other two get much harder. Small pieces you have to patch in place are just a distributed monolith with extra network hops. Immutable replacement of a monolith means redeploying everything to change one line. Declarative desired state over components you edit by hand is a description that is constantly wrong.
 
 That is what §1's "loosely coupled systems… combined with robust automation" is actually made of.
-
-> 🔭 **Closer Look:** If several of these feel familiar from Chapter 15, that is not a coincidence: several of the twelve factors are these same principles under older names, written for a platform that did not exist yet. *[cross-bearing: see Ch 15 §1 — twelve factors]*. Also relevant: *[cross-bearing: see Ch 5 §4 — scheduled once, replaced never]*, which is immutable infrastructure enacted at the Pod level, and where you first met the replacement discipline as a concrete behavior rather than a principle.
 
 ---
 
@@ -24796,7 +24359,6 @@ This is the most dangerous piece of vocabulary in the chapter, and it is dangero
    ############################################################
                     (a different thing entirely)
 
-
    +----------------------------------------------------------+
    |  THE MESH'S CONTROL PLANE                                |
    |  Distributes policy + certificates to the proxies        |
@@ -24892,8 +24454,6 @@ The handshake, in Istio's own summary: outbound traffic from a client is re-rout
 
 Four steps, and the application was not consulted at any of them.
 
-> 🔭 **Closer Look:** Meshes also support a **permissive mode**, where "the server accepts both plaintext and mutual TLS traffic," which exists "to provide greater flexibility for the on-boarding process" [source: istio-security-mtls-identity-2026-08-31]. You cannot switch a hundred services to mandatory mTLS on a Tuesday afternoon; permissive mode is how a real migration happens. Worth knowing the concept exists; the configuration is well past associate tier.
-
 ### What a mesh adds over what you already have
 
 This is the boundary question, and you have been walking toward it since Chapter 9.
@@ -24906,8 +24466,6 @@ This is the boundary question, and you have been walking toward it since Chapter
 | **A service mesh** | mTLS between every pair of workloads; per-service telemetry; L7 traffic control east-west | It is not free — it is more moving parts, more resource use, and another control plane to run |
 
 The honest summary: Service gives you a name, NetworkPolicy gives you a fence, and a mesh gives you a *conversation you can inspect and trust*. The glossary is candid that the sidecar model "uses more computing resources and becomes more complex to manage as your system grows" [source: cncf-glossary-service-mesh-2026-08-31], which is the pressure ambient mode is responding to.
-
-> 🔭 **Closer Look:** **Istio** and **Linkerd** are the two service meshes you are most likely to meet by name, and both are CNCF Graduated projects [source: cncf-project-maturity-levels-2026-08-23]. This section teaches Istio's model because it is the most widely documented, and because the sidecar/ambient split is the fact most likely to be tested. At associate tier, know what a mesh *is* and what it *buys*, not how to configure one. If you find yourself learning the names of a mesh's own custom resources, you have gone past the exam.
 
 *[cross-bearing: see Ch 9 §6 — the component that makes it real]* and *[cross-bearing: see Ch 12 §4 — secrets are not encrypted]*, both of which are the same lesson in different clothes: the object is not the mechanism, and encoding is not encryption.
 
@@ -24958,8 +24516,6 @@ Now the correction this whole section exists for.
 > The serverless property is the **lifecycle** — driven by requests, scaled to zero when idle — not the absence of containers or servers.
 
 Read that alongside the glossary's "abstracts servers away from the user" and the misconception dissolves completely. Nothing disappeared. A container image still gets pulled; a Pod still gets scheduled onto a node; a kubelet still starts it. What changed is that none of that happens until a request arrives, and it all goes away again when the requests stop.
-
-> 🔭 **Closer Look:** Notice what Knative is *built out of*. It is implemented as CRDs, the fourth pluggable interface, two sections ago. A whole serverless platform, sitting on the extension mechanism, with the API server storing and serving its objects. *[cross-bearing: see Ch 6 §8 — the control loop, extended]*. This is the pattern from §4 doing real work rather than being an example.
 
 ### Scale to zero
 
@@ -25244,8 +24800,6 @@ There are exactly **three** Committees: **Code of Conduct**, **Security Response
 
 *Two governance structures side by side. The pairing is the point — most of the confusion in this material comes from meeting them separately.*
 
-> 🔭 **Closer Look:** CNCF **TAGs** and Kubernetes **SIGs** are easy to confuse, and there is a historical reason that is more useful than any warning. The CNCF's own groups were *originally called SIGs*: "By June 2019, this number had grown to 37 projects and the TOC approved the creation of SIGs, later to be renamed Technical Advisory Groups" [source: cncf-tags-current-structure-2026-08-31]. They were the same word once, at two scales, and CNCF renamed theirs. TAGs operate across the whole foundation. SIGs operate inside the Kubernetes project. One foundation, many projects; Kubernetes is one of them.
-
 A detail that makes the SIG list concrete rather than abstract: several SIGs are ones you have already met the work of. **SIG Network**, **SIG Storage**, **SIG Node**, **SIG Autoscaling** and **SIG Release** are all on the roster [source: k8s-sig-list-and-groups-2026-08-31], and mapping them onto this book's chapters is straightforward: Network to Chapters 9 and 10, Storage to Chapter 11, Node to much of Chapters 2 and 5, Release to the versions Chapter 8 taught you to reason about. SIG Autoscaling sponsors both of the node autoscalers from the section you just read [source: k8s-docs-node-autoscaling-2026-08-31]. Every interface in §4 has a group of people behind it, working in public.
 
 ### The release train, and the fact you already half-know
@@ -25498,34 +25052,6 @@ That is the pluggability story, and it is one story.
 3. **Data plane versus control plane, twice.** A mesh's data plane is the proxies; its control plane configures them; neither is the cluster's control plane. Same vocabulary, different layer.
 4. **Which autoscaler moves which axis, and which ones ship.** Replicas (HPA, KEDA), resources (VPA), nodes (Cluster Autoscaler, Karpenter). HPA is built in; VPA is an add-on.
 5. **SIG, Working Group, Committee, Steering — and TAG is none of them.** Durable and topic-scoped; cross-SIG and time-bounded; closed-membership; overall governance. TAGs are CNCF-wide; SIGs are Kubernetes-internal.
-
-**Common Traps:**
-
-| The trap | The correct understanding |
-|---|---|
-| Reading *cloud native* as "runs in a public cloud" | The definition's first sentence says public, private **and** hybrid. The term is about how you build and operate, not where it runs. |
-| Treating the CNCF technology list as exhaustive | The definition says outright that the list is non-exhaustive. |
-| Ordering the maturity levels wrong | Sandbox → Incubating → Graduated. Sandbox is bleeding edge; Incubating is production use by a small number of users; Graduated is stable and widely adopted. |
-| Looking for graduation criteria on the projects page | They live in the TOC's project lifecycle documentation. |
-| Memorizing which projects are Graduated | The roster changes. Learn the levels and what each one asserts. |
-| Confusing the TOC with the Governing Board | The Board handles business oversight and budget and sets the scope; the TOC owns technical vision and approves projects **within** that scope. |
-| Using the pre-2025 TAG list | TAGs were restructured in 2025. The old list is all over older study material. |
-| Treating CNCF TAGs and Kubernetes SIGs as the same thing | Different organizations at different scopes. *(Easy to confuse — they shared a name historically, which is exactly why.)* |
-| Confusing a SIG with a Working Group | SIGs are the primary, durable unit for a topic. Working Groups cross SIG lines and are time-bounded. |
-| Assuming every community group is open | Committees are not. They are formed by Steering for topics requiring discretion, and do not always operate in the open. |
-| "A service mesh needs application code changes" | The defining property is delivering security, observability and traffic management **without** them. |
-| Confusing the mesh's data plane with its control plane — or with the cluster's | Data plane = the proxies mediating service-to-service traffic. Control plane = what configures them. Neither is Chapter 3's control plane. |
-| "Service mesh means sidecars" | Sidecar mode puts an Envoy proxy beside each Pod; ambient mode uses per-node L4 proxies plus optional per-namespace Envoy waypoints. Both use Envoy. |
-| "Knative replaces Kubernetes" | Knative is Kubernetes-based, builds on the Pod abstraction, and is implemented as CRDs. |
-| Confusing Knative Serving with Eventing | Serving: HTTP-triggered autoscaling container runtime with scale to zero. Eventing: CloudEvents-over-HTTP asynchronous routing. |
-| "Serverless means no containers" | The workloads are still containers in Pods. Serverless describes the lifecycle. *(Easy to confuse — the name actively misleads.)* |
-| Confusing horizontal with vertical scaling | Horizontal changes the **number** of replicas. Vertical changes the **resources** available to each. |
-| "VPA ships with Kubernetes" | VPA is an add-on. The object can exist while nothing acts on it — the same pattern as `kubectl top` without metrics-server. |
-| "In-place vertical resize means VPA now works in place" | In-place Pod vertical resize is a stable Kubernetes feature; full VPA support for it is not a settled story. Do not state it as fact. |
-| Confusing Pod autoscaling with node autoscaling | HPA, VPA and KEDA scale **workloads**. Cluster Autoscaler and Karpenter scale the **node pool**. |
-| "KEDA is a CPU autoscaler" | KEDA is event-driven — queue depth and similar external signals — plus schedule-based scaling through its Cron scaler. |
-| Giving Karpenter a CNCF maturity level | No official source assigns it one. It is sponsored by Kubernetes SIG Autoscaling. |
-| Expecting Observability as its own domain | The current blueprint has four domains — Kubernetes Fundamentals 44%, Container Orchestration 28%, Cloud Native Application Delivery 16%, Cloud Native Architecture 12% [source: cncf-kcna-certification-page-2026-08-23]. Observability is not one of them; it is competency material inside Cloud Native Architecture. Under the retired five-domain blueprint it was a domain of its own, weighted 8%, and Cloud Native Application Delivery carried 8% rather than today's 16% [source: cncf-kcna-curriculum-retired-2026-09-04]. Much third-party prep still targets that older split. |
 
 ---
 
@@ -26276,8 +25802,6 @@ Sit with that for a second. The bar is not "we emit metrics." The bar is: when s
 
 Instrumentation comes in two kinds. **Code-based** instrumentation is written into the application and gives "deeper insight and rich telemetry from your application itself." **Zero-code** instrumentation attaches from outside and is "great for getting started, or when you can't modify the application you need to get telemetry out of," pulling telemetry "from libraries you use and/or the environment your application runs in" [source: opentelemetry-instrumentation-2026-08-31]. Hold onto that second kind. It returns in §5.
 
-> 🔭 **Closer Look:** The CNCF glossary makes a point the other sources leave implicit: observability is "a system property," and consequently "how observable a system is will significantly impact its operating and development costs" [source: cncf-glossary-observability-2026-08-31]. It is not a product you install. It is a characteristic your system either has or lacks, and the cost of lacking it is paid in engineer-hours at three in the morning.
-
 ### What a probe is not
 
 You have already met something in this book that looks like observability, sits close to it, and is emphatically not it.
@@ -26326,8 +25850,6 @@ Baggage is a key-value store that travels with a request, letting you "propagate
 The detail that makes baggage a *separate* signal rather than a property of spans is this: "baggage is a separate key-value store and is unassociated with attributes on spans, metrics, or logs without explicitly adding them" [source: opentelemetry-baggage-2026-08-31]. It rides alongside. Attaching it to a span is a deliberate act. That separation is exactly why it earns its own row, and exactly why people forget it.
 
 Baggage "means you can pass data across services and processes, making it available to add to traces, metrics, or logs in those services" [source: opentelemetry-baggage-2026-08-31]. Which is to say: it is the signal that makes the other three signals talk about *the same thing*. Hold that. §8 is built on it.
-
-> 🔭 **Closer Look:** Baggage travels over the wire, which has a consequence worth one sentence of operational caution: "Sensitive Baggage items can be shared with unintended resources, like third-party APIs… making it visible to anyone inspecting your network traffic" [source: opentelemetry-baggage-2026-08-31]. Customer identifiers are the classic case. Not exam surface, but it is the reason mature teams have a policy about what goes in baggage.
 
 ### One limit, stated early
 
@@ -26409,8 +25931,6 @@ Time series are identified by more than a name.
 > 🪝 **Snag:** A *metric label* and a *Kubernetes label* are different things that share a word. Kubernetes labels are the universal join between objects and selectors *[cross-bearing: see Ch 4 §5 — the universal join]*. Metric labels are dimensions on a time series. They are not related, they are not interchangeable, and reading a question quickly is exactly how you conflate them.
 
 The identity rule has a consequence that follows directly from it: "The change of any label's value, including adding or removing labels, will create a new time series" [source: prometheus-data-model-2026-08-31].
-
-> 🔭 **Closer Look — cardinality.** Because the label set *is* the identity, "every unique combination of key-value label pairs represents a new time series, which can dramatically increase the amount of data stored" [source: prometheus-naming-labels-cardinality-2026-08-31]. Hence the standing advice: "Do not use labels to store dimensions with high cardinality (many different label values), such as user IDs, email addresses, or other unbounded sets of values" [source: prometheus-naming-labels-cardinality-2026-08-31]. Add a `user_id` label to a busy endpoint's request counter and you have not added a dimension. You have multiplied your storage by your user count. This is not KCNA exam surface; it is the single most common way real teams break their own metrics stack, which is why it's here.
 
 ### The denominator
 
@@ -26887,12 +26407,6 @@ Two agents dominate this slot, and the exam-adjacent detail is their relationshi
 
 Why two? Footprint. A vanilla Fluentd instance "runs on 30-40MB of memory" [source: fluentd-architecture-2026-08-31]: trivial on a server, less trivial multiplied across every node in a large fleet, and genuinely limiting on constrained hardware. Fluent Bit is the lightweight answer. Both "are commonly deployed on Kubernetes as node-level logging agents (DaemonSets) that collect container logs from each node and forward them to a backend" [source: fluent-bit-overview-2026-08-23].
 
-> 🔭 **Closer Look — what a log agent actually does.** Fluent Bit's data pipeline runs six stages in order: **input** plugins gather from sources such as log files and OS metrics; a **parser** converts unstructured data to structured; **filters** alter the data before delivery; a **buffer** stores it in memory or on the filesystem; a **router** directs it through filters to one or more destinations using tags and matching rules; and **output** plugins define those destinations [source: fluent-bit-overview-2026-08-23]. This is deployment-level detail, not exam surface. It is here because it makes concrete what happens between reading a file off a node and writing it to a backend.
-
-> 🪢 **Mnemonic:** **Fluentd** is one word. **Fluent Bit** is two. The parent is a single compound; the lightweight child is "Fluent" plus a "Bit" of it. That asymmetry looks like a typo and is not, and a question that renders one of them wrong is testing whether you noticed.
-
-> 🪝 **Snag:** Fluentd is CNCF graduated *as of the source cached for this book*. Project maturity levels change, and a question asking which projects are *currently* graduated is asking about a moving roster rather than a durable fact. What is durable and worth knowing: Fluentd is the CNCF project, Fluent Bit is its lighter sub-project, and both serve as node-level agents. *[cross-bearing: see Ch 17 §2 — sandbox, incubating, graduated, and who decides]*
-
 <!-- AUTHOR-REVIEW: G32 / FinOps, recorded here because Ch 18 is the last content chapter. Cost management (OpenCost) is absent from this chapter, consistent with Ch 17, which carries the parallel note. The decision is defensible on objective grounds: `opencost-overview-2026-08-23` tags itself D4 Cloud Native Ecosystem and Principles — Ch 17's competency, not Observability — so its absence is not a Ch 18 coverage failure. It is worth flagging anyway: once this gate clears, the book ships with zero FinOps coverage, and the retired KCNA blueprint grouped cost management closely enough with observability that a candidate may expect it. The outline asked for this decision to be visible in both chapters rather than silent in one; it now is. -->
 
 ---
@@ -27001,8 +26515,6 @@ Two other framings appear alongside the golden signals, and both are named in th
 The person who created RED drew the line himself: "The USE Method doesn't really apply to services; it applies to hardware, network disks, things like this. We really wanted a microservices-oriented monitoring philosophy, so we came up with the RED Method" [source: red-method-tom-wilkie-2026-08-31].
 
 That is the whole complementarity, and note what produced it. RED exists *because* one service became twenty. *[cross-bearing: see Ch 17 §3 — small pieces, replaced whole]* The architecture changed, and the measurement framing had to change with it, which is this chapter's thesis showing up in the methodology literature.
-
-> 🔭 **Closer Look — one word, three meanings.** "Utilization" now means three different things in this chapter, and all three are correct in their own context. In §3, utilization is **a percentage of the containers' resource request** [source: k8s-docs-hpa-utilization-vs-requests-2026-08-31]. In the USE method, utilization is "the average time that the resource was busy servicing work" [source: use-method-brendan-gregg-2026-08-31], a duration fraction. And the golden-signals concept nearest to both is **saturation**, how full the service is [source: sre-book-four-golden-signals-2026-08-23]. When you meet the word in a question, check which system is speaking.
 
 <!-- AUTHOR-REVIEW: RED's only surviving authoritative source is a Grafana Labs blog post by Tom Wilkie, the method's originator — the original Weaveworks publication is dead, and the CNCF TAG Observability whitepaper's RED link now points to that dead host. That is the method's author but is not official documentation, and no CNCF/LF source defines RED. Per the outline's stated posture, RED is named and contrasted here but carries no teaching weight, and no graded item in this chapter depends on it. B1 gap G21 should be recorded as substantially-but-not-fully closed. -->
 
@@ -27169,22 +26681,6 @@ The question was never "do we have monitoring." The question is: *is the service
 4. **SLI vs SLO.** Measurement versus objective. SLA is the third term and the usual distractor.
 5. **Observability vs monitoring.** New questions versus pre-chosen indicators. Not "dashboards versus no dashboards."
 6. **metrics-server is not a monitoring system.** The exam tests the boundary, not either side.
-
-**Common Traps** — these are distinctions that are easy to confuse, and they are the ones this material rewards getting right:
-
-| The trap | The correct understanding |
-|---|---|
-| "Observability is monitoring with better dashboards" | Observability handles **unknown unknowns** — questions you did not plan for. Monitoring detects known unknowns [source: cncf-tag-observability-whitepaper-2026-08-31] |
-| Naming three signals | **Four**, on OpenTelemetry's Signals page. Baggage is contextual information passed *between* signals [source: opentelemetry-signals-2026-08-23] |
-| Using "span" and "trace" interchangeably | One unit of work versus the whole request path [source: opentelemetry-observability-primer-2026-08-23] |
-| "Logs are the richest signal, so lead with them" | Logs "are not extremely useful for tracking code execution on their own, as they typically lack contextual information" [source: opentelemetry-observability-primer-2026-08-23] |
-| SLI and SLO swapped | SLI **measures**; SLO **commits**. If there's a consequence attached, it's an SLA [source: sre-book-service-level-objectives-2026-08-31] |
-| "Prometheus pushes" / "apps report to Prometheus" | It **scrapes over HTTP**. Pushgateway is an intermediary for jobs too short to scrape [source: prometheus-pushgateway-practices-2026-08-31] |
-| "Prometheus for per-request billing" | Explicitly not — "if you need 100% accuracy… Prometheus is not a good choice" [source: prometheus-overview-2026-08-23] |
-| "Prometheus needs clustered/network storage" | Each server is **standalone by design**, so it works "when other parts of your infrastructure are broken" [source: prometheus-overview-2026-08-23] |
-| "Prometheus was CNCF's first project" | **Second**, in 2016. Kubernetes was first [source: prometheus-overview-2026-08-23] |
-| Expecting Observability as a standalone domain | It is competency material inside **Cloud Native Architecture** [source: lf-kcna-program-changes-2026-08-23]. *[cross-bearing: see Ch 1 — the curriculum that moved under everyone's feet]* |
-| `kubectl logs` as a log archive | Rotation, one-restart depth, and eviction all bound it [source: k8s-docs-logging-architecture-2026-08-23]. Anything historical needs cluster-level logging |
 
 ---
 
@@ -27949,8 +27445,6 @@ The card below is a *selection*: the highest-value pairs, sized to be drilled in
 | **kubelet skew vs kubectl skew vs supported releases** | Three different numbers. `kubelet` may be **up to three minor versions older** than `kube-apiserver` and must never be newer [source: k8s-version-skew-policy-2026-08-31]. `kubectl` is supported **within one minor version either direction** [source: k8s-version-skew-policy-2026-08-31]. The project maintains release branches for the **most recent three minor releases** [source: k8s-version-skew-policy-2026-08-31]. | Stems mix these deliberately. Read which component is named before reaching for a number. |
 | **scheduled once vs rescheduled** | A Pod is bound to a node **once**. It is never moved. What people call "rescheduling" is a *new* Pod created by a controller after the old one died. | A stem describing a Pod "moving to another node" is describing a replacement, and the controller is the actor. |
 | **`restartPolicy` scope** | It governs **containers within a Pod**, not the Pod object. A Job whose Pod template sets `restartPolicy: Never` will still get a *replacement Pod* from the Job controller when the first one fails; the policy stopped the container from restarting in place, not the workload from being retried. | The trap is reading "Never" as "this workload will not come back." Note also that a Deployment's Pod template cannot use `Never` at all; the API requires `Always` there. |
-
-> 🔭 **Closer Look:** The version-skew numbers reward a moment of structure. Every rule is anchored to `kube-apiserver`, and every component except `kubectl` must be **no newer** than it, which is why the upgrade order is control plane first. `kubectl` is the only component allowed to be *newer*, because it is a client you run from your laptop and the project accepts you may have upgraded it casually [source: k8s-version-skew-policy-2026-08-31].
 
 ### Domain 2 — Container Orchestration (Ch 9–13)
 

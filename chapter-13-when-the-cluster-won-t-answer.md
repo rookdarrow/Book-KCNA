@@ -110,7 +110,7 @@ sections:
     objectives: ["D2.3"]
     requires_figure: true
     figure_anchor: "ch13-fig06-diagnostic-layer-stack"
-    checkpoint_after: true
+    checkpoint_after: false
 
   - name: "Versions That Don't Agree"
     objectives: ["D2.3"]
@@ -152,9 +152,9 @@ soundings_planned:
 #-- cleanly. Practice stays at B4's 15. New total 39.
 question_budget:
   soundings: 8
-  taking_your_bearings: 16             # across 3 checkpoints (6 + 5 + 5)
-  practice_questions: 15
-  total_this_chapter: 39
+  taking_your_bearings: 14             # across 2 checkpoints (6 + 8)
+  practice_questions: 16
+  total_this_chapter: 38
 
 #-- Concept / objective / command tagging -------------------------------
 kb_tags:
@@ -198,9 +198,7 @@ kb_tags:
     - "kubectl-get-pod-o-wide"
     - "kubectl-top"
     - "crictl-ps"
-    - "crictl-pods"
     - "crictl-logs"
-    - "crictl-inspect"
 
 figures_planned:
   - "ch13-fig01-two-audience-split"
@@ -218,15 +216,13 @@ figures_planned:
 **Domain: Container Orchestration (Troubleshooting) | Published domain weight: 28% [source: cncf-kcna-curriculum-pdf-2026-08-23]**
 **Complexity: Mixed | Novelty: Moderate | Prerequisites: Heavy**
 
-<!-- AUTHOR-REVIEW: The 28% figure above is the published weight for the whole Container Orchestration domain, which spans Networking, Security, Troubleshooting and Storage. CNCF publishes no sub-competency weights (B1 gap G33, B2 disclosure #1), so this chapter's share of that 28% is an authored allocation, not a published one. The metadata line states the published number with its tag; the disclaimer below is the house form. Verify it matches the shipped Ch 9-12 wording before materialisation. -->
-
 *Container Orchestration is 28% of the exam. How that 28% divides among its four competencies is not published — the allocation of chapters across this Part is the author's, derived from the competency list, not from CNCF data.*
 
 ---
 
 ## Attention Budget
 
-**Total time: ~95 minutes | Recommended: Split across 2 sessions**
+**Total time: ~102 minutes | Recommended: Split across 2 sessions**
 
 | Section | Time | Attention Cost | Best Time to Study |
 |---|---|---|---|
@@ -236,10 +232,9 @@ figures_planned:
 | ☆ Taking Your Bearings 1 | 8 min | Medium | After a brief break |
 | §4 Pods That Start and Don't Stay | 15 min | High | Peak attention |
 | §5 When the Node Is the Problem | 10 min | Medium | Mid-session |
-| ☆ Taking Your Bearings 2 | 8 min | Medium | After a brief break |
 | §6 Versions That Don't Agree | 7 min | Medium | Anytime |
 | §7 Numbers Nobody Collects | 8 min | Low | Anytime |
-| ☆ Taking Your Bearings 3 | 7 min | Medium | After a brief break |
+| ☆ Taking Your Bearings 2 | 11 min | Medium | After a brief break |
 | ☀️ §8 Read the Phase First | 5 min | Low | End of session |
 
 **Attention Cost Key:**
@@ -283,21 +278,21 @@ Two of them deliberately probe material you met a while ago and may have let sli
 <details>
 <summary>Answers + reading strategy</summary>
 
-**1.** Container state. `Reason` is a field on the container state, not on the Pod phase. The five Pod phases are `Pending`, `Running`, `Succeeded`, `Failed`, and `Unknown`, and none of them is called `ContainerCreating`. [source: k8s-docs-pod-failure-signatures-2026-08-31] *[cross-bearing: see Ch 5 §5 — Pod phases and container states]*
+1. Container state. `Reason` is a field on the container state, not on the Pod phase. The five Pod phases are `Pending`, `Running`, `Succeeded`, `Failed`, and `Unknown`, and none of them is called `ContainerCreating`. [source: k8s-docs-pod-failure-signatures-2026-08-31] *[cross-bearing: see Ch 5 §5 — Pod phases and container states]*
 
-**2.** No. Nothing is retrying it with looser constraints. `Pending` is a stable report that no feasible node was found. The scheduler will place the Pod the moment a node becomes feasible, but it will not relax the Pod's own requirements to make that happen. *[cross-bearing: see Ch 7 §2 — feasible nodes]*
+2. No. Nothing is retrying it with looser constraints. `Pending` is a stable report that no feasible node was found. The scheduler will place the Pod the moment a node becomes feasible, but it will not relax the Pod's own requirements to make that happen. *[cross-bearing: see Ch 7 §2 — feasible nodes]*
 
-**3.** With no tag, Kubernetes assumes `:latest`, and the default `imagePullPolicy` for `:latest` is `Always`. The kubelet queries the registry every time it launches a container. [source: k8s-docs-images-2026-08-23] *[cross-bearing: see Ch 2 §6 — imagePullPolicy]*
+3. With no tag, Kubernetes assumes `:latest`, and the default `imagePullPolicy` for `:latest` is `Always`. The kubelet queries the registry every time it launches a container. [source: k8s-docs-images-2026-08-23] *[cross-bearing: see Ch 2 §6 — imagePullPolicy]*
 
-**4.** `Burstable`. It is not `Guaranteed`, because container B has no limits and container A's limits do not equal its requests. It is not `BestEffort`, because at least one container has requests. [source: k8s-docs-pod-qos-2026-08-24] *[cross-bearing: see Ch 5 §8 — QoS classes]*
+4. `Burstable`. It is not `Guaranteed`, because container B has no limits and container A's limits do not equal its requests. It is not `BestEffort`, because at least one container has requests. [source: k8s-docs-pod-qos-2026-08-24] *[cross-bearing: see Ch 5 §8 — QoS classes]*
 
-**5.** `Ready=False` means the node is not healthy and is not accepting Pods. [source: k8s-docs-node-status-2026-08-24] The kubelet is what reports a node's status, in the form of updates to the Node's `.status`. [source: k8s-docs-node-controller-heartbeats-2026-08-31] *[cross-bearing: see Ch 8 §4 — node conditions]*
+5. `Ready=False` means the node is not healthy and is not accepting Pods. [source: k8s-docs-node-status-2026-08-24] The kubelet is what reports a node's status, in the form of updates to the Node's `.status`. [source: k8s-docs-node-controller-heartbeats-2026-08-31] *[cross-bearing: see Ch 8 §4 — node conditions]*
 
-**6.** 1.34. The kubelet may be up to three minor versions older than the API server, and must never be newer. [source: k8s-version-skew-policy-2026-08-31] *[cross-bearing: see Ch 8 §6 — the version-skew window]*
+6. 1.34. The kubelet may be up to three minor versions older than the API server, and must never be newer. [source: k8s-version-skew-policy-2026-08-31] *[cross-bearing: see Ch 8 §6 — the version-skew window]*
 
-**7.** `kubectl logs <pod> -c cache`. For a multi-container Pod, `-c <container>` is how you name the one you mean. [source: k8s-docs-logging-architecture-2026-08-23] *[cross-bearing: see Ch 5 §2 — multi-container Pods]*
+7. `kubectl logs <pod> -c cache`. For a multi-container Pod, `-c <container>` is how you name the one you mean. [source: k8s-docs-logging-architecture-2026-08-23] *[cross-bearing: see Ch 5 §2 — multi-container Pods]*
 
-**8.** The object is created and nothing routes traffic. This is exactly the pattern Chapter 10 named: the API server accepts and stores the object, and no controller is watching for it, so it is a record of intent with nobody to honor it. *[cross-bearing: see Ch 10 §3 — an object without its component does nothing]*
+8. The object is created and nothing routes traffic. This is exactly the pattern Chapter 10 named: the API server accepts and stores the object, and no controller is watching for it, so it is a record of intent with nobody to honor it. *[cross-bearing: see Ch 10 §3 — an object without its component does nothing]*
 
 ---
 
@@ -327,15 +322,15 @@ Three of the most common failure shapes, and in all three the first thing everyo
 
 So here is the question this chapter opens and does not answer until the end: **what do you read first, and why is it always the same thing?**
 
-You are not going to learn nine error strings. You could get nine error strings from a blog post, and you would forget them within a week, because a list of strings has no structure to hang on. What you are going to learn is a method, the same one practitioners actually use, which is not recognition but narrowing. When an experienced operator meets a Pod they have never seen fail in this particular way, they do not consult a mental glossary. They take a bearing, then another, and read the answer off the intersection — each question they ask the cluster eliminates a whole category of cause, and they arrive at the diagnosis without ever having seen this exact failure before.
+You are not going to learn nine error strings. You could get nine error strings from a blog post, and you would forget them within a week, because a list of strings has no structure to hang on. What you are going to learn is a method, the same one practitioners actually use, which is not recognition but narrowing. When an experienced administrator meets a Pod they have never seen fail in this particular way, they do not consult a mental glossary. They take a bearing, then another, and read the answer off the intersection — each question they ask the cluster eliminates a whole category of cause, and they arrive at the diagnosis without ever having seen this exact failure before.
 
 That is transferable. Error-string recall is not. Kubernetes will ship a failure signature next year that nobody has written a blog post about yet, and the method will find it anyway.
 
 > **Dead Reckoning:** A Pod's phase tells you which stage of the platform's own start-up sequence stopped. Each stage is owned by a different component. Knowing the stage tells you which component to interrogate, and interrogating the right component is the whole of diagnosis. `kubectl logs` interrogates the application, which is the last component in the sequence and therefore the last one worth asking.
 
-A word about how this chapter treats the exam. CNCF publishes four domain weights and a list of competency names — no sub-competency weights, no item counts, no published statement of which question shapes it favors. So when this chapter calls something high-value, that is the author's judgement from the competency list and the material's own structure, not a published figure, and it is stated as judgement everywhere it appears.
+A word about how this chapter treats the exam. CNCF publishes four domain weights and a list of competency names — no sub-competency weights, no item counts, no published statement of which question shapes it favors. So when this chapter calls something high-value, that is the author's judgment from the competency list and the material's own structure, not a published figure, and it is stated as judgment everywhere it appears.
 
-On that judgement: failure signatures are the material most study guides reduce to a two-column glossary — signature on the left, one-line cause on the right. A glossary will get you through a question that names a string. It will not get you through a question that describes a symptom and asks what you would check, and the second shape is the one this chapter is built for, because it is the one the method survives.
+On that judgment: failure signatures are the material most study guides reduce to a two-column glossary — signature on the left, one-line cause on the right. A glossary will get you through a question that names a string. It will not get you through a question that describes a symptom and asks what you would check, and the second shape is the one this chapter is built for, because it is the one the method survives.
 
 ---
 
@@ -388,8 +383,6 @@ That middle clause is load-bearing, and it is the one people drop. A cluster-wid
 *[cross-bearing: see Ch 16 §1 — when the Pod is fine and the application isn't]*
 
 That is also why you will not find `kubectl exec`, `kubectl debug`, or `kubectl port-forward` taught here. They are real tools, they are on the KCNA competency list, and they belong to the other chapter. They exist to get you inside a container that is already running, which is a question you only ask once the platform has succeeded. *[cross-bearing: see Ch 16 §3 — getting inside a container]* and *[cross-bearing: see Ch 16 §5 — bypassing the Service on purpose]*
-
-<!-- AUTHOR-REVIEW: book-level objective tagging, not a change to this chapter's text. `kubectl exec`, `kubectl debug` / ephemeral containers, `kubectl port-forward`, and Service/EndpointSlice debugging are all on the authored D2.3 Troubleshooting list and are all deferred to Ch 16, which is filed under D3.2 Debugging. Unless Ch 16's frontmatter carries `objectives: ["D3.2", "D2.3"]`, the book's objective index will show a substantial slice of D2.3 with no owning chapter. The deferrals here are correct and explicitly signposted; the fix belongs in Ch 16's frontmatter. -->
 
 ### The order, and why it is that order
 
@@ -456,13 +449,11 @@ Every failure in this section shares one property: **no container ever executed.
 
 Start at the top of the tree, because this is the branch people skip.
 
-If a Pod was rejected at admission — by Pod Security Admission [source: k8s-docs-pod-security-admission-2026-08-31], by a validating webhook, by a quota — **there is no Pod object to describe.** The refusal happened at the harbor entrance, and there is no vessel inside to inspect. Chapter 12 already flagged this to you and said it "shows up at a different point in the triage flow"; here is that point.
+If a Pod was rejected at admission — by Pod Security Admission [source: k8s-docs-pod-security-admission-2026-08-31], by a validating webhook, by a quota [source: k8s-docs-resource-quotas-2026-08-24] — **there is no Pod object to describe.** An admission rejection ends the request before anything is stored: "If any of the controllers in either phase reject the request, the entire request is rejected immediately and an error is returned to the end-user" [source: k8s-docs-admission-controllers-2026-08-24], and only a request that passes admission is "validated using the validation routines for the corresponding API object, and then written to the object store." [source: k8s-docs-controlling-access-2026-08-24] The refusal happened at the harbor entrance, and there is no vessel inside to inspect. Chapter 12 already flagged this to you and said it "shows up at a different point in the triage flow"; here is that point.
 
-<!-- AUTHOR-REVIEW: RESEARCH GAP. The claim that an admission refusal leaves no Pod object, and that a controller's failed create is recorded on the ReplicaSet rather than on any Pod, is not supported by any snapshot in this chapter's corpus. `k8s-docs-pod-security-admission-2026-08-31` documents the enforce/audit/warn modes but not the "no object is created" consequence; validating webhooks and ResourceQuota have no snapshot at all. This is the top branch of the §2 signature map and the keyed answer to a graded item (TYB 1 Q4, Practice Q9 distractor D), so it cannot be cut. Route a Stage 2 fetch for (a) PSA enforcement outcomes and (b) ReplicaSet status conditions / the `FailedCreate` event, then tag every occurrence. -->
+The consequence is practical. `kubectl get pod myapp` returns `NotFound`, and the natural reading of `NotFound` is "something deleted it" or "I'm in the wrong namespace." Neither is true. The object never existed, because the request to create it was rejected, and the rejection message went to whoever issued the create: your terminal, if you ran `kubectl apply`; the Deployment's ReplicaSet status, if a controller was creating it on your behalf. [source: k8s-docs-deployment-failed-deployment-2026-09-04]
 
-The consequence is practical. `kubectl get pod myapp` returns `NotFound`, and the natural reading of `NotFound` is "something deleted it" or "I'm in the wrong namespace." Neither is true. The object never existed, because the request to create it was rejected, and the rejection message went to whoever issued the create: your terminal, if you ran `kubectl apply`; the Deployment's ReplicaSet status, if a controller was creating it on your behalf.
-
-> 🪝 **Snag:** When a Deployment's Pods are refused at admission, the Deployment does not fail loudly. It sits at zero available replicas, and the reason is on the **ReplicaSet**, not on any Pod. `kubectl describe replicaset <name>` is where the refusal message is. Chasing the missing Pod will find you nothing, because there is nothing to find.
+> 🪝 **Snag:** When a Deployment's Pods are refused at admission, the Deployment does not fail loudly. It sits at zero available replicas, its `Progressing` condition can still read `True`, and the refusal is recorded against the **ReplicaSet** that tried, not on any Pod. The documentation's own example shows exactly this shape: a `ReplicaFailure` condition with reason `FailedCreate`, carrying the API server's message — `pods "nginx-deployment-4262182780-" is forbidden: exceeded quota` — and no Pod name anywhere, because none was created. [source: k8s-docs-deployment-failed-deployment-2026-09-04] `kubectl describe replicaset <name>` is where the refusal message is written out; the Deployment surfaces it only as that condition. Chasing the missing Pod will find you nothing, because there is nothing to find.
 
 *[cross-bearing: see Ch 12 §6 — Pod Security Admission]*
 
@@ -490,7 +481,7 @@ Two other `Pending` causes surprise people often enough to name. Exhausting CPU 
 
 An unbound PersistentVolumeClaim belongs in this family too: a storage problem can arrive disguised as a scheduling problem, with a Pod sitting in `Pending` for reasons that have nothing to do with CPU, memory, or taints *[cross-bearing: see Ch 11 §2 — PV and PVC binding]*. Chapter 11 promised you would be able to tell the two apart from the symptoms, so here is how — and the answer is that you have to look at the claim, because the Pod cannot tell you.
 
-Run `kubectl get pvc` beside `kubectl get pods`. A claim reading `Pending` means it has not found a volume, and **claims remain unbound indefinitely if a matching volume does not exist** [source: k8s-docs-persistent-volumes-depth-2026-08-25] — there is no timeout and no eventual failure, which is why this looks so much like a Pod that simply will not schedule.
+Run `kubectl get pvc` beside `kubectl get pods`. A claim reading `Pending` means it has not found a volume, and **claims remain unbound indefinitely if a matching volume does not exist** [source: k8s-docs-persistent-volumes-2026-08-23] — there is no timeout and no eventual failure, which is why this looks so much like a Pod that simply will not schedule.
 
 Then read the claim's StorageClass, because **the binding mode inverts the direction of cause**:
 
@@ -504,7 +495,7 @@ Then read the claim's StorageClass, because **the binding mode inverts the direc
 
 If the Pod has been placed on a node but its containers are not running, the containers are in the `Waiting` state, and `Waiting` carries a `Reason` field that names the specific problem. The documentation frames the whole category: "If a Pod is stuck in the Waiting state, then it has been scheduled to a worker node, but it can't run on that machine. The most common cause of Waiting pods is a failure to pull the image." [source: k8s-docs-debug-pods-2026-08-23]
 
-This is where the phase-versus-state distinction earns its keep. The *phase* may still read `Pending`, because the containers have not been made ready to run, or the Pod may show `Running` with containers not yet up. Either way, the string that tells you what is actually wrong lives on the **container state**, not the phase. You get it from `kubectl describe pod`, which "shows the state for each container within that Pod." [source: k8s-docs-pod-failure-signatures-2026-08-31]
+This is where the phase-versus-state distinction earns its keep. For a Pod whose only container is waiting on its image or its configuration, the *phase* still reads `Pending` — the phase definition counts "the time spent downloading container images over the network" as `Pending` [source: k8s-docs-pod-failure-signatures-2026-08-31] — while a multi-container Pod with one container already up may show `Running` beside a container that is still `Waiting`. Either way, the string that tells you what is actually wrong lives on the **container state**, not the phase. You get it from `kubectl describe pod`, which "shows the state for each container within that Pod." [source: k8s-docs-pod-failure-signatures-2026-08-31]
 
 Here are the `Waiting` reasons that matter for the never-started family, from the documented reason table [source: k8s-docs-pod-failure-signatures-2026-08-31]:
 
@@ -529,7 +520,7 @@ The documented cause list is short: "invalid image name, or pulling from a priva
 
 That third check is underrated. Pulling the image by hand from a shell on the node, or from your laptop if the registry is reachable from there, collapses the question "is this a Kubernetes problem or a registry problem?" in about five seconds.
 
-The subtle version of this failure involves the pull policy. Recall that if you specify no tag, or the tag `:latest`, the default policy is `Always`, and the kubelet "queries the container image registry to resolve the name to an image digest" on every container launch. [source: k8s-docs-images-2026-08-23] A cached image is provisions already aboard, but with `Always` the kubelet still has to hail the registry before it will use them. That means a Pod which has been running happily for weeks on a cached image will fail to restart the moment the registry becomes unreachable. A Pod pinned to a specific tag other than `:latest` gets `IfNotPresent` by default and rides out the same registry outage without noticing.
+The subtle version of this failure involves the pull policy. Recall that if you specify no tag, or the tag `:latest`, the default policy is `Always`, and the kubelet "queries the container image registry to resolve the name to an image digest" on every container launch. [source: k8s-docs-images-2026-08-23] A cached image is like provisions already aboard, but with `Always` the kubelet still has to hail the registry before it will use them. That means a Pod which has been running happily for weeks on a cached image will fail to restart the moment the registry becomes unreachable. A Pod pinned to a specific tag other than `:latest` gets `IfNotPresent` by default and rides out the same registry outage without noticing.
 
 > 🔭 **Closer Look:** `Always` does not mean "download the layers every time." The kubelet resolves the tag to a digest, and "if the kubelet has a container image with that exact digest cached locally, it uses its cached image." [source: k8s-docs-images-2026-08-23] The bandwidth cost is small. The *availability* cost is not: the registry has to answer, and if it doesn't, the container doesn't start.
 
@@ -541,15 +532,13 @@ The subtle version of this failure involves the pull policy. Recall that if you 
 
 ### `CreateContainerConfigError`: the configuration cannot be assembled
 
-<!-- AUTHOR-REVIEW: RESEARCH GAP, highest severity in this chapter. `CreateContainerConfigError` appears in no cached snapshot in this corpus. The `Waiting` reason table in k8s-docs-pod-failure-signatures-2026-08-31 lists fourteen reasons and this is not one of them, so it has been lifted out of that table above rather than presented as sourced from it. The signature cannot be cut: it is one of the nine the ☀️ Zenith is built on, it carries a ★ Fixed Point, and it is the keyed correct answer to TYB 1 Q1 and Practice Q5, and the diagnosis in Practice Q9. Route a Stage 2 fetch for a page that documents it — the ConfigMap and Secret consumption docs ("the kubelet reports an error if the ConfigMap doesn't exist") are the most likely home, since the rendered reason table does not carry it. The same gap covers the related claim in Practice Q9's answer key that Kubernetes does not validate a referenced Secret's existence at admission time. -->
-
 This one is worth dwelling on because the symptom is so far from the cause.
 
-A container's configuration includes everything the kubelet has to gather before it can hand a container definition to the runtime: environment variables, mounted volumes, and, crucially, the contents of any ConfigMap or Secret the Pod references. If a referenced ConfigMap does not exist, or a referenced Secret does not exist, or a named key inside one of them is missing, the kubelet cannot finish assembling the container. It stops, and reports `CreateContainerConfigError`.
+A container's configuration includes everything the kubelet has to gather before it can hand a container definition to the runtime: environment variables, mounted volumes, and, crucially, the contents of any ConfigMap or Secret the Pod references. If a referenced ConfigMap does not exist, or a referenced Secret does not exist, or a named key inside one of them is missing, the kubelet cannot finish assembling the container: "If you reference a ConfigMap that doesn't exist and you don't mark the reference as `optional`, the Pod won't start. Similarly, references to keys that don't exist in the ConfigMap will also prevent the Pod from starting" [source: k8s-docs-configmap-restrictions-2026-09-04], and "None of a Pod's containers will start until all non-optional Secrets are available." [source: k8s-docs-secret-missing-reference-2026-09-04] It stops, and reports `CreateContainerConfigError` — the kubelet's own name for "failed to create container config." [source: k8s-kubelet-kuberuntime-container-reasons-2026-09-04]
 
 Notice what has *not* gone wrong. The Pod scheduled successfully; the node was feasible. The image pulled successfully; the registry answered. Every earlier stage worked. The failure is at the last step before the container runs, and it is caused by an object in a completely different part of your manifests.
 
-Chapter 12 pointed a reader here for exactly this case: a Pod that references a Secret which does not exist. It will not start, it will never start, and nothing about the message mentions Secrets unless you read the events.
+Chapter 12 pointed a reader here for exactly this case: a Pod that references a Secret which does not exist. It will not start, it will never start, and nothing about the message mentions Secrets unless you read the events — which is where the kubelet puts the detail: "the kubelet periodically retries running that Pod. The kubelet also reports an Event for that Pod, including details of the problem fetching the Secret." [source: k8s-docs-secret-missing-reference-2026-09-04]
 
 > 🪝 **Snag:** A missing ConfigMap and a *misspelled key inside an existing* ConfigMap produce the same reason string. `describe` will name which one it could not resolve. Read the message, not just the reason.
 
@@ -563,7 +552,7 @@ From platform scope, the diagnosis is: identify *which* init container is stuck,
 
 *[cross-bearing: see Ch 16 §2 — debugging init containers]*
 
-> ★ **Fixed Point**
+> ★ **Fixed Point:**
 >
 > **Every failure in this section means no container ever executed.** `Pending`, the image-pull family, `CreateContainerConfigError`, `ErrImageNeverPull` — in each case the platform stopped before running your code. Reading application logs cannot help, because there are no application logs. The diagnosis lives in `kubectl describe` and in the events, always.
 
@@ -573,15 +562,13 @@ From platform scope, the diagnosis is: identify *which* init container is stuck,
 
 You have now seen the method twice and been told twice to "read the events." Here is what that actually means, and what the three commands genuinely do.
 
-<!-- AUTHOR-REVIEW: RESEARCH GAP, kubectl command surface. Four command forms in this section carry no source tag, and the corpus does not hold their syntax: `kubectl events --for pod/<name>`, `kubectl get events --sort-by=.metadata.creationTimestamp`, `kubectl logs --all-containers`, and `kubectl config current-context`. The bundled snapshot k8s-docs-kubectl-cheatsheet-troubleshooting-2026-08-31 claims in its frontmatter to close this gap but is transcribed only as far as its first heading and contains no command lines at all; its own note already concedes that `kubectl events` is NOT covered. The same gap covers the semantics of the `RESTARTS`, `READY` and `STATUS` columns of `kubectl get pods`, which this section and two graded items rely on. Two fixes, in order of leverage: (1) re-transcribe the cheatsheet snapshot past its first heading — that alone closes most of this; (2) fetch kubernetes.io/docs/reference/kubectl/generated/kubectl_events/ for the `--for` selector syntax specifically. Until then, none of the four is tagged, deliberately. -->
-
 ### First: confirm you are talking to the cluster you think you are
 
 Before you trust a single line of output, confirm which cluster answered. The official troubleshooting guide for `kubectl` itself opens on this: it exists for people who "encounter issues accessing `kubectl` or connecting to your cluster," and its first instruction is to "make sure you have installed and configured `kubectl` correctly on your local machine. Check the `kubectl` version to ensure it is up-to-date and compatible with your cluster." [source: k8s-docs-troubleshoot-kubectl-2026-08-31]
 
 The failure this prevents is not exotic. You are looking at a staging cluster while debugging a production incident; you are in the `default` namespace while your workload lives in `payments`; the Pod "does not exist" because you are asking the wrong API server. Every one of those produces confident, well-formatted, entirely irrelevant output.
 
-`kubectl config current-context` costs you one second and eliminates the whole category.
+`kubectl config current-context` — the quick reference's own one-liner to "display the current-context" [source: k8s-docs-kubectl-quick-reference-troubleshooting-2026-09-04] — costs you one second and eliminates the whole category.
 
 *[cross-bearing: see Ch 8 §1 — kubeconfig and contexts]*
 
@@ -612,7 +599,7 @@ kubectl events --for pod/<pod-name>
 kubectl get events --sort-by=.metadata.creationTimestamp
 ```
 
-The second form is the one to reach for when you do not yet know which object is at fault. Events are not sorted usefully by default, and a namespace's event stream read in creation order is a chronology of everything the cluster tried to do recently.
+The first form filters events "to only those pertaining to the specified resource" [source: k8s-docs-kubectl-events-2026-08-31]; the second is the quick reference's own recipe for a namespace's events in creation order [source: k8s-docs-kubectl-quick-reference-troubleshooting-2026-09-04]. The second form is the one to reach for when you do not yet know which object is at fault. Events are not sorted usefully by default, and a namespace's event stream read in creation order is a chronology of everything the cluster tried to do recently.
 
 Chapter 6 left you a specific promise here. A Deployment that stalls reports `ProgressDeadlineExceeded`, a condition which says the rollout did not finish in time and says nothing at all about *why*. Several quite different underlying causes produce that identical condition, and Chapter 6 told you there were six of them. Here they are, from the same page Chapter 6 drew on: **insufficient quota, readiness probe failures, image pull errors, insufficient permissions, limit ranges, and application runtime misconfiguration** [source: k8s-docs-deployment-spec-fields-2026-08-24]. Notice how little they have in common. Two are about permission, one is about the registry, one is about the application's own health reporting, and one is about a quota you may not have known existed. A single condition string covers all six, which is exactly why the condition is a starting point and not a diagnosis. The events on the ReplicaSet and on its Pods are where the actual reason lives.
 
@@ -627,9 +614,7 @@ Worked through: a Deployment shows `ProgressDeadlineExceeded`. You describe the 
 
 An `Event` is a Kubernetes object like any other. It lives in etcd, it appears in the API, and, unlike most objects, **it is deleted automatically after a retention window.** The API server's `--event-ttl` flag sets that window. [source: k8s-apiserver-event-ttl-and-toleration-defaults-2026-08-31]
 
-<!-- AUTHOR-REVIEW: the k8s-apiserver-event-ttl snapshot is transcribed only as far as the `--event-ttl` heading; the default duration value is NOT in the cached text, despite the snapshot's own frontmatter claiming the retention default is "NOW PINNED." Two corrections needed: (1) amend that snapshot's frontmatter so a later chapter reading only the header does not cite a number the corpus does not hold; (2) if a later fetch pins the default, it may be added here as a dated illustration, never as the examinable fact. The prose below deliberately states no duration — an earlier draft wrote "on the order of an hour," which was memory, not source. -->
-
-The window is bounded and it is short — short enough that a failure investigated the next working day will have no events left. Read the flag on your own cluster rather than assuming a figure. That has a consequence people learn the hard way:
+The window is bounded and it is short. The flag reference lists its default as `1h0m0s` — one hour [source: k8s-apiserver-event-ttl-default-2026-09-04] — which is an illustration of the scale, not a number to memorize: it is a flag, and your cluster's administrators may have set it. Short enough, either way, that a failure investigated the next working day will have no events left. Read the flag on your own cluster rather than assuming a figure. That has a consequence people learn the hard way:
 
 > ⚠ **Navigational Hazards**
 >
@@ -656,11 +641,11 @@ Kubernetes "captures logs from each container in a running Pod" [source: k8s-doc
 
 **`-c` names one container.** For a multi-container Pod, `-c <container>` is how you say which one you mean. [source: k8s-docs-logging-architecture-2026-08-23] Chapter 5 handed this case to this section by name. On a Pod with `app`, `cache`, and `log-shipper`, a bare `kubectl logs` cannot know which you intended, and reading the wrong container's silence and concluding the application is broken is a real and common misdiagnosis that costs people entire afternoons.
 
-**`--all-containers`** returns all of them at once, which is what you usually want when you do not yet know which container is at fault.
+**`--all-containers`** — "Get all containers' logs in the pod(s)" [source: k8s-docs-kubectl-logs-reference-2026-09-04] — returns all of them at once, which is what you usually want when you do not yet know which container is at fault.
 
 **`--previous`** is the one that matters most in this chapter. It "retrieves logs from a previous instantiation of a container." [source: k8s-docs-logging-architecture-2026-08-23] This is the flag that reads the container that *died*, and it is the answer to the second of the three failures from this chapter's opening.
 
-> ★ **Fixed Point**
+> ★ **Fixed Point:**
 >
 > **On a crash-looping Pod, `kubectl logs` reads the container that has not started yet, and returns nothing. `kubectl logs --previous` reads the container that died, and returns the reason.**
 >
@@ -684,11 +669,11 @@ One constraint on all of this: the kubelet keeps a bounded amount. "By default, 
 CONDITIONS   kubectl describe pod <name>         Container state + Reason.
     │        kubectl describe node <node>        Node conditions, if suspect.
     ▼
-  EVENTS     kubectl events --for pod/<name>     What did the components SAY?
-    │        kubectl get events --sort-by=...    Chronology, when object unknown.
+  EVENTS     kubectl events (filtered to the Pod) What did the components SAY?
+    │        kubectl get events (sorted by time)  Chronology, when object unknown.
     ▼
    LOGS      kubectl logs <name> -c <container>  Only meaningful once you know
-             kubectl logs <name> --previous      the container actually ran.
+             kubectl logs <name> (previous run)   the container actually ran.
 ```
 -->
 
@@ -855,7 +840,7 @@ The documented causes are broad: "application errors, configuration errors, reso
 
 Also recall that `restartPolicy` is what makes a loop possible at all. The default is `Always`, and with `Always` a container that exits, even with code 0, even successfully, is restarted. [source: k8s-docs-container-restart-backoff-2026-08-31] A container that runs a task and exits cleanly, deployed under the default policy, will loop forever. That is not a bug; it is a Deployment being used where a Job belonged.
 
-*[cross-bearing: see Ch 5 §4 — restartPolicy and restart backoff]*
+*[cross-bearing: see Ch 5 §5 — restartPolicy and restart backoff]*
 
 ### `OOMKilled` versus `Evicted`: the chapter's most confusable pair
 
@@ -872,8 +857,8 @@ Both mean "something ended your workload over memory." Everything else about the
   Container exceeds ITS OWN limit        NODE runs low on a resource
               │                                    │
               ▼                                    ▼
-  kubelet kills and restarts             kubelet chooses victims by
-  that ONE container                     QoS class and terminates PODS
+  kernel kills that ONE process;         kubelet chooses victims by
+  kubelet restarts the container         QoS class and terminates PODS
               │                                    │
               ▼                                    ▼
   Reason: OOMKilled,                     Pod phase: Failed.
@@ -891,8 +876,6 @@ Both mean "something ended your workload over memory." Everything else about the
 -->
 
 *Different trigger, different scope, different outcome. Three axes, and they disagree on all three.*
-
-<!-- AUTHOR-REVIEW: this figure and the prose below have been rebuilt on the three axes the corpus supports — trigger, scope, outcome. An earlier draft ran a fourth axis, "different killer," attributing the OOM kill to kernel cgroup enforcement as against the kubelet. The words "kernel" and "cgroup" appear in NONE of the 26 snapshots, and the one sourced statement of agency says the opposite: k8s-docs-pod-qos-2026-08-24 states that a container exceeding a limit is "killed and restarted by the kubelet." The kernel framing is defensible in practice but is currently unsourced and contradicted, so it has been removed from the figure, the ⚠ Hazards below, the Exam Alert, the Chapter Summary, and Practice Q6's key. To restore it, fetch kubernetes.io/docs/concepts/configuration/manage-resources-containers/ (or the OOM-kill behavior docs) and re-source the whole discrimination. NOTE: this figure's ASCII has changed, so ch13-fig05's entry in image-specs.md needs regenerating — the "Kernel cgroup enforcement" node and the "four axes" caption no longer exist. -->
 
 **`OOMKilled`** is the container exceeding its own memory limit. The container is ended and the reason is recorded as `OOMKilled` — documented as "The container ran out of memory." [source: k8s-docs-pod-failure-signatures-2026-08-31] The Pod survives. The other containers in it survive. The killed container is restarted in place per its `restartPolicy`, and the restart count goes up.
 
@@ -913,7 +896,7 @@ The kubelet is watching more than memory: it "monitors resources like memory, di
 
 The outcome is at Pod scope: "During a node-pressure eviction, the kubelet sets the phase for the selected pods to `Failed`, and terminates the Pod." [source: k8s-docs-node-pressure-eviction-2026-08-31] The Pod is finished. It does not restart in place. If it belongs to a controller, that controller notices and creates a replacement: "If the pods are managed by a workload management object (such as StatefulSet or Deployment) that replaces failed pods, the control plane (`kube-controller-manager`) creates new pods in place of the evicted pods." [source: k8s-docs-node-pressure-eviction-2026-08-31] A bare Pod with no controller is simply gone.
 
-<!-- AUTHOR-REVIEW: the figure above and Practice Q6's distractor A both print `Reason: Evicted` as a literal API string. The node-pressure snapshot documents the *phase* transition to `Failed` but states no accompanying `Reason` string, and `Evicted` is absent from the container-state reason table. Low risk, but it is printed as literal product output; source it or paraphrase. -->
+<!-- AUTHOR-REVIEW: the rendered ch13-fig05 prints `Reason: Evicted` as a literal API string. The node-pressure snapshot documents the phase transition to `Failed` but states no accompanying `Reason` string, and no snapshot carries the string. Low risk (it is what `kubectl get pods` prints for an evicted Pod), but it is figure text with no source; source it or drop that line at the next render. The chapter prose and Practice Q6 no longer print it. -->
 
 Before the kubelet touches your workloads it tries to help itself: "The kubelet attempts to reclaim node-level resources before it terminates end-user pods. For example, it removes unused container images when disk resources are starved." [source: k8s-docs-node-pressure-eviction-2026-08-31] So an eviction wave usually means the node has already exhausted its own cheap options.
 
@@ -957,7 +940,7 @@ That distinction matters because the fixes are opposite. If the application is c
 
 Read that consequence carefully. The Pod is alive, it is consuming its node's resources, `kubectl get pods` shows it as `Running`, and it is receiving **no traffic at all**, because it has been silently removed from its Service's endpoints.
 
-> ★ **Fixed Point**
+> ★ **Fixed Point:**
 >
 > **A liveness probe failure restarts the container. A readiness probe failure removes the Pod from Service endpoints and changes nothing else.**
 >
@@ -1062,14 +1045,12 @@ Which raises a question. What do you do when the failure is *in* that path? If t
 
 `crictl` "is a command-line interface for CRI-compatible container runtimes. You can use it to inspect and debug container runtimes and applications on a Kubernetes node." [source: k8s-docs-crictl-2026-08-31] It has been stable since Kubernetes v1.11 [source: k8s-docs-crictl-2026-08-31], and it runs on the node, not from your laptop; it "requires a Linux operating system with a CRI runtime." [source: k8s-docs-crictl-2026-08-31]
 
-For KCNA purposes, two commands and one argument are what matter.
+For KCNA purposes, two commands and one argument are what matter, and both commands are the project's own examples: "List running containers" and "Get all container logs". [source: k8s-docs-crictl-commands-2026-09-04]
 
 ```
 crictl ps        # containers the runtime is actually running, on this node
 crictl logs <id> # that container's logs, read from the runtime directly
 ```
-
-<!-- AUTHOR-REVIEW: the k8s-docs-crictl-2026-08-31 snapshot declares `crictl-ps` and `crictl-logs` in its frontmatter `concepts_covered`, but its transcription stops at the `/etc/crictl.yaml` configuration section and neither command form appears in the verbatim body. Every other crictl claim in this section is verbatim-clean; these two command lines and the gloss beside them are not verifiable from the cached text. Re-transcribe the snapshot's "General usage" command examples to close it. -->
 
 The argument is the whole point: **when the cluster's view and the node's view disagree, `crictl` is how you see the node's view.** A container that `kubectl` cannot account for but `crictl ps` lists is a container the kubelet failed to register, which localizes your problem to the kubelet, not to the workload. A container that neither can see was never started, which is a different problem entirely.
 
@@ -1132,8 +1113,6 @@ That step feels like an admission of defeat, and it should not. The Kubernetes p
 Reading the known issues first is not giving up. It is the cheapest step available and it is on the official list.
 
 > ⚓ **Worth Securing:** When a failure survives the whole triage flow (phase, conditions, events, logs, node) and still makes no sense, your next two moves are `kubectl version` across every component you can reach, and the release notes for the version you are on. Both are five-minute checks. Both are on the official troubleshooting path. Neither is where anyone thinks to look on the second hour of an incident.
-
-<!-- AUTHOR-REVIEW: an earlier draft asserted that "Kubernetes ships roughly three minor releases a year." That cadence claim is in no snapshot in this corpus — the version-skew page states the three-release support window and the ~1 year of patch support, and nothing about releases per year — so the clause has been removed rather than shipped from memory beside a tag that does not cover it. If the cadence is wanted, fetch kubernetes.io/releases/ and restore it with its own tag. Note also that Ch 17 §8 owns the release cadence per the term ledger, so a pointer may be the better answer than a fact. -->
 
 <!-- AUTHOR-REVIEW: Outline Open Question 3 (the LTS hazard) is unresolved. Per the term ledger, the fact that Kubernetes has no long-term-support release belongs to Ch 8 §6, and shipped Ch 8 does not state it. This section therefore does NOT raise the question, and no graded item in this chapter hinges on it. The 08-31 skew snapshot confirms the page contains no use of the term "LTS" at all. If the author retrofits a Navigational Hazards line into Ch 8 §6, this section can then retrieve it. -->
 
@@ -1208,15 +1187,11 @@ That last sentence is the fact. The API exists as a specification; it does not e
 
 The 2026-08-23 snapshot is blunter still: metrics-server "is a cluster addon component (not deployed by default in all distributions)." [source: k8s-docs-resource-metrics-pipeline-2026-08-23] Some distributions install it for you; many do not. Which is why "does `kubectl top` work?" is a genuinely useful first question about an unfamiliar cluster. It tells you something about how thoroughly the cluster was built.
 
-<!-- AUTHOR-REVIEW: an earlier draft named `kubeadm`, `kind`, and bare self-hosted clusters as ones that do NOT install metrics-server, and asserted that managed platforms often do. Neither claim is in any snapshot — the corpus goes exactly as far as "not deployed by default in all distributions" and no further — so the per-distribution breakdown has been cut to the sourced formulation. To restore it, fetch the metrics-server project README, which states the installation requirement directly. -->
-
-> ★ **Fixed Point**
+> ★ **Fixed Point:**
 >
 > **`kubectl top` requires metrics-server, and many distributions do not install it.** An error from `kubectl top` is a statement about what is installed on the cluster, not about the workload you asked about.
 
 The same absence has a second consequence people meet separately and never connect: **a HorizontalPodAutoscaler reads the same Metrics API.** [source: k8s-docs-resource-metrics-pipeline-2026-08-31] An HPA created on a cluster without metrics-server is accepted like any other object, has no metric source to read, and never scales anything: the same pattern, one layer up. *[cross-bearing: see Ch 6 §2 — the HPA in one sentence]* and *[cross-bearing: see Ch 17 §7 — the autoscaling landscape]*
-
-<!-- AUTHOR-REVIEW: the HPA's *dependency* on the Metrics API is fully sourced. What an HPA object visibly *reports* on a cluster without metrics-server (an earlier draft said "unknown metrics") is not in any snapshot, so the prose above and TYB 3 Q3's key now state only the sourced consequence: created, no metric source, never scales. Fetch the HorizontalPodAutoscaler docs if the specific status text is wanted. -->
 
 One scope note worth carrying: metrics-server "is meant only for autoscaling purposes — for example, don't use it to forward metrics to monitoring solutions, or as a source of monitoring solution metrics." [source: k8s-docs-resource-metrics-pipeline-2026-08-23] It holds current values for autoscaling decisions. It is not a monitoring system, it keeps no history, and you cannot query it for what happened an hour ago. *[cross-bearing: see Ch 18 §3 — metrics-server versus a monitoring system]*
 
@@ -1291,7 +1266,7 @@ D) `Burstable`, because a single-container Pod cannot reach `Guaranteed`
 
 A) The nodes have insufficient permissions to report metrics
 B) metrics-server is not installed, so the Metrics API is not served
-C) metrics-server is installed but has not completed its first scrape, so the API is not answering yet
+C) metrics-server is installed and healthy, but `kubectl top` also needs a separate monitoring system to be present before it can answer
 D) The cluster has no HorizontalPodAutoscaler, so the Metrics API is not activated
 
 **7.** *[retrieval: ch8]* Your control plane is at 1.37. You are asked whether a node running kubelet 1.33 is supported. What is the answer, and what is the rule?
@@ -1323,7 +1298,7 @@ D) The logs are available for the duration of the event retention window
 
 **5. B.** *[retrieval: ch5]* `Guaranteed` is evaluated per container: every container needs a request and a limit, for both CPU and memory, with each limit equal to its request. [source: k8s-docs-pod-qos-2026-08-24] This container meets all four. A is wrong — no Pod-level request is required. C misreads `BestEffort`, which requires no request or limit at all and has nothing to do with other Pods on the node. D is invented; container count plays no part in the criteria.
 
-**6. B.** metrics-server is a cluster addon, and the Metrics API needs it running before it can answer anything. [source: k8s-docs-resource-metrics-pipeline-2026-08-31] A is not a permissions failure. C is the tempting wrong answer — a server mid-scrape returns thin data, not a missing-resource error; the two failures look alike but aren't. D inverts the dependency: the HPA consumes the Metrics API, it doesn't switch it on.
+**6. B.** metrics-server is a cluster addon, and the Metrics API needs it running before it can answer anything. [source: k8s-docs-resource-metrics-pipeline-2026-08-31] A is not a permissions failure. C is the tempting wrong answer — `kubectl top` reads the Metrics API and nothing else: the API server "serves Metrics API for use by HPA, VPA, and by the `kubectl top` command" [source: k8s-docs-resource-metrics-pipeline-2026-08-31], and a monitoring system is a different tool answering a different question. If metrics-server were installed and healthy, `kubectl top` would work. D inverts the dependency: the HPA consumes the Metrics API, it doesn't switch it on.
 
 **7. B.** *[retrieval: ch8]* The rule is that kubelet may run up to three minor versions behind the API server; at control-plane 1.37 that floor is 1.34. [source: k8s-version-skew-policy-2026-08-31] 1.33 is four behind — outside the window. A has no bound at all. C is the trap: counting 1.36, 1.35, 1.34, 1.33 as "three older" is an easy off-by-one, and the most common error in applying this rule. D demands exact matching, which the skew window specifically exists to avoid.
 
@@ -1333,7 +1308,7 @@ D) The logs are available for the duration of the event retention window
 
 **If you got 6–8:** Solid. You're separating failures by trigger, scope, and layer — Pod, node, and cluster — which is what this material was building toward.
 
-**If you got 3–5:** Find which side you lost. Questions 1–5 (failure states, QoS) point back to §4; questions 6–8 (metrics, skew, logging) point to §6–7 and Chapter 8 §6.
+**If you got 3–5:** Find which side you lost. Questions 1–3 and 5 (failure states, QoS) point back to §4, and question 4 (`crictl`) to §5; questions 6–8 (metrics, skew, logging) point to §6–§7 and Chapter 8 §6.
 
 **If you got 0–2:** Start at §4's ⚠ Navigational Hazards on requests versus limits, then read §7's opening before moving on.
 
@@ -1411,7 +1386,7 @@ Only when the Pod is `Running` and `Ready`, the trouble is confined to that one 
 
 So §1's question and §8's answer are the same question. *What do you read first* and *whose problem is this* have one answer, and it is the phase. That is why the order is what it is, and why it is not arbitrary: the first thing you read is the thing that tells you whether to keep reading at all.
 
-> ★ **Fixed Point**
+> ★ **Fixed Point:**
 >
 > **Read the phase before you read the logs.**
 >
@@ -1469,8 +1444,6 @@ A) The cluster is out of capacity and needs more nodes
 B) Six nodes have capacity but are refusing this Pod on purpose; the Pod needs a matching toleration, or it needs to not want those nodes
 C) The Pod's resource requests exceed every node's allocatable capacity
 D) The Pod will be scheduled once the scheduler retries it with the taint ignored
-
-<!-- AUTHOR-REVIEW: this stem previously quoted a literal scheduler event string (`0/6 nodes are available: 6 node(s) had untolerated taint {workload: gpu}`), and Q2's answer key quoted `Insufficient cpu` / `Insufficient memory` as the contrasting predicate messages. No snapshot in this corpus contains any scheduler event text — k8s-docs-debug-pods-2026-08-23 establishes that the scheduler writes such messages but never quotes one — so both have been paraphrased rather than shipped as verbatim product output. The graded discrimination survives the paraphrase. To restore the literal strings, fetch a page documenting scheduler event message formats. -->
 
 **3.** Which single column of `kubectl get pods` output most quickly separates a never-started failure from a started-then-died failure?
 
@@ -1599,7 +1572,7 @@ D) The Pod's events were deleted along with the Pod, so a surviving Pod always r
 - **B is plausible**: "pulling from a private registry without an imagePullSecret" is the other documented cause. [source: k8s-docs-images-2026-08-23]
 - **C is plausible**: the debugging guide's own checklist asks "have you pushed the image to the registry?" [source: k8s-docs-debug-pods-2026-08-23]
 
-**5. A.** `CreateContainerConfigError` means the kubelet could not assemble the container's configuration, typically because a referenced ConfigMap or Secret, or a key inside one, does not exist.
+**5. A.** `CreateContainerConfigError` means the kubelet could not assemble the container's configuration, typically because a referenced ConfigMap or Secret, or a key inside one, does not exist. [source: k8s-docs-configmap-restrictions-2026-09-04]
 
 - **B is wrong.** A universal taint produces `Pending` with no container state at all.
 - **C is wrong**, and it targets a real conflation of policy problems with configuration problems. `imagePullPolicy: Never` with no local image produces its own reason string, `ErrImageNeverPull` [source: k8s-docs-pod-failure-signatures-2026-08-31], and in any case the stem stipulates the image is correct and pullable.
@@ -1627,7 +1600,7 @@ D) The Pod's events were deleted along with the Pod, so a surviving Pod always r
 
 - **A is wrong.** A Secret volume does not affect scheduling. The Pod is on a node.
 - **B is wrong.** Image pull secrets are a different mechanism, and a pull failure produces a pull reason.
-- **D is wrong**, and it is the important distractor. Admission refusal means **no Pod object exists**. Here the Pod exists and is describable, which rules admission out entirely — a referenced Secret's absence is discovered by the kubelet at container-configuration time, not at the admission gate.
+- **D is wrong**, and it is the important distractor. Admission refusal means **no Pod object exists**. Here the Pod exists and is describable, which rules admission out entirely — a referenced Secret's absence is discovered by the kubelet at container-configuration time, not at the admission gate. [source: k8s-docs-secret-missing-reference-2026-09-04]
 
 **10. B.** A restart count of 7 means the container has died and been restarted seven times. `1/1 Ready` means it is currently passing its readiness probe and is in its Service's endpoints. Both facts are true at once.
 
@@ -1704,6 +1677,8 @@ D) The Pod's events were deleted along with the Pod, so a surviving Pod always r
 
 🏆 **Safe Harbor** — you have finished the platform half of troubleshooting. Nine signatures, one lookup, one key.
 
+🗺️ Chart → **🌊 Passage** → 🌅 Dawn
+
 ---
 
 ## The Voyage Ahead
@@ -1722,6 +1697,3 @@ Before that, though, there is a different kind of question waiting. This chapter
 
 > *"The phase is the cluster telling you where it stopped. Every diagnosis you will ever make starts by believing it."*
 
-<!-- AUTHOR-REVIEW: two housekeeping items for the author, neither a change to reader-facing text.
-(1) The outline's kb_tags.commands lists `crictl-pods` and `crictl-inspect`; neither appears in this draft, correctly — the outline's own §5 depth ruling authorizes `crictl ps` and `crictl logs` only. Remove the two entries so the concept index does not claim coverage the chapter deliberately declined to give.
-(2) The Zenith figure anchor is `ch13-zenith-read-the-phase-first`, which conforms to structural-contract.yaml's `anchor_id_pattern` (the contract explicitly permits `zenith` in place of `figNN`) and passes the linter. The image-specs stage flagged it as non-conforming against a stricter house rule and proposed `ch13-fig07-zenith-...`. No change made here: renaming the anchor would break the join key with image-specs.md and with the diagram pipeline's figures-metadata.yaml. If the stricter rule is the real one, change the contract and sweep all books, not this one chapter. Note separately that `ch13-fig04` is the sixth figure in reading order — figure number does not imply position in this chapter. -->

@@ -608,7 +608,7 @@ Which brings us to the sentence this section exists for.
 > ⚓ **Worth Securing — the absent-component pattern.** An object can exist while nothing at all happens, if the component that would act on it is absent. The object is real; it's stored; `kubectl get` will show it to you. But an object is a *description*, and descriptions don't do anything by themselves. Something has to be watching for it and willing to act. Remember the phrase: **an object without its component does nothing.** You're going to meet it four more times in this book, and each time it will look like a completely different problem until you recognize it.
 
 *[cross-bearing: see Ch 9 — CoreDNS as the cluster DNS addon, and the Service DNS records it serves]*
-*[cross-bearing: see Ch 10 — an Ingress with no Ingress controller does nothing at all: the same pattern, first recurrence]*
+*[cross-bearing: see Ch 10 §3 — an Ingress with no Ingress controller does nothing at all: the same pattern, first recurrence]*
 *[cross-bearing: see Ch 13 — `kubectl top` with no metrics-server installed]*
 *[cross-bearing: see Ch 17 — VPA is an addon and is not shipped by default]*
 

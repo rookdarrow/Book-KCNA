@@ -424,7 +424,7 @@ One sentence is all the HPA gets here. Where its metrics come from and what else
 
 One last observation from Chapter 3, now with teeth. Your cluster could be changing at any point as work happens and control loops automatically fix failures, which means that potentially your cluster never reaches a stable state; and as long as the controllers are running and able to make useful changes, it doesn't matter whether the overall state is stable [source: k8s-docs-controllers-2026-08-23]. Kubernetes is not trying to arrive anywhere. It is trying to keep closing gaps.
 
-*[cross-bearing: see Ch 7 §1 — the Pod this loop just created still has to be placed on a node, and sometimes it can't be]*
+*[cross-bearing: see Ch 7 §1–§2 — the Pod this loop just created still has to be placed on a node, and sometimes it can't be]*
 *[cross-bearing: see Ch 9 — this churn is exactly why something needs a stable name]*
 
 ---
@@ -818,7 +818,7 @@ Read the first clause again, because the whole resource is in it: *as nodes are 
 
 The workloads overview puts the purpose well: a DaemonSet defines Pods that provide facilities local to nodes, and each Pod performs a job similar to a system daemon on a classic Unix or POSIX server [source: k8s-docs-workloads-2026-08-23]. The typical uses are all recognizably that shape: running a cluster storage daemon on every node, a log-collection daemon on every node, a node-monitoring daemon on every node [source: k8s-docs-daemonset-2026-08-24]. A DaemonSet might be fundamental to the operation of the cluster, such as a plugin to run cluster networking; it might help you manage the node; or it might provide optional behavior that enhances the platform [source: k8s-docs-workloads-2026-08-23].
 
-Two of those come back later. Cluster networking plugins ship as DaemonSets *[cross-bearing: see Ch 9 — CNI plugins and how Pod networking gets implemented]*, and node-level log agents are the canonical observability example *[cross-bearing: see Ch 18 — node-level log collection]*.
+Two of those come back later. Cluster networking plugins ship as DaemonSets [source: flannel-docs-kubernetes-2026-09-04] *[cross-bearing: see Ch 9 §1 — CNI plugins and how Pod networking gets implemented]*, and node-level log agents are the canonical observability example *[cross-bearing: see Ch 18 — node-level log collection]*.
 
 The Pod count is a consequence, not a setting. If you specify a node selector or node affinity in the template, the DaemonSet controller creates Pods on nodes matching it; if you specify neither, it creates Pods on all nodes [source: k8s-docs-daemonset-2026-08-24]. The controller creates a Pod for each eligible node [source: k8s-docs-daemonset-2026-08-24]. Supporting this from another direction: horizontal pod autoscaling does not apply to objects that can't be scaled, and the documentation's own example of such an object is a DaemonSet [source: k8s-docs-hpa-2026-08-24]. *[cross-bearing: see Ch 7 §3 — nodeSelector and node affinity]*
 
@@ -895,7 +895,7 @@ The documentation offers the same guidance from the ReplicaSet's side, phrased a
 >
 > Run the tree in Figure 6.5 in order and none of these three can happen, because the tree asks about the work before it asks about the software.
 
-*[cross-bearing: see Ch 7 §4 — a DaemonSet's Pods still go through scheduling, and taints are how a node opts out]*
+*[cross-bearing: see Ch 7 §4 and §6 — a DaemonSet's Pods still go through scheduling, and taints are how a node opts out]*
 
 ---
 

@@ -1,0 +1,1 @@
+Two-panel comparison: in the Deployment panel three hash-named Pods sit side by side, one dies and is replaced by a Pod with a different name and UID, with no storage shown; in the StatefulSet panel three Pods named db-0, db-1 and db-2 each attach to their own volume, and when db-0 dies the replacement takes the same name and reattaches to the same volume

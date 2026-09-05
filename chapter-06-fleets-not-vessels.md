@@ -750,6 +750,9 @@ Storage sticks to the identity too. For each volume claim template defined in a 
 And the ordering is guaranteed rather than incidental: for a StatefulSet with N replicas, Pods are created sequentially in order from 0 to N−1 and terminated in reverse order from N−1 to 0, and before a scaling operation is applied to a Pod, all of its predecessors must be Running and Ready [source: k8s-docs-statefulset-2026-08-24].
 
 <!-- FIGURE: ch06-fig05-statefulset-vs-deployment-identity -->
+![Two-panel comparison: in the Deployment panel three hash-named Pods sit side by side, one dies and is replaced by a Pod with a different name and UID, with no storage shown; in the StatefulSet panel three Pods named db-0, db-1 and db-2 each attach to their own volume, and when db-0 dies the replacement takes the same name and reattaches to the same volume](figures/ch06-fig05-statefulset-vs-deployment-identity.svg)
+
+<!-- ASCII-FALLBACK
 ```
   Deployment — Pods are interchangeable
 
@@ -771,6 +774,7 @@ And the ordering is guaranteed rather than incidental: for a StatefulSet with N 
               same name, same volume.
               The identity outlived the Pod.
 ```
+-->
 
 **Figure 6.4 — the storage belongs to the identity, not to the Pod.** Look at the lower row carefully. The volume is not drawn attached to a Pod; it is drawn attached to `db-0`, which is a slot that Pods pass through. That is the claim, and Chapter 11 is where it gets completed.
 

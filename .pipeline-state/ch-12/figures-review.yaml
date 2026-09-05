@@ -91,7 +91,7 @@ figures:
       type, satisfying color plus a non-color signal.
     suggested_fix: ''
 - anchor_id: ch12-fig04-pod-security-standards-levels
-  status: pending
+  status: approved  # 2026-09-04 coordinator review: render matches the chapter; promoted to figures/ and applied
   render_paths:
     svg: figures/ch12-fig04-pod-security-standards-levels.svg
     png: figures/ch12-fig04-pod-security-standards-levels.png

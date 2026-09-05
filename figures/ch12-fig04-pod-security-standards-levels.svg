@@ -1,0 +1,214 @@
+<svg viewBox="0 0 820 1608" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="psl-title psl-desc" width="640" height="1256">
+    <title id="psl-title">Pod Security Standards: levels, modes &amp; labels</title>
+    <desc id="psl-desc">A matrix of fourteen securityContext fields checked against the privileged, baseline and restricted Pod Security levels, noted as cumulative; a list of the three modes enforce, audit and warn with what each does when a check fails; and the per-namespace label form with a worked example carrying all three modes at two different levels.</desc>
+
+    <rect width="100%" height="100%" fill="#F5EFE4"></rect>
+
+    <!-- ================= PANEL A — THE LEVELS ================= -->
+    <text x="32" y="44" font-family="'Fira Sans', sans-serif" font-size="20" font-weight="700" letter-spacing="0.02em" fill="#0B1E3B">THE LEVELS</text>
+    <line x1="32" y1="56" x2="788" y2="56" stroke="#0B1E3B" stroke-opacity="0.25" stroke-width="1.5"></line>
+
+    <text x="32" y="80" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="700" fill="#B58B3E">what gets checked</text>
+    <line x1="32" y1="88" x2="196" y2="88" stroke="#B58B3E" stroke-width="2"></line>
+
+    <!-- table header -->
+    <rect x="32" y="112" width="260" height="40" rx="6" fill="#FFFFFF" stroke="#0B1E3B" stroke-opacity="0.25" stroke-width="1"></rect>
+    <text x="44" y="137" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" fill="#0B1E3B">securityContext field</text>
+
+    <rect x="304" y="112" width="108" height="40" rx="6" fill="#0B1E3B"></rect>
+    <text x="358" y="138" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#FFFFFF">privileged</text>
+
+    <rect x="424" y="112" width="144" height="40" rx="6" fill="#0B1E3B"></rect>
+    <text x="496" y="138" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#FFFFFF">baseline</text>
+
+    <rect x="580" y="112" width="208" height="40" rx="6" fill="#0B1E3B"></rect>
+    <text x="684" y="138" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#FFFFFF">restricted</text>
+
+    <!-- Row 1 — privileged: true -->
+    <rect x="32" y="156" width="260" height="44" rx="4" fill="#FFFFFF" stroke="#0B1E3B" stroke-opacity="0.12" stroke-width="0.8"></rect>
+    <text x="44" y="183" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">privileged: true</text>
+    <rect x="304" y="156" width="108" height="44" rx="4" fill="#FFFFFF" stroke="#0B1E3B" stroke-opacity="0.12" stroke-width="0.8"></rect>
+    <text x="358" y="183" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" fill="#8A8D90">allowed</text>
+    <rect x="424" y="156" width="144" height="44" rx="4" fill="#FFFFFF" stroke="#0B1E3B" stroke-opacity="0.12" stroke-width="0.8"></rect>
+    <text x="496" y="183" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" font-weight="700" fill="#0B1E3B">✗ forbidden</text>
+    <rect x="580" y="156" width="208" height="44" rx="4" fill="#FFFFFF" stroke="#0B1E3B" stroke-opacity="0.12" stroke-width="0.8"></rect>
+    <text x="684" y="183" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" font-weight="700" fill="#0B1E3B">✗ forbidden</text>
+
+    <!-- Row 2 — hostNetwork/hostPID/hostIPC -->
+    <rect x="32" y="204" width="260" height="44" rx="4" fill="#FFFFFF" stroke="#0B1E3B" stroke-opacity="0.12" stroke-width="0.8"></rect>
+    <text x="44" y="231" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">hostNetwork/hostPID/hostIPC</text>
+    <rect x="304" y="204" width="108" height="44" rx="4" fill="#FFFFFF" stroke="#0B1E3B" stroke-opacity="0.12" stroke-width="0.8"></rect>
+    <text x="358" y="231" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" fill="#8A8D90">allowed</text>
+    <rect x="424" y="204" width="144" height="44" rx="4" fill="#FFFFFF" stroke="#0B1E3B" stroke-opacity="0.12" stroke-width="0.8"></rect>
+    <text x="496" y="231" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" font-weight="700" fill="#0B1E3B">✗ forbidden</text>
+    <rect x="580" y="204" width="208" height="44" rx="4" fill="#FFFFFF" stroke="#0B1E3B" stroke-opacity="0.12" stroke-width="0.8"></rect>
+    <text x="684" y="231" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" font-weight="700" fill="#0B1E3B">✗ forbidden</text>
+
+    <!-- Row 3 — hostPath volumes -->
+    <rect x="32" y="252" width="260" height="44" rx="4" fill="#FFFFFF" stroke="#0B1E3B" stroke-opacity="0.12" stroke-width="0.8"></rect>
+    <text x="44" y="279" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">hostPath volumes</text>
+    <rect x="304" y="252" width="108" height="44" rx="4" fill="#FFFFFF" stroke="#0B1E3B" stroke-opacity="0.12" stroke-width="0.8"></rect>
+    <text x="358" y="279" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" fill="#8A8D90">allowed</text>
+    <rect x="424" y="252" width="144" height="44" rx="4" fill="#FFFFFF" stroke="#0B1E3B" stroke-opacity="0.12" stroke-width="0.8"></rect>
+    <text x="496" y="279" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" font-weight="700" fill="#0B1E3B">✗ forbidden</text>
+    <rect x="580" y="252" width="208" height="44" rx="4" fill="#FFFFFF" stroke="#0B1E3B" stroke-opacity="0.12" stroke-width="0.8"></rect>
+    <text x="684" y="279" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" font-weight="700" fill="#0B1E3B">✗ forbidden</text>
+
+    <!-- Row 4 — hostPort -->
+    <rect x="32" y="300" width="260" height="44" rx="4" fill="#FFFFFF" stroke="#0B1E3B" stroke-opacity="0.12" stroke-width="0.8"></rect>
+    <text x="44" y="327" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">hostPort</text>
+    <rect x="304" y="300" width="108" height="44" rx="4" fill="#FFFFFF" stroke="#0B1E3B" stroke-opacity="0.12" stroke-width="0.8"></rect>
+    <text x="358" y="327" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" fill="#8A8D90">allowed</text>
+    <rect x="424" y="300" width="144" height="44" rx="4" fill="#FFFFFF" stroke="#0B1E3B" stroke-opacity="0.12" stroke-width="0.8"></rect>
+    <text x="496" y="327" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" font-weight="500" fill="#1F4A4E">restricted</text>
+    <rect x="580" y="300" width="208" height="44" rx="4" fill="#FFFFFF" stroke="#0B1E3B" stroke-opacity="0.12" stroke-width="0.8"></rect>
+    <text x="684" y="327" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" font-weight="500" fill="#1F4A4E">restricted</text>
+
+    <!-- Row 5 — capabilities.add -->
+    <rect x="32" y="348" width="260" height="44" rx="4" fill="#FFFFFF" stroke="#0B1E3B" stroke-opacity="0.12" stroke-width="0.8"></rect>
+    <text x="44" y="375" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">capabilities.add</text>
+    <rect x="304" y="348" width="108" height="44" rx="4" fill="#FFFFFF" stroke="#0B1E3B" stroke-opacity="0.12" stroke-width="0.8"></rect>
+    <text x="358" y="375" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" fill="#8A8D90">allowed</text>
+    <rect x="424" y="348" width="144" height="44" rx="4" fill="#FFFFFF" stroke="#0B1E3B" stroke-opacity="0.12" stroke-width="0.8"></rect>
+    <text x="496" y="375" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" font-weight="500" fill="#1F4A4E">known list</text>
+    <rect x="580" y="348" width="208" height="44" rx="4" fill="#FFFFFF" stroke="#0B1E3B" stroke-opacity="0.12" stroke-width="0.8"></rect>
+    <text x="684" y="375" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" font-weight="500" fill="#1F4A4E">only NET_BIND_SERVICE</text>
+
+    <!-- Row 6 — capabilities.drop -->
+    <rect x="32" y="396" width="260" height="44" rx="4" fill="#FFFFFF" stroke="#0B1E3B" stroke-opacity="0.12" stroke-width="0.8"></rect>
+    <text x="44" y="423" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">capabilities.drop</text>
+    <rect x="304" y="396" width="108" height="44" rx="4" fill="#FFFFFF" stroke="#0B1E3B" stroke-opacity="0.12" stroke-width="0.8"></rect>
+    <text x="358" y="423" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" fill="#8A8D90">—</text>
+    <rect x="424" y="396" width="144" height="44" rx="4" fill="#FFFFFF" stroke="#0B1E3B" stroke-opacity="0.12" stroke-width="0.8"></rect>
+    <text x="496" y="423" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" fill="#8A8D90">—</text>
+    <rect x="580" y="396" width="208" height="44" rx="4" fill="#FFFFFF" stroke="#0B1E3B" stroke-opacity="0.12" stroke-width="0.8"></rect>
+    <text x="684" y="423" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" font-weight="500" fill="#1F4A4E">must include ALL</text>
+
+    <!-- Row 7 — seccompProfile.type (tall, restricted 2-line) -->
+    <rect x="32" y="444" width="260" height="60" rx="4" fill="#FFFFFF" stroke="#0B1E3B" stroke-opacity="0.12" stroke-width="0.8"></rect>
+    <text x="44" y="479" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">seccompProfile.type</text>
+    <rect x="304" y="444" width="108" height="60" rx="4" fill="#FFFFFF" stroke="#0B1E3B" stroke-opacity="0.12" stroke-width="0.8"></rect>
+    <text x="358" y="479" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" fill="#8A8D90">allowed</text>
+    <rect x="424" y="444" width="144" height="60" rx="4" fill="#FFFFFF" stroke="#0B1E3B" stroke-opacity="0.12" stroke-width="0.8"></rect>
+    <text x="496" y="479" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" font-weight="500" fill="#1F4A4E">not Unconfined</text>
+    <rect x="580" y="444" width="208" height="60" rx="4" fill="#FFFFFF" stroke="#0B1E3B" stroke-opacity="0.12" stroke-width="0.8"></rect>
+    <text x="684" y="468" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" font-weight="500" fill="#1F4A4E">RuntimeDefault or</text>
+    <text x="684" y="486" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" font-weight="500" fill="#1F4A4E">Localhost</text>
+
+    <!-- Row 8 — appArmorProfile.type (tall, baseline + restricted 2-line) -->
+    <rect x="32" y="508" width="260" height="60" rx="4" fill="#FFFFFF" stroke="#0B1E3B" stroke-opacity="0.12" stroke-width="0.8"></rect>
+    <text x="44" y="543" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">appArmorProfile.type</text>
+    <rect x="304" y="508" width="108" height="60" rx="4" fill="#FFFFFF" stroke="#0B1E3B" stroke-opacity="0.12" stroke-width="0.8"></rect>
+    <text x="358" y="543" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" fill="#8A8D90">allowed</text>
+    <rect x="424" y="508" width="144" height="60" rx="4" fill="#FFFFFF" stroke="#0B1E3B" stroke-opacity="0.12" stroke-width="0.8"></rect>
+    <text x="496" y="532" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" font-weight="500" fill="#1F4A4E">RuntimeDefault</text>
+    <text x="496" y="550" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" font-weight="500" fill="#1F4A4E">or Localhost</text>
+    <rect x="580" y="508" width="208" height="60" rx="4" fill="#FFFFFF" stroke="#0B1E3B" stroke-opacity="0.12" stroke-width="0.8"></rect>
+    <text x="684" y="532" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" font-weight="500" fill="#1F4A4E">RuntimeDefault or</text>
+    <text x="684" y="550" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" font-weight="500" fill="#1F4A4E">Localhost</text>
+
+    <!-- Row 9 — allowPrivilegeEscalation -->
+    <rect x="32" y="572" width="260" height="44" rx="4" fill="#FFFFFF" stroke="#0B1E3B" stroke-opacity="0.12" stroke-width="0.8"></rect>
+    <text x="44" y="599" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">allowPrivilegeEscalation</text>
+    <rect x="304" y="572" width="108" height="44" rx="4" fill="#FFFFFF" stroke="#0B1E3B" stroke-opacity="0.12" stroke-width="0.8"></rect>
+    <text x="358" y="599" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" fill="#8A8D90">allowed</text>
+    <rect x="424" y="572" width="144" height="44" rx="4" fill="#FFFFFF" stroke="#0B1E3B" stroke-opacity="0.12" stroke-width="0.8"></rect>
+    <text x="496" y="599" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" fill="#8A8D90">—</text>
+    <rect x="580" y="572" width="208" height="44" rx="4" fill="#FFFFFF" stroke="#0B1E3B" stroke-opacity="0.12" stroke-width="0.8"></rect>
+    <text x="684" y="599" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" font-weight="500" fill="#1F4A4E">must be false</text>
+
+    <!-- Row 10 — runAsNonRoot -->
+    <rect x="32" y="620" width="260" height="44" rx="4" fill="#FFFFFF" stroke="#0B1E3B" stroke-opacity="0.12" stroke-width="0.8"></rect>
+    <text x="44" y="647" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">runAsNonRoot</text>
+    <rect x="304" y="620" width="108" height="44" rx="4" fill="#FFFFFF" stroke="#0B1E3B" stroke-opacity="0.12" stroke-width="0.8"></rect>
+    <text x="358" y="647" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" fill="#8A8D90">—</text>
+    <rect x="424" y="620" width="144" height="44" rx="4" fill="#FFFFFF" stroke="#0B1E3B" stroke-opacity="0.12" stroke-width="0.8"></rect>
+    <text x="496" y="647" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" fill="#8A8D90">—</text>
+    <rect x="580" y="620" width="208" height="44" rx="4" fill="#FFFFFF" stroke="#0B1E3B" stroke-opacity="0.12" stroke-width="0.8"></rect>
+    <text x="684" y="647" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" font-weight="500" fill="#1F4A4E">must be true</text>
+
+    <!-- Row 11 — runAsUser -->
+    <rect x="32" y="668" width="260" height="44" rx="4" fill="#FFFFFF" stroke="#0B1E3B" stroke-opacity="0.12" stroke-width="0.8"></rect>
+    <text x="44" y="695" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">runAsUser</text>
+    <rect x="304" y="668" width="108" height="44" rx="4" fill="#FFFFFF" stroke="#0B1E3B" stroke-opacity="0.12" stroke-width="0.8"></rect>
+    <text x="358" y="695" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" fill="#8A8D90">any</text>
+    <rect x="424" y="668" width="144" height="44" rx="4" fill="#FFFFFF" stroke="#0B1E3B" stroke-opacity="0.12" stroke-width="0.8"></rect>
+    <text x="496" y="695" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" fill="#8A8D90">any</text>
+    <rect x="580" y="668" width="208" height="44" rx="4" fill="#FFFFFF" stroke="#0B1E3B" stroke-opacity="0.12" stroke-width="0.8"></rect>
+    <text x="684" y="695" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" font-weight="500" fill="#1F4A4E">must be non-zero or unset</text>
+
+    <!-- Row 12 — volume types (restricted 4-line) -->
+    <rect x="32" y="716" width="260" height="104" rx="4" fill="#FFFFFF" stroke="#0B1E3B" stroke-opacity="0.12" stroke-width="0.8"></rect>
+    <text x="44" y="773" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">volume types</text>
+    <rect x="304" y="716" width="108" height="104" rx="4" fill="#FFFFFF" stroke="#0B1E3B" stroke-opacity="0.12" stroke-width="0.8"></rect>
+    <text x="358" y="773" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" fill="#8A8D90">any</text>
+    <rect x="424" y="716" width="144" height="104" rx="4" fill="#FFFFFF" stroke="#0B1E3B" stroke-opacity="0.12" stroke-width="0.8"></rect>
+    <text x="496" y="773" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" fill="#8A8D90">any</text>
+    <rect x="580" y="716" width="208" height="104" rx="4" fill="#FFFFFF" stroke="#0B1E3B" stroke-opacity="0.12" stroke-width="0.8"></rect>
+    <text x="684" y="742" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" font-weight="500" fill="#1F4A4E">safe list only</text>
+    <text x="684" y="762" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#8A8D90">configMap · csi ·</text>
+    <text x="684" y="780" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#8A8D90">emptyDir · secret ·</text>
+    <text x="684" y="798" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#8A8D90">projected · pvc · …</text>
+
+    <!-- Cumulative callout -->
+    <rect x="32" y="836" width="756" height="64" rx="6" fill="#0B1E3B" fill-opacity="0.04" stroke="#1F4A4E" stroke-opacity="0.35" stroke-width="1"></rect>
+    <text x="410" y="862" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="700" fill="#0B1E3B">privileged ⊃ baseline ⊃ restricted</text>
+    <text x="410" y="884" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" font-style="italic" fill="#1F4A4E">restricted inherits every baseline requirement, plus everything else in this table</text>
+
+    <!-- ================= PANEL B — THE MODES ================= -->
+    <text x="32" y="960" font-family="'Fira Sans', sans-serif" font-size="20" font-weight="700" letter-spacing="0.02em" fill="#0B1E3B">THE MODES</text>
+    <line x1="32" y1="976" x2="788" y2="976" stroke="#0B1E3B" stroke-opacity="0.25" stroke-width="1.5"></line>
+
+    <text x="32" y="1000" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="700" fill="#B58B3E">what happens when a check fails</text>
+    <line x1="32" y1="1008" x2="356" y2="1008" stroke="#B58B3E" stroke-width="2"></line>
+
+    <!-- enforce -->
+    <rect x="32" y="1044" width="112" height="32" rx="4" fill="#0B1E3B"></rect>
+    <text x="88" y="1065" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="700" fill="#FFFFFF">enforce</text>
+    <text x="156" y="1065" font-family="'Fira Sans', sans-serif" font-size="14" fill="#8A8D90">→</text>
+    <text x="180" y="1065" font-family="'Fira Sans', sans-serif" font-size="14" fill="#0B1E3B">the Pod is <tspan font-weight="700">REJECTED</tspan></text>
+
+    <!-- audit -->
+    <rect x="32" y="1100" width="112" height="32" rx="4" fill="#0B1E3B"></rect>
+    <text x="88" y="1121" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="700" fill="#FFFFFF">audit</text>
+    <text x="156" y="1121" font-family="'Fira Sans', sans-serif" font-size="14" fill="#8A8D90">→</text>
+    <text x="180" y="1121" font-family="'Fira Sans', sans-serif" font-size="14" fill="#0B1E3B">recorded in the audit log; the Pod <tspan font-weight="700">runs</tspan></text>
+
+    <!-- warn -->
+    <rect x="32" y="1156" width="112" height="32" rx="4" fill="#0B1E3B"></rect>
+    <text x="88" y="1177" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" font-weight="700" fill="#FFFFFF">warn</text>
+    <text x="156" y="1177" font-family="'Fira Sans', sans-serif" font-size="14" fill="#8A8D90">→</text>
+    <text x="180" y="1177" font-family="'Fira Sans', sans-serif" font-size="14" fill="#0B1E3B">user-facing warning; the Pod <tspan font-weight="700">runs</tspan></text>
+
+    <!-- ================= PANEL C — APPLIED PER NAMESPACE ================= -->
+    <text x="32" y="1256" font-family="'Fira Sans', sans-serif" font-size="20" font-weight="700" letter-spacing="0.02em" fill="#0B1E3B">APPLIED PER NAMESPACE, BY LABEL</text>
+    <line x1="32" y1="1272" x2="788" y2="1272" stroke="#0B1E3B" stroke-opacity="0.25" stroke-width="1.5"></line>
+
+    <rect x="32" y="1296" width="560" height="36" rx="4" fill="#FFFFFF" stroke="#0B1E3B" stroke-opacity="0.30" stroke-width="1"></rect>
+    <text x="48" y="1319" font-family="'Fira Mono', monospace" font-size="14" font-weight="700" fill="#0B1E3B">pod-security.kubernetes.io/&lt;MODE&gt;: &lt;LEVEL&gt;</text>
+
+    <text x="32" y="1348" font-family="'Fira Sans', sans-serif" font-size="14" font-style="italic" fill="#8A8D90">e.g.</text>
+
+    <rect x="32" y="1356" width="460" height="32" rx="4" fill="#FFFFFF" stroke="#0B1E3B" stroke-opacity="0.15" stroke-width="0.8"></rect>
+    <text x="48" y="1377" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">pod-security.kubernetes.io/enforce: baseline</text>
+
+    <rect x="32" y="1396" width="460" height="32" rx="4" fill="#FFFFFF" stroke="#0B1E3B" stroke-opacity="0.15" stroke-width="0.8"></rect>
+    <text x="48" y="1417" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">pod-security.kubernetes.io/warn: restricted</text>
+
+    <rect x="32" y="1436" width="460" height="32" rx="4" fill="#FFFFFF" stroke="#0B1E3B" stroke-opacity="0.15" stroke-width="0.8"></rect>
+    <text x="48" y="1457" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">pod-security.kubernetes.io/audit: restricted</text>
+
+    <text x="32" y="1492" font-family="'Fira Sans', sans-serif" font-size="16" fill="#0B1E3B">▲</text>
+    <text x="56" y="1492" font-family="'Fira Sans', sans-serif" font-size="16" font-style="italic" fill="#0B1E3B">all three, on one namespace, at two different levels.</text>
+    <text x="56" y="1514" font-family="'Fira Sans', sans-serif" font-size="16" font-style="italic" fill="#0B1E3B">This is not a contradiction. It is a migration.</text>
+
+    <!-- Legend -->
+    <line x1="32" y1="1556" x2="788" y2="1556" stroke="#0B1E3B" stroke-opacity="0.12" stroke-width="0.8"></line>
+    <text x="32" y="1576" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.12em" fill="#1F4A4E">COLOR KEY</text>
+    <circle cx="196" cy="1572" r="5" fill="#8A8D90"></circle>
+    <text x="208" y="1576" font-family="'Fira Sans', sans-serif" font-size="14" fill="#1F4A4E">no rule at this level</text>
+    <circle cx="416" cy="1572" r="5" fill="#1F4A4E"></circle>
+    <text x="428" y="1576" font-family="'Fira Sans', sans-serif" font-size="14" fill="#1F4A4E">restricted-level requirement</text>
+    <circle cx="676" cy="1572" r="5" fill="#0B1E3B"></circle>
+    <text x="688" y="1576" font-family="'Fira Sans', sans-serif" font-size="14" fill="#1F4A4E">forbidden</text>
+  </svg>

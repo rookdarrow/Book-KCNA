@@ -98,7 +98,7 @@ figures:
       and matches the alt-text intent.'
     suggested_fix: ''
 - anchor_id: ch06-fig05-statefulset-vs-deployment-identity
-  status: pending
+  status: approved  # 2026-09-04 coordinator review: render matches the chapter; promoted to figures/ and applied
   render_paths:
     svg: figures/ch06-fig05-statefulset-vs-deployment-identity.svg
     png: figures/ch06-fig05-statefulset-vs-deployment-identity.png

@@ -1,0 +1,1 @@
+A Node contains one Pod; the Pod carries a single IP address on its own boundary and holds two containers, app and helper, which communicate over localhost and both read and write a shared volume inside the Pod

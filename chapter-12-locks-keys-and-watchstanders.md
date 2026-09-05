@@ -1234,6 +1234,9 @@ What you need beyond that is the policy — three of them — and what "does som
 The levels are the §5 fields with names on them. What each actually checks:
 
 <!-- FIGURE: ch12-fig04-pod-security-standards-levels -->
+![A matrix of fourteen securityContext fields checked against the privileged, baseline and restricted Pod Security levels, noted as cumulative; a list of the three modes enforce, audit and warn with what each does when a check fails; and the per-namespace label form with a worked example carrying all three modes at two different levels](figures/ch12-fig04-pod-security-standards-levels.svg)
+
+<!-- ASCII-FALLBACK
 ```
    THE LEVELS — what gets checked
    ══════════════════════════════════════════════════════════════════
@@ -1286,6 +1289,7 @@ The levels are the §5 fields with names on them. What each actually checks:
            ▲ all three, on one namespace, at two different levels.
              This is not a contradiction. It is a migration.
 ```
+-->
 
 The rows in that figure are the Baseline and Restricted controls this chapter grades on, not the complete published list. Baseline forbids `privileged`, the host namespaces (`hostNetwork`, `hostPID`, `hostIPC`), `hostPath` volumes, and unconfined seccomp, and restricts `hostPort` and added capabilities to known lists. Restricted adds every Baseline requirement plus: volumes limited to a safe list; `allowPrivilegeEscalation: false`; `runAsNonRoot: true`; `runAsUser` non-zero or unset; seccomp explicitly `RuntimeDefault` or `Localhost`; and capabilities dropping `ALL` with only `NET_BIND_SERVICE` addable back [source: k8s-docs-pod-security-standards-profiles-2026-08-31].
 

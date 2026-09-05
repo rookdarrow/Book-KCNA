@@ -3,7 +3,7 @@ book: kcna
 generated: '2026-09-01T07:27:15+00:00'
 figures:
 - anchor_id: ch05-fig01-pod-shared-network-namespace
-  status: pending
+  status: approved  # 2026-09-04 coordinator review: render matches the chapter; promoted to figures/ and applied
   render_paths:
     svg: figures/ch05-fig01-pod-shared-network-namespace.svg
     png: figures/ch05-fig01-pod-shared-network-namespace.png

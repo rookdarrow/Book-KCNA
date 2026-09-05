@@ -82,30 +82,6 @@ kb_tags:
 figures_planned: []
 ---
 
-<!--
-  Stage 4/12 voice pass, KCNA Ch 20, pass 2 (input: draft-v2.md).
-  Light-touch pass. The Exam block (items 1-60) is left byte-identical: every stem and option
-  in a scored instrument is calibrated, and voice work there risks moving a distractor's meaning.
-  Prose edits are confined to the Instructions section and the walkthrough explanations.
--->
----
-chapter: 20
-title: "Full Mock Exam"
-chapter_type: mock_exam
-exam: "KCNA"
-exam_version: "CNCF curriculum effective 2025-11-24"
----
-
-<!-- AUTHOR-REVIEW: YAML frontmatter added this pass. The stage-11 structural audit on draft-v1
-     reported 8 FAILs and 5 WARNs for missing Attention Budget, Soundings, Why This Chapter Matters,
-     Taking Your Bearings, Exam Alert, Chapter Summary, Road Ahead, and the ☆/★/⚠/🧭 markers. Every
-     one of those rules carries `exempt_chapter_types: [mock_exam]` in structural-contract.yaml, so
-     the findings were an artifact of the linter having no chapter_type to read — draft-v1 shipped
-     without frontmatter. Confirm structural_lint reads chapter_type from the draft's own frontmatter
-     and not only from the outline in pipeline state; if it reads only the outline, this block is
-     harmless but the audit will keep failing until the outline is the input. Do NOT resolve those
-     findings by adding Soundings or Bearings to a scored instrument. -->
-
 # Chapter 20: Full Mock Exam
 
 ## *"Ninety minutes. No notes. Find out."*
@@ -118,17 +94,17 @@ You have reached the last chapter, and it is the only one that does not teach yo
 
 Nineteen chapters have explained. This one measures. There is no Soundings block here, no Fixed Points, no callouts in the margin: a diagnostic instrument that keeps interrupting itself with encouragement is not a diagnostic instrument. The voice comes back in the walkthroughs, after the clock stops.
 
-**Dead Reckoning:** The Linux Foundation publishes both of the numbers this instrument is built around. Its candidate handbook gives them for multiple-choice exams as a class: the exam "consists of 60* multiple-choice questions" and candidates "have 90* minutes to complete" it `[source: lf-mc-exam-important-instructions-2026-08-31]`. The asterisks lead to a footnote naming CNPA, a different exam with 85 questions and 120 minutes; they are not a hedge about the class figures. KCNA belongs to that class: the Linux Foundation's own exam-code table puts KCNA in the multiple-choice column beside KCSA and LFCA, with CKA and CKAD in the performance-based column `[source: lf-exam-user-interface-exam-codes-2026-08-31]`. Neither number appears on the KCNA product page `[source: provenance-kcna-60-questions-2026-08-31]`. That is the provenance lesson Chapter 1 spent a section on. *[cross-bearing: see Ch 1 § Ninety Minutes: The Exam as Published]*
+**Dead Reckoning:** The Linux Foundation publishes both of the numbers this instrument is built around. Its candidate handbook gives them for multiple-choice exams as a class: the exam "consists of 60* multiple-choice questions" and candidates "have 90* minutes to complete" it [source: lf-mc-exam-important-instructions-2026-08-31]. The asterisks lead to a footnote naming CNPA, a different exam with 85 questions and 120 minutes; they are not a hedge about the class figures. KCNA belongs to that class: the Linux Foundation's own exam-code table puts KCNA in the multiple-choice column beside KCSA and LFCA, with CKA and CKAD in the performance-based column [source: lf-exam-user-interface-exam-codes-2026-08-31]. Neither number appears on the KCNA product page [source: provenance-kcna-60-questions-2026-08-31]. That is the provenance lesson Chapter 1 spent a section on. *[cross-bearing: see Ch 1 § Ninety Minutes: The Exam as Published]*
 
 So: **sixty questions, ninety minutes.**
 
 ### What this instrument is, and is not
 
-It is sized to the published count and weighted to the published blueprint: 44% Kubernetes Fundamentals, 28% Container Orchestration, 16% Cloud Native Application Delivery, 12% Cloud Native Architecture `[source: cncf-curriculum-kcna-readme-2026-08-31]`. Twenty-six questions, seventeen, ten, and seven.
+It is sized to the published count and weighted to the published blueprint: 44% Kubernetes Fundamentals, 28% Container Orchestration, 16% Cloud Native Application Delivery, 12% Cloud Native Architecture [source: cncf-curriculum-kcna-readme-2026-08-31]. Twenty-six questions, seventeen, ten, and seven.
 
 It was written by Lodestar Ledgers. It is not a leaked exam, not a reconstruction of one, and not a prediction of your score. What it gives you is a fix on your own position, taken from your own answers.
 
-One shape here is this book's, not the Linux Foundation's. Every item below offers four options with one correct answer. The Linux Foundation does not publish how many options its multiple-choice items carry, whether any item is multi-select, whether unscored pretest items are mixed in, or whether a wrong answer costs anything `[source: lf-examui-multiple-choice-2026-08-31]`. Four options and one right answer is a reasonable authoring choice. Do not read it as a disclosure.
+One shape here is this book's, not the Linux Foundation's. Every item below offers four options with one correct answer. The Linux Foundation does not publish how many options its multiple-choice items carry, whether any item is multi-select, whether unscored pretest items are mixed in, or whether a wrong answer costs anything [source: lf-examui-multiple-choice-2026-08-31] [source: lf-exam-scoring-and-notification-2026-08-31]. Four options and one right answer is a reasonable authoring choice. Do not read it as a disclosure.
 
 ### Conditions worth reproducing
 
@@ -138,7 +114,7 @@ A reader who looks things up is measuring how good this book's index is. That is
 
 ### How the real console behaves
 
-The Linux Foundation documents the multiple-choice exam interface in its candidate handbook. You move between items with Previous and Next; you can flag an item for later review; flagged items are highlighted on a Review Screen, and you can return to one and change your answer. When you reach the final item you are prompted to review, and the Review Screen carries the Finish Exam button. A Pause Exam function exists, and using it does not stop the timer `[source: lf-examui-multiple-choice-2026-08-31]`.
+The Linux Foundation documents the multiple-choice exam interface in its candidate handbook. You move between items with Previous and Next; you can flag an item for later review; flagged items are highlighted on a Review Screen, and you can return to one and change your answer. When you reach the final item you are prompted to review, and the Review Screen carries the Finish Exam button. A Pause Exam function exists, and using it does not stop the timer [source: lf-examui-multiple-choice-2026-08-31].
 
 On paper you can do all of that and more. Flag, move on, come back — and finish the first pass at roughly 54 of the 90 minutes, keeping the rest for the flagged items. Chapter 19 owns the reasoning behind that split and what to do with the second pass; this chapter only asks you to run it. *[cross-bearing: see Ch 19 §3 — pacing and time discipline]*
 
@@ -151,7 +127,7 @@ On paper you can do all of that and more. Flag, move on, come back — and finis
 
 ### One thing the real exam will not give you
 
-Your score report arrives within 24 hours, by email and on the Portal. It reports the outcome. It does not tell you which domain you were weak in: the Linux Foundation states plainly that it "does not report performance on individual items and will not honor requests for more detailed information" `[source: lf-exam-scoring-and-notification-2026-08-31]`.
+Your score report arrives within 24 hours, by email and on the Portal. It reports the outcome. It does not tell you which domain you were weak in: the Linux Foundation states plainly that it "does not report performance on individual items and will not honor requests for more detailed information" [source: lf-exam-scoring-and-notification-2026-08-31].
 
 That is the whole argument for the score sheet at the end of this chapter. The per-domain breakdown you are about to generate is not a convenience duplicating something the real exam hands you afterward. It is the only domain-level diagnostic you will get anywhere in this preparation, and you get it before the exam, which is the only point at which it can still change anything.
 
@@ -297,7 +273,7 @@ spec:
       image: example/app:1.0
 ```
 
-The Pod above is applied and stays in `Pending`. Which of the following is a plausible cause?
+The Pod above is applied, and ten minutes later `kubectl get pods` still prints `Pending` in its `STATUS` column. Which of the following is a plausible cause?
 
 A. The image tag does not exist in the registry that the node would pull it from
 B. The container's main process started and then exited immediately on startup
@@ -315,7 +291,7 @@ D. The original digest is updated to match the new content, so digest references
 
 ---
 
-**14.** An operator applies a NetworkPolicy that allows ingress to Pods labeled `app: db` from Pods labeled `app: api`, and then writes a second NetworkPolicy intended to deny ingress from `app: batch`. What is the effect?
+**14.** A cluster administrator applies a NetworkPolicy that allows ingress to Pods labeled `app: db` from Pods labeled `app: api`, and then writes a second NetworkPolicy intended to deny ingress from `app: batch`. What is the effect?
 
 A. Both are honored, and traffic from `app: batch` is explicitly blocked at the target Pods
 B. The second policy replaces the first, because policies are evaluated in creation order
@@ -352,11 +328,11 @@ web-6d4f8b7c9d-7hqnv   1/1     Running   0          14m
 web-6d4f8b7c9d-lz8mt   0/1     Running   0          14m
 ```
 
-A Service of type `ClusterIP` selects Pods with the label `app: web`. How many endpoints does the Service have?
+A Service of type `ClusterIP` selects Pods with the label `app: web`. How many of these Pods will the Service send traffic to?
 
 A. Three, because all three Pods are in the `Running` phase
 B. Zero, because one Pod that is not ready invalidates the whole EndpointSlice
-C. Two, because a Pod that is not ready is removed from the Service's endpoints
+C. Two, because a Pod that is not ready is marked ineligible in the EndpointSlice and receives no traffic
 D. Three, but kube-proxy silently drops the traffic it routes to the unready Pod
 
 ---
@@ -595,7 +571,7 @@ D. Complementary framings: latency, traffic, errors, and saturation against rate
 
 ---
 
-**40.** A cluster operator sets a ResourceQuota on a namespace limiting total memory requests to `10Gi`, and a LimitRange in the same namespace setting a default container memory request of `256Mi`. What does each accomplish?
+**40.** A cluster administrator sets a ResourceQuota on a namespace limiting total memory requests to `10Gi`, and a LimitRange in the same namespace setting a default container memory request of `256Mi`. What does each accomplish?
 
 A. They are redundant; either one alone would bound the namespace's memory consumption
 B. The quota caps the namespace's aggregate; the LimitRange supplies per-object defaults and bounds
@@ -789,8 +765,8 @@ $ kubectl get svc,endpointslice -l app=orders
 NAME             TYPE        CLUSTER-IP      PORT(S)   AGE
 service/orders   ClusterIP   10.96.140.22    80/TCP    6m
 
-NAME                         ADDRESSTYPE   ENDPOINTS   AGE
-endpointslice/orders-x8k2p   IPv4          <none>      6m
+NAME                         ADDRESSTYPE   PORTS     ENDPOINTS   AGE
+endpointslice/orders-x8k2p   IPv4          <unset>   <unset>     6m
 
 $ kubectl get pods -l app=order-api
 NAME                       READY   STATUS    RESTARTS   AGE
@@ -838,7 +814,7 @@ A container is a host process placed in kernel namespaces and cgroups, sharing t
 
 **2. B** — *D2.1 · Ch 9 §1 · 🔵*
 
-Without a CNI plugin the cluster has no implementation of the pod network. Pods do not get addresses and do not become ready. *[cross-bearing: see Ch 9 §1 — four rules and a plugin]*
+Without a CNI plugin the cluster has no implementation of the pod network. The kubeadm documentation lists the symptom under its own heading — CoreDNS "stuck in the `Pending` state" — and calls it "expected and part of the design": "You have to install a Pod Network before CoreDNS may be deployed fully" [source: k8s-docs-kubeadm-troubleshooting-2026-09-04]. Pods that need the pod network do not get addresses and do not become ready. *[cross-bearing: see Ch 9 §1 — four rules and a plugin]*
 
 - **A is wrong** because the control plane comes up independently of the pod network. That is why you can inspect a broken cluster at all.
 - **C is wrong** because the failure is not egress-specific; pod-to-pod networking does not exist either.
@@ -878,19 +854,11 @@ A Namespace is a scope for names, and several important kinds live outside it: N
 
 **6. D** — *D2.2 · Ch 12 §1 · ⚪*
 
-Cloud, Cluster, Container, Code, from outside in. The cloud (or datacenter) layer is the foundation; a compromise there makes every layer above it moot. *[cross-bearing: see Ch 12 §1 — four layers and four phases]*
+Cloud, Cluster, Container, Code, from outside in. The Kubernetes documentation's 4Cs model has each layer build "upon the next outermost layer", and names the Cloud — "or co-located servers, or the corporate datacenter" — as the trusted computing base: if that layer is vulnerable, "there is no guarantee that the components built on top of this base are secure" [source: k8s-docs-4cs-cloud-native-security-v1-22-archived-2026-08-31]. The current page has since reframed the subject around lifecycle phases, which is why Chapter 12 §1 teaches both [source: k8s-docs-cloud-native-security-2026-08-23]. *[cross-bearing: see Ch 12 §1 — four layers and four phases]*
 
 - **A is wrong** because Code is the innermost layer, the one every other layer sits outside of.
 - **B is wrong** because Container is the second-innermost, one step out from Code.
 - **C is wrong** because Cluster is the third, sitting inside Cloud rather than outside it.
-
-<!-- AUTHOR-REVIEW: this item asserts the composition and ordering of a named external model (the
-     4Cs of Cloud Native Security, from the Kubernetes documentation) with no [source:] tag. The
-     ordering is load-bearing — a reader who learns it backwards fails the real question. The
-     cross-bearing to Ch 12 §1 suggests Ch 12 owns and sourced it; if Ch 12's fact-accuracy
-     diagnostic cleared it against a cached snapshot, name that snapshot here. If it did not, open a
-     research gap for the Kubernetes docs page on the 4C's of Cloud Native Security and tag both the
-     stem's premise and this walkthrough. -->
 
 ---
 
@@ -939,22 +907,16 @@ Deployment owns ReplicaSets; each ReplicaSet owns Pods. A rolling update works b
 Pull, not push. An in-cluster agent reconciles continuously against a repository that holds desired state. *[cross-bearing: see Ch 15 §3 — push, or pull]*
 
 - **B is wrong** because it describes the push model precisely — and it inverts the security argument. Holding cluster credentials in the build system is the push model's cost, and avoiding it is a principal reason to adopt pull.
-- **C is wrong** because continuous reconciliation is one of the OpenGitOps principles. The agent corrects drift that no merge caused.
+- **C is wrong** because continuous reconciliation is one of the four OpenGitOps principles: "Software agents continuously observe actual system state and attempt to apply the desired state" [source: opengitops-principles-v1-2026-08-31]. The agent corrects drift that no merge caused.
 - **D is wrong** because GitOps depends on declarative manifests; it does not replace them with scripts.
-
-<!-- AUTHOR-REVIEW: draft-v1 wrote "one of the four OpenGitOps principles". The cardinality claim is
-     the fragile part and no OpenGitOps snapshot is in this corpus, so the count has been dropped
-     here. Open a research gap for the OpenGitOps Principles (opengitops.dev); once cached, restore
-     "four" and tag it. Note the B6 skeleton assigns the four principles to Ch 15 §3, so Ch 15 may
-     already carry a snapshot — check there before opening a new gap. -->
 
 ---
 
 **12. D** — *D2.3 · Ch 13 §2 · 🔵*
 
-`Pending` is the phase of a Pod that has not been scheduled. The scheduler found no feasible node, or the Pod has not yet been considered. *[cross-bearing: see Ch 13 §2 — Pods that never start]*
+`Pending` in the `STATUS` column is a Pod that has been accepted and not placed: the scheduler found no feasible node, or has not yet considered the Pod, so no kubelet has created anything. Be precise about what that column shows. The *phase* `Pending` is wider — Chapter 5 §5 was careful that it also covers the time a kubelet spends downloading an image — but once a kubelet is at work, `kubectl get pods` prints the container's waiting reason (`ContainerCreating`, `ErrImagePull`, `ImagePullBackOff`) in the column instead of the bare phase. A column that still reads `Pending` after ten minutes means nothing has reached a node. *[cross-bearing: see Ch 13 §2 — Pods that never start]* *[cross-bearing: see Ch 5 §5 — Pod phases and container states]*
 
-- **A is wrong** because a missing tag surfaces as `ImagePullBackOff`, which happens *after* scheduling. The image is pulled on a node, so a Pod cannot fail to pull an image it was never assigned a node for.
+- **A is wrong** because a missing tag is reported as a container state — `Waiting`, with the reason `ErrImagePull` and then `ImagePullBackOff` — and that reason is what the `STATUS` column would print. It also needs a node: the image is pulled by a kubelet, so a Pod that has not been assigned one cannot have failed to pull.
 - **B is wrong** because a container that starts and exits gives you `CrashLoopBackOff`, not `Pending`.
 - **C is wrong** because an OOM kill requires a running container. Reading the phase first is what separates these four instantly. *[cross-bearing: see Ch 13 §1 — whose problem is this]*
 
@@ -982,22 +944,13 @@ NetworkPolicy is allow-only. There is no deny rule to write. What produces isola
 
 **15. A** — *D4.3 · Ch 17 §2 · 🔵*
 
-Sandbox, Incubating, Graduated, in that order. Sandbox is the entry point; Incubating and then Graduated each raise the bar on adoption, governance, and sustainability. *[cross-bearing: see Ch 17 §2 — Sandbox, Incubating, Graduated, and who decides]*
+Sandbox, Incubating, Graduated, in that order. The CNCF describes Sandbox projects as "experimental projects not yet widely tested in production", Incubating projects as "used successfully in production by a small number of users", and Graduated projects as "stable, widely adopted, and production ready" [source: cncf-project-maturity-levels-2026-08-23]. Sandbox is the entry point, and each step up raises the bar on adoption and on the due diligence the TOC applies before a project moves — adopter interviews, a two-week public comment period, and a two-thirds supermajority vote [source: cncf-toc-project-lifecycle-process-2026-08-31]. *[cross-bearing: see Ch 17 §2 — Sandbox, Incubating, Graduated, and who decides]*
 
 - **B is wrong** because it reverses the first two levels. Incubating is the middle rung, not the entry point.
 - **C is wrong** because it skips Incubating. A project does not go from Sandbox straight to Graduated.
 - **D is wrong** on both halves: it names the wrong entry level and the wrong successor.
 
-Worth carrying into the real exam: the *levels and their order* are the durable fact. Which projects sit at which level changes constantly, and a memorized Graduated roster is memorization with an expiry date on it.
-
-<!-- AUTHOR-REVIEW: two provenance gaps in this item, both needing a fetch rather than a rewrite.
-     (1) The maturity levels and their ordering are asserted with no [source:] tag;
-     cncf-curriculum-kcna-readme-2026-08-31 covers domain weights only and does not reach them. Open
-     a research gap for the CNCF project maturity levels / graduation criteria document. This one is
-     worth caching rather than softening — the item's whole force depends on the ordering being right.
-     (2) The stem's premise that the entry level carries no production-adoption requirement is a
-     claim about admission criteria and needs the same snapshot. If the snapshot does not support it,
-     cut the clause and let the stem read "at the entry level of its maturity ladder". -->
+Worth carrying into the real exam: the *levels and their order* are the durable fact. Which projects sit at which level changes constantly, and a memorized Graduated roster is memorization with an expiry date on it. One more name you will meet on cncf.io: Archived, for projects the TOC describes as "Inactive or low activity projects that are no longer supported" [source: cncf-toc-project-lifecycle-process-2026-08-31]. It is where projects go when they stop, not a rung on the ladder.
 
 ---
 
@@ -1013,11 +966,11 @@ Authentication (who are you), then authorization (may you), then admission (shou
 
 **17. C** — *D2.1 · Ch 9 §4 · 🔵*
 
-Readiness gates endpoint membership. `web-...-lz8mt` shows `0/1` ready, so it keeps running but is taken out of the Service's endpoint set — precisely the behavior the probe exists to provide. Two endpoints. *[cross-bearing: see Ch 9 §4 — the list behind the name]*
+Readiness gates traffic, not membership. `web-...-lz8mt` shows `0/1` ready, so it keeps running and stays listed in the Service's EndpointSlice, but with its `ready` condition set to `false`, and kube-proxy programs no route to it. The other two carry the traffic — precisely the behavior the probe exists to provide. Two. *[cross-bearing: see Ch 9 §4 — the list behind the name]*
 
-- **A is wrong** because it reads the `STATUS` column and ignores `READY`. `Running` is the phase; readiness is a separate condition, and it is the one endpoints follow.
-- **B is wrong** because endpoint membership is per-Pod, not all-or-nothing. The other two Pods remain addressable.
-- **D is wrong** because kube-proxy does not drop traffic to unready Pods. The Pod is not in the endpoint list for it to route to in the first place.
+- **A is wrong** because it reads the `STATUS` column and ignores `READY`. `Running` is the phase; readiness is a separate condition, and it is the one traffic follows.
+- **B is wrong** because eligibility is decided per endpoint, not all-or-nothing. The other two Pods remain addressable.
+- **D is wrong** because kube-proxy does not route to an endpoint whose `ready` condition is `false`, so there is nothing to drop. The Pod is listed; it is not a destination.
 
 ---
 
@@ -1035,7 +988,7 @@ Two mechanisms wearing the same word. `helm rollback` moves the *release* to a p
 
 Cordon marks the node unschedulable so nothing new lands there; drain then evicts what is already running so it can be rescheduled elsewhere. *[cross-bearing: see Ch 8 §4 — taking a node out of service]*
 
-- **B is wrong** in ordering. Draining first without cordoning invites the scheduler to place new Pods on the node you are emptying. (In practice `kubectl drain` cordons for you. The exam tests the conceptual order, and knowing *why* cordon precedes drain is the point.)
+- **B is wrong** in ordering. Cordon is the precondition: stop new arrivals first, then move out what is already aboard. Draining a node the scheduler is still free to fill is emptying a room with the door standing open, which is why Chapter 8 frames the maintenance sequence as cordon, then drain. The exam tests that conceptual order, and knowing *why* cordon precedes drain is the point.
 - **C is wrong**, and destructive: deleting the Node object does not gracefully move the workloads off it first.
 - **D is wrong** because `uncordon` returns a node to service, which is the opposite of taking it out.
 
@@ -1083,19 +1036,11 @@ Init containers run to completion, in order, before any application container st
 
 **24. A** — *D2.3 · Ch 13 §3 · 🔵*
 
-`--previous` retrieves the logs of the previous terminated container instance. With eleven restarts and the most recent 22 seconds ago, that is the run that actually failed. *[cross-bearing: see Ch 13 §3 — looking inside]*
+`--previous` retrieves the logs "from a previous instantiation of a container", and by default, when a container restarts, the kubelet "keeps one terminated container with its logs" [source: k8s-docs-logging-architecture-2026-08-23]. With eleven restarts and the most recent 22 seconds ago, that kept container is the run that actually failed. *[cross-bearing: see Ch 13 §3 — looking inside]*
 
 - **B is wrong** because in a crash loop the current instance is either seconds old or not running at all. You get an empty stream or the first lines of a fresh start.
 - **C is wrong** because `describe` shows events, conditions, and state transitions — useful context, but not the container's own output.
-- **D is wrong** for the same reason. `kubectl events --for pod/<pod>` filters events to a resource `[source: k8s-docs-kubectl-events-2026-08-31]`, which tells you what the cluster did, not what the process printed.
-
-<!-- AUTHOR-REVIEW: the claim about `kubectl logs --previous` is untagged, while the sibling
-     `kubectl events` claim in the same walkthrough is tagged — inconsistent within one item. The
-     natural tag is k8s-docs-kubectl-cheatsheet-troubleshooting-2026-08-31, whose concepts_covered
-     lists `kubectl-logs-previous`. BUT the body of that snapshot as packed for this stage ends at
-     the heading "## Interacting with running Pods" with no command lines beneath it, so the flag's
-     documented wording could not be verified. Confirm the file on disk carries the line before
-     tagging; if it is genuinely truncated, that is a corpus defect to raise rather than paper over. -->
+- **D is wrong** for the same reason. `kubectl events --for pod/<pod>` filters events to a resource [source: k8s-docs-kubectl-events-2026-08-31], which tells you what the cluster did, not what the process printed.
 
 ---
 
@@ -1183,7 +1128,7 @@ An ephemeral container added by `kubectl debug` runs a separate image inside the
 
 An operator is a controller for a custom resource, encoding what a human operator would know about running a particular application. *[cross-bearing: see Ch 6 §8 — the control loop, extended]*
 
-- **A is wrong**, and it is a genuine vocabulary hazard: "operator" is never used for a person in this book. Where the Gateway API says "cluster operator" it means a *role name*, not an individual. *[cross-bearing: see Ch 10 §5 — roles, not just routes]*
+- **A is wrong**, and it is a genuine vocabulary hazard: in the Kubernetes sense an operator is software, not a person. This book writes "cluster administrator" for the person. Where the Gateway API says "cluster operator" it means a *role name*, not an individual. *[cross-bearing: see Ch 10 §5 — roles, not just routes]*
 - **B is wrong** because a `kubectl` plugin extends the client on your workstation, not the cluster's reconciliation behavior.
 - **D is wrong** because an admission webhook acts once per request, at admission time. An operator runs a loop continuously, long after the object was persisted.
 
@@ -1277,6 +1222,7 @@ ResourceQuota caps the namespace's aggregate; LimitRange supplies per-object def
 - **C is wrong** because `Never` means use only what is already on the node, and fail if nothing is there. The kubelet builds nothing.
 - **D is wrong** because `Always` re-checks the registry on every container start but places no requirement on how the image is referenced. A digest reference is a separate, stronger guarantee.
 
+---
 
 **43. C** — *D2.4 · Ch 11 §3 · ⚪*
 
@@ -1286,6 +1232,8 @@ A StorageClass names a provisioner, and that provisioner creates the PersistentV
 - **B is wrong**, and it is the answer that sounds most like "storage appears by itself." `hostPath` ties the data to one node's filesystem, which is the opposite of what a claim is for.
 - **D is wrong** because a reclaim policy governs what happens to a volume *after* its claim is deleted. It acts at the end of the lifecycle, not the beginning.
 
+---
+
 **44. B** — *D3.1 · Ch 14 §5 · 🔵*
 
 Kustomize patches a shared base with one overlay per environment, and it does so without a templating language — the overlays are ordinary YAML fragments merged onto the base. The question's two constraints, no duplication and no templating, name Kustomize exactly. *[cross-bearing: see Ch 14 §5 — patching instead of templating]*
@@ -1293,6 +1241,8 @@ Kustomize patches a shared base with one overlay per environment, and it does so
 - **A is wrong** on the second constraint only, which is what makes it the strongest distractor. Separate values files genuinely solve the duplication; Helm reaches that answer *through* a template language, which the question rules out. *[cross-bearing: see Ch 14 §6 — which one, when]*
 - **C is wrong** because sync waves order the objects within an apply. Ordering is not variation between environments. *[cross-bearing: see Ch 15 §5 — ordering the sync]*
 - **D is wrong** because it is still Helm, and a generator does not remove the templating the question excludes.
+
+---
 
 **45. D** — *D1.3 · Ch 7 §1 · ⚪*
 
@@ -1302,6 +1252,8 @@ Filter, then score, then bind. Filtering reduces the nodes to the feasible ones;
 - **B is wrong** because binding is the last act, not the first. A Pod is bound once, to a node already chosen.
 - **C is wrong** because the kubelet is not consulted for placement. It acts on Pods already assigned to its node. *[cross-bearing: see Ch 3 §3 — node components in context]*
 
+---
+
 **46. A** — *D2.1 · Ch 10 §5 · 🔵*
 
 The Gateway API's three kinds are modeled on three roles: GatewayClass for the infrastructure provider, Gateway for the cluster operator, HTTPRoute for the application developer. The split is the design, not an accident of the API. *[cross-bearing: see Ch 10 §5 — roles, not just routes]*
@@ -1309,6 +1261,8 @@ The Gateway API's three kinds are modeled on three roles: GatewayClass for the i
 - **B is wrong** because it scrambles the mapping. Reading it against the responsibilities is the check: an application developer does not supply the cluster's networking infrastructure.
 - **C is wrong** on both counts. HTTPRoute is namespaced and belongs to the team that owns the application, which is the whole point of a role-oriented API.
 - **D is wrong** for the same reason as B — it inverts the outermost and innermost roles.
+
+---
 
 **47. C** — *D4.2 · Ch 17 §3 · 🔵*
 
@@ -1318,6 +1272,8 @@ Independent deployment and independent scaling are the gains; operational and ne
 - **B is wrong** because service boundaries change the *shape* of coupling rather than removing it. Two services that must be released together are still coupled, now across a network.
 - **D is wrong** because a repository and a pipeline per service are the mechanics of independent deployment, not its cause. Shared databases and lockstep releases defeat it regardless.
 
+---
+
 **48. B** — *D1.1 · Ch 6 §7 · ⚪*
 
 A CronJob creates a Job on its schedule, and the Job creates the Pod or Pods that run the work to completion. Two objects, one for the schedule and one for the run. *[cross-bearing: see Ch 6 §7 — one per node, and work that ends]*
@@ -1325,6 +1281,8 @@ A CronJob creates a Job on its schedule, and the Job creates the Pod or Pods tha
 - **A is wrong** because it collapses the layer that makes retries and completion tracking work. Without a Job there is nothing holding the notion of "this run finished."
 - **C is wrong** because a Deployment is for work that should keep running. Its controller replaces a Pod that exits, which is the opposite of what run-to-completion needs.
 - **D is wrong** because a DaemonSet is about node coverage, not scheduled work.
+
+---
 
 **49. A** — *D2.2 · Ch 12 §7 · 🔵*
 
@@ -1334,13 +1292,17 @@ An SBOM is the inventory: it records which components the image contains, which 
 - **C is wrong**, and the distinction is worth holding: provenance records *how and where* the artifact was built. It is the build-process half; the SBOM is the components half.
 - **D is wrong** because a digest identifies the image uniquely without saying anything about what is inside it. *[cross-bearing: see Ch 2 §3 — registries, tags, and digests]*
 
+---
+
 **50. D** — *D3.2 · Ch 16 §5 · 🔵*
 
 A working port-forward proves the application is running and answering on its port. The Service path is the only thing left between that Pod and the client, so the fault is in the Service path — selector, ports, or endpoint membership. *[cross-bearing: see Ch 16 §5 — bypassing the Service on purpose]*
 
 - **A is wrong**, and it is the answer that feels responsible. If the application were unhealthy it would not have answered the port-forward. A successful port-forward rules this out rather than supporting it.
-- **B is wrong** because port-forward and Service traffic are not separable that way at this level; a CNI failing between nodes would not leave a single Pod cleanly reachable while its Service silently times out.
+- **B is wrong** because nothing in the pair establishes it. The two results localize the fault to the Service path; they do not name a component on it. A network plugin failing between nodes is one exotic resident of that path, and it would break far more than one Service — every cross-node Pod conversation in the cluster. Check the ordinary residents first: selector, ports, endpoints.
 - **C is wrong** because cluster IPs are allocated from a range and not handed out twice. Inventing an allocator bug is a heavier explanation than the ordinary one.
+
+---
 
 **51. B** — *D1.1 · Ch 4 §5 · ⚪*
 
@@ -1350,6 +1312,8 @@ Labels identify and select; annotations carry metadata that nothing selects on. 
 - **C is wrong** because selectors cannot match annotations at all, whatever the length. Length is a real constraint on label values, but it does not open a door to annotations.
 - **D is wrong** because labels are not unique keys. Non-uniqueness is the point: a selector matches a *set*.
 
+---
+
 **52. C** — *D2.1 · Ch 9 §7 · 🔵*
 
 An unqualified name resolves in the client Pod's own namespace, because that namespace comes first in the Pod's DNS search list. A Pod in `orders` reaches the `billing` Service in `orders`. *[cross-bearing: see Ch 9 §7 — names, and where they resolve]*
@@ -1357,6 +1321,8 @@ An unqualified name resolves in the client Pod's own namespace, because that nam
 - **A is wrong**, and it is the most common wrong model. `default` is a namespace like any other; it has no privileged position in resolution.
 - **B is wrong** because the search list exists precisely so that short names work. Requiring an FQDN everywhere would make the convenience pointless.
 - **D is wrong** because resolution is not first-come-first-served across the cluster. Two namespaces may each hold a `billing` Service, and each resolves within its own.
+
+---
 
 **53. D** — *D4.3 · Ch 17 §8 · 🔵*
 
@@ -1366,6 +1332,8 @@ A substantial change goes through a Kubernetes Enhancement Proposal, brought to 
 - **B is wrong** because the Landscape is a catalog of the ecosystem, not an intake path for Kubernetes changes.
 - **C is wrong** because a TAG operates at CNCF level across projects. It is the wrong altitude for a change to one Kubernetes subsystem.
 
+---
+
 **54. A** — *D1.4 · Ch 2 §4 · ⚪*
 
 CRI standardizes the boundary between the kubelet and the container runtime. Because the interface is fixed, runtimes behind it are interchangeable — which is what let the ecosystem change runtimes without changing Kubernetes. *[cross-bearing: see Ch 2 §4 — the container runtime interface]*
@@ -1373,6 +1341,8 @@ CRI standardizes the boundary between the kubelet and the container runtime. Bec
 - **B is wrong** because image format and layer ordering are the OCI image specification's business. *[cross-bearing: see Ch 2 §5 — the Open Container Initiative]*
 - **C is wrong** because registry distribution is the OCI distribution specification.
 - **D is wrong** because giving a container a network address is CNI's job. Keeping the four interfaces apart by *what they stand between* is the reliable way to hold them. *[cross-bearing: see Ch 17 §4 — every place Kubernetes lets you in]*
+
+---
 
 **55. C** — *D1.1 · Ch 5 §1 · ⚪*
 
@@ -1382,6 +1352,8 @@ Containers in a Pod share a network namespace, so they reach each other on `loca
 - **B is wrong** because process-namespace sharing is opt-in, not the default.
 - **D is wrong** because limits are set per container. What the Pod has is a QoS class derived from all of them together. *[cross-bearing: see Ch 5 §8 — what a Pod is owed]*
 
+---
+
 **56. B** — *D3.1 · Ch 15 §1 · ⚪*
 
 ConfigMaps and Secrets supply configuration at run time, so one image runs unchanged in every environment. That is twelve-factor III implemented with Kubernetes objects. *[cross-bearing: see Ch 15 §1 — twelve factors, and the ones Kubernetes already solved]*
@@ -1389,6 +1361,8 @@ ConfigMaps and Secrets supply configuration at run time, so one image runs uncha
 - **A is wrong** and is the practice the factor exists to forbid. An image per environment means the artifact you tested is not the artifact you shipped. *[cross-bearing: see Ch 2 §2 — what's inside an image]*
 - **C is wrong** because a `hostPath` makes the configuration a property of the node, which is worse than baking it in: now it varies invisibly.
 - **D is wrong** because rebuilding on a configuration change is exactly the coupling between build and config that the factor separates.
+
+---
 
 **57. D** — *D1.1 · Ch 6 §4 · 🟡*
 
@@ -1398,6 +1372,8 @@ Five. `maxSurge: 1` permits one Pod above the desired count of four, so the ceil
 - **B is wrong** because that is a blue/green shape, not a rolling update. `maxSurge` is one, not the replica count. *[cross-bearing: see Ch 15 §2 — ways to replace what's running]*
 - **C is wrong** because taking a Pod down first is precisely what `maxUnavailable: 0` forbids. This configuration adds before it removes.
 
+---
+
 **58. A** — *D1.3 · Ch 7 §3 · 🔵*
 
 `preferredDuringSchedulingIgnoredDuringExecution` expresses a preference: the scheduler favors matching nodes when they exist and schedules the Pod anyway when they do not. Soft rules score; they do not filter. *[cross-bearing: see Ch 7 §3 — asking for a particular berth]*
@@ -1406,15 +1382,19 @@ Five. `maxSurge: 1` permits one Pod above the desired count of four, so the ceil
 - **C is wrong** because taints and tolerations work the other way round: a toleration lets a Pod onto a tainted node, it does not express a preference among untainted ones. *[cross-bearing: see Ch 7 §4 — when the berth refuses you]*
 - **D is wrong** because a `required` rule is the hard form, and hard rules filter.
 
+---
+
 **59. B** — *D3.2 · Ch 16 §4 · 🟡*
 
-The Service selects `app=orders`; the Pods carry `app=order-api`. The EndpointSlice exists and is empty, which is the signature of a selector that matches nothing. *[cross-bearing: see Ch 16 §4 — is anything even selected]*
+The Service is labeled `app=orders`, and a selector almost always mirrors the label its author gave the Service; the Pods carry `app=order-api`. The EndpointSlice exists and is empty, which is the signature of a selector that matches nothing — `kubectl describe service orders` prints the selector and confirms it. *[cross-bearing: see Ch 16 §4 — is anything even selected]*
 
-Read the output in the order it is printed. The slice was created, so the Service has a selector and the control plane is doing its job. Its `ENDPOINTS` column reads `<none>`, so nothing matched. And both Pods are `1/1 READY`, which rules out readiness as the cause — a Pod that matched but was not ready would still be *listed*, carrying a condition saying it must not receive traffic. **An empty list is a selector problem; a list that serves nothing is a readiness problem.** *[cross-bearing: see Ch 9 §4 — the list behind the name]*
+Read the output in the order it is printed. The slice was created, so the Service has a selector and the control plane is doing its job. Its `ENDPOINTS` column reads `<unset>`, which is how kubectl prints an empty list [source: k8s-source-kubectl-endpointslice-printer-2026-09-04], so nothing matched. And both Pods are `1/1 READY`, which rules out readiness as the cause — a Pod that matched but was not ready would still be *listed*, carrying a condition saying it must not receive traffic. **An empty list is a selector problem; a list that serves nothing is a readiness problem.** *[cross-bearing: see Ch 9 §4 — the list behind the name]*
 
 - **A is wrong** on the evidence in front of you. `1/1 READY` is the readiness probe passing; a startup probe still running would show `0/1`.
 - **C is wrong** because a `targetPort` mismatch produces endpoints that exist and refuse connections. The slice would not be empty.
 - **D is wrong** because an Ingress controller has nothing to do with a Service's endpoint list. A ClusterIP Service does not route through one. *[cross-bearing: see Ch 10 §3 — the object is not the implementation]*
+
+---
 
 **60. C** — *D1.1 · Ch 3 §6 · ⚪*
 
@@ -1454,7 +1434,3 @@ Mark each item right or wrong, then tally by domain. The per-domain maximums bel
 **One thing the score cannot tell you.** The real exam reports an outcome, not a domain breakdown. This is the last time you will see one, so use it.
 
 And if you cleared the band comfortably with even sub-scores, you are not looking for more study material. You are looking for a date.
-
----
-
-**Calculated Length: n/a (content-driven) | Chapter type: mock_exam**

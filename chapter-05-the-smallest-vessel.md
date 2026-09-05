@@ -321,6 +321,9 @@ Read that as an explanation rather than a feature list. Suppose you want two con
 So the Pod is not a container with extra fields. **The Pod is the shared context, and the containers live inside it.** One hull, one address, one berth on the node. Whatever you stow inside travels together or not at all.
 
 <!-- FIGURE: ch05-fig01-pod-shared-network-namespace -->
+![A Node contains one Pod; the Pod carries a single IP address on its own boundary and holds two containers, app and helper, which communicate over localhost and both read and write a shared volume inside the Pod](figures/ch05-fig01-pod-shared-network-namespace.svg)
+
+<!-- ASCII-FALLBACK
 ```
 ┌─ Node ──────────────────────────────────────────────────┐
 │                                                          │
@@ -341,6 +344,7 @@ So the Pod is not a container with extra fields. **The Pod is the shared context
 │                                                            │
 └────────────────────────────────────────────────────────────┘
 ```
+-->
 
 Note where the IP address is attached in that figure. It is bound to the Pod boundary, not to either container. That placement is the pedagogy, not decoration.
 

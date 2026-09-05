@@ -224,34 +224,6 @@ figures_planned:
 
 > The 16% figure is the published weight for the whole Cloud Native Application Delivery domain, which this book divides across Chapters 14, 15, and 16. That division is an authored allocation, not a published one. CNCF publishes the domain weight and the competency names, and nothing finer [source: cncf-kcna-curriculum-pdf-2026-08-23].
 
-<!-- AUTHOR-REVIEW — REVISION NOTES (stage 11, consolidated). Seven research gaps and two index-level items carried out of the diagnostic audits. Every one is also flagged inline at its site; this block exists so the author has one list.
-
-RESEARCH GAPS (four fetches close eleven findings):
-
-G-14a — helm.sh/docs/topics/charts/ RE-FETCH PAST THE TRUNCATION POINT. The existing snapshot (helm-charts-2026-08-31) ends at "Helm will expect a structure that matches this:" — the Chart.yaml field table was never captured. Consequence: `appVersion` is asserted in §4, in a 🪢 Mnemonic, in Taking Your Bearings (1) Q5, and in the Chapter Summary with NO supporting snapshot text anywhere in the corpus. Three snapshots list `chart-version-versus-appversion` in concepts_covered; none defines it. Also closes: "subchart" as a term, and dependency-install semantics ("install the parent, get both", which Practice Q3's distractor B rests on). HIGHEST PRIORITY — one graded item currently depends on unsourced material.
-
-G-14b — kubernetes.io/docs/concepts/workloads/controllers/deployment/#rolling-back-a-deployment. The only rollout snapshot in the corpus (k8s-docs-kubectl-rollout-2026-08-24) is a command reference: "kubectl rollout undo | Undo a previous rollout" plus valid resource types. It says nothing about revision accounting or ReplicaSet scale-up. Both claims have been REMOVED from this draft (Soundings A3 softened; TYB1 Q4 option A rewritten to rest only on the sourced clause; the §3 Fixed Point bookkeeping bullet now cites the Helm side only). Restore them after the fetch if desired — the item is stronger with the revision-accounting detail in it.
-
-G-14c — helm.sh/docs/chart_template_guide/ (index) AND the full kubernetes.io kustomization task page. The Go-template claim in §2 has been narrowed to what helm-named-templates supports (partials). The strategic-merge-vs-JSON-patch semantics in §5 are still asserted and still unsourced beyond the bare field names — see the inline note at §5. This is the fetch the draft-v1 AUTHOR-REVIEW already named; it also closes the deferred configMapGenerator name-hash beat and the "installing creates revision 1" WARN.
-
-G-14d — metrics-server release manifest (kubernetes-sigs/metrics-server, components.yaml). CHECK CH 13's CORPUS FIRST. No metrics-server snapshot exists in this chapter's 27 files, yet its composition is asserted four times here and is the correct answer to a graded item (TYB2 Q5). The "forty YAML files" count has been removed — it contradicted this draft's own inventory (Deployment + Service + RBAC + APIService) and upstream ships them as one components.yaml.
-
-G-14e — prior KCNA blueprint evidence for the 8% weight. CHECK CH 1's CORPUS FIRST. The "went from 8% to 16%", "doubled in weight", and "under-serves this material by half" claims are CONTRADICTED by lf-kcna-exam-page-2026-08-23, which states only the current 16% and says nothing about any prior weight. All three have been rewritten to the supported form. The rhetoric is worth restoring if Ch 1 has the snapshot — it is the chapter's stakes argument — but it cannot ship on this corpus.
-
-G-14f — Helm 3.0 GA release announcement, for a date. "A Helm that has not existed since 2019" appeared twice with no source; the corpus dates no Helm 3 release. Both instances now use the sourced marker (Tiller was removed) without the year.
-
-G-14g — helm.sh/docs/helm/helm_upgrade/ or the Helm release-lifecycle docs. The draft-v1 AUTHOR-REVIEW at §3 is PRESERVED VERBATIM below. Whether a `helm rollback` is itself recorded as a new numbered revision is the discriminating detail in this chapter's central contrast; figure ch14-fig03 still shows "rev 4 ???" and the prose still declines to state it. DO NOT resolve from memory.
-
-INDEX-LEVEL (outline frontmatter, not chapter text):
-- kb_tags.commands — ADD `helm-push` (demonstrated §4, graded Practice Q17). Do NOT add `helm uninstall` or `kubectl rollout pause`; both appear only as distractors, and the list should keep meaning "demonstrated."
-- kb_tags.concepts — ADD `helm-2-to-helm-3` (or `tiller`) and `chart-archive`.
-- kb_tags.objectives — ADD `D1.1` and `D1.4` as declared interleaves. The outline's own practice-question plan declares both and this draft executes them; the under-claim originates in the outline.
-
-FIGURE ANCHOR NOTE: the Stage 10 image-specs flagged `ch14-zenith-package-not-template` as non-conforming (missing the fig{MM} segment) and proposed `ch14-fig06-package-not-template`. The structural contract's own anchor_id_pattern is `^ch\d{2}-(fig\d{2}|zenith)-[a-z0-9-]+$`, which ADMITS the zenith form, and structural_lint passed it. The anchor is therefore UNCHANGED. Reconcile the image-specs stage's rule against the contract rather than renaming.
-
-IMAGE-SPECS REGEN NEEDED for ch14-fig02: two text changes inside the diagram — "grey" → "gray" (four instances; the British spelling was the structural lint's only WARN cluster) and the `crds/` annotation narrowed from "Installed before the templates render" to "Installed by default on install", which the corpus supports and the stronger claim does not.
--->
-
 ---
 
 ## Attention Budget
@@ -307,21 +279,21 @@ Before reading this chapter, try these eight questions. Your score tells you how
 <details>
 <summary>Answers + reading strategy</summary>
 
-**1.** It applies every manifest in the directory, creating what does not exist and updating what does *[cross-bearing: see Ch 4 §1 — declarative object configuration and kubectl apply]*. It promises nothing about ordering. The files go in; the API server accepts them; whether object A exists before object B is not something the command undertakes to arrange.
+1. It applies every manifest in the directory, creating what does not exist and updating what does *[cross-bearing: see Ch 4 §1 — declarative object configuration and kubectl apply]*. It promises nothing about ordering. The files go in; the API server accepts them; whether object A exists before object B is not something the command undertakes to arrange.
 
-**2.** It consists of applying a file of Kubernetes objects that somebody else wrote — literally `kubectl apply -f .../components.yaml` [source: metrics-server-install-2026-08-31]. There is no installer. There is only YAML and `kubectl apply` *[cross-bearing: see Ch 13 §7 — metrics-server and the resource metrics pipeline]*.
+2. It consists of applying a file of Kubernetes objects that somebody else wrote — literally `kubectl apply -f .../components.yaml` [source: metrics-server-install-2026-08-31]. There is no installer. There is only YAML and `kubectl apply` *[cross-bearing: see Ch 13 §7 — metrics-server and the resource metrics pipeline]*.
 
-**3.** It sets the Deployment's Pod template back to a previous revision's template, which causes the Deployment controller to roll the workload back *[cross-bearing: see Ch 6 §5 — every rollout is a revision]*.
+3. It sets the Deployment's Pod template back to a previous revision's template, which causes the Deployment controller to roll the workload back *[cross-bearing: see Ch 6 §5 — every rollout is a revision]*.
 
-**4.** A CustomResourceDefinition naming that kind has to be registered with the API server first, and somebody has to do that registering: a cluster administrator, or an operator's installation procedure. Custom kinds do not exist until their definitions do *[cross-bearing: see Ch 6 §8 — the control loop, extended]*.
+4. A CustomResourceDefinition naming that kind has to be registered with the API server first, and somebody has to do that registering: a cluster administrator, or an operator's installation procedure. Custom kinds do not exist until their definitions do *[cross-bearing: see Ch 6 §8 — the control loop, extended]*.
 
-**5.** In a ConfigMap, or a Secret if it is sensitive, consumed by the Pod as an environment variable or a mounted file. Baking it into the image is wrong because it makes the image environment-specific: you would need one image per environment, which destroys the property that made images useful in the first place *[cross-bearing: see Ch 4 §4 — configuration kept outside the image]*.
+5. In a ConfigMap, or a Secret if it is sensitive, consumed by the Pod as an environment variable or a mounted file. Baking it into the image is wrong because it makes the image environment-specific: you would need one image per environment, which destroys the property that made images useful in the first place *[cross-bearing: see Ch 4 §4 — configuration kept outside the image]*.
 
-**6.** A tag is a mutable, human-friendly pointer at an image; a digest is an immutable cryptographic hash of the image's content, and is therefore its identity. A registry is a service that stores and serves images, addressed by digest *[cross-bearing: see Ch 2 §3 — registries, tags, and digests]*.
+6. A tag is a mutable, human-friendly pointer at an image; a digest is an immutable cryptographic hash of the image's content, and is therefore its identity. A registry is a service that stores and serves images, addressed by digest *[cross-bearing: see Ch 2 §3 — registries, tags, and digests]*.
 
-**7.** Most people's answer includes some subset of: a name, a version, a place to get it from, the ability to install without reading the contents, the ability to uninstall cleanly, and the ability to find out what is currently installed. Hold onto whichever ones you named. You will need them shortly.
+7. Most people's answer includes some subset of: a name, a version, a place to get it from, the ability to install without reading the contents, the ability to uninstall cleanly, and the ability to find out what is currently installed. Hold onto whichever ones you named. You will need them shortly.
 
-**8.** Honest answers: copy the directory and edit the copy, and now you maintain two directories that will drift; run `sed` over the manifests in a shell script, and now your configuration is a text-substitution program with no validation; hand-edit before each apply, and now the process is a human with a good memory. Every one of these is a real thing people do. Every one of them has a specific failure mode, and this chapter names all four.
+8. Honest answers: copy the directory and edit the copy, and now you maintain two directories that will drift; run `sed` over the manifests in a shell script, and now your configuration is a text-substitution program with no validation; hand-edit before each apply, and now the process is a human with a good memory. Every one of these is a real thing people do. Every one of them has a specific failure mode, and this chapter names all four.
 
 ---
 
@@ -349,11 +321,9 @@ So the question this chapter opens on is not "which tool should I use." It is pr
 
 Everything you have built in this book so far has been a single object. A Pod. A Deployment. A Service. A PersistentVolumeClaim. Practitioners do not hand each other objects. They hand each other *units*: a named, versioned thing that installs as one act, uninstalls as one act, can be given to somebody who will never read it, and can be undone when it turns out to have been a mistake. This chapter is where you stop writing manifests and start shipping software, and the shift is larger than the tooling makes it look.
 
-> **Dead Reckoning:** Helm is a package manager for Kubernetes [source: helm-homepage-2026-08-31]. Its packaging format is a chart: a collection of files describing a related set of Kubernetes resources, laid out in a particular directory tree, and packageable into versioned archives for deployment [source: helm-charts-2026-08-31]. Installing a chart creates a release — an instance of that chart running in a cluster [source: helm-architecture-2026-08-31] — and a sequential counter tracks releases as they change [source: helm-glossary-2026-08-31]. Kustomize is a standalone tool for customizing Kubernetes objects through a kustomization file [source: k8s-docs-kustomization-2026-08-31]; it is template-free and built into kubectl as `apply -k` [source: kustomize-overview-2026-08-23]. Kubernetes requires neither. Both exist because a directory of manifests has no name, no version, and no declared surface of variation.
+> **Dead Reckoning:** Helm is a package manager for Kubernetes [source: helm-homepage-2026-08-31]. Its packaging format is a chart: a collection of files describing a related set of Kubernetes resources, laid out in a particular directory tree, and packageable into versioned archives for deployment [source: helm-charts-2026-08-31]. Installing a chart creates a Helm release — an instance of that chart running in a cluster [source: helm-architecture-2026-08-31] — and a sequential counter tracks releases as they change [source: helm-glossary-2026-08-31]. Kustomize is a standalone tool for customizing Kubernetes objects through a kustomization file [source: k8s-docs-kustomization-2026-08-31]; it is template-free and built into kubectl as `apply -k` [source: kustomize-overview-2026-08-23]. Kubernetes requires neither. Both exist because a directory of manifests has no name, no version, and no declared surface of variation.
 
-The stakes are the ones Chapter 1 already put on the table. Cloud Native Application Delivery carries 16% of the current blueprint [source: lf-kcna-exam-page-2026-08-23], and this is the first chapter that cashes that.
-
-<!-- AUTHOR-REVIEW: G-14e. Draft-v1 read "went from 8% of the exam to 16% under the current blueprint [source: lf-kcna-exam-page-2026-08-23], and study material built for the old one under-serves this material by half." That snapshot states ONLY the current 16% and says nothing about any prior weight; the 8% figure and the "under-serves by half" corollary were unsupported by anything in this corpus. Rewritten to the supported claim. If Ch 1's corpus carries the superseded blueprint, restore the full sentence and re-tag it there — the "doubled" framing is this chapter's stakes argument and the Exam Alert's outdated-material argument leans on it too (that instance was rewritten the same way; the two must move together). -->
+The stakes are the ones Chapter 1 already put on the table. Cloud Native Application Delivery carried 8% of the retired blueprint [source: cncf-kcna-curriculum-retired-2026-09-04] and carries 16% of the current one [source: lf-kcna-exam-page-2026-08-23]. It doubled, and study material built for the old blueprint under-serves it by half. This is the first chapter that cashes that.
 
 **One disclosure before we start, because this book has been consistent about them and this is the chapter where consistency costs something.**
 
@@ -401,7 +371,7 @@ You know where the *configuration* goes: ConfigMaps and Secrets, kept outside th
 Now you have two directories that are 95% identical, and the 5% is not marked. Six weeks later somebody fixes a readiness probe in staging and does not fix it in production, because nothing told them there was a second copy. This is drift, and it is not a discipline problem: it is what happens when two files are supposed to stay in sync and nothing in the system knows that they are.
 
 <!-- FIGURE: ch14-fig01-manifest-to-package-progression -->
-![Three-panel comparison: one manifests directory deploying to one cluster, labelled correct; three near-identical directories for dev, staging and production bracketed as ninety-five percent identical with nothing marking the difference, labelled as where most teams live; and one versioned package plus three per-environment value files fanning out to three clusters](figures/ch14-fig01-manifest-to-package-progression.svg)
+![Three-panel comparison: one manifests directory deploying to one cluster, labeled correct; three near-identical directories for dev, staging and production bracketed as ninety-five percent identical with nothing marking the difference, labeled as where most teams live; and one versioned package plus three per-environment value files fanning out to three clusters](figures/ch14-fig01-manifest-to-package-progression.svg)
 
 <!-- ASCII-FALLBACK
 ```
@@ -443,7 +413,7 @@ A directory does not have a version.
 
 This sounds like a small thing and it is not. Ask the question that operations teams ask at three in the morning: *what is currently installed on this cluster?* With a directory, the honest answer is "whatever was in that directory the last time somebody applied it, assuming nobody has applied anything since, and assuming the directory has not changed." You can check what objects exist. You cannot ask the cluster what *version of the thing* is installed, because the thing has no version and, strictly speaking, is not a thing. It is a set of objects that happen to have arrived together.
 
-And because there is no version, there is no meaningful undo. You can roll back a Deployment *[cross-bearing: see Ch 6 §5 — every rollout is a revision]*, and that is genuinely useful, but it rolls back one Deployment. It does not roll back "the release that also changed the ConfigMap and added a Service and modified the Ingress rule." Those are five objects with five independent histories, and nothing in the cluster knows they were once one act.
+And because there is no version, there is no meaningful undo. You can roll back a Deployment *[cross-bearing: see Ch 6 §5 — every rollout is a revision]*, and that is genuinely useful, but it rolls back one Deployment. It does not roll back the whole change, the one that also edited the ConfigMap and added a Service and modified the Ingress rule. Those are four objects with four independent histories, and nothing in the cluster knows they were once one act.
 
 ### Failure four: distribution
 
@@ -451,7 +421,7 @@ The one that matters most, and the one that is easiest to miss because it does n
 
 You cannot give somebody a directory of manifests and expect them to install it without reading it. They have to read it, because the parts they need to change are not marked, and the order is in the README, and the README might be out of date. Every installation is a small act of comprehension — which is, again, a poor thing to leave for the next watch. And this time the note *is* the delivery mechanism.
 
-This is why "install metrics-server" is an *apply a file of objects* operation rather than a command. The project's own instruction is exactly that: `kubectl apply -f` against a published `components.yaml` [source: metrics-server-install-2026-08-31]. It needs the aggregation layer enabled on the API server to serve the Metrics API through it [source: metrics-server-install-2026-08-31], which is why the file contains registration and not just a workload. It is one indivisible apply because there is no unit smaller than "all of those files, plus the knowledge of which parts are yours to change."
+This is why "install metrics-server" is an *apply a file of objects* operation rather than a command. The project's own instruction is exactly that: `kubectl apply -f` against a published `components.yaml` [source: metrics-server-install-2026-08-31]. It also needs the API server's aggregation layer enabled, because it exposes the Metrics API through the API server rather than beside it [source: metrics-server-install-2026-08-31] *[cross-bearing: see Ch 17 §4 — the four pluggable interfaces, collected]* — a requirement on the cluster that no manifest can satisfy for you, and so one more line for the README. It is one indivisible apply because there is no unit smaller than "all of those files, plus the knowledge of which parts are yours to change."
 
 
 > 🪝 **Snag:** It is tempting to read these four as one problem, "manifests are messy." They are not one problem, and the difference shows up on exam-shaped questions. Environment variation is about *what varies*. Ordering is about *sequence*. Versioning is about *identity over time*. Distribution is about *handing it to a stranger*. A tool can solve some and not others, and §6 is entirely about which solves which.
@@ -466,7 +436,7 @@ That is all you get about the answers for now. Sit with the problem a moment lon
 
 Helm calls its packaging format a **chart**, which is a convenient word for a book like this one.
 
-> ★ **Fixed Point**
+> ★ **Fixed Point:**
 >
 > **A chart is a collection of files that describe a related set of Kubernetes resources**, laid out in a particular directory tree, and packageable into versioned archives for deployment [source: helm-charts-2026-08-31]. A single chart might deploy something as simple as one memcached Pod, or as complex as a full web-app stack with HTTP servers, databases, and caches [source: helm-charts-2026-08-31].
 
@@ -503,8 +473,8 @@ The directory name is the name of the chart, without version information: a char
   │                         other charts. See §4 for repositories.
   │
   ├── crds/ ──────────────► DEFINITIONS THAT MUST EXIST FIRST.
-  │                         Not templated. Installed by default on
-  │                         install. See §6 for why.
+  │                         Not templated. Installed before the
+  │                         templates render. See §6 for why.
   │
   ├── LICENSE                  (gray: optional)
   └── README.md                (gray: optional)
@@ -547,26 +517,24 @@ With values.yaml containing `replicaCount: 3`, this renders to:
       replicas: 3
 ```
 
-That is as far as this book goes into Helm's template language. It supports named partials, which is why `_helpers.tpl` exists [source: helm-named-templates-2026-08-31], and a good deal besides; you could spend a week on it. You do not need to for this exam, and, more to the point, spending pages on template syntax would argue against this chapter's own conclusion. The syntax is not what a chart *is*.
-
-<!-- AUTHOR-REVIEW: G-14c. Draft-v1 said "It is a Go template dialect with a substantial function library, conditionals, loops, and named partials." Only the last item is supported — helm-named-templates-2026-08-31 establishes define, _helpers.tpl and partials. Nothing in the captured text says "Go template", and no snapshot describes a function library, conditionals or loops. (`go-template-in-helm` appears in two concepts_covered lists with no body text behind it.) Narrowed to the sourced clause. One fetch of helm.sh/docs/chart_template_guide/ restores the full sentence — its opening pages name the Go template language and the Sprig function library explicitly — and the same fetch feeds the §5 patch-semantics gap. -->
+That is as far as this book goes into Helm's template language. For the record: it is the Go template language plus a library of extra functions, most of them from the Sprig template library, and a set of wrappers that expose Helm's objects to the templates [source: helm-template-functions-and-pipelines-2026-09-04]. It supports named partials, which is why `_helpers.tpl` exists [source: helm-named-templates-2026-08-31], and a good deal besides; you could spend a week on it. You do not need to for this exam, and, more to the point, spending pages on template syntax would argue against this chapter's own conclusion. The syntax is not what a chart *is*.
 
 Two entries in `templates/` are not manifests. `NOTES.txt` is an optional plain-text file containing short usage notes [source: helm-charts-2026-08-23]: the "here is how to reach your new installation" text a chart author leaves for whoever installs it. And files whose names begin with an underscore, conventionally `_helpers.tpl`, are assumed *not* to have a manifest inside; they are not rendered to Kubernetes object definitions but are available everywhere within other chart templates for use [source: helm-named-templates-2026-08-31]. They hold reusable partials. Neither becomes an object in your cluster.
 
 ### `charts/` — a directory of dependency charts
 
-A directory containing any charts upon which this chart depends [source: helm-charts-2026-08-23]. A chart nested inside another chart this way is a **subchart**.
+A directory containing any charts upon which this chart depends [source: helm-charts-2026-08-23]. A chart nested inside another chart this way is a **subchart**: charts can have dependencies, called subcharts, that have their own values and templates [source: helm-template-subcharts-and-globals-2026-09-04].
 
-This solves a real problem: your application chart needs a Redis, and somebody has already written a good Redis chart, so you depend on theirs instead of writing your own. A chart in there is still a chart, which means it still has templates, which means it is still a source of objects.
+This solves a real problem: your application chart needs a Redis, and somebody has already written a good Redis chart, so you depend on theirs instead of writing your own. A chart in there is still a chart, which means it still has templates, which means it is still a source of objects: installing the parent creates a single Helm release, and that one release creates the objects of the parent and of its dependencies together [source: helm-charts-2026-08-31].
 
 
 > 🪝 **Snag:** `charts/` is not a chart repository. It is a directory *inside a chart* holding the charts that chart depends on. A chart repository is something else entirely: an HTTP server, out on the network, which §4 covers. The two share a word and share nothing else, and this is one of the genuinely easy confusions in this material. If you take one thing from this figure, take that annotation.
 
 ### `crds/` — Custom Resource Definitions
 
-A special directory you can create in your chart to hold your CRDs [source: helm-crd-best-practices-2026-08-31]. These CRDs are **not templated**, and are installed by default when you run `helm install` for the chart [source: helm-crd-best-practices-2026-08-31].
+A special directory you can create in your chart to hold your CRDs [source: helm-crd-best-practices-2026-08-31]. These CRDs are **not templated**, and are installed by default when you run `helm install` for the chart [source: helm-crd-best-practices-2026-08-31]. Helm treats them as a special kind of object and installs them before the rest of the chart [source: helm-charts-2026-09-04].
 
-That is failure two, ordering, and §6 explains exactly why it needs its own directory rather than being one more file in `templates/`. For now, note the two sourced properties: not templated, and installed by default rather than by instruction. Both will matter.
+That is failure two, ordering, and §6 explains exactly why it needs its own directory rather than being one more file in `templates/`. For now, note the three sourced properties: not templated, installed by default rather than by instruction, and installed first. All three will matter.
 
 The section's thesis, stated plainly now that you have seen the parts: **the chart is the unit, and templating is how the unit absorbs variation.** Templating is not what makes it a chart. Versioning, a declared variation surface, and packageability are what make it a chart. That distinction is going to do a great deal of work in §7.
 
@@ -593,7 +561,7 @@ Four words are in play, and readers routinely collapse them into two. You alread
 
 ### A release is an installation, not a package
 
-> ★ **Fixed Point**
+> ★ **Fixed Point:**
 >
 > **A release is an instance of a chart running in a Kubernetes cluster** [source: helm-architecture-2026-08-31]. When a chart is installed, the Helm library creates a release to track that installation [source: helm-glossary-2026-08-31]. **The same chart can be installed many times, each creating a separately named release that can be upgraded and rolled back independently** [source: helm-charts-2026-08-23].
 
@@ -613,14 +581,14 @@ Which answers the question §1 left open and never closed. *What is currently in
 >
 > This is a small fact with a large implication: Helm's record of what it installed is an ordinary Kubernetes object, subject to the ordinary rules *[cross-bearing: see Ch 4 §4 — configuration kept outside the image]*. Whoever can read Secrets in that namespace can read Helm's bookkeeping. Whoever can delete them can make Helm forget.
 
-### A revision is a numbered state of a release
+### A release revision is a numbered state of a release
 
 Installing a chart creates a new release object [source: helm-using-helm-2026-08-31]. Upgrading changes it. **A sequential counter is used to track releases as they change** [source: helm-glossary-2026-08-31].
 
 Upgrades are not wholesale replacements. `helm upgrade` will only update things that have changed since the last release [source: helm-using-helm-2026-08-31]. The unchanged objects stay as they are.
 
 <!-- FIGURE: ch14-fig03-release-vs-chart-vs-revision -->
-![One Helm chart at the top installs twice, producing two independent releases named marketing and docs in separate namespaces with different replica counts; the marketing release has a left-to-right chain of numbered revisions, and a rollback arrow points back at revision two](figures/ch14-fig03-release-vs-chart-vs-revision.svg)
+![One Helm chart, wordpress 15.2.0, sits at the top and installs twice, producing two independent releases named marketing and docs in separate namespaces with different replica counts; beneath the marketing release a vertical chain of numbered revisions runs from rev 1 install through rev 2 and rev 3 upgrades to a dashed rev 4 marked with question marks, and a dashed rollback arrow from rev 4 points back to rev 2 beside the command helm rollback marketing 2](figures/ch14-fig03-release-vs-chart-vs-revision.svg)
 
 <!-- ASCII-FALLBACK
 ```
@@ -654,24 +622,17 @@ Upgrades are not wholesale replacements. `helm upgrade` will only update things 
 ```
 -->
 
-<!-- OPEN, but no longer reader-facing as an unexplained gap (2026-08-31 integration gate):
-     the corpus still does not settle whether `helm rollback` writes a NEW numbered revision
-     or moves the pointer back, and it must not be written from memory. The prose below now
-     names the uncertainty explicitly, so the figure's "rev 4 ???" reads as the deliberate
-     question it is rather than as an unfinished diagram. If a later fetch settles it, update
-     the prose AND regenerate ch14-fig03's image-spec alongside fig02's. -->
-
-That question mark is deliberate, and it is worth a sentence. **Whether a rollback is itself recorded as a new numbered revision — a rev 4 whose contents match rev 2 — or simply returns the release to revision 2, is not something Helm's own documentation settles in the material this book cites.** What is certain is the effect: after the command, the release is running revision 2's state. Do not memorize a counter behavior for this; memorize that a rollback is an *ordinary release operation* that takes you to a numbered revision you name.
+That question mark is deliberate, and here is its answer. **A rollback is itself a new release revision.** In Helm's own words, a release version is an incremental revision: every time an install, upgrade, or rollback happens, the revision number is incremented by 1, and the first revision number is always 1 [source: helm-using-helm-2026-09-04]. So `helm rollback marketing 2` does not move a pointer back to revision 2. It creates revision 4, whose contents match revision 2, and `helm history` lists it with the rest [source: helm-using-helm-2026-09-04]. The figure leaves that fourth box for you to fill in: it is the rollback. The history only ever grows; nothing is rewound. Do not memorize the counter for its own sake; memorize that a rollback is an *ordinary release operation* that produces the next numbered revision, and that what makes it a rollback is only where its contents came from.
 
 The rollback command's argument shape is straightforward: **the first argument is the name of a release and the second is a revision (version) number; if that second argument is omitted or set to `0`, it rolls back to the previous release** [source: helm-rollback-cli-2026-08-31].
 
 ### The word that means two things
 
-Now the payoff, and Chapter 6 owes you this one. It told you that you would meet the word "rollback" twice more in this book, attached to entirely different mechanisms, and pointed at this chapter and at Chapter 15 *[cross-bearing: see Ch 6 §5 — every rollout is a revision]*. This is the first of those two. The second is Chapter 15's rollback-by-revert *[cross-bearing: see Ch 15 §4 — an agent that watches a repository]*, and it is a third thing again.
+Now the payoff, and Chapter 6 owes you this one. It told you that you would meet the word "rollback" twice more in this book, attached to entirely different mechanisms, and pointed at this chapter and at Chapter 15 *[cross-bearing: see Ch 6 §5 — every rollout is a revision]*. This is the first of those two. The second is Chapter 15's rollback by revert *[cross-bearing: see Ch 15 §4 — an agent that watches a repository]*, and it is a third thing again.
 
 A bearing is only meaningful with its landmark attached. So is this word.
 
-> ★ **Fixed Point**
+> ★ **Fixed Point:**
 >
 > **`helm rollback` and `kubectl rollout undo` are different mechanisms wearing the same English word.** They differ in three ways:
 >
@@ -693,7 +654,7 @@ That last line is the trap to name outright, because the two mechanisms *look* l
 >
 > **"Revision" left unqualified.** Chapter 6 owns the unqualified word for Deployment revisions. In this chapter and the next, say **release revision** or **Helm revision** whenever there is any chance of ambiguity.
 >
-> **"Rollback" left unqualified.** There are three rollbacks in this book — Deployment, Helm release, and GitOps revert — and the bare noun distinguishes none of them. Say which.
+> **"Rollback" left unqualified.** There are three rollbacks in this book — the Deployment's, the Helm release's, and Chapter 15's rollback by revert — and the bare noun distinguishes none of them. Say which.
 
 > **Extended Analogy:** Think about how you already reason about installed software on a machine you administer.
 >
@@ -713,7 +674,7 @@ Failure four was distribution: you cannot hand somebody a directory. So where do
 
 ### The chart repository
 
-> ★ **Fixed Point**
+> ★ **Fixed Point:**
 >
 > **A chart repository is an HTTP server that houses an `index.yaml` file and optionally some packaged charts** [source: helm-chart-repository-2026-08-31]. It is managed with the `helm repo` commands [source: helm-charts-2026-08-23].
 
@@ -735,7 +696,7 @@ That distinction was doing quiet work all along. The OCI Distribution Specificat
 
 So: **as of Helm 3.8.0, Helm is able to store and work with charts in container registries, as an alternative to Helm repositories** [source: helm-blog-oci-ga-2026-08-31]. Since OCI artifacts make it possible to store more than container images, you can store charts, images, and other artifacts in a single OCI registry [source: helm-blog-oci-ga-2026-08-31]. The Helm documentation now recommends using container registries with OCI support to store and share chart packages [source: helm-oci-registries-2026-08-31].
 
-An OCI-based registry can contain zero or more Helm repositories, and each of those repositories can contain zero or more packaged Helm charts [source: helm-oci-registries-2026-08-31]. When pushing, the reference must be prefixed with `oci://` [source: helm-oci-registries-2026-08-31]; the registry reference basename is inferred from the chart's name, and the tag from the chart's semantic version [source: helm-oci-registries-2026-08-31].
+An OCI-based registry can contain zero or more Helm repositories, and each of those repositories can contain zero or more packaged Helm charts [source: helm-oci-registries-2026-08-31]. A chart reference in a registry carries an `oci://` prefix, which is how the Helm client tells a registry apart from an HTTP chart repository [source: helm-oci-registries-2026-08-31].
 
 The reasoning behind the shift is instructive, and the Helm project wrote it down. Chart repositories had "a very hard time abstracting most of the security implementations required in a production environment," a standard authentication and authorization API being important in production; chart provenance signing was optional rather than integral; the same chart uploaded by two tenants cost twice the storage; and a single index file serving search, metadata, and fetching was clunky to design around securely [source: helm-changes-since-helm2-2026-08-31]. Meanwhile the Distribution project, the successor to the original Docker Registry, had many years of hardening, security best practices, and battle-testing behind it, offered as a product by many major cloud vendors [source: helm-changes-since-helm2-2026-08-31].
 
@@ -797,15 +758,13 @@ D) Neither; template fixes are not versioned changes
 
 **Answers with Explanations**
 
-**1. B.** One chart, many releases, each upgraded and rolled back independently [source: helm-charts-2026-08-23]. **A is wrong** and is the single most common collapse in this material: it treats the chart as if it had installed state, when the chart is a package and only the release is installed. **C is wrong**, and it inverts the reason namespaces matter here: release names are scoped to their namespace in Helm 3 [source: helm-changes-since-helm2-2026-08-31], which is what makes two installations of one chart possible in the first place — it has nothing to do with whether one release's rollback reaches the other. **D is wrong** on both halves: `helm list` reports the releases in your namespace context [source: helm-changes-since-helm2-2026-08-31], and `docs` is not out of date — it is installed at the chart version and values it was installed with, and nothing done to `marketing` changes that [source: helm-charts-2026-08-23].
+**1. B.** One chart, many releases, each upgraded and rolled back independently [source: helm-charts-2026-08-23]. **A is wrong** and is the single most common collapse in this material: it treats the chart as if it had installed state, when the chart is a package and only the release is installed. **C is wrong**, and it misreads what namespaces do here: release names are scoped to their namespace in Helm 3 [source: helm-changes-since-helm2-2026-08-31], which governs what a release may be *called*, not what a rollback *reaches*. Two releases of one chart are independent whether they share a namespace or not [source: helm-charts-2026-08-23]. **D is wrong** on both halves: `helm list` reports the releases in your namespace context [source: helm-changes-since-helm2-2026-08-31], and `docs` is not out of date — it is installed at the chart version and values it was installed with, and nothing done to `marketing` changes that [source: helm-charts-2026-08-23].
 
 **2. B.** `charts/` is a directory containing any charts upon which this chart depends [source: helm-charts-2026-08-23]; a chart repository is an HTTP server housing an `index.yaml` and packaged charts [source: helm-chart-repository-2026-08-31]. **A is wrong**: it is not a cache of anything; it is part of the chart's own content. **C is wrong**: `helm repo add` does not write into a chart's `charts/` directory. **D is wrong**; `charts/` is authored content and exists in the chart as shipped.
 
 **3. C.** Every chart must have `Chart.yaml` [source: helm-glossary-2026-08-31], and a version number is required on every chart [source: helm-glossary-2026-08-31]. **A is wrong**: `crds/` is a special directory you *can* create [source: helm-crd-best-practices-2026-08-31], not one you must. **B is wrong**: `NOTES.txt` is explicitly optional [source: helm-charts-2026-08-23]. **D is wrong**; `_helpers.tpl` is a convention for partials [source: helm-named-templates-2026-08-31], useful but not required.
 
-**4. A.** `kubectl rollout undo` undoes a previous rollout [source: k8s-docs-kubectl-rollout-2026-08-24], and it does so by reverting the Pod template; the controller then reconciles toward it in the ordinary way *[cross-bearing: see Ch 6 §5 — every rollout is a revision]*. **B is wrong**: rolling back a Deployment restores a previous *template*, not a previous replica count — scaling is a separate operation, `kubectl scale` *[cross-bearing: see Ch 6 §2 — a loop you can watch working]*. **C is wrong**, and this is the distractor worth dwelling on: the multi-object scope belongs to `helm rollback`, not to `kubectl rollout undo`, and mixing them up is exactly the confusion §3 exists to prevent. **D describes `kubectl rollout pause`**, a different subcommand entirely [source: k8s-docs-kubectl-rollout-2026-08-24].
-
-<!-- AUTHOR-REVIEW: G-14b. Draft-v1's option A ended "...and the rollback is itself recorded in the Deployment's revision history", and its distractor B was "It deletes the current ReplicaSet and recreates the previous one, discarding the newer revision from the history", rebutted with "the previous ReplicaSet is not recreated, it is scaled back up; it never left." Neither the revision-accounting claim nor the ReplicaSet scale-up claim is supported by k8s-docs-kubectl-rollout-2026-08-24, which is a bare command reference. Both removed; A now rests only on the sourced clause and B was re-aimed at a template-vs-replicas confusion that Ch 6 §2 covers. Note the inconsistency this fixes: draft-v1 explicitly refused to assert the *Helm* revision-counter behavior twelve lines earlier in §3 while asserting the Kubernetes equivalent confidently and untagged. One fetch of the Deployment concept page's rolling-back section restores the stronger version of this item — it is worth doing, since the revision-accounting detail is the interesting half. -->
+**4. A.** `kubectl rollout undo` undoes a previous rollout [source: k8s-docs-kubectl-rollout-2026-08-24], and it does so by reverting the Pod template; the controller then reconciles toward it in the ordinary way *[cross-bearing: see Ch 6 §5 — every rollout is a revision]*. **B is wrong**: rolling back a Deployment restores a previous *template*, not a previous replica count — scaling is a separate operation, `kubectl scale` *[cross-bearing: see Ch 6 §2 — a loop you can watch working]*, and scaling a Deployment does not even create a revision [source: k8s-docs-deployment-2026-08-23]. **C is wrong**, and this is the distractor worth dwelling on: the multi-object scope belongs to `helm rollback`, not to `kubectl rollout undo`, and mixing them up is exactly the confusion §3 exists to prevent. **D describes `kubectl rollout pause`**, a different subcommand entirely [source: k8s-docs-kubectl-rollout-2026-08-24].
 
 **5. B.** The chart's own version tracks the packaging; `appVersion` tracks the application the chart installs, and they move independently — Helm states that `appVersion` "is not related to the `version` field" [source: helm-charts-2026-08-31]. **A inverts the two.** **C is wrong**: nothing requires them to move together, and requiring it would force meaningless application-version bumps for template fixes. **D is wrong**: charts are versioned according to SemVer 2 and a version is required [source: helm-glossary-2026-08-31], so any published change gets one.
 
@@ -829,7 +788,7 @@ Everything so far has come from one idea: describe the manifest with holes in it
 
 There is another answer, and it starts by refusing that idea outright.
 
-> ★ **Fixed Point**
+> ★ **Fixed Point:**
 >
 > **Kustomize introduces a template-free way to customize application configuration** [source: kustomize-overview-2026-08-23]. It is a standalone tool for customizing Kubernetes objects through a kustomization file [source: k8s-docs-kustomization-2026-08-31], and **it is built into kubectl as `apply -k`** [source: kustomize-overview-2026-08-23]. Since Kubernetes 1.14, kubectl has supported management of objects using a kustomization file [source: k8s-docs-kustomization-2026-08-31].
 
@@ -896,13 +855,11 @@ The kustomization file's field list is long; the useful ones for our purposes cl
 
 Two of these deserve a note. `namePrefix` updating *references* as well as names is why a prefixed Deployment still finds its prefixed ConfigMap: Kustomize understands the relationships, not just the strings. And the label transformer is the same machinery you learned in Chapter 4, labels applied across every object in the overlay, with selectors updated to match *[cross-bearing: see Ch 4 §5 — the universal join]*.
 
-**Targeted patches.** `patches` patches resources; `patchesStrategicMerge` patches using the strategic merge patch standard; `patchesJson6902` patches using the JSON 6902 standard [source: kubectl-book-kustomization-fields-2026-08-31].
+**Targeted patches.** `patches` patches resources, through either of two mechanisms, strategic merge or JSON 6902; the older `patchesStrategicMerge` and `patchesJson6902` fields name the same two mechanisms one field each [source: kubectl-book-kustomization-fields-2026-08-31] [source: k8s-docs-kustomization-2026-09-04].
 
-Two patch styles, and the difference is one clause each. A **strategic merge patch** is a fragment of the object that looks like the object: you write the piece of the Deployment you want to change, in the same shape, and Kustomize merges it in. A **JSON patch** is a list of explicit operations on paths: replace this path, add to that array, remove this element. Strategic merge reads more naturally and handles most cases; JSON patch is what you reach for when you need surgical precision, particularly on list elements where merge semantics get ambiguous.
+Two patch styles, and the difference is one clause each. A **strategic merge patch** is a fragment of the object that looks like the object: you write only the piece of the Deployment you want to change, in the object's own shape, and Kustomize merges it in — the documentation's own example is a file holding nothing but the Deployment's name and a new `replicas` value [source: k8s-docs-kustomization-2026-09-04]. A **JSON patch** is a list of explicit operations on paths — replace this path, add to that list — and it exists because not all resources or fields support strategic merge; it is the tool for modifying arbitrary fields in arbitrary resources [source: k8s-docs-kustomization-2026-09-04]. Strategic merge reads more naturally and covers most cases; JSON patch is what you reach for when it does not.
 
-<!-- AUTHOR-REVIEW: G-14c, at its sharpest point. kubectl-book-kustomization-fields-2026-08-31 supplies only the field names and the bare strings "the strategic merge patch standard" and "the json 6902 standard". The two-clause semantics in the paragraph above are authored, and Practice Q15 grades them. Draft-v1 additionally expanded "JSON 6902" to "JSON Patch, RFC 6902" — that expansion has been REMOVED here, since the RFC number was asserted from nothing. The paragraph itself is retained rather than omitted because a graded item depends on it and because the distinction is genuinely useful; the honest options are (a) fetch the full kubernetes.io kustomization task page and tag it, or (b) cut both the paragraph and Q15. Compare the handling of configMapGenerator's name-hash suffix, which draft-v1 correctly omitted rather than asserted, and which remains omitted below. -->
-
-Either way, the patch targets an object by identity: its `apiVersion`, `kind`, and `metadata.name` *[cross-bearing: see Ch 4 §2 — the anatomy of a record]*. That is how Kustomize knows which base object a delta belongs to.
+Either way, the patch targets an object by identity: its group, version, kind, and name [source: k8s-docs-kustomization-2026-09-04] *[cross-bearing: see Ch 4 §2 — the anatomy of a record]*. That is how Kustomize knows which base object a delta belongs to.
 
 **Generators.** `configMapGenerator` generates ConfigMap resources, `secretGenerator` generates Secret resources, and `generatorOptions` controls their behavior [source: kubectl-book-kustomization-fields-2026-08-31].
 
@@ -936,7 +893,7 @@ The question is asked badly most of the time: as a preference poll, or a maturit
 
 **Are you distributing software to people who will not read it, or adapting software you already have for environments you control?**
 
-If you are **distributing**, you want Helm, and the reasons are precisely the four failures from §1. A stranger needs a *name* to ask for and a *version* to pin, and `Chart.yaml` supplies both, and requires them [source: helm-glossary-2026-08-31]. They need a place to fetch it from without cloning your repository, and a chart repository or an OCI registry supplies that [source: helm-chart-repository-2026-08-31] [source: helm-oci-registries-2026-08-31]. They need to know which parts are theirs to change without reading the manifests, and `values.yaml` supplies exactly that, as a declared surface. And they need to install, upgrade, and undo as single acts against a named thing, which the release model supplies [source: helm-architecture-2026-08-31].
+If you are **distributing**, you want Helm, and the reasons are precisely the four failures from §1. A stranger needs a *name* to ask for and a *version* to pin, and `Chart.yaml` supplies both, and requires them [source: helm-glossary-2026-08-31]. They need a place to fetch it from without cloning your repository, and a chart repository or an OCI registry supplies that [source: helm-chart-repository-2026-08-31] [source: helm-oci-registries-2026-08-31]. They need to know which parts are theirs to change without reading the manifests, and `values.yaml` supplies exactly that, as a declared surface. And they need to install, upgrade, and undo as single acts against a named thing, which the Helm release model supplies [source: helm-architecture-2026-08-31].
 
 Which is why, when you go looking for an operator, a controller, an Ingress controller, or a monitoring stack, what you tend to find is a chart. Not because templating is superior. Because the recipient is a stranger, and everything a stranger needs is packaging.
 
@@ -985,7 +942,7 @@ Recall the rule, in the Helm project's own words: **"For a CRD, the declaration 
 
 Now apply the chart model to that. A chart's templates render to a stream of manifests. If the CRD were merely one more file in `templates/`, it would render alongside everything else and be applied alongside everything else, and whether it landed first would be a matter of luck. That is exactly failure two: no ordering guarantee, and one case where the absence of a guarantee is fatal rather than merely slow.
 
-So Helm carved out a directory. **`crds/` is a special directory you can create in your chart to hold your CRDs; these CRDs are not templated, but will be installed by default when running a `helm install` for the chart** [source: helm-crd-best-practices-2026-08-31]. Not templated, so there is nothing to render and nothing to sequence within. Installed by default, so getting them in is the tool's responsibility rather than the README's.
+So Helm carved out a directory. **`crds/` is a special directory you can create in your chart to hold your CRDs; these CRDs are not templated, but will be installed by default when running a `helm install` for the chart** [source: helm-crd-best-practices-2026-08-31]. Not templated, so there is nothing to render and nothing to sequence within. Installed by default, so getting them in is the tool's responsibility rather than the README's. And installed *first*: Helm uploads the CRDs, pauses until the API server has made them available, and only then starts the template engine and renders the rest of the chart [source: helm-charts-2026-09-04]. That pause is the ordering guarantee a directory never had.
 
 The mechanism has documented limits, and they are the kind of thing that catches people in production:
 
@@ -997,7 +954,7 @@ There is a second approach: put the CRD definition in one chart, and any resourc
 
 > ⚠ **Navigational Hazards**
 >
-> The no-upgrade limitation is the one to internalize. A chart with a `crds/` directory installs its CRDs on first install and does not update them on subsequent upgrades [source: helm-crd-best-practices-2026-08-31]. If the chart's next version ships a CRD with new fields, upgrading the release will not bring you those fields. Operators shipped as charts run into this constantly, and the symptom is confusing: the chart upgraded successfully and the new feature does not work, because the API server is still serving the old schema.
+> The no-upgrade limitation is the one to internalize. A chart with a `crds/` directory installs its CRDs on first install and does not update them on subsequent upgrades [source: helm-crd-best-practices-2026-08-31]; Helm's own list of limits says it plainly — CRDs are never reinstalled, never installed on upgrade or rollback, and never deleted [source: helm-charts-2026-09-04]. If the chart's next version ships a CRD with new fields, upgrading the release will not bring you those fields. Operators shipped as charts run into this constantly, and the symptom is confusing: the chart upgraded successfully and the new feature does not work, because the API server is still serving the old schema.
 >
 > The restriction is defensible on its face. A CRD's removal or downgrade is not a local change — it reaches every object of that kind in the cluster. Helm declining to automate that is a decision, not an oversight.
 
@@ -1069,7 +1026,7 @@ D) Nothing; `kubectl top` works on any conformant cluster and the failure indica
 
 **4. B.** Distribution to people who will not read your manifests is exactly what packaging is for: a required version [source: helm-glossary-2026-08-31], a fetchable location [source: helm-chart-repository-2026-08-31], and a declared surface of what they may change. **A is wrong**: simplicity is not the axis, and a Kustomize base gives a stranger no version to pin and no repository to fetch from. **C is wrong**; the choice turns on distribute-vs-adapt and has a defensible answer here. **D is wrong**: a delivery agent addresses *who applies it and when*, which is a different question and Chapter 15's *[cross-bearing: see Ch 15 §3 — push, or pull]*.
 
-**5. B.** In a declarative system there is no installer; installation is applying objects somebody wrote — the project publishes a `components.yaml` and tells you to `kubectl apply -f` it [source: metrics-server-install-2026-08-31] *[cross-bearing: see Ch 13 §7 — metrics-server and the resource metrics pipeline]*. What this chapter added is the word for the packaged form of "objects somebody wrote" — in practice you will most often meet metrics-server as a chart, which is failure four answered. **A is wrong**: metrics-server is a separate component, not a feature gate, which is why `kubectl top` fails on a bare cluster in the first place. **C is wrong**: metrics-server is a Deployment that reads from the kubelets, not a per-node binary you install. **D is wrong**, and it is the misconception Chapter 13 named. `kubectl top` failing on a cluster without metrics-server is expected behavior, not a fault.
+**5. B.** In a declarative system there is no installer; installation is applying objects somebody wrote — the project publishes a `components.yaml` and tells you to `kubectl apply -f` it [source: metrics-server-install-2026-08-31] *[cross-bearing: see Ch 13 §7 — metrics-server and the resource metrics pipeline]*. What this chapter added is the word for the packaged form of "objects somebody wrote" — the project also offers metrics-server as a Helm chart [source: metrics-server-install-2026-08-31], which is failure four answered. **A is wrong**: metrics-server is a separate component, not a feature gate, which is why `kubectl top` fails on a bare cluster in the first place. **C is wrong**: metrics-server collects resource metrics from the kubelets and exposes them through the API server [source: metrics-server-install-2026-08-31]; the kubelets are already on every node, and nothing new is installed there. **D is wrong**, and it is the misconception Chapter 13 named. `kubectl top` failing on a cluster without metrics-server is expected behavior, not a fault.
 
 
 **If you scored 0–2:** Re-read **§5**, then the decision table in **§6**. The most common cause of a low score here is reading Kustomize as "Helm with different syntax," which makes every comparison question a coin flip.
@@ -1095,7 +1052,7 @@ They agree about everything that matters. Both exist to take a directory of loos
 Which means the argument the ecosystem spends so much energy on — templating versus not-templating, engine versus no-engine, Go templates versus patches — is an argument about *how*, conducted between two tools that had already agreed on *what*. And the *what* is the part that changes how you work.
 
 <!-- FIGURE: ch14-zenith-package-not-template -->
-![Two symmetric paths, one labelled render that fills in holes from templates and values, one labelled patch that merges deltas from a base and overlay, converging with opposing arrows on a single highlighted box reading one named, versioned, installable unit, which then flows to a cluster](figures/ch14-zenith-package-not-template.svg)
+![Two symmetric paths, one labeled render that fills in holes from templates and values, one labeled patch that merges deltas from a base and overlay, converging with opposing arrows on a single highlighted box reading one named, versioned, installable unit, which then flows to a cluster](figures/ch14-zenith-package-not-template.svg)
 
 <!-- ASCII-FALLBACK
 ```
@@ -1128,7 +1085,7 @@ Which means the argument the ecosystem spends so much energy on — templating v
 ```
 -->
 
-That is what the subtitle meant. *A chart is not a release*: the package and the installation are different things, and collapsing them costs you the ability to say what is running where. *Templates are not the point*: they are one way of absorbing variation, and a tool exists that absorbs variation without them and solves the same problem anyway.
+That is what the subtitle meant. *A chart is not a release*: the package and the installation, the Helm release, are different things, and collapsing them costs you the ability to say what is running where. *Templates are not the point*: they are one way of absorbing variation, and a tool exists that absorbs variation without them and solves the same problem anyway.
 
 There is a nice symmetry in it with something you already know. Chapter 4 taught that a Kubernetes object is a *record of intent*, a durable declaration of what should be true, which controllers then work to make true *[cross-bearing: see Ch 4 §6 — a declaration, not an order]*. A package is that same move, one level up: a durable declaration of what a whole application should be, with a version number on it so you can say *which* declaration, and a name so you can ask what happened to it. Not a bigger object. The same idea applied to the set.
 
@@ -1171,9 +1128,7 @@ High-priority *for this chapter's material*, on the reasoning given in Why This 
 
 That last row deserves a sentence of its own, because it connects to something Chapter 1 warned you about. Tiller was Helm 2's in-cluster component, introduced so that multiple people could interact with the same set of releases; with RBAC enabled by default from Kubernetes 1.6, locking it down for production became difficult to manage, and the permissive default configuration could grant users a far broader range of permissions than intended [source: helm-changes-since-helm2-2026-08-31]. Helm 3 removed it, storing release records in Kubernetes directly and evaluating permissions through your kubeconfig instead [source: helm-changes-since-helm2-2026-08-31].
 
-Treat Tiller as a dating stamp. This domain carries 16% of the current blueprint [source: lf-kcna-exam-page-2026-08-23], and a study resource that explains how to secure Tiller is describing a Helm that Helm 3 removed [source: helm-changes-since-helm2-2026-08-31] — which is reason enough to read carefully whatever else it tells you about this domain.
-
-<!-- AUTHOR-REVIEW: G-14e, second site. Draft-v1 read "This domain doubled in weight under the current blueprint [source: lf-kcna-exam-page-2026-08-23], and a great deal of the freely available preparation material for it predates that change, some of it by a wide margin." The "doubled" claim is contradicted by that snapshot (which gives only the current 16%), and the market claim about preparation material is unverifiable by construction. Both rewritten: the weight to the supported figure, the market claim recast as guidance. The two weight sentences in this chapter — here and in Why This Chapter Matters — must be restored together or not at all. G-14f: the draft-v1 phrase "a Helm that has not existed since 2019" is also gone from both of its sites; the corpus dates no Helm 3 release, and the sourced marker does the same work without a year. -->
+Treat Tiller as a dating stamp. This domain doubled in weight under the current blueprint, from 8% [source: cncf-kcna-curriculum-retired-2026-09-04] to 16% [source: lf-kcna-exam-page-2026-08-23], and a study resource that explains how to secure Tiller is describing a Helm that Helm 3 removed [source: helm-changes-since-helm2-2026-08-31] — which is reason enough to read carefully whatever else it tells you about this domain.
 
 ---
 
@@ -1181,7 +1136,7 @@ Treat Tiller as a dating stamp. This domain carries 16% of the current blueprint
 
 **1.** `[interleaved: D1.1]` You run `kubectl apply -f manifests/` where the directory contains a CustomResourceDefinition and a custom resource that uses it. The custom resource is rejected. Why?
 
-A) `kubectl apply` applies files alphabetically, and the resource sorted before the definition
+A) The CRD was accepted, but a CustomResourceDefinition only takes effect after the API server is restarted
 B) The CRD declaration must be registered before any resources of its kind can be used, and applying a directory guarantees no ordering
 C) Custom resources cannot be applied with `kubectl apply`; they require a controller
 D) The CRD needs to be in a `crds/` directory for kubectl to recognize it
@@ -1191,7 +1146,7 @@ D) The CRD needs to be in a `crds/` directory for kubectl to recognize it
 A) It contains the rendered manifests that will be applied to the cluster
 B) It holds the default configuration values for the chart, and defines what an installer may change
 C) It is generated by Helm at install time from the `--set` flags
-D) It is the file an installer edits in place before running `helm install`
+D) It must be edited in place by the installer before running `helm install`
 
 **3.** Which entry in a chart directory does **not** contribute Kubernetes objects to your cluster?
 
@@ -1239,7 +1194,7 @@ D) `kubectl rollout undo` acts on the whole namespace, while `helm rollback` act
 
 A) `kubectl rollout undo` on the Deployment
 B) `helm rollback` on the release
-C) `kubectl apply -f` with the old manifests
+C) `kubectl apply -f` against the chart's `templates/` directory
 D) `kubectl rollout undo` on the Deployment plus a manual ConfigMap edit
 
 **10.** `helm install` is run with no release name and no flags. What happens in Helm 3?
@@ -1277,12 +1232,12 @@ B) Renames only the kustomization file's own metadata
 C) Filters which resources from the base are included
 D) Prepends a value to container image names
 
-**15.** Which pair correctly describes Kustomize's two patch styles?
+**15.** Which statement captures how Kustomize's approach differs from Helm's templating?
 
-A) Strategic merge patch writes a fragment shaped like the object; JSON patch lists explicit operations on paths
-B) A strategic merge patch must restate the whole object; a JSON patch names only the changed fields
-C) Strategic merge patch is server-side; JSON patch is client-side
-D) Strategic merge patch requires a template engine; JSON patch does not
+A) Kustomize keeps every manifest a complete, valid Kubernetes object and describes the differences separately; templating makes the manifest incomplete and completes it at render time
+B) Kustomize renders manifests from placeholders at apply time, while Helm patches complete manifests
+C) Kustomize requires a `values.yaml` in the base to declare what an overlay may change
+D) A Kustomize base's manifests are not valid Kubernetes objects until an overlay has been applied to them
 
 **16.** A team keeps their application manifests in their own Git repository, deploys to three clusters they administer, and has no external consumers. Which approach fits best, and why?
 
@@ -1291,18 +1246,18 @@ B) Kustomize, because there is nothing to distribute and the manifests stay read
 C) Helm, because three environments exceed what overlays can express
 D) Kustomize, because overlays remove the need to keep the base under version control
 
-**17.** You push a Helm chart to an OCI registry. Which statement about the reference is correct?
+**17.** A chart repository serves *packaged charts*. What is a packaged chart, physically?
 
-A) The reference must be prefixed with `oci://` and must not contain the basename or tag on push
-B) The reference must include the chart's digest, since tags are not supported for charts
-C) The reference is identical in form to a Helm repository URL
-D) Charts pushed to OCI registries lose their version, which must be supplied at install time
+A) A container image with the chart's templates baked into its layers
+B) A tarred and gzipped, optionally signed, chart directory — a chart archive
+C) A Git commit tagged with the chart's version
+D) The set of manifests the chart renders to, stored as plain YAML
 
 ---
 
 **Answers with Explanations**
 
-**1. B.** The declaration must be registered before any resources of that CRD's kinds can be used [source: helm-crd-best-practices-2026-08-31], and applying a directory makes no ordering promise. Failure two from §1, in its sharpest form. **A is wrong**: even if the ordering happened to be favorable, that would be luck, not a guarantee, and alphabetical ordering is not something `kubectl apply` undertakes. **C is wrong**; custom resources are applied exactly like any other object once their kind exists *[cross-bearing: see Ch 6 §8 — the control loop, extended]*. **D is wrong**: `crds/` is a Helm chart convention [source: helm-crd-best-practices-2026-08-31], meaningless to bare kubectl.
+**1. B.** The declaration must be registered before any resources of that CRD's kinds can be used [source: helm-crd-best-practices-2026-08-31], and applying a directory makes no ordering promise. Failure two from §1, in its sharpest form. **A is wrong**: custom resources appear in a running cluster through dynamic registration [source: k8s-docs-custom-resources-2026-08-23]; no restart is involved, and the problem here is sequence, not a reboot. **C is wrong**; custom resources are applied exactly like any other object once their kind exists *[cross-bearing: see Ch 6 §8 — the control loop, extended]*. **D is wrong**: `crds/` is a Helm chart convention [source: helm-crd-best-practices-2026-08-31], meaningless to bare kubectl.
 
 **2. B.** `values.yaml` holds the default configuration values for the chart [source: helm-charts-2026-08-23], which is also the declared surface of what an installer may change. **A confuses values with rendered output**; the rendering happens from `templates/` combined with values [source: helm-charts-2026-08-23]. **C inverts the direction**: `--set` overrides `values.yaml`, merged with higher precedence [source: helm-using-helm-2026-08-31], not the reverse. **D is the beginner's move and is wrong for the reason that matters most in this chapter**: overrides are supplied with `--values`/`-f` or `--set` [source: helm-using-helm-2026-08-31], which leaves the chart itself unmodified — and a chart you have edited is no longer the versioned artifact you fetched, which is the whole property packaging exists to give you.
 
@@ -1318,7 +1273,7 @@ D) Charts pushed to OCI registries lose their version, which must be supplied at
 
 **8. B.** `helm rollback`'s first argument is a release name [source: helm-rollback-cli-2026-08-31]; `kubectl rollout undo` manages the rollout of a Deployment, DaemonSet, or StatefulSet [source: k8s-docs-kubectl-rollout-2026-08-24]. Different unit, different scope. **A is wrong on the mechanism**: a Helm rollback that changes a Pod template produces a rolling update as an ordinary consequence of reconciliation. **C is the trap this section exists to prevent**; neither calls the other — Helm renders charts client-side and stores a record of the installation in Kubernetes [source: helm-changes-since-helm2-2026-08-31], with no kubectl in the path. **D inverts both scopes.**
 
-**9. B.** The release is the unit that contains all four objects, and rolling it back returns them together [source: helm-rollback-cli-2026-08-31]. **A is wrong** and is the single-object trap: it fixes the Deployment and leaves the ConfigMap wrong. **C might work** if you still have the old manifests and apply them correctly, but it is not a single action and it does not update Helm's release record, leaving the cluster and Helm's bookkeeping disagreeing. **D is A's problem plus manual work**, which is the state Helm exists to eliminate.
+**9. B.** The release is the unit that contains all four objects, and rolling it back returns them together [source: helm-rollback-cli-2026-08-31]. **A is wrong** and is the single-object trap: it fixes the Deployment and leaves the ConfigMap wrong. **C is wrong** before it starts: the files in `templates/` are templates, not manifests — they have holes in them — and they only become valid Kubernetes manifests when combined with values [source: helm-charts-2026-08-23]. The API server will not take them raw. Rendering is Helm's job, and so is remembering what it rendered. **D is A's problem plus manual work**, which is the state Helm exists to eliminate.
 
 **10. B.** Helm 3 throws an error if no name is provided with `helm install` [source: helm-changes-since-helm2-2026-08-31]. **A describes Helm 2**, which auto-generated names — behavior that proved to be more of a nuisance than a helpful feature in production [source: helm-changes-since-helm2-2026-08-31]. You can still opt into it with `--generate-name` [source: helm-changes-since-helm2-2026-08-31]. **C is wrong, though it describes what most chart READMEs look like**: the conventional `helm install wordpress bitnami/wordpress` passes the chart name *explicitly* as the release name, which is easy to misread as inference. Helm does not infer it. **D is wrong on both halves**: no name is generated without `--generate-name` [source: helm-changes-since-helm2-2026-08-31], and which namespace you land in is a matter of your kubeconfig context [source: helm-changes-since-helm2-2026-08-31], not something `helm install` invents.
 
@@ -1330,11 +1285,11 @@ D) Charts pushed to OCI registries lose their version, which must be supplied at
 
 **14. A.** `namePrefix` prepends the value to the names of all resources *and references* [source: kubectl-book-kustomization-fields-2026-08-31]. That "and references" clause is the load-bearing part: a prefixed Deployment still finds its prefixed ConfigMap. **B is wrong**; the transformation applies to the resources, not to the kustomization's own metadata. **C describes `resources`.** **D describes `images`**, which modifies name, tags, and/or digest for images [source: kubectl-book-kustomization-fields-2026-08-31].
 
-**15. A.** `patchesStrategicMerge` patches using the strategic merge patch standard and `patchesJson6902` using the JSON 6902 standard [source: kubectl-book-kustomization-fields-2026-08-31]; a strategic merge patch is a fragment shaped like the object, and a JSON patch is a list of operations on paths. **B inverts the relationship exactly**, and it is the plausible error: the merge patch is the *fragment* form — you write only the piece you are changing — while the operation-list form is the one that names paths explicitly. **C is wrong**; the two are not a client/server split, and both describe a change to a manifest before it is applied. **D is wrong**, and it contradicts the tool's headline property: Kustomize is template-free [source: kustomize-overview-2026-08-23].
+**15. A.** Kustomize is a template-free way to customize configuration [source: kustomize-overview-2026-08-23]: a base is a directory of resources with a `kustomization.yaml`, and an overlay refers to that base and applies customizations on top of it [source: k8s-docs-kustomization-2026-09-04]. The base's manifests are valid objects throughout; nothing is rendered from a non-object into an object. **B inverts the two tools.** **C is wrong**: there is no `values.yaml` in Kustomize — an overlay can patch anything, which is exactly the trade-off §5 names against Helm's declared surface. **D is wrong**: a base's `deployment.yaml` is an ordinary manifest that `kubectl apply -f` accepts with no rendering step; the kustomization file is the one file in the directory the API server will not take.
 
 **16. B.** Nothing is being distributed, the manifests are the team's own, and a Kustomize base stays readable as ordinary manifests with overlays declaring only deltas [source: kustomize-overview-2026-08-23]. **A is wrong**: a required version is valuable *for a stranger who must pin something*, and Git supplies identity for a team's own repository. **C is wrong**; overlays are explicitly designed for managing any number of distinctly customized configurations [source: kustomize-overview-2026-08-23]. **D is wrong and inverts the arrangement**: an overlay declares deltas *against* a base [source: kustomize-overview-2026-08-23], so the base is the thing that most needs a version — which is exactly the job Git does here, and Chapter 15's subject *[cross-bearing: see Ch 15 §3 — push, or pull]*.
 
-**17. A.** When using `helm push`, the reference must be prefixed with `oci://` and must not contain the basename or tag [source: helm-oci-registries-2026-08-31]. **B is wrong**: the tag is inferred from the chart's semantic version [source: helm-oci-registries-2026-08-31], so tags very much apply. **C is wrong**; the `oci://` prefix is exactly what distinguishes the two forms. **D is wrong**: the version is what the tag is derived from [source: helm-oci-registries-2026-08-31], so it travels with the chart rather than being supplied later.
+**17. B.** A chart archive is a tarred and gzipped (and optionally signed) chart [source: helm-glossary-2026-08-31]; the archive is the package, and a chart repository is an HTTP server housing an `index.yaml` and some of these archives [source: helm-chart-repository-2026-08-31]. **A is wrong**: a chart is not an image, even when it is stored in an OCI registry — the registry stores it as an artifact alongside images, which is the point of Question 12 [source: helm-blog-oci-ga-2026-08-31]. **C is wrong**: Git is where chart source often lives, but a repository serves archives over HTTP, not commits. **D is wrong**, and it collapses the distinction §2 drew: a chart contains templates and values, not rendered manifests — rendering happens at install time, against the values you supply [source: helm-charts-2026-08-23].
 
 ---
 
@@ -1348,9 +1303,9 @@ D) Charts pushed to OCI registries lose their version, which must be supplied at
 | **`values.yaml`** | The declared surface of variation — what an installer may change, with a working default for each. Overrides come from `-f` (rightmost wins) and `--set` (beats every file). |
 | **`templates/`** | Combined with values, generates valid Kubernetes manifests. Files starting with `_` are partials, not objects. |
 | **`charts/`** | Dependency charts *inside* this chart. **Not a repository.** |
-| **`crds/`** | Not templated, installed by default. Solves the one ordering failure that is fatal rather than slow. Cannot be upgraded by Helm. |
+| **`crds/`** | Not templated, installed first and by default. Solves the one ordering failure that is fatal rather than slow. Cannot be upgraded by Helm. |
 | **Helm release** | One installed instance of a chart, named, scoped to a namespace. One chart installs many times; each release upgrades and rolls back independently. |
-| **Release revision** | One numbered state of a release. `helm rollback <release> <revision>`; omit the revision to go back one. |
+| **Release revision** | One numbered state of a release. `helm rollback <release> <revision>`; omit the revision to go back one. A rollback is itself a new revision; the history only grows. |
 | **`helm list`** | Answers "what is installed here" — the releases in your namespace context, or `--all-namespaces` for the cluster. A directory has no equivalent. |
 | **`helm rollback` vs `kubectl rollout undo`** | Different unit (release vs one workload), different scope (everything the chart installed vs one Pod template), different bookkeeping. Neither calls the other. |
 | **Chart repository** | An HTTP server housing `index.yaml` and packaged charts. Managed with `helm repo`. |
@@ -1369,6 +1324,8 @@ D) Charts pushed to OCI registries lose their version, which must be supplied at
 Part IV opened with a debt thirteen chapters deep, and you have now collected on it. When a chapter told you to install a CNI plugin, an Ingress controller, a CSI driver, metrics-server, you now know exactly what that sentence was hiding, and you have the vocabulary to say what it should have said instead.
 
 More than that: you can now read a stranger's `deploy/` directory and take its depth. Which of the four failures is this directory living with? Is anything marked as variable? Is there a version? Could you hand this to a colleague on another team without a phone call? Those are not academic questions. They are the questions that decide whether an application is shippable, and until this chapter you did not have a way to ask them.
+
+🗺️ Chart → **🌊 Passage** → 🌅 Dawn
 
 ---
 

@@ -58,9 +58,9 @@ soundings_planned:
 # --- Skill v5.3 Part 8: practice-question budget (from B4 via arc-outline) ---
 question_budget:
   soundings: 5
-  taking_your_bearings: 5              # across 2 checkpoints (3 + 2)
+  taking_your_bearings: 6             # across 2 checkpoints (3 + 3)
   practice_questions: 0                # orientation type — exempt per structural contract
-  total_this_chapter: 10
+  total_this_chapter: 11
 
 # --- Concept / objective / command tagging ---
 kb_tags:
@@ -97,13 +97,13 @@ figures_planned:
 | Section | Time | Attention Cost | Best Time to Study |
 |---|---|---|---|
 | 🧭 Soundings | 7 min | Low | Anytime |
-| What the KCNA Is, and Who It's For | 4 min | Low | Anytime |
-| Ninety Minutes: The Exam as Published | 5 min | Low | Anytime |
-| The Curriculum That Moved Under Everyone's Feet | 10 min | Medium | When alert |
+| §1 What the KCNA Is, and Who It's For | 4 min | Low | Anytime |
+| §2 Ninety Minutes: The Exam as Published | 5 min | Low | Anytime |
+| §3 The Curriculum That Moved Under Everyone's Feet | 10 min | Medium | When alert |
 | ☆ Taking Your Bearings: The Exam and the Blueprint | 4 min | Medium | After brief pause |
-| The Phrase We Haven't Defined Yet | 2 min | Low | Anytime |
-| How This Book Is Built | 5 min | Low | Anytime |
-| Three Ways to Read This Book | 3 min | Low | Anytime |
+| §4 The Phrase We Haven't Defined Yet | 2 min | Low | Anytime |
+| §5 How This Book Is Built | 5 min | Low | Anytime |
+| §6 Three Ways to Read This Book | 3 min | Low | Anytime |
 | ☆ Taking Your Bearings: Using the Instruments | 5 min | Low | Anytime |
 
 **Attention Cost Key:**
@@ -124,28 +124,28 @@ figures_planned:
 
 Before reading this chapter, try these five questions. They test what you're arriving with, not what this chapter teaches. Every one is answerable from general IT experience, and no score here is a bad score. Your result is a reading instruction, not a verdict.
 
-**1.** A container and a virtual machine both isolate an application from its neighbors. What does a container share with its host that a virtual machine does not?
+1. A container and a virtual machine both isolate an application from its neighbors. What does a container share with its host that a virtual machine does not?
 
-**2.** Kubernetes is often described as "the thing that runs your containers." Is that accurate? If not, what does Kubernetes actually do, and what runs the containers?
+2. Kubernetes is often described as "the thing that runs your containers." Is that accurate? If not, what does Kubernetes actually do, and what runs the containers?
 
-**3.** Who controls the Kubernetes project — a single vendor, a commercial company that licenses it, or an open-source foundation?
+3. Who controls the Kubernetes project — a single vendor, a commercial company that licenses it, or an open-source foundation?
 
-**4.** When someone says an application is "cloud native," what do most people take that to mean?
+4. When someone says an application is "cloud native," what do most people take that to mean?
 
-**5.** Have you written Terraform, Ansible playbooks, CloudFormation templates, or anything similar: a file that describes what infrastructure *should* look like, rather than a script that performs steps to build it?
+5. Have you written Terraform, Ansible playbooks, CloudFormation templates, or anything similar: a file that describes what infrastructure *should* look like, rather than a script that performs steps to build it?
 
 <details>
 <summary>Answers + reading strategy</summary>
 
-**1.** The host's **operating system** — that is the documentation's word [source: k8s-docs-overview-2026-08-23]. Practitioners sharpen it: what is actually shared is the host's **kernel**, and this book uses that sharper register where the precision earns its keep. Hold both — the first is the wording to recognize on an answer sheet. *[cross-bearing: see Ch 2 §1 — what a container actually is, and why both registers are correct]*
+1. The host's **operating system** — that is the documentation's word [source: k8s-docs-overview-2026-08-23]. Practitioners sharpen it: what is actually shared is the host's **kernel**, and this book uses that sharper register where the precision earns its keep. Hold both — the first is the wording to recognize on an answer sheet. *[cross-bearing: see Ch 2 §1 — what a container actually is, and why both registers are correct]*
 
-**2.** Not accurate. Kubernetes is an **orchestrator** — it decides what should run where. A separate **container runtime** on each machine does the work of actually starting the containers [source: k8s-docs-cluster-architecture-2026-08-23]. *[cross-bearing: see Ch 2 §4 — the Container Runtime Interface]*
+2. Not accurate. Kubernetes is an **orchestrator** — it decides what should run where. A separate **container runtime** on each machine does the work of actually starting the containers [source: k8s-docs-cluster-architecture-2026-08-23]. *[cross-bearing: see Ch 2 §4 — the Container Runtime Interface]*
 
-**3.** An open-source foundation. Kubernetes is hosted by the **Cloud Native Computing Foundation**, which is part of the nonprofit **Linux Foundation** [source: cncf-who-we-are-2026-08-23]. *[cross-bearing: see Ch 17 §2 — CNCF governance and the project lifecycle]*
+3. An open-source foundation. Kubernetes is hosted by the **Cloud Native Computing Foundation**, which is part of the nonprofit **Linux Foundation** [source: cncf-who-we-are-2026-08-23]. *[cross-bearing: see Ch 17 §2 — CNCF governance and the project lifecycle]*
 
-**4.** Most people take it to mean "runs in a public cloud." That is the near-universal assumption, and it is not what the term means. We'll come back to it in §4 below, and *[cross-bearing: see Ch 17 §1 — the CNCF definition of cloud native]*.
+4. Most people take it to mean "runs in a public cloud." That is the near-universal assumption, and it is not what the term means. We'll come back to it in §4 below, and *[cross-bearing: see Ch 17 §1 — the CNCF definition of cloud native]*.
 
-**5.** No right answer here; this one is calibration only, and it isn't scored. If you've written any of those, you already hold a distinction that Chapter 4 will name for you, and you'll move through it fast. If you haven't, Chapter 4 is worth reading slowly. *[cross-bearing: see Ch 4 §1 — declarative versus imperative]*
+5. No right answer here; this one is calibration only, and it isn't scored. If you've written any of those, you already hold a distinction that Chapter 4 will name for you, and you'll move through it fast. If you haven't, Chapter 4 is worth reading slowly. *[cross-bearing: see Ch 4 §1 — declarative versus imperative]*
 
 **Scoring: question 5 isn't scored. Of the four scored questions —**
 
@@ -159,7 +159,7 @@ Before reading this chapter, try these five questions. They test what you're arr
 
 ---
 
-## ⚪ What the KCNA Is, and Who It's For
+## ⚪ §1 — What the KCNA Is, and Who It's For
 
 Here is a question worth carrying for the next few pages: **why does so much of the KCNA study material online describe a different exam than the one you are going to sit?**
 
@@ -173,21 +173,21 @@ Take "no prerequisites" literally. No required course. No logged hours. No prior
 
 It is a **multiple-choice, online, proctored exam** [source: lf-kcna-exam-page-2026-08-23]. That matters more than it sounds, and it's the first place people misjudge this credential.
 
-The hands-on Kubernetes certifications, the ones that drop you into a live terminal with a broken cluster and a running clock, measure whether you can *do* the thing [source: lf-cloud-native-certification-catalog-2026-08-23]. The KCNA measures whether you can *discriminate*. Given several plausible-sounding statements about how the scheduler decides where a Pod goes, can you identify the one that's true? Given a symptom, can you name the layer where the problem lives? That is a genuinely different skill, and it is not a lesser one. Practitioners who can execute a command from muscle memory but can't say why it works are everywhere, and they're the ones who stall at three in the morning when the situation stops matching the runbook.
+The hands-on Kubernetes certifications, the ones that drop you into a live terminal with a broken cluster and a running clock, measure whether you can *do* the thing [source: lf-cloud-native-certification-catalog-2026-08-23]. The KCNA measures whether you can *discriminate*. Given several plausible-sounding statements about how the scheduler decides where a Pod goes, can you identify the one that's true? *[cross-bearing: see Ch 5 §1 — the Pod as the unit of scheduling]* *[cross-bearing: see Ch 3 §2 — the control plane, where the scheduler lives]* Given a symptom, can you name the layer where the problem lives? That is a genuinely different skill, and it is not a lesser one. Practitioners who can execute a command from muscle memory but can't say why it works are everywhere, and they're the ones who stall at three in the morning when the situation stops matching the runbook.
 
 > ⚓ **Worth Securing:** A conceptual exam deserves a conceptual study method. The instinct to "just get hands on a cluster and practice" is a good instinct for CKA and a partially misdirected one here. Hands-on time helps, because it makes abstractions concrete, but you will not pass this exam by drilling `kubectl` commands, and you can fail it while typing them fluently. Study for discrimination: for every concept, ask "what is the thing this is most often confused with, and what's the difference?"
 
-Let me be direct about what this book is not. It is **not a kubectl drill book.** There are commands in it, because you cannot understand a Service without seeing how one is described, but the commands are here to illuminate concepts, not to build reflexes. When you want the reflexes, and if you stay in this field you will, the Certified Kubernetes Administrator is the next voyage: a genuinely hands-on exam taken in a live terminal [source: lf-cloud-native-certification-catalog-2026-08-23]. Lodestar Ledgers publishes a guide for that one too.
+Let me be direct about what this book is not. It is **not a kubectl drill book.** `kubectl` is the command-line tool you talk to a cluster with, and its grammar is Chapter 8's *[cross-bearing: see Ch 8 §1 — the grammar of a kubectl command]*. There are commands in this book, because you cannot understand a Service without seeing how one is described *[cross-bearing: see Ch 9 §2 — the Service object]*, but the commands are here to illuminate concepts, not to build reflexes. When you want the reflexes, and if you stay in this field you will, the Certified Kubernetes Administrator is the next voyage: a genuinely hands-on exam taken in a live terminal [source: lf-cloud-native-certification-catalog-2026-08-23]. Lodestar Ledgers publishes a guide for that one too.
 
 The wider certification family — the other associate-level exams, the specialist tracks, how they relate to one another — belongs in Chapter 17, alongside the ecosystem material it's part of. *[cross-bearing: see Ch 17 — the cloud native certification landscape]*
 
 ---
 
-## ⚪ Ninety Minutes: The Exam as Published
+## ⚪ §2 — Ninety Minutes: The Exam as Published
 
 Everything in this section comes from the Linux Foundation's own exam page. Where the page is silent, I'll say so. That silence turns out to be one of the more useful facts in the chapter.
 
-> **Dead Reckoning:** The KCNA is an online, proctored, multiple-choice exam. Duration is 90 minutes. There are no prerequisites. Registration includes a 12-month eligibility window in which to schedule and sit the exam, two exam attempts, and an exam preparation handbook. The certification is valid for two years. Pricing at the time this book's sources were captured (2026-08-23): $250 for the exam alone; $299 for the exam bundled with the LFS250 course; $495 for the exam bundled with the THRIVE-ONE annual subscription [source: lf-kcna-exam-page-2026-08-23].
+> **Dead Reckoning:** The KCNA is an online, proctored, multiple-choice exam. Duration is 90 minutes. There are no prerequisites. Registration includes a 12-month eligibility window in which to schedule and sit the exam, two exam attempts. The certification is valid for two years. Pricing at the time this book's sources were captured (2026-08-23): $250 for the exam alone; $299 for the exam bundled with the LFS250 course; $495 for the exam bundled with the THRIVE-ONE annual subscription [source: lf-kcna-exam-page-2026-08-23].
 
 Two of those facts deserve a moment.
 
@@ -199,9 +199,9 @@ Two of those facts deserve a moment.
 
 Now a disclosure most study guides skip.
 
-**The two numbers everyone quotes are both published — just not where you would look for them.** The passing score is in the Linux Foundation's candidate FAQ for its multiple-choice exams, which states that a score of 75% or above must be earned to pass [source: lf-mc-exam-faq-2026-08-23]. The question count is in the same handbook, on the "Multiple Choice Exams: Important Instructions" page, which states that the exam "consists of 60* multiple-choice questions" [source: provenance-kcna-60-questions-2026-08-31]. Both are published for multiple-choice exams **as a class**, and KCNA is placed in that class by its own exam page. Neither figure is on the exam page most candidates read, which states the format, the duration, the eligibility terms, the price, and the domain weights and stops there [source: lf-kcna-exam-page-2026-08-23]. What it does not do is repeat what the handbook already says.
+**The two numbers everyone quotes are both published — just not where you would look for them.** The passing score is in the Linux Foundation's candidate documentation, on the page "Multiple Choice Exams: Frequently Asked Questions," which states that a score of 75% or above must be earned to pass [source: lf-mc-exam-faq-2026-08-23]. The question count is in the same documentation, on the sibling page "Multiple Choice Exams: Important Instructions," which states that the exam "consists of 60* multiple-choice questions" [source: provenance-kcna-60-questions-2026-08-31]. Both are published for multiple-choice exams **as a class**, and KCNA is placed in that class by its own exam page. Neither figure is on the exam page most candidates read, which states the format, the duration, the eligibility terms, the price, and the domain weights and stops there [source: lf-kcna-exam-page-2026-08-23]. What it does not do is repeat what the candidate documentation already says.
 
-You will nonetheless see "60 questions, 75% to pass" repeated across study sites, videos, and forum threads, stated flatly, as one fact. It is two facts with one pedigree and a shared problem: the certifying body publishes both, in a handbook, for a class of exams — and almost nobody who repeats them has read that handbook or cites it. What travels on repetition is not the numbers. It is the *claim to know where they come from*.
+You will nonetheless see "60 questions, 75% to pass" repeated across study sites, videos, and forum threads, stated flatly, as one fact. It is two facts with one pedigree and a shared problem: the certifying body publishes both, in its candidate documentation, for a class of exams — and almost nobody who repeats them has read that documentation or cites it. What travels on repetition is not the numbers. It is the *claim to know where they come from*.
 
 
 > ⚠ **Navigational Hazards**
@@ -218,7 +218,7 @@ There's a broader habit here, and it's worth naming: **know which of your facts 
 
 ---
 
-## 🔵 The Curriculum That Moved Under Everyone's Feet
+## 🔵 §3 — The Curriculum That Moved Under Everyone's Feet
 
 Here's the answer to the question I opened with.
 
@@ -226,8 +226,7 @@ The KCNA exam blueprint was restructured, effective no earlier than **November 2
 
 These are the four domains and weights you are being examined against:
 
-**★ Fixed Point**
-
+★ **Fixed Point:**
 **The current KCNA blueprint is four domains: Kubernetes Fundamentals 44%, Container Orchestration 28%, Cloud Native Application Delivery 16%, Cloud Native Architecture 12%** [source: lf-kcna-exam-page-2026-08-23]**.**
 
 If you memorize one thing from this chapter, memorize those four numbers. They are the index to everything else. Every study decision you make from here should be checkable against them.
@@ -243,9 +242,7 @@ Their named competencies:
 
 [source: lf-kcna-exam-page-2026-08-23] [source: cncf-kcna-curriculum-pdf-2026-08-23]
 
-And here is what they replaced. The retired blueprint had five domains: Kubernetes Fundamentals 46%, Container Orchestration 22%, Cloud Native Architecture 16%, **Cloud Native Observability 8%**, and Cloud Native Application Delivery 8% [source: lf-kcna-program-changes-2026-08-23].
-
-<!-- AUTHOR-REVIEW: Contested provenance for the five retired weights (46/22/16/8/8), and for everything derived from them below — ch01-fig01's left column, the −2/+6/×2 annotations, the "under-serve Application Delivery by roughly half" test, the 🪝 Snag on 16→12, and the Logbook Entry's premise. The fact-accuracy audit verified these against the cached snapshot lf-kcna-program-changes-2026-08-23, where they appear verbatim. The curriculum-alignment audit reports that snapshot is stale — that the research stage found the retired percentages were never on the LF page, cached a correction, and could not write it to sources/. Both cannot be right. Resolve by (a) retrieving the retired curriculum PDF from cncf/curriculum/old-versions/ and caching it as cncf-kcna-curriculum-retired-2026-08-23.md, or (b) if that fails, cutting all five percentages and respec'ing ch01-fig01 as a one-sided "what moved" diagram. The structural claim — five domains became four, observability folded into Architecture — is independently sourced and survives either way. Do NOT source the weights from the CNCF-hosted Medium repost; that is a syndicated guest post, the exact diffusion mechanism §2 teaches readers to catch. -->
+And here is what they replaced. The retired blueprint had five domains: Kubernetes Fundamentals 46%, Container Orchestration 22%, Cloud Native Architecture 16%, **Cloud Native Observability 8%**, and Cloud Native Application Delivery 8% [source: cncf-kcna-curriculum-retired-2026-09-04].
 
 <!-- FIGURE: ch01-fig01-blueprint-change-2025 -->
 ![Two-column diagram comparing the retired five-domain KCNA blueprint on the left with the current four-domain blueprint on the right. Kubernetes Fundamentals moves from 46 percent to 44 percent, Container Orchestration from 22 to 28 percent, Cloud Native Application Delivery from 8 to 16 percent. Cloud Native Architecture at 16 percent and Cloud Native Observability at 8 percent merge into a single Cloud Native Architecture domain at 12 percent, with Observability folded in as a competency rather than remaining a standalone domain.](figures/ch01-fig01-blueprint-change-2025.svg)
@@ -269,27 +266,27 @@ And here is what they replaced. The retired blueprint had five domains: Kubernet
 ```
 -->
 
-*The 2025 KCNA blueprint restructure. Two movements matter most: Application Delivery doubled, and Observability stopped being a domain of its own.*
+*The 2025 KCNA blueprint restructure. Two movements matter most: Application Delivery doubled, and Observability stopped being a domain of its own.* [source: cncf-kcna-curriculum-retired-2026-09-04] [source: lf-kcna-exam-page-2026-08-23]
 
 Three things changed in ways that should change your behavior.
 
-**Cloud Native Observability is gone as a standalone domain.** Observability did not stop being tested. It was folded in as a competency under Cloud Native Architecture, alongside Ecosystem and Principles and Community and Collaboration [source: lf-kcna-program-changes-2026-08-23]. Prometheus, OpenTelemetry, the difference between metrics and traces: all still fair game. But the 8% once reserved for observability alone now shares a 12% domain with two other competencies. If you were planning to spend a fifth of your study time on Prometheus, that plan came off the old chart. *[cross-bearing: see Ch 18 §1 — observability under the current blueprint]*
+**Cloud Native Observability is gone as a standalone domain.** Observability did not stop being tested. It was folded in as a competency under Cloud Native Architecture, alongside Ecosystem and Principles and Community and Collaboration [source: lf-kcna-program-changes-2026-08-23]. Prometheus, OpenTelemetry, the difference between metrics and traces: all still fair game. But the 8% once reserved for observability alone now shares a 12% domain with two other competencies [source: cncf-kcna-curriculum-retired-2026-09-04]. If you were planning to spend a fifth of your study time on Prometheus, that plan came off the old chart. *[cross-bearing: see Ch 18 §1 — observability under the current blueprint; the signals, metrics and traces among them, and OpenTelemetry are Ch 18 §2, and Prometheus is Ch 18 §4]*
 
-**Cloud Native Application Delivery doubled**, from 8% to 16% [source: lf-kcna-program-changes-2026-08-23]. That is the largest proportional change among the domains that survived the restructure, and material built for the old blueprint will under-serve it by roughly half — a topic budgeted for 8% of an exam doesn't retroactively grow when the weight moves. GitOps, Helm, deployment strategies, debugging deployed applications: this is now one exam question in six. *[cross-bearing: see Ch 14–16 — the Application Delivery domain in full]*
+**Cloud Native Application Delivery doubled**, from 8% to 16% [source: cncf-kcna-curriculum-retired-2026-09-04]. That is the largest proportional change among the domains that survived the restructure, and material built for the old blueprint will under-serve it by roughly half — a topic budgeted for 8% of an exam doesn't retroactively grow when the weight moves. GitOps, Helm, deployment strategies, debugging deployed applications: this is now one exam question in six. *[cross-bearing: see Ch 14–16 — the Application Delivery domain in full; Helm is Ch 14 §2, GitOps is Ch 15 §3]*
 
-**Container Orchestration rose six points**, from 22% to 28% [source: lf-kcna-program-changes-2026-08-23]. Networking, security, troubleshooting, and storage together now account for more than a quarter of the exam.
+**Container Orchestration rose six points**, from 22% to 28% [source: cncf-kcna-curriculum-retired-2026-09-04]. Networking, security, troubleshooting, and storage together now account for more than a quarter of the exam.
 
-Kubernetes Fundamentals eased slightly, 46% to 44% [source: lf-kcna-program-changes-2026-08-23], a rounding-level change that shouldn't move anything in your plan. It remains, by a wide margin, the largest domain.
+Kubernetes Fundamentals eased slightly, 46% to 44% [source: cncf-kcna-curriculum-retired-2026-09-04], a rounding-level change that shouldn't move anything in your plan. It remains, by a wide margin, the largest domain.
 
-<!-- AUTHOR-REVIEW: The curriculum-alignment audit recovered a reader-facing consequence this section should carry and currently doesn't — that the only date which determines which blueprint you are examined against is the date you SIT the exam (not the purchase date, not first-attempt-versus-retake). That claim is not present in any cached snapshot on disk. Add it here with a citation once the corrected lf-kcna-program-changes snapshot lands; do not add it unsourced. -->
+One more thing the Linux Foundation's notice settles, and it is the question candidates ask most often: **the only date that determines which blueprint you are examined against is the date you sit the exam.** Not the date you bought it. Not whether the sitting is a first attempt or a retake. Any KCNA exam taken after the updated release tests on the new domains and competencies [source: lf-kcna-program-changes-2026-08-23]. The update is live, as the exam page's own four-domain listing shows [source: lf-kcna-exam-page-2026-08-23], so whatever your purchase receipt or your study material says, the four domains above are the ones you will meet.
 
-> 🪝 **Snag:** "Cloud Native Architecture" appears in both blueprints at different weights, 16% before and 12% now, but it isn't the same domain in a smaller hat. It *gained* observability while *losing* weight, so the material it does cover is compressed harder than the number alone suggests. Don't reason about it by comparing 16 to 12.
+> 🪝 **Snag:** "Cloud Native Architecture" appears in both blueprints at different weights, 16% before and 12% now [source: cncf-kcna-curriculum-retired-2026-09-04], but it isn't the same domain in a smaller hat. It *gained* observability while *losing* weight, so the material it does cover is compressed harder than the number alone suggests. Don't reason about it by comparing 16 to 12.
 
 Now the practical use of all this.
 
 You are going to encounter other study material. Videos, blog posts, practice question sets, competing books, a colleague's notes from when they passed. Some of it is excellent. Here is how to check whether it describes your exam, in about fifteen seconds:
 
-**Count the domains.** If the material is organized around **five** domains, or carries a standalone chapter or section titled "Cloud Native Observability" presented as a domain in its own right, it was built for the retired blueprint. That doesn't make its facts wrong; a Pod worked the same way in 2024. But its *weighting* is wrong, which makes its emphasis wrong, which makes its practice sets wrong, which makes the picture it hands you of where the exam's mass sits wrong. Specifically, it will under-serve Application Delivery by roughly half.
+**Count the domains.** If the material is organized around **five** domains, or carries a standalone chapter or section titled "Cloud Native Observability" presented as a domain in its own right, it was built for the retired blueprint. That doesn't make its facts wrong; a Pod worked the same way in 2024. But its *weighting* is wrong, which makes its emphasis wrong, which makes its practice sets wrong, which makes the picture it hands you of where the exam's mass sits wrong. Specifically, it will under-serve Application Delivery by roughly half [source: cncf-kcna-curriculum-retired-2026-09-04].
 
 Use it for facts if you like. Don't use it to allocate your time.
 
@@ -336,14 +333,14 @@ D) Prioritize Cloud Native Application Delivery, since it doubled in the 2025 re
 
 **1 — B.** Observability is a competency under **Cloud Native Architecture** in the current four-domain blueprint [source: lf-kcna-program-changes-2026-08-23].
 
-- **A is wrong**, and it's the trap that matters. Cloud Native Observability *was* a standalone 8% domain, in the blueprint retired in the 2025 restructure. If you picked A, you may be studying from the retired blueprint, or thinking in its terms. That's the whole point of §3.
+- **A is wrong**, and it's the trap that matters. Cloud Native Observability *was* a standalone 8% domain, in the blueprint retired in the 2025 restructure [source: cncf-kcna-curriculum-retired-2026-09-04]. If you picked A, you may be studying from the retired blueprint, or thinking in its terms. That's the whole point of §3.
 - **C is wrong.** Container Orchestration's four competencies are Networking, Security, Troubleshooting, and Storage. Troubleshooting and observability are related in practice, but the blueprint catalogs them separately.
 - **D is wrong.** Nothing was removed. It was reorganized. Observability content is still examinable; it simply shares a smaller domain now.
 
 **2 — C.** The **four domain weights** (44 / 28 / 16 / 12) are stated on the exam page, and they're the most useful published fact you have [source: lf-kcna-exam-page-2026-08-23].
 
-- **A is wrong**, though less wrong than it looks. The question count is not on the exam page — but it *is* published, on the candidate handbook's "Multiple Choice Exams: Important Instructions" page, for multiple-choice exams as a class [source: provenance-kcna-60-questions-2026-08-31]. The trap is the page you would think to check, not the fact.
-- **B is wrong**, for a subtler reason than A. The 75% passing score *is* published by the Linux Foundation — in its candidate FAQ for multiple-choice exams, not on the exam page the question asks about [source: lf-mc-exam-faq-2026-08-23]. Keep the two straight by *where they live*: both are official, and both are in the candidate handbook rather than on the exam page the question asks about.
+- **A is wrong**, though less wrong than it looks. The question count is not on the exam page — but it *is* published, in the Linux Foundation's candidate documentation, on the "Multiple Choice Exams: Important Instructions" page, for multiple-choice exams as a class [source: provenance-kcna-60-questions-2026-08-31]. The trap is the page you would think to check, not the fact.
+- **B is wrong**, for a subtler reason than A. The 75% passing score *is* published by the Linux Foundation — in its candidate documentation, on the "Multiple Choice Exams: Frequently Asked Questions" page, not on the exam page the question asks about [source: lf-mc-exam-faq-2026-08-23]. Keep the two straight by *where they live*: both are official, and both are in the candidate documentation rather than on the exam page the question asks about.
 - **D is wrong.** No study-hour recommendation appears anywhere on the page. Certifying bodies rarely prescribe preparation time, for the obvious reason that it depends entirely on what the candidate walks in carrying.
 
 Believing the inherited numbers isn't dangerous; *building a strategy on them* is. Answer every question, pace by elapsed time rather than by question number, and neither figure is one you need.
@@ -352,7 +349,7 @@ Believing the inherited numbers isn't dangerous; *building a strategy on them* i
 
 - **A is wrong.** Chapter count tracks *how much explaining a topic needs*, not *how many questions it generates*. Those correlate loosely at best. This book's chapter allocation deviates from the published domain weights by at most 2.8 percentage points, deliberately, and §5 says so out loud. Where the two disagree, the exam weights win. They're the published number.
 - **C is wrong.** An even split sounds fair and is simply inaccurate. It gives Cloud Native Architecture (12%) more than twice the attention its share of the exam warrants, and starves Kubernetes Fundamentals (44%).
-- **D is wrong**, and it's the trap §3 sets by accident. A domain that doubled from a small base is still small. Growth rate is not exam share: Application Delivery moved from 8% to 16%, which makes it the fastest-growing domain and still the second-smallest one. Sixteen does not outrank forty-four.
+- **D is wrong**, and it's the trap §3 sets by accident. A domain that doubled from a small base is still small. Growth rate is not exam share: Application Delivery moved from 8% to 16% [source: cncf-kcna-curriculum-retired-2026-09-04], which makes it the fastest-growing domain and still the second-smallest one. Sixteen does not outrank forty-four.
 
 ---
 
@@ -367,7 +364,7 @@ That last one is a habit rather than a fact, and it's the most portable thing in
 
 ---
 
-## ⚪ The Phrase We Haven't Defined Yet
+## ⚪ §4 — The Phrase We Haven't Defined Yet
 
 You've read "cloud native" perhaps a dozen times by now. It's in the credential's name. It's in two of the four domain names. And I haven't defined it.
 
@@ -377,7 +374,7 @@ That's deliberate, and I'd rather tell you than have you wonder.
 
 The CNCF maintains a published definition with named characteristics — the Cloud Native Definition, currently at version 1.1 [source: cncf-cloud-native-definition-2026-08-23]. You will get it in full in Chapter 17: the actual document, unabridged, each characteristic examined. *[cross-bearing: see Ch 17 §1 — the CNCF cloud native definition and its characteristics]*
 
-Why wait four hundred pages for a definition I could give you in a paragraph? Because those are two different experiences of the same sentence. Read on page ten, the definition is vocabulary: a string of adjectives you'd nod at and forget by Tuesday. Read in Chapter 17, after you have met containers, orchestration, declarative APIs, services, and delivery pipelines in person, every clause lands as a description of something you now recognize. The definition stops being a thing to memorize and becomes a summary of what you already know.
+Why wait four hundred pages for a definition I could give you in a paragraph? Because those are two different experiences of the same sentence. Read on page ten, the definition is vocabulary: a string of adjectives you'd nod at and forget by Tuesday. Read in Chapter 17, after you have met containers, orchestration, declarative APIs, services, and delivery pipelines in person, every clause lands as a description of something you now recognize *[cross-bearing: see Ch 4 §1 — what "declarative" means]*. The definition stops being a thing to memorize and becomes a summary of what you already know.
 
 So Chapter 1 leaves you with the question rather than the answer. Hold it open. It's the only thing this book asks you to carry that far.
 
@@ -389,7 +386,7 @@ So Chapter 1 leaves you with the question rather than the answer. Hold it open. 
 
 ---
 
-## ⚪ How This Book Is Built
+## ⚪ §5 — How This Book Is Built
 
 The instrument panel. Six Parts, twenty chapters.
 
@@ -447,11 +444,9 @@ Difficulty is marked on section headings: ⚪ Foundation, 🔵 Standard, 🟡 Ad
 
 ### Two mechanisms that look like padding and aren't
 
-<!-- AUTHOR-REVIEW: The two paragraphs below make learning-science claims — the pretesting effect and the testing/spacing effect — and the second explicitly appeals to external research ("a well-established effect"). No cached source covers learning science; this cannot be verified from the current source set. This chapter spends §2 teaching readers to distinguish published facts from inherited ones, then makes an unsourced appeal to research two sections later, so this gap is worth closing rather than waiving. Open a BOOK-LEVEL research gap (both mechanisms are book-wide, so cache once rather than per chapter): Roediger & Karpicke (2006) on the testing effect; Richland, Kornell & Kao (2009) on pretesting; Bjork on desirable difficulties. Tag both paragraphs here and the QC2.2 explanation below. If the gap will not be filled, downgrade "That's a well-established effect" to authorial framing so it stops claiming external authority. -->
+**The Soundings at the start of each chapter.** These are not quizzes. Nothing is scored, recorded, or held against you. They exist for two reasons. Pre-testing improves subsequent learning even when you get the answers wrong: an attempt that fails still leaves you better placed to learn the answer when you meet it [source: richland-kornell-kao-2009-pretesting-effect-2026-09-04]. And a score gives you something more useful than a grade: a reading instruction. High score, skim. Low score, slow down. Skipping them to save six minutes costs you more than six minutes.
 
-**The Soundings at the start of each chapter.** These are not quizzes. Nothing is scored, recorded, or held against you. They exist for two reasons. Pre-testing improves subsequent learning even when you get the answers wrong, because attempting a question primes you to notice its answer when you meet it. And a score gives you something more useful than a grade: a reading instruction. High score, skim. Low score, slow down. Skipping them to save six minutes costs you more than six minutes.
-
-**Later chapters will test earlier chapters' material.** Chapter 13's checkpoint will ask you something from Chapter 8. This is going to feel, the first few times, like the book forgot it already covered that. It didn't. Retrieving a fact after you've had time to partly forget it strengthens the memory far more than rereading it would. That's a well-established effect and the single highest-leverage thing this book does structurally. When you hit one of those questions and think *we did this already*, that thought is the mechanism working. Answer it anyway.
+**Later chapters will test earlier chapters' material.** Chapter 13's checkpoint will ask you something from Chapter 8. This is going to feel, the first few times, like the book forgot it already covered that. It didn't. Retrieving a fact after you've had time to partly forget it strengthens the memory far more than rereading it would [source: roediger-karpicke-2006-testing-effect-2026-09-04]. That's a well-established effect and the single highest-leverage thing this book does structurally. When you hit one of those questions and think *we did this already*, that thought is the mechanism working. Answer it anyway.
 
 ### The book-level artifacts
 
@@ -463,7 +458,7 @@ Three things ship alongside the chapters:
 
 ---
 
-## ⚪ Three Ways to Read This Book
+## ⚪ §6 — Three Ways to Read This Book
 
 You now have a Soundings score. Use it.
 
@@ -479,9 +474,9 @@ You now have a Soundings score. Use it.
 
 > **Logbook Entry:** Picture a candidate who sits the KCNA this year having studied hard from a course recorded in 2024.
 >
-> They'd done everything right by their own lights: worked through the whole course, drilled the practice sets, built a mental map of the exam. That map had five domains on it. It had a standalone observability domain worth 8%, and they had studied Prometheus with the thoroughness an 8% standalone domain deserves. They knew the exporters. They knew the scrape model. They could talk about PromQL at a whiteboard.
+> They'd done everything right by their own lights: worked through the whole course, drilled the practice sets, built a mental map of the exam. That map had five domains on it. It had a standalone observability domain worth 8% [source: cncf-kcna-curriculum-retired-2026-09-04], and they had studied Prometheus with the thoroughness an 8% standalone domain deserves. They knew the exporters. They knew the scrape model. They could talk about PromQL at a whiteboard.
 >
-> They passed. A conceptual exam is forgiving of a misallocated study plan when the underlying facts are sound. But they described the first ten minutes as recalibration, question by question, as it dawned on them that the exam's mass was not where they'd been told it was. Application Delivery kept coming up. They had given it the attention appropriate to 8% of an exam, and it is 16%.
+> They passed. A conceptual exam is forgiving of a misallocated study plan when the underlying facts are sound. But they described the first ten minutes as recalibration, question by question, as it dawned on them that the exam's mass was not where they'd been told it was. Application Delivery kept coming up. They had given it the attention appropriate to 8% of an exam, and it is 16% [source: cncf-kcna-curriculum-retired-2026-09-04].
 >
 > Ten minutes of a ninety-minute exam spent recalibrating is over a tenth of your time, and it goes at exactly the moment your composure matters most. That is what §3 of this chapter is for.
 
@@ -528,7 +523,7 @@ D) Only if the same workloads also run with a second provider
 - **B is wrong.** The answers are part of the instrument. They're where the reading-strategy rubric lives, and several of them carry cross-bearings pointing at where the material is covered. Reading them costs a minute and shapes how you read the chapter.
 - **D is wrong**, and its first half is right, which is what makes it tempting. The score genuinely says nothing about your ability. But it says a great deal about the gap between what you brought and what the chapter assumes — and that gap is exactly a pacing instruction. Discarding the score because it isn't a verdict throws away the only thing it was ever for.
 
-**2 — B.** Retrieval practice. Recalling something after a delay, once you've partly forgotten it, builds a substantially more durable memory than rereading the same passage would. Spacing those retrievals across chapters is what makes the material stick past exam day.
+**2 — B.** Retrieval practice. Recalling something after a delay, once you've partly forgotten it, builds a substantially more durable memory than rereading the same passage would [source: roediger-karpicke-2006-testing-effect-2026-09-04]. Spacing those retrievals across chapters is what makes the material stick past exam day.
 
 - **A is wrong**, and this is the reflex worth inoculating against right now. When a later checkpoint asks about earlier material, it will feel like repetition. It isn't. It's the one structural feature of this book most likely to be skipped by readers trying to be efficient, and skipping it costs the most.
 - **C is wrong.** Retrieval questions are scheduled by *spacing interval*, not by prerequisite relationship. Chapter 13 does not necessarily depend on Chapter 8; the question appears there because enough time has passed for the retrieval to be worth something.
@@ -559,9 +554,9 @@ The positive half of this — what the characteristics actually are — is Chapt
 |---|---|
 | What the KCNA is | Beginner-level, no prerequisites, multiple-choice, online and proctored — a test of discrimination, not of typing speed |
 | Published exam facts | 90 minutes · no prerequisites · 12-month eligibility window · 2 attempts included · valid 2 years · $250 exam-only as of 2026-08-23 |
-| Not on the exam page | The question count (60 — published in the candidate handbook's Important Instructions for MC exams) and the passing score (75% — published in the Linux Foundation's candidate FAQ). Both official; neither on the exam page |
+| Not on the exam page | The question count (60 — in the Linux Foundation's candidate documentation, "Multiple Choice Exams: Important Instructions") and the passing score (75% — the same documentation, "Multiple Choice Exams: Frequently Asked Questions"). Both official; neither on the exam page |
 | The four domains | **44 / 28 / 16 / 12** — Kubernetes Fundamentals · Container Orchestration · Cloud Native Application Delivery · Cloud Native Architecture |
-| The 2025 restructure | Effective no earlier than 2025-11-24. Five domains → four. Observability folded into Architecture. App Delivery doubled (8% → 16%). Orchestration +6 points |
+| The 2025 restructure | Effective no earlier than 2025-11-24. Five domains → four. Observability folded into Architecture. App Delivery doubled (8% → 16%). Orchestration +6 points [source: cncf-kcna-curriculum-retired-2026-09-04] |
 | Spotting stale material | Five domains, or a standalone "Cloud Native Observability" section, means the retired blueprint. Facts may be fine; weighting isn't |
 | Weight disclosure | CNCF publishes domain-level weights only. Per-chapter emphasis in this book is authored judgment, diverging from the published weights by at most 2.8 points |
 | "Cloud native" | Deliberately undefined until Chapter 17. It does **not** mean "runs in a public cloud" |
@@ -569,7 +564,7 @@ The positive half of this — what the characteristics actually are — is Chapt
 | Soundings | A pacing instrument, not a quiz. Low score = read slowly. Never a verdict |
 | Retrieval questions | Later chapters test earlier material on purpose. When it feels repetitive, that's the mechanism working |
 
-[source: lf-kcna-exam-page-2026-08-23] [source: lf-kcna-program-changes-2026-08-23] [source: cncf-cloud-native-definition-2026-08-23]
+[source: lf-kcna-exam-page-2026-08-23] [source: lf-kcna-program-changes-2026-08-23] [source: cncf-kcna-curriculum-retired-2026-09-04] [source: cncf-cloud-native-definition-2026-08-23]
 
 ---
 
@@ -579,17 +574,15 @@ Chapter 1 complete. You know what you're sitting, when the blueprint moved, and 
 
 That's the whole job of an orientation chapter, and it's done.
 
-🗺️ *Chart* → 🌊 Passage → 🌅 Dawn
+**🗺️ Chart** → 🌊 Passage → 🌅 Dawn
 
 ---
 
 ## The Voyage Ahead
 
-Chapter 2 ends where its title begins: with a shipping container. An actual one: corrugated steel, standardized corner fittings, the sort that stacks by the thousand on a container ship.
+Chapter 2 ends where its title begins: with a shipping container. An actual one: corrugated steel, standardized dimensions and fittings, the sort that stacks by the thousand on a container ship.
 
-That is not decoration, and it is not a metaphor chosen for the scenery. The intermodal shipping container changed global trade not by being a better box, but by being a box that cranes, truck beds, railcars, and ships' holds could all agree to handle identically. The contents stopped mattering to the infrastructure. That one decoupling, between what's inside and what moves it, is precisely what a software container does, and it's why Chapter 2 starts there rather than with a definition.
-
-<!-- AUTHOR-REVIEW: The intermodal-container history above is uncached and load-bearing for all of Chapter 2's opening. Cache an authority during Chapter 2's research pass — Levinson, *The Box*, or ISO 668 — and tag it there. The specific "stacks eight high" figure from the prior draft has been softened out pending that source. -->
+That is not decoration, and it is not a metaphor chosen for the scenery. The intermodal shipping container changed global trade not by being a better box, but by being a box that cranes, truck beds, railcars, and ships' holds could all agree to handle identically [source: levinson-the-box-pup-catalog-2026-09-04]. The contents stopped mattering to the infrastructure. That one decoupling, between what's inside and what moves it, is precisely what a software container does, and it's why Chapter 2 starts there rather than with a definition.
 
 The definition comes first; the crate is the payoff. By the time it arrives, you'll already see why it had to be that way.
 

@@ -1,1 +1,1 @@
-Two stacked panels split by a heavy horizontal line labelled authorship boundary. The upper panel, headed YOU AUTHOR THIS, lists apiVersion, kind, metadata with nested name, uid and optional namespace, and spec. The lower panel, headed THE SYSTEM AUTHORS THIS, contains only status.
+Two stacked panels split by a heavy horizontal line labeled authorship boundary. The upper panel, headed YOU AUTHOR THIS, lists apiVersion, kind, metadata with nested name, uid and optional namespace, and spec. The lower panel, headed THE SYSTEM AUTHORS THIS, contains only status.

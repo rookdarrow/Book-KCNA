@@ -52,7 +52,7 @@ sections:
     objectives: ["D1.1"]
     requires_figure: true
     figure_anchor: "ch05-fig02-pod-phases-and-container-states"
-    checkpoint_after: true
+    checkpoint_after: false
   - name: "A Pod's Identity"
     objectives: ["D1.1"]
     requires_figure: false
@@ -97,8 +97,8 @@ soundings_planned:
 #-- justification and B4's standing sanction ("minimums are minimums").
 question_budget:
   soundings: 8
-  taking_your_bearings: 15             # across 3 checkpoints (5 + 5 + 5)
-  practice_questions: 21
+  taking_your_bearings: 13             # across 2 checkpoints (5 + 8)
+  practice_questions: 23
   total_this_chapter: 44
 
 #-- Concept / objective / command tagging --------------------------------
@@ -193,7 +193,7 @@ figures_planned:
 
 ## Attention Budget
 
-**Total time: ~95 minutes | Recommended: Split across 2 sessions**
+**Total time: ~92 minutes | Recommended: Split across 2 sessions**
 
 | Section | Time | Attention Cost | Best Time to Study |
 |---|---|---|---|
@@ -203,11 +203,10 @@ figures_planned:
 | ☆ Taking Your Bearings #1 | 6 min | Medium | After a brief pause |
 | §4 Scheduled Once, Replaced Never | 5 min | Low | Anytime |
 | §5 Pod Phases and Container States | 15 min | **High** | Peak attention |
-| ☆ Taking Your Bearings #2 | 7 min | Medium | After a short break |
 | §6 A Pod's Identity | 4 min | Low | Anytime |
 | §7 Three Probes, Three Jobs | 12 min | Medium-high | When alert |
 | §8 What a Pod Is Owed | 12 min | **High** | Peak attention |
-| ☆ Taking Your Bearings #3 | 7 min | Medium | After a short break |
+| ☆ Taking Your Bearings #2 | 11 min | Medium | After a short break |
 | §9 The Smallest Deployable Unit | 4 min | Low | Anytime |
 
 **Attention Cost Key:**
@@ -215,9 +214,9 @@ figures_planned:
 - **Medium:** New concepts requiring focus — study when alert
 - **High:** Abstract or dense material — study at peak attention
 
-**Recommended split point:** after ☆ Taking Your Bearings #2. Sections 1–5 are *what a Pod is and what happens to it*; sections 6–8 are *what the kubelet does for it*. That is the natural seam.
+**Recommended split point:** after §5. Sections 1–5 are *what a Pod is and what happens to it*; sections 6–8 are *what the kubelet does for it*. That is the natural seam.
 
-*If you only have 15 minutes: read §5 and take Bearings #2. Phase-versus-state is the highest-leverage distinction in this chapter, and Chapter 13's entire troubleshooting method is built on top of it.*
+*If you only have 15 minutes: read §5, then answer the first three items of ☆ Taking Your Bearings #2 — they are the §5 items. Phase-versus-state is the highest-leverage distinction in this chapter, and Chapter 13's entire troubleshooting method is built on top of it.*
 
 ---
 
@@ -315,7 +314,7 @@ That costs something. Everything in a Pod lands on one machine, scales as one th
 
 Here is the answer, and it's worth reading slowly, because it's the load-bearing fact of the whole chapter.
 
-**Each Pod gets its own unique cluster-wide IP address. A Pod has a private network namespace which is shared by all of the containers within it. Processes running in different containers in the same Pod can communicate with each other over `localhost`** [source: k8s-docs-network-model-2026-08-23].
+**Each Pod gets its own unique cluster-wide IP address. A Pod has a private network namespace which is shared by all of the containers within it. Processes running in different containers in the same Pod can communicate with each other over `localhost`** [source: k8s-docs-network-model-2026-08-23]. The address itself — where it comes from, and the rules the cluster network must obey to make it reachable — is Chapter 9's *[cross-bearing: see Ch 9 §1 — the Pod IP and the network model]*.
 
 Read that as an explanation rather than a feature list. Suppose you want two containers to behave the way two processes on one host behave: able to reach each other instantly, without service discovery, without a network hop, without either one needing to know the other's address. There is exactly one way to give them that. Put them in the same network namespace. And a network namespace is not something you can hand out per-container-but-shared and still call the container an independent schedulable thing. The moment two containers share a network namespace, they have to be placed together, started together, and torn down together. They have become one unit.
 
@@ -351,9 +350,7 @@ The second half of the shared context is **storage**. Containers in a Pod can sh
 
 Chapter 3 described the kubelet's job in a sentence that contained an unexplained noun: the kubelet "takes a set of PodSpecs that are provided through various mechanisms and ensures that the containers described in those PodSpecs are running and healthy" [source: k8s-docs-cluster-architecture-2026-08-23]. You were told PodSpecs would get their proper treatment here *[cross-bearing: see Ch 3 §3 — the kubelet and what it ensures]*.
 
-There's less to it than the name suggests, because Chapter 4 already taught it. A Pod is an object like any other: `apiVersion`, `kind`, `metadata`, `spec`, plus a `status` the system maintains [source: k8s-docs-objects-2026-08-23]. Read "PodSpec" as **the `spec` field of a Pod**. It's what you write; it lists the containers, their images, and everything else in this chapter. That's the whole connection, and it's worth exactly one sentence. You don't need it developed; you need it *joined up*.
-
-<!-- AUTHOR-REVIEW: the identity "PodSpec = the spec field of a Pod" is entailed by k8s-docs-cluster-architecture (which uses "PodSpecs" without defining it) plus k8s-docs-objects (which establishes spec generically), but is not stated verbatim in any cached snapshot. The pending k8s-docs-pods-2026-08-24.md snapshot carries `podspec` in its concepts_covered; tag after materialization, or keep this as an explicit authorial gloss. -->
+There's less to it than the name suggests, because Chapter 4 already taught it. A Pod is an object like any other: `apiVersion`, `kind`, `metadata`, `spec`, plus a `status` the system maintains [source: k8s-docs-objects-2026-08-23]. Read "PodSpec" as **the `spec` field of a Pod** — the API reference types that field as a `PodSpec`, "a description of a pod," and calls it the "specification of the desired behavior of the pod" [source: k8s-api-ref-pod-v1-2026-09-04]. It's what you write; it lists the containers, their images, and everything else in this chapter. That's the whole connection, and it's worth exactly one sentence. You don't need it developed; you need it *joined up*.
 
 The second half of Chapter 3's sentence — "running **and healthy**" — is a bigger promise, and §7 pays it.
 
@@ -361,7 +358,7 @@ The second half of Chapter 3's sentence — "running **and healthy**" — is a b
 
 > 🪝 **Snag:** Each container in a Pod does **not** get its own IP address. The Pod gets one; all its containers share it. This is the easiest carry-over error to make from single-container Docker experience, where "one container, one IP" was a safe assumption. In Kubernetes it is not.
 
-That one fact is the premise of Chapter 9. When you get to Services, the entire argument for why they must exist rests on the Pod having an IP that changes when the Pod is replaced *[cross-bearing: see Ch 9 — why a Service is necessary]*.
+That one fact is the premise of Chapter 9. When you get to Services, the entire argument for why they must exist rests on the Pod having an IP that changes when the Pod is replaced *[cross-bearing: see Ch 9 §2 — why a Service is necessary]*.
 
 ---
 
@@ -381,7 +378,7 @@ The decision rule is short, and it falls straight out of §1. There are exactly 
 
 The helper container in a multi-container Pod has a name you'll meet constantly: the **sidecar**. A log-shipping agent that reads files the app writes to a shared volume; the documented cluster-logging pattern is exactly this, "a sidecar container with a logging agent configured to pick up logs from an application container" [source: k8s-docs-logging-architecture-2026-08-23]. A proxy that intercepts the app's network traffic on `localhost`, which is what a service mesh does when it "deploys an Envoy proxy alongside each pod" [source: istio-service-mesh-2026-08-23]. A credential-refreshing helper that rewrites a token file the app reads. In every case the sidecar exists to do something *for* the main container, using one of exactly those two coupling mechanisms.
 
-You'll meet the sidecar again in Chapter 17, where a service mesh deploys a proxy alongside each Pod as its data plane *[cross-bearing: see Ch 17 — the mesh data plane]*. That's Chapter 17's material; here, the word is enough.
+You'll meet the sidecar again in Chapter 17, where a service mesh deploys a proxy alongside each Pod as its data plane *[cross-bearing: see Ch 17 §5 — the mesh data plane]*. That's Chapter 17's material; here, the word is enough.
 
 Under the hood, modern Kubernetes implements sidecars as a special case of init container — one with `restartPolicy: Always`, which keeps running after Pod startup instead of exiting; the mechanism is on by default since v1.29 [source: k8s-docs-sidecar-containers-2026-08-24]. That sentence will make full sense a section from now; file it for §3.
 
@@ -428,10 +425,10 @@ Two things in that figure carry the whole section. The init containers are stric
 
 ### When an init container fails
 
-This is the part the exam cares about. If an init container fails, the kubelet restarts it, and the Pod's `restartPolicy` governs whether it gets retried at all. Which means:
+This is the part the exam cares about. If an init container fails, the kubelet restarts it, repeatedly, until it succeeds — unless the Pod's `restartPolicy` says otherwise [source: k8s-docs-init-containers-2026-08-24]. Which means:
 
 - With the default policy, a Pod with a broken init container sits there retrying, and **never progresses to its app containers**.
-- With a `restartPolicy` of `Never`, the Pod fails outright.
+- With a `restartPolicy` of `Never`, Kubernetes treats the whole Pod as failed [source: k8s-docs-init-containers-2026-08-24].
 
 Those two observable outcomes are what matter here. That sentence also leans on a field this chapter hasn't defined yet, and it does so deliberately. `restartPolicy` is §5's material, and stating the dependency plainly beats pretending the sections are independent *[cross-bearing: see Ch 5 §5 — restartPolicy and the restart backoff]*. When you get there, come back and the failure behavior will click into place.
 
@@ -445,7 +442,7 @@ That's why they run in sequence. A thing that exits can be waited on. It's why "
 
 > 🪢 **Mnemonic:** *In order, to completion, all of them, then the app.* Four beats, one line. Say it once and you have the section.
 
-Debugging a Pod stuck behind a failing init container falls under **Troubleshooting**, one of the twelve named KCNA competencies [source: cncf-kcna-curriculum-pdf-2026-08-23], and the method is Chapter 16's *[cross-bearing: see Ch 16 §2 — debugging init containers]*. What you need here is the model of what *should* happen, so you can recognize when it hasn't.
+Working out *why* an init container keeps failing falls under **Debugging**, one of the thirteen named KCNA competencies [source: cncf-kcna-curriculum-pdf-2026-08-23], and the method is Chapter 16's *[cross-bearing: see Ch 16 §2 — debugging init containers]*. What you need here is the model of what *should* happen, so you can recognize when it hasn't.
 
 ---
 
@@ -532,11 +529,11 @@ The lifetime, in order:
 - It is **scheduled once in its lifetime** to a specific node, where it remains until termination or deletion [source: k8s-docs-pod-lifecycle-2026-08-23].
 - It is **never "rescheduled" to a different node**. Instead, it is replaced by a new, near-identical Pod **with a different UID** [source: k8s-docs-pod-lifecycle-2026-08-23].
 - If the node dies, the Pods running on it are **marked for deletion after a timeout** [source: k8s-docs-pod-lifecycle-2026-08-23].
-- Pods **do not survive** evictions due to lack of resources or node maintenance [source: k8s-docs-pod-lifecycle-2026-08-23].
+- Pods **do not survive** evictions due to lack of resources or node maintenance [source: k8s-docs-pod-lifecycle-2026-08-23]. What an eviction looks like from the outside, and how to tell one from a crash, is Chapter 13's *[cross-bearing: see Ch 13 §4 — Evicted and node-pressure eviction]*.
 
 The documentation's own summary is that Pods are "relatively ephemeral (rather than durable) entities" [source: k8s-docs-pod-lifecycle-2026-08-23]. That's the word to hold onto.
 
-> 🪝 **Snag:** A Pod on a failed node is **not rescheduled onto a healthy node.** It is deleted, and something creates a new one. The word "rescheduled" implies the same object moving, which will lead you to the wrong answer on questions about UIDs, about identity, and about why StatefulSets are different *[cross-bearing: see Ch 6 — StatefulSets]*. Kubernetes does not move Pods. It replaces them.
+> 🪝 **Snag:** A Pod on a failed node is **not rescheduled onto a healthy node.** It is deleted, and something creates a new one. The word "rescheduled" implies the same object moving, which will lead you to the wrong answer on questions about UIDs, about identity, and about why StatefulSets are different *[cross-bearing: see Ch 6 §6 — StatefulSets]*. Kubernetes does not move Pods. It replaces them.
 
 > ⚓ **Worth Securing:** The replacement Pod can have the same *name* and still be a different object. Chapter 4 taught that a UID is "intended to distinguish between historical occurrences of similar entities" [source: k8s-docs-names-and-uids-2026-08-24] — this is precisely that case. Same name, different UID, different object, and the cluster knows the difference even when the human reading `kubectl get pods` doesn't.
 
@@ -556,7 +553,7 @@ You've met this idea before. Chapter 2 taught that containers are intended to be
 
 A Pod is that instinct one level up. You don't repair a failed Pod; you get a new one. Replace, don't repair: at the image layer and at the Pod layer both. A hull that cannot be patched underway has to be a hull you are willing to lose, and the whole design follows from accepting that. Noticing that it's the *same* conviction expressed twice is worth more than memorizing either instance.
 
-That replacement story has a mechanical half, and it is exam-relevant: Pods terminate *gracefully*, not instantly. Because Pods represent processes, the design aim is that they get a chance to shut down cleanly rather than being violently killed with no chance to clean up [source: k8s-docs-pod-termination-2026-08-24]. When you delete a Pod, the kubelet runs any `preStop` hook a container defines, then asks the runtime to stop each container with a TERM signal. A countdown runs alongside: `terminationGracePeriodSeconds`, **30 seconds by default**. If containers are still running when it expires, they get KILL, and only then is the object removed from the API [source: k8s-docs-pod-termination-2026-08-24]. A workload that exits promptly on TERM is what makes replace-don't-repair cheap in practice — Chapter 15 will hand you the methodology's word for it, *disposability* *[cross-bearing: see Ch 15 — the twelve factors]*.
+That replacement story has a mechanical half, and it is exam-relevant: Pods terminate *gracefully*, not instantly. Because Pods represent processes, the design aim is that they get a chance to shut down cleanly rather than being violently killed with no chance to clean up [source: k8s-docs-pod-termination-2026-08-24]. When you delete a Pod, the kubelet runs any `preStop` hook a container defines, then asks the runtime to stop each container with a TERM signal. A countdown runs alongside: `terminationGracePeriodSeconds`, **30 seconds by default**. If containers are still running when it expires, they get KILL, and only then is the object removed from the API [source: k8s-docs-pod-termination-2026-08-24]. A workload that exits promptly on TERM is what makes replace-don't-repair cheap in practice — Chapter 15 will hand you the methodology's word for it, *disposability* *[cross-bearing: see Ch 15 §1 — the twelve factors]*.
 
 ---
 
@@ -615,13 +612,13 @@ WORKED OVERLAY — both readings are legitimate:
 ┌─ POD  phase: Running ──────────────────────────────────────┐
 │   ┌─ app     state: Running                             ┐  │
 │   └─────────────────────────────────────────────────────┘  │
-│   ┌─ helper  state: Waiting   Reason: <restart backoff>  ┐  │
+│   ┌─ helper  state: Waiting   Reason: CrashLoopBackOff   ┐  │
 │   └─────────────────────────────────────────────────────┘  │
 └─────────────────────────────────────────────────────────────┘
 ```
 -->
 
-<!-- AUTHOR-REVIEW: the worked overlay previously showed `Reason: ImagePullBackOff` against `phase: Running`, which CONTRADICTS the cached definition of Running ("all of the containers have been created") — a container blocked on an image pull has not been created, and the draft's own table further down maps that exact scenario to `Pending`. Fixed here by swapping to a POST-creation waiting reason. The natural label is `CrashLoopBackOff` (a container that started, failed, and is serving its backoff delay), but that status-reason string appears in NO cached snapshot — a genuine research gap, distinct from the five unmaterialized snapshots. The neutral placeholder `<restart backoff>` is used instead. Once a source for container status reasons is fetched, replace the placeholder with `CrashLoopBackOff` here and in the prose two subsections below, and tag both. -->
+<!-- FIGURE-REGEN ch05-fig02: the 2026-09-01 render still labels the worked overlay "Reason: ImagePullBackOff" against "phase: Running", a pairing the prose below rules out (an unpulled image means the container was never created, so the Pod is Pending). Regenerate the overlay with CrashLoopBackOff to match this fallback, then update the alt text to match the new render. -->
 
 The nesting in that figure is the point. Container states are drawn *inside* the Pod because that is the actual relationship: one contains the other. If you find yourself picturing them side by side, as two alternative ways of saying the same thing, the figure has failed and so has the model.
 
@@ -647,9 +644,7 @@ If the exam gives you a Pod whose phase is `Running` and asks whether the applic
 
 A container that reaches `Terminated` doesn't necessarily stay there. What decides is `restartPolicy`.
 
-**The `spec` of a Pod has a `restartPolicy` field with possible values `Always` (the default), `OnFailure`, and `Never`. The `restartPolicy` applies to all containers in the Pod** [source: k8s-docs-pod-lifecycle-2026-08-23]. It is set once, on the Pod, which is trap #3 above stated as a fact rather than a warning.
-
-<!-- AUTHOR-REVIEW: the prior draft asserted "There is no way to configure one container to restart and another not to" — an absolute negative that (a) is unverifiable against the cache and (b) is complicated by the mechanism this chapter currently omits: sidecar containers ARE init containers carrying `restartPolicy: Always`. The absolute has been dropped rather than scoped, because scoping it ("…for app containers") would itself be an unsourced claim. Once k8s-docs-sidecar-containers-2026-08-24.md and k8s-docs-init-containers-2026-08-24.md are materialized, decide whether to (a) restore the absolute scoped to app containers, or (b) leave it as written. Note the retrieved init-containers text also states that a Pod policy of `Always` causes init containers to use `OnFailure` — so "applies to all containers" is true of the FIELD's scope but not of the resulting behavior in every case. Practice question 10's distractor C rebuttal depends on this resolution. -->
+**The `spec` of a Pod has a `restartPolicy` field with possible values `Always` (the default), `OnFailure`, and `Never`. The `restartPolicy` applies to all containers in the Pod** [source: k8s-docs-pod-lifecycle-2026-08-23]. It is set once, on the Pod, which is trap #3 above stated as a fact rather than a warning. The one container-level `restartPolicy` the documentation describes is the sidecar case from §2: an entry in `initContainers` may carry its own `restartPolicy: Always`, and that is precisely what turns a one-shot init step into a sidecar that runs for the life of the Pod [source: k8s-docs-sidecar-containers-2026-08-24]. App containers are governed by the Pod-level value, full stop [source: k8s-docs-pod-lifecycle-2026-08-23].
 
 When a container does exit and the policy calls for a restart, the kubelet doesn't retry immediately and forever. **After containers in a Pod exit, the kubelet restarts them with an exponential backoff delay — 10s, 20s, 40s, and so on — capped at five minutes. Once a container has executed for 10 minutes without any problems, the kubelet resets the restart backoff timer for that container** [source: k8s-docs-pod-lifecycle-2026-08-23].
 
@@ -671,9 +666,7 @@ Line that up against both vocabularies:
 
 The phase tells you the Pod hasn't gotten going. The state tells you which container. The `Reason` tells you why. Three fields, three levels of specificity, and only the third one is actionable.
 
-Note carefully that the phase here is `Pending`, not `Running`. `Running` requires that **all** the containers have been created; a container that cannot pull its image has not been created. That distinction is exactly why the worked overlay in the figure above uses a *post-creation* waiting reason instead of this one.
-
-<!-- AUTHOR-REVIEW: `CrashLoopBackOff` — the counterpart status reason for a container that HAS been created, has failed, and is serving its backoff delay before the next attempt — appears in no cached snapshot and so cannot be named here. It is the natural label for the figure's worked overlay and for one sentence in this subsection. Open a research fetch for container status reasons (candidates: the Pod-lifecycle container-states section, or the Pod API reference ContainerStateWaiting). -->
+Note carefully that the phase here is `Pending`, not `Running`. `Running` requires that **all** the containers have been created; a container that cannot pull its image has not been created. The *post-creation* counterpart has a name too. A container that has been created, has crashed, and is sitting out the restart backoff between attempts is reported as **`CrashLoopBackOff`** — the state in which "the backoff delay mechanism is currently in effect for a container in a crash loop" [source: k8s-docs-container-restart-backoff-2026-08-31]. That container *has* been created, so a Pod holding it can report `Running` while it waits; an image that never pulled cannot say the same. One caution from the documentation itself: `CrashLoopBackOff` is the word `kubectl` prints in its `Status` column, "a kubectl display field for user intuition," and it is not the Pod's `phase` [source: k8s-docs-pod-failure-signatures-2026-08-31]. What to do when you see it is Chapter 13's *[cross-bearing: see Ch 13 §4 — CrashLoopBackOff]*.
 
 **What this section deliberately does not do** is tell you what to *run*. No `kubectl describe` walkthrough, no event stream, no diagnostic sequence. Chapter 5 owns the vocabulary; Chapter 13 owns the method, and Chapter 2 already published that boundary *[cross-bearing: see Ch 13 §2 — diagnosing a Pod that will not start]*. The reason the boundary is worth holding: Chapter 13's method is *"read the phase before you read the logs."* That instruction is worthless to a reader who doesn't already own the vocabulary. This section is what makes Chapter 13 possible.
 
@@ -721,18 +714,16 @@ Soundings question 4 asked you to describe a situation where a process is runnin
 
 ### The four mechanisms (how a probe asks)
 
-Take these first, separately, because they're orthogonal to the three types and tangle badly if you learn them together. There are four check mechanisms [source: k8s-docs-pod-lifecycle-2026-08-23]:
+Take these first, separately, because they're orthogonal to the three types and tangle badly if you learn them together. There are four check mechanisms [source: k8s-docs-pod-lifecycle-2026-08-23] [source: k8s-docs-pod-probes-2026-09-04]:
 
 | Mechanism | What it does | Success means |
 |---|---|---|
 | `exec` | Executes a command in the container | Exit status 0 |
 | `httpGet` | HTTP GET against the Pod's IP, port, and path | Status code ≥ 200 and < 400 |
 | `tcpSocket` | TCP check against a port | The port is open |
-| `grpc` | A gRPC health check | The gRPC health check passes |
+| `grpc` | A gRPC health check | The response status is `SERVING` |
 
-**Any probe type can use any mechanism.** The mechanism is *how the question is asked*; the type is *what the answer is used for*. Keep them in separate compartments and this section is easy. Merge them and you'll be trying to memorize twelve things instead of seven.
-
-<!-- AUTHOR-REVIEW: two small over-tagging notes on the table and the sentence above. (a) The cached pod-lifecycle snapshot gives explicit success criteria for exec, httpGet and tcpSocket but says only "grpc (gRPC health check)" — the fourth cell has been softened to "the gRPC health check passes" rather than the more specific "reports serving," which was authorial. (b) The orthogonality claim — "any probe type can use any mechanism" — is correct in fact but is inferred from the snapshot listing mechanisms and types in adjacent sentences; it is nowhere asserted. It is also the entire answer to Practice question 17, whose three distractors all depend on it. Fetch the probes section of the Pod-lifecycle page or the Pod API reference and tag both sites properly before a graded item rests on document layout. -->
+**Any probe type can use any mechanism.** The documentation's rule is that "each probe must define exactly one of these four mechanisms," and it says so for every probe, whatever its type [source: k8s-docs-pod-probes-2026-09-04]. The mechanism is *how the question is asked*; the type is *what the answer is used for*. Keep them in separate compartments and this section is easy. Merge them and you'll be trying to memorize twelve things instead of seven.
 
 Note that `httpGet` goes to *the Pod's* IP, not the container's: §1's fact turning up somewhere you might not have expected it.
 
@@ -784,7 +775,7 @@ Liveness and readiness look almost identical on paper. Both are periodic checks.
 - **Liveness restarts, and does not remove from service.**
 - **Readiness removes from service, and does not restart.**
 
-If you remember one sentence from §7, that's the one.
+If you remember one sentence from §7, that's the one. Read it as a statement about what each probe *does*: the documentation's liveness definition says nothing about endpoints, and only the readiness definition does [source: k8s-docs-pod-lifecycle-2026-08-23]. It is not a promise about who receives traffic during a restart — a container that has just been killed is not ready either, and that is readiness's machinery answering for it, not liveness's.
 
 > ★ **Fixed Point:** **Liveness failure → the kubelet kills the container** (restart policy then applies). **Readiness failure → the Pod's IP is removed from the endpoints of all matching Services; nothing is restarted.** **Startup probe configured → all other probes are disabled until it succeeds.**
 
@@ -860,14 +851,14 @@ Two more exist and are specified the same way — `ephemeral-storage` (local eph
 
 There is a fourth movement to this arithmetic, and it is the one the exam names. **Kubernetes classifies every Pod you run into a *quality of service (QoS) class* and uses that classification to influence how the Pod is treated when a node comes under resource pressure** [source: k8s-docs-pod-qos-2026-08-24]. You never set the class directly. It is derived entirely from the shape of the requests and limits you just learned to write:
 
-- **`Guaranteed`** — every container in the Pod has a memory limit and a memory request set equal to each other, and a CPU limit and CPU request set equal to each other. These Pods have the strictest resource bounds and are the least likely to face eviction: guaranteed not to be killed until they exceed their own limits [source: k8s-docs-pod-qos-2026-08-24].
+- **`Guaranteed`** — every container in the Pod has a memory limit and a memory request set equal to each other, and a CPU limit and CPU request set equal to each other. These Pods have the strictest resource bounds and are the least likely to face eviction: guaranteed not to be killed until they exceed their own limits, or until the node has nothing lower-priority left to take first [source: k8s-docs-pod-qos-2026-08-24].
 - **`Burstable`** — the Pod does not meet the `Guaranteed` criteria, but at least one container has a memory or CPU request or limit. There is a lower-bound guarantee based on the request, with room to use more when the node has spare capacity [source: k8s-docs-pod-qos-2026-08-24].
 - **`BestEffort`** — no container in the Pod has any memory or CPU request or limit at all. These Pods may use whatever node resources are not spoken for by the other classes — and when the node runs short, they are the first over the side [source: k8s-docs-pod-qos-2026-08-24].
 
-Keep the mechanisms separate in your head, because a distractor will happily blur them: CPU overuse is throttled and memory overuse is OOM-killed, per container, as above — while the QoS class governs *eviction under node pressure*, a Pod-level decision. Same inputs, different machinery.
+Keep the mechanisms separate in your head, because a distractor will happily blur them: CPU overuse is throttled and memory overuse is OOM-killed, per container, as above — while the QoS class governs *eviction under node pressure*, a Pod-level decision — `BestEffort` Pods go first, then `Burstable`, then `Guaranteed` [source: k8s-docs-pod-qos-2026-08-24], and reading an eviction after the fact is Chapter 13's *[cross-bearing: see Ch 13 §4 — eviction order by QoS class]*. Same inputs, different machinery.
 
 <!-- FIGURE: ch05-fig05-requests-limits-qos-classes -->
-![A horizontal band for one container's use of one resource, marked at zero, at the request, and at the limit; the zone up to the request is reserved and read by the kube-scheduler, the zone between request and limit is allowed when the node has spare capacity, and the zone past the limit is not allowed and is enforced by the kubelet with the kernel; a note beneath states that CPU is throttled at the limit while memory is OOM-killed reactively under node memory pressure](figures/ch05-fig05-requests-limits-qos-classes.svg)
+![A vertical scale for one container's use of one resource, marked at zero, at the request, and at the limit; the zone up to the request is reserved for this container and is what the kube-scheduler reads to choose the node, the zone between request and limit is allowed if the node has spare capacity, and the zone past the limit is not allowed and is enforced by the kubelet with the kernel; a note beneath states that CPU is throttled at the limit while memory is OOM-killed reactively under node memory pressure](figures/ch05-fig05-requests-limits-qos-classes.svg)
 
 <!-- ASCII-FALLBACK
 ```
@@ -893,7 +884,6 @@ A SINGLE CONTAINER'S RESOURCE BAND
   Guaranteed     every container: limits = requests (CPU and memory)
   Burstable      not Guaranteed, but at least one request or limit set
   BestEffort     no requests and no limits anywhere in the Pod
-                research snapshot, do not fill in from memory
 ```
 -->
 
@@ -901,7 +891,7 @@ A SINGLE CONTAINER'S RESOURCE BAND
 
 ### Where these two numbers come back
 
-Briefly, because you'll see all of this again: requests are the input to the scheduler's filtering step *[cross-bearing: see Ch 7 §2 — resource requests as a scheduling filter]*. They're what the system is reporting on when a Pod is killed for using too much *[cross-bearing: see Ch 13 §4 — OOMKilled and Evicted]*. They're the baseline autoscalers compare observed usage against *[cross-bearing: see Ch 17 — autoscaling targets]*, and they're the denominator when monitoring reports "utilization" *[cross-bearing: see Ch 18 §3 — utilization relative to requests]*.
+Briefly, because you'll see all of this again: requests are the input to the scheduler's filtering step *[cross-bearing: see Ch 7 §2 — resource requests as a scheduling filter]*. They're what the system is reporting on when a Pod is killed for using too much *[cross-bearing: see Ch 13 §4 — OOMKilled and Evicted]*. They're the baseline autoscalers compare observed usage against *[cross-bearing: see Ch 17 §7 — autoscaling targets]*, and they're the denominator when monitoring reports "utilization" *[cross-bearing: see Ch 18 §3 — utilization relative to requests]*.
 
 Two numbers in a Pod spec; four later chapters. It's worth getting right the first time.
 
@@ -937,13 +927,13 @@ A Pod is `Pending` until every container has been created; one that can't pull i
 
 The trap: writing `ImagePullBackOff` as the *state* rather than the *reason* is the most self-concealing miss in the chapter — the string is right, the slot is wrong. The three container states are only ever `Waiting`, `Running`, or `Terminated`.
 
-Contrast a Pod that's `Running` with one container `Waiting` on a restart backoff between crash-loop attempts: same state name, but that container has already been created once, so the Pod reports `Running`, not `Pending`. Same word, different reason, different phase.
+Contrast a Pod that's `Running` with one container `Waiting` in `CrashLoopBackOff`, sitting out the restart backoff between crash-loop attempts: same state name, but that container has already been created once, so the Pod reports `Running`, not `Pending`. Same word, different reason, different phase.
 
 Two more answers are tempting here, for different reasons. "A Pod can't be `Running` if a container is `Waiting`" treats phase and state as one vocabulary that must agree — they're two vocabularies at two scopes, and post-creation waits are exactly the case where they needn't. "`Running` means the app is healthy" reaches the right verdict for the wrong reason: `Running` explicitly includes containers that are starting or restarting, so this belief will look at a crash-looping Pod, see `Running`, and call it fine.
 
-**2. It can't be set per-container. `restartPolicy` lives on the Pod's `spec` and governs every container in it** [source: k8s-docs-pod-lifecycle-2026-08-23].
+**2. Not on an app container. `restartPolicy` lives on the Pod's `spec` and governs every container in it** [source: k8s-docs-pod-lifecycle-2026-08-23].
 
-If two workloads genuinely need different restart behavior, that's a sign they belong in two Pods, not one.
+If two workloads genuinely need different restart behavior, that's a sign they belong in two Pods, not one. The single exception is the one §5 named: an entry in `initContainers` may carry `restartPolicy: Always`, which makes it a sidecar [source: k8s-docs-sidecar-containers-2026-08-24] — a different mechanism from what the colleague intended, not a per-container override of the Pod's policy.
 
 **3. `status` carries `phase`, and the Kubernetes system writes it.** You declare desired state in `spec`; `status` is what gets reported back [source: k8s-docs-objects-2026-08-23]. `phase` is an observation, not an instruction — asking for a particular phase is a category error. A phase is a report on what's true, not a request. Chapter 4's spec/status split was abstract when you learned it; this is the first place in the book with a concrete field to hang it on.
 
@@ -1036,10 +1026,8 @@ A hull is not cargo. The vessel is the thing that gets a berth, an address, and 
 - **`restartPolicy` is Pod-level and applies to every container** — because the Pod is the unit (§5).
 - **The phase is Pod-level while the state is per-container** — because the Pod is the unit, but the containers are what actually run (§5).
 - **Identity attaches to the Pod** — one ServiceAccount for the whole thing, not one per container (§6).
-- **Requests are declared per container, but the scheduler places the Pod** — because the thing being placed is the wrapper, not any single container inside it (§8).
+- **Requests are declared per container, but the scheduler places the Pod** — because the thing being placed is the wrapper, not any single container inside it, and the request it weighs is the sum of the containers' requests [source: k8s-docs-pod-qos-2026-08-24] (§8).
 - **Services will select Pods, not containers** — which is what Chapter 9 is built on (§1, forward).
-
-<!-- AUTHOR-REVIEW: the sixth bullet previously read "…and it needs the wrapper's total," asserting that a Pod's resource request is the SUM of its containers' requests. That aggregation rule is not stated in k8s-docs-resource-management-2026-08-23, which covers only per-container specification and the scheduler's use of requests. The bullet has been reworded to claim only what is sourced (kube-scheduler places Pods). The summation IS recoverable from the pending k8s-docs-pod-qos-2026-08-24.md snapshot ("The resource request of a Pod is equal to the sum of the resource requests of its component Containers"); restore and tag once materialized. Note the pending init-containers snapshot complicates the rule for Pods that declare init containers — check both before writing the aggregate claim. -->
 
 Now go back to where you started this chapter. If "Pod is Kubernetes' word for container" had been true, **every single one of those seven statements would be wrong.** Not subtly wrong. Wrong in ways that produce confidently incorrect answers about IP addressing, about restart behavior, about what a status field is describing, and about what a Service is pointed at.
 
@@ -1081,9 +1069,7 @@ The first three of those aren't three separate things to memorize. They're one r
 
 ## Practice Questions
 
-Twenty-three questions. Five of them retrieve material from Chapters 2–4; four require two sections of this chapter at once. Answers and full explanations follow the last question.
-
-<!-- AUTHOR-REVIEW: budget delta. The Ch 5 outline allocates 21 Practice questions; this revision carries 23. The two additions (Q22, phase + init containers; Q23, multi-container + phase) close the two interleaving gaps the question-quality audit named and are the only realistic way to test `phase-succeeded`, which was previously untested. Offsetting: the 2–3 QoS items the audit anticipated are NOT added, because §8's QoS material is blocked on an unmaterialized snapshot — so chapter total lands at 46 rather than the 46–47 the audit projected. If the 21 budget must hold exactly, the cut candidate identified by the audit is Q17 (three structurally identical distractors, and its correct answer rests on an inferred rather than sourced orthogonality claim — see the author-review in §7). Retrieval rate with 23 items: 8 of 38 Bearings + Practice = 21.1%, above the 20% target the arc outline sets for Chapter 5. -->
+Twenty-three questions. Five of them retrieve material from Chapters 2–4; the last two require two sections of this chapter at once. Answers and full explanations follow the last question.
 
 ---
 
@@ -1184,7 +1170,7 @@ D) Pod creation fails validation until a ServiceAccount is specified
 **13.** **[retrieval: ch4]** Chapter 4 listed `kubernetes.io/service-account-token` among the built-in Secret types. Which statement about it is correct today?
 
 A) It is the current, recommended way to deliver a ServiceAccount credential to a Pod
-B) It is the legacy long-lived form; since v1.22 the recommended approach uses short-lived, automatically rotating tokens via the TokenRequest API
+B) It is the legacy long-lived form; the recommended approach now uses short-lived, automatically rotating tokens obtained through the TokenRequest API
 C) It is a cluster-scoped object, unlike other Secret types
 D) It has been removed from Kubernetes and is no longer a valid Secret type
 
@@ -1292,7 +1278,7 @@ Init containers run before the app containers, in declaration order, each comple
 
 **5. C — It is an identifying attribute in `metadata` that other objects can select on.**
 Labels are key/value pairs attached to objects, intended to specify identifying attributes, and used to organize and select subsets of objects [source: k8s-docs-labels-selectors-2026-08-23].
-*A* confuses labels with names: a Pod's name is unique within a namespace; labels are deliberately non-unique. *B* confuses labels with `status`; labels live in `metadata` and you write them. *D* describes `nodeSelector`, which is about *node* labels constraining placement — Kubernetes only schedules the Pod onto nodes that have each of the labels you specify [source: k8s-docs-assign-pod-node-2026-08-23] — not about Pod labels. Hold onto the correct answer: it's the mechanism ReplicaSets use to know which Pods are theirs, and the mechanism a Service uses to know which Pods to route to.
+*A* confuses labels with names: a Pod's name is unique within a namespace; labels are deliberately non-unique. *B* confuses labels with `status`; labels live in `metadata` and you write them. *D* describes `nodeSelector`, which is about *node* labels constraining placement — Kubernetes only schedules the Pod onto nodes that have each of the labels you specify [source: k8s-docs-assign-pod-node-2026-08-23] — not about Pod labels. Hold onto the correct answer: it's the mechanism ReplicaSets use to know which Pods are theirs *[cross-bearing: see Ch 6 §1 — Deployments, ReplicaSets, and the Pod template]*, and the mechanism a Service uses to know which Pods to route to *[cross-bearing: see Ch 9 §4 — the Service selector]*.
 
 **6. B — Marked for deletion after a timeout, and replaced by a new Pod with a different UID.**
 If a node dies, the Pods running on it are marked for deletion after a timeout; a Pod is never rescheduled to a different node but is replaced by a new, near-identical Pod with a different UID [source: k8s-docs-pod-lifecycle-2026-08-23].
@@ -1315,7 +1301,7 @@ This is the costliest trap in the chapter: the phase is genuinely, correctly `Ru
 
 **10. B — Pod-level, applies to all containers, defaults to `Always`.**
 The Pod's `spec` has a `restartPolicy` field with values `Always` (default), `OnFailure`, and `Never`, and it applies to all containers in the Pod [source: k8s-docs-pod-lifecycle-2026-08-23].
-*A* and *D* both place the field at container scope, which is the documented misconception; *D* additionally invents a dependency on liveness probes that doesn't exist. *C* claims a **total exemption** for init containers, and there is none. A Pod-level `Never` policy is precisely what makes a failing init container fatal to the whole Pod, which is §3's failure case. <!-- AUTHOR-REVIEW: this rebuttal previously asserted that init container failures are handled according to the Pod's restartPolicy without qualification. The retrieved-but-unmaterialized init-containers source states that a Pod restartPolicy of `Always` causes init containers to use `OnFailure` — so init containers DO receive special handling, and the rebuttal must not claim they are treated identically. The wording above rejects C on the grounds of the *total* exemption it claims, which stays true either way. Revisit alongside §3's author-review once k8s-docs-init-containers-2026-08-24.md is materialized. -->
+*A* and *D* both place the field at container scope, which is the documented misconception; *D* additionally invents a dependency on liveness probes that doesn't exist. *C* claims a **total exemption** for init containers, and there is none. A Pod-level `Never` policy is precisely what makes a failing init container fatal to the whole Pod, which is §3's failure case [source: k8s-docs-init-containers-2026-08-24]. Init containers do get one adjustment, which is not the same as an exemption: when the Pod's policy is `Always`, a failing init container is retried as though the policy were `OnFailure` [source: k8s-docs-init-containers-2026-08-24] — special handling *within* the Pod's policy, not independence from it.
 
 **11. C — Capped at five minutes; resets after 10 minutes of trouble-free execution.**
 The kubelet restarts with exponential backoff (10s, 20s, 40s, …) capped at five minutes, and resets the backoff timer once a container has executed for 10 minutes without any problems [source: k8s-docs-pod-lifecycle-2026-08-23].
@@ -1325,7 +1311,7 @@ The kubelet restarts with exponential backoff (10s, 20s, 40s, …) capped at fiv
 If you deploy a Pod in a namespace and don't manually assign a ServiceAccount, Kubernetes assigns that namespace's `default` [source: k8s-docs-service-accounts-2026-08-23].
 *A* is the intuitive answer and it's wrong; every Pod gets an identity. *C* misses the namespaced scope: every namespace gets its *own* `default` ServiceAccount on creation, and they are distinct objects. *D* invents a validation requirement.
 
-**13. B — Legacy long-lived form; short-lived rotating tokens via TokenRequest are recommended since v1.22.**
+**13. B — The legacy long-lived form; short-lived, automatically rotating tokens via the TokenRequest API are what the documentation recommends.**
 In Kubernetes v1.22 and later, Kubernetes gets a short-lived, automatically rotating token using the TokenRequest API and mounts it as a projected volume; long-lived ServiceAccount token Secrets are not recommended [source: k8s-docs-service-accounts-2026-08-23] [source: k8s-docs-secret-2026-08-23].
 *A* inverts current guidance. *C* is false; Secrets are namespaced like other Secret types. *D* overstates it: the type still exists and is still valid; it's discouraged, not removed.
 
@@ -1342,7 +1328,7 @@ All other probes are disabled if a startup probe is provided, until it succeeds 
 *A* is the intuitive default and it's the trap. *B* invents a softened behavior; the suppression is complete, not partial, and that completeness is the point: a slow-starting application must not be killed by a liveness probe before it has started. *D* over-corrects in the other direction. The suppression **lifts** the moment the startup probe succeeds, at which point liveness and readiness take over for the rest of the container's life. A startup probe that permanently disabled the other two would leave you with no health checking at all.
 
 **17. B — Any probe type can use any of the four mechanisms.**
-The four check mechanisms — `exec`, `grpc`, `httpGet`, and `tcpSocket` — are listed independently of the three probe types [source: k8s-docs-pod-lifecycle-2026-08-23].
+The documentation's rule is that each probe — whatever its type — must define exactly one of the four check mechanisms, `exec`, `grpc`, `httpGet`, or `tcpSocket` [source: k8s-docs-pod-probes-2026-09-04]; the mechanisms are defined independently of the three probe types [source: k8s-docs-pod-lifecycle-2026-08-23].
 *A* and *C* each invent a constraint pairing a type to a mechanism; keeping "how it asks" and "what the answer does" in separate compartments is what makes §7 manageable. *D* is a different error, a scope error rather than a pairing error: an `exec` probe executes its command **in the container being probed**, which is the only way it could tell you anything about that container's health.
 
 **18. B — Failure. Success requires a status code ≥ 200 and < 400.**
@@ -1423,4 +1409,4 @@ You'll also start seeing this chapter's material used rather than taught. Probes
 
 You can now read a Pod's status and know what it's telling you, which is the first genuinely diagnostic skill in this book. Nine sections, six figures, and one design decision that turned out to explain all of it.
 
-**Voyage Progress:** 🗺️ → 🌊 → 🌅 — Chapter 5 of 20 complete.
+🗺️ Chart → **🌊 Passage** → 🌅 Dawn

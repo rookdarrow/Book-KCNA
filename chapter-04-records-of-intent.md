@@ -47,7 +47,7 @@ sections:
     objectives: ["D1.1"]
     requires_figure: true
     figure_anchor: "ch04-fig05-configmap-secret-contrast"
-    checkpoint_after: true
+    checkpoint_after: false
   - name: "The Universal Join"
     objectives: ["D1.1"]
     requires_figure: true
@@ -81,8 +81,8 @@ soundings_planned:
 #-- § "Taking Your Bearings checkpoints" for justification and B4's sanction.
 question_budget:
   soundings: 8
-  taking_your_bearings: 13             # across 3 checkpoints (5 + 4 + 4)
-  practice_questions: 19
+  taking_your_bearings: 11             # across 2 checkpoints (5 + 6)
+  practice_questions: 21
   total_this_chapter: 40
 
 #-- Concept / objective / command tagging --------------------------------
@@ -168,7 +168,7 @@ figures_planned:
 
 ## Attention Budget
 
-**Total time: ~115 minutes | Recommended: split across two sessions (§1–§3, then §4–§6)**
+**Total time: ~144 minutes | Recommended: split across two sessions (§1–§3, then §4–§6)**
 
 | Section | Time | Attention Cost | Best Time to Study |
 |---|---|---|---|
@@ -177,9 +177,8 @@ figures_planned:
 | ☆ Taking Your Bearings #1 | 8 min | Medium | After a brief pause |
 | §3 Where a Name Lives | 15 min | Medium | When alert |
 | §4 Configuration Kept Outside the Image | 25 min | High | Peak attention |
-| ☆ Taking Your Bearings #2 | 7 min | Medium | After a brief pause |
 | §5 The Universal Join | 20 min | Medium | When alert |
-| ☆ Taking Your Bearings #3 | 7 min | Medium | After a brief pause |
+| ☆ Taking Your Bearings #2 | 10 min | Medium | After a brief pause |
 | §6 A Declaration, Not an Order | 6 min | Low | Anytime |
 | Practice Questions | 28 min | High | Peak attention |
 
@@ -188,7 +187,7 @@ figures_planned:
 - **Medium:** new concepts requiring focus. Study when alert.
 - **High:** abstract or dense material, or a misconception that needs dismantling. Study at peak attention.
 
-*If you only have 15 minutes: read §2 and take Bearings #1. The two field names in that section are the vocabulary every remaining chapter of this book assumes you have.*
+*If you only have 15 minutes: read §2 and take Taking Your Bearings #1. The two field names in that section are the vocabulary every remaining chapter of this book assumes you have.*
 
 ---
 
@@ -236,7 +235,7 @@ Eight questions before you begin. Your score picks the reading strategy and noth
 
 8. **A scope for names:** a namespace, a tenant, a project, a schema. Something that makes "database" mean different things in different contexts without either team having to rename anything.
 
-**If you got 6+ right:** skim this chapter. Focus on the ★ Fixed Points and the ⚠ Navigational Hazards callouts, and take all three Taking Your Bearings checkpoints at full effort. You have the priors; this chapter is giving them Kubernetes-specific names and one genuinely counterintuitive detail in §4.
+**If you got 6+ right:** skim this chapter. Focus on the ★ Fixed Points and the ⚠ Navigational Hazards callouts, and take both Taking Your Bearings checkpoints at full effort. You have the priors; this chapter is giving them Kubernetes-specific names and one genuinely counterintuitive detail in §4.
 
 **If you got 3–5 right:** read at normal pace. The material is well within reach and this chapter is calibrated for you.
 
@@ -273,7 +272,7 @@ By the end of this chapter, you'll be able to:
 
 ---
 
-## §1 — ⚪ You File a Declaration
+## ⚪ §1 — You File a Declaration
 
 Start where the documentation starts.
 
@@ -303,7 +302,7 @@ That distinction is not just philosophical. It shows up as three concrete techni
 | **Imperative object configuration** | Individual files | Production projects | 1 |
 | **Declarative object configuration** | Directories of files | Production projects | 1+ |
 
-**Imperative commands.** A user operates directly on live objects in a cluster, providing operations to `kubectl` as arguments or flags. `kubectl create deployment nginx --image nginx` runs an instance of the nginx container by creating a Deployment object [source: k8s-docs-object-management-2026-08-24]. Notice that the documentation is not sniffy about this. It calls imperative commands *the recommended way to get started or to run a one-off task in a cluster*, and it names the cost precisely: because the technique operates directly on live objects, **it provides no history of previous configurations** [source: k8s-docs-object-management-2026-08-24].
+**Imperative commands.** A user operates directly on live objects in a cluster, providing operations to `kubectl` as arguments or flags. `kubectl create deployment nginx --image nginx` runs an instance of the nginx container by creating a Deployment object [source: k8s-docs-object-management-2026-08-24] *[cross-bearing: see Ch 6 §1 — the Deployment]*. Notice that the documentation is not sniffy about this. It calls imperative commands *the recommended way to get started or to run a one-off task in a cluster*, and it names the cost precisely: because the technique operates directly on live objects, **it provides no history of previous configurations** [source: k8s-docs-object-management-2026-08-24].
 
 **Imperative object configuration.** The command specifies the operation (`create`, `replace`, and so on), optional flags, and at least one file name. The file must contain a full definition of the object in YAML or JSON [source: k8s-docs-object-management-2026-08-24]. You said what to do *and* handed over the document.
 
@@ -317,7 +316,7 @@ The verb you will use to submit a record is `kubectl apply`, which applies a con
 
 > 🔭 **Closer Look:** The three techniques differ in one thing that matters more than syntax: **where the record of what you wanted lives.** With an imperative command it lives only in the cluster, which is why the documentation says the technique gives you no history. With object configuration it lives in a file, which can go into source control, be reviewed before it is pushed, and serve as a template for the next object [source: k8s-docs-object-management-2026-08-24]. The trade-off is stated just as plainly in the other direction: object configuration requires a basic understanding of the object schema and the additional step of writing a YAML file. Nothing here is free, and the documentation does not pretend otherwise.
 
-One precision note before we go on, because the chapter subtitle is a slogan and slogans overclaim. Kubernetes accepts plenty of imperative instruction. `kubectl delete` deletes. `kubectl scale` updates the size of a workload. `kubectl exec` executes a command inside a running container and has no declarative reading at all [source: k8s-docs-kubectl-overview-2026-08-23]. The accurate claim is narrower and more interesting than the slogan: **the objects are declarations, and the imperative commands work by changing declarations.** We will make that precise in §6. For now, hold the narrow version.
+One precision note before we go on, because the chapter subtitle is a slogan and slogans overclaim. Kubernetes accepts plenty of imperative instruction. `kubectl delete` deletes. `kubectl scale` updates the size of a workload. `kubectl exec` executes a command inside a running container and has no declarative reading at all [source: k8s-docs-kubectl-overview-2026-08-23] *[cross-bearing: see Ch 16 §3 — getting inside a running container]*. The accurate claim is narrower and more interesting than the slogan: **the objects are declarations, and the imperative commands work by changing declarations.** We will make that precise in §6. For now, hold the narrow version.
 
 > **Extended Analogy:** Think about the papers a vessel files before departure.
 >
@@ -331,7 +330,7 @@ You now know what an object *is*. §2 tells you what is inside one.
 
 ---
 
-## §2 — ⚪ The Anatomy of a Record
+## ⚪ §2 — The Anatomy of a Record
 
 Chapter 3 owed you something. This is where it comes due.
 
@@ -350,7 +349,7 @@ In the manifest file for the object you want to create, you set values for four 
 
 Then you apply it: `kubectl apply -f <manifest>` [source: k8s-docs-objects-2026-08-23].
 
-That is the complete structural vocabulary. Not a starting subset that gets extended for advanced resources. The complete thing. A Pod manifest has those four fields — a Pod, for now, being the unit Kubernetes schedules and runs; it is Chapter 5's whole subject. A NetworkPolicy manifest has those four fields. A custom resource for a database operator that some vendor shipped last week has those four fields. This is why the transferability claim from *Why This Chapter Matters* is not marketing: the structure does not vary by resource type, and it does not expire. *[cross-bearing: see Ch 6 — custom resources and operators]*
+That is the complete structural vocabulary. Not a starting subset that gets extended for advanced resources. The complete thing. A Pod manifest has those four fields — a Pod, for now, being the unit Kubernetes schedules and runs; it is Chapter 5's whole subject *[cross-bearing: see Ch 5 §1 — the Pod as the unit of scheduling]*. A NetworkPolicy manifest has those four fields *[cross-bearing: see Ch 10 §6 — NetworkPolicy]*. A custom resource for a database operator that some vendor shipped last week has those four fields. This is why the transferability claim from *Why This Chapter Matters* is not marketing: the structure does not vary by resource type, and it does not expire. *[cross-bearing: see Ch 6 — custom resources and operators]*
 
 > **Dead Reckoning:** Four top-level fields to know — required on almost every object; the documentation's own hedge is *"for objects that have a `spec`"* [source: k8s-docs-objects-2026-08-23].
 >
@@ -376,7 +375,7 @@ A **UID** is a system-generated string, and it is not reusable at all. Every obj
 Here is what one object looks like, laid out. Note the boundary running through the middle of it, because that boundary is the second half of this section.
 
 <!-- FIGURE: ch04-fig01-object-anatomy-spec-status -->
-![Two stacked panels split by a heavy horizontal line labelled authorship boundary. The upper panel, headed YOU AUTHOR THIS, lists apiVersion, kind, metadata with nested name, uid and optional namespace, and spec. The lower panel, headed THE SYSTEM AUTHORS THIS, contains only status.](figures/ch04-fig01-object-anatomy-spec-status.svg)
+![Two stacked panels split by a heavy horizontal line labeled authorship boundary. The upper panel, headed YOU AUTHOR THIS, lists apiVersion, kind, metadata with nested name, uid and optional namespace, and spec. The lower panel, headed THE SYSTEM AUTHORS THIS, contains only status.](figures/ch04-fig01-object-anatomy-spec-status.svg)
 
 <!-- ASCII-FALLBACK
 ```
@@ -523,7 +522,7 @@ You now have the shape of the record. Two questions follow immediately from it, 
 
 ---
 
-## §3 — 🔵 Where a Name Lives
+## 🔵 §3 — Where a Name Lives
 
 In Kubernetes, **namespaces** provide a mechanism for isolating groups of resources within a single cluster. Names of resources need to be unique within a namespace, but not across namespaces [source: k8s-docs-namespaces-2026-08-23].
 
@@ -591,7 +590,7 @@ Kubernetes starts with four namespaces, and each exists for a specific reason [s
 
 Two details in that table are the ones examiners like.
 
-**`kube-public` is a convention, not an enforcement.** The documentation is explicit: *the public aspect of this namespace is only a convention, not a requirement* [source: k8s-docs-namespaces-2026-08-23]. It is often repeated as a hard property of the namespace; it is not one. It is not; it is a norm about what people put there, and norms make poor access control.
+**`kube-public` is a convention, not an enforcement.** The documentation is explicit: *the public aspect of this namespace is only a convention, not a requirement* [source: k8s-docs-namespaces-2026-08-23]. It is often repeated as a hard property of the namespace; it is not one. It is a norm about what people put there, and norms make poor access control.
 
 **`kube-node-lease` is the one people forget**, and it connects forward. Those Lease objects are how the control plane knows a node is still alive; when the heartbeats stop, the node controller marks the node's condition and eventually acts *[cross-bearing: see Ch 8 — node conditions and heartbeats]* [source: k8s-docs-nodes-2026-08-23].
 
@@ -603,7 +602,7 @@ Namespaces are also the unit by which cluster resources get divided between mult
 
 ---
 
-## §4 — 🔵 Configuration Kept Outside the Image
+## 🔵 §4 — Configuration Kept Outside the Image
 
 Start with the problem, not the object.
 
@@ -625,7 +624,7 @@ Four facts about ConfigMaps carry weight.
 
 **The four consumption paths, and the asymmetry among them.** There are four different ways to use a ConfigMap to configure a container inside a Pod: inside a container command and args; as environment variables for a container; as a file in a read-only volume for the application to read; or by writing code that runs inside the Pod and uses the Kubernetes API to read the ConfigMap. **For the first three methods, the kubelet uses the data from the ConfigMap when it launches the container(s) for a Pod. The fourth method lets the application subscribe to updates whenever the ConfigMap changes** [source: k8s-docs-configmap-2026-08-23].
 
-> 🪝 **Snag:** You edited the ConfigMap. The running application did not notice. In my experience this is the most common day-one surprise with ConfigMaps, and it is not a bug: three of the four consumption paths are applied by the kubelet *at container launch*. Only the fourth, where your code reads the Kubernetes API itself, subscribes to changes [source: k8s-docs-configmap-2026-08-23]. If you want the first three to pick up a change, something has to cause the containers to be launched again.
+> 🪝 **Snag:** You edited the ConfigMap. The running application did not notice. In my experience this is the most common day-one surprise with ConfigMaps, and it is not a bug, but it is path-dependent, and the documentation is more precise than the four-way summary above. Command-line arguments and environment variables are fixed when the kubelet launches the container: ConfigMaps consumed as environment variables *are not updated automatically and require a pod restart* [source: k8s-docs-configmap-mounted-updates-2026-09-04]. A ConfigMap mounted as a volume is different. When it is updated, the projected keys are *eventually* updated as well, because the kubelet checks whether the mounted ConfigMap is fresh on every periodic sync, so the change lands after a delay rather than never [source: k8s-docs-configmap-mounted-updates-2026-09-04], with one exception: a container using a ConfigMap as a `subPath` volume mount will not receive updates [source: k8s-docs-volumes-2026-08-23]. Only the fourth path, where your code reads the Kubernetes API itself, sees the change the moment it happens [source: k8s-docs-configmap-2026-08-23]. So: environment variable, relaunch; volume file, wait; API, immediate.
 
 **Immutability.** Starting from v1.19 you can add an `immutable` field to a ConfigMap definition. Once a ConfigMap is marked as immutable, **it is not possible to revert this change**, nor to mutate the contents of its `data` or `binaryData` fields. You can only delete and recreate the ConfigMap [source: k8s-docs-configmap-2026-08-23]. Notice the shape of that: the same replace-don't-mutate instinct that governs container images, applied to configuration. Notice also that `immutable: true` is a one-way door, and the platform will not ask whether you meant it.
 
@@ -727,7 +726,7 @@ Three rows need a sentence each.
 >
 > **"The value is base64, so it's protected."** Base64 is not an encryption method and provides no additional confidentiality over plain text [source: k8s-docs-secrets-good-practices-2026-08-24]. Anyone who can read the object can decode the value in one command.
 >
-> **"Update the ConfigMap and the running container picks it up."** Only if the application reads the Kubernetes API directly. The other three consumption paths are applied by the kubelet at container launch [source: k8s-docs-configmap-2026-08-23].
+> **"Update the ConfigMap and the running container picks it up."** That depends on the path. Environment variables and command-line arguments are fixed at container launch, and a ConfigMap consumed as environment variables requires a Pod restart [source: k8s-docs-configmap-mounted-updates-2026-09-04]. A volume-mounted ConfigMap is refreshed by the kubelet on its periodic sync, eventually rather than instantly, and never through a `subPath` mount [source: k8s-docs-configmap-mounted-updates-2026-09-04] [source: k8s-docs-volumes-2026-08-23]. Only an application reading the Kubernetes API directly sees the change as it happens [source: k8s-docs-configmap-2026-08-23].
 >
 > **"Immutable can be turned back off."** It cannot. Marking a ConfigMap immutable is irreversible; delete and recreate is the only route back [source: k8s-docs-configmap-2026-08-23].
 >
@@ -739,7 +738,7 @@ One forward pointer before we move on. "Store config in the environment" is the 
 
 ---
 
-## §5 — 🔵 The Universal Join
+## 🔵 §5 — The Universal Join
 
 Everything so far has been about one object at a time. This section is about how you talk about many.
 
@@ -749,7 +748,7 @@ Slow down on that middle clause: *do not directly imply semantics to the core sy
 
 The documentation's own example labels are the ones practitioners actually use, and they make the abstraction concrete for free [source: k8s-docs-labels-selectors-2026-08-23]:
 
-```
+```text
 release:      stable | canary
 environment:  dev | qa | production
 tier:         frontend | backend | cache
@@ -770,7 +769,7 @@ The API supports two types.
 **Set-based** selectors use `in`, `notin`, and `exists` (plus its negation). For example, `environment in (production, qa)`, `tier notin (frontend, backend)`, `partition` (meaning: has the key at all), and `!partition` (meaning: does not have the key). Set-based requirements are **more expressive** than equality-based ones, and multiple requirements are **ANDed** together with commas [source: k8s-docs-labels-selectors-2026-08-23].
 
 <!-- FIGURE: ch04-fig03-labels-selectors-join -->
-![Four Pod cards labelled A through D, each carrying a tier and an env label. Below them, four selectors resolve to sets: tier equals fe gives A and B; env equals prod gives A and C; env in prod or qa also gives A and C; tier equals be and env equals prod gives C alone. Pod A appears in three sets and Pod D in none.](figures/ch04-fig03-labels-selectors-join.svg)
+![Four Pod cards labeled A through D, each carrying a tier and an env label. Below them, four selectors resolve to sets: tier equals fe gives A and B; env equals prod gives A and C; env in prod or qa also gives A and C; tier equals be and env equals prod gives C alone. Pod A appears in three sets and Pod D in none.](figures/ch04-fig03-labels-selectors-join.svg)
 
 <!-- ASCII-FALLBACK
 ```
@@ -795,7 +794,7 @@ The API supports two types.
 
 ### The bridge to what you will actually see
 
-Some resource types accept only equality-based selectors. Newer resources (**Job, Deployment, ReplicaSet, and DaemonSet**) support set-based requirements through two structured fields, `matchLabels` and `matchExpressions`. And the relationship between them is exact: **`matchLabels` is a map of `{key, value}` pairs equivalent to a `matchExpressions` entry with operator `In`** [source: k8s-docs-labels-selectors-2026-08-23].
+Some resource types accept only equality-based selectors. Newer resources (**Job, Deployment, ReplicaSet, and DaemonSet**) support set-based requirements through two structured fields, `matchLabels` and `matchExpressions` *[cross-bearing: see Ch 6 — the workload resources that carry these selectors]*. And the relationship between them is exact: **`matchLabels` is a map of `{key, value}` pairs equivalent to a `matchExpressions` entry with operator `In`** [source: k8s-docs-labels-selectors-2026-08-23].
 
 That equivalence is the kind of precise, checkable fact this exam rewards. `matchLabels: {tier: frontend}` and `matchExpressions: [{key: tier, operator: In, values: [frontend]}]` are the same requirement written two ways. `matchLabels` is not a weaker feature; it is shorthand.
 
@@ -868,7 +867,7 @@ D) Node, ConfigMap, Namespace
 
 **5.** 🔵 You are looking at a workload resource with this selector:
 
-```
+```yaml
 matchLabels:
   tier: frontend
 ```
@@ -885,14 +884,14 @@ Write the equivalent using `matchExpressions`.
 - **A** and **C** are wrong — every object listed there is namespaced; ServiceAccounts in particular get a `default` one in every namespace on creation [source: k8s-docs-service-accounts-2026-08-23].
 - **D** is the trap: Node and Namespace are genuinely cluster-scoped, but ConfigMap is namespaced — which is exactly why the same-namespace rule in §4 exists.
 
-**2.** **Two label values, in one namespace.** The docs are explicit: you don't need multiple namespaces to separate slightly different resources such as versions of the same software — use labels to distinguish resources within one namespace instead [source: k8s-docs-namespaces-2026-08-23]. Labels let you filter by version without fragmenting one deployable unit across a namespace boundary; Q4–Q6 below cover the mechanics.
+**2.** **Two label values, in one namespace.** The docs are explicit: you don't need multiple namespaces to separate slightly different resources such as versions of the same software — use labels to distinguish resources within one namespace instead [source: k8s-docs-namespaces-2026-08-23]. Labels let you filter by version without fragmenting one deployable unit across a namespace boundary; questions 4–6 below cover the mechanics.
 
 **3. [retrieval: ch2]** Any two of: configuring the nodes themselves to authenticate to the registry; a kubelet credential provider that fetches credentials dynamically; pre-pulled images already on the node; vendor-specific or local extensions [source: k8s-docs-images-2026-08-23]. The Secret is the one this chapter covers because it's the only one of the five that's itself a Kubernetes object you write, submit, and version — the other four are properties of the node, the kubelet, or the platform.
 
 **4.** Equality-based: `environment = production` (or `environment == production`). Set-based: `environment in (production)` [source: k8s-docs-labels-selectors-2026-08-23]. Same requirement, two syntaxes — set-based is the more expressive of the two, since it also handles membership in several values, key existence, and negation.
 
 **5.**
-```
+```yaml
 matchExpressions:
   - key: tier
     operator: In
@@ -916,7 +915,7 @@ matchExpressions:
 
 ---
 
-## §6 — 🟡 A Declaration, Not an Order
+## 🟡 §6 — A Declaration, Not an Order
 
 Count what you have written in this chapter.
 
@@ -931,7 +930,7 @@ And yet things happen. Here is why:
 > The Kubernetes control plane continually and actively manages every object's actual state to match the desired state you supplied [source: k8s-docs-objects-2026-08-23].
 
 <!-- FIGURE: ch04-zenith-declaration-not-order -->
-![A single box labelled THE FILED DECLARATION, what should be true, connected to five separate readers below it: a scheduler, a controller, a kubelet, and two more controllers, each annotated as consulting the record at a different time — 09:00, 09:04, 09:04, 11:20 and 03:17. Text beneath reads: no hand receives an instruction; every hand reads the record, observes the world, and closes the gap.](figures/ch04-zenith-declaration-not-order.svg)
+![A single box labeled THE FILED DECLARATION, what should be true, connected to five separate readers below it: a scheduler, a controller, a kubelet, and two more controllers, each annotated as consulting the record at a different time — 09:00, 09:04, 09:04, 11:20 and 03:17. Text beneath reads: no hand receives an instruction; every hand reads the record, observes the world, and closes the gap.](figures/ch04-zenith-declaration-not-order.svg)
 
 <!-- ASCII-FALLBACK
 ```
@@ -1001,7 +1000,7 @@ One more time, precisely, because §1 promised it and because slogans deserve au
 | Confusing labels with annotations | Labels identify and can be selected on; annotations record and cannot [source: k8s-docs-annotations-2026-08-24] |
 | "ConfigMaps hold config; Secrets hold *secure* config" | Secrets are stored unencrypted by default [source: k8s-docs-secret-2026-08-23]. The difference is treatment, not cryptography |
 | "The value is base64, so it's protected" | Base64 is not an encryption method and provides no additional confidentiality over plain text [source: k8s-docs-secrets-good-practices-2026-08-24] |
-| Assuming a ConfigMap change reaches a running container | Only via the API-reading path. The other three are applied by the kubelet at container launch [source: k8s-docs-configmap-2026-08-23] |
+| Assuming a ConfigMap change reaches a running container instantly | Environment variables need a Pod restart; a volume mount is refreshed eventually, on the kubelet's periodic sync, and never via `subPath`; only the API-reading path sees the change as it happens [source: k8s-docs-configmap-mounted-updates-2026-09-04] [source: k8s-docs-volumes-2026-08-23] |
 | "An immutable ConfigMap can be un-marked" | It cannot be reverted. Delete and recreate [source: k8s-docs-configmap-2026-08-23] |
 | Forgetting the ConfigMap size ceiling | 1 MiB [source: k8s-docs-configmap-2026-08-23] |
 | Referencing a ConfigMap across namespaces | The Pod and the ConfigMap must be in the same namespace [source: k8s-docs-configmap-2026-08-23] |
@@ -1016,42 +1015,42 @@ Twenty-one questions. Four test material from earlier chapters and are tagged as
 
 ---
 
-**Q1.** ⚪ **[retrieval: ch3]** You run `kubectl apply -f deployment.yaml`. Which component receives the request, and where does the resulting object live?
+**1.** ⚪ **[retrieval: ch3]** You run `kubectl apply -f deployment.yaml`. Which component receives the request, and where does the resulting object live?
 
 A) The kube-apiserver receives it and etcd stores it
 B) The kubelet receives it and writes the object to disk on the node
 C) The kube-scheduler receives it and holds it in its scheduling queue
 D) The kube-controller-manager receives it directly and stores it in memory
 
-**Q2.** 🔵 **[retrieval: ch3]** You change one number in a manifest's `spec` and re-apply it. What happens to the control loop as a result?
+**2.** 🔵 **[retrieval: ch3]** You change one number in a manifest's `spec` and re-apply it. What happens to the control loop as a result?
 
 A) The loop is restarted with the new value as its starting condition
 B) Nothing until you also run a command telling the controller to reconcile
 C) The controller now observes a difference between `spec` and `status` and acts to close it
 D) The previous loop terminates and a new loop is created for the new desired state
 
-**Q3.** 🟡 **[retrieval: ch3]** Chapter 3 used the built-in Job controller as its worked example of the controller pattern. When the Job controller determines that Pods are needed to carry out a task, what does it actually do?
+**3.** 🟡 **[retrieval: ch3]** Chapter 3 used the built-in Job controller as its worked example of the controller pattern. When the Job controller determines that Pods are needed to carry out a task, what does it actually do?
 
 A) It starts the Pods itself, on a node it selects
 B) It instructs the kubelet on each chosen node to start the containers
 C) It writes the new Pod objects into etcd directly, since it is a control-plane component
 D) It tells the API server to create the Pods, and other components in the control plane act on that new information
 
-**Q4.** ⚪ Which of the following is **not** one of the four fields you must set in a manifest?
+**4.** ⚪ Which of the following is **not** one of the four fields you must set in a manifest?
 
 A) `apiVersion`
 B) `kind`
 C) `status`
 D) `metadata`
 
-**Q5.** 🔵 Which statement about `apiVersion` is correct?
+**5.** 🔵 Which statement about `apiVersion` is correct?
 
 A) It names the version of the Kubernetes cluster the object was created on
 B) It names the version of the API being used to create this object, and it appears once per object
 C) It names the version of the API being used, and applies to the whole file
 D) It is optional for built-in resource types and required only for custom resources
 
-**Q6.** 🟡 `kubectl scale deployment/web --replicas=5` is an imperative command. In the terms this chapter has established, what does it actually do?
+**6.** 🟡 `kubectl scale deployment/web --replicas=5` is an imperative command. In the terms this chapter has established, what does it actually do?
 
 A) It instructs the kubelet on each node to start the additional containers
 B) It bypasses the object model and operates directly on the running Pods
@@ -1060,28 +1059,28 @@ D) It edits a number in the Deployment's `spec`; a controller then observes the 
 
 ---
 
-**Q7.** ⚪ Which of these is cluster-scoped?
+**7.** ⚪ Which of these is cluster-scoped?
 
 A) PersistentVolume
 B) ConfigMap
 C) ServiceAccount
 D) Deployment
 
-**Q8.** 🔵 Your team wants to run `v2.3` and `v2.4` of the same application side by side in one cluster. What does the Kubernetes documentation direct you to do?
+**8.** 🔵 Your team wants to run `v2.3` and `v2.4` of the same application side by side in one cluster. What does the Kubernetes documentation direct you to do?
 
 A) Create a namespace per version — this is the documented use of namespaces
 B) Create a namespace per version and nest both inside a parent namespace
 C) Create one namespace per version, then use a ResourceQuota to link them
 D) Keep both in one namespace and distinguish them with labels
 
-**Q9.** 🔵 Which statement about Kubernetes' four initial namespaces is correct?
+**9.** 🔵 Which statement about Kubernetes' four initial namespaces is correct?
 
 A) `kube-public` enforces public readability — unauthenticated readability is a property of the namespace itself
 B) `kube-system` is where the cluster places objects whose manifests did not specify a namespace
 C) `kube-node-lease` holds the Lease objects associated with each node, which let the kubelet send heartbeats so the control plane can detect node failure
 D) `default` is the recommended namespace for production workloads, since using it requires no additional configuration
 
-**Q10.** 🔵 Which statement about namespaces is correct?
+**10.** 🔵 Which statement about namespaces is correct?
 
 A) Namespaces can be nested up to three levels deep
 B) A resource can belong to multiple namespaces if it is referenced from both
@@ -1090,42 +1089,42 @@ D) Namespaces cannot be nested, but cluster-scoped resources belong to all of th
 
 ---
 
-**Q11.** 🔵 What does using a Secret instead of a ConfigMap give you?
+**11.** 🔵 What does using a Secret instead of a ConfigMap give you?
 
 A) Encryption of the data at rest, enabled by default
 B) Encryption in transit between the API server and the kubelet, which ConfigMaps do not get
 C) Automatic redaction, so that no principal with API access can read the contents
 D) A distinct object type and access-control surface, with no encryption by default
 
-**Q12.** ⚪ An application reads a setting from an environment variable populated by a ConfigMap. An operator edits the ConfigMap. What does the running application see?
+**12.** ⚪ An application reads a setting from an environment variable populated by a ConfigMap. An administrator edits the ConfigMap. What does the running application see?
 
 A) The old value — the kubelet used the ConfigMap data when it launched the container
 B) The new value immediately
 C) The new value after a short kubelet resync interval
 D) The new value, but only if the application re-reads the environment variable rather than caching it at startup
 
-**Q13.** 🟡 **[retrieval: ch2]** ConfigMaps gained an immutability property in v1.19. Which statement about it is correct?
+**13.** 🟡 **[retrieval: ch2]** ConfigMaps gained an immutability property in v1.19. Which statement about it is correct?
 
 A) Immutability makes the ConfigMap behave like a container image layer: already-running containers keep the old contents, and newly launched containers get the new ones
 B) Once marked immutable, the change cannot be reverted and the data cannot be mutated — you can only delete and recreate the ConfigMap
 C) Immutability can be toggled off if the ConfigMap has no Pods consuming it
 D) Immutability applies to the `data` field but the `binaryData` field remains editable
 
-**Q14.** 🔵 You need to make a 4 MB reference data file available to a containerized application. What does the documentation direct you to do?
+**14.** 🔵 You need to make a 4 MB reference data file available to a containerized application. What does the documentation direct you to do?
 
 A) Use a volume, a separate database, or a file service — ConfigMap data cannot exceed 1 MiB
 B) Split it across four ConfigMaps and mount all four
 C) Store it in a Secret, which has no size limit
 D) Store it in a ConfigMap — the 1 MiB figure is a recommendation, not a limit
 
-**Q15.** 🔵 A Pod in namespace `team-a` needs configuration that already exists in a ConfigMap named `settings` in namespace `team-b`. What is your option?
+**15.** 🔵 A Pod in namespace `team-a` needs configuration that already exists in a ConfigMap named `settings` in namespace `team-b`. What is your option?
 
 A) Reference it as `team-b/settings` from the Pod's manifest
 B) Reference it by its fully qualified name, `settings.team-b.svc.cluster.local`
 C) Create a ConfigMap named `settings` in `team-a` — the Pod and the ConfigMap must be in the same namespace
 D) Grant the Pod's ServiceAccount read access to `team-b` and reference it normally
 
-**Q16.** 🔵 A Secret is created to hold an application's API key. The manifest sets no `type` field. What type does the Secret carry?
+**16.** 🔵 A Secret is created to hold an application's API key. The manifest sets no `type` field. What type does the Secret carry?
 
 A) `kubernetes.io/basic-auth` — the type is inferred from the key names in `data`
 B) `Opaque` — arbitrary user-defined data, which is the default type
@@ -1134,35 +1133,35 @@ D) `kubernetes.io/service-account-token` — the default for any Secret not boun
 
 ---
 
-**Q17.** 🔵 Which of these is a valid **set-based** selector?
+**17.** 🔵 Which of these is a valid **set-based** selector?
 
 A) `environment != production`
 B) `environment in (production, qa)`
 C) `environment = production, tier != frontend`
 D) `environment == production`
 
-**Q18.** 🔵 Given `matchLabels: {app: web}`, which `matchExpressions` entry is exactly equivalent?
+**18.** 🔵 Given `matchLabels: {app: web}`, which `matchExpressions` entry is exactly equivalent?
 
 A) `{key: app, operator: In, values: [web]}`
 B) `{key: app, operator: Equals, values: [web]}`
 C) `{key: app, operator: Exists, values: [web]}`
 D) `{key: app, operator: In, values: []}`
 
-**Q19.** 🔵 A controller is written to manage every object carrying a particular attribute. The attribute has been recorded as an annotation. What happens?
+**19.** 🔵 A controller is written to manage every object carrying a particular attribute. The attribute has been recorded as an annotation. What happens?
 
 A) The controller finds them, but more slowly than if a label had been used
 B) The controller finds them only if the annotation key uses the `kubernetes.io/` prefix
 C) The controller finds them only within its own namespace
 D) The controller cannot select them — selectors operate over labels, and annotations are non-identifying by definition
 
-**Q20.** 🟡 Which of the following is a valid **user-defined** label?
+**20.** 🟡 Which of the following is a valid **user-defined** label?
 
 A) key `kubernetes.io/tier`, value `frontend`
 B) key with a 120-character name segment and no prefix, value `frontend`
 C) key `example.com/tier`, value `frontend`
 D) key `tier`, value a 200-character description string
 
-**Q21.** 🔵 You are looking at a workload manifest that contains both a `spec.replicas` field and a `spec.selector.matchLabels` block. Which field determines *which* objects the workload manages, and which determines *how many* it maintains?
+**21.** 🔵 You are looking at a workload manifest that contains both a `spec.replicas` field and a `spec.selector.matchLabels` block. Which field determines *which* objects the workload manages, and which determines *how many* it maintains?
 
 A) `replicas` determines which; `matchLabels` determines how many
 B) `matchLabels` determines which; `replicas` determines how many
@@ -1173,103 +1172,104 @@ D) Neither — both are set by the system and reported in `status`
 
 ### Answers and Explanations
 
-**Q1. Answer: A.** Every read and write of cluster state goes through the kube-apiserver [source: k8s-docs-control-plane-node-communication-2026-08-24], and etcd is the consistent, highly-available key-value store used as Kubernetes' backing store for all cluster data [source: k8s-docs-cluster-architecture-2026-08-23].
+**1. Answer: A.** Every read and write of cluster state goes through the kube-apiserver [source: k8s-docs-control-plane-node-communication-2026-08-24], and etcd is the consistent, highly-available key-value store used as Kubernetes' backing store for all cluster data [source: k8s-docs-cluster-architecture-2026-08-23].
 - **B** confuses the kubelet's role: it runs containers on a node from PodSpecs provided to it, and it is not a store of record.
 - **C** picks a real control-plane component with the wrong job; the scheduler watches for Pods with no assigned node and selects nodes for them [source: k8s-docs-cluster-architecture-2026-08-23]. It receives nothing from `kubectl`.
 - **D** describes the shape of the misconception that controllers are messaged directly. They are not; they watch the API server.
 
-**Q2. Answer: C.** A controller compares desired state against current state and acts on the difference [source: k8s-docs-controllers-2026-08-23]; the difference is what changed, so the change is what it responds to.
+**2. Answer: C.** A controller compares desired state against current state and acts on the difference [source: k8s-docs-controllers-2026-08-23]; the difference is what changed, so the change is what it responds to.
 - **A** and **D** both imagine the loop as something with a lifecycle tied to your action. It has neither a start you trigger nor an end. It is described as a non-terminating loop that regulates the state of a system [source: k8s-docs-controllers-2026-08-23].
 - **B** is the imperative instinct at its purest, and it is the single most useful wrong answer in this chapter. There is no such command, and needing one would defeat the entire architecture. Nobody tells the controller. The controller is already watching.
 
-**Q3. [retrieval: ch3] Answer: D.** The documentation is unusually direct about this: *the Job controller does not run any Pods or containers itself. Instead, the Job controller tells the API server to create or remove Pods. Other components in the control plane act on the new information* [source: k8s-docs-controllers-2026-08-23].
+**3. [retrieval: ch3] Answer: D.** The documentation is unusually direct about this: *the Job controller does not run any Pods or containers itself. Instead, the Job controller tells the API server to create or remove Pods. Other components in the control plane act on the new information* [source: k8s-docs-controllers-2026-08-23].
 - **A** is the intuitive picture of a controller as a worker. Built-in controllers manage state by interacting with the cluster API server; they are not execution engines.
 - **B** invents a controller-to-kubelet channel. Chapter 3's hub-and-spoke pattern rules it out: all API usage from nodes (or the Pods they run) terminates at the API server, and none of the other control-plane components is designed to expose remote services [source: k8s-docs-control-plane-node-communication-2026-08-24].
 - **C** is the one that survives longest for people who half-remember the architecture. Being a control-plane component does not grant direct access to the store. Ideally only the API server has access to etcd, since access to etcd is equivalent to root permission in the cluster [source: k8s-docs-etcd-access-control-2026-08-24].
 - **D** is also the shape of §2 of this chapter: everything, including a controller's own writes, goes through the same door.
 
-**Q4. Answer: C.** The four fields to set are `apiVersion`, `kind`, `metadata`, and `spec` (for objects that have a `spec` — which a Pod is) [source: k8s-docs-objects-2026-08-23]. `status` is supplied and updated by the Kubernetes system and its components; writing it accomplishes nothing.
+**4. Answer: C.** The four fields to set are `apiVersion`, `kind`, `metadata`, and `spec` (for objects that have a `spec`) [source: k8s-docs-objects-2026-08-23]. `status` is supplied and updated by the Kubernetes system and its components; writing it accomplishes nothing.
 - **A is a required field:** `apiVersion` names which version of the API you are using to create this object, and so selects the schema the rest of the document is parsed under.
 - **B is a required field:** `kind` names the resource type, and it is what determines the internal shape of `spec`.
 - **D is a required field:** `metadata` carries identity, the name, the UID, and the optional namespace, which is how the cluster tells this object from every other object of the same kind.
 
-**Q5. Answer: B.** `apiVersion` is which version of the Kubernetes API you're using to create this object [source: k8s-docs-objects-2026-08-23], and it is one of the fields set per object.
+**5. Answer: B.** `apiVersion` is which version of the Kubernetes API you're using to create this object [source: k8s-docs-objects-2026-08-23], and it is one of the fields set per object.
 - **A** conflates the API version of a resource type with the version of the cluster software. Those move independently; a resource's API version can remain stable across many cluster releases.
 - **C** is the file-level assumption, and it fails because a single file can hold several objects of different kinds, each versioned independently.
 - **D** is wrong: the four required fields are required for every object, built-in or custom.
 
-**Q6. Answer: D.** `kubectl scale` updates the size of a workload [source: k8s-docs-kubectl-overview-2026-08-23]. It amends a number in the object's `spec`, and the control plane then continually and actively manages the actual state to match the desired state you supplied [source: k8s-docs-objects-2026-08-23]. The command changed a declaration; the loop did the work.
+**6. Answer: D.** `kubectl scale` updates the size of a workload [source: k8s-docs-kubectl-overview-2026-08-23]. It amends a number in the object's `spec`, and the control plane then continually and actively manages the actual state to match the desired state you supplied [source: k8s-docs-objects-2026-08-23]. The command changed a declaration; the loop did the work.
 - **A** invents a direct command channel to the kubelet. Nothing in the object model works that way.
 - **B** is the plausible-sounding version of the same error, and it is the one to reason your way out of: there is no "acting on running Pods" that skips the objects, because the objects *are* how the cluster knows what should be running.
 - **C** is the over-correction this chapter's §1 precision note exists to prevent. Kubernetes accepts imperative commands all day; the documentation names imperative commands the recommended way to get started or to run a one-off task [source: k8s-docs-object-management-2026-08-24]. The claim is not "no imperatives." The claim is "the imperatives work by editing declarations."
 
-**Q7. Answer: A.** Low-level resources such as nodes and persistent volumes are not in any namespace [source: k8s-docs-namespaces-2026-08-23].
+**7. Answer: A.** Low-level resources such as nodes and persistent volumes are not in any namespace [source: k8s-docs-namespaces-2026-08-23].
 - **B** and **D** are among the documentation's own examples of namespaced objects, and ConfigMap in particular is namespaced enough that §4's same-namespace rule exists because of it.
 - **C** is namespaced too, and pointedly so. ServiceAccounts are bound to a namespace, and every namespace gets a `default` one on creation [source: k8s-docs-service-accounts-2026-08-23].
 
-**Q8. Answer: D.** It is not necessary to use multiple namespaces to separate slightly different resources, such as different versions of the same software; use labels to distinguish resources within the same namespace [source: k8s-docs-namespaces-2026-08-23].
+**8. Answer: D.** It is not necessary to use multiple namespaces to separate slightly different resources, such as different versions of the same software; use labels to distinguish resources within the same namespace [source: k8s-docs-namespaces-2026-08-23].
 - **A** is the intuitive habit the documentation specifically corrects.
 - **B** additionally fails on nesting: namespaces cannot be nested inside one another [source: k8s-docs-namespaces-2026-08-23].
 - **C** misuses ResourceQuota, which divides cluster resources between namespaces rather than linking them.
 
-**Q9. Answer: C.** `kube-node-lease` holds Lease objects associated with each node; node leases allow the kubelet to send heartbeats so that the control plane can detect node failure [source: k8s-docs-namespaces-2026-08-23].
+**9. Answer: C.** `kube-node-lease` holds Lease objects associated with each node; node leases allow the kubelet to send heartbeats so that the control plane can detect node failure [source: k8s-docs-namespaces-2026-08-23].
 - **A is the trap this item exists for.** The documentation says plainly that *the public aspect of this namespace is only a convention, not a requirement* [source: k8s-docs-namespaces-2026-08-23]. `kube-public` is readable by all clients including unauthenticated ones, but that is a fact about how the cluster is configured and what people put there, not an enforcement the namespace performs.
 - **B** invents a fallback behavior. `kube-system` is the namespace for objects created by the Kubernetes system; an object whose manifest omits a namespace lands in whichever namespace the request context supplies — `default` on a fresh kubeconfig, the ServiceAccount's namespace when `kubectl` runs inside the cluster [source: k8s-docs-kubectl-overview-2026-08-23] — and `default` exists precisely so that you can start using a new cluster without first creating one [source: k8s-docs-namespaces-2026-08-23].
 - **D** inverts the documentation's advice: for a production cluster, consider *not* using the `default` namespace, make other namespaces and use those [source: k8s-docs-namespaces-2026-08-23].
 
-**Q10. Answer: C.** Namespaces cannot be nested inside one another, and each Kubernetes resource can only be in one namespace [source: k8s-docs-namespaces-2026-08-23].
+**10. Answer: C.** Namespaces cannot be nested inside one another, and each Kubernetes resource can only be in one namespace [source: k8s-docs-namespaces-2026-08-23].
 - **A** and **B** contradict those two rules directly.
-- **D** is the subtle one and it is still wrong: cluster-scoped resources do not belong to every namespace. They belong to none. That distinction matters enormously for permissions, because "in all namespaces" and "in no namespace" imply very different things about who can be granted access *[cross-bearing: see Ch 12]*.
+- **D** is the subtle one and it is still wrong: cluster-scoped resources do not belong to every namespace. They belong to none. That distinction matters enormously for permissions, because "in all namespaces" and "in no namespace" imply very different things about who can be granted access *[cross-bearing: see Ch 12 §3 — Role versus ClusterRole]*.
 
-**Q11. Answer: D.** Kubernetes Secrets are, by default, stored unencrypted in the API server's underlying data store; anyone with API access can retrieve or modify one, as can anyone with etcd access or the ability to create a Pod in the namespace [source: k8s-docs-secret-2026-08-23]. What the object type gives you is a place to apply the four recommended protections, not the protections themselves.
+**11. Answer: D.** Kubernetes Secrets are, by default, stored unencrypted in the API server's underlying data store; anyone with API access can retrieve or modify one, as can anyone with etcd access or the ability to create a Pod in the namespace [source: k8s-docs-secret-2026-08-23]. What the object type gives you is a place to apply the four recommended protections, not the protections themselves.
 - **A** is the misconception this chapter exists to correct. Secret values are stored unencrypted by default, though they *can* be configured to be encrypted at rest [source: k8s-docs-secrets-good-practices-2026-08-24], which is a configuration you perform, not a default you inherit.
 - **B** is wrong on the premise: API traffic is TLS-protected as a matter of cluster configuration [source: k8s-docs-cloud-native-security-2026-08-23], and that protection is not specific to Secrets.
 - **C** contradicts the documented behavior outright. Anyone with API access can retrieve the Secret; base64 encoding of the stored value provides no additional confidentiality over plain text [source: k8s-docs-secrets-good-practices-2026-08-24].
 
-**Q12. Answer: A.** For the environment-variable path, as for command-and-args and read-only volume file paths, the kubelet uses the data from the ConfigMap when it launches the containers for a Pod [source: k8s-docs-configmap-2026-08-23]. Only the API-reading path subscribes to updates.
-- **B** and **C** both assume a propagation mechanism that does not exist for this path.
+**12. Answer: A.** For the environment-variable path, the kubelet uses the data from the ConfigMap when it launches the containers for a Pod [source: k8s-docs-configmap-2026-08-23], and ConfigMaps consumed as environment variables are not updated automatically and require a Pod restart [source: k8s-docs-configmap-mounted-updates-2026-09-04].
+- **B** assumes a propagation mechanism that does not exist for this path.
+- **C** is the instructive near-miss, because it is true of a different path: a ConfigMap mounted as a *volume* has its projected keys eventually refreshed on the kubelet's periodic sync [source: k8s-docs-configmap-mounted-updates-2026-09-04]. The stem says environment variable, and that path has no sync.
 - **D** is the most instructive miss, because half of it is a real belief: applications genuinely do differ in whether they cache configuration at startup. It does not help here. The environment the container was launched with is fixed at launch; re-reading it returns the same value the kubelet supplied. The application's diligence is irrelevant when the source never changes.
 
-**Q13. [retrieval: ch2] Answer: B.** Once a ConfigMap is marked as immutable, it is not possible to revert this change nor to mutate the contents of the `data` or `binaryData` fields; you can only delete and recreate the ConfigMap [source: k8s-docs-configmap-2026-08-23].
+**13. [retrieval: ch2] Answer: B.** Once a ConfigMap is marked as immutable, it is not possible to revert this change nor to mutate the contents of the `data` or `binaryData` fields; you can only delete and recreate the ConfigMap [source: k8s-docs-configmap-2026-08-23].
 - **A is the ch2 discrimination**, and it fails on Chapter 2's own rule. Image layers are immutable, but the way a change reaches a container is *not* by the object quietly serving new contents to new containers. It is by building a new image and recreating the container [source: k8s-docs-containers-2026-08-23]. An immutable ConfigMap works the same way: you delete and recreate, and consumers are relaunched. There is no dual-contents state in either mechanism.
 - **C** is the most tempting wrong answer because it sounds like a reasonable safety valve. There is no such escape hatch.
 - **D** is wrong: both fields are covered.
 
-**Q14. Answer: A.** The data stored in a ConfigMap cannot exceed 1 MiB; for larger settings, consider mounting a volume or using a separate database or file service [source: k8s-docs-configmap-2026-08-23].
+**14. Answer: A.** The data stored in a ConfigMap cannot exceed 1 MiB; for larger settings, consider mounting a volume or using a separate database or file service [source: k8s-docs-configmap-2026-08-23].
 - **B** is a workaround for a limit that exists precisely because ConfigMaps are not designed to hold large chunks of data; it fights the design rather than following the guidance.
 - **C** is wrong on its premise: a Secret is described as holding *a small amount* of sensitive data [source: k8s-docs-secret-2026-08-23], and is not the escape hatch for size.
 - **D** misreads the limit as advisory.
 
-**Q15. Answer: C.** The Pod and the ConfigMap must be in the same namespace [source: k8s-docs-configmap-2026-08-23]. The configuration has to exist in `team-a`.
+**15. Answer: C.** The Pod and the ConfigMap must be in the same namespace [source: k8s-docs-configmap-2026-08-23]. The configuration has to exist in `team-a`.
 - **A** invents a cross-namespace reference syntax that the field does not accept.
 - **B** borrows the Service DNS form, which addresses Services over the network [source: k8s-docs-namespaces-2026-08-23]. A ConfigMap is not reached over the network by a Pod's config machinery, and these are two mechanisms that look similar and are not.
 - **D** is the closest to plausible and still wrong: permission to read an object is not the same as the ability to reference it as a config source. Access control governs *who may*, not *what the field accepts*.
 
-**Q16. Answer: B.** `Opaque` is arbitrary user-defined data and is the default type [source: k8s-docs-secret-2026-08-23]. The `type` field exists to facilitate programmatic handling of the secret data [source: k8s-api-ref-secret-v1-2026-08-24]: it tells consumers what shape to expect, and `Opaque` is the honest answer of "no particular shape."
+**16. Answer: B.** `Opaque` is arbitrary user-defined data and is the default type [source: k8s-docs-secret-2026-08-23]. The `type` field exists to facilitate programmatic handling of the secret data [source: k8s-api-ref-secret-v1-2026-08-24]: it tells consumers what shape to expect, and `Opaque` is the honest answer of "no particular shape."
 - **A** invents inference from key names. Nothing infers a Secret's type; `kubernetes.io/basic-auth` is a type you choose deliberately when you are storing basic-authentication credentials.
 - **C** is wrong twice over. `type` IS a real top-level Secret field — just not a required one; it defaults to `Opaque` [source: k8s-docs-secret-2026-08-23]. And a Secret is one of the types that carries `data` rather than a `spec` [source: k8s-api-ref-secret-v1-2026-08-24], so "the four required fields" is the wrong frame for this object entirely.
 - **D** confuses a specific legacy type with a default. `kubernetes.io/service-account-token` is a ServiceAccount token, a legacy long-lived credential superseded since v1.22 by short-lived tokens from the TokenRequest API [source: k8s-docs-secret-2026-08-23] [source: k8s-docs-service-accounts-2026-08-23].
 
-**Q17. Answer: B.** Set-based selectors use `in`, `notin`, and `exists` [source: k8s-docs-labels-selectors-2026-08-23].
+**17. Answer: B.** Set-based selectors use `in`, `notin`, and `exists` [source: k8s-docs-labels-selectors-2026-08-23].
 - **A** and **D** are equality-based: `=`, `==`, and `!=` are the equality-based operators. `!=` in particular reads like a set operation and is not one.
 - **C** is the item's best distractor, because the comma makes it *look* set-based. It is two equality-based requirements ANDed together; commas AND multiple requirements regardless of which selector type they use [source: k8s-docs-labels-selectors-2026-08-23]. The comma tells you nothing about the operator; the operators are what you read.
 
-**Q18. Answer: A.** `matchLabels` is a map of `{key, value}` pairs equivalent to `matchExpressions` with operator `In` [source: k8s-docs-labels-selectors-2026-08-23].
+**18. Answer: A.** `matchLabels` is a map of `{key, value}` pairs equivalent to `matchExpressions` with operator `In` [source: k8s-docs-labels-selectors-2026-08-23].
 - **B** uses an operator that does not exist in this vocabulary; the operators are `In`, `NotIn`, `Exists`, and `DoesNotExist`.
 - **C** is a real operator with a different meaning: `Exists` tests for the key regardless of value, so it would also match `app: api`.
 - **D** is `In` with an empty value list, which matches nothing.
 
-**Q19. Answer: D.** Annotations attach arbitrary non-identifying metadata, and in contrast to labels are *not used to identify and select objects* [source: k8s-docs-annotations-2026-08-24]; selection is a label operation, and the label selector is the core grouping primitive [source: k8s-docs-labels-selectors-2026-08-23]. The fix is not to work around the selector. It is to record the attribute as a label, because wanting to select on it is what makes it identifying.
+**19. Answer: D.** Annotations attach arbitrary non-identifying metadata, and in contrast to labels are *not used to identify and select objects* [source: k8s-docs-annotations-2026-08-24]; selection is a label operation, and the label selector is the core grouping primitive [source: k8s-docs-labels-selectors-2026-08-23]. The fix is not to work around the selector. It is to record the attribute as a label, because wanting to select on it is what makes it identifying.
 - **A** implies a performance difference where there is a capability difference.
 - **B** inverts the prefix rule: `kubernetes.io/` and `k8s.io/` are reserved for core components in both labels and annotations, not required of user keys [source: k8s-docs-annotations-2026-08-24].
 - **C** describes namespace scoping, which is real but is not what stops the controller here.
 
-**Q20. Answer: C.** A label key may carry an optional prefix that is a DNS subdomain followed by a slash; `example.com/` is exactly that, and `tier` is a valid name segment [source: k8s-docs-labels-selectors-2026-08-23].
+**20. Answer: C.** A label key may carry an optional prefix that is a DNS subdomain followed by a slash; `example.com/` is exactly that, and `tier` is a valid name segment [source: k8s-docs-labels-selectors-2026-08-23].
 - **A is invalid for a user-defined label:** the `kubernetes.io/` and `k8s.io/` prefixes are reserved for Kubernetes core components [source: k8s-docs-labels-selectors-2026-08-23].
 - **B is invalid on length:** the name segment must be 63 characters or less [source: k8s-docs-labels-selectors-2026-08-23]. The 253-character allowance applies to the *prefix*, which is a different segment, and mixing the two limits is the specific slip this option targets.
 - **D is invalid on the value:** valid label values must be 63 characters or less [source: k8s-docs-labels-selectors-2026-08-23]. A 200-character description belongs in an annotation, whose values carry no character-set restriction and are bounded only by a 256 KiB total per object [source: k8s-docs-annotations-2026-08-24]. That is §5's rule in miniature: if it does not fit in a label value, it was probably never something you wanted to select on.
 
-**Q21. Answer: B.** `matchLabels` is a selector, and the label selector is the core grouping primitive; it answers *which objects* [source: k8s-docs-labels-selectors-2026-08-23]. `replicas` sits in `spec` and states desired state: how many should exist, which is exactly the documentation's own worked example of a Deployment spec specifying three replicas [source: k8s-docs-objects-2026-08-23].
+**21. Answer: B.** `matchLabels` is a selector, and the label selector is the core grouping primitive; it answers *which objects* [source: k8s-docs-labels-selectors-2026-08-23]. `replicas` sits in `spec` and states desired state: how many should exist, which is exactly the documentation's own worked example of a Deployment spec specifying three replicas [source: k8s-docs-objects-2026-08-23].
 - **A** inverts the two.
 - **C** and **D** both misplace authorship: `replicas` is something you set in `spec`, not something reported to you in `status`. `status` reports how many *currently* exist, which is the other half of the pair and the thing the controller compares against.
 
@@ -1289,7 +1289,7 @@ D) Neither — both are set by the system and reported in `status`
 | Namespace | A scope for names. Unique within, not across. Cannot be nested. One namespace per resource |
 | Initial namespaces | `default` (start without creating one), `kube-system` (system objects), `kube-public` (readable by all — by convention, not enforcement), `kube-node-lease` (node heartbeat Leases) |
 | Cluster-scoped | Nodes, PersistentVolumes, StorageClasses, and namespace objects themselves. `kubectl api-resources --namespaced=false` settles it |
-| ConfigMap | Non-confidential key-value data, ≤1 MiB, same namespace as the Pod. Four consumption paths; only the API-reading one sees updates. Immutability is irreversible |
+| ConfigMap | Non-confidential key-value data, ≤1 MiB, same namespace as the Pod. Four consumption paths: environment variables are fixed at launch, volume mounts refresh eventually, only the API-reading one sees a change as it happens. Immutability is irreversible |
 | Secret | Same shape, different intent and treatment. Values base64-*encoded*; stored *unencrypted* by default. Readable by anyone with API access, etcd access, or Pod-creation rights in the namespace |
 | Base64 | An encoding, not an encryption method. No additional confidentiality over plain text [source: k8s-docs-secrets-good-practices-2026-08-24] |
 | `Opaque` | The default Secret type: arbitrary user-defined data |
@@ -1303,9 +1303,11 @@ D) Neither — both are set by the system and reported in `status`
 
 ## 🏆 Safe Harbor
 
-**Voyage Progress:** 🗺️ → 🌊 → 🌅 — Chapter 4 of 20 complete. You have crossed from *watching the system* to *writing to it*, which is the largest single step in this book.
+🗺️ Chart → **🌊 Passage** → 🌅 Dawn
 
-You can now read a manifest you have never seen. You know which of its fields you author and which one is a report. You know where its name has to be unique and which resources have no name-scope at all. You know how to describe a set of objects rather than list one. And you know the exact thing a Secret does and does not do, which is a piece of knowledge something plenty of working practitioners, in my experience, have wrong.
+*You have crossed from watching the system to writing to it, which is the largest single step in this book.*
+
+You can now read a manifest you have never seen. You know which of its fields you author and which one is a report. You know where its name has to be unique and which resources have no name-scope at all. You know how to describe a set of objects rather than list one. And you know the exact thing a Secret does and does not do, which is a piece of knowledge plenty of working practitioners, in my experience, have wrong.
 
 ---
 

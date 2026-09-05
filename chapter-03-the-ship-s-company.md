@@ -50,7 +50,7 @@ sections:
     objectives: ["D1.1"]
     requires_figure: true
     figure_anchor: "ch03-fig04-request-path-through-apiserver"
-    checkpoint_after: true
+    checkpoint_after: false
   - name: "Controllers and the Control Loop"
     objectives: ["D1.1"]
     requires_figure: true
@@ -80,9 +80,9 @@ soundings_planned:
 #-- § "Taking Your Bearings checkpoints" for justification and B4's own sanction.
 question_budget:
   soundings: 8
-  taking_your_bearings: 13             # across 3 checkpoints (5 + 4 + 4)
-  practice_questions: 19
-  total_this_chapter: 40
+  taking_your_bearings: 11             # across 2 checkpoints (5 + 6)
+  practice_questions: 25
+  total_this_chapter: 44
 
 #-- Concept / objective / command tagging --------------------------------
 kb_tags:
@@ -149,7 +149,7 @@ figures_planned:
 
 ## Attention Budget
 
-**Total time: ~85 minutes | Recommended: Single session if you're fresh; otherwise split after the second checkpoint**
+**Total time: ~88 minutes | Recommended: Single session if you're fresh; otherwise split after §5**
 
 | Section | Time | Attention Cost | Best Time to Study |
 |---|---|---|---|
@@ -159,9 +159,8 @@ figures_planned:
 | ☆ Taking Your Bearings #1 | 6 min | Medium | After a brief break |
 | §4 Addons, and What Else Is Optional | 6 min | Low | Anytime |
 | §5 The Only Door In | 11 min | High | Peak attention |
-| ☆ Taking Your Bearings #2 | 5 min | Medium | After a brief break |
 | §6 Controllers and the Control Loop | 14 min | High | Peak attention |
-| ☆ Taking Your Bearings #3 | 5 min | Medium | After a brief break |
+| ☆ Taking Your Bearings #2 | 8 min | Medium | After a brief break |
 | §7 Nobody Is in Charge | 7 min | Medium | Anytime after §5 and §6 |
 
 **Attention Cost Key:**
@@ -169,7 +168,7 @@ figures_planned:
 - **Medium:** New concepts requiring focus — study when alert
 - **High:** Abstract or complex material — study at peak attention
 
-*If you only have 15 minutes: read §6 and take Taking Your Bearings #3. Later chapters retrieve §6 by name, more than any other section here. Nothing else in this chapter is retrieved as often.*
+*If you only have 15 minutes: read §6 and take Taking Your Bearings #2. Later chapters retrieve §6 by name, more than any other section here. Nothing else in this chapter is retrieved as often.*
 
 ---
 
@@ -253,7 +252,7 @@ By the end of this chapter, you'll be able to:
 
 ---
 
-## §1 — ⚪ How the Cluster Got the Shape It Has
+## ⚪ §1 — How the Cluster Got the Shape It Has
 
 Systems have shapes, and the shapes have reasons. Kubernetes looks the way it looks because of a specific sequence of problems the industry solved one at a time, each solution creating the conditions for the next.
 
@@ -269,10 +268,8 @@ Systems have shapes, and the shapes have reasons. Kubernetes looks the way it lo
 
 That last sentence is the documentation's, and it says *operating system*. The sharper statement, that what a container shares with the host is specifically the **kernel**, is this book's, not the documentation's, and you'll see it written that way where the precision earns its keep. Treat it as our gloss on an accurate but coarse sentence, not as a quotation.
 
-<!-- AUTHOR-REVIEW: book-level status — handled here; no further edits elsewhere. Cached wording is "share the Operating System (OS) among the applications" (k8s-docs-overview-2026-08-23). Ch 2 §1 (chapter-02:281–285) adjudicates BOTH registers as correct — quote "operating system" when citing; hold "kernel" as the practitioner sharpening — and this chapter follows it above. Ch 1 §Soundings A1 uses the kernel register Ch 2 blesses, so the chapters agree in substance; its answer now labels the sharpening as the book's own (resolved 2026-08-24). Practice Q2 in this chapter is keyed to the snapshot's wording, not the gloss. -->
-
 <!-- FIGURE: ch03-fig03-deployment-eras-timeline -->
-![Three side-by-side layer stacks comparing traditional, virtualized, and container deployment; traditional runs one app on an OS on hardware, virtualized adds a hypervisor and a guest OS per virtual machine, and containers place three apps directly on one shared operating system](figures/ch03-fig03-deployment-eras-timeline.svg)
+![Three side-by-side layer stacks comparing traditional, virtualized, and container deployment; traditional runs one app on an OS on hardware, virtualized adds a hypervisor and a guest OS per virtual machine, and containers place three apps directly on one shared operating system; a bottom row names what each era shares: nothing, the hardware, the OS kernel](figures/ch03-fig03-deployment-eras-timeline.svg)
 
 <!-- ASCII-FALLBACK
 ```
@@ -322,7 +319,7 @@ Read that right-hand column again. Notice how many entries describe something th
 
 ### What Kubernetes is not
 
-This list is more useful than the last one, and it is easier to get wrong than its length suggests. Kubernetes is not a traditional, all-inclusive PaaS. Because it operates at the container level rather than the hardware level, it provides some features common to PaaS offerings (deployment, scaling, load balancing) and lets users integrate their own logging, monitoring, and alerting. But Kubernetes is not monolithic, and those default solutions are optional and pluggable. It provides the building blocks for building developer platforms while preserving user choice [source: k8s-docs-overview-2026-08-23].
+This list is more useful than the last one, and it is easier to get wrong than its length suggests. Kubernetes is not a traditional, all-inclusive PaaS (Platform as a Service). Because it operates at the container level rather than the hardware level, it provides some features common to PaaS offerings (deployment, scaling, load balancing) and lets users integrate their own logging, monitoring, and alerting. But Kubernetes is not monolithic, and those default solutions are optional and pluggable. It provides the building blocks for building developer platforms while preserving user choice [source: k8s-docs-overview-2026-08-23].
 
 Specifically, Kubernetes [source: k8s-docs-overview-2026-08-23]:
 
@@ -345,17 +342,17 @@ That Snag deserves a moment of honesty, because it's the book correcting its own
 
 On June 6th, 2014, the first commit of Kubernetes was pushed to GitHub: 250 files and 47,501 lines of Go, bash, and markdown [source: k8s-history-ten-years-2026-08-23]. The project did not appear from nothing. Kubernetes drew on Google's internal container-orchestration experience with the Borg system and its research successor Omega, and was written in Go [source: k8s-history-ten-years-2026-08-23]. It arrived into a container moment that Docker had opened the year before [source: k8s-history-ten-years-2026-08-23]. A popular, portable unit of deployment created the demand for something to manage those units at scale.
 
-Kubernetes was announced publicly at DockerCon in June 2014, reached v1.0 in July 2015, and was donated by Google to the newly formed Cloud Native Computing Foundation as its first project [source: k8s-history-ten-years-2026-08-23]. CNCF is part of the nonprofit Linux Foundation [source: cncf-who-we-are-2026-08-23]. One more beat of that history earns its keep here, because it explains a shorthand you will still meet: "Kubernetes runs Docker containers." It was once literally true — early Kubernetes drove Docker Engine directly through a built-in shim, and that shim, dockershim, has since been removed from Kubernetes. The images never noticed: an image built with Docker is a standard OCI image, and the runtimes underneath run it natively [source: k8s-blog-dockershim-faq-2026-08-24].
+Kubernetes was announced publicly at DockerCon in June 2014, reached v1.0 in July 2015, and was donated by Google to the newly formed Cloud Native Computing Foundation as its first project [source: k8s-history-ten-years-2026-08-23]. CNCF is part of the nonprofit Linux Foundation [source: cncf-who-we-are-2026-08-23]. One more beat of that history earns its keep here, because it explains a shorthand you will still meet: "Kubernetes runs Docker containers." It was once literally true — early Kubernetes drove Docker Engine directly through a built-in shim, and that shim, dockershim, has since been removed from Kubernetes. The images never noticed: images produced by `docker build` work with every CRI implementation, exactly as they did before [source: k8s-blog-dockershim-faq-2026-08-24].
 
 The name comes from the Greek word for helmsman or pilot; "K8s" is the numeronym, with eight letters between the K and the s [source: k8s-history-ten-years-2026-08-23]. The brand you're reading did not pick the maritime register to be cute about it. The subject arrived that way.
 
 > 🔭 **Closer Look:** Borg and Omega were two different projects, not one renamed. Borg was the production system; Omega is described as its research successor [source: k8s-history-ten-years-2026-08-23]. Kubernetes inherited from both. This is deeper than the exam requires.
 
-*[cross-bearing: see Ch 17 §1 — the CNCF, its governance, and the cloud native definition]*
+*[cross-bearing: see Ch 17 §1 — the CNCF and the cloud native definition; its governance follows in §2]*
 
 ---
 
-## §2 — ⚪ The Control Plane
+## ⚪ §2 — The Control Plane
 
 Start with the shape of the thing. A ship's company sorts itself before it works: some stations keep the reckoning, others keep the deck.
 
@@ -364,7 +361,7 @@ A Kubernetes cluster consists of a control plane plus a set of worker machines, 
 So: two kinds of machine, two sets of software. That answers Soundings question 3, and it's the first thing to fix in your head, because every component name you're about to learn hangs off it.
 
 <!-- FIGURE: ch03-fig01-control-plane-and-node-components -->
-![Cluster component census: a control plane region holding kube-apiserver, etcd, kube-scheduler, kube-controller-manager and a dashed optional cloud-controller-manager, above two node regions each holding kubelet, a dashed optional kube-proxy, and a container runtime](figures/ch03-fig01-control-plane-and-node-components.svg)
+![Cluster component census: a control plane region holding kube-apiserver, etcd, kube-scheduler, kube-controller-manager and a dashed optional cloud-controller-manager, above a node region labeled as repeating per worker that holds kubelet, a dashed optional kube-proxy, and a container runtime with containerd named as the example; a legend marks solid borders as always present and dashed borders as optional](figures/ch03-fig01-control-plane-and-node-components.svg)
 
 <!-- ASCII-FALLBACK
 ```
@@ -409,7 +406,7 @@ That "front end" phrase is doing enormous work, and §5 is devoted to unpacking 
 
 Consistent and highly-available key value store used as Kubernetes' backing store for all cluster data. If your Kubernetes cluster uses etcd as its backing store, make sure you have a back up plan for the data [source: k8s-docs-cluster-architecture-2026-08-23].
 
-That's the whole official description, and it's terser than it looks. Two words deserve unpacking, and what follows is this book's explanation of them rather than more documentation. *"All cluster data"* means all of it: every object you created, every object the system created, every piece of state the cluster knows about. And *"consistent"* is the property the rest of the architecture leans on. In plain terms, it's what lets independent components reading the same shared state work from the same picture of the world rather than from private, drifting copies. Take that as the gloss it is; the formal guarantees are etcd's own subject, not this chapter's.
+That's the whole official description, and it's terser than it looks. Two words deserve unpacking, and what follows is this book's explanation of them rather than more documentation. *"All cluster data"* means all of it: every object you created, every object the system created, every piece of state the cluster knows about. (An object, for now, is a stored description of something that should exist; Chapter 4 is where the word gets its full treatment.) And *"consistent"* is the property the rest of the architecture leans on. In plain terms, it's what lets independent components reading the same shared state work from the same picture of the world rather than from private, drifting copies. Take that as the gloss it is; the formal guarantees are etcd's own subject, not this chapter's.
 
 > ⚓ **Worth Securing:** etcd is where the cluster lives. It is the backing store for *all* cluster data [source: k8s-docs-cluster-architecture-2026-08-23], which means the other components can be killed, restarted, or replaced and rebuild their working picture from what etcd holds. etcd itself holds the thing that cannot be rebuilt from anywhere else. Losing it is not something you recover from by restarting a process. It's something you recover from by having taken a backup, which is why the documentation's one piece of unsolicited advice about etcd is "make sure you have a back up plan."
 
@@ -426,7 +423,9 @@ One component boundary needs stating precisely right now, because it heads off a
 
 ### kube-controller-manager
 
-Control plane component that runs controller processes. Logically, each controller is a separate process, but to reduce complexity, they are all compiled into a single binary and run in a single process. There are many different types of controllers — for example: the Node controller (noticing and responding when nodes go down); the Job controller (watching for Job objects that represent one-off tasks, then creating Pods to run those tasks to completion); the EndpointSlice controller (populating EndpointSlice objects to provide a link between Services and Pods); and the ServiceAccount controller (creating default ServiceAccounts for new namespaces) [source: k8s-docs-cluster-architecture-2026-08-23].
+Control plane component that runs controller processes. Logically, each controller is a separate process, but to reduce complexity, they are all compiled into a single binary and run in a single process. There are many different types of controllers — for example: the node controller (noticing and responding when nodes go down); the Job controller (watching for Job objects that represent one-off tasks, then creating Pods to run those tasks to completion); the EndpointSlice controller (populating EndpointSlice objects to provide a link between Services and Pods); and the ServiceAccount controller (creating default ServiceAccounts for new namespaces) [source: k8s-docs-cluster-architecture-2026-08-23].
+
+Jobs, EndpointSlices, ServiceAccounts, and Namespaces are all objects with chapters of their own (6, 9, 5, and 4 respectively); here they are only the things those controllers act on.
 
 > ⚠ **Navigational Hazards:** Read that second sentence twice. *Logically*, each controller is a separate process. That's the conceptual model. *Actually*, they are all compiled into a single binary and run in a single process. This is a single sentence in the documentation and it reads like a trivial implementation note, which is exactly why it gets tested. Candidates who skimmed it will tell you confidently that there's one process per controller, or one container per controller, or one Pod per controller. All three are wrong for the same reason: there is no per-controller unit of any kind. One binary. One process. Many logical controllers inside it.
 
@@ -440,7 +439,7 @@ That last sentence is the one to hold onto. This component is genuinely optional
 
 ---
 
-## §3 — ⚪ Node Components in Context
+## ⚪ §3 — Node Components in Context
 
 *[cross-bearing: see Ch 2 §4 — the kubelet, CRI, and container runtime chain, which this section places in its architectural context]*
 
@@ -474,7 +473,7 @@ You already own this one. Chapter 2 walked the chain: the kubelet speaks CRI, th
 
 That's the census. Eight components, and here it is in one place.
 
-> **★ Fixed Point**
+> ★ **Fixed Point:**
 >
 > **Control plane:** kube-apiserver, etcd, kube-scheduler, kube-controller-manager, and cloud-controller-manager *(optional — absent on premises and on your laptop)*.
 >
@@ -490,35 +489,35 @@ That's the census. Eight components, and here it is in one place.
 
 Five questions. One of them reaches back to Chapter 2.
 
-**Q1.** ⚪ Which of the following components runs on *every node* rather than on the control plane?
+**1.** ⚪ Which of the following is a *node* component rather than a control-plane component?
 
 A) kube-proxy
 B) kube-scheduler
 C) etcd
 D) cloud-controller-manager
 
-**Q2.** ⚪ "Watches for newly created Pods with no assigned node, and selects a node for them to run on." Which component?
+**2.** ⚪ "Watches for newly created Pods with no assigned node, and selects a node for them to run on." Which component?
 
 A) kube-controller-manager
 B) kubelet
 C) kube-apiserver
 D) kube-scheduler
 
-**Q3.** 🔵 How does kube-controller-manager run its controllers?
+**3.** 🔵 How does kube-controller-manager run its controllers?
 
 A) All controllers compiled into a single binary, running in a single process
 B) One operating-system process per controller, supervised by a parent process
 C) One container per controller, all within a single Pod
 D) One Pod per controller, all in the kube-system namespace
 
-**Q4.** 🔵 What does etcd store?
+**4.** 🔵 What does etcd store?
 
 A) Only the objects you explicitly created
 B) All cluster data
 C) Only Pod definitions and node registrations
 D) Cluster data plus cached container image layers
 
-**Q5.** 🟡 *[retrieval: ch2]* A Pod has been assigned to a node and its containers need to start. Which node component causes a container to actually start, and through what interface does it do so?
+**5.** 🟡 *[retrieval: ch2]* A Pod has been assigned to a node and its containers need to start. Which node component causes a container to actually start, and through what interface does it do so?
 
 A) kube-proxy, via the iptables rules it maintains on the node
 B) kube-scheduler, by connecting directly to that node's container runtime
@@ -529,27 +528,27 @@ D) The kubelet, via the Container Runtime Interface (CRI)
 
 **Answers with Explanations:**
 
-**Q1 — A.** kube-proxy is a node component; it runs on each node in the cluster, maintaining network rules [source: k8s-docs-cluster-architecture-2026-08-23].
+**1 — A.** kube-proxy is a node component; where it runs at all, it runs on each node in the cluster, maintaining network rules [source: k8s-docs-cluster-architecture-2026-08-23].
 - **B is wrong** — kube-scheduler is a control plane component. It's a common slip because scheduling *results* in something happening on a node, but the scheduler itself lives on the control plane.
 - **C is wrong** — etcd is a control plane component and the backing store for all cluster data.
 - **D is wrong** — cloud-controller-manager is a control plane component, and an optional one at that.
 
-**Q2 — D.** That is the kube-scheduler's published description, near-verbatim [source: k8s-docs-cluster-architecture-2026-08-23].
+**2 — D.** That is the kube-scheduler's published description, near-verbatim [source: k8s-docs-cluster-architecture-2026-08-23].
 - **A is wrong** — the controller-manager runs controllers. Several of them create Pods, but none of them chooses which node a Pod lands on.
 - **B is wrong** — the kubelet acts *after* a node has been chosen, ensuring the containers described for its own node are running. It doesn't select nodes.
 - **C is wrong** — the API server serves the API. It stores and serves the fact that a Pod has no node yet; it doesn't decide the node.
 
-**Q3 — A.** Logically each controller is a separate process, but to reduce complexity they are all compiled into a single binary and run in a single process [source: k8s-docs-cluster-architecture-2026-08-23].
+**3 — A.** Logically each controller is a separate process, but to reduce complexity they are all compiled into a single binary and run in a single process [source: k8s-docs-cluster-architecture-2026-08-23].
 - **B is wrong** — and it's wrong in the most tempting way, because the documentation's own sentence begins "Logically, each controller is a separate process." That word *logically* is the whole question.
 - **C is wrong** for the same reason B is: there is no per-controller unit of any kind, container or otherwise. The unit is the controller-manager itself, and every controller lives inside it.
 - **D is wrong** for that same reason. Whatever the controller-manager happens to be packaged as in your cluster, there is *one* of it, not one per controller.
 
-**Q4 — B.** etcd is the backing store for all cluster data [source: k8s-docs-cluster-architecture-2026-08-23].
+**4 — B.** etcd is the backing store for all cluster data [source: k8s-docs-cluster-architecture-2026-08-23].
 - **A is wrong** — the cluster creates plenty of objects you didn't (default ServiceAccounts, EndpointSlices, Leases), and those are stored there too.
 - **C is wrong** — a subset answer. Believing etcd holds only *some* of the state is the specific misconception that leads people astray later, when Chapter 12 asks why Secret encryption at rest is a separate configuration decision.
 - **D is wrong** — image layers live in a registry and, once pulled, are cached on node disk by the kubelet and runtime [source: k8s-docs-images-2026-08-23]. etcd stores API objects, not binary payloads.
 
-**Q5 — D.** *[retrieval: ch2]* The kubelet ensures the containers described in its PodSpecs are running [source: k8s-docs-cluster-architecture-2026-08-23], and it reaches the runtime through the Container Runtime Interface, the extension point Kubernetes defines for alternative container runtimes [source: k8s-docs-extending-kubernetes-2026-08-23].
+**5 — D.** *[retrieval: ch2]* The kubelet ensures the containers described in its PodSpecs are running [source: k8s-docs-cluster-architecture-2026-08-23], and it reaches the runtime through the Container Runtime Interface, the extension point Kubernetes defines for alternative container runtimes [source: k8s-docs-extending-kubernetes-2026-08-23].
 - **A is wrong** — kube-proxy handles network rules for Services. It has nothing to do with starting containers.
 - **B is wrong** — the scheduler selects a node and records the decision. It never contacts a node's runtime. This is the highest-value wrong answer on the page, because the belief behind it ("the scheduler places the Pod on the node, so it must talk to the node") is genuinely widespread.
 - **C is wrong** — the container runtime doesn't poll the API server. It sits below the kubelet and is driven by it through CRI. The runtime doesn't know Kubernetes exists.
@@ -570,7 +569,7 @@ D) The kubelet, via the Container Runtime Interface (CRI)
 
 ---
 
-## §4 — 🔵 Addons, and What Else Is Optional
+## 🔵 §4 — Addons, and What Else Is Optional
 
 This is the shortest section in the chapter and it exists for one sentence at the end of it.
 
@@ -615,7 +614,7 @@ Which brings us to the sentence this section exists for.
 
 ---
 
-## §5 — 🔵 The Only Door In
+## 🔵 §5 — The Only Door In
 
 You have the census. Now the arrangement, because eight components in a list is a vocabulary, and eight components with a shape is an architecture.
 
@@ -645,8 +644,6 @@ Put those together and a shape appears. Not a chain of command. A chart table: o
 ```
 -->
 *The state path. Every arrow terminates at the API server, and the API server is the one component with an edge to etcd. Now look for the arrow that isn't drawn: there is none between any two of the surrounding components.*
-
-<!-- AUTHOR-REVIEW: the prior draft carried a BLOCKING note here asking Stage 2 to fetch kubernetes.io/docs/concepts/architecture/control-plane-node-communication/. Stage 2 DID fetch it (research-manifest A1); the note was stale and has been removed. Two real qualifications survive the fetch and are now reflected in the prose above and below: (1) "only the API server talks to etcd" is sourced as a RECOMMENDATION — A3's wording is "ideally only the API server should have access to it" — not as an invariant, so the text no longer states it absolutely; (2) A1 documents outbound API-server→kubelet paths (logs, attach, port-forward) that this figure does not draw, so the figure and §5 are now explicitly scoped to the state/API path. Do not restore the absolute phrasing. -->
 
 ### What follows from a hub
 
@@ -685,7 +682,7 @@ Read the verbs. *Notices.* *Selects.* *Records.* *Notices.* At no point does one
 
 ---
 
-## §6 — 🔵 Controllers and the Control Loop
+## 🔵 §6 — Controllers and the Control Loop
 
 This is the section the rest of the book leans on. If you read one section of this chapter at full attention, read this one.
 
@@ -731,7 +728,7 @@ Sit with how ordinary that is. A thermostat doesn't execute a heating plan. It d
         no start.  no end.  no exit condition.
 ```
 -->
-*Notice there is no entry arrow and no terminus. A loop drawn with a beginning teaches the wrong thing: this one was already running before your request arrived and will still be running after it's satisfied.*
+*Notice that the loop itself has no entry arrow and no terminus; desired state feeds the comparison from outside it. A loop drawn with a beginning teaches the wrong thing: this one was already running before your request arrived and will still be running after it's satisfied.*
 
 <!-- FIGURE PAIR (do not redraw in isolation): this figure and `ch15-zenith-control-loop-pointed-at-a-repo` are a matched pair on one chassis.
      Chapter 15 §7 is the book's designated primary Zenith and its caption asks the
@@ -745,7 +742,7 @@ Sit with how ordinary that is. A thermostat doesn't execute a heating plan. It d
 
 ### The controller pattern, precisely
 
-A controller tracks at least one Kubernetes resource type. Those objects carry a field that represents the desired state, and the controller for that resource is responsible for making the current state come closer to it. The controller might carry the action out itself; more commonly, in Kubernetes, a controller will send messages to the API server that have useful side effects [source: k8s-docs-controllers-2026-08-23].
+A controller tracks at least one Kubernetes resource type. Those objects carry a field that represents the desired state, and the controller for that resource is responsible for making the current state come closer to it. The controller might carry the action out itself; more commonly, in Kubernetes, a controller will send messages to the API server that have useful side effects [source: k8s-docs-controllers-2026-08-23]. (A *resource type*, for now, is one kind of object the API serves — Pods, Jobs, Nodes. Chapter 4 makes the word precise.)
 
 Read that last clause carefully, because it is the distinction most people get wrong.
 
@@ -761,7 +758,7 @@ Note what's the same and what's different. The loop is identical: desired state 
 
 Controllers also update the objects that configure them. Once the work is done for a Job, the Job controller updates that Job object to mark it Finished [source: k8s-docs-controllers-2026-08-23]. The loop reports on itself through the same shared state it reads from.
 
-> **★ Fixed Point**
+> ★ **Fixed Point:**
 >
 > **A control loop is: a desired state, a current state, and an action that closes the gap between them — repeating, without terminating.**
 >
@@ -799,44 +796,44 @@ This is also where §1's capability list cashes out. Self-healing was listed as 
 
 ## ☆ Taking Your Bearings #2 — Arrangement, Optionality, and the Control Loop
 
-Six questions on §5 and §6 — arrangement, optionality, and the control loop. Q4 carries two ideas at once, so treat it as two questions in disguise.
+Six questions on §4 through §6 — optionality, the hub arrangement, and the control loop. Q4 is worth reading twice: its answer is §5's arrangement seen from a controller's side.
 
-**Q1.** 🔵 Two components are often called "optional": kube-proxy and the cloud-controller-manager. Which pair of statements correctly describes when each is actually absent?
+**1.** 🔵 Two components are often called "optional": kube-proxy and the cloud-controller-manager. Which pair of statements correctly describes when each is actually absent?
 
 A) kube-proxy is absent only in single-node clusters; cloud-controller-manager runs in every cluster to manage infrastructure
-B) kube-proxy is absent when your network plugin forwards Service traffic itself; cloud-controller-manager is absent from self-hosted and local clusters, which have no cloud provider to link to
+B) kube-proxy is absent when your network plugin forwards Service traffic itself; cloud-controller-manager is absent from on-premises and local clusters, which have no cloud provider to link to
 C) kube-proxy is absent only if no Services have been created; cloud-controller-manager is absent only from a laptop learning cluster
 D) Neither is ever truly absent — both are required node components, just idle when unused
 
-**Q2.** 🔵 Cluster DNS is described in the documentation as an addon rather than a component. What follows from that classification?
+**2.** 🔵 Cluster DNS is described in the documentation as an addon rather than a component. What follows from that classification?
 
 A) It cannot be used in production clusters
 B) It runs on the control plane rather than on the nodes
 C) It is required on every cluster and is simply categorized separately
 D) It extends the cluster's functionality rather than constituting the cluster
 
-**Q3.** 🔵 A component continuously compares a recorded target replica count against the number of Pods actually running, and creates or deletes Pods when they differ. Is this a control loop, and what are its two states?
+**3.** 🔵 A component continuously compares a recorded target replica count against the number of Pods actually running, and creates or deletes Pods when they differ. Is this a control loop, and what are its two states?
 
 A) Yes — desired state is the recorded target count; current state is the number actually running
 B) Yes — desired state is the number actually running; current state is the recorded target count
 C) No — it's a scheduled task that runs at intervals, and it has no states
 D) No — control loops observe state but never create or delete objects
 
-**Q4.** 🔵 The Job controller receives a new Job. What does it actually do?
+**4.** 🔵 The Job controller receives a new Job. What does it actually do?
 
 A) Starts the containers for the Job directly on the nodes it selects
 B) Tells the API server to create Pods; other components act on that information
 C) Chooses which node each of the Job's Pods will run on, then starts them
 D) Connects to each node's kubelet and instructs it to run the Job's Pods
 
-**Q5.** 🟡 Two controllers: Controller A reconciles the number of running replicas against a declared count. Controller B ensures enough Nodes exist in the cluster, provisioning new machines when needed. Which uses control via the API server, and which uses direct control?
+**5.** 🟡 Two controllers: Controller A reconciles the number of running replicas against a declared count. Controller B ensures enough Nodes exist in the cluster, provisioning new machines when needed. Which uses control via the API server, and which uses direct control?
 
 A) Both use control via the API server
 B) A uses direct control; B uses control via the API server
 C) A uses control via the API server; B uses direct control
 D) Both use direct control
 
-**Q6.** 🟡 A cluster's state is changing continuously and never settles into a steady configuration. Is this a malfunction?
+**6.** 🟡 A cluster's state is changing continuously and never settles into a steady configuration. Is this a malfunction?
 
 A) No — as long as the controllers are running and able to make useful changes, overall stability doesn't matter
 B) Yes — a healthy cluster converges on a stable state and then stays there
@@ -847,32 +844,32 @@ D) No, but only in clusters that have some form of autoscaling enabled
 
 **Answers with Explanations:**
 
-**Q1 — B.** A network plugin that forwards Service traffic itself makes kube-proxy redundant; a self-hosted or local cluster has no cloud provider to link to, so it has no cloud-controller-manager at all [source: k8s-docs-cluster-architecture-2026-08-23].
-- **A** — node count doesn't decide kube-proxy, and every managed cluster needs the cloud-controller-manager.
+**1 — B.** A network plugin that forwards Service traffic itself makes kube-proxy redundant; an on-premises or local cluster has no cloud provider to link to, so it has no cloud-controller-manager at all [source: k8s-docs-cluster-architecture-2026-08-23].
+- **A** — node count doesn't decide kube-proxy, and cloud-controller-manager does not run in every cluster: on your own premises or on your own PC there is none.
 - **C** — usage patterns don't decide optionality; something else already doing the job does.
 - **D** — both are genuinely optional, not merely idle; an idle component would still show up in a listing.
 
-**Q2 — D.** Addons extend Kubernetes' functionality [source: k8s-docs-components-2026-08-23].
+**2 — D.** Addons extend Kubernetes' functionality [source: k8s-docs-components-2026-08-23].
 - **A** — addons are production-appropriate; cluster DNS is launched automatically by the addon manager [source: k8s-docs-dns-cluster-addon-2026-08-24].
 - **B** — the addon/component split is about role, not placement.
 - **C** — near-universal in practice isn't the same as part of the cluster's definition. That gap is the whole pattern.
 
-**Q3 — A.** Controllers are control loops that watch cluster state and act to close the gap between desired and current [source: k8s-docs-controllers-2026-08-23].
+**3 — A.** Controllers are control loops that watch cluster state and act to close the gap between desired and current [source: k8s-docs-controllers-2026-08-23].
 - **B** reverses desired and current — invert those and the whole model breaks.
 - **C** — a scheduled task runs on a clock and finishes; a control loop runs on a gap and doesn't.
 - **D** — creating and deleting objects is how most controllers close the gap.
 
-**Q4 — B.** The Job controller doesn't run Pods or containers itself — it tells the API server what should exist, and other components act on that [source: k8s-docs-controllers-2026-08-23]. It's the same pattern behind Pod scheduling: the scheduler records its choice through the API server, the kubelet discovers it independently, and nothing in the control plane calls another component directly [source: k8s-docs-control-plane-node-communication-2026-08-24]. Apparent cooperation is independent observation of shared state, and the API server is the only thing that reaches etcd.
+**4 — B.** The Job controller doesn't run Pods or containers itself — it tells the API server what should exist, and other components act on that [source: k8s-docs-controllers-2026-08-23]. It's the same pattern behind Pod scheduling: the scheduler records its choice through the API server, the kubelet discovers it independently, and nothing in the control plane calls another component directly [source: k8s-docs-control-plane-node-communication-2026-08-24]. Apparent cooperation is independent observation of shared state, and the API server is the only thing that reaches etcd.
 - **A** — controllers never touch containers; that's the kubelet's job, on its own node only.
 - **C** — node selection belongs to the scheduler, after the Pods already exist as objects.
 - **D** — nothing on the control plane instructs a kubelet directly; it watches and acts on what it finds.
 
-**Q5 — C.** Controller A stays inside the cluster, asking the API server to create or remove Pods — control via the API server. Controller B needs a machine that doesn't exist yet, so it reaches outside the cluster to provision one — direct control [source: k8s-docs-controllers-2026-08-23].
+**5 — C.** Controller A stays inside the cluster, asking the API server to create or remove Pods — control via the API server. Controller B needs a machine that doesn't exist yet, so it reaches outside the cluster to provision one — direct control [source: k8s-docs-controllers-2026-08-23].
 - **A** — no amount of API-server messaging conjures a new machine.
 - **B** — the pairing is backwards; replica reconciliation is the textbook in-cluster case.
 - **D** — direct control is the less common shape, not the default.
 
-**Q6 — A.** A cluster can be changing at any point as work happens and control loops fix failures; as long as controllers are running and able to make useful changes, overall stability doesn't matter [source: k8s-docs-controllers-2026-08-23].
+**6 — A.** A cluster can be changing at any point as work happens and control loops fix failures; as long as controllers are running and able to make useful changes, overall stability doesn't matter [source: k8s-docs-controllers-2026-08-23].
 - **B** — the intuition most operators bring from other systems, and the one Kubernetes discards.
 - **C** — "stuck in a loop" imports a pathology that doesn't apply; the loop is supposed to run forever.
 - **D** — the claim isn't conditional on any feature.
@@ -881,7 +878,7 @@ D) No, but only in clusters that have some form of autoscaling enabled
 
 **If you scored 4–5:** Solid. Go back for whichever you missed before moving on.
 
-**If you scored 0–3:** Re-read §5's submission story and §6's ★ Fixed Point and Job-controller paragraph. Both traps turn on the same word — "optional" in one, "settled" in the other.
+**If you scored 0–3:** Re-read §4's table of what is optional, §5's submission story, and §6's ★ Fixed Point and Job-controller paragraph. Two of the traps here turn on a single word each — "optional" in Q1, "settled" in Q6.
 
 **Checkpoint: You've Now Mastered**
 ✓ What "optional" means for each of the three optional things — and whose word it is in each case
@@ -893,8 +890,9 @@ D) No, but only in clusters that have some form of autoscaling enabled
 ✓ Control via API server versus direct control, and which is common
 ✓ Why a cluster that never settles isn't a broken cluster
 
+---
 
-## §7 — 🟡 Nobody Is in Charge
+## 🟡 §7 — Nobody Is in Charge
 
 ☀️ **Zenith**
 
@@ -912,7 +910,7 @@ Back to §1's Snag, in the documentation's own words:
 
 > Kubernetes is not a mere orchestration system. In fact, it eliminates the need for orchestration. **The technical definition of orchestration is execution of a defined workflow: first do A, then B, then C.** In contrast, Kubernetes comprises a set of independent, composable control processes that continuously drive the current state towards the provided desired state. It shouldn't matter how you get from A to C. Centralized control is also not required. This results in a system that is easier to use and more powerful, robust, resilient, and extensible. [source: k8s-docs-overview-2026-08-23]
 
-> **★ Fixed Point**
+> ★ **Fixed Point:**
 >
 > **Orchestration, technically, is the execution of a defined workflow: first do A, then B, then C.** Kubernetes disclaims it. Kubernetes comprises a set of independent, composable control processes that continuously drive current state toward desired state — and it shouldn't matter how you get from A to C. Centralized control is not required. [source: k8s-docs-overview-2026-08-23]
 
@@ -925,8 +923,6 @@ Everyone in the industry, including this book in Chapter 1, calls Kubernetes an 
 A distinction you can't cash out is just trivia, so: why is this worth building a system around?
 
 **A system with no coordinator has no component whose failure leaves the others without instructions.** Not because everything keeps working — some things very much stop working — but because none of them were *taking* instructions in the first place. A kubelet's standing job is not an order it received; it is a comparison it holds, against the PodSpecs it already has [source: k8s-docs-cluster-architecture-2026-08-23]. There is no instruction queue to drain and no coordinator to wait on, because the work was never expressed that way.
-
-<!-- AUTHOR-REVIEW: the prior draft asserted specific kubelet behavior during a control-plane partition ("it keeps the containers it already knows about running"). No cached or newly-fetched snapshot covers kubelet behavior when the API server is unreachable — k8s-docs-nodes-2026-08-23 documents only the control-plane side (Ready → Unknown, API-initiated eviction). The claim has been reframed above as a consequence of the sourced "ensures the containers described in those PodSpecs are running" description rather than as reported partition behavior. If the partition behavior is wanted explicitly, open a research gap for the kubelet reference or kubernetes.io/docs/concepts/architecture/nodes/ node-lifecycle; do not restore the unsourced version. -->
 
 **A system that describes outcomes rather than sequences absorbs changes to the outcome without anyone rewriting the sequence.** Change the described state and every loop that cares about it recomputes its own gap. Nobody edits a workflow, because nobody wrote one. It shouldn't matter how you get from A to C, so when C changes, nothing about the path needs redesigning.
 
@@ -945,6 +941,8 @@ That's why §6 was worth more than the eight names, and why the eight names were
 *[cross-bearing: see Ch 6 — controllers you configure yourself]*
 *[cross-bearing: see Ch 15 — the loop, pointed somewhere unexpected]*
 *[cross-bearing: see Ch 17 — the same pattern, named as a principle]*
+
+🗺️ Chart → **🌊 Passage** → 🌅 Dawn
 
 ---
 
@@ -972,175 +970,175 @@ That's why §6 was worth more than the eight names, and why the eight names were
 
 ## Practice Questions
 
-**Q1.** ⚪ In the traditional deployment era, what was the only practical way to give an application resource isolation on a physical server?
+**1.** ⚪ In the traditional deployment era, what was the only practical way to give an application resource isolation on a physical server?
 
 A) Configure per-application resource quotas in the operating system
 B) Run each application under a separate OS user account with per-user limits
 C) Run each application on a different physical server
 D) Run each application inside its own hypervisor partition
 
-**Q2.** 🔵 *[retrieval: ch2]* Containers have relaxed isolation properties compared with virtual machines. Architecturally, what is it that containers share with each other that separate VMs do not?
+**2.** 🔵 *[retrieval: ch2]* Containers have relaxed isolation properties compared with virtual machines. Architecturally, what is it that containers share with each other that separate VMs do not?
 
 A) The operating system
 B) The physical hardware underneath the machine
 C) Their filesystem and process space
 D) The network interface on the host
 
-**Q3.** ⚪ Which of the following does Kubernetes explicitly *not* do?
+**3.** ⚪ Which of the following does Kubernetes explicitly *not* do?
 
 A) Restart containers that fail their health check
 B) Automatically mount a storage system of your choice
 C) Expose a container using a DNS name or its own IP address
 D) Deploy your source code and build your application
 
-**Q4.** 🔵 Kubernetes drew on which internal Google system, and what language is it written in?
+**4.** 🔵 Kubernetes drew on which internal Google system, and what language is it written in?
 
 A) MapReduce, a data-processing framework; written in C++
 B) Borg, and its research successor Omega; written in Go
 C) Spanner, a globally distributed database; written in Java
 D) Omega alone, with no production predecessor; written in Rust
 
-**Q5.** ⚪ Kubernetes was donated by Google to which foundation, and what does the name mean?
+**5.** ⚪ Kubernetes was donated by Google to which foundation, and what does the name mean?
 
 A) The Apache Software Foundation, as an incubating project; the name is an acronym
 B) The Cloud Native Computing Foundation, as one of several launch projects; the name is Latin for shepherd
 C) The Cloud Native Computing Foundation, as its first project; the name is Greek for helmsman or pilot
 D) The Open Container Initiative, alongside runC; the name is Greek for cluster
 
-**Q6.** ⚪ The documentation says that in production environments the control plane usually runs across multiple computers. What does that buy?
+**6.** ⚪ The documentation says that in production environments the control plane usually runs across multiple computers. What does that buy?
 
 A) Higher throughput, because each control-plane machine serves a different namespace
 B) Fault tolerance and high availability
 C) Reduced etcd storage, because cluster data is sharded across the machines
 D) A higher ceiling on the number of worker nodes a single cluster can hold
 
-**Q7.** ⚪ Which component is described as the front end for the Kubernetes control plane?
+**7.** ⚪ Which component is described as the front end for the Kubernetes control plane?
 
 A) kube-apiserver
 B) kube-controller-manager
 C) etcd
 D) kubelet
 
-**Q8.** ⚪ What is etcd's role in a Kubernetes cluster?
+**8.** ⚪ What is etcd's role in a Kubernetes cluster?
 
 A) It runs the containers that make up the control-plane components
 B) It caches container images so that Pods start faster on each node
 C) It routes API traffic across multiple kube-apiserver instances
 D) It is a consistent, highly-available key value store holding all cluster data
 
-**Q9.** 🔵 kube-apiserver is described as designed to scale horizontally. What does that mean in practice?
+**9.** 🔵 kube-apiserver is described as designed to scale horizontally. What does that mean in practice?
 
 A) It automatically grows its memory allocation as request load increases
 B) It spawns one worker process for each connected client
 C) You deploy more instances of it and balance traffic between them
 D) It shards cluster data across multiple independent etcd clusters
 
-**Q10.** 🔵 Which of these is *not* listed among the factors kube-scheduler takes into account?
+**10.** 🔵 Which of these is *not* listed among the factors kube-scheduler takes into account?
 
 A) How recently each candidate node was rebooted
 B) Individual and collective resource requirements
 C) Affinity and anti-affinity specifications
 D) Data locality
 
-**Q11.** 🔵 The kubelet is given a set of PodSpecs. What is its responsibility?
+**11.** 🔵 The kubelet is given a set of PodSpecs. What is its responsibility?
 
 A) To choose which node each PodSpec should run on
 B) To store the PodSpecs durably so that they survive a restart
 C) To ensure the containers described in those PodSpecs are running and healthy
 D) To forward the PodSpecs to kube-proxy for network configuration
 
-**Q12.** 🔵 You SSH to a worker node and start a container by hand using the container runtime directly. What does the kubelet do about it?
+**12.** 🔵 You SSH to a worker node and start a container by hand using the container runtime directly. What does the kubelet do about it?
 
 A) It restarts it if it exits, since it is running on a managed node
 B) Nothing — the kubelet doesn't manage containers that were not created by Kubernetes
 C) It reports it to the API server as an unmanaged Pod on that node
 D) It terminates it immediately as an unauthorized workload on a managed node
 
-**Q13.** 🔵 Which node component is *not* Kubernetes software — that is, a separate project that Kubernetes drives through a defined interface?
+**13.** 🔵 Which node component is *not* Kubernetes software — that is, a separate project that Kubernetes drives through a defined interface?
 
 A) kubelet
 B) kube-proxy
 C) All three node components are Kubernetes project components
 D) The container runtime
 
-**Q14.** 🟡 A cluster has an object created and stored, but the component that would normally act on that kind of object is not installed. What happens?
+**14.** 🟡 A cluster has an object created and stored, but the component that would normally act on that kind of object is not installed. What happens?
 
 A) The API server rejects the object at creation time as unserviceable
 B) kube-controller-manager automatically installs the missing component
 C) Nothing happens — the object exists as a description, but nothing acts on it
 D) The kubelet on each node takes over the missing component's responsibilities
 
-**Q15.** 🟡 A kubelet needs to know which Pods it is responsible for. Where does it get that, and what else does it talk to in order to get it?
+**15.** 🟡 A kubelet needs to know which Pods it is responsible for. Where does it get that, and what else does it talk to in order to get it?
 
 A) From kube-scheduler, which pushes each assignment directly to the node it selected
 B) From the API server, which it watches — not from the scheduler or another kubelet
 C) From etcd, which it reads directly, bypassing the API server for lower latency
 D) From kube-proxy on the same node, which relays control-plane traffic inward
 
-**Q16.** 🔵 In Kubernetes, when a controller "wants" a Pod to exist, what does it typically do?
+**16.** 🔵 In Kubernetes, when a controller "wants" a Pod to exist, what does it typically do?
 
 A) Sends messages to the API server that have useful side effects
 B) Creates the container directly through the node's container runtime
 C) Writes the Pod definition into etcd itself, bypassing the API server
 D) Instructs the target node's kubelet over a dedicated control channel
 
-**Q17.** 🔵 What are the two states a control loop compares?
+**17.** 🔵 What are the two states a control loop compares?
 
 A) Requested state and allocated state
 B) Declared state and validated state
 C) Desired state and current state
 D) Committed state and applied state
 
-**Q18.** 🟡 §1 lists self-healing among the things Kubernetes provides: restarting containers that fail, replacing containers, killing containers that don't respond to a health check. In §6's terms, what makes self-healing a standing condition rather than an action?
+**18.** 🟡 §1 lists self-healing among the things Kubernetes provides: restarting containers that fail, replacing containers, killing containers that don't respond to a health check. In §6's terms, what makes self-healing a standing condition rather than an action?
 
 A) It is scheduled to run at a fixed interval, re-checking every container each time
 B) It is a loop comparing the state you asked for against the state that exists, acting whenever the two differ
 C) It runs once when a Pod is created and then hands responsibility to the kubelet
 D) It is triggered by an operator or an external monitoring system when a failure is detected
 
-**Q19.** 🟡 A controller needs to provision a new virtual machine from a cloud provider because the cluster needs more Nodes. Which control shape is this, and where does it get its desired state?
+**19.** 🟡 A controller needs to provision a new virtual machine from a cloud provider because the cluster needs more Nodes. Which control shape is this, and where does it get its desired state?
 
 A) Direct control; it finds desired state from the API server, then talks to the external system
 B) Control via the API server; it finds desired state in the cloud provider's own API
 C) Direct control; it finds desired state in a configuration file on the control plane
 D) Control via the API server; it reads desired state directly out of etcd
 
-**Q20.** 🟡 A system is described as "executing a defined workflow: first do A, then B, then C." In the documentation's terms, what is that system doing?
+**20.** 🟡 A system is described as "executing a defined workflow: first do A, then B, then C." In the documentation's terms, what is that system doing?
 
 A) Reconciliation
 B) Declarative configuration
 C) Automatic bin packing
 D) Orchestration
 
-**Q21.** 🟡 The documentation says Kubernetes eliminates the need for orchestration. What does it say Kubernetes comprises instead?
+**21.** 🟡 The documentation says Kubernetes eliminates the need for orchestration. What does it say Kubernetes comprises instead?
 
 A) A centralized coordinator that computes an optimal execution order for the cluster
 B) A workflow engine with pluggable, user-defined step definitions
 C) A message bus over which the components exchange instructions with each other
 D) A set of independent, composable control processes driving current state toward desired state
 
-**Q22.** 🟡 The Node controller notices when nodes go down and responds. Which component is it running inside, and what does "responds" mean in control-loop terms?
+**22.** 🟡 The node controller notices when nodes go down and responds. Which component is it running inside, and what does "responds" mean in control-loop terms?
 
 A) It runs inside kube-controller-manager; it compares expected node state against observed, and asks the API server to act
 B) It runs inside the kubelet on each node, and it restarts that node's containers when they stop
 C) It runs inside kube-scheduler, and it moves the failed node's Pods to other nodes itself
 D) It runs as its own separate control-plane component and instructs the affected node's kubelet directly
 
-**Q23.** 🟡 kube-proxy and cloud-controller-manager are both marked optional in the documentation. Is it for the same reason?
+**23.** 🟡 kube-proxy and cloud-controller-manager are both marked optional in the documentation. Is it for the same reason?
 
 A) No — one because another component may already do its job; the other because there may be nothing for it to integrate with
 B) Yes — both are optional because a cluster below a certain size does not need either of them
 C) Yes — both are optional because an addon can be installed to replace either of them
 D) No — one is optional only in single-node clusters; the other only in clusters that define no Services
 
-**Q24.** 🔵 *[retrieval: ch2]* You need to change one line of configuration baked into a running container's filesystem. What is the correct process?
+**24.** 🔵 *[retrieval: ch2]* You need to change one line of configuration baked into a running container's filesystem. What is the correct process?
 
 A) Edit the file inside the running container and restart its process
 B) Build a new image that includes the change, then recreate the container from it
 C) Mount a writable layer over the container and patch the file in place
 D) Ask the kubelet to hot-patch the container's filesystem on the node
 
-**Q25.** 🔵 *[retrieval: ch2]* What does a container image contain?
+**25.** 🔵 *[retrieval: ch2]* What does a container image contain?
 
 A) The application binary only — libraries come from the node at run time
 B) A full guest operating system, including its own kernel, like a VM disk image
@@ -1151,120 +1149,120 @@ D) The code, its runtime, application and system libraries, and default settings
 
 **Answers with Explanations:**
 
-**Q1 — C.** There was no way to define resource boundaries for applications on a physical server; the solution was to run each application on a different physical server, which didn't scale and was expensive [source: k8s-docs-overview-2026-08-23].
+**1 — C.** There was no way to define resource boundaries for applications on a physical server; the solution was to run each application on a different physical server, which didn't scale and was expensive [source: k8s-docs-overview-2026-08-23].
 - **A is wrong** — the documented problem statement is precisely that no such boundary mechanism existed.
 - **B is wrong**, and instructively so. Separate user accounts were a real historical practice, and they do constrain *some* things, but not the ones that mattered. One application could still consume most of the machine's CPU or memory and starve the rest, which is exactly the failure the documentation describes.
 - **D is wrong** — hypervisors are the *next* era. That's the whole point of the progression.
 
-**Q2 — A.** *[retrieval: ch2]* Containers have relaxed isolation properties that let them share the operating system among the applications, which is why they are considered lightweight; a VM, by contrast, is a full machine running all the components, including its own operating system, on top of virtualized hardware [source: k8s-docs-overview-2026-08-23]. Ch 2 §1 holds both registers: "operating system" is the published wording and the one to recognize on an answer sheet; "kernel" is the mechanism underneath it.
+**2 — A.** *[retrieval: ch2]* Containers have relaxed isolation properties that let them share the operating system among the applications, which is why they are considered lightweight; a VM, by contrast, is a full machine running all the components, including its own operating system, on top of virtualized hardware [source: k8s-docs-overview-2026-08-23]. Ch 2 §1 holds both registers: "operating system" is the published wording and the one to recognize on an answer sheet; "kernel" is the mechanism underneath it.
 - **B is wrong** — VMs share the physical hardware too. That's what virtualization *is*, and it's the previous era's change, not this one.
 - **C is wrong** — and it's the reversal worth catching. A container has *its own* filesystem, and its own share of CPU, memory, and process space [source: k8s-docs-overview-2026-08-23]. Those are among the things that stay separate.
 - **D is wrong** — networking is configurable in both models and isn't the architectural distinction the era transition turns on.
 
-**Q3 — D.** Kubernetes does not deploy source code and does not build your application; CI/CD workflows are determined by organizational culture, preferences, and technical requirements [source: k8s-docs-overview-2026-08-23].
+**3 — D.** Kubernetes does not deploy source code and does not build your application; CI/CD workflows are determined by organizational culture, preferences, and technical requirements [source: k8s-docs-overview-2026-08-23].
 - **A, B, C are wrong** — all three appear in the published capability list as things Kubernetes does: self-healing, storage orchestration, and service discovery respectively [source: k8s-docs-overview-2026-08-23].
 
-**Q4 — B.** Kubernetes drew on Google's internal container-orchestration experience, Borg and its research successor Omega, and was written in Go [source: k8s-history-ten-years-2026-08-23].
+**4 — B.** Kubernetes drew on Google's internal container-orchestration experience, Borg and its research successor Omega, and was written in Go [source: k8s-history-ten-years-2026-08-23].
 - **A is wrong** — MapReduce is a data-processing framework, an unrelated lineage, and the language is wrong.
 - **C is wrong** — Spanner is a distributed database, and the language is wrong.
 - **D is wrong** — Omega alone is incomplete. Borg came first and was the production system; Omega is described as its research successor. The language is also wrong.
 
-**Q5 — C.** Kubernetes was donated by Google to the newly formed Cloud Native Computing Foundation as its first project, and the name comes from the Greek word for helmsman or pilot [source: k8s-history-ten-years-2026-08-23].
+**5 — C.** Kubernetes was donated by Google to the newly formed Cloud Native Computing Foundation as its first project, and the name comes from the Greek word for helmsman or pilot [source: k8s-history-ten-years-2026-08-23].
 - **A is wrong** on both halves; the CNCF is part of the nonprofit Linux Foundation [source: cncf-who-we-are-2026-08-23], not Apache, and the name is not an acronym.
 - **B is wrong** on the second half, which is the discriminating half. "First project" is right; the etymology is Greek, not Latin, and it is helmsman, not shepherd.
 - **D is wrong** — the OCI is a separate Linux Foundation body governing container format and runtime specifications [source: oci-overview-2026-08-23], and it is where Docker donated runC, not where Google donated Kubernetes.
 
-**Q6 — B.** In production environments the control plane usually runs across multiple computers and a cluster usually runs multiple nodes, providing fault tolerance and high availability [source: k8s-docs-cluster-architecture-2026-08-23].
+**6 — B.** In production environments the control plane usually runs across multiple computers and a cluster usually runs multiple nodes, providing fault tolerance and high availability [source: k8s-docs-cluster-architecture-2026-08-23].
 - **A is wrong** — nothing partitions control-plane duties by namespace. kube-apiserver instances are interchangeable [source: k8s-docs-cluster-architecture-2026-08-23].
 - **C is wrong** — running the control plane across several machines is not a data-sharding scheme, and the documentation describes no such sharding.
 - **D is wrong** — a plausible-sounding benefit that the documentation does not claim here. The stated purpose is availability, not capacity.
 
-**Q7 — A.** The API server is the front end for the Kubernetes control plane [source: k8s-docs-cluster-architecture-2026-08-23].
+**7 — A.** The API server is the front end for the Kubernetes control plane [source: k8s-docs-cluster-architecture-2026-08-23].
 - **B is wrong** — the controller-manager runs controllers; it's a client of the front end, not the front end.
 - **C is wrong** — etcd is the backing store *behind* the front end, not the front end itself. This is the most tempting wrong answer if you think of "front end" as "where the data is."
 - **D is wrong** — the kubelet is a node agent.
 
-**Q8 — D.** Verbatim role from the documentation: a consistent and highly-available key value store used as Kubernetes' backing store for all cluster data [source: k8s-docs-cluster-architecture-2026-08-23].
+**8 — D.** Verbatim role from the documentation: a consistent and highly-available key value store used as Kubernetes' backing store for all cluster data [source: k8s-docs-cluster-architecture-2026-08-23].
 - **A is wrong** — etcd is a datastore, not a runtime.
 - **B is wrong** — image caching happens on nodes, managed by the kubelet and runtime [source: k8s-docs-images-2026-08-23].
 - **C is wrong** — that describes a load balancer sitting in front of multiple kube-apiserver instances, which is a real thing but not etcd.
 
-**Q9 — C.** kube-apiserver is designed to scale horizontally: it scales by deploying more instances, and you can run several and balance traffic between them [source: k8s-docs-cluster-architecture-2026-08-23].
+**9 — C.** kube-apiserver is designed to scale horizontally: it scales by deploying more instances, and you can run several and balance traffic between them [source: k8s-docs-cluster-architecture-2026-08-23].
 - **A is wrong** — that's vertical scaling, and it isn't what the documentation describes.
 - **B is wrong** — a process-per-client model is not what "scales horizontally" means here; the unit of scaling is the whole instance.
 - **D is wrong** — data sharding across etcd clusters is not part of the described design.
 
-**Q10 — A.** The listed factors are resource requirements, hardware/software/policy constraints, affinity and anti-affinity specifications, data locality, inter-workload interference, and deadlines [source: k8s-docs-cluster-architecture-2026-08-23]. Time-since-reboot is plausible as a stability heuristic, and some systems do weigh something like it, but it is not among the factors Kubernetes lists.
+**10 — A.** The listed factors are resource requirements, hardware/software/policy constraints, affinity and anti-affinity specifications, data locality, inter-workload interference, and deadlines [source: k8s-docs-cluster-architecture-2026-08-23]. Time-since-reboot is plausible as a stability heuristic, and some systems do weigh something like it, but it is not among the factors Kubernetes lists.
 - **B, C, D are wrong as answers** because all three *are* listed factors.
 
-**Q11 — C.** The kubelet takes a set of PodSpecs provided through various mechanisms and ensures that the containers described in those PodSpecs are running and healthy [source: k8s-docs-cluster-architecture-2026-08-23].
+**11 — C.** The kubelet takes a set of PodSpecs provided through various mechanisms and ensures that the containers described in those PodSpecs are running and healthy [source: k8s-docs-cluster-architecture-2026-08-23].
 - **A is wrong** — node selection belongs to kube-scheduler.
 - **B is wrong** — durable storage is etcd's job, reached through the API server.
 - **D is wrong** — kube-proxy maintains network rules; it isn't downstream of the kubelet's PodSpec handling.
 
-**Q12 — B.** The kubelet doesn't manage containers which were not created by Kubernetes [source: k8s-docs-cluster-architecture-2026-08-23].
+**12 — B.** The kubelet doesn't manage containers which were not created by Kubernetes [source: k8s-docs-cluster-architecture-2026-08-23].
 - **A is wrong** — "running on a managed node" isn't the criterion; *created by Kubernetes* is.
 - **C is wrong** — the kubelet's stated responsibility is the containers described in its PodSpecs. A container it didn't create isn't one of those, so there is nothing for it to maintain or account for.
 - **D is wrong** — the kubelet doesn't police the node. It doesn't manage what isn't its business, which is different from acting against it.
 
-**Q13 — D.** Kubernetes supports container runtimes such as containerd, CRI-O, and any other implementation of the Kubernetes CRI [source: k8s-docs-cluster-architecture-2026-08-23]. These are separate projects driven through the Container Runtime Interface [source: k8s-docs-extending-kubernetes-2026-08-23].
+**13 — D.** Kubernetes supports container runtimes such as containerd, CRI-O, and any other implementation of the Kubernetes CRI [source: k8s-docs-cluster-architecture-2026-08-23]. These are separate projects driven through the Container Runtime Interface [source: k8s-docs-extending-kubernetes-2026-08-23].
 - **A and B are wrong** — kubelet and kube-proxy are Kubernetes project components.
 - **C is wrong** — the whole design point of CRI is that the runtime is pluggable and external.
 
-**Q14 — C.** The object exists as a stored description; something has to be watching for it and willing to act, and if that component is absent, nothing acts. This is the absent-component pattern from §4.
+**14 — C.** The object exists as a stored description; something has to be watching for it and willing to act, and if that component is absent, nothing acts. This is the absent-component pattern from §4.
 - **A is wrong** — the API server validates the object's structure, not whether a consumer for it exists.
 - **B is wrong** — nothing in Kubernetes self-installs missing components in response to an object appearing.
 - **D is wrong** — the kubelet has exactly one job and doesn't inherit others.
 
-**Q15 — B.** All API usage from nodes and the Pods they run terminates at the API server, and none of the other control-plane components are designed to expose remote services [source: k8s-docs-control-plane-node-communication-2026-08-24]. The kubelet watches the API server and acts on what it finds.
+**15 — B.** All API usage from nodes and the Pods they run terminates at the API server, and none of the other control-plane components are designed to expose remote services [source: k8s-docs-control-plane-node-communication-2026-08-24]. The kubelet watches the API server and acts on what it finds.
 - **A is wrong** — the scheduler notifies the API server of its decision [source: k8s-docs-kube-scheduler-2026-08-23]. It does not push anything to a node.
 - **C is wrong** — the API server is the component that reads and writes etcd; access to etcd is root-equivalent and is meant to be confined to it [source: k8s-docs-etcd-access-control-2026-08-24].
 - **D is wrong** — kube-proxy maintains network rules for Services. It is not a control-plane relay.
 
-**Q16 — A.** A controller might carry the action out itself, but more commonly a controller sends messages to the API server that have useful side effects [source: k8s-docs-controllers-2026-08-23].
+**16 — A.** A controller might carry the action out itself, but more commonly a controller sends messages to the API server that have useful side effects [source: k8s-docs-controllers-2026-08-23].
 - **B is wrong** — the Job controller explicitly does not run any Pods or containers itself [source: k8s-docs-controllers-2026-08-23].
 - **C is wrong** — controllers go through the API server, not around it.
 - **D is wrong** — there is no such dedicated channel; the kubelet watches the API server.
 
-**Q17 — C.** Desired state and current state: the thermostat's set temperature and the room's actual temperature, generalized [source: k8s-docs-controllers-2026-08-23].
+**17 — C.** Desired state and current state: the thermostat's set temperature and the room's actual temperature, generalized [source: k8s-docs-controllers-2026-08-23].
 - **A, B, D are wrong** — plausible-sounding pairs that appear nowhere in the documentation. If any of them felt right, that's worth noticing: real terminology and invented terminology read identically until you've anchored the real pair.
 
-**Q18 — B.** Controllers are control loops that watch cluster state and act to move current state closer to desired state, continuously [source: k8s-docs-controllers-2026-08-23]. Self-healing — restarting failed containers, replacing containers, killing ones that fail a health check [source: k8s-docs-overview-2026-08-23] — is that comparison running, not a procedure someone invoked.
+**18 — B.** Controllers are control loops that watch cluster state and act to move current state closer to desired state, continuously [source: k8s-docs-controllers-2026-08-23]. Self-healing — restarting failed containers, replacing containers, killing ones that fail a health check [source: k8s-docs-overview-2026-08-23] — is that comparison running, not a procedure someone invoked.
 - **A is wrong** — a clock-driven sweep is a scheduled task. A control loop is driven by the gap between two states, not by an interval.
 - **C is wrong** — "runs once and hands off" is exactly the model §6 replaces. Nothing about the loop terminates when a Pod comes up.
 - **D is wrong** — no external trigger is involved. The whole point is that nobody has to notice and initiate.
 
-**Q19 — A.** Controllers that interact with external state find their desired state from the API server, then communicate directly with an external system to bring the current state closer in line, and provisioning Nodes is the documentation's own example [source: k8s-docs-controllers-2026-08-23].
+**19 — A.** Controllers that interact with external state find their desired state from the API server, then communicate directly with an external system to bring the current state closer in line, and provisioning Nodes is the documentation's own example [source: k8s-docs-controllers-2026-08-23].
 - **B is wrong** — desired state always comes from the API server, even for direct-control controllers. That's what makes them Kubernetes controllers.
 - **C is wrong** — no local config file holds desired state; that would break the whole model.
 - **D is wrong** on both halves: this is direct control, and components reach etcd through the API server rather than around it.
 
-**Q20 — D.** The technical definition of orchestration is execution of a defined workflow: first do A, then B, then C [source: k8s-docs-overview-2026-08-23].
+**20 — D.** The technical definition of orchestration is execution of a defined workflow: first do A, then B, then C [source: k8s-docs-overview-2026-08-23].
 - **A is wrong** — reconciliation is the opposite shape: continuous comparison, no defined sequence.
 - **B is wrong** — declarative configuration describes an end state without a path.
 - **C is wrong** — bin packing is a placement optimization, not a workflow model.
 
-**Q21 — D.** Kubernetes comprises a set of independent, composable control processes that continuously drive the current state towards the provided desired state; it shouldn't matter how you get from A to C, and centralized control is not required [source: k8s-docs-overview-2026-08-23].
+**21 — D.** Kubernetes comprises a set of independent, composable control processes that continuously drive the current state towards the provided desired state; it shouldn't matter how you get from A to C, and centralized control is not required [source: k8s-docs-overview-2026-08-23].
 - **A is wrong** — and it names the exact thing the documentation disclaims: centralized control is explicitly not required.
 - **B is wrong** — a workflow engine with pluggable steps is still a workflow engine. Making the steps configurable doesn't stop the system from executing a defined sequence.
 - **C is wrong**, and it is the mental model §5 spent a whole section dismantling. Components do not exchange instructions; they observe shared state. None of the other control-plane components are even designed to expose remote services [source: k8s-docs-control-plane-node-communication-2026-08-24].
 
-**Q22 — A.** The Node controller is one of the controllers run by kube-controller-manager — noticing and responding when nodes go down — and every controller in that binary runs in the same single process [source: k8s-docs-cluster-architecture-2026-08-23]. "Responds" means what it means for every controller: compare, then ask the API server to change something [source: k8s-docs-controllers-2026-08-23].
-- **B is wrong** — the kubelet manages containers on its own node. It is not where the Node controller lives, and a node that has gone down is not running a kubelet you can rely on.
+**22 — A.** The node controller is one of the controllers run by kube-controller-manager — noticing and responding when nodes go down — and every controller in that binary runs in the same single process [source: k8s-docs-cluster-architecture-2026-08-23]. "Responds" means what it means for every controller: compare, then ask the API server to change something [source: k8s-docs-controllers-2026-08-23].
+- **B is wrong** — the kubelet manages containers on its own node. It is not where the node controller lives, and a node that has gone down is not running a kubelet you can rely on.
 - **C is wrong** — kube-scheduler assigns unscheduled Pods to nodes; it doesn't monitor node health, and it doesn't move Pods itself.
-- **D is wrong** — the Node controller is not a separate component, and nothing on the control plane instructs a kubelet directly.
+- **D is wrong** — the node controller is not a separate component, and nothing on the control plane instructs a kubelet directly.
 
-**Q23 — A.** kube-proxy is unnecessary when a network plugin implements equivalent packet forwarding for Services; cloud-controller-manager is absent when you run on your own premises or on your own PC, because there is no cloud provider to link to [source: k8s-docs-cluster-architecture-2026-08-23].
+**23 — A.** kube-proxy is unnecessary when a network plugin implements equivalent packet forwarding for Services; cloud-controller-manager is absent when you run on your own premises or on your own PC, because there is no cloud provider to link to [source: k8s-docs-cluster-architecture-2026-08-23].
 - **B is wrong** — cluster size is irrelevant to both.
 - **C is wrong** — addons don't substitute for either.
 - **D is wrong** — both halves invent conditions the documentation doesn't state.
 
-**Q24 — B.** *[retrieval: ch2]* Containers are intended to be stateless and immutable; you should not change the code of a container that is already running. The correct process is to build a new image that includes the change, then recreate the container from the updated image [source: k8s-docs-containers-2026-08-23].
+**24 — B.** *[retrieval: ch2]* Containers are intended to be stateless and immutable; you should not change the code of a container that is already running. The correct process is to build a new image that includes the change, then recreate the container from the updated image [source: k8s-docs-containers-2026-08-23].
 - **A is wrong** — editing in place is exactly the practice immutability rules out, and the change vanishes on the next restart.
 - **C is wrong**, but not because the mechanism doesn't exist. A container's writable layer is real. It's wrong because anything written there belongs to *that container instance* and is gone the moment the container is replaced, which is a thing Kubernetes does constantly. That's the practical teeth of immutability: the change lives in the image, or it doesn't survive.
 - **D is wrong** — there is no such kubelet capability. The kubelet starts and stops containers through the CRI [source: k8s-docs-extending-kubernetes-2026-08-23]; it doesn't reach inside their filesystems. Note the connection to this chapter, though: the control loop's response to a changed desired state is the same instinct — replace, don't mutate.
 
-**Q25 — D.** *[retrieval: ch2]* A container image is a ready-to-run software package containing everything needed to run an application: the code and any runtime it requires, application and system libraries, and default values for any essential settings [source: k8s-docs-containers-2026-08-23].
+**25 — D.** *[retrieval: ch2]* A container image is a ready-to-run software package containing everything needed to run an application: the code and any runtime it requires, application and system libraries, and default values for any essential settings [source: k8s-docs-containers-2026-08-23].
 - **A is wrong** — the standardization from having dependencies included is precisely what makes a container repeatable across environments [source: k8s-docs-containers-2026-08-23]. If libraries came from the node, that guarantee would be gone.
 - **B is wrong** — and it's the VM confusion again. A full machine with its own operating system is the virtualized era's unit, not the container era's [source: k8s-docs-overview-2026-08-23].
 - **C is wrong** — an image is ready to run. Nothing is compiled at container start.

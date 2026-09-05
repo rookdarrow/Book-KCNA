@@ -56,7 +56,7 @@ sections:
     objectives: ["D1.2"]
     requires_figure: false
     figure_anchor: null
-    checkpoint_after: true
+    checkpoint_after: false
   - name: "Versions That Are Allowed to Disagree"
     objectives: ["D1.2"]
     requires_figure: true
@@ -101,9 +101,9 @@ soundings_planned:
 #-- Chapters 3-7. Chapter total 35 -> 40.
 question_budget:
   soundings: 8
-  taking_your_bearings: 15             # across 3 checkpoints (5 + 5 + 5)
-  practice_questions: 17
-  total_this_chapter: 40
+  taking_your_bearings: 12             # across 2 checkpoints (5 + 7)
+  practice_questions: 18
+  total_this_chapter: 38
 
 #-- Concept / objective / command tagging --------------------------------
 kb_tags:
@@ -190,7 +190,7 @@ figures_planned:
 # Chapter 8: Standing the Watch
 ## *"The commands you'll actually type, and the versions that bite"*
 
-**Domain: Kubernetes Fundamentals — 44% of the exam** [source: cncf-kcna-curriculum-pdf-2026-08-23] **· Competency: Cluster Administration — ~5% (authored allocation) · Complexity: Mixed · Novelty: Moderate**
+**Domain: Kubernetes Fundamentals — 44% of the exam** [source: cncf-kcna-curriculum-pdf-2026-08-23] **· Competency: Administration — ~5% (authored allocation) · Complexity: Mixed · Novelty: Moderate**
 
 *The 44% is CNCF's published weight for one of its four domains* [source: cncf-kcna-certification-page-2026-08-23]. *The ~5% is this book's own allocation across the competencies inside that domain: the published curriculum carries a percentage against each of the four domains and none against the competencies listed within them* [source: cncf-kcna-curriculum-pdf-2026-08-23]. *The front matter explains how these allocations were derived.*
 
@@ -198,7 +198,7 @@ figures_planned:
 
 ## Attention Budget
 
-**Total time: ~150 minutes | Recommended: split across two sessions, breaking after ☆ Taking Your Bearings #2**
+**Total time: ~160 minutes | Recommended: split across two sessions, breaking after §5**
 
 | Section | Time | Attention Cost | Best Time to Study |
 |---|---|---|---|
@@ -208,10 +208,9 @@ figures_planned:
 | ☆ Taking Your Bearings #1 | 8 min | Medium | After a brief break |
 | §4 — Taking a Node Out of Service | 18 min | Medium | When alert |
 | §5 — Who Owns the Control Plane | 10 min | Low | Anytime |
-| ☆ Taking Your Bearings #2 | 8 min | Medium | After a brief break |
 | §6 — Versions That Are Allowed to Disagree | 20 min | **High** | Peak attention — start of a fresh session |
 | §7 — The One Backup That Matters | 10 min | Medium | When alert |
-| ☆ Taking Your Bearings #3 | 8 min | Medium | After a brief break |
+| ☆ Taking Your Bearings #2 | 11 min | Medium | After a brief break |
 | §8 — Rules, or Consequences | 8 min | Low | Anytime |
 | Practice Questions | 25 min | Medium | When alert |
 
@@ -220,9 +219,9 @@ figures_planned:
 - **Medium:** new concepts requiring focus — study when alert
 - **High:** abstract or dense material — study at peak attention
 
-*If you only have 15 minutes: read §2's gate sequence and §6's skew table, then work ☆ Taking Your Bearings #3. That is where this chapter's exam points actually live. §1, §4 and §5 are recognition material you will mostly get right on instinct.*
+*If you only have 15 minutes: read §2's gate sequence and §6's skew table, then work ☆ Taking Your Bearings #2. That is where this chapter's exam points actually live. §1, §4 and §5 are recognition material you will mostly get right on instinct.*
 
-**On the session split:** the recommended break after Bearings #2 puts the request path and the node in one session, and versions, disaster and synthesis in the other. It also isolates §6, the densest pure-recall block in this book, at the start of a fresh session, which is where it belongs.
+**On the session split:** the recommended break between §5 and §6 puts the request path and the node in one session, and versions, disaster and synthesis in the other. It also isolates §6, the densest pure-recall block in this book, at the start of a fresh session, which is where it belongs.
 
 ---
 
@@ -270,7 +269,7 @@ Before reading this chapter, try these eight questions. Your score determines ho
 
 8. **Any duty that moves when somebody else runs the control plane counts.** Upgrade timing and etcd backup are the two this chapter can defend; which further duties move is a per-provider question rather than a documented split, so a broad answer is a pass here.
 
-**If you got 6+ right:** skim. Read §2 and §6 properly — they carry this chapter's exam points — and work all three Taking Your Bearings checkpoints. The rest you can move through quickly.
+**If you got 6+ right:** skim. Read §2 and §6 properly — they carry this chapter's exam points — and work both Taking Your Bearings checkpoints. The rest you can move through quickly.
 
 **If you got 3–5 right:** read at normal pace. This chapter is calibrated for you.
 
@@ -327,7 +326,7 @@ Here is the shape. Every `kubectl` invocation takes the form `kubectl [command] 
 Put five commands you have already run through those same four slots, and the shape appears retroactively.
 
 <!-- FIGURE: ch08-fig01-kubectl-verb-resource-grammar -->
-![A five-column table aligning five kubectl commands on the slots kubectl, command, TYPE, NAME and flags; some cells are empty because those commands omit those slots; two arrows below point up at the TYPE column labelled case-insensitive and the NAME column labelled case-sensitive](figures/ch08-fig01-kubectl-verb-resource-grammar.svg)
+![A five-column table aligning five kubectl commands on the slots kubectl, command, TYPE, NAME and flags; some cells are empty because those commands omit those slots; two arrows below point up at the TYPE column labeled case-insensitive and the NAME column labeled case-sensitive](figures/ch08-fig01-kubectl-verb-resource-grammar.svg)
 
 <!-- ASCII-FALLBACK
 ```
@@ -337,7 +336,7 @@ Put five commands you have already run through those same four slots, and the sh
   kubectl   cordon                         node-7
   kubectl   get              pods
   kubectl   apply                                      -f deploy.yaml
-  kubectl   scale            deployment    web         --replicas=5
+  kubectl   scale            deployment    web         ‑‑replicas=5
   kubectl   describe         node          worker-3
 
                                 ▲             ▲
@@ -417,9 +416,9 @@ This chapter compresses that to three gates and a logbook. The project's own pag
 
 ### Gate one: authentication — *who are you?*
 
-Authentication establishes the identity behind the request. The cluster creation script or cluster admin configures the API server to run one or more Authenticator modules [source: k8s-docs-controlling-access-2026-08-24], and the input to the authentication step is the entire HTTP request, though it typically examines the headers and/or client certificate [source: k8s-docs-controlling-access-2026-08-24]. The API server is configured to listen for remote connections on a secure HTTPS port, typically 443, with one or more forms of client authentication enabled [source: k8s-docs-control-plane-node-communication-2026-08-24].
+Authentication establishes the identity behind the request. The cluster creation script or cluster admin configures the API server to run one or more Authenticator modules [source: k8s-docs-controlling-access-2026-08-24], and the input to the authentication step is the entire HTTP request, though it typically examines the headers and/or client certificate [source: k8s-docs-controlling-access-2026-08-24]. The API server is configured to listen for remote connections on a secure HTTPS port with one or more forms of client authentication enabled [source: k8s-docs-control-plane-node-communication-2026-08-24].
 
-Two facts about this gate are worth carrying. First, its failure mode is specific: if the request cannot be authenticated, it is rejected with HTTP status code 401 [source: k8s-docs-controlling-access-2026-08-24]. Second, a small surprise — while Kubernetes uses usernames for access control decisions and in request logging, it does not have a `User` object [source: k8s-docs-controlling-access-2026-08-24]. Identity here is a property of a request, not a record in the datastore.
+Two facts about this gate are worth carrying. First, its failure mode is specific: if the request cannot be authenticated, it is rejected with HTTP status code 401 [source: k8s-docs-controlling-access-2026-08-24]. Second, a small surprise — while Kubernetes uses usernames for access control decisions and in request logging, it does not have a `User` object [source: k8s-docs-controlling-access-2026-08-24]. Identity here is a property of a request, not a record in the datastore *[cross-bearing: see Ch 12 §2 — users and groups as identities from outside the cluster]*.
 
 The two identities you already have in the cluster arrive at this gate by different routes. Nodes should be provisioned with the public root certificate for the cluster, so that they can connect securely to the API server, along with valid client credentials; a good approach is for the kubelet's client credentials to take the form of a client certificate [source: k8s-docs-control-plane-node-communication-2026-08-24]. Automating the provisioning of those certificates is what kubelet TLS bootstrapping is for [source: k8s-docs-control-plane-node-communication-2026-08-24]. Pods, meanwhile, connect by leveraging a ServiceAccount: Kubernetes automatically injects the public root certificate and a valid bearer token into the Pod when it is instantiated [source: k8s-docs-control-plane-node-communication-2026-08-24]. That injected token is the same file `kubectl` looks for in §1 when it decides it is running inside a cluster.
 
@@ -437,12 +436,12 @@ This is the gate you did not have.
 
 Admission control modules are software modules that can modify or reject requests [source: k8s-docs-controlling-access-2026-08-24], and unlike the first two gates they can access the contents of the object that is being created or modified [source: k8s-docs-controlling-access-2026-08-24]. They sit before persistence: once a request passes all admission controllers, it is validated using the validation routines for the corresponding API object, and then written to the object store [source: k8s-docs-controlling-access-2026-08-24].
 
-And here is the property that makes them a genuinely different kind of thing rather than a third variation on "no." Authentication and authorization answer yes or no. Admission may answer yes, no, or *yes — but not as you wrote it*: admission controllers can also set complex defaults for fields [source: k8s-docs-controlling-access-2026-08-24].
+And here is the property that makes them a genuinely different kind of thing rather than a third variation on "no." Authentication and authorization answer yes or no. Admission may answer yes, no, or *yes — but not as you wrote it*: admission controllers can also set complex defaults for fields [source: k8s-docs-controlling-access-2026-08-24]. The project's vocabulary for the two kinds is worth one sentence: admission control mechanisms may be **validating**, **mutating**, or both — mutating controllers may modify the data for the resource being modified, validating controllers may not — and the mutating ones run in a first phase, the validating ones in a second [source: k8s-docs-admission-controllers-2026-08-24].
 
 > ★ **Fixed Point:** Authentication, then authorization, then admission. Authentication asks **who**. Authorization asks **may you**. Admission asks **should this, exactly as written, be allowed to happen** — and it is the only one of the three that can change your request instead of refusing it [source: k8s-docs-controlling-access-2026-08-24].
 
 <!-- FIGURE: ch08-fig02-three-api-gates -->
-![Three boxes in a row labelled Authentication, Authorization and Admission, with a request arrow entering on the left and persistence to etcd on the right; each box has a downward arrow to a REJECT outcome, and the Admission box has an additional arrow labelled REWRITTEN that loops back into the forward path](figures/ch08-fig02-three-api-gates.svg)
+![Three boxes stacked top to bottom, labeled Gate 1 Authentication, Gate 2 Authorization and Gate 3 Admission, with a request entering from the top and a Persisted to etcd terminal at the bottom; each gate has a branch leading left to a REJECT outcome, and the Admission gate alone has a dashed REWRITTEN path that leaves it to the right and rejoins the forward path before persistence](figures/ch08-fig02-three-api-gates.svg)
 
 <!-- ASCII-FALLBACK
 ```
@@ -464,11 +463,11 @@ And here is the property that makes them a genuinely different kind of thing rat
 
 > 🔭 **Closer Look:** Admission controllers act on requests that create, modify, delete, or connect to (proxy) an object. They do not act on requests that merely read objects [source: k8s-docs-controlling-access-2026-08-24] — reads bypass the admission control layer entirely [source: k8s-docs-admission-controllers-2026-08-24]. So the whole of this gate is invisible to `kubectl get`, which is deeper than the exam requires and explains a great deal of otherwise-baffling behavior the first time you install a policy engine.
 
-> **Extended Analogy:** Think of a working commercial harbour rather than a locked building. A vessel arriving is met first by a pilot boat, whose only question is *which vessel is this*: papers, registration, identity. That is authentication. It has no view on your business here.
+> **Extended Analogy:** Think of a working commercial harbor rather than a locked building. A vessel arriving is met first by a pilot boat, whose only question is *which vessel is this*: papers, registration, identity. That is authentication. It has no view on your business here.
 >
-> Once identified, the harbourmaster consults the berth allocations: is this vessel entitled to a berth in this harbour today? That is authorization. The harbourmaster does not open a single crate. The question is about standing, not about cargo.
+> Once identified, the harbormaster consults the berth allocations: is this vessel entitled to a berth in this harbor today? That is authorization. The harbormaster does not open a single crate. The question is about standing, not about cargo.
 >
-> Then, and only then, the customs officer comes aboard. This one *does* open crates. She may find something prohibited and turn the whole vessel around. But she has a third option the other two lack: she may say the vessel can dock provided a particular container stays sealed, or provided a declaration is completed and attached before unloading. The vessel proceeds — altered. That is admission control, and the third option is the entire reason it is a separate office rather than one more line on the harbourmaster's form.
+> Then, and only then, the customs officer comes aboard. This one *does* open crates. She may find something prohibited and turn the whole vessel around. But she has a third option the other two lack: she may say the vessel can dock provided a particular container stays sealed, or provided a declaration is completed and attached before unloading. The vessel proceeds — altered. That is admission control, and the third option is the entire reason it is a separate office rather than one more line on the harbormaster's form.
 
 ### Two admission controllers you have already met
 
@@ -480,7 +479,7 @@ And the Pod Security Standards are enforced by the built-in Pod Security Admissi
 
 The same is true of §3's material, arriving next. ResourceQuota is an admission controller that observes the incoming request and ensures that it does not violate any of the constraints enumerated in the ResourceQuota object [source: k8s-docs-admission-controllers-2026-08-24], and LimitRanger does the same for the constraints in a LimitRange object [source: k8s-docs-admission-controllers-2026-08-24]. Neither is a separate subsystem with its own enforcement path; both take effect at this gate.
 
-> 🔭 **Closer Look:** Dynamic admission control means the cluster calls out to a webhook *you* supplied. Kubernetes makes synchronous HTTP requests to a remote service, a webhook backend, and the documentation is candid that this adds a potential point of failure [source: k8s-docs-extending-kubernetes-2026-08-23]. Which is to say: once you install a validating webhook, your webhook being down is a thing that can stop your cluster accepting requests.
+> 🔭 **Closer Look:** Dynamic admission control means the cluster calls out to a webhook *you* supplied — a mutating webhook or a validating webhook, with one built-in admission controller for each kind [source: k8s-docs-admission-controllers-2026-08-24]. Kubernetes makes synchronous HTTP requests to a remote service, a webhook backend, and the documentation is candid that this adds a potential point of failure [source: k8s-docs-extending-kubernetes-2026-08-23]. Which is to say: once you install a validating webhook, your webhook being down is a thing that can stop your cluster accepting requests.
 
 ### And a logbook
 
@@ -617,9 +616,9 @@ The reason this matters is not that the third gate has an extra feature. It is t
 
 *Common wrong turns:* a two-gate answer (the most common incomplete model, and the one Soundings question 3 was built to expose); the order reversed; and attributing the mutation power to authorization.
 
-**4.** **Admission.** Both earlier gates already said yes — the identity was established and the action was permitted — so the refusal came from the gate that looks at the request's *contents*. A plausible reason: the Pod would have exceeded its namespace's ResourceQuota, or a policy plugin rejected something about the object as written.
+**4.** **Admission.** Both earlier gates already said yes — the identity was established and the action was permitted — so the refusal came from the gate that looks at the request's *contents*. A plausible reason: the Pod would have exceeded its namespace's ResourceQuota, or an admission plugin rejected something about the object as written.
 
-One plausible cause is enough. There is no need to enumerate admission controllers; the full plugin surface is out of scope here and Chapter 12 owns the policy landscape.
+One plausible cause is enough. There is no need to enumerate admission controllers; the full admission-plugin surface is out of scope here and Chapter 12 owns the policy landscape.
 
 **5.** **ResourceQuota**, which constrains **aggregate resource consumption per namespace**. The other mechanism is **LimitRange**, which constrains **each applicable object kind** in a namespace and supplies defaults so that Pods specify their resource requirements at all.
 
@@ -663,7 +662,7 @@ Read the middle clause of that first sentence again. It is doing more work than 
 > ★ **Fixed Point:** `cordon` stops arrivals and touches nothing already aboard. `drain` clears what is aboard. `uncordon` reopens. Three commands, three jobs — and **the maintenance sequence needs the first two.**
 
 <!-- FIGURE: ch08-fig04-node-lifecycle-cordon-drain -->
-![Four node panels in a row labelled schedulable, cordoned, drained and schedulable, connected by transitions labelled cordon, drain and uncordon; the same three Pods A, B and C appear unchanged in the first two panels and are gone from the third, while an arriving Pod is admitted in panels one and four and turned away in panel two](figures/ch08-fig04-node-lifecycle-cordon-drain.svg)
+![Four node panels stacked top to bottom, labeled Schedulable, Cordoned, Drained and Schedulable, connected by downward arrows labeled kubectl cordon, kubectl drain and kubectl uncordon; the same three Pods A, B and C appear unchanged in the first two panels and are gone from the third, which is marked empty, while a new Pod arriving from the right is admitted in panels one and four and turned away in panel two](figures/ch08-fig04-node-lifecycle-cordon-drain.svg)
 
 <!-- ASCII-FALLBACK
 ```
@@ -721,7 +720,7 @@ For nodes there are two forms of heartbeat: updates to the `.status` of a Node, 
 
 Chapter 4 pointed at exactly those Leases and said they were how the control plane detects node failure [source: k8s-docs-namespaces-2026-08-23] *[cross-bearing: see Ch 4 §3 — the four initial namespaces]*. That IOU is now settled: two heartbeat forms, one of them an object in a namespace you have already listed.
 
-The node controller is a Kubernetes control plane component that manages several aspects of nodes: assigning a CIDR block to the node when it is registered; keeping its internal list of nodes up to date with the cloud provider's list of available machines; and monitoring the nodes' health — updating the `Ready` condition to `Unknown` when a node becomes unreachable, and triggering API-initiated eviction of all the Pods from the node if it stays unreachable [source: k8s-docs-nodes-2026-08-23].
+The node controller is a Kubernetes control plane component that manages several aspects of nodes: assigning a CIDR (Classless Inter-Domain Routing) block — a range of IP addresses — to the node when it is registered; keeping its internal list of nodes up to date with the cloud provider's list of available machines; and monitoring the nodes' health — updating the `Ready` condition to `Unknown` when a node becomes unreachable, and triggering API-initiated eviction of all the Pods from the node if it stays unreachable [source: k8s-docs-nodes-2026-08-23].
 
 Read that third job as a shape rather than as a list. It observes (heartbeats), it compares against what it expects, and it acts (condition update, then eviction). **The node controller is a control loop.** You met the pattern in Chapter 3 and you have met it in every chapter since *[cross-bearing: see Ch 3 §6 — the control loop]*. Noticing that costs one sentence and buys §8 half its argument.
 
@@ -809,7 +808,7 @@ The Kubernetes project maintains release branches for the most recent **three** 
 
 ### The cadence, which makes the branch count make sense
 
-Since 2021 the project ships **three minor releases per year**, approximately every fifteen weeks, each following a release cycle led by a SIG Release team; patch releases are cut monthly from the supported branches [source: k8s-releases-cadence-2026-08-23].
+Since 2021 the project ships **three minor releases per year**, approximately every fifteen weeks, each following a release cycle led by a SIG (Special Interest Group) Release team; patch releases are cut monthly from the supported branches [source: k8s-releases-cadence-2026-08-23].
 
 Now put the two facts beside each other, because neither is memorable alone and together they are almost self-evident: three releases a year, across three supported branches, is roughly a year of coverage, which is exactly the patch-support figure. The three-branch rule is not an arbitrary number somebody picked. It is what "about a year of support" costs at this release cadence.
 
@@ -981,7 +980,7 @@ Two reasons, two failure modes: one about availability, one about confidentialit
 
 **How'd you do?**
 
-**7/7:** You own the node lifecycle and the two duties that cannot be improvised. Take the recommended break; §8 is short, and then Part II is done.
+**7/7:** You own the node lifecycle and the two duties that cannot be improvised. Take a breather if you want one; §8 is short, and then Part II is done.
 **5–6:** Good. If a skew-table or cordon item was among the misses, spend ten minutes with Figure 8.5 — it holds the exceptions better than the table does.
 **0–4:** Re-read §4 and §6 before continuing. Don't memorize the skew table's five rows — derive them: one rule, three rows, two exceptions for two different reasons.
 
@@ -999,8 +998,6 @@ Two reasons, two failure modes: one about availability, one about confidentialit
 
 ---
 
-One flag: the brief said the two checkpoints hold 20 questions total — they actually hold 10 (5 each). I merged from the real 10, dropping 3 (the cordon/drain challenge-scenario duplicate, the upgrade-ownership item, and the applied skew-table item whose ground the kept conceptual version already covers), landing on 7. Word count came to 1091, comfortably inside the 1350 budget.
-
 ## ⚪ §8 — Rules, or Consequences
 
 You were asked to keep score. Here is the claim.
@@ -1017,7 +1014,7 @@ Every administrative act in it is a write through the one door you met in Chapte
 
 **§4, and this is the one that should land.** `kubectl cordon` has no private channel to the node. It does not connect to the machine. It writes a field on a Node object through the API server — cordoned nodes are marked Unschedulable in their spec [source: k8s-docs-node-status-2026-08-24] — and `spec` is the half of an object that *you* declare, as against `status`, which the system reports back. Chapter 4 taught you that distinction *[cross-bearing: see Ch 4 §2 — spec and status]*, and here it does real work: cordoning is an act of *declaring intent about a machine*, which is why it lives in `spec` and why `SchedulingDisabled`, the thing your terminal prints, is not a Condition in the API at all.
 
-The scheduler then does what the scheduler always does: it checks taints, not node conditions, when it makes scheduling decisions [source: k8s-docs-taints-tolerations-depth-2026-08-24], and Chapter 7 already showed you a built-in `node.kubernetes.io/unschedulable` taint with a `NoSchedule` effect sitting in that table [source: k8s-docs-daemonset-2026-08-24]. Nothing here is a new mechanism. It is the object model and the scheduler you already have, with an operator's hand on the spec field.
+The scheduler then does what the scheduler always does: it checks taints, not node conditions, when it makes scheduling decisions [source: k8s-docs-taints-tolerations-depth-2026-08-24], and Chapter 7 already showed you a built-in `node.kubernetes.io/unschedulable` taint [source: k8s-docs-taints-tolerations-depth-2026-08-24] with a `NoSchedule` effect [source: k8s-docs-daemonset-2026-08-24] sitting in that table. Nothing here is a new mechanism. It is the object model and the scheduler you already have, with an operator's hand on the spec field.
 
 **§4 again.** The node controller observes heartbeats, compares them against what it expects, and acts: updating a condition, then evicting. It is a control loop — the same loop, at the same altitude as Chapter 6's — and you could have predicted its structure without being told.
 
@@ -1028,7 +1025,7 @@ The scheduler then does what the scheduler always does: it checks taints, not no
 > ☀️ **Zenith:** One door, and behind it controllers you have already met. Everything in this chapter is a write to the first, reconciled by the second.
 
 <!-- FIGURE: ch08-zenith-consequences-not-rules -->
-![Four administrative actions on the left — kubectl cordon, applying a quota, applying a deployment, and kubelet self-registration — all converge on a single central box labelled the API server, one door; four arrows leave it to the scheduler from chapter seven, the node controller from chapters four and eight, the workload controllers from chapter six, and the control loop from chapter three, with a single arrow running down from the box to etcd](figures/ch08-zenith-consequences-not-rules.svg)
+![Four administrative actions on the left — cordon a node with kubectl cordon, apply a quota, apply a deployment, and a kubelet joining the cluster by self-registration — each send one arrow into a single tall box on the right, The API Server, marked ONE DOOR; from that box one arrow runs straight down to etcd, the durable store, and one arrow runs down and left into a single grouped box of downstream consumers listing kube-scheduler from Chapter 7, the node controller from Chapters 4 and 8, workload controllers from Chapter 6, and the control loop from Chapter 3](figures/ch08-zenith-consequences-not-rules.svg)
 
 <!-- ASCII-FALLBACK
 ```
@@ -1152,13 +1149,13 @@ D) They can; a ResourceQuota in the `kube-system` namespace applies cluster-wide
 **7. [retrieval: ch5]** A namespace has a LimitRange that supplies a default CPU request. A developer submits a Pod manifest that declares no resource fields at all. The Pod is accepted, with the default filled in. What has changed about where this Pod can be placed, compared with the manifest as written?
 
 A) Nothing — defaults are recorded for reporting but are not used in placement decisions
-B) It can now be placed on fewer nodes, because it now books capacity against Allocatable that it did not book before
+B) It may now fit on fewer nodes, because it now books capacity against Allocatable that it did not book before
 C) It can now be placed on more nodes, because a declared request lets the scheduler relax its filtering
 D) Nothing — placement is decided from limits, not requests
 
 **8.** You are told: "take node worker-3 out of service and clear it before the maintenance window." Using only the four-slot grammar, which commands accomplish this, and in what order?
 
-A) `kubectl drain worker-3`, then `kubectl cordon worker-3`
+A) `kubectl cordon node worker-3`, then `kubectl drain node worker-3`
 B) `kubectl cordon worker-3`, then `kubectl drain worker-3`
 C) `kubectl cordon worker-3` alone — draining is implied
 D) `kubectl uncordon worker-3`, then `kubectl drain worker-3`
@@ -1259,7 +1256,7 @@ Nodes are cluster-scoped, and a ResourceQuota is a statement about a namespace. 
 Chapter 5 established that when you specify the resource request for containers in a Pod, the kube-scheduler uses this information to decide which node to place the Pod on [source: k8s-docs-resource-management-2026-08-23], and §4 of this chapter established that the scheduler treats Allocatable as the available capacity for Pods and does not over-subscribe it. A Pod that previously declared nothing now books capacity, so nodes that would have accepted it may now fail to fit it. **A is wrong**: the defaulted value is a real field on a real object and is used exactly as if you had written it. **C inverts the effect**; declaring a request adds a constraint, it does not relax one. **D is wrong** on which of requests and limits the scheduler reads.
 
 **8. B.**
-`cordon` first to stop new arrivals, then `drain` to evict what is already there — `cordon` is documented as a preparatory step before a node reboot or other maintenance, which is precisely this sequence. Note the grammar: both take the node's name directly, without a preceding TYPE, because the verb already implies the resource type. **A reverses the documented order**, putting the preparatory step after the operation it prepares for. **C is the chapter's headline trap**: `cordon` does not empty anything, so rebooting after a bare cordon takes down every Pod still aboard — which is a real outage, not just a lost mark. **D begins by making the node schedulable again**, which is the opposite of the instruction; `uncordon` is the third command, run after maintenance.
+`cordon` first to stop new arrivals, then `drain` to evict what is already there — `cordon` is documented as a preparatory step before a node reboot or other maintenance, which is precisely this sequence. Note the grammar: both take the node's name directly, without a preceding TYPE, because the verb already implies the resource type. **A fills the TYPE slot that both verbs leave empty** — the reference form is `kubectl cordon NODE` [source: k8s-docs-kubectl-cordon-2026-08-24], and `drain` takes the node's name the same way. **C is the chapter's headline trap**: `cordon` does not empty anything, so rebooting after a bare cordon takes down every Pod still aboard — which is a real outage, not just a lost mark. **D begins by making the node schedulable again**, which is the opposite of the instruction; `uncordon` is the third command, run after maintenance.
 
 **9. C.**
 `Ready` becomes `Unknown` when the node controller has not heard from the node within the `node-monitor-grace-period`. **A is the intuitive wrong answer** and misstates the evidence: `False` means the node *told you* it is unhealthy, which requires the node to be talking. **B is wrong**: `NotReady` is a display convention in summary output, not one of the condition's three values. **D is wrong** on two counts — `SchedulingDisabled` is not a Condition in the Kubernetes API at all, and it describes a deliberately cordoned node rather than an unreachable one.
@@ -1268,7 +1265,7 @@ Chapter 5 established that when you specify the resource request for containers 
 Cordoned nodes are marked Unschedulable in their `spec`, which is exactly what Chapter 4's rule predicts: `spec` is what you declare, `status` is what the system reports back, and unschedulability is a decision you made about the machine rather than an observation of it. **A is wrong** for that reason. **C is wrong**: the mechanism is a spec field, not a label. **D is wrong** and is worth rejecting emphatically, because it is precisely the belief §8 exists to dismantle — and note that `SchedulingDisabled`, the string your terminal prints, is not in the API either, so even the output is not what it appears to be. There are no side channels.
 
 **11. B. [retrieval: ch3]**
-Observe, compare, act: it is a control loop, the same pattern as the ReplicaSet controller holding a replica count and the Job controller driving Pods to completion, both in Chapter 6. **A is wrong**: admission plugins act synchronously on inbound requests rather than reconciling observed state against declared state. **C is wrong**: the kubelet and kube-proxy are node agents, and "daemon" describes where they run rather than how they work. **D is wrong** on both the pattern and the examples; nothing here is batched, and etcd compaction is storage maintenance, not reconciliation.
+Observe, compare, act: it is a control loop — the same pattern as the Deployment controller of Chapter 6 holding the fleet at its declared size, and the scheduler of Chapter 7 watching for Pods that have no node yet and binding them. **A is wrong**: admission plugins act synchronously on inbound requests rather than reconciling observed state against declared state. **C is wrong**: the kubelet and kube-proxy are node agents, and "daemon" describes where they run rather than how they work. **D is wrong** on both the pattern and the examples; nothing here is batched, and etcd compaction is storage maintenance, not reconciliation.
 
 **12. B.**
 kubeadm is the officially supported tool for creating clusters, installing the control plane and joining nodes; kind and minikube are the documented local learning tools. **A swaps the two categories.** **C swaps kubeadm and k3s**: k3s is a lightweight distribution, not the official bootstrapper. **D** names the right bootstrapper and then attributes a duty to it that the CRI boundary explicitly excludes: a container runtime (containerd or CRI-O) must be installed on every node, and kubeadm does not supply it. That is the Chapter 2 interface boundary showing up as an operational requirement — the most attractive wrong answer here precisely because it *sounds* like something a complete bootstrapper would do.
@@ -1342,6 +1339,8 @@ More usefully, you end it with a method. The two questions from §8 — *what ob
 
 Part II is complete. Ship, cargo, and company: the container, the cluster, the objects, the Pod, the controllers, the placement, and now the watch. That is the whole of what runs and how it is looked after.
 
+🗺️ Chart → **🌊 Passage** → 🌅 Dawn
+
 ---
 
 ## The Voyage Ahead
@@ -1356,4 +1355,4 @@ Part III is how that works: addresses, the abstraction that makes them survivabl
 
 Chapter 9 opens by giving every Pod an address, and then explaining why that is not enough.
 
-> *"The chart tells you where the harbours are. It does not tell you how the water moves between them — and the water is what you are actually sailing on."*
+> *"The chart tells you where the harbors are. It does not tell you how the water moves between them — and the water is what you are actually sailing on."*

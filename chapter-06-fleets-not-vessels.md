@@ -56,7 +56,7 @@ sections:
     objectives: ["D1.1"]
     requires_figure: false
     figure_anchor: null
-    checkpoint_after: true
+    checkpoint_after: false
   - name: "When Pods Are Not Interchangeable"
     objectives: ["D1.1"]
     requires_figure: true
@@ -100,9 +100,9 @@ soundings_planned:
 #-- Ch 5, all of which shipped three checkpoints. See § Taking Your Bearings.
 question_budget:
   soundings: 8
-  taking_your_bearings: 15             # across 3 checkpoints (5 + 5 + 5)
+  taking_your_bearings: 13             # across 2 checkpoints (5 + 8)
   practice_questions: 19
-  total_this_chapter: 42
+  total_this_chapter: 40
 
 #-- Concept / objective / command tagging --------------------------------
 kb_tags:
@@ -181,21 +181,17 @@ figures_planned:
   - "ch06-zenith-control-loop-instantiated"
 ---
 
-<!-- AUTHOR-REVIEW (pipeline): the Stage 3 draft for this chapter exceeded one `max_tokens` window and stdout capture kept only the final assistant message, leaving `draft-v1.md` truncated. The chapter was recovered by concatenating both assistant blocks from `.draft-v1.md.progress.log` (the seam is clean) and that reconstruction is what was voiced and revised here. The pipeline fix is to accumulate text across ALL assistant messages when `stop_reason == max_tokens`, not to re-draft. This will hit any chapter whose draft exceeds one window. -->
-
 # Chapter 6: Fleets, Not Vessels
 ## *"Nobody sails one Pod"*
 
-**Domain: Kubernetes Fundamentals — Kubernetes Core Concepts [source: cncf-kcna-curriculum-pdf-2026-08-23] | Estimated share of the exam: ~6% (authored allocation — CNCF publishes domain weights, not competency weights [source: cncf-kcna-curriculum-pdf-2026-08-23]; see front matter) 
+**Exam domain: Kubernetes Fundamentals (44% of the exam) — competency: Kubernetes Core Concepts** [source: cncf-kcna-certification-page-2026-08-23] [source: cncf-kcna-curriculum-pdf-2026-08-23] **| Estimated share of the exam: ~6% (authored allocation — CNCF publishes domain weights, not competency weights** [source: cncf-kcna-curriculum-pdf-2026-08-23]**; see front matter)**
 **Complexity: Mixed | Novelty: Moderate | Prerequisites: Chapters 3, 4, 5**
-
-<!-- AUTHOR-REVIEW: two disclosure items on the metadata line above. (1) The competency ID `D1.1` has been REMOVED. CNCF publishes four domain weights and twelve named competencies with no numbering and no sub-weights [source: cncf-kcna-curriculum-pdf-2026-08-23]; `D1.1` is a Lodestar-internal decomposition (declared as such at book-outline/domain-analysis.md:33) and must not read as a CNCF taxonomy ID in shipped text. (2) The ~6% figure is this book's authored allocation, not a published CNCF weight. Match the exact disclosure phrasing used in the metadata lines of Chapters 2–5 before this ships. -->
 
 ---
 
 ## Attention Budget
 
-**Total time: ~2 hours | Recommended: split across two sessions**
+**Total time: ~131 minutes | Recommended: split across two sessions**
 
 | Section | Time | Attention Cost | Best Time to Study |
 |---|---|---|---|
@@ -205,11 +201,10 @@ figures_planned:
 | ☆ Taking Your Bearings #1 | 5 min | Medium | After a brief pause |
 | §4 — Changing the Fleet Under Way | 18 min | **High** | Peak attention |
 | §5 — Every Rollout Is a Revision | 11 min | Medium | Peak attention |
-| ☆ Taking Your Bearings #2 | 5 min | Medium | After a brief pause |
 | §6 — When Pods Are Not Interchangeable | 9 min | Medium | Mid-session |
 | §7 — One Per Node, and Work That Ends | 10 min | Low | Anytime |
 | §8 — The Control Loop, Extended | 12 min | Medium-high | Peak attention |
-| ☆ Taking Your Bearings #3 | 5 min | Medium | After a brief pause |
+| ☆ Taking Your Bearings #2 | 8 min | Medium | After a brief pause |
 | §9 — Nobody Sails One Pod (the chapter's ☀️ Zenith) | 4 min | Low | Anytime |
 | Exam Alert + Practice Questions | 25 min | Medium | Separate session |
 
@@ -218,9 +213,9 @@ figures_planned:
 - **Medium:** new concepts requiring focus. Study when alert.
 - **High:** abstract or dense material with arithmetic. Study at peak attention.
 
-**Recommended split point:** after ☆ Taking Your Bearings #2. Sections 1 through 5 are the Deployment arc from end to end. Sections 6 through 9 are the rest of the family and what the pattern turns into.
+**Recommended split point:** after §5, before §6. Sections 1 through 5 are the Deployment arc from end to end. Sections 6 through 9 are the rest of the family and what the pattern turns into.
 
-*If you only have 15 minutes: read §1, jump to the decision tree at the close of §7, then work ☆ Taking Your Bearings #3. That is the highest-leverage route through this chapter.*
+*If you only have 15 minutes: read §1, jump to the decision tree at the close of §7, then work ☆ Taking Your Bearings #2. That is the highest-leverage route through this chapter.*
 
 ---
 
@@ -268,11 +263,11 @@ Before you read this chapter, work these eight. Your score tells you how to read
 
 8. **Chapter 5 said the Pod is replaced, not moved:** a new, near-identical Pod with a different UID. What it left unanswered was *who does the replacing.* That is the question this chapter opens on. *Count it right if you named the replacement and the open question.*
 
-**If you got 6 or more right:** skim. Read the ★ Fixed Points, the ⚠ Navigational Hazards blocks, and §4 in full. The two rolling-update bounds and their defaults are the easiest pair in this chapter to get backwards. Then work all three ☆ Taking Your Bearings checkpoints.
+**If you got 6 or more right:** skim. Read the ★ Fixed Points, the ⚠ Navigational Hazards blocks, and §4 in full. The two rolling-update bounds and their defaults are the easiest pair in this chapter to get backwards. Then work both ☆ Taking Your Bearings checkpoints.
 
 **If you got 3 to 5 right:** read at normal pace. This chapter is calibrated for you. Do not skip §3; it is short and everything after it depends on it.
 
-**If you got 0 to 2 right:** read carefully, and take the recommended split after ☆ Taking Your Bearings #2. **If questions 7 and 8 were among your misses, re-read Chapter 3 §6 and Chapter 5 §4 before you start §2.** Those two sections are the debts this chapter collects, and §2 will read as a vocabulary drill without them.
+**If you got 0 to 2 right:** read carefully, and take the recommended split after §5. **If questions 7 and 8 were among your misses, re-read Chapter 3 §6 and Chapter 5 §4 before you start §2.** Those two sections are the debts this chapter collects, and §2 will read as a vocabulary drill without them.
 
 </details>
 
@@ -361,9 +356,7 @@ That last clarification matters more than it looks. `.spec.replicas` on a Deploy
 
 A ReplicaSet is defined with a selector that specifies how to identify Pods it can acquire, a number of replicas indicating how many Pods it should be maintaining, and a **Pod template** specifying the data of new Pods it should create; when it needs to create a new Pod, it uses that template [source: k8s-docs-replicaset-2026-08-24].
 
-Everything Chapter 4 taught you about an object's four required fields is unchanged. Everything Chapter 5 taught you about a Pod's `spec` is unchanged. It has simply moved one nesting level down: a Pod template has exactly the same schema as a Pod, except that it is nested and carries no `apiVersion` or `kind` of its own — the DaemonSet page states that rule in those words [source: k8s-docs-daemonset-2026-08-24]. You do not need that developed. You need it *located*. *[cross-bearing: see Ch 4 §2 — apiVersion, kind, metadata, spec]*
-
-<!-- AUTHOR-REVIEW: the identical nesting rule for a Deployment's / ReplicaSet's `.spec.template` is not in the cached corpus — the Deployment API reference says only "Template describes the pods that will be created." The sentence above is therefore attributed visibly to the DaemonSet page. To state it as a general rule, cache `k8s-api-replicaset-v1-*` / `k8s-api-deployment-v1-*` (see recommended research gap 3). -->
+Everything Chapter 4 taught you about an object's four required fields is unchanged. Everything Chapter 5 taught you about a Pod's `spec` is unchanged. It has simply moved one nesting level down: a Pod template has exactly the same schema as a Pod, except that it is nested and carries no `apiVersion` or `kind` of its own. The Deployment page states that rule in those words [source: k8s-docs-deployment-pod-template-2026-09-04], and so does the DaemonSet page [source: k8s-docs-daemonset-2026-08-24]. You do not need that developed. You need it *located*. *[cross-bearing: see Ch 4 §2 — apiVersion, kind, metadata, spec]*
 
 ### The reframe
 
@@ -410,7 +403,7 @@ web-7d4b9c6f8-z7rtc    0/1     ContainerCreating   0          2s
 
 Nobody triggered that. No job ran. No alert fired and no runbook was consulted. A gap appeared between what you asked for and what existed, and a loop that had been watching the whole time closed it. The new Pod is not the old Pod recovered. It is a different Pod with a different name and a different UID *[cross-bearing: see Ch 5 §4 — replacement, not recovery]*, built from the same template.
 
-Worth noticing about the mechanics: the controller does not create that Pod itself. More commonly in Kubernetes, a controller sends messages to the API server that have useful side effects [source: k8s-docs-controllers-2026-08-23], and other components act on the new information. The "nobody is in charge" property Chapter 3 established holds at this altitude too. The ReplicaSet controller writes a wish to the API server and something else does the work.
+Worth noticing about the mechanics: the controller does not run that Pod itself. It tells the API server to create it [source: k8s-docs-controllers-2026-08-23]. More commonly in Kubernetes, a controller sends messages to the API server that have useful side effects, and other components in the control plane act on the new information [source: k8s-docs-controllers-2026-08-23]. The "nobody is in charge" property Chapter 3 established holds at this altitude too. The ReplicaSet controller writes a wish to the API server and something else does the work.
 
 ### Scaling is the same operation
 
@@ -442,7 +435,7 @@ Chapter 4 taught you label selectors as the universal join and listed the places
 
 ### Membership is a query
 
-A ReplicaSet does not track its Pods by name and does not hold a list. Chapter 4 drew this join once already — figure `ch04-fig03-labels-selectors-join` — and the picture here is the same one, now with an owner on one side. It has a `.spec.selector`, a label selector, using the labels that identify potential Pods to acquire [source: k8s-docs-replicaset-2026-08-24]. The machinery is exactly what Chapter 4 gave you: set-based requirements are expressed through `matchExpressions`, and `matchLabels` is the equality-shaped shorthand, equivalent to `matchExpressions` with the operator `In`; newer resources such as Job, Deployment, ReplicaSet and DaemonSet support both [source: k8s-docs-labels-selectors-2026-08-23]. Nothing new to learn, one new place to apply it. *[cross-bearing: see Ch 4 §5 — labels and selectors, the universal join]*
+A ReplicaSet does not track its Pods by name and does not hold a list. Chapter 4 drew this join once already, in §5's figure of four Pods and the selector sets they fall into, and the picture here is the same one, now with an owner on one side. It has a `.spec.selector`, a label selector, using the labels that identify potential Pods to acquire [source: k8s-docs-replicaset-2026-08-24]. The machinery is exactly what Chapter 4 gave you: set-based requirements are expressed through `matchExpressions`, and `matchLabels` is the equality-shaped shorthand, equivalent to `matchExpressions` with the operator `In`; newer resources such as Job, Deployment, ReplicaSet and DaemonSet support both [source: k8s-docs-labels-selectors-2026-08-23]. Nothing new to learn, one new place to apply it. *[cross-bearing: see Ch 4 §5 — labels and selectors, the universal join]*
 
 Its Pods are whichever Pods match. Not "the Pods it made." The ones that match, right now, whoever made them.
 
@@ -451,8 +444,6 @@ Its Pods are whichever Pods match. Not "the Pods it made." The ones that match, 
 You got a runaway. Create a Pod, fail to see it, notice the count is still short, create another, and keep going, with no condition that ever stops it. That outcome is so obviously bad that Kubernetes refuses to let you build it. In a ReplicaSet, `.spec.template.metadata.labels` **must** match `spec.selector` or the object will be rejected by the API [source: k8s-docs-replicaset-2026-08-24]. Same for a Deployment: `.spec.selector` must match `.spec.template.metadata.labels`, or it will be rejected by the API [source: k8s-docs-deployment-spec-fields-2026-08-24]. Same for a DaemonSet: configuration with those two not matching is rejected [source: k8s-docs-daemonset-2026-08-24].
 
 This is worth sitting with. It is one of the few validations Kubernetes performs by refusing the object outright rather than accepting it and reconciling toward it, and the reason is simple: what you wrote has no reachable steady state at all.
-
-<!-- AUTHOR-REVIEW: the outline (§3, Bearings #1 item 3) assumes a selector/template mismatch produces a live runaway in the cluster. All three cached sources state the API rejects the object outright. Section teaches the rejection with the runaway as the *reason* for it, and Bearings #1 item 3 plus Practice Q3's replacement are aligned to that reading. Confirmed against the corpus by the fact-accuracy stage; retained here for the record. -->
 
 > ★ **Fixed Point:**
 >
@@ -466,7 +457,7 @@ A ReplicaSet is linked to its Pods via the Pods' `metadata.ownerReferences` fiel
 
 That link is what makes deletion tidy. Kubernetes checks for and deletes objects that no longer have owner references, like the Pods left behind when you delete a ReplicaSet, in a process called **cascading deletion**, and background cascading deletion is the default [source: k8s-docs-garbage-collection-2026-08-24]. In practice: delete the Deployment and its ReplicaSets and their Pods go too. To delete a ReplicaSet and all of its Pods you just use `kubectl delete`; the garbage collector automatically removes the dependent Pods by default [source: k8s-docs-replicaset-2026-08-24].
 
-The opposite outcome has a name too. Dependents that survive their owner are called **orphan** objects, and by default Kubernetes deletes dependents rather than leaving them behind [source: k8s-docs-garbage-collection-2026-08-24]. The way you produce orphans by accident is by changing a selector, so that Pods a controller used to claim stop matching it and nothing is left holding them. That route is hazardous enough that a DaemonSet's `.spec.selector` cannot be mutated at all once the object is created, precisely because mutating a pod selector can lead to the unintentional orphaning of Pods [source: k8s-docs-daemonset-2026-08-24].
+The opposite outcome has a name too. Dependents that survive their owner are called **orphan** objects, and by default Kubernetes deletes dependents rather than leaving them behind [source: k8s-docs-garbage-collection-2026-08-24]. The way you produce orphans by accident is by changing a selector, so that Pods a controller used to claim stop matching it and nothing is left holding them. That route is hazardous enough that a DaemonSet's `.spec.selector` cannot be mutated at all once the object is created, precisely because mutating a Pod selector can lead to the unintentional orphaning of Pods [source: k8s-docs-daemonset-2026-08-24]. A Deployment's `.spec.selector` is immutable after creation too, in `apps/v1` [source: k8s-docs-deployment-pod-template-2026-09-04].
 
 ### Where the selector actually bites
 
@@ -593,10 +584,6 @@ At most thirteen Pods exist at any instant during the update, counting old and n
 
 Notice the asymmetry in the rounding, because it is not arbitrary. Surge rounds up: Kubernetes will give you *more* headroom above the line than the percentage strictly buys. Unavailable rounds down: it will allow *fewer* Pods to be missing than the percentage strictly permits. Both defaults round in the direction of keeping more capacity online. That is a design decision you can read straight off the field descriptions.
 
-<!-- AUTHOR-REVIEW: the outline's worked example (§4, fig02 spec, and Bearings #2 item 1) states the ceiling for 10 replicas at defaults is 12. The cached source specifies maxSurge rounds UP from a percentage, giving ceil(2.5) = 3 and a ceiling of 13; the fact-accuracy stage confirmed 13 against both the concept page and the API reference. Draft uses 13 throughout, including fig02, Bearings #2 and Practice Q8's independent six-replica case. The outline's 12 must be corrected before it propagates to The Lodestar. -->
-
-<!-- AUTHOR-REVIEW: the worked-arithmetic block above was a fenced ASCII block in draft-v1 and tripped the structural linter's figure-anchor check (it is a calculation, not a diagram, and is fully subsumed by ch06-fig02 which renders the same two numbers as lines on a chart). It is now typeset as a table, which needs no anchor. If the author would rather have it rendered as a figure, it needs an anchor (`ch06-fig07-rolling-update-arithmetic`) and a matching image-specs entry; the two rounding rows must stay adjacent either way so the asymmetry is visible at a glance. -->
-
 <!-- FIGURE: ch06-fig02-rolling-update-maxsurge-maxunavailable -->
 ![Count-versus-time chart for a ten-replica rolling update: a dashed ceiling line at thirteen marks desired plus maxSurge, a solid line at ten marks the desired count, and a dashed floor line at eight marks desired minus maxUnavailable; an old Pod population declines while a new population rises, their total never crossing the ceiling and the available count never falling below the floor](figures/ch06-fig02-rolling-update-maxsurge-maxunavailable.svg)
 
@@ -627,7 +614,7 @@ Notice the asymmetry in the rounding, because it is not arbitrary. Surge rounds 
 The other strategy is the contrast that makes the first one legible. With `Recreate`, all existing Pods are killed before new ones are created [source: k8s-docs-deployment-2026-08-23].
 
 <!-- FIGURE: ch06-fig03-recreate-vs-rolling -->
-![Two stacked availability timelines: the Recreate strategy shows a solid bar, then a bracketed gap labelled zero available while all old Pods are killed before new ones are created, then a solid bar again; the RollingUpdate strategy shows an unbroken bar whose fill shifts from old to new through an overlapping middle region, never reaching zero](figures/ch06-fig03-recreate-vs-rolling.svg)
+![Two stacked availability timelines: the Recreate strategy shows a solid bar, then a bracketed gap labeled zero available while all old Pods are killed before new ones are created, then a solid bar again; the RollingUpdate strategy shows an unbroken bar whose fill shifts from old to new through an overlapping middle region, never reaching zero](figures/ch06-fig03-recreate-vs-rolling.svg)
 
 <!-- ASCII-FALLBACK
 ```
@@ -738,7 +725,7 @@ Same loop. Same mechanics. Opposite direction.
 >
 > **"I'll just `rollout undo` to get back to three replicas."** You cannot. `undo` restores a Pod template. Your replica count is not in a Pod template. If you scaled from three to six and want three back, scale to three.
 >
-> **"I set `revisionHistoryLimit: 0` to keep etcd clean."** You also removed your ability to roll back; the documentation says so in the same paragraph that describes the field [source: k8s-docs-deployment-spec-fields-2026-08-24]. There is a defensible reason to do this in a GitOps environment where the previous state lives somewhere else entirely. There is no defensible reason to do it because the `kubectl get rs` output was untidy.
+> **"I set `revisionHistoryLimit: 0` to keep etcd clean."** You also removed your ability to roll back; the documentation says so in the same paragraph that describes the field [source: k8s-docs-deployment-spec-fields-2026-08-24]. There is a defensible reason to do this in a GitOps environment, where the previous state lives somewhere else entirely *[cross-bearing: see Ch 15 §3 — GitOps, and where its desired state lives]*. There is no defensible reason to do it because the `kubectl get rs` output was untidy.
 >
 > **"The rollout failed."** Usually it stalled. See §4: a Deployment that cannot get new Pods to available does not fail over to the old version. It stops, holding both ReplicaSets, with the old Pods still serving. The distinction matters because "failed" implies something ended and "stalled" means something is still waiting for you.
 
@@ -758,7 +745,7 @@ A **StatefulSet** runs a group of Pods and maintains a sticky identity for each 
 
 That identity is concrete, not conceptual. For a StatefulSet with N replicas, each Pod is assigned an integer ordinal unique across the set — by default, from 0 through N−1 — and each Pod derives its hostname from the StatefulSet's name and its own ordinal. The pattern is `$(statefulset name)-$(ordinal)`, so a three-replica StatefulSet named `web` produces `web-0`, `web-1` and `web-2` [source: k8s-docs-statefulset-2026-08-24].
 
-Storage sticks to the identity too. For each volume claim template defined in a StatefulSet, each Pod receives one PersistentVolumeClaim, and **the same claim will be bound to that Pod throughout its lifecycle**; when the Pod is rescheduled onto a different node, its mounts follow [source: k8s-docs-statefulset-2026-08-24]. This is what the workloads overview means when it says a StatefulSet matches each Pod with a PersistentVolume, and that code running in those Pods can replicate data to other Pods in the same StatefulSet to improve overall resilience [source: k8s-docs-workloads-2026-08-23].
+Storage sticks to the identity too. For each volume claim template defined in a StatefulSet, each Pod receives one PersistentVolumeClaim, and **the same claim will be bound to that Pod throughout its lifecycle**; when the Pod is rescheduled onto a different node, its mounts follow [source: k8s-docs-statefulset-2026-08-24] *[cross-bearing: see Ch 11 §2 — PersistentVolumeClaims, and what a claim binds to]*. This is what the workloads overview means when it says a StatefulSet matches each Pod with a PersistentVolume, and that code running in those Pods can replicate data to other Pods in the same StatefulSet to improve overall resilience [source: k8s-docs-workloads-2026-08-23].
 
 And the ordering is guaranteed rather than incidental: for a StatefulSet with N replicas, Pods are created sequentially in order from 0 to N−1 and terminated in reverse order from N−1 to 0, and before a scaling operation is applied to a Pod, all of its predecessors must be Running and Ready [source: k8s-docs-statefulset-2026-08-24].
 
@@ -811,15 +798,11 @@ You have now been told that a StatefulSet's Pods each get their own persistent s
 
 The storage half of this — PersistentVolume, PersistentVolumeClaim, StorageClass, access modes, and the provisioning path — is a chapter of its own, and it needs vocabulary this chapter has not built.
 
-<!-- AUTHOR-REVIEW: two Chapter 11 facts were cut from this paragraph in revision, per the curriculum-alignment stage and research-manifest note 8 — that a StatefulSet's storage must be provisioned by a PV provisioner from the requested storage class or pre-provisioned by an admin, and that deleting or scaling down a StatefulSet does NOT delete the associated volumes [source: k8s-docs-statefulset-2026-08-24]. The second one should move into ch06-fig05's DESIGN BRIEF (not the reader's prose), where it is the cleanest evidence for the figure's requirement that storage belongs to the identity rather than to the Pod. -->
-
 *[cross-bearing: see Ch 11 — PersistentVolumes, claims, and how a Pod's storage follows its identity]*
 
 One more open thread, smaller: StatefulSets currently require a headless Service to be responsible for the network identity of the Pods, and you are responsible for creating it [source: k8s-docs-statefulset-2026-08-24]. What a headless Service is belongs with the rest of Services. *[cross-bearing: see Ch 9 — headless Services and stable DNS names]*
 
 *[cross-bearing: see Ch 16 — debugging StatefulSets and their claims]*
-
-<!-- AUTHOR-REVIEW: chapter-01 line 435 carries a published cross-bearing reading "*[see Ch 6 §3 — StatefulSets and stable identity]*". StatefulSet is §6 in this chapter, and §3 is pinned by chapter-04 line 688 (selectors and ownership), which cannot move. Per the outline's Open Question #1, the recommended fix is a one-token edit in chapter-01: §3 → §6. Not fixable from inside this draft. -->
 
 ---
 
@@ -840,8 +823,6 @@ Two of those come back later. Cluster networking plugins ship as DaemonSets *[cr
 The Pod count is a consequence, not a setting. If you specify a node selector or node affinity in the template, the DaemonSet controller creates Pods on nodes matching it; if you specify neither, it creates Pods on all nodes [source: k8s-docs-daemonset-2026-08-24]. The controller creates a Pod for each eligible node [source: k8s-docs-daemonset-2026-08-24]. Supporting this from another direction: horizontal pod autoscaling does not apply to objects that can't be scaled, and the documentation's own example of such an object is a DaemonSet [source: k8s-docs-hpa-2026-08-24]. *[cross-bearing: see Ch 7 §3 — nodeSelector and node affinity]*
 
 One more thing to bank, because Chapter 7 collects it. DaemonSets keep running on nodes where nothing else will — nodes the cluster has fenced off from ordinary workloads entirely. And you have already met the mechanism that makes this possible, in disguise: it has been holding those networking and logging agents in place on every node since you first saw them running everywhere in Chapter 3's census. Chapter 7 unmasks it *[cross-bearing: see Ch 7 §4 — taints, tolerations, and the fence DaemonSets step over]*.
-
-<!-- AUTHOR-REVIEW: no cached sentence states in so many words that a DaemonSet has no `replicas` field. The claim is supported by (a) "creates a Pod for each eligible node" [k8s-docs-daemonset-2026-08-24] and (b) the HPA page naming DaemonSet as an object that can't be scaled [k8s-docs-hpa-2026-08-24]. Prose here, in the §7 Fixed Point, and in the Chapter Summary all use the hedged form — the count is a consequence of node eligibility — rather than asserting field absence. The stronger form needs the DaemonSet API reference fetched (research gap G-6A). -->
 
 ### Job — work that ends
 
@@ -922,8 +903,6 @@ The documentation offers the same guidance from the ReplicaSet's side, phrased a
 
 Chapter 3 closed by promising you controllers you configure yourself. Chapter 2 named custom resources as the fourth socket in the pattern where Kubernetes defines an interface and lets the ecosystem implement it. Both promises come due here.
 
-<!-- AUTHOR-REVIEW: chapter-02 line 600 carries a published cross-bearing reading "*[see Ch 6 §3 — CRDs and extending the API]*". CRDs are §8 in this chapter; §3 is pinned by chapter-04 line 688 and cannot move, and CRDs cannot move earlier than §8 without teaching API extension before the reader has met a built-in controller. Per the outline's Open Question #1, the recommended fix is a one-token edit in chapter-02: §3 → §8. Not fixable from inside this draft. -->
-
 ### Start with the word "resource"
 
 A resource is an endpoint in the Kubernetes API that stores a collection of API objects of a certain kind; the built-in `pods` resource contains a collection of Pod objects [source: k8s-docs-custom-resources-2026-08-23]. You have been using resources all book. `kubectl get pods` talks to one. `kubectl get deployments` talks to another.
@@ -954,7 +933,7 @@ That is Chapter 3's control loop, written by someone who is not the Kubernetes p
 
 > 🪝 **Snag:** "We installed the CRD, created an object of the new kind, and nothing happened." That is the correct behavior. There is no controller. You gave the cluster a new noun and no verb.
 >
-> **Name this shape, because you are going to meet it again.** *An object without its component does nothing.* An Ingress with no ingress controller is the same shape. `kubectl top` with no metrics-server is the same shape. A vertical autoscaler that isn't shipped by default is the same shape. It is not four gotchas. It is one rule with four instances, and the rule is that Kubernetes will happily accept a record of intent that nothing in the cluster is currently able to act on. *[cross-bearing: see Ch 10 — Ingress without an ingress controller]* *[cross-bearing: see Ch 13 — `kubectl top` without metrics-server]*
+> **Name this shape, because you are going to meet it again.** *An object without its component does nothing.* An Ingress with no Ingress controller is the same shape. `kubectl top` with no metrics-server is the same shape. A vertical autoscaler that isn't shipped by default is the same shape. It is not four gotchas. It is one rule with four instances, and the rule is that Kubernetes will happily accept a record of intent that nothing in the cluster is currently able to act on. *[cross-bearing: see Ch 10 — Ingress without an Ingress controller]* *[cross-bearing: see Ch 13 — `kubectl top` without metrics-server]*
 
 ### The pattern, named
 
@@ -983,7 +962,7 @@ Chapter 2 showed you the move: Kubernetes defines an interface and lets the ecos
 
 Four sockets, one pattern. Collecting them into a single statement about what kind of system Kubernetes is belongs later, when you have met all four in their own contexts. *[cross-bearing: see Ch 17 — CRI, CNI, CSI and CRDs, resolved into one story]*
 
-> 🔭 **Closer Look:** CRDs are not the only route to a custom API. The other is API-server aggregation, which offers more flexibility at the cost of writing and operating more of the API machinery yourself [source: k8s-docs-custom-resources-2026-08-23]. For this book's purposes: CRD is the common path, aggregation is the rarer one, and knowing that both exist is enough.
+> 🔭 **Closer Look:** CRDs are not the only route to a custom API. The other is API-server aggregation, which offers more flexibility at the cost of writing and operating more of the API machinery yourself [source: k8s-docs-custom-resources-2026-08-23]. For this book's purposes: CRD is the common path, aggregation is the rarer one, and knowing that both exist is enough. *[cross-bearing: see Ch 17 §4 — the aggregation layer, among the other extension points]*
 
 *[cross-bearing: see Ch 14 — why Helm charts have a `crds/` directory]*
 *[cross-bearing: see Ch 15 — a delivery tool that is, structurally, a controller acting on custom resources]*
@@ -1032,7 +1011,7 @@ A rounds `maxSurge` down instead. C rounds `maxUnavailable` up instead. D treats
 
 **3. `Recreate`, and you are accepting a window of complete unavailability.** All existing Pods are killed before new ones are created. You are trading availability for correctness, because a rolling update would put old code and migrated data in the same room. The near-miss answer, "a rolling update with `maxSurge: 0`," removes the extra Pods but not the overlap: old and new versions still coexist while the update walks through the fleet. Only `Recreate` guarantees no overlap.
 
-**4.** The rollout stalls. New Pods that never report ready never become available, so the old ReplicaSet can never scale down past the `maxUnavailable` floor — both stay alive, the old Pods keep serving, and a failing readiness probe removes a Pod's IP from every Service's endpoints, so no traffic ever reaches the broken new Pods. **Users experience nothing** — the entire value of the mechanism, and why Chapter 5 spent as long as it did on probes. After `progressDeadlineSeconds` (600 by default), the Deployment surfaces a `Progressing` condition with `reason: ProgressDeadlineExceeded`. Naming that signal is this chapter's job; diagnosing which of the six causes fired is Chapter 13's. *[cross-bearing: see Ch 13 §3]*
+**4.** The rollout stalls. New Pods that never report ready never become available, so the old ReplicaSet can never scale down past the `maxUnavailable` floor — both stay alive, the old Pods keep serving, and a failing readiness probe removes a Pod's IP from every Service's endpoints, so no traffic ever reaches the broken new Pods. **Users experience nothing** — the entire value of the mechanism, and why Chapter 5 spent as long as it did on probes. After `progressDeadlineSeconds` (600 by default), the Deployment surfaces a `Progressing` condition with `reason: ProgressDeadlineExceeded`. Naming that signal is this chapter's job; diagnosing which of the six causes fired is Chapter 13's. *[cross-bearing: see Ch 13 §3 — reading the events behind a stalled rollout]*
 
 **5. No.** The deciding property is whether the Pods are **interchangeable**. A Deployment assumes any Pod in it can be replaced by any other, even one that mounts and writes to a volume. A StatefulSet exists for Pods built from the same spec but *not* interchangeable, each carrying a persistent identity across rescheduling. "Disk means StatefulSet" fails both ways: it burdens stateless services that merely cache to disk, and it leaves identity-dependent workloads in Deployments, where a routine Pod replacement quietly returns the wrong data.
 
@@ -1149,11 +1128,11 @@ Which returns you to the title. Nobody sails one Pod, not because a single Pod i
 
 Nineteen questions. Answers and explanations follow the full set, so work them all first.
 
-<!-- AUTHOR-REVIEW (question coverage, for the author to rule on): Q3 and Q7 were re-cut in revision because each duplicated a ☆ Taking Your Bearings item (Q3 ≡ Bearings #1 item 3; Q7 ⊂ Bearings #2 item 1). The two freed slots now close the `revisionHistoryLimit` gap and the "neither bound may be 0 if the other is 0" gap. THREE taught concepts remain untested and cannot be covered without raising the chapter's question budget above the outline's 42: (a) HorizontalPodAutoscaler — taught in §2, in the Chapter Summary, cited in Q14's key, never the object of a question; (b) overlapping selectors — a full Logbook Entry sidebar in §3 with no retrieval path (Q4 tests bare-Pod adoption, which is adjacent but not the same mechanism); (c) CronJob idempotency and the five-field `.spec.schedule` syntax — flagged with emphasis in §7, source-backed, untested. `kubectl rollout status` is likewise the only verb in §5's table with no question behind it. The book is under its 300-question floor, so a raise from 42 to 45 is affordable if the author wants these closed. -->
+<!-- AUTHOR-REVIEW (question coverage, for the author to rule on): Q3 and Q7 were re-cut in revision because each duplicated a ☆ Taking Your Bearings item (Q3 ≡ Bearings #1 item 3; Q7 ⊂ Bearings #2 item 1). One freed slot closes the `revisionHistoryLimit` gap (Q3); the other (Q7) originally tested the "neither bound may be 0 if the other is 0" rule and was re-cut in the 2026-09-04 audit to test the rolling-update mechanism itself at exam depth, so that rule is now taught in §4's Dead Reckoning and untested. THREE taught concepts remain untested and cannot be covered without raising the chapter's question budget above the outline's 42: (a) HorizontalPodAutoscaler — taught in §2, in the Chapter Summary, cited in Q14's key, never the object of a question; (b) overlapping selectors — a full Logbook Entry sidebar in §3 with no retrieval path (Q4 tests bare-Pod adoption, which is adjacent but not the same mechanism); (c) CronJob idempotency and the five-field `.spec.schedule` syntax — flagged with emphasis in §7, source-backed, untested. `kubectl rollout status` is likewise the only verb in §5's table with no question behind it. The book is under its 300-question floor, so a raise from 42 to 45 is affordable if the author wants these closed. -->
 
 ---
 
-**Q1.** ⚪ You create a Deployment with `replicas: 3`. Which object actually creates the three Pods?
+**1.** ⚪ You create a Deployment with `replicas: 3`. Which object actually creates the three Pods?
 
 A) The Deployment
 B) The ReplicaSet the Deployment creates
@@ -1162,7 +1141,7 @@ D) The kubelet on each node
 
 ---
 
-**Q2.** ⚪ **[retrieval: ch4]** On a Deployment, where does the number of replicas you *asked for* live, and where does the number *currently running* live?
+**2.** ⚪ **[retrieval: ch4]** On a Deployment, where does the number of replicas you *asked for* live, and where does the number *currently running* live?
 
 A) Both in `spec`
 B) Both in `status`
@@ -1171,7 +1150,7 @@ D) The requested count in `metadata`; the running count in `spec`
 
 ---
 
-**Q3.** 🔵 You set `.spec.revisionHistoryLimit: 0` on a Deployment to stop old ReplicaSets accumulating in `etcd` and crowding `kubectl get rs`. What else have you given up?
+**3.** 🔵 You set `.spec.revisionHistoryLimit: 0` on a Deployment to stop old ReplicaSets accumulating in `etcd` and crowding `kubectl get rs`. What else have you given up?
 
 A) Nothing — the field only controls how many entries `kubectl rollout history` prints
 B) The ability to undo a new rollout, because its revision history is cleaned up
@@ -1180,7 +1159,7 @@ D) Rollbacks to revisions older than the previous one, but `rollout undo` with n
 
 ---
 
-**Q4.** 🔵 A ReplicaSet has `replicas: 3` and a selector of `app=web`. You manually create a bare Pod carrying the label `app=web`. What is the most likely outcome?
+**4.** 🔵 A ReplicaSet has `replicas: 3` and a selector of `app=web`. You manually create a bare Pod carrying the label `app=web`. What is the most likely outcome?
 
 A) Nothing; bare Pods are never touched by controllers
 B) The ReplicaSet adopts the Pod, is now over its desired count, and terminates a Pod
@@ -1189,7 +1168,7 @@ D) The ReplicaSet scales up to four to accommodate it
 
 ---
 
-**Q5.** 🔵 **[retrieval: ch5]** A ReplicaSet replaces a Pod that was deleted. What is true of the replacement, and why does it matter?
+**5.** 🔵 **[retrieval: ch5]** A ReplicaSet replaces a Pod that was deleted. What is true of the replacement, and why does it matter?
 
 A) It is the same Pod restarted, retaining its UID and IP
 B) It is a new Pod with a new UID; anything that recorded the old Pod's identity is now stale
@@ -1198,7 +1177,7 @@ D) It is a new Pod that reuses the old Pod's name but receives a new UID
 
 ---
 
-**Q6.** ⚪ You run `kubectl delete deployment/web`. What happens to the ReplicaSets and Pods beneath it, and by what mechanism?
+**6.** ⚪ You run `kubectl delete deployment/web`. What happens to the ReplicaSets and Pods beneath it, and by what mechanism?
 
 A) Nothing; they are independent objects and must be deleted individually
 B) They are deleted by cascading deletion, driven by owner references
@@ -1207,16 +1186,16 @@ D) They remain until the next garbage-collection window, which runs hourly
 
 ---
 
-**Q7.** 🔵 A Deployment has eight replicas, with `maxSurge: 0` and `maxUnavailable: 1` set explicitly. What are the ceiling on total Pods and the floor on available Pods, and is this configuration legal?
+**7.** ⚪ A Deployment uses the default strategy. You change the container image in its Pod template and apply the manifest. What does the Deployment do?
 
-A) Ceiling 8, floor 7; legal — the prohibition is only on setting *both* to 0
-B) Ceiling 8, floor 7; illegal — `maxSurge` may never be 0
-C) Ceiling 9, floor 7; legal — `maxSurge: 0` still permits one surge Pod for the swap
-D) Ceiling 8, floor 8; legal — with no surge allowed, nothing may become unavailable either
+A) Terminates every existing Pod, then creates new Pods from the updated template
+B) Creates a new ReplicaSet for the updated template and moves Pods from the old ReplicaSet to the new one at a controlled rate
+C) Edits each existing Pod in place so that it pulls the new image
+D) Nothing, until you run `kubectl rollout resume`
 
 ---
 
-**Q8.** 🔵 A Deployment has **six** replicas, with `maxSurge` and `maxUnavailable` both left at their defaults. What are the ceiling on total Pods and the floor on available Pods?
+**8.** 🔵 A Deployment has **six** replicas, with `maxSurge` and `maxUnavailable` both left at their defaults. What are the ceiling on total Pods and the floor on available Pods?
 
 A) Ceiling 8, floor 5
 B) Ceiling 7, floor 5
@@ -1225,16 +1204,16 @@ D) Ceiling 7, floor 4
 
 ---
 
-**Q9.** 🔵 Which of the following is the correct reason to choose `Recreate` over `RollingUpdate`?
+**9.** 🔵 Which of the following is the correct reason to choose `Recreate` over `RollingUpdate`?
 
 A) It is faster, because Pods are not replaced one at a time
 B) The application cannot tolerate two versions running simultaneously
-C) It needs no spare capacity, because no surge Pods are ever created
+C) It is the only strategy that can complete without ever creating a surge Pod
 D) It avoids the need for readiness probes
 
 ---
 
-**Q10.** 🔵 You make two changes to a Deployment on Monday: you update the container image, and you scale from four replicas to eight. How many new revisions appear in `kubectl rollout history`?
+**10.** 🔵 You make two changes to a Deployment on Monday: you update the container image, and you scale from four replicas to eight. How many new revisions appear in `kubectl rollout history`?
 
 A) Zero
 B) One
@@ -1243,7 +1222,7 @@ D) One, but only if the image change is applied second
 
 ---
 
-**Q11.** 🔵 You run `kubectl rollout undo deployment/web`. Which statement best describes what the cluster does?
+**11.** 🔵 You run `kubectl rollout undo deployment/web`. Which statement best describes what the cluster does?
 
 A) It restores a snapshot of the Deployment object taken before the last change
 B) It sets the Pod template to the previous revision's value and runs the same rolling update in the other direction
@@ -1252,7 +1231,7 @@ D) It reverses every field change made since the last rollout, including replica
 
 ---
 
-**Q12.** 🔵 You deploy a new image. The Pods start, but a bug means their readiness probes never succeed. Sixty seconds later, what is the state of the service and the Deployment?
+**12.** 🔵 You deploy a new image. The Pods start, but a bug means their readiness probes never succeed. Sixty seconds later, what is the state of the service and the Deployment?
 
 A) The service is down; all Pods have been replaced with broken ones
 B) The old Pods are still serving; the rollout has stalled with both ReplicaSets alive
@@ -1261,7 +1240,7 @@ D) The Pods are killed and restarted repeatedly until the image is fixed
 
 ---
 
-**Q13.** 🔵 Which of these workloads most clearly requires a StatefulSet rather than a Deployment?
+**13.** 🔵 Which of these workloads most clearly requires a StatefulSet rather than a Deployment?
 
 A) A web front end that caches rendered pages to a local disk
 B) A message consumer that must never have two instances processing the queue simultaneously
@@ -1270,7 +1249,7 @@ D) A batch importer that writes its output to object storage
 
 ---
 
-**Q14.** ⚪ Your cluster has twelve worker nodes. You create a DaemonSet with no node selector and no affinity. How many Pods will it produce, and what happens when three more nodes join?
+**14.** ⚪ Your cluster has twelve worker nodes. You create a DaemonSet with no node selector and no affinity. How many Pods will it produce, and what happens when three more nodes join?
 
 A) One Pod; three more nodes changes nothing
 B) Twelve Pods; three more nodes produces fifteen
@@ -1279,7 +1258,7 @@ D) Twelve Pods; three more nodes requires you to scale the DaemonSet
 
 ---
 
-**Q15.** ⚪ A data pipeline must run once, process a file, and exit. A second pipeline must run the same processing every night at midnight. Which resources do you create?
+**15.** ⚪ A data pipeline must run once, process a file, and exit. A second pipeline must run the same processing every night at midnight. Which resources do you create?
 
 A) Two Jobs, one with a schedule field set
 B) A Job for the first; a CronJob for the second
@@ -1288,7 +1267,7 @@ D) A Deployment with `replicas: 1` for the first; a CronJob for the second
 
 ---
 
-**Q16.** ⚪ **[retrieval: ch5]** Chapter 5 taught five Pod phases. Which phase indicates a Job's Pod has done its work correctly, and what does that phase mean?
+**16.** ⚪ **[retrieval: ch5]** Chapter 5 taught five Pod phases. Which phase indicates a Job's Pod has done its work correctly, and what does that phase mean?
 
 A) `Running` — the container is still executing, which for a Job means progress
 B) `Succeeded` — all containers terminated in success and will not be restarted
@@ -1297,7 +1276,7 @@ D) `Failed` — all containers terminated, at least one in failure
 
 ---
 
-**Q17.** 🟡 A StatefulSet's Pods all match its label selector, exactly as a Deployment's do. A StatefulSet nevertheless guarantees something about its Pods that no selector could express. What is it, and what carries it?
+**17.** 🟡 A StatefulSet's Pods all match its label selector, exactly as a Deployment's do. A StatefulSet nevertheless guarantees something about its Pods that no selector could express. What is it, and what carries it?
 
 A) That they are all running — carried by the readiness probe
 B) That each Pod keeps a stable ordinal identity and hostname across rescheduling — carried by the Pod's ordinal and derived name, not by the selector
@@ -1306,7 +1285,7 @@ D) That they share a namespace — carried by the selector's scope
 
 ---
 
-**Q18.** 🟡 You install a CRD defining a resource called `Certificate`, and you create a `Certificate` object. `kubectl get certificate` returns it. No certificate is issued. What is the minimum missing piece?
+**18.** 🟡 You install a CRD defining a resource called `Certificate`, and you create a `Certificate` object. `kubectl get certificate` returns it. No certificate is issued. What is the minimum missing piece?
 
 A) RBAC permissions granting access to the new resource
 B) A controller that watches `Certificate` objects and acts on them
@@ -1315,7 +1294,7 @@ D) A `status` subresource, without which nothing can act on the object
 
 ---
 
-**Q19.** 🟡 **[retrieval: ch3]** What does a custom controller written by a third party have in common with a built-in controller such as the Deployment controller, and where does each of them run?
+**19.** 🟡 **[retrieval: ch3]** What does a custom controller written by a third party have in common with a built-in controller such as the Deployment controller, and where does each of them run?
 
 A) Nothing structural — custom controllers use a separate API and run as privileged processes inside the control plane
 B) Both follow the same control loop — read `.spec`, act, write `.status` — but built-ins ship with the control plane while a custom controller normally runs as an ordinary Deployment
@@ -1326,43 +1305,43 @@ D) Both are registered with the API server through a CustomResourceDefinition, w
 
 ### Answers & Explanations
 
-**Q1 — B.** The Deployment creates a ReplicaSet, and the ReplicaSet creates Pods in the background [source: k8s-docs-deployment-2026-08-23]. **A** is the most common wrong answer and it collapses the middle layer; if you hold it, rolling updates become unexplainable, because they work by having two ReplicaSets alive at once. **C** is wrong: the scheduler decides *where* an existing Pod runs, not whether it exists. **D** is wrong for the same reason at a lower level: the kubelet runs containers for Pods already assigned to its node.
+**1 — B.** The Deployment creates a ReplicaSet, and the ReplicaSet creates Pods in the background [source: k8s-docs-deployment-2026-08-23]. **A** is the most common wrong answer and it collapses the middle layer; if you hold it, rolling updates become unexplainable, because they work by having two ReplicaSets alive at once. **C** is wrong: the scheduler decides *where* an existing Pod runs, not whether it exists. **D** is wrong for the same reason at a lower level: the kubelet runs containers for Pods already assigned to its node.
 
-**Q2 — C.** Almost every Kubernetes object has a `spec` describing desired state, which you set at creation, and a `status` describing current state, supplied and updated by the system [source: k8s-docs-objects-2026-08-23]. The documentation uses this exact example: set the Deployment `spec` to three replicas, and Kubernetes starts three instances and updates the `status` to match [source: k8s-docs-objects-2026-08-23]. **A** and **B** each collapse the distinction that makes control loops possible; you cannot compare two states stored in one field. **D** is wrong because `metadata` holds identity, not intent.
+**2 — C.** Almost every Kubernetes object has a `spec` describing desired state, which you set at creation, and a `status` describing current state, supplied and updated by the system [source: k8s-docs-objects-2026-08-23]. The documentation uses this exact example: set the Deployment `spec` to three replicas, and Kubernetes starts three instances and updates the `status` to match [source: k8s-docs-objects-2026-08-23]. **A** and **B** each collapse the distinction that makes control loops possible; you cannot compare two states stored in one field. **D** is wrong because `metadata` holds identity, not intent.
 
-**Q3 — B.** `.spec.revisionHistoryLimit` is the number of old ReplicaSets retained to allow rollback, defaulting to 10; setting it to zero means all old ReplicaSets with 0 replicas are cleaned up, and in that case a new Deployment rollout **cannot be undone**, since its revision history is cleaned up [source: k8s-docs-deployment-spec-fields-2026-08-24]. **A is wrong**, and it is the tempting one: the old ReplicaSets *are* the history. Deleting them removes the mechanism, not merely the display — which is why §5 insists that a revision is a ReplicaSet, not a log entry. **C is wrong** because pause and resume act on an in-flight rollout [source: k8s-docs-deployment-2026-08-23] and have nothing to do with retained ReplicaSets. **D is wrong** in the most useful way: `undo` with no arguments goes to the *previous* revision, and that is precisely the revision that no longer exists.
+**3 — B.** `.spec.revisionHistoryLimit` is the number of old ReplicaSets retained to allow rollback, defaulting to 10; setting it to zero means all old ReplicaSets with 0 replicas are cleaned up, and in that case a new Deployment rollout **cannot be undone**, since its revision history is cleaned up [source: k8s-docs-deployment-spec-fields-2026-08-24]. **A is wrong**, and it is the tempting one: the old ReplicaSets *are* the history. Deleting them removes the mechanism, not merely the display — which is why §5 insists that a revision is a ReplicaSet, not a log entry. **C is wrong** because pause and resume act on an in-flight rollout [source: k8s-docs-deployment-2026-08-23] and have nothing to do with retained ReplicaSets. **D is wrong** in the most useful way: `undo` with no arguments goes to the *previous* revision, and that is precisely the revision that no longer exists.
 
-**Q4 — B.** A ReplicaSet identifies new Pods to acquire using its selector, and a Pod with no controller owner reference that matches will be immediately acquired [source: k8s-docs-replicaset-2026-08-24]. If the acquisition puts the ReplicaSet over its desired count, the newly acquired Pod is immediately terminated [source: k8s-docs-replicaset-2026-08-24]. **A** is wrong and dangerous: a ReplicaSet is explicitly not limited to owning Pods produced by its own template [source: k8s-docs-replicaset-2026-08-24]. **C** is wrong; labels are not unique keys and nothing at the API layer objects. **D** is wrong because the desired count is your declaration, not something the controller revises upward to accommodate surprises.
+**4 — B.** A ReplicaSet identifies new Pods to acquire using its selector, and a Pod with no controller owner reference that matches will be immediately acquired [source: k8s-docs-replicaset-2026-08-24]. If the acquisition puts the ReplicaSet over its desired count, the newly acquired Pod is immediately terminated [source: k8s-docs-replicaset-2026-08-24]. **A** is wrong and dangerous: a ReplicaSet is explicitly not limited to owning Pods produced by its own template [source: k8s-docs-replicaset-2026-08-24]. **C** is wrong; labels are not unique keys and nothing at the API layer objects. **D** is wrong because the desired count is your declaration, not something the controller revises upward to accommodate surprises.
 
-**Q5 — B.** A Pod is never rescheduled to a different node; it is replaced by a new, near-identical Pod with a different UID [source: k8s-docs-pod-lifecycle-2026-08-23], and higher-level controllers such as Deployments create those replacements [source: k8s-docs-pod-lifecycle-2026-08-23]. Why it matters: anything that recorded the old Pod's name, UID or IP address is now pointing at something that does not exist. **A** and **C** both preserve identity across replacement, which is exactly the thing that does not happen, and holding either of them is what makes Chapter 9's Services look like unnecessary machinery. **D is the trap worth understanding**, because it is *true of a different resource*: a StatefulSet's Pods do keep their ordinal-derived names across replacement [source: k8s-docs-statefulset-2026-08-24]. The stem says ReplicaSet, whose Pods carry generated names, so the replacement gets a new name as well as a new UID. Which resource is holding the Pods decides which answer is right.
+**5 — B.** A Pod is never rescheduled to a different node; it is replaced by a new, near-identical Pod with a different UID [source: k8s-docs-pod-lifecycle-2026-08-23], and higher-level controllers such as Deployments create those replacements [source: k8s-docs-pod-lifecycle-2026-08-23]. Why it matters: anything that recorded the old Pod's name, UID or IP address is now pointing at something that does not exist. **A** and **C** both preserve identity across replacement, which is exactly the thing that does not happen, and holding either of them is what makes Chapter 9's Services look like unnecessary machinery. **D is the trap worth understanding**, because it is *true of a different resource*: a StatefulSet's Pods do keep their ordinal-derived names across replacement [source: k8s-docs-statefulset-2026-08-24]. The stem says ReplicaSet, whose Pods carry generated names, so the replacement gets a new name as well as a new UID. Which resource is holding the Pods decides which answer is right.
 
-**Q6 — B.** Owner references tell the control plane which objects depend on others, and Kubernetes deletes objects that no longer have owner references, like the Pods left behind when you delete a ReplicaSet, in a process called cascading deletion, with background cascading deletion as the default [source: k8s-docs-garbage-collection-2026-08-24]. **A** is wrong: the whole point of the owner-reference link is that dependents don't have to be tracked by hand. **C** confuses the two mechanisms; selection finds Pods, ownership governs deletion, and the documentation is explicit that ownership is different from labels and selectors [source: k8s-docs-garbage-collection-2026-08-24]. **D** invents a schedule; cascading deletion is not a periodic sweep.
+**6 — B.** Owner references tell the control plane which objects depend on others, and Kubernetes deletes objects that no longer have owner references, like the Pods left behind when you delete a ReplicaSet, in a process called cascading deletion, with background cascading deletion as the default [source: k8s-docs-garbage-collection-2026-08-24]. **A** is wrong: the whole point of the owner-reference link is that dependents don't have to be tracked by hand. **C** confuses the two mechanisms; selection finds Pods, ownership governs deletion, and the documentation is explicit that ownership is different from labels and selectors [source: k8s-docs-garbage-collection-2026-08-24]. **D** invents a schedule; cascading deletion is not a periodic sweep.
 
-**Q7 — A, ceiling 8 and floor 7, and it is legal.** `maxSurge` is the maximum number of Pods that may exist over the desired count, so 8 + 0 = 8; `maxUnavailable` is the maximum that may be unavailable, so 8 − 1 = 7 [source: k8s-docs-deployment-spec-fields-2026-08-24]. The legality turns on one clause: neither value may be 0 **if the other is 0** [source: k8s-docs-deployment-spec-fields-2026-08-24]. Here `maxUnavailable` is 1, so `maxSurge: 0` is permitted — and this is the configuration you reach for on a capacity-constrained cluster where there is no room for extra Pods. **B** overstates the rule into a blanket prohibition; the constraint is on the *pair*, because a rollout that may neither exceed nor drop below the desired count has no legal move. **C** invents a floor of one surge Pod; 0 means 0. **D** invents a coupling between the two fields, which is exactly the misconception §4's figure exists to kill: they bound different quantities in different directions.
+**7 — B.** The default `.spec.strategy.type` is `RollingUpdate` [source: k8s-docs-deployment-2026-08-23]. Updating the Pod template creates a new ReplicaSet, and the Deployment manages moving Pods from the old ReplicaSet to the new one at a controlled rate [source: k8s-docs-deployment-2026-08-23]. **A** describes `Recreate`, the other strategy: all existing Pods are killed before new ones are created, and it is not the default [source: k8s-docs-deployment-2026-08-23]. **C** is not something a Deployment ever does. It never edits the Pods it already has; a changed template is a different kind of Pod, which needs a different ReplicaSet to hold it, and that is exactly why §5 can define a revision as a ReplicaSet. **D** inverts pause and resume: a rollout proceeds unless you paused the Deployment beforehand, and resuming only means anything after a pause [source: k8s-docs-deployment-2026-08-23].
 
-**Q8 — A, ceiling 8, floor 5.** `maxSurge` = 25% of 6 = 1.5, rounded **up** to 2, so the ceiling is 6 + 2 = 8. `maxUnavailable` = 25% of 6 = 1.5, rounded **down** to 1, so the floor is 6 − 1 = 5 [source: k8s-docs-deployment-spec-fields-2026-08-24]. **B** rounds surge down. **C** rounds unavailable up. **D** rounds both the wrong way. Both defaults round in the direction of keeping more capacity online; if you can remember that sentence you can rebuild both rules from it.
+**8 — A, ceiling 8, floor 5.** `maxSurge` = 25% of 6 = 1.5, rounded **up** to 2, so the ceiling is 6 + 2 = 8. `maxUnavailable` = 25% of 6 = 1.5, rounded **down** to 1, so the floor is 6 − 1 = 5 [source: k8s-docs-deployment-spec-fields-2026-08-24]. **B** rounds surge down. **C** rounds unavailable up. **D** rounds both the wrong way. Both defaults round in the direction of keeping more capacity online; if you can remember that sentence you can rebuild both rules from it.
 
-**Q9 — B.** `Recreate` kills all existing Pods before new ones are created [source: k8s-docs-deployment-2026-08-23], which is the correct choice precisely when two versions must not coexist: a schema migration, an exclusive lock, a single-instance license. **A** is a rationalization: speed is not the reason, and the cost is a window of zero availability. **C is the best distractor here, and it is materially true** — `Recreate` does surge nothing, and people do reach for it on clusters with no headroom. It is still the wrong *reason*, because `maxSurge: 0` (with a non-zero `maxUnavailable`) gets you a zero-headroom rollout without the downtime window [source: k8s-docs-deployment-spec-fields-2026-08-24]. Choose `Recreate` for correctness, not for capacity. **D** is false and inverts the risk: with `Recreate` you have less protection, not more, because there is no overlap window in which a failing new version can be caught before the old one is gone.
+**9 — B.** `Recreate` kills all existing Pods before new ones are created [source: k8s-docs-deployment-2026-08-23], which is the correct choice precisely when two versions must not coexist: a schema migration, an exclusive lock, a single-instance license. **A** is a rationalization: speed is not the reason, and the cost is a window of zero availability. **C is the best distractor here, because half of it is true** — `Recreate` does surge nothing, and people do reach for it on clusters with no headroom. But it is not the *only* strategy that can: `maxSurge: 0` with a non-zero `maxUnavailable` gives you a rolling update that never exceeds the desired count and never opens a downtime window [source: k8s-docs-deployment-spec-fields-2026-08-24]. Choose `Recreate` for correctness, not for capacity. **D** is false and inverts the risk: with `Recreate` you have less protection, not more, because there is no overlap window in which a failing new version can be caught before the old one is gone.
 
-**Q10 — B, one.** The image change modifies `.spec.template` and creates a revision. The scale changes `.spec.replicas`, and other updates such as scaling do not create a revision [source: k8s-docs-deployment-2026-08-23]. **A** ignores the image change. **C** is the intuitive answer, two edits and two entries, and it is the one this chapter exists to correct. **D** invents an ordering dependency; the rule is about *which field* changed, not about sequence.
+**10 — B, one.** The image change modifies `.spec.template` and creates a revision. The scale changes `.spec.replicas`, and other updates such as scaling do not create a revision [source: k8s-docs-deployment-2026-08-23]. **A** ignores the image change. **C** is the intuitive answer, two edits and two entries, and it is the one this chapter exists to correct. **D** invents an ordering dependency; the rule is about *which field* changed, not about sequence.
 
-**Q11 — B.** `kubectl rollout undo` rolls back to the previous revision [source: k8s-docs-deployment-2026-08-23], and a revision is a ReplicaSet holding a previous Pod template. Restoring it sets the template back and lets the same rolling update run in the other direction, bounded by the same `maxSurge` and `maxUnavailable` and gated by the same readiness checks. **A** is wrong because there is no snapshot of the whole object; the old ReplicaSets are what the history consists of, which is why `revisionHistoryLimit: 0` removes the ability to undo [source: k8s-docs-deployment-spec-fields-2026-08-24]. **C** invokes a backup system that does not exist here. **D** is wrong and is the practical trap: `undo` restores a Pod template, so it will not reverse a replica-count change.
+**11 — B.** `kubectl rollout undo` rolls back to the previous revision [source: k8s-docs-deployment-2026-08-23], and a revision is a ReplicaSet holding a previous Pod template. Restoring it sets the template back and lets the same rolling update run in the other direction, bounded by the same `maxSurge` and `maxUnavailable` and gated by the same readiness checks. **A** is wrong because there is no snapshot of the whole object; the old ReplicaSets are what the history consists of, which is why `revisionHistoryLimit: 0` removes the ability to undo [source: k8s-docs-deployment-spec-fields-2026-08-24]. **C** invokes a backup system that does not exist here. **D** is wrong and is the practical trap: `undo` restores a Pod template, so it will not reverse a replica-count change.
 
-**Q12 — B.** New Pods that never report ready never count as available [source: k8s-docs-deployment-spec-fields-2026-08-24], so the rollout cannot scale the old ReplicaSet down past the `maxUnavailable` floor. Both ReplicaSets stay alive; the old Pods keep serving. Readiness probe failures are named explicitly among the reasons a Deployment gets stuck without completing [source: k8s-docs-deployment-spec-fields-2026-08-24]. Meanwhile the failing readiness probe removes each broken Pod's IP from the endpoints of every matching Service [source: k8s-docs-pod-lifecycle-2026-08-23], so no traffic reaches them. **A** describes what happens *without* readiness probes, which is the point of having them. **C** is wrong: Kubernetes surfaces a `ProgressDeadlineExceeded` condition after `progressDeadlineSeconds` and keeps retrying [source: k8s-docs-deployment-spec-fields-2026-08-24]; it does not roll back for you. **D** describes a liveness-probe failure, which is a different probe doing a different job.
+**12 — B.** New Pods that never report ready never count as available [source: k8s-docs-deployment-spec-fields-2026-08-24], so the rollout cannot scale the old ReplicaSet down past the `maxUnavailable` floor. Both ReplicaSets stay alive; the old Pods keep serving. Readiness probe failures are named explicitly among the reasons a Deployment gets stuck without completing [source: k8s-docs-deployment-spec-fields-2026-08-24]. Meanwhile the failing readiness probe removes each broken Pod's IP from the endpoints of every matching Service [source: k8s-docs-pod-lifecycle-2026-08-23], so no traffic reaches them. **A** describes what happens *without* readiness probes, which is the point of having them. **C** is wrong: Kubernetes surfaces a `ProgressDeadlineExceeded` condition after `progressDeadlineSeconds` and keeps retrying [source: k8s-docs-deployment-spec-fields-2026-08-24]; it does not roll back for you. **D** describes a liveness-probe failure, which is a different probe doing a different job.
 
-**Q13 — C.** Members that address each other by stable hostname and own distinct data are, by definition, not interchangeable, which is the criterion [source: k8s-docs-statefulset-2026-08-24]. **A** is the disk misconception: the cache writes to disk and is nonetheless perfectly happy in a Deployment, because replacing one Pod with a differently-named one breaks nothing. **B targets a different error — "singleton, therefore StatefulSet."** "Only one instance may run" is not the same claim as "the instances are not interchangeable." A Deployment with `replicas: 1` expresses it, and if you must guarantee no overlap even during a rollout, the strategy field is where you say so: `Recreate` [source: k8s-docs-deployment-2026-08-23]. Nothing in the requirement needs a sticky identity. **D** writes durable output but holds no identity; the importer could run as any Pod, or as a Job, and nothing downstream would notice.
+**13 — C.** Members that address each other by stable hostname and own distinct data are, by definition, not interchangeable, which is the criterion [source: k8s-docs-statefulset-2026-08-24]. **A** is the disk misconception: the cache writes to disk and is nonetheless perfectly happy in a Deployment, because replacing one Pod with a differently-named one breaks nothing. **B targets a different error — "singleton, therefore StatefulSet."** "Only one instance may run" is not the same claim as "the instances are not interchangeable." A Deployment with `replicas: 1` expresses it, and if you must guarantee no overlap even during a rollout, the strategy field is where you say so: `Recreate` [source: k8s-docs-deployment-2026-08-23]. Nothing in the requirement needs a sticky identity. **D** writes durable output but holds no identity; the importer could run as any Pod, or as a Job, and nothing downstream would notice.
 
-**Q14 — B.** With neither a node selector nor node affinity specified, the DaemonSet controller creates Pods on all nodes [source: k8s-docs-daemonset-2026-08-24], so twelve. As nodes are added to the cluster, Pods are added to them [source: k8s-docs-daemonset-2026-08-24], so three new nodes gives you fifteen, automatically. **A** confuses a DaemonSet with a single-replica workload. **C** and **D** both assume a `replicas` field you would have to manage; the Pod count is a consequence of node eligibility [source: k8s-docs-daemonset-2026-08-24], and horizontal autoscaling explicitly does not apply to a DaemonSet because it is not a scalable object [source: k8s-docs-hpa-2026-08-24].
+**14 — B.** With neither a node selector nor node affinity specified, the DaemonSet controller creates Pods on all nodes [source: k8s-docs-daemonset-2026-08-24], so twelve. As nodes are added to the cluster, Pods are added to them [source: k8s-docs-daemonset-2026-08-24], so three new nodes gives you fifteen, automatically. **A** confuses a DaemonSet with a single-replica workload. **C** and **D** both assume a `replicas` field you would have to manage; the Pod count is a consequence of node eligibility [source: k8s-docs-daemonset-2026-08-24], and horizontal autoscaling explicitly does not apply to a DaemonSet because it is not a scalable object [source: k8s-docs-hpa-2026-08-24].
 
-**Q15 — B.** A Job defines a task that runs to completion, once [source: k8s-docs-job-2026-08-24]. A CronJob creates Jobs on a repeating schedule [source: k8s-docs-cronjob-2026-08-24]. **A** invents a schedule field on the Job; the schedule lives on the CronJob, which then creates Jobs [source: k8s-docs-cronjob-2026-08-24]. **C** is over-engineering: a CronJob whose schedule fires once is a scheduled thing pretending to be a one-off, and it will surprise whoever inherits it. **D** is wrong in a way worth noticing: a Deployment with `replicas: 1` would treat the process exiting as a failure and restart it forever, which is the precise opposite of what "runs once and exits" means.
+**15 — B.** A Job defines a task that runs to completion, once [source: k8s-docs-job-2026-08-24]. A CronJob creates Jobs on a repeating schedule [source: k8s-docs-cronjob-2026-08-24]. **A** invents a schedule field on the Job; the schedule lives on the CronJob, which then creates Jobs [source: k8s-docs-cronjob-2026-08-24]. **C** is over-engineering: a CronJob whose schedule fires once is a scheduled thing pretending to be a one-off, and it will surprise whoever inherits it. **D** is wrong in a way worth noticing: a Deployment with `replicas: 1` would treat the process exiting as a failure and restart it forever, which is the precise opposite of what "runs once and exits" means.
 
-**Q16 — B.** `Succeeded` means all containers in the Pod have terminated in success and will not be restarted [source: k8s-docs-pod-lifecycle-2026-08-23]. **A** confuses in-progress with done. **C** invents a phase; there are five, and `Completed` is not among them [source: k8s-docs-pod-lifecycle-2026-08-23] — though `Completed` is a word you will meet in tooling output, which is exactly why the distractor works. **D** is the failure phase: all containers terminated and at least one terminated in failure [source: k8s-docs-pod-lifecycle-2026-08-23].
+**16 — B.** `Succeeded` means all containers in the Pod have terminated in success and will not be restarted [source: k8s-docs-pod-lifecycle-2026-08-23]. **A** confuses in-progress with done. **C** invents a phase; there are five, and `Completed` is not among them [source: k8s-docs-pod-lifecycle-2026-08-23] — though `Completed` is a word you will meet in tooling output, which is exactly why the distractor works. **D** is the failure phase: all containers terminated and at least one terminated in failure [source: k8s-docs-pod-lifecycle-2026-08-23].
 
-**Q17 — B.** A selector identifies a *set*. It can answer "is this Pod one of yours"; it cannot answer "which one is this." A StatefulSet's Pods carry identity through their ordinal and derived hostname, `$(statefulset name)-$(ordinal)`, giving `web-0`, `web-1`, `web-2`, and that identity sticks to the Pod across rescheduling [source: k8s-docs-statefulset-2026-08-24]. The identity is a *separate* mechanism layered over selection, which is why the StatefulSet controller also adds a per-Pod name label, `statefulset.kubernetes.io/pod-name`, so you can attach a Service to one specific member [source: k8s-docs-statefulset-2026-08-24]. **A is wrong** because readiness is a property the probe reports on the Pod's status; it is not a guarantee the StatefulSet makes about its members, and it is equally available to a Deployment. **C is wrong** because `.spec.replicas` is the count, and a selector's match count is a *current observation*, not a guarantee — a controller mid-scale has a match count that disagrees with the desired one, which is the whole reason the loop exists. **D is wrong** because namespace scoping comes from the request, not from anything the StatefulSet guarantees, and it is the same for every workload resource.
+**17 — B.** A selector identifies a *set*. It can answer "is this Pod one of yours"; it cannot answer "which one is this." A StatefulSet's Pods carry identity through their ordinal and derived hostname, `$(statefulset name)-$(ordinal)`, giving `web-0`, `web-1`, `web-2`, and that identity sticks to the Pod across rescheduling [source: k8s-docs-statefulset-2026-08-24]. The identity is a *separate* mechanism layered over selection, which is why the StatefulSet controller also adds a per-Pod name label, `statefulset.kubernetes.io/pod-name`, so you can attach a Service to one specific member [source: k8s-docs-statefulset-2026-08-24]. **A is wrong** because readiness is a property the probe reports on the Pod's status; it is not a guarantee the StatefulSet makes about its members, and it is equally available to a Deployment. **C is wrong** because `.spec.replicas` is the count, and a selector's match count is a *current observation*, not a guarantee — a controller mid-scale has a match count that disagrees with the desired one, which is the whole reason the loop exists. **D is wrong** because namespace scoping comes from the request, not from anything the StatefulSet guarantees, and it is the same for every workload resource.
 
-**Q18 — B.** On their own, custom resources let you store and retrieve structured data; combining a custom resource with a custom controller is what provides a true declarative API [source: k8s-docs-custom-resources-2026-08-23]. **A is wrong, and it is the first thing most people check, which is why it is here:** your object was accepted and `kubectl get certificate` returned it, so access is demonstrably not the problem — a permissions failure would have shown up at the request, not as silence afterwards. **C** is backwards: a CRD is the alternative to API aggregation, and defining a CRD means the Kubernetes API serves and stores your resource without you writing an API server [source: k8s-docs-custom-resources-2026-08-23]. **D** is a real feature attached to a false claim; nothing about a `status` subresource is what makes something act on an object. A controller is.
+**18 — B.** On their own, custom resources let you store and retrieve structured data; combining a custom resource with a custom controller is what provides a true declarative API [source: k8s-docs-custom-resources-2026-08-23]. **A is wrong, and it is the first thing most people check, which is why it is here:** your object was accepted and `kubectl get certificate` returned it, so access is demonstrably not the problem — a permissions failure would have shown up at the request, not as silence afterward. **C** is backwards: a CRD is the alternative to API aggregation, and defining a CRD means the Kubernetes API serves and stores your resource without you writing an API server [source: k8s-docs-custom-resources-2026-08-23]. **D** is a real feature attached to a false claim; nothing about a `status` subresource is what makes something act on an object. A controller is.
 
-**Q19 — B.** Controllers are client programs that read and/or write the Kubernetes API, following a control loop: read an object's `.spec`, possibly do things, then update the object's `.status` [source: k8s-docs-extending-kubernetes-2026-08-23]. That description covers both. The difference is deployment, not architecture: an operator's controller normally runs outside the control plane, much as you would run any containerized application, for example as a Deployment [source: k8s-docs-operator-pattern-2026-08-23], while the controllers Kubernetes ships run in the control plane — as the horizontal pod autoscaling controller does [source: k8s-docs-hpa-2026-08-24]. **A** is wrong on both counts: operators are ordinary clients of the Kubernetes API [source: k8s-docs-operator-pattern-2026-08-23], not privileged processes. **C** is wrong; controllers talk *to* the API server, and a built-in controller sends messages to the API server that have useful side effects [source: k8s-docs-controllers-2026-08-23] rather than running inside it. **D** conflates the noun with the verb, which is the exact confusion §8's Fixed Point exists to correct: a CRD registers a *resource*, not a controller. Nothing about installing a CRD makes any program discoverable or runnable, which is why installing one and creating an object of the new kind produces silence.
+**19 — B.** Controllers are client programs that read and/or write the Kubernetes API, following a control loop: read an object's `.spec`, possibly do things, then update the object's `.status` [source: k8s-docs-extending-kubernetes-2026-08-23]. That description covers both. The difference is deployment, not architecture: an operator's controller normally runs outside the control plane, much as you would run any containerized application, for example as a Deployment [source: k8s-docs-operator-pattern-2026-08-23], while the controllers Kubernetes ships run in the control plane — as the horizontal pod autoscaling controller does [source: k8s-docs-hpa-2026-08-24]. **A** is wrong on both counts: operators are ordinary clients of the Kubernetes API [source: k8s-docs-operator-pattern-2026-08-23], not privileged processes. **C** is wrong; controllers talk *to* the API server, and a built-in controller sends messages to the API server that have useful side effects [source: k8s-docs-controllers-2026-08-23] rather than running inside it. **D** conflates the noun with the verb, which is the exact confusion §8's Fixed Point exists to correct: a CRD registers a *resource*, not a controller. Nothing about installing a CRD makes any program discoverable or runnable, which is why installing one and creating an object of the new kind produces silence.
 
 ---
 
@@ -1429,4 +1408,6 @@ Specifically, you can now:
 
 And one thing that is not a bullet point: you have seen the control loop twice now, at two altitudes, and recognized it the second time. Hold onto that recognition. You are going to need it once more, and the third time is the one that matters.
 
-🗺️ Chart → 🌊 Passage → 🌅 **Dawn** — Part II's trunk is behind you.
+🗺️ Chart → **🌊 Passage** → 🌅 Dawn
+
+*Part II's trunk is behind you.*

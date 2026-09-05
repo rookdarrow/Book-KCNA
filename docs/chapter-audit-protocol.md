@@ -67,6 +67,12 @@ From `structural-contract.yaml`. Present, in order, correctly named:
 **Checkpoints are now at exactly the minimum of 2.** There is no slack: removing one breaks
 the contract.
 
+**Cross-check the Attention Budget table against the headings, both ways.** Two checkpoint rows,
+each sitting where its checkpoint sits; the "Total time" header equals the row sum; the
+"Recommended" split names a section (`after §5`), never a checkpoint number.
+`scripts/normalize_kcna.py` (certcomp) rebuilds the table, frontmatter budgets and marker forms;
+`scripts/chapter_checks.py --chapter N` is the pre-read report.
+
 **Cross-check the Attention Budget table against the headings, both ways.** Every `§N` row
 names a heading that exists, every `##` section has a row, and every checkpoint row is a
 checkpoint that still exists. The 2026-09-03 checkpoint merge deleted 33 sections from 16
@@ -82,9 +88,14 @@ Optional: `🏆` Safe Harbor, `☀️` Zenith, `⚓` Worth Securing, `🪝` Snag
 
 - The marker must be the **marker form** (`**Dead Reckoning:**`), not a prose mention. Ch 2
   fails on exactly this: it references "§6 Dead Reckoning" inside a table and has no block.
-- Difficulty indicators are `⚪` Foundation, `🔵` Standard, `🟡` Advanced, `🔴` Expert. Check
-  they are applied consistently — whether every section heading carries one is still an open
-  `[DECIDE]`, so record which convention this chapter follows rather than "fixing" it.
+- Difficulty indicators are `⚪` Foundation, `🔵` Standard, `🟡` Advanced, `🔴` Expert. Every
+  `§N` heading carries one (a synthesis section may carry `☀️` instead). Heading form is
+  glyph-first: `## ⚪ §1 — Title` (decided 2026-09-04; chapters 1–4 were converted).
+- Fixed Point token: `★ **Fixed Point:**` — the contract's documented form, on its own line or
+  opening a blockquote (decided 2026-09-04; the four earlier variants were normalized).
+- Voyage Progress strip: exactly `🗺️ Chart → **🌊 Passage** → 🌅 Dawn` with the current stage
+  bold (Chart = Ch 1, Passage = Ch 2–18, Dawn = Ch 19–20), placed after the Safe Harbor block.
+  Any trailing sentence goes on its own italic line below it. Chapter 20 carries none.
 - **No marker emoji inside a fenced code block.** Substitution skips fences, so the emoji
   survives to the EPUB and Kindle renders an empty box.
 
@@ -101,7 +112,9 @@ Optional: `🏆` Safe Harbor, `☀️` Zenith, `⚓` Worth Securing, `🪝` Snag
   `check_reflow` fails on anything that overflows a 390px column.
 - **Links**: never `](chapter-NN-slug.md)`. Source-file links do not exist inside the EPUB
   and produce RSC-007 errors that fail epubcheck, which KDP runs at upload.
-- **Question numbering**: house format is `**1.**`. Eight chapters use `**Q1.**`.
+- **Question numbering**: house format is `**1.**` for checkpoints and practice questions,
+  including their answer keys (`**1 — B.**`, `**1. Answer: B.**`). Soundings blocks use a plain
+  ordered list (`1.`) for questions and answers. (Normalized 2026-09-04; `**Q1.**` is gone.)
 - **Checkpoint closing**: `✓/☐ You've Now Mastered` list, or `<details>` scoring bands. Both
   exist in the book. Record which this chapter uses.
 - **`source_ascii:`** blocks carry an explicit indicator (`|2`), never a bare `|`.
@@ -155,8 +168,11 @@ define / gloss+pointer / name+pointer / do not use.
   anchors, 78 image, 7 ASCII, 0 both.
 - **Anchor vs frontmatter.** A `figure_anchor:` entry in the chapter's YAML with no
   `<!-- FIGURE: -->` in the body is a figure with nowhere to land. 21 ids are in this state.
-- Alt text describes the figure, not the anchor id. Alt text was generated outside the voice
-  pass, so it is also where the British spellings concentrate.
+- Alt text describes the RENDER, not the ASCII fallback and not the anchor id — the 2026-09-04
+  audits found a dozen alts written against the fallback's shape (fan-out vs cascade, "in a
+  row" vs vertical). Keep the in-chapter alt and `figures/<anchor>.alt.txt` identical. Alt text
+  was generated outside the voice pass; British spellings are normalized by the central script,
+  but a spelling baked into the SVG/PNG needs a regeneration.
 - **The caption claims what the figure shows.** `ch15-fig06` stacked its phases vertically
   while the spec called for left-to-right — accurate caption, wrong render.
 - Portrait figures (aspect < 0.75) render nearly full-page in print; note any taller than 3:4.

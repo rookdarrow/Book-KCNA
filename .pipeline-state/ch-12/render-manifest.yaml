@@ -330,20 +330,20 @@ figures:
       \  │          │      │      │\n     │         │        │         │         \
       \ │      │      │\n     ▼         ▼        ▼         ▼          ▼      │   \
       \   ▼\n   image     known    binds     append-    private  │   admission\n \
-      \  +digest   CVEs     to the    only log   registry │   controller\n   +SBOM\
+      \  +digest   vulns    to the    only log   registry │   controller\n   +SBOM\
       \              DIGEST                        │\n                        ▲  \
       \                         │   ▲\n     ┌──────────────────┴─────────────┐   \
       \          │   │\n     │  the artifact's identity —     │             │   │\n\
       \     │  the same digest — is carried  │             │   │\n     │  the whole\
       \ length of the chain │             │   │\n     └────────────────────────────────┘\
       \             │   │\n                                                    │ \
-      \  │\n   Trivy, Harbor    Cosign     Rekor    Harbor,     │  Kyverno,\n   scanners\
-      \         Notation            imagePull-  │  Gatekeeper,\n                 \
-      \   Fulcio              Secrets     │  Policy\n                            \
-      \                        │  Controller\n                                   \
-      \                 │\n   ◀── everything left of the line happened somewhere else,\n\
-      \       under somebody else's control, possibly months ago.\n       VERIFY is\
-      \ the first checkpoint the cluster performs itself.\n"
+      \  │\n   Harbor,          Cosign     Rekor    Harbor,     │  Kyverno,\n   image\
+      \ scanners   Notation            imagePull-  │  Gatekeeper,\n              \
+      \      Fulcio              Secrets     │  Policy\n                         \
+      \                           │  Controller\n                                \
+      \                    │\n   ◀── everything left of the line happened somewhere\
+      \ else,\n       under somebody else's control, possibly months ago.\n      \
+      \ VERIFY is the first checkpoint the cluster performs itself.\n"
     vendor_terms:
     - trivy
     - harbor

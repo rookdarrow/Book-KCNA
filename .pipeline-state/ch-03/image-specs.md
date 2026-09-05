@@ -319,40 +319,49 @@ copyright_clearance:
 **Mandatory:** yes
 **Type:** cyclic flowchart (closed loop, no start or end node)
 
-**Content specification:**
-Four nodes arranged around a closed cycle: `DESIRED STATE`, `CURRENT STATE`, `COMPARE`, and `ACT TO CLOSE THE GAP`. The cycle reads: `COMPARE` reads both `DESIRED STATE` and `CURRENT STATE`; a gap between them drives `ACT TO CLOSE THE GAP`; acting changes the world, which changes `CURRENT STATE`; and the loop returns to `COMPARE`. Draw it so the eye can traverse the cycle continuously without finding a place to enter or exit. There must be **no** start node, no stop node, no terminator shape, no numbered steps, and no arrow entering the figure from outside or leaving it. Below the loop, set the line **"no start. no end. no exit condition."** as figure text (not caption) in the same weight as the node labels — it is part of the diagram's argument. Because `DESIRED STATE` and `CURRENT STATE` are the two inputs to `COMPARE`, place them symmetrically on either side of it so their parity is visible; `ACT TO CLOSE THE GAP` sits on the return path from `COMPARE` back to `CURRENT STATE`.
-
-*Note to the author before render:* the source ASCII's edge directions are ambiguous — it appears to show `COMPARE → CURRENT STATE`, which inverts the causality (COMPARE observes current state; it does not produce it). The specification above states the semantically correct edges. Confirm this reading before the illustrator commits, since the redrawn figure will not match the ASCII arrow-for-arrow.
+**Content specification (revised 2026-09-04, FIGURE PAIR):**
+This figure and `ch15-zenith-control-loop-pointed-at-a-repo` are a matched pair on one chassis; Chapter 15 §7's caption asks the reader to lay the two side by side and see that ONE BOX CHANGED CONTENTS. Geometry, node positions and arrow directions are therefore fixed by the twin and must stay identical. Four boxes: `DESIRED STATE` top centre, holding a double-ruled inner box `etcd / the store` (in the twin this inner box reads `Git repository` and nothing else moves); `CONTROLLER` centre; `CURRENT STATE` bottom left, subtitled *what is actually true*; `API SERVER` bottom right, subtitled *the only door in* with `kube-apiserver` beneath. Four arrows: DESIRED STATE → CONTROLLER (observe), CURRENT STATE → CONTROLLER (observe), CONTROLLER → API SERVER (act to close the gap), API SERVER → CURRENT STATE (changes). The controller never touches current state directly; every write goes through the API server. Below the loop, set the line **"no start. no end. no exit condition."** as figure text (not caption) — it is part of the diagram's argument. No start node, no stop node, no terminator shape, no numbered steps.
 
 **Visual style:**
-- Palette: inherit book default (Lodestar navy/slate line-art on cream)
-- Size (pixels): 900x750 portrait-ish square
-- Font: inherit book default (Fira Sans, small caps or uppercase for the four node labels as in the ASCII)
-- Accent color for highlighted elements: Brass #B58B3E on the cycle edges themselves — the closed path, not any single box, is what earns emphasis here
+- Palette: inherit book default (Lodestar navy/teal line-art on cream)
+- Size (pixels): 640x760 viewBox, portrait — the twin's frame
+- Font: inherit book default (Fira Sans for box labels, Fira Mono for the arrow verbs OBSERVE / ACT: CLOSE GAP / CHANGES and for `kube-apiserver`)
+- Accent color for highlighted elements: Brass #B58B3E on the double-ruled `etcd` store box only (and its legend swatch); the twin puts its brass on the same box
 
 **Critical details (non-negotiable accuracy):**
-- The loop is closed. A single stray entry arrow ruins the figure's only teaching point; the caption explicitly says "a loop drawn with a beginning teaches the wrong thing."
-- `COMPARE` takes two inputs — desired and current. Both edges into COMPARE must be drawn; dropping either makes it look like a one-sided check.
-- The action changes `CURRENT STATE`, not `DESIRED STATE`. Nothing in this loop writes to desired state — that comes from outside, and the figure deliberately does not show it.
-- No thermostat imagery, no temperature dial, no furnace. The thermostat is prose analogy only; the figure is the abstract loop. A literal thermostat would make readers file this as "the HVAC diagram" and fail to retrieve it in Chapter 15.
-- Four nodes exactly. Do not add "watch," "reconcile," or "requeue" — those are vocabulary the chapter has not introduced.
+- Identical geometry to the twin. A reader comparing the two figures must find exactly one difference: the contents of the inner box inside DESIRED STATE.
+- The only door in is the API server. No arrow runs from CONTROLLER to CURRENT STATE directly.
+- Desired state feeds the loop from outside it; the loop (controller → API server → current state → controller) has no entry arrow and no terminus.
+- No thermostat imagery. No COMPARE box, no "ACT TO CLOSE THE GAP" box — those belonged to the pre-2026-08-31 drawing.
 - The "no start. no end. no exit condition." line stays inside the image, so it survives if the figure is viewed apart from its caption.
 
 **Source ASCII (for designer reference):**
 ```
-              ┌──────────────────┐
-       ┌─────▶│  DESIRED STATE   │──────┐
-       │      └──────────────────┘      │
-       │                                ▼
-  ┌─────────┐                     ┌──────────┐
-  │ CURRENT │◀────────────────────│ COMPARE  │
-  │  STATE  │                     └──────────┘
-  └─────────┘                           │
-       ▲                                ▼
-       │      ┌──────────────────┐      │
-       └──────│  ACT TO CLOSE    │◀─────┘
-              │     THE GAP      │
-              └──────────────────┘
+                        ┌─────────────────┐
+                        │  DESIRED STATE  │
+                        │                 │
+                        │  ╔═══════════╗  │
+                        │  ║   etcd    ║  │
+                        │  ║ the store ║  │
+                        │  ╚═══════════╝  │
+                        └────────┬────────┘
+                                 │
+                                 │  observe
+                                 ▼
+                        ┌─────────────────┐
+                        │                 │
+             ┌─────────►│   CONTROLLER    │──────────┐
+             │          │                 │          │
+             │          └─────────────────┘          │  act to
+             │                                       │  close the gap
+             │  observe                              │
+             │                                       ▼
+    ┌────────┴────────┐                     ┌─────────────────┐
+    │ CURRENT STATE   │◄────────────────────│   API SERVER    │
+    │                 │                     │  (the only      │
+    │  what is        │                     │   door in)      │
+    │  actually true  │                     └─────────────────┘
+    └─────────────────┘
 
         no start.  no end.  no exit condition.
 ```
@@ -362,20 +371,32 @@ Four nodes arranged around a closed cycle: `DESIRED STATE`, `CURRENT STATE`, `CO
 ```yaml-figure-spec
 anchor_id: ch03-fig02-control-loop-desired-vs-current
 diagram_type: flowchart
-source_ascii: |4
-                ┌──────────────────┐
-         ┌─────▶│  DESIRED STATE   │──────┐
-         │      └──────────────────┘      │
-         │                                ▼
-    ┌─────────┐                     ┌──────────┐
-    │ CURRENT │◀────────────────────│ COMPARE  │
-    │  STATE  │                     └──────────┘
-    └─────────┘                           │
-         ▲                                ▼
-         │      ┌──────────────────┐      │
-         └──────│  ACT TO CLOSE    │◀─────┘
-                │     THE GAP      │
-                └──────────────────┘
+source_ascii: |2
+                          ┌─────────────────┐
+                          │  DESIRED STATE  │
+                          │                 │
+                          │  ╔═══════════╗  │
+                          │  ║   etcd    ║  │
+                          │  ║ the store ║  │
+                          │  ╚═══════════╝  │
+                          └────────┬────────┘
+                                   │
+                                   │  observe
+                                   ▼
+                          ┌─────────────────┐
+                          │                 │
+               ┌─────────►│   CONTROLLER    │──────────┐
+               │          │                 │          │
+               │          └─────────────────┘          │  act to
+               │                                       │  close the gap
+               │  observe                              │
+               │                                       ▼
+      ┌────────┴────────┐                     ┌─────────────────┐
+      │ CURRENT STATE   │◄────────────────────│   API SERVER    │
+      │                 │                     │  (the only      │
+      │  what is        │                     │   door in)      │
+      │  actually true  │                     └─────────────────┘
+      └─────────────────┘
 
           no start.  no end.  no exit condition.
 vendor_terms: []
@@ -385,11 +406,11 @@ complexity_hint:
   label_count: 5
 pedagogy:
   part_18_criteria_met: [temporal_structure, fixed_point]
-  learning_outcome: "Describe a controller as a non-terminating loop that compares desired to current state and acts on the difference, rather than as a procedure that runs to completion"
+  learning_outcome: "Describe a controller as a non-terminating loop that observes desired state and current state and acts, through the API server, to close the gap, rather than as a procedure that runs to completion"
   fixed_point_emphasis: true
-  fixed_point_emphasis_target: "the closed cycle path itself — no entry arrow, no terminus"
+  fixed_point_emphasis_target: "the double-ruled etcd box inside DESIRED STATE, the store the loop reads its desired state from; Chapter 15's twin figure swaps only this box's contents"
 accessibility:
-  alt_text_seed: "A closed four-step cycle with no beginning or end: compare reads desired state and current state, acting to close the gap changes current state, and comparison begins again; captioned no start, no end, no exit condition"
+  alt_text_seed: "A closed control loop with no beginning and no end. Desired state, held in etcd, the store, is observed by a controller; the controller acts to close the gap through the API server, the only door in; the API server changes current state, what is actually true, which the controller observes in turn. Captioned no start, no end, no exit condition."
 rendering_hints:
   preferred_orientation: portrait
   grayscale_critical: true

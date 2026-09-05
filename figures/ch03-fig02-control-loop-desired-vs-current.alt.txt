@@ -1,1 +1,1 @@
-A closed four-step cycle with no beginning or end: compare reads desired state and current state, acting to close the gap changes current state, and comparison begins again; captioned no start, no end, no exit condition
+A closed control loop with no beginning and no end. Desired state, held in etcd, the store, is observed by a controller; the controller acts to close the gap through the API server, the only door in; the API server changes current state, what is actually true, which the controller observes in turn. Captioned no start, no end, no exit condition.

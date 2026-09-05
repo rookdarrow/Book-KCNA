@@ -695,7 +695,7 @@ Sit with how ordinary that is. A thermostat doesn't execute a heating plan. It d
 **In Kubernetes, controllers are control loops that watch the state of your cluster, then make or request changes where needed. Each controller tries to move the current cluster state closer to the desired state** [source: k8s-docs-controllers-2026-08-23].
 
 <!-- FIGURE: ch03-fig02-control-loop-desired-vs-current -->
-![A closed four-step cycle with no beginning or end: compare reads desired state and current state, acting to close the gap changes current state, and comparison begins again; captioned no start, no end, no exit condition](figures/ch03-fig02-control-loop-desired-vs-current.svg)
+![A closed control loop with no beginning and no end. Desired state, held in etcd, the store, is observed by a controller; the controller acts to close the gap through the API server, the only door in; the API server changes current state, what is actually true, which the controller observes in turn. Captioned no start, no end, no exit condition.](figures/ch03-fig02-control-loop-desired-vs-current.svg)
 
 <!-- ASCII-FALLBACK
 ```

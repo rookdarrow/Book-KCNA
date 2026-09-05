@@ -294,25 +294,25 @@ copyright_clearance:
 ## Figure: ch16-fig04-service-break-points
 
 **Anchor ID:** `ch16-fig04-service-break-points`
-**Purpose:** Places the four ways a Service request breaks at their actual positions on the request path, so the reader can tell an empty endpoint list (upstream) from a populated list with a failed request (downstream).
+**Purpose:** Places the four ways a Service request breaks at their actual positions on the request path, so the reader can tell a Service with no ready endpoints (upstream: a selector mismatch empties the slice; not-Ready Pods stay listed with ready: false) from ready endpoints with a failed request (downstream).
 **Replaces ASCII:** yes
 **Mandatory:** yes
 **Type:** annotated data-flow chain with callout boxes and a positional legend
 
 **Content specification:**
-A single horizontal request chain across the top, six nodes with arrows between them: `client` → `DNS name` → `Service` → `EndpointSlice` → `Pod` → `container port`. Below the chain, three callout boxes drop from three specific points on it, each connected by a short vertical leader to the node it belongs to. From `DNS name` drops `BREAK 4 — name doesn't resolve to this Service`. From `EndpointSlice` drops `BREAK 1+2 — LIST EMPTY`, itself listing two numbered causes: `1 selector mismatch` and `2 not Ready`. From `container port` drops `BREAK 3 — port ≠ targetPort`, with the parenthetical `(list is POPULATED)` set inside the box. Beneath the callouts, a three-row legend keyed on position rather than number: `UPSTREAM of the list` → `breaks 1 and 2 → EMPTY LIST`; `DOWNSTREAM of the list` → `break 3 → POPULATED LIST, request still fails`; `BESIDE the whole path` → `break 4 → you never reached this Service at all`. The organizing idea is spatial: the reader should be able to see, without reading a word of the legend, that two breaks live at the endpoint list, one lives past it, and one lives off to the side before the Service is ever involved. Render the leader dots as aligned columns or a rule, not literal dots.
+A single horizontal request chain across the top, six nodes with arrows between them: `client` → `DNS name` → `Service` → `EndpointSlice` → `Pod` → `container port`. Below the chain, three callout boxes drop from three specific points on it, each connected by a short vertical leader to the node it belongs to. From `DNS name` drops `BREAK 4 — name doesn't resolve to this Service`. From `EndpointSlice` drops `BREAK 1+2 — NO READY ENDPOINTS`, itself listing two numbered causes: `1 selector mismatch → slice empty` and `2 not Ready → ready: false`. From `container port` drops `BREAK 3 — port ≠ targetPort`, with the parenthetical `(endpoints ARE ready)` set inside the box. Beneath the callouts, a three-row legend keyed on position rather than number: `UPSTREAM of readiness` → `breaks 1 and 2 → NO READY ENDPOINTS`; `DOWNSTREAM of readiness` → `break 3 → ENDPOINTS READY, request still fails`; `BESIDE the whole path` → `break 4 → you never reached this Service at all`. The organizing idea is spatial: the reader should be able to see, without reading a word of the legend, that two breaks live at the endpoint list's readiness, one lives past it, and one lives off to the side before the Service is ever involved. Render the leader dots as aligned columns or a rule, not literal dots.
 
 **Visual style:**
 - Palette: inherit book default (brand navy on cream)
 - Size (pixels): 1200x760 landscape
 - Font: inherit book default; `port`, `targetPort`, `EndpointSlice` in Fira Mono
-- Accent color for highlighted elements: Brass (#B58B3E) on the `BREAK 1+2 / LIST EMPTY` box and its leader — the empty list is the section's Fixed Point
+- Accent color for highlighted elements: Brass (#B58B3E) on the `BREAK 1+2 / NO READY ENDPOINTS` box and its leader — no ready endpoints is the section's Fixed Point
 
 **Critical details (non-negotiable accuracy):**
 - Chain order is exactly `client → DNS name → Service → EndpointSlice → Pod → container port`. The EndpointSlice sits between the Service and the Pod; it is not a branch off the Service and not an endpoint of the chain.
 - Break 4 attaches to `DNS name`, **not** to `Service`. It is the failure where the client never reached this Service at all.
-- Breaks 1 and 2 attach to `EndpointSlice` — the same point, because both produce the same symptom (empty list) and are distinguished by cause, not by position.
-- Break 3 attaches to `container port`, downstream of the list, and its box must carry `(list is POPULATED)`. That contrast is the section's whole diagnostic value.
+- Breaks 1 and 2 attach to `EndpointSlice` — the same point, because both produce the same symptom (no ready endpoints) and are distinguished by cause, not by position: a selector mismatch leaves the slice empty, not-Ready Pods stay listed with ready: false.
+- Break 3 attaches to `container port`, downstream of the list, and its box must carry `(endpoints ARE ready)`. That contrast is the section's whole diagnostic value.
 - `port ≠ targetPort` — keep the inequality symbol and both field names spelled exactly. Reversing which one the container listens on contradicts §4 and Practice Question Q11.
 - Three callout boxes, not four: breaks 1 and 2 share one box.
 
@@ -323,15 +323,20 @@ A single horizontal request chain across the top, six nodes with arrows between 
                │                          │                        │
           ┌────┴────┐              ┌──────┴──────┐          ┌──────┴──────┐
           │ BREAK 4 │              │  BREAK 1+2  │          │   BREAK 3   │
-          │ name    │              │  LIST EMPTY │          │ port ≠      │
-          │ doesn't │              │  1 selector │          │ targetPort  │
-          │ resolve │              │    mismatch │          │             │
-          │ to this │              │  2 not Ready│          │ (list is    │
-          │ Service │              │             │          │  POPULATED) │
+          │ name    │              │  NO READY   │          │ port ≠      │
+          │ doesn't │              │  ENDPOINTS  │          │ targetPort  │
+          │ resolve │              │             │          │             │
+          │ to this │              │ 1 selector  │          │ (endpoints  │
+          │ Service │              │   mismatch  │          │  ARE ready) │
+          │         │              │   → slice   │          │             │
+          │         │              │     empty   │          │             │
+          │         │              │ 2 not Ready │          │             │
+          │         │              │   → ready:  │          │             │
+          │         │              │     false   │          │             │
           └─────────┘              └─────────────┘          └─────────────┘
 
-  UPSTREAM of the list ....... breaks 1 and 2 → EMPTY LIST
-  DOWNSTREAM of the list ..... break 3 → POPULATED LIST, request still fails
+  UPSTREAM of readiness ...... breaks 1 and 2 → NO READY ENDPOINTS
+  DOWNSTREAM of readiness .... break 3 → ENDPOINTS READY, request still fails
   BESIDE the whole path ...... break 4 → you never reached this Service at all
 ```
 
@@ -346,15 +351,20 @@ source_ascii: |2
                  │                          │                        │
             ┌────┴────┐              ┌──────┴──────┐          ┌──────┴──────┐
             │ BREAK 4 │              │  BREAK 1+2  │          │   BREAK 3   │
-            │ name    │              │  LIST EMPTY │          │ port ≠      │
-            │ doesn't │              │  1 selector │          │ targetPort  │
-            │ resolve │              │    mismatch │          │             │
-            │ to this │              │  2 not Ready│          │ (list is    │
-            │ Service │              │             │          │  POPULATED) │
+            │ name    │              │  NO READY   │          │ port ≠      │
+            │ doesn't │              │  ENDPOINTS  │          │ targetPort  │
+            │ resolve │              │             │          │             │
+            │ to this │              │ 1 selector  │          │ (endpoints  │
+            │ Service │              │   mismatch  │          │  ARE ready) │
+            │         │              │   → slice   │          │             │
+            │         │              │     empty   │          │             │
+            │         │              │ 2 not Ready │          │             │
+            │         │              │   → ready:  │          │             │
+            │         │              │     false   │          │             │
             └─────────┘              └─────────────┘          └─────────────┘
 
-    UPSTREAM of the list ....... breaks 1 and 2 → EMPTY LIST
-    DOWNSTREAM of the list ..... break 3 → POPULATED LIST, request still fails
+    UPSTREAM of readiness ...... breaks 1 and 2 → NO READY ENDPOINTS
+    DOWNSTREAM of readiness .... break 3 → ENDPOINTS READY, request still fails
     BESIDE the whole path ...... break 4 → you never reached this Service at all
 vendor_terms: [service, endpointslice, pod, dns]
 complexity_hint:
@@ -363,11 +373,11 @@ complexity_hint:
   label_count: 12
 pedagogy:
   part_18_criteria_met: [spatial_structure, distinguishing_alternatives, fixed_point]
-  learning_outcome: "Locate a Service failure at its position on the request path, and distinguish an empty endpoint list from a populated list with a failing request"
+  learning_outcome: "Locate a Service failure at its position on the request path, and distinguish a Service with no ready endpoints (a selector mismatch leaves the slice empty; Pods that are not Ready stay listed with ready: false) from ready endpoints with a failing request"
   fixed_point_emphasis: true
-  fixed_point_emphasis_target: "the BREAK 1+2 / LIST EMPTY callout at the EndpointSlice — a Service with no endpoints is working exactly as written"
+  fixed_point_emphasis_target: "the BREAK 1+2 / NO READY ENDPOINTS callout at the EndpointSlice — a Service with no ready endpoints is working exactly as written"
 accessibility:
-  alt_text_seed: "A request path runs left to right from client, to DNS name, to Service, to EndpointSlice, to Pod, to container port. Three callouts drop from it. From the DNS name: break four, the name does not resolve to this Service. From the EndpointSlice: breaks one and two, the list is empty, caused either by a selector mismatch or by Pods not being Ready. From the container port: break three, port does not equal targetPort, and here the list is populated. A legend notes that upstream breaks empty the list, the downstream break leaves it populated while the request still fails, and break four means this Service was never reached."
+  alt_text_seed: "A request path runs left to right from client, to DNS name, to Service, to EndpointSlice, to Pod, to container port. Three callouts drop from it. From the DNS name: break four, the name does not resolve to this Service. From the EndpointSlice: breaks one and two, no ready endpoints — a selector mismatch leaves the slice empty, while Pods that are not Ready stay listed with ready false. From the container port: break three, port does not equal targetPort, and here the endpoints are ready. A legend notes that breaks one and two sit upstream of readiness and yield no ready endpoints, break three sits downstream with ready endpoints and a failing request, and break four means this Service was never reached."
 rendering_hints:
   preferred_orientation: landscape
   grayscale_critical: true
@@ -411,11 +421,11 @@ Two horizontal paths stacked with a clear band of white space between them — t
   THE SERVICE PATH (what your users travel)
   client ──▶ DNS ──▶ Service (ClusterIP) ──▶ service proxy ──▶ Pod:targetPort
                           │                        │
-                     selector, endpoints      kube-proxy rules
+                     selector, endpoints    kube-proxy or its equivalent
                      [ §4 breaks 1-4 all live on this path ]
 
   THE PORT-FORWARD PATH (what you travel)
-  kubectl ──▶ API server ──▶ kubelet ──▶ Pod:port
+  kubectl ──▶ API server ──▶ Pod:port
                     │
             pods/portforward subresource
             [ shares NO step with the path above except the Pod itself ]
@@ -430,11 +440,11 @@ source_ascii: |2
     THE SERVICE PATH (what your users travel)
     client ──▶ DNS ──▶ Service (ClusterIP) ──▶ service proxy ──▶ Pod:targetPort
                             │                        │
-                       selector, endpoints      kube-proxy rules
+                       selector, endpoints    kube-proxy or its equivalent
                        [ §4 breaks 1-4 all live on this path ]
 
     THE PORT-FORWARD PATH (what you travel)
-    kubectl ──▶ API server ──▶ kubelet ──▶ Pod:port
+    kubectl ──▶ API server ──▶ Pod:port
                       │
               pods/portforward subresource
               [ shares NO step with the path above except the Pod itself ]
@@ -449,7 +459,7 @@ pedagogy:
   fixed_point_emphasis: true
   fixed_point_emphasis_target: "the two terminal Pod nodes — the only step the two paths share"
 accessibility:
-  alt_text_seed: "Two separate request paths. The Service path, travelled by users, runs from client to DNS to the Service's ClusterIP to the service proxy to the Pod's targetPort, annotated with selector and endpoints at the Service and kube-proxy rules at the proxy; all four of section four's break points live on this path. The port-forward path, travelled by the engineer, runs from kubectl to the API server via the pods/portforward subresource and on to the Pod's port. The two paths share no step except the Pod itself."
+  alt_text_seed: "Two separate request paths. The Service path, traveled by users, runs from client to DNS to the Service's ClusterIP to the service proxy, kube-proxy or its equivalent, to the Pod's targetPort, annotated with selector and endpoints at the Service; all four of section four's break points live on this path. The port-forward path, traveled by the engineer, runs from kubectl to the API server via the pods/portforward subresource and on to the Pod's port. The two paths share no step except the Pod itself."
 rendering_hints:
   preferred_orientation: landscape
   grayscale_critical: true

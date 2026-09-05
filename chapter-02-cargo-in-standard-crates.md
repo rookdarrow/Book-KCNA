@@ -624,6 +624,9 @@ A **filesystem bundle** is the artifact in the middle of that last item, and it 
 And the flow that connects them, in three beats: at a high level, an OCI implementation would download an OCI Image, then unpack that image into an OCI Runtime **filesystem bundle**; at that point the bundle would be run by an OCI Runtime [source: oci-overview-2026-08-23].
 
 <!-- FIGURE: ch02-fig03-oci-three-specs -->
+![Three specification boxes across the top: image-spec, the format of the artifact; distribution-spec, the API for moving it over the wire; runtime-spec, how to run a filesystem bundle. Each has an arrow descending to the stage it governs in the flow beneath: an OCI Image is pulled, then unpacked, becoming a filesystem bundle, which is then run. Kubernetes appears nowhere in the figure.](figures/ch02-fig03-oci-three-specs.svg)
+
+<!-- ASCII-FALLBACK
 ```
   ┌── image-spec ────┐  ┌── distribution-spec ─┐  ┌── runtime-spec ───┐
   │ the FORMAT of    │  │ the API for MOVING   │  │ how to RUN a      │
@@ -635,6 +638,7 @@ And the flow that connects them, in three beats: at a high level, an OCI impleme
    │  OCI Image   │ ──pull─►│   unpack   │ ──────►│ filesystem bundle│──► run
    └──────────────┘         └────────────┘        └──────────────────┘
 ```
+-->
 
 **Figure 2-4.** Specifications on top, artifact lifecycle underneath, one column each. What to notice: nothing in this figure is Kubernetes. Compare it against Figure 2-3. Those are two different planes, and the next callout is about exactly that.
 

@@ -223,45 +223,46 @@ copyright_clearance:
 **Mandatory:** yes
 **Type:** side-by-side comparison, containment versus per-object constraint
 
-**Content specification:**
+**Content specification (revised 2026-09-04):**
 
-Two panels of equal width, side by side, under headers **ResourceQuota** (left) and **LimitRange** (right).
+Two panels of equal width, side by side, under headers **ResourceQuota** (left) and **LimitRange** (right). **Both panels are enclosed in an identical bordered container labelled `namespace: team-atlas`** — both objects are namespaced (the k8s-docs-limit-range snapshot: a LimitRange constrains allocations *in a namespace*), and caption 8.3 says so outright: the boundary is the same on each side and is not the discrimination.
 
-*Left panel.* A single large bordered container labelled `namespace: team-atlas`. Inside it sit four small boxes each labelled `Pod`, in a row. Below the four Pods, still inside the container, two stacked horizontal bars: the upper reads `namespace total`, the lower reads `AT CAP`. The container border is the point — the constraint has a boundary and the Pods are inside it. Beneath the panel, an upward arrow with a three-line annotation: `5th Pod arrives:` / `REJECTED` / `the namespace total is reached`.
+*Left panel.* Inside the namespace container, four small boxes each labelled `Pod`, in a row. Below the four Pods, still inside the container, a single horizontal bar spanning all four: `namespace total — AT CAP`. Beneath the panel, a fifth Pod arriving with the outcome `REJECTED` / `the namespace total is reached`.
 
-*Right panel.* **No container, and this absence must be conspicuous.** Directly under the LimitRange header, set the parenthetical `(no namespace boundary)` in the position where the left panel's container border would be — the reader must register a deliberate absence, not an omission. Four independent Pod boxes sit in a row with nothing enclosing them. Each Pod box carries its own two-line internal constraint reading `min ≤` / `≤ max` — the constraint is *inside each object*, which is the entire structural contrast. Beneath the panel, an upward arrow with a three-line annotation: `5th Pod arrives declaring nothing:` / `ACCEPTED — with` / `defaults FILLED IN`.
+*Right panel.* Inside the same namespace container, four Pod boxes in a row, each carrying its own internal constraint `min ≤ x ≤ max` — the constraint is *inside each object*. Beneath the panel, a fifth Pod arriving, declaring nothing, with the outcome `ACCEPTED — defaults filled in`.
 
-The two outcome words — `REJECTED` and `ACCEPTED` — must be typographically parallel and equally weighted so the reader compares them directly. Keep the two panels on a shared baseline so the four Pods on the left align horizontally with the four Pods on the right; the only difference the eye should find between the two Pod rows is the presence or absence of the surrounding boundary.
+The two outcome words — `REJECTED` and `ACCEPTED` — must be typographically parallel and equally weighted. Keep the two panels on a shared baseline so the four Pods on the left align with the four on the right; the difference the eye should find is one aggregate bar on the left versus a bound inside every Pod on the right.
 
 **Visual style:**
 - Palette: inherit book default (Lodestar navy on cream; brass accent)
-- Size (pixels): 1200x900 landscape
-- Font: inherit book default — Roboto Slab for panel headers, Fira Mono for `namespace: team-atlas` and `min ≤ ≤ max`, Fira Sans for outcome annotations
-- Accent color for highlighted elements: Brass `#B58B3E` on the left panel's namespace container border and on both outcome labels (`REJECTED`, `ACCEPTED — with defaults FILLED IN`)
+- Size (pixels): roughly 1200x1000, near-square
+- Font: inherit book default — Roboto Slab for panel headers, Fira Mono for `namespace: team-atlas` and `min ≤ x ≤ max`, Fira Sans for outcome annotations
+- Accent color for highlighted elements: Brass `#B58B3E` on what is counted — the left panel's aggregate `AT CAP` bar and the per-Pod bounds on the right. The namespace boundary carries no accent on either side.
 
 **Critical details (non-negotiable accuracy):**
-- **The namespace boundary appears on the LEFT panel only.** Drawing a boundary on the right destroys the figure; the absence *is* the content.
+- **The namespace boundary appears on BOTH panels, identically.** LimitRange is a namespaced object; the words "(no namespace boundary)" must not appear.
 - The quota is an **aggregate ceiling on the namespace**. It must never be depicted as a per-Pod bound.
 - The LimitRange constraint sits **inside each individual Pod**. It must never be depicted as a namespace-wide bar.
 - Left outcome is refusal; right outcome is acceptance-with-modification. Swapping these reproduces Practice Q5's distractor A, the section's only real error.
 - Four Pods per panel, with a fifth arriving in each. Keep the counts equal — the panels differ by mechanism, not by scale.
+- No oxblood: rejection here is a mechanism working as designed, not a Navigational Hazard.
 - Do not add quota scopes, scope selectors, priority-class quota, or a countable-resource roster. All are above associate tier and explicitly out of scope per the draft's §3 scope guard.
 
 **Source ASCII (for designer reference):**
 ```
-        ResourceQuota                          LimitRange
-   ┌──────────────────────────┐          (no namespace boundary)
-   │ namespace: team-atlas    │
-   │  ┌────┐┌────┐┌────┐┌────┐│           ┌─────┐┌─────┐┌─────┐┌─────┐
-   │  │Pod ││Pod ││Pod ││Pod ││           │ Pod ││ Pod ││ Pod ││ Pod │
-   │  └────┘└────┘└────┘└────┘│           │min ≤││min ≤││min ≤││min ≤│
-   │  ═══ namespace total ═══ │           │≤ max││≤ max││≤ max││≤ max│
-   │  ═══════ AT CAP ════════ │           └─────┘└─────┘└─────┘└─────┘
-   └──────────────────────────┘
-             ▲                                       ▲
-      5th Pod arrives:                    5th Pod arrives declaring
-        REJECTED                          nothing:  ACCEPTED — with
-   the namespace total is reached           defaults FILLED IN
+        ResourceQuota                            LimitRange
+ ┌────────────────────────────┐      ┌────────────────────────────┐
+ │ namespace: team-atlas      │      │ namespace: team-atlas      │
+ │  ┌────┐┌────┐┌────┐┌────┐  │      │ ┌─────┐┌─────┐┌─────┐┌────┐│
+ │  │Pod ││Pod ││Pod ││Pod │  │      │ │ Pod ││ Pod ││ Pod ││Pod ││
+ │  └────┘└────┘└────┘└────┘  │      │ │min ≤││min ≤││min ≤││min≤││
+ │  ═══ namespace total ════  │      │ │≤ max││≤ max││≤ max││≤max││
+ │  ═══════ AT CAP ═════════  │      │ └─────┘└─────┘└─────┘└────┘│
+ └────────────────────────────┘      └────────────────────────────┘
+              ▲                                    ▲
+       5th Pod arrives:                 5th Pod arrives declaring
+         REJECTED 403                   nothing:  ACCEPTED — with
+   the namespace total is reached         defaults FILLED IN
 ```
 
 **Proposed filename:** `ch08-fig05-quota-vs-limitrange.png`
@@ -269,20 +270,20 @@ The two outcome words — `REJECTED` and `ACCEPTED` — must be typographically 
 ```yaml-figure-spec
 anchor_id: ch08-fig05-quota-vs-limitrange
 diagram_type: component_diagram
-source_ascii: |5
-          ResourceQuota                          LimitRange
-     ┌──────────────────────────┐          (no namespace boundary)
-     │ namespace: team-atlas    │
-     │  ┌────┐┌────┐┌────┐┌────┐│           ┌─────┐┌─────┐┌─────┐┌─────┐
-     │  │Pod ││Pod ││Pod ││Pod ││           │ Pod ││ Pod ││ Pod ││ Pod │
-     │  └────┘└────┘└────┘└────┘│           │min ≤││min ≤││min ≤││min ≤│
-     │  ═══ namespace total ═══ │           │≤ max││≤ max││≤ max││≤ max│
-     │  ═══════ AT CAP ════════ │           └─────┘└─────┘└─────┘└─────┘
-     └──────────────────────────┘
-               ▲                                       ▲
-        5th Pod arrives:                    5th Pod arrives declaring
-          REJECTED                          nothing:  ACCEPTED — with
-     the namespace total is reached           defaults FILLED IN
+source_ascii: |2
+          ResourceQuota                            LimitRange
+   ┌────────────────────────────┐      ┌────────────────────────────┐
+   │ namespace: team-atlas      │      │ namespace: team-atlas      │
+   │  ┌────┐┌────┐┌────┐┌────┐  │      │ ┌─────┐┌─────┐┌─────┐┌────┐│
+   │  │Pod ││Pod ││Pod ││Pod │  │      │ │ Pod ││ Pod ││ Pod ││Pod ││
+   │  └────┘└────┘└────┘└────┘  │      │ │min ≤││min ≤││min ≤││min≤││
+   │  ═══ namespace total ════  │      │ │≤ max││≤ max││≤ max││≤max││
+   │  ═══════ AT CAP ═════════  │      │ └─────┘└─────┘└─────┘└────┘│
+   └────────────────────────────┘      └────────────────────────────┘
+                ▲                                    ▲
+         5th Pod arrives:                 5th Pod arrives declaring
+           REJECTED 403                   nothing:  ACCEPTED — with
+     the namespace total is reached         defaults FILLED IN
 vendor_terms: [ResourceQuota, LimitRange, Pod, namespace]
 complexity_hint:
   node_count: 12
@@ -292,9 +293,9 @@ pedagogy:
   part_18_criteria_met: [distinguishing_alternatives, spatial_structure, fixed_point]
   learning_outcome: "Distinguish ResourceQuota from LimitRange by scope — namespace aggregate versus individual object — and by failure mode"
   fixed_point_emphasis: true
-  fixed_point_emphasis_target: "The namespace boundary present on the left panel and conspicuously absent on the right"
+  fixed_point_emphasis_target: "what is counted: the single 'namespace total / AT CAP' bar spanning all four Pods on the left versus the 'min <= x <= max' bound drawn inside each Pod on the right. The namespace boundary is identical on both sides and carries no accent"
 accessibility:
-  alt_text_seed: "Two panels compared side by side: on the left, four Pods enclosed in a bordered namespace box with a namespace total bar marked at cap, and a fifth arriving Pod rejected; on the right, four unenclosed Pods each carrying its own minimum and maximum bounds, and a fifth arriving Pod that declares nothing being accepted with defaults filled in"
+  alt_text_seed: "Two panels side by side, each enclosed in the same dashed namespace boundary labeled namespace team-atlas. On the left, ResourceQuota: four Pods above a single namespace total bar marked AT CAP, and a fifth arriving Pod REJECTED because the namespace total is reached. On the right, LimitRange: four Pods each carrying its own min and max bound, and a fifth arriving Pod that declares nothing ACCEPTED with defaults filled in."
 rendering_hints:
   preferred_orientation: landscape
   grayscale_critical: true

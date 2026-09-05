@@ -108,10 +108,9 @@ figures:
     aspect_ratio: pass
     grayscale_legibility: pass
     alt_text_present: pass
-  regenerate_hint: Increase stroke width (e.g. ~3px vs ~1.5px) or add a double-line
-    treatment on the three Brass loop arrows so the closed cycle is distinguished
-    by both color and a non-color signal, not color alone.
-  review_notes: ''
+  regenerate_hint: ''
+  review_notes: 2026-09-04 regenerated to the FIGURE PAIR chassis shared with ch15-zenith-control-loop-pointed-at-a-repo;
+    approved after visual check against the twin.
   last_applied_hash: null
   ai_review:
     verdict: looks_good

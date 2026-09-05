@@ -3,7 +3,7 @@ book: kcna
 generated: '2026-09-01T07:27:15+00:00'
 figures:
 - anchor_id: ch05-fig01-pod-shared-network-namespace
-  status: approved  # 2026-09-04 coordinator review: render matches the chapter; promoted to figures/ and applied
+  status: approved
   render_paths:
     svg: figures/ch05-fig01-pod-shared-network-namespace.svg
     png: figures/ch05-fig01-pod-shared-network-namespace.png
@@ -69,7 +69,7 @@ figures:
     fixed_point_visible_detail: ''
     suggested_fix: ''
 - anchor_id: ch05-fig02-pod-phases-and-container-states
-  status: approved
+  status: regenerate
   render_paths:
     svg: figures/ch05-fig02-pod-phases-and-container-states.svg
     png: figures/ch05-fig02-pod-phases-and-container-states.png
@@ -82,8 +82,17 @@ figures:
     aspect_ratio: pass
     grayscale_legibility: pass
     alt_text_present: pass
-  regenerate_hint: ''
-  review_notes: ''
+  regenerate_hint: 'In the WORKED OVERLAY the HELPER container''s line must read exactly
+    ''state: Waiting'' with ''Reason: CrashLoopBackOff''. It must NOT say ImagePullBackOff:
+    a container whose image was never pulled was never created, so that Pod would
+    be Pending, not Running; CrashLoopBackOff is a container that was created, ran,
+    exited, and is waiting between restarts, which is exactly the legitimate Running-Pod
+    / Waiting-container pairing this panel teaches. Keep everything else from the
+    current render: the two stacked panels, the five-phase machine with the dashed
+    ''(any) -> Unknown'' route, the two nested container-state machines with (+Reason)
+    (+startedAt) (+exitCode) under APP, and brass on the ''phase: Running'' label
+    in the overlay.'
+  review_notes: '2026-09-04 chapter audit: regenerate requested; see regenerate_hint.'
   last_applied_hash: null
   ai_review:
     verdict: looks_good

@@ -371,7 +371,7 @@ pedagogy:
   fixed_point_emphasis: true
   fixed_point_emphasis_target: "The two divergent helm install arrows fanning from the single chart box to two independently-named releases"
 accessibility:
-  alt_text_seed: "One Helm chart at the top installs twice, producing two independent releases named marketing and docs in separate namespaces with different replica counts; the marketing release has a left-to-right chain of numbered revisions, and a rollback arrow points back at revision two"
+  alt_text_seed: "One Helm chart, wordpress 15.2.0, sits at the top and installs twice, producing two independent releases named marketing and docs in separate namespaces with different replica counts; beneath the marketing release a vertical chain of numbered revisions runs from rev 1 install through rev 2 and rev 3 upgrades to a dashed rev 4 marked with question marks, and a dashed rollback arrow from rev 4 points back to rev 2 beside the command helm rollback marketing 2"
 rendering_hints:
   preferred_orientation: landscape
   grayscale_critical: true
@@ -548,7 +548,7 @@ A five-row comparison table with a header row and two content columns. Header: b
   │                    │  install/upgrade/rollback│  no installed-state      │
   │                    │  as single acts          │  record of its own       │
   ├────────────────────┼──────────────────────────┼──────────────────────────┤
-  │ Where the engine   │  a CLI you install       │  in kubectl. `apply -k`  │
+  │ Where the engine   │  a CLI you install       │  in kubectl: apply -k    │
   │ lives              │                          │  Nothing to install.     │
   ├────────────────────┴──────────────────────────┴──────────────────────────┤
   │  WHAT THE CHOICE ACTUALLY TURNS ON:                                      │
@@ -579,7 +579,7 @@ source_ascii: |2
     │                    │  install/upgrade/rollback│  no installed-state      │
     │                    │  as single acts          │  record of its own       │
     ├────────────────────┼──────────────────────────┼──────────────────────────┤
-    │ Where the engine   │  a CLI you install       │  in kubectl. `apply -k`  │
+    │ Where the engine   │  a CLI you install       │  in kubectl: apply -k    │
     │ lives              │                          │  Nothing to install.     │
     ├────────────────────┴──────────────────────────┴──────────────────────────┤
     │  WHAT THE CHOICE ACTUALLY TURNS ON:                                      │

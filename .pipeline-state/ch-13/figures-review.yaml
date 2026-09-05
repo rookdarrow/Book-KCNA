@@ -34,7 +34,7 @@ figures:
     suggested_fix: Strip the stray trailing quotation mark from the arrow label text
       so it reads '...the behavior is still wrong' with no dangling punctuation.
 - anchor_id: ch13-fig02-pod-failure-signature-map
-  status: approved
+  status: regenerate
   render_paths:
     svg: figures/ch13-fig02-pod-failure-signature-map.svg
     png: figures/ch13-fig02-pod-failure-signature-map.png
@@ -47,7 +47,16 @@ figures:
     aspect_ratio: pass
     grayscale_legibility: pass
     alt_text_present: pass
-  regenerate_hint: ''
+  regenerate_hint: 'Relabel the second split; the source ASCII has been revised and
+    is the authority. A Pod that has been scheduled but whose containers are Waiting
+    on an image pull or on CreateContainerConfigError has phase Pending, not Running,
+    so the right-hand branch must NOT be labeled ''Running''. The second question
+    reads ''How far did start-up get?''; its left branch reads ''Not scheduled yet
+    (phase Pending)'' and its right branch reads ''Scheduled to a node (containers
+    Waiting)''. The word ''Running'' must not appear anywhere in the figure. Everything
+    else stays: the root question ''Does the Pod object exist?'' with its NO branch
+    to admission (brass focal), and the three Waiting-reason groups with their chapter
+    references.'
   review_notes: ''
   last_applied_hash: null
   ai_review:
@@ -94,7 +103,7 @@ figures:
       rather than a hierarchy or network.
     suggested_fix: ''
 - anchor_id: ch13-fig05-oomkilled-vs-evicted
-  status: approved
+  status: approved  # 2026-09-05: cosmetic label nit recorded in the hint below; author chose not to regenerate approved renders
   render_paths:
     svg: figures/ch13-fig05-oomkilled-vs-evicted.svg
     png: figures/ch13-fig05-oomkilled-vs-evicted.png
@@ -107,7 +116,13 @@ figures:
     aspect_ratio: pass
     grayscale_legibility: pass
     alt_text_present: pass
-  regenerate_hint: ''
+  regenerate_hint: 'Text fidelity: the source ASCII has been revised and is the authority.
+    The second row on the OOMKilled side must read ''kernel kills that ONE process;
+    kubelet restarts the container'' - do not print the words ''cgroup'' or ''enforcement''.
+    The third row reads ''Reason: OOMKilled, on the container'' on the left and ''Pod
+    phase: Failed. The Pod is finished.'' on the right - do NOT print ''Reason: Evicted''
+    anywhere. Keep the two parallel vertical chains compared row by row, with brass
+    on the final Scope / Trigger row.'
   review_notes: ''
   last_applied_hash: null
   ai_review:
@@ -178,7 +193,7 @@ figures:
     fixed_point_visible_note: ''
     suggested_fix: ''
 - anchor_id: ch13-zenith-read-the-phase-first
-  status: approved
+  status: approved  # 2026-09-05: cosmetic label nit recorded in the hint below; author chose not to regenerate approved renders
   render_paths:
     svg: figures/ch13-zenith-read-the-phase-first.svg
     png: figures/ch13-zenith-read-the-phase-first.png
@@ -191,7 +206,14 @@ figures:
     aspect_ratio: pass
     grayscale_legibility: pass
     alt_text_present: pass
-  regenerate_hint: ''
+  regenerate_hint: 'The signature lists have been corrected and the source ASCII is
+    the authority. Under ''containers never ran'' list exactly five: ErrImagePull,
+    ImagePullBackOff, ImageInspectError, ErrImageNeverPull, CreateContainerConfigError.
+    Under ''containers ran, then ended'' list exactly three: CrashLoopBackOff, OOMKilled,
+    Evicted. Do NOT print ''probe failures'' anywhere. The caption ''Nine signatures.
+    One lookup. The key is always the phase.'' counts Pending (the second branch,
+    a signature in its own right) plus those five plus those three. Keep the four-branch
+    tree rooted in ''ONE KEY: the phase'' with brass on the root only.'
   review_notes: ''
   last_applied_hash: null
   ai_review:

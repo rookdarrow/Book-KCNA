@@ -223,14 +223,24 @@ figures:
   figure_spec:
     anchor_id: ch03-fig02-control-loop-desired-vs-current
     diagram_type: flowchart
-    source_ascii: "            ┌──────────────────┐\n     ┌─────▶│  DESIRED STATE\
-      \   │──────┐\n     │      └──────────────────┘      │\n     │              \
-      \                  ▼\n┌─────────┐                     ┌──────────┐\n│ CURRENT\
-      \ │◀────────────────────│ COMPARE  │\n│  STATE  │                     └──────────┘\n\
-      └─────────┘                           │\n     ▲                            \
-      \    ▼\n     │      ┌──────────────────┐      │\n     └──────│  ACT TO CLOSE\
-      \    │◀─────┘\n            │     THE GAP      │\n            └──────────────────┘\n\
-      \n      no start.  no end.  no exit condition.\n"
+    source_ascii: "                        ┌─────────────────┐\n                 \
+      \       │  DESIRED STATE  │\n                        │                 │\n \
+      \                       │  ╔═══════════╗  │\n                        │  ║  \
+      \ etcd    ║  │\n                        │  ║ the store ║  │\n              \
+      \          │  ╚═══════════╝  │\n                        └────────┬────────┘\n\
+      \                                 │\n                                 │  observe\n\
+      \                                 ▼\n                        ┌─────────────────┐\n\
+      \                        │                 │\n             ┌─────────►│   CONTROLLER\
+      \    │──────────┐\n             │          │                 │          │\n\
+      \             │          └─────────────────┘          │  act to\n          \
+      \   │                                       │  close the gap\n             │\
+      \  observe                              │\n             │                  \
+      \                     ▼\n    ┌────────┴────────┐                     ┌─────────────────┐\n\
+      \    │ CURRENT STATE   │◄────────────────────│   API SERVER    │\n    │    \
+      \             │                     │  (the only      │\n    │  what is    \
+      \    │                     │   door in)      │\n    │  actually true  │    \
+      \                 └─────────────────┘\n    └─────────────────┘\n\n        no\
+      \ start.  no end.  no exit condition.\n"
     vendor_terms: []
     complexity_hint:
       node_count: 4
@@ -240,16 +250,19 @@ figures:
       part_18_criteria_met:
       - temporal_structure
       - fixed_point
-      learning_outcome: Describe a controller as a non-terminating loop that compares
-        desired to current state and acts on the difference, rather than as a procedure
-        that runs to completion
+      learning_outcome: Describe a controller as a non-terminating loop that observes
+        desired state and current state and acts, through the API server, to close
+        the gap, rather than as a procedure that runs to completion
       fixed_point_emphasis: true
-      fixed_point_emphasis_target: the closed cycle path itself — no entry arrow,
-        no terminus
+      fixed_point_emphasis_target: the double-ruled etcd box inside DESIRED STATE,
+        the store the loop reads its desired state from; Chapter 15's twin figure
+        swaps only this box's contents
     accessibility:
-      alt_text_seed: 'A closed four-step cycle with no beginning or end: compare reads
-        desired state and current state, acting to close the gap changes current state,
-        and comparison begins again; captioned no start, no end, no exit condition'
+      alt_text_seed: A closed control loop with no beginning and no end. Desired state,
+        held in etcd, the store, is observed by a controller; the controller acts
+        to close the gap through the API server, the only door in; the API server
+        changes current state, what is actually true, which the controller observes
+        in turn. Captioned no start, no end, no exit condition.
     rendering_hints:
       preferred_orientation: portrait
       grayscale_critical: true

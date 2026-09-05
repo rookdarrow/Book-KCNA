@@ -286,63 +286,58 @@ copyright_clearance:
 **Mandatory:** yes
 **Type:** Left-to-right data-flow diagram with a filtering gate, three columns plus a controller callout
 
-**Content specification:**
+**Content specification (revised 2026-09-04):**
 
-Three columns, left to right. **Column one, upper left:** a box headed `Service: database` containing two lines of monospace, `selector:` and indented `app: db`. A downward arrow leaves this box, labelled `query`, and points into column one's lower element: a stacked list of four Pod entries, drawn as one bordered column divided by internal rules. The four entries, top to bottom, are `Pod app: db / 10.244.1.7`, `Pod app: db / 10.244.4.2`, `Pod app: db / 10.244.4.9`, and `Pod app: cache / 10.244.1.9`.
+Left column, top: a box headed `Service: database` containing two lines of monospace, `selector:` and indented `app: db`. A downward arrow labelled `query` points into a stacked list of four Pod entries, drawn as one bordered column divided by internal rules: `Pod app: db / 10.244.1.7`, `Pod app: db / 10.244.4.2`, `Pod app: db / 10.244.4.9`, and `Pod app: cache / 10.244.1.9`.
 
-**Column two, centre:** a tall gate element headed `Ready?`, drawn as a physical gate — the ASCII uses a double-ruled block to suggest a barrier and labels the body `GATE`.
+Centre: the **EndpointSlice** object. The three matching Pods each send a `matches` arrow into it, annotated `✓ Ready`, `✓ Ready`, `✗ NOT Ready`. **The slice lists all three**, each as `address:5432` with its endpoint condition on the same row: `10.244.1.7:5432 ready: true`, `10.244.4.2:5432 ready: true`, `10.244.4.9:5432 ready: false`. A note inside the object: *listed: every Pod the selector matches*.
 
-**Arrows from the Pod list into the gate.** The first three Pods each get a horizontal arrow labelled `matches`, with a secondary label beneath: `✓ Ready` for `10.244.1.7`, `✓ Ready` for `10.244.4.2`, and `✗ NOT Ready` for `10.244.4.9`. The first two arrows pass *through* the gate and continue into column three. The third arrow **stops at the gate face** and is annotated `✗ STOPPED at gate`.
+Right: the `Ready?` **gate sits after the slice, on the traffic path**. The two `ready: true` rows pass through it to arrows labelled `traffic`; the `ready: false` row's arrow **stops at the gate face** and is annotated `✗ STOPPED at gate`. Readiness does not remove the endpoint; it disqualifies it — this is §4's Fixed Point and Bearings #2's answer.
 
-The fourth Pod, `app: cache / 10.244.1.9`, gets **no arrow at all**. It carries an inline annotation to its right: `✗ never matched the selector` and, on a second line, `(different failure — different file)`. The visual difference between "stopped at the gate" and "never entered the diagram's flow" is the figure's second lesson and must survive rendering — a stopped arrow and an absent arrow are not the same failure.
+The fourth Pod, `app: cache / 10.244.1.9`, gets **no arrow at all** and is not in the slice. It carries the annotation `✗ never matched the selector — not listed at all` and `(different failure — different file)`. A stopped arrow and an absent arrow are not the same failure and must not be drawn alike.
 
-**Column three, upper right:** a box headed `EndpointSlice` containing exactly two monospace lines, `10.244.1.7:5432` and `10.244.4.2:5432`. The two surviving arrows terminate here.
-
-**Below and centred:** a callout box reading `EndpointSlice controller` with a second line `(in kube-controller-manager)`, and a leader line pointing at it annotated `watches Services + Pods, writes the slice`. This box has no traffic arrows in or out — it is an actor annotation, not a stage in the flow.
+Below: a callout box `EndpointSlice controller` / `(in kube-controller-manager)` with a leader line into the slice annotated `writes`, and a note `watches Services + Pods`. It has no traffic arrows — it is an actor annotation, not a hop.
 
 **Visual style:**
 - Palette: inherit book default
-- Size (pixels): 1200x800 landscape
-- Font: inherit book default (Fira Mono for addresses, ports, label keys/values and `app: db`)
-- Accent color for highlighted elements: Brass `#B58B3E` on the gate element and on the `✗ STOPPED at gate` arrow terminus. Passing arrows in the default line color; the stopped arrow in a visibly distinct weight and a terminating cross-bar, not merely a different hue.
+- Size (pixels): roughly 1200x1400, portrait
+- Font: inherit book default (Fira Mono for addresses, ports, `ready: true/false`, label keys/values and `app: db`)
+- Accent color for highlighted elements: Brass `#B58B3E` on the gate element and on the terminus of the stopped `ready: false` arrow. Passing arrows in the default line colour; the stopped arrow in a visibly distinct weight with a terminating bar, not merely a different hue.
 
 **Critical details (non-negotiable accuracy):**
-- The EndpointSlice contains exactly **two** entries. Three Pods match the selector; only two are Ready. If the rendered slice shows three entries the figure teaches the wrong rule.
-- Endpoint entries are `address:port` pairs — `10.244.1.7:5432` and `10.244.4.2:5432`. Do not strip the port and do not vary it between entries.
-- Pod `10.244.4.9` **matches the selector** and is stopped by readiness. Pod `10.244.1.9` **never matched** — its label is `app: cache`, not `app: db`. These are two different failures with two different fixes, and the draft's Snag callout depends on them being visually distinguishable. Do not draw them the same way.
-- The selector box holds the **query** (`app: db`), never a list of addresses. The EndpointSlice holds the **answer**. The Service does not store endpoints; that is Practice Question 11's distractor A.
-- The writer is the **EndpointSlice controller**, running inside kube-controller-manager. It is not kube-proxy, not CoreDNS, not the kubelet, and not the Service. No other component may appear in this figure.
-- The controller callout must not sit on the traffic path. It watches and writes; it is not a hop.
-- Direction of the controller's arrow: it writes *into* the EndpointSlice. Do not draw the EndpointSlice feeding the controller.
+- The EndpointSlice contains exactly **three** entries — every Pod the selector matches — and the third carries `ready: false`. A slice that omits the not-Ready Pod teaches the wrong rule (it contradicts the chapter's Fixed Point).
+- Endpoint entries are `address:port` pairs with port `5432` on every entry.
+- Pod `10.244.4.9` **matches the selector** and is listed; readiness stops its traffic. Pod `10.244.1.9` **never matched** — label `app: cache` — and is not listed. Two failures, two fixes, drawn differently.
+- The selector box holds the **query** (`app: db`), never a list of addresses. The EndpointSlice holds the **answer**.
+- The writer is the **EndpointSlice controller**, running inside kube-controller-manager. Not kube-proxy, not CoreDNS, not the kubelet, not the Service. No other component may appear.
+- The controller writes *into* the EndpointSlice. Do not draw the slice feeding the controller.
 
 **Source ASCII (for designer reference):**
 ```
-  Service: database                                    EndpointSlice
-  ┌────────────────────┐                              ┌──────────────────┐
-  │ selector:          │                              │ 10.244.1.7:5432  │
-  │   app: db          │                              │ 10.244.4.2:5432  │
-  └─────────┬──────────┘                              └────────▲─────────┘
-            │                                                  │
-            │ query                       ┌───────────┐        │
-            ▼                             │  Ready?   │        │
-   ┌──────────────────┐                   │  ╔═════╗  │        │
-   │ Pod  app: db     │ ──── matches ────►│  ║ === ║  ├────────┘
-   │      10.244.1.7  │      ✓ Ready      │  ╚═════╝  │
-   ├──────────────────┤                   │   GATE    │
-   │ Pod  app: db     │ ──── matches ────►│           ├────────┘
-   │      10.244.4.2  │      ✓ Ready      │           │
-   ├──────────────────┤                   │           │
-   │ Pod  app: db     │ ──── matches ────►│ ✗ STOPPED │
-   │      10.244.4.9  │      ✗ NOT Ready  │  at gate  │
-   ├──────────────────┤                   └───────────┘
-   │ Pod  app: cache  │  ✗ never matched the selector
+  Service: database
+  ┌────────────────────┐
+  │ selector:          │
+  │   app: db          │
+  └─────────┬──────────┘
+            │ query
+            ▼
+   ┌──────────────────┐             ┌─────────────────────────────────┐
+   │ Pod  app: db     │ ─matches───►│ EndpointSlice                   │
+   │      10.244.1.7  │  ✓ Ready    │                                 │      ┌───────────┐
+   ├──────────────────┤             │  10.244.1.7:5432  ready: true   │─────►│  Ready?   │───► traffic
+   │ Pod  app: db     │ ─matches───►│  10.244.4.2:5432  ready: true   │─────►│  ╔═════╗  │───► traffic
+   │      10.244.4.2  │  ✓ Ready    │  10.244.4.9:5432  ready: false  │─────►│  ║ === ║  │ ✗ STOPPED
+   ├──────────────────┤             │                                 │      │  ╚═════╝  │   at gate
+   │ Pod  app: db     │ ─matches───►│  listed: every Pod the          │      │   GATE    │
+   │      10.244.4.9  │  ✗ NOT Ready│  selector matches               │      └───────────┘
+   ├──────────────────┤             └────────────────▲────────────────┘
+   │ Pod  app: cache  │  ✗ never matched the selector — not listed at all
    │      10.244.1.9  │     (different failure — different file)
-   └──────────────────┘
-
-            ┌─────────────────────────────┐
-            │  EndpointSlice controller   │ ◄── watches Services + Pods,
-            │  (in kube-controller-manager)│     writes the slice
-            └─────────────────────────────┘
+   └──────────────────┘                              │ writes
+                                      ┌──────────────┴────────────────┐
+                                      │  EndpointSlice controller     │ ◄── watches Services + Pods
+                                      │ (in kube-controller-manager)  │
+                                      └───────────────────────────────┘
 ```
 
 **Proposed filename:** `ch09-fig03-service-endpointslice-selector-path.png`
@@ -351,32 +346,30 @@ The fourth Pod, `app: cache / 10.244.1.9`, gets **no arrow at all**. It carries 
 anchor_id: ch09-fig03-service-endpointslice-selector-path
 diagram_type: data_flow
 source_ascii: |2
-    Service: database                                    EndpointSlice
-    ┌────────────────────┐                              ┌──────────────────┐
-    │ selector:          │                              │ 10.244.1.7:5432  │
-    │   app: db          │                              │ 10.244.4.2:5432  │
-    └─────────┬──────────┘                              └────────▲─────────┘
-              │                                                  │
-              │ query                       ┌───────────┐        │
-              ▼                             │  Ready?   │        │
-     ┌──────────────────┐                   │  ╔═════╗  │        │
-     │ Pod  app: db     │ ──── matches ────►│  ║ === ║  ├────────┘
-     │      10.244.1.7  │      ✓ Ready      │  ╚═════╝  │
-     ├──────────────────┤                   │   GATE    │
-     │ Pod  app: db     │ ──── matches ────►│           ├────────┘
-     │      10.244.4.2  │      ✓ Ready      │           │
-     ├──────────────────┤                   │           │
-     │ Pod  app: db     │ ──── matches ────►│ ✗ STOPPED │
-     │      10.244.4.9  │      ✗ NOT Ready  │  at gate  │
-     ├──────────────────┤                   └───────────┘
-     │ Pod  app: cache  │  ✗ never matched the selector
+    Service: database
+    ┌────────────────────┐
+    │ selector:          │
+    │   app: db          │
+    └─────────┬──────────┘
+              │ query
+              ▼
+     ┌──────────────────┐             ┌─────────────────────────────────┐
+     │ Pod  app: db     │ ─matches───►│ EndpointSlice                   │
+     │      10.244.1.7  │  ✓ Ready    │                                 │      ┌───────────┐
+     ├──────────────────┤             │  10.244.1.7:5432  ready: true   │─────►│  Ready?   │───► traffic
+     │ Pod  app: db     │ ─matches───►│  10.244.4.2:5432  ready: true   │─────►│  ╔═════╗  │───► traffic
+     │      10.244.4.2  │  ✓ Ready    │  10.244.4.9:5432  ready: false  │─────►│  ║ === ║  │ ✗ STOPPED
+     ├──────────────────┤             │                                 │      │  ╚═════╝  │   at gate
+     │ Pod  app: db     │ ─matches───►│  listed: every Pod the          │      │   GATE    │
+     │      10.244.4.9  │  ✗ NOT Ready│  selector matches               │      └───────────┘
+     ├──────────────────┤             └────────────────▲────────────────┘
+     │ Pod  app: cache  │  ✗ never matched the selector — not listed at all
      │      10.244.1.9  │     (different failure — different file)
-     └──────────────────┘
-
-              ┌─────────────────────────────┐
-              │  EndpointSlice controller   │ ◄── watches Services + Pods,
-              │  (in kube-controller-manager)│     writes the slice
-              └─────────────────────────────┘
+     └──────────────────┘                              │ writes
+                                        ┌──────────────┴────────────────┐
+                                        │  EndpointSlice controller     │ ◄── watches Services + Pods
+                                        │ (in kube-controller-manager)  │
+                                        └───────────────────────────────┘
 vendor_terms: [kubernetes, service, endpointslice, pod, kube-controller-manager]
 complexity_hint:
   node_count: 8
@@ -384,11 +377,11 @@ complexity_hint:
   label_count: 16
 pedagogy:
   part_18_criteria_met: [spatial_structure, distinguishing_alternatives, fixed_point]
-  learning_outcome: "Trace the path from a Service selector to the addresses traffic reaches, and state that a Pod must both match the selector and be Ready to appear in the EndpointSlice"
+  learning_outcome: "Trace the path from a Service selector to the addresses traffic reaches: matching the selector is what puts a Pod in the EndpointSlice, and being Ready is what lets its endpoint receive traffic. A matching Pod that is not Ready stays listed with ready: false"
   fixed_point_emphasis: true
-  fixed_point_emphasis_target: "the Ready? gate, and specifically the arrow from Pod 10.244.4.9 terminating against the gate face"
+  fixed_point_emphasis_target: "the '10.244.4.9:5432 ready: false' row inside the EndpointSlice: listed, but its arrow is stopped at the Ready? gate before traffic"
 accessibility:
-  alt_text_seed: "A Service named database holds the selector app equals db. Four Pods are listed; three carry the label app db and one carries app cache. The three matching Pods send arrows toward a gate labelled Ready. Two Ready Pods pass through into an EndpointSlice containing 10.244.1.7 port 5432 and 10.244.4.2 port 5432. The third matching Pod, not Ready, is stopped at the gate. The cache Pod never matched the selector and sends no arrow. Beneath, the EndpointSlice controller in kube-controller-manager watches Services and Pods and writes the slice."
+  alt_text_seed: "A Service named database holds the selector app equals db. Four Pods are listed; three carry the label app db and one carries app cache. The three matching Pods send arrows into an EndpointSlice that lists all three: 10.244.1.7 port 5432 ready true, 10.244.4.2 port 5432 ready true, and 10.244.4.9 port 5432 ready false. From the slice, the two ready entries pass through a gate labeled Ready to traffic; the ready false entry is stopped at the gate. The cache Pod never matched the selector and is not listed at all. Beneath, the EndpointSlice controller in kube-controller-manager watches Services and Pods and writes the slice."
 rendering_hints:
   preferred_orientation: landscape
   grayscale_critical: true
@@ -411,9 +404,9 @@ copyright_clearance:
 
 **Content specification:**
 
-Divide the canvas horizontally. **Above the divider (control plane / API objects):** two boxes side by side. Left box headed `Service` with body `10.96.0.42`. Right box headed `EndpointSlice` with body lines `10.244.1.7:5432` and `10.244.4.2:5432`. To the left of the Service box, the label `kube-proxy` with an arrow into it annotated `watches`. From beneath both boxes, arrows descend and cross the divider; the arrow from the Service box is labelled `programs`.
+Divide the canvas horizontally. **Above the divider (API objects, served by the API server — label the band `API OBJECTS`, never `CONTROL PLANE`):** two boxes side by side. Left box headed `Service` with body `10.96.0.42`. Right box headed `EndpointSlice` with body lines `10.244.1.7:5432` and `10.244.4.2:5432`. **kube-proxy sits below the divider, inside the node** (revised 2026-09-04: it is a per-node component, one Pod of a DaemonSet on every node, not a control-plane component). Two dashed `watches` arrows rise from the kube-proxy box across the divider to the Service and EndpointSlice objects; one solid `programs` arrow descends from kube-proxy into the rules layer.
 
-**The divider itself** is a heavy horizontal rule labelled at its left end `node: worker-3`. It represents the node boundary, and the two arrows from the control plane pierce it. The rule continues down the right edge of the figure as a vertical boundary, enclosing everything below-left as "inside worker-3".
+**The divider itself** is a heavy horizontal rule labelled at its left end `node: worker-3`. It represents the node boundary, and kube-proxy's two `watches` arrows pierce it upward. The rule continues down the right edge of the figure as a vertical boundary, enclosing everything below-left as "inside worker-3".
 
 **Below the divider, the packet path, top to bottom:**
 
@@ -431,7 +424,7 @@ Divide the canvas horizontally. **Above the divider (control plane / API objects
 **Critical details (non-negotiable accuracy):**
 - The cluster IP box is **hollow and dashed**. Nothing is drawn inside it but the address and the parenthetical. No process glyph, no server icon, no port, no socket, no daemon. If the ghost box renders as a solid box like its neighbours, the figure teaches the opposite of its own caption.
 - kube-proxy **watches Service and EndpointSlice objects** — those two, and not Pods. Do not draw kube-proxy watching Pods; the EndpointSlice controller does that, and Bearings #3 item 1 turns on the distinction.
-- kube-proxy **programs the rules layer**. It does not sit in the packet path. Do not place the kube-proxy label between the frontend Pod and the rules band, and do not draw the traffic arrow entering kube-proxy.
+- kube-proxy **runs on the node and programs the rules layer**. It is drawn inside the node boundary, never in a band labelled control plane, and it does not sit in the packet path. Do not place the kube-proxy label between the frontend Pod and the rules band, and do not draw the traffic arrow entering kube-proxy.
 - The mode list is exactly four values: **iptables (the default)**, IPVS, nftables — Linux — and kernelspace — Windows. `iptables` is the one marked default. Do not add `userspace` (retired) or `eBPF` (a plugin data plane, not a kube-proxy mode); both are named distractors in Practice Question 18.
 - Backend endpoints are Pod addresses in `10.244.x.x`; the virtual address is `10.96.0.42`. Keeping the two ranges visibly distinct is what makes "readdressed" legible.
 - `10.244.4.2` is annotated `(on worker-11)` and must sit at or across the node boundary. The rules layer on worker-3 redirects to an endpoint on another node — that is the point of including it.
@@ -440,20 +433,25 @@ Divide the canvas horizontally. **Above the divider (control plane / API objects
 **Source ASCII (for designer reference):**
 ```
                        ┌──────────────┐    ┌──────────────────┐
-        kube-proxy ───►│   Service    │    │  EndpointSlice   │
-        watches        │  10.96.0.42  │    │ 10.244.1.7:5432  │
-                       └──────────────┘    │ 10.244.4.2:5432  │
-                              │            └──────────────────┘
-                              │ programs           │
-   ═══ node: worker-3 ════════▼════════════════════▼══════════════════
-                                                                     ║
-   ┌──────────┐        ┌ ─ ─ ─ ─ ─ ─ ─ ┐                             ║
-   │ frontend │        ╎ 10.96.0.42    ╎  ◄── the cluster IP.        ║
-   │   Pod    │───────►╎  (nothing is  ╎      no process. no socket. ║
-   └──────────┘  to    ╎   here)       ╎      an address with        ║
-             10.96.0.42└ ─ ─ ─ ─ ─ ─ ─ ┘      nothing at it.         ║
-                              ┊                                      ║
-              ┏━━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━━━┓                     ║
+     API OBJECTS       │   Service    │    │  EndpointSlice   │
+     (served by the    │  10.96.0.42  │    │ 10.244.1.7:5432  │
+      API server)      └──────▲───────┘    │ 10.244.4.2:5432  │
+                              │            └────────▲─────────┘
+                              │ watches            │ watches
+   ═══ node: worker-3 ════════╪════════════════════╪══════════════════
+                              │                    │                 ║
+                        ┌─────┴────────────────────┴─────┐           ║
+                        │ kube-proxy  (runs on every     │           ║
+                        │ node — one Pod of a DaemonSet) │           ║
+                        └───────────────┬────────────────┘           ║
+                                        │ programs                   ║
+   ┌──────────┐        ┌ ─ ─ ─ ─ ─ ─ ─ ┐│                            ║
+   │ frontend │        ╎ 10.96.0.42    ╎│  ◄── the cluster IP.       ║
+   │   Pod    │───────►╎  (nothing is  ╎│      no process. no socket.║
+   └──────────┘  to    ╎   here)       ╎│      an address with       ║
+             10.96.0.42└ ─ ─ ─ ─ ─ ─ ─ ┘│      nothing at it.        ║
+                              ┊         │                            ║
+              ┏━━━━━━━━━━━━━━━┻━━━━━━━━━▼━━━━━━┓                     ║
               ┃   R U L E S   L A Y E R        ┃ ◄─ traffic passes   ║
               ┃  ┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄  ┃    THROUGH, is not   ║
               ┃  mode: iptables (default) ·    ┃    delivered TO      ║
@@ -474,20 +472,25 @@ anchor_id: ch09-fig04-kube-proxy-modes
 diagram_type: data_flow
 source_ascii: |2
                          ┌──────────────┐    ┌──────────────────┐
-          kube-proxy ───►│   Service    │    │  EndpointSlice   │
-          watches        │  10.96.0.42  │    │ 10.244.1.7:5432  │
-                         └──────────────┘    │ 10.244.4.2:5432  │
-                                │            └──────────────────┘
-                                │ programs           │
-     ═══ node: worker-3 ════════▼════════════════════▼══════════════════
-                                                                       ║
-     ┌──────────┐        ┌ ─ ─ ─ ─ ─ ─ ─ ┐                             ║
-     │ frontend │        ╎ 10.96.0.42    ╎  ◄── the cluster IP.        ║
-     │   Pod    │───────►╎  (nothing is  ╎      no process. no socket. ║
-     └──────────┘  to    ╎   here)       ╎      an address with        ║
-               10.96.0.42└ ─ ─ ─ ─ ─ ─ ─ ┘      nothing at it.         ║
-                                ┊                                      ║
-                ┏━━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━━━┓                     ║
+       API OBJECTS       │   Service    │    │  EndpointSlice   │
+       (served by the    │  10.96.0.42  │    │ 10.244.1.7:5432  │
+        API server)      └──────▲───────┘    │ 10.244.4.2:5432  │
+                                │            └────────▲─────────┘
+                                │ watches            │ watches
+     ═══ node: worker-3 ════════╪════════════════════╪══════════════════
+                                │                    │                 ║
+                          ┌─────┴────────────────────┴─────┐           ║
+                          │ kube-proxy  (runs on every     │           ║
+                          │ node — one Pod of a DaemonSet) │           ║
+                          └───────────────┬────────────────┘           ║
+                                          │ programs                   ║
+     ┌──────────┐        ┌ ─ ─ ─ ─ ─ ─ ─ ┐│                            ║
+     │ frontend │        ╎ 10.96.0.42    ╎│  ◄── the cluster IP.       ║
+     │   Pod    │───────►╎  (nothing is  ╎│      no process. no socket.║
+     └──────────┘  to    ╎   here)       ╎│      an address with       ║
+               10.96.0.42└ ─ ─ ─ ─ ─ ─ ─ ┘│      nothing at it.        ║
+                                ┊         │                            ║
+                ┏━━━━━━━━━━━━━━━┻━━━━━━━━━▼━━━━━━┓                     ║
                 ┃   R U L E S   L A Y E R        ┃ ◄─ traffic passes   ║
                 ┃  ┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄  ┃    THROUGH, is not   ║
                 ┃  mode: iptables (default) ·    ┃    delivered TO      ║
@@ -510,7 +513,7 @@ pedagogy:
   fixed_point_emphasis: true
   fixed_point_emphasis_target: "the dashed hollow box holding 10.96.0.42 and the words nothing is here"
 accessibility:
-  alt_text_seed: "Above a node boundary, kube-proxy watches a Service object holding cluster IP 10.96.0.42 and an EndpointSlice holding two Pod addresses with port 5432, and programs rules below the boundary. Inside worker-3, a frontend Pod sends traffic to 10.96.0.42, drawn as a dashed empty box marked nothing is here — no process, no socket. The traffic descends through a heavy rules layer listing modes iptables as default, IPVS, nftables and Windows kernelspace, then is readdressed to two backend Pods, one local and one on worker-11."
+  alt_text_seed: "Above a node boundary sit two API objects: a Service holding cluster IP 10.96.0.42 and an EndpointSlice holding two Pod addresses with port 5432. Inside the node worker-3, kube-proxy, which runs on every node, watches both objects across the boundary and programs the rules layer beneath it. A frontend Pod sends traffic to 10.96.0.42, drawn as a dashed empty box marked nothing is here — no process, no socket. The traffic descends through a heavy rules layer listing modes iptables as default, IPVS, nftables and Windows kernelspace, then is readdressed to two backend Pods, one local and one on worker-11."
 rendering_hints:
   preferred_orientation: landscape
   grayscale_critical: true

@@ -75,7 +75,7 @@ A landscape figure with a centred title, "THE SAME SYSTEM, TWO POSTURES". Two eq
      ┌─────────────┐                   ┌─────────────┐
      │  DASHBOARD  │                   │  OPEN QUERY │
      │ answers the │                   │  over rich  │
-     │  4 questions│                   │  telemetry  │
+     │  questions  │                   │  telemetry  │
      │  you picked │                   │             │
      └──────┬──────┘                   └──────┬──────┘
             ▼                                 ▼
@@ -92,7 +92,7 @@ A landscape figure with a centred title, "THE SAME SYSTEM, TWO POSTURES". Two eq
 ```yaml-figure-spec
 anchor_id: ch18-fig01-monitoring-vs-observability
 diagram_type: concept_map
-source_ascii: |4
+source_ascii: |2
                 THE SAME SYSTEM, TWO POSTURES
 
     MONITORING                        OBSERVABILITY
@@ -113,7 +113,7 @@ source_ascii: |4
        ┌─────────────┐                   ┌─────────────┐
        │  DASHBOARD  │                   │  OPEN QUERY │
        │ answers the │                   │  over rich  │
-       │  4 questions│                   │  telemetry  │
+       │  questions  │                   │  telemetry  │
        │  you picked │                   │             │
        └──────┬──────┘                   └──────┬──────┘
               ▼                                 ▼
@@ -328,7 +328,7 @@ Title across the top: "ARROWS OUT, NOT IN". A tall central box on the right-of-c
    │ ┌┴────────┐  │              ┌────────────┐ ┌──────────┐
    │ │short job│  │              │ALERTMANAGER│ │ GRAFANA  │
    │ └─────────┘  │              │ routes to  │ │ dashboards│
-   └──────────────┘              │ email/pager│ │(NOT CNCF)│
+   └──────────────┘              │ email/pager│ │          │
       one narrow                 └────────────┘ └──────────┘
       inbound path
 
@@ -340,7 +340,7 @@ Title across the top: "ARROWS OUT, NOT IN". A tall central box on the right-of-c
 ```yaml-figure-spec
 anchor_id: ch18-fig04-prometheus-pull-architecture
 diagram_type: data_flow
-source_ascii: |5
+source_ascii: |2
                       ARROWS OUT, NOT IN
 
      ┌──────────────┐                  ┌──────────────────┐
@@ -376,7 +376,7 @@ source_ascii: |5
      │ ┌┴────────┐  │              ┌────────────┐ ┌──────────┐
      │ │short job│  │              │ALERTMANAGER│ │ GRAFANA  │
      │ └─────────┘  │              │ routes to  │ │ dashboards│
-     └──────────────┘              │ email/pager│ │(NOT CNCF)│
+     └──────────────┘              │ email/pager│ │          │
         one narrow                 └────────────┘ └──────────┘
         inbound path
 

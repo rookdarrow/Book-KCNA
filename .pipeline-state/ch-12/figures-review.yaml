@@ -91,7 +91,7 @@ figures:
       type, satisfying color plus a non-color signal.
     suggested_fix: ''
 - anchor_id: ch12-fig04-pod-security-standards-levels
-  status: approved  # 2026-09-04 coordinator review: render matches the chapter; promoted to figures/ and applied
+  status: approved
   render_paths:
     svg: figures/ch12-fig04-pod-security-standards-levels.svg
     png: figures/ch12-fig04-pod-security-standards-levels.png
@@ -130,7 +130,7 @@ figures:
       accurately describes the text-weight encoding actually used (and rename 'restricted-level
       requirement' since it also fires on baseline-only cells).
 - anchor_id: ch12-fig05-supply-chain-checkpoints
-  status: approved
+  status: approved  # 2026-09-05: cosmetic label nit recorded in the hint below; author chose not to regenerate approved renders
   render_paths:
     svg: figures/ch12-fig05-supply-chain-checkpoints.svg
     png: figures/ch12-fig05-supply-chain-checkpoints.png
@@ -143,9 +143,13 @@ figures:
     aspect_ratio: pass
     grayscale_legibility: pass
     alt_text_present: pass
-  regenerate_hint: Regenerate as a horizontal left-to-right pipeline (BUILD through
-    RUN running left to right) with a vertical dashed boundary between RESTRICT and
-    VERIFY, keeping VERIFY's brass emphasis.
+  regenerate_hint: 'Tool names must match the source ASCII exactly: under SCAN print
+    ''Harbor, image scanners'' - the word ''Trivy'' must not appear anywhere in the
+    figure. SCAN''s output reads ''known vulns''. Keep the horizontal BUILD -> SCAN
+    -> SIGN -> RECORD -> RESTRICT | VERIFY -> RUN pipeline, the vertical cluster boundary
+    between RESTRICT and VERIFY as the brass focal element, the digest callout, and
+    the tool names under the other steps (Cosign / Notation / Fulcio; Rekor; Harbor,
+    imagePullSecrets; Kyverno, Gatekeeper, Policy Controller).'
   review_notes: ''
   last_applied_hash: null
   ai_review:

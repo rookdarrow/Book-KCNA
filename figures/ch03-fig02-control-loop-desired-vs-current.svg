@@ -1,68 +1,76 @@
-<svg viewBox="0 0 520 680" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch03-fig02-control-loop-title ch03-fig02-control-loop-desc" width="460" height="602">
-      <title id="ch03-fig02-control-loop-title">Control loop: desired state vs. current state</title>
-      <desc id="ch03-fig02-control-loop-desc">A closed four-step cycle with no beginning or end: Compare reads Desired State and Current State, Act to Close the Gap changes Current State, and comparison begins again.</desc>
-      <defs>
-        <marker id="arrow-muted" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
-          <polygon points="0 0, 10 4, 0 8" fill="#1F4A4E"></polygon>
-        </marker>
-        <marker id="arrow-accent" markerWidth="12" markerHeight="10" refX="11" refY="5" orient="auto">
-          <polygon points="0 0, 12 5, 0 10" fill="#B58B3E"></polygon>
-        </marker>
-      </defs>
+<svg viewBox="0 0 640 760" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ch03-fig02-control-loop-desired-vs-current-title ch03-fig02-control-loop-desired-vs-current-desc" width="640" height="760">
+  <title id="ch03-fig02-control-loop-desired-vs-current-title">Control loop: desired state versus current state</title>
+  <desc id="ch03-fig02-control-loop-desired-vs-current-desc">A closed control loop with no beginning and no end. Desired state, held in etcd, the store, is observed by a controller; the controller acts to close the gap through the API server, the only door in; the API server changes current state, what is actually true, which the controller observes in turn. Captioned no start, no end, no exit condition.</desc>
+  <defs>
+    <marker id="ch03-fig02-arrow-teal" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#1F4A4E"></polygon>
+    </marker>
+    <marker id="ch03-fig02-arrow-navy" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#0B1E3B"></polygon>
+    </marker>
+  </defs>
 
-      <rect width="100%" height="100%" fill="#F5EFE4"></rect>
+  <rect width="640" height="760" fill="#F5EFE4"></rect>
 
-      <!-- ===== Connectors (drawn before nodes) ===== -->
+  <!-- Arrows (drawn before boxes) -->
 
-      <!-- Spoke: Desired State -> Compare (fixed input, not part of the loop) -->
-      <line x1="320" y1="136" x2="320" y2="244" stroke="#1F4A4E" stroke-width="1.5" marker-end="url(#arrow-muted)"></line>
+  <!-- DESIRED STATE -> CONTROLLER : observe -->
+  <path d="M320,208 L320,272" stroke="#1F4A4E" stroke-width="1.5" fill="none" marker-end="url(#ch03-fig02-arrow-teal)"></path>
+  <text x="336" y="246" text-anchor="start" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.04em" fill="#1F4A4E">OBSERVE</text>
 
-      <!-- Loop leg 1: Compare -> Act to Close the Gap (double-rail, thick) -->
-      <line x1="336" y1="316" x2="336" y2="424" stroke="#B58B3E" stroke-width="2.8" marker-end="url(#arrow-accent)"></line>
-      <line x1="344" y1="316" x2="344" y2="424" stroke="#B58B3E" stroke-width="2.8"></line>
+  <!-- CONTROLLER -> API SERVER : act to close the gap -->
+  <path d="M 416 320 H 476 Q 484 320 484 328 V 460" stroke="#0B1E3B" stroke-width="1.5" fill="none" marker-end="url(#ch03-fig02-arrow-navy)"></path>
+  <rect x="336" y="380" width="136" height="20" fill="#F5EFE4"></rect>
+  <text x="404" y="396" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.04em" fill="#0B1E3B">ACT: CLOSE GAP</text>
 
-      <!-- Loop leg 2: Act to Close the Gap -> Current State (double-rail, thick) -->
-      <line x1="196" y1="424" x2="196" y2="316" stroke="#B58B3E" stroke-width="2.8" marker-end="url(#arrow-accent)"></line>
-      <line x1="204" y1="424" x2="204" y2="316" stroke="#B58B3E" stroke-width="2.8"></line>
+  <!-- API SERVER -> CURRENT STATE : changes -->
+  <path d="M384,520 L256,520" stroke="#0B1E3B" stroke-width="1.5" fill="none" marker-end="url(#ch03-fig02-arrow-navy)"></path>
+  <rect x="284" y="488" width="72" height="20" fill="#F5EFE4"></rect>
+  <text x="320" y="504" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.04em" fill="#0B1E3B">CHANGES</text>
 
-      <!-- Loop leg 3: Current State -> Compare, closing the cycle (double-rail, thick) -->
-      <line x1="240" y1="276" x2="280" y2="276" stroke="#B58B3E" stroke-width="2.8" marker-end="url(#arrow-accent)"></line>
-      <line x1="240" y1="284" x2="280" y2="284" stroke="#B58B3E" stroke-width="2.8"></line>
+  <!-- CURRENT STATE -> CONTROLLER : observe -->
+  <path d="M 120 460 V 328 Q 120 320 128 320 H 224" stroke="#1F4A4E" stroke-width="1.5" fill="none" marker-end="url(#ch03-fig02-arrow-teal)"></path>
+  <rect x="36" y="380" width="76" height="20" fill="#F5EFE4"></rect>
+  <text x="74" y="396" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" letter-spacing="0.04em" fill="#1F4A4E">OBSERVE</text>
 
-      <!-- ===== Nodes ===== -->
+  <!-- DESIRED STATE container -->
+  <rect x="180" y="40" width="280" height="168" rx="8" fill="rgba(11,30,59,0.05)" stroke="#1F4A4E" stroke-width="1"></rect>
+  <text x="320" y="68" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">DESIRED STATE</text>
 
-      <!-- Desired State -->
-      <rect x="160" y="64" width="200" height="72" rx="6" fill="#F5EFE4"></rect>
-      <rect x="160" y="64" width="200" height="72" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
-      <text x="260" y="104" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">DESIRED STATE</text>
+  <!-- etcd double-ruled focal box -->
+  <rect x="228" y="112" width="184" height="72" rx="6" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1.2"></rect>
+  <rect x="236" y="120" width="168" height="56" rx="4" fill="none" stroke="#B58B3E" stroke-width="1"></rect>
+  <text x="320" y="144" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">etcd</text>
+  <text x="320" y="164" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" fill="#8A8D90">the store</text>
 
-      <!-- Compare -->
-      <rect x="280" y="244" width="200" height="72" rx="6" fill="#F5EFE4"></rect>
-      <rect x="280" y="244" width="200" height="72" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
-      <text x="380" y="284" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">COMPARE</text>
+  <!-- CONTROLLER -->
+  <rect x="224" y="272" width="192" height="96" rx="6" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1"></rect>
+  <text x="320" y="328" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">CONTROLLER</text>
 
-      <!-- Current State -->
-      <rect x="40" y="244" width="200" height="72" rx="6" fill="#F5EFE4"></rect>
-      <rect x="40" y="244" width="200" height="72" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
-      <text x="140" y="284" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">CURRENT STATE</text>
+  <!-- CURRENT STATE -->
+  <rect x="56" y="460" width="200" height="120" rx="6" fill="rgba(11,30,59,0.05)" stroke="#1F4A4E" stroke-width="1"></rect>
+  <text x="156" y="500" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">CURRENT STATE</text>
+  <text x="156" y="524" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" fill="#8A8D90">what is actually true</text>
 
-      <!-- Act to Close the Gap -->
-      <rect x="160" y="424" width="200" height="72" rx="6" fill="#F5EFE4"></rect>
-      <rect x="160" y="424" width="200" height="72" rx="6" fill="#F5EFE4" stroke="#0B1E3B" stroke-width="1"></rect>
-      <text x="260" y="448" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">ACT TO CLOSE</text>
-      <text x="260" y="472" fill="#0B1E3B" font-size="16" font-weight="500" font-family="'Fira Sans', sans-serif" text-anchor="middle">THE GAP</text>
+  <!-- API SERVER -->
+  <rect x="384" y="460" width="200" height="120" rx="6" fill="#FFFFFF" stroke="#0B1E3B" stroke-width="1"></rect>
+  <text x="484" y="500" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="16" font-weight="600" fill="#0B1E3B">API SERVER</text>
+  <text x="484" y="524" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-size="14" fill="#8A8D90">the only door in</text>
+  <text x="484" y="548" text-anchor="middle" font-family="'Fira Mono', monospace" font-size="14" fill="#8A8D90">kube-apiserver</text>
 
-      <!-- ===== Caption ===== -->
-      <text x="260" y="552" fill="#8A8D90" font-size="16" font-style="italic" font-family="'Fira Sans', sans-serif" text-anchor="middle">no start. no end. no exit condition.</text>
+  <!-- Caption -->
+  <text x="320" y="624" text-anchor="middle" font-family="'Fira Sans', sans-serif" font-style="italic" font-size="16" fill="#0B1E3B">no start. no end. no exit condition.</text>
 
-      <!-- ===== Legend ===== -->
-      <line x1="40" y1="596" x2="480" y2="596" stroke="#8A8D90" stroke-width="0.8"></line>
-      <text x="40" y="616" fill="#1F4A4E" font-size="14" font-weight="500" font-family="'Fira Mono', monospace" text-anchor="start" letter-spacing="0.12em">LEGEND</text>
+  <!-- Legend -->
+  <line x1="56" y1="664" x2="584" y2="664" stroke="rgba(11,30,59,0.12)" stroke-width="0.8"></line>
+  <text x="56" y="696" font-family="'Fira Mono', monospace" font-size="14" font-weight="500" letter-spacing="0.12em" fill="#8A8D90">LEGEND</text>
 
-      <line x1="40" y1="628" x2="64" y2="628" stroke="#B58B3E" stroke-width="2.8"></line>
-      <line x1="40" y1="636" x2="64" y2="636" stroke="#B58B3E" stroke-width="2.8"></line>
-      <text x="72" y="640" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="start">CLOSED LOOP</text>
+  <rect x="140" y="688" width="16" height="16" fill="rgba(181,139,62,0.10)" stroke="#B58B3E" stroke-width="1"></rect>
+  <text x="164" y="696" text-anchor="start" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">THE STORE</text>
 
-      <line x1="280" y1="632" x2="304" y2="632" stroke="#1F4A4E" stroke-width="1.5"></line>
-      <text x="312" y="640" fill="#1F4A4E" font-size="14" font-family="'Fira Mono', monospace" text-anchor="start">FIXED INPUT</text>
-    </svg>
+  <line x1="272" y1="696" x2="296" y2="696" stroke="#1F4A4E" stroke-width="2"></line>
+  <text x="304" y="696" text-anchor="start" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">OBSERVE</text>
+
+  <line x1="392" y1="696" x2="416" y2="696" stroke="#0B1E3B" stroke-width="2"></line>
+  <text x="424" y="696" text-anchor="start" font-family="'Fira Mono', monospace" font-size="14" fill="#0B1E3B">ACT / WRITE</text>
+</svg>

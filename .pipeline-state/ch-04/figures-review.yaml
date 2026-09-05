@@ -119,7 +119,7 @@ figures:
       geometry matches a comparison-table diagram type.
     suggested_fix: ''
 - anchor_id: ch04-fig03-labels-selectors-join
-  status: approved
+  status: approved  # 2026-09-05: cosmetic label nit recorded in the hint below; author chose not to regenerate approved renders
   render_paths:
     svg: figures/ch04-fig03-labels-selectors-join.svg
     png: figures/ch04-fig03-labels-selectors-join.png
@@ -132,11 +132,18 @@ figures:
     aspect_ratio: pass
     grayscale_legibility: pass
     alt_text_present: pass
-  regenerate_hint: Draw connector lines (or an overlap/Venn-style grouping) from each
-    Pod card down to every selector result it belongs to, and bold/brass-highlight
-    the 'A' glyph specifically within the three result sets it appears in, so the
-    recurrence is visible without re-reading each line.
-  review_notes: ''
+  regenerate_hint: 'Layout defects to fix from the last render: (1) the legend''s
+    third entry (''Pod D - matches no selector'') was clipped at the right edge: wrap
+    the legend onto two rows, or narrow the entries, so every legend entry is fully
+    inside the frame with a margin; (2) there were roughly 200 px of empty cream above
+    the OBJECTS heading: the SVG viewBox must fit the content tightly with even margins
+    on all four sides; (3) the SVG must be well-formed XML (one root svg element,
+    every tag closed, ampersands escaped) so the validators can parse it. Keep the
+    current design otherwise: four Pod cards in a row, four selector rows beneath
+    with connector lines from each card down to every set it belongs to, Pod A in
+    brass in its three sets, Pod D dashed and fog with no connectors. US spelling
+    (''labeled'').'
+  review_notes: '2026-09-04 chapter audit: regenerate requested; see regenerate_hint.'
   last_applied_hash: null
   ai_review:
     verdict: looks_good

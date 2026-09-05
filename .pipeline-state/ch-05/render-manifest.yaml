@@ -202,13 +202,13 @@ figures:
 
       ┌─ POD  phase: Running ──────────────────────────────────────┐
 
-      │   ┌─ app     state: Running    ─────────────────────────┐  │
+      │   ┌─ app     state: Running                             ┐  │
 
-      │   └────────────────────────────────────────────────────-┘  │
+      │   └─────────────────────────────────────────────────────┘  │
 
-      │   ┌─ helper  state: Waiting    Reason: ImagePullBackOff ┐   │
+      │   ┌─ helper  state: Waiting   Reason: CrashLoopBackOff   ┐  │
 
-      │   └─────────────────────────────────────────────────────┘   │
+      │   └─────────────────────────────────────────────────────┘  │
 
       └─────────────────────────────────────────────────────────────┘
 
@@ -235,7 +235,7 @@ figures:
         Failed and Unknown, and nested inside it two container boxes each show three
         states Waiting, Running and Terminated; a second panel shows a real instant
         where the Pod's phase is Running while its helper container's state is Waiting
-        with reason ImagePullBackOff
+        with reason CrashLoopBackOff
     rendering_hints:
       preferred_orientation: portrait
       grayscale_critical: true

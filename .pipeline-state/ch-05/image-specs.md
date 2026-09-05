@@ -224,12 +224,12 @@ copyright_clearance:
 **Type:** two-panel nested state diagram (schematic panel above, worked instance panel below)
 
 **Content specification:**
-Two stacked panels. The **upper panel** is a large box labelled **POD**. Along its top runs the Pod-scoped vocabulary on one line: **`status.phase:`** followed by a transition chain **`Pending → Running → Succeeded`**, with a second branch dropping from `Running` to **`Failed`**, and a third entry beneath reading **`(any) → Unknown`** to show that Unknown is reachable from anywhere. Below that, still *inside* the POD box, sit two nested sub-boxes: **`container: app`** and **`container: helper`**. Each nested box carries its own separate vocabulary line: **`state: Waiting → Running → Terminated`**. Under the `app` box's chain only, add the per-state payload annotations aligned beneath their states — **`(+Reason)`** under Waiting, **`(+startedAt)`** under Running, **`(+exitCode)`** under Terminated. The **lower panel** is headed **"WORKED OVERLAY — both readings are legitimate"** and shows one concrete instant: a POD box labelled **`phase: Running`** containing two boxes, **`app  state: Running`** and **`helper  state: Waiting   Reason: ImagePullBackOff`**. The pedagogy is the **nesting**: phase and state must never appear as side-by-side peer lists, because the surrounding prose says explicitly that a side-by-side reading means "the figure has failed and so has the model." The lower panel's job is to make the apparent contradiction — Pod `Running`, container `Waiting` — look obviously non-contradictory once the scopes are nested.
+Two stacked panels. The **upper panel** is a large box labelled **POD**. Along its top runs the Pod-scoped vocabulary on one line: **`status.phase:`** followed by a transition chain **`Pending → Running → Succeeded`**, with a second branch dropping from `Running` to **`Failed`**, and a third entry beneath reading **`(any) → Unknown`** to show that Unknown is reachable from anywhere. Below that, still *inside* the POD box, sit two nested sub-boxes: **`container: app`** and **`container: helper`**. Each nested box carries its own separate vocabulary line: **`state: Waiting → Running → Terminated`**. Under the `app` box's chain only, add the per-state payload annotations aligned beneath their states — **`(+Reason)`** under Waiting, **`(+startedAt)`** under Running, **`(+exitCode)`** under Terminated. The **lower panel** is headed **"WORKED OVERLAY — both readings are legitimate"** and shows one concrete instant: a POD box labelled **`phase: Running`** containing two boxes, **`app  state: Running`** and **`helper  state: Waiting   Reason: CrashLoopBackOff`**. The pedagogy is the **nesting**: phase and state must never appear as side-by-side peer lists, because the surrounding prose says explicitly that a side-by-side reading means "the figure has failed and so has the model." The lower panel's job is to make the apparent contradiction — Pod `Running`, container `Waiting` — look obviously non-contradictory once the scopes are nested.
 
 **Visual style:**
 - Palette: inherit book default
 - Size (pixels): 1000x760 portrait
-- Font: inherit book default (Fira Mono for every phase and state value, and for `ImagePullBackOff`, `Reason`, `startedAt`, `exitCode`, `status.phase`)
+- Font: inherit book default (Fira Mono for every phase and state value, and for `CrashLoopBackOff`, `Reason`, `startedAt`, `exitCode`, `status.phase`)
 - Accent color for highlighted elements: Brass `#B58B3E` on the lower panel's `phase: Running` label
 
 **Critical details (non-negotiable accuracy):**
@@ -240,6 +240,7 @@ Two stacked panels. The **upper panel** is a large box labelled **POD**. Along i
 - A Pod with two containers has **one** phase and **two** states. The count asymmetry must be visible.
 - The payload annotations are per-state and correct as paired: Waiting carries a `Reason`, Running carries `startedAt`, Terminated carries an exit code (plus reason and start/finish times).
 - In the worked overlay the Pod is `Running` while a container is `Waiting`. This is the single most consequential fact in the chapter and must not be "tidied" into agreement.
+- The Waiting reason in the overlay is `CrashLoopBackOff`, never `ImagePullBackOff` (revised 2026-09-04): an image that was never pulled means a container that was never created, and the chapter's quoted definition of `Running` requires every container to have been created — that Pod is `Pending`. CrashLoopBackOff is a created container waiting between restarts, the one pairing the prose licenses.
 - The source ASCII at draft line 408 contains a stray hyphen in a box border (`────-┘`). That is a drafting artifact; do not reproduce it.
 
 **Source ASCII (for designer reference):**
@@ -262,10 +263,10 @@ Two stacked panels. The **upper panel** is a large box labelled **POD**. Along i
 WORKED OVERLAY — both readings are legitimate:
 
 ┌─ POD  phase: Running ──────────────────────────────────────┐
-│   ┌─ app     state: Running    ─────────────────────────┐  │
-│   └────────────────────────────────────────────────────-┘  │
-│   ┌─ helper  state: Waiting    Reason: ImagePullBackOff ┐   │
-│   └─────────────────────────────────────────────────────┘   │
+│   ┌─ app     state: Running                             ┐  │
+│   └─────────────────────────────────────────────────────┘  │
+│   ┌─ helper  state: Waiting   Reason: CrashLoopBackOff   ┐  │
+│   └─────────────────────────────────────────────────────┘  │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -293,10 +294,10 @@ source_ascii: |2
   WORKED OVERLAY — both readings are legitimate:
 
   ┌─ POD  phase: Running ──────────────────────────────────────┐
-  │   ┌─ app     state: Running    ─────────────────────────┐  │
-  │   └────────────────────────────────────────────────────-┘  │
-  │   ┌─ helper  state: Waiting    Reason: ImagePullBackOff ┐   │
-  │   └─────────────────────────────────────────────────────┘   │
+  │   ┌─ app     state: Running                             ┐  │
+  │   └─────────────────────────────────────────────────────┘  │
+  │   ┌─ helper  state: Waiting   Reason: CrashLoopBackOff   ┐  │
+  │   └─────────────────────────────────────────────────────┘  │
   └─────────────────────────────────────────────────────────────┘
 vendor_terms: [pod, container]
 complexity_hint:
@@ -309,7 +310,7 @@ pedagogy:
   fixed_point_emphasis: true
   fixed_point_emphasis_target: "the 'phase: Running' label in the worked overlay panel"
 accessibility:
-  alt_text_seed: "A Pod box shows five phase values Pending, Running, Succeeded, Failed and Unknown, and nested inside it two container boxes each show three states Waiting, Running and Terminated; a second panel shows a real instant where the Pod's phase is Running while its helper container's state is Waiting with reason ImagePullBackOff"
+  alt_text_seed: "A Pod box shows five phase values Pending, Running, Succeeded, Failed and Unknown, and nested inside it two container boxes each show three states Waiting, Running and Terminated; a second panel shows a real instant where the Pod's phase is Running while its helper container's state is Waiting with reason CrashLoopBackOff"
 rendering_hints:
   preferred_orientation: portrait
   grayscale_critical: true

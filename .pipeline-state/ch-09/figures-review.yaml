@@ -60,7 +60,7 @@ figures:
       with its own CNAME diagram below.
     suggested_fix: ''
 - anchor_id: ch09-fig03-service-endpointslice-selector-path
-  status: approved
+  status: regenerate
   render_paths:
     svg: figures/ch09-fig03-service-endpointslice-selector-path.svg
     png: figures/ch09-fig03-service-endpointslice-selector-path.png
@@ -73,8 +73,20 @@ figures:
     aspect_ratio: pass
     grayscale_legibility: pass
     alt_text_present: pass
-  regenerate_hint: ''
-  review_notes: ''
+  regenerate_hint: 'The EndpointSlice must LIST all three matching Pods, each as address:5432
+    with its ready condition on the same row: ''10.244.1.7:5432  ready: true'', ''10.244.4.2:5432  ready:
+    true'', ''10.244.4.9:5432  ready: false''. Readiness does not remove an endpoint;
+    it disqualifies it from traffic. So the Ready? gate sits AFTER the slice, on the
+    traffic path: the two ready: true rows pass through the gate to an arrow labeled
+    ''traffic''; the ready: false row''s arrow is stopped at the gate face with a
+    brass terminus. All three matching Pods send a ''matches'' arrow INTO the slice
+    (the not-Ready one too, annotated ''NOT Ready''). The cache Pod (app: cache) never
+    matched the selector and is not in the slice at all: draw it dashed and fog with
+    no arrow, as before. The EndpointSlice controller callout stays beneath, watching
+    Services + Pods and writing the slice (dashed). Legend entries: ''LISTED - MATCHES
+    SELECTOR'', ''TRAFFIC - READY'', ''STOPPED AT GATE - READY: FALSE'', ''EXCLUDED
+    - NO MATCH'', ''WATCH / WRITE''. US spelling.'
+  review_notes: '2026-09-04 chapter audit: regenerate requested; see regenerate_hint.'
   last_applied_hash: null
   ai_review:
     verdict: looks_good
@@ -92,7 +104,7 @@ figures:
       ''FOCAL — READINESS GATE'' entry.'
     suggested_fix: ''
 - anchor_id: ch09-fig04-kube-proxy-modes
-  status: approved
+  status: approved  # 2026-09-05: cosmetic label nit recorded in the hint below; author chose not to regenerate approved renders
   render_paths:
     svg: figures/ch09-fig04-kube-proxy-modes.svg
     png: figures/ch09-fig04-kube-proxy-modes.png
@@ -105,8 +117,19 @@ figures:
     aspect_ratio: pass
     grayscale_legibility: pass
     alt_text_present: pass
-  regenerate_hint: ''
-  review_notes: ''
+  regenerate_hint: 'kube-proxy is a per-node component (one Pod of a DaemonSet on
+    every node), NOT a control-plane component. Draw the kube-proxy box INSIDE the
+    ''NODE: WORKER-3'' boundary, with two dashed WATCHES arrows going up across the
+    boundary to the Service and EndpointSlice objects and one solid PROGRAMS arrow
+    down into the rules layer. Label the band above the boundary ''API OBJECTS'' (they
+    are served by the API server); the words ''CONTROL PLANE'' must not appear. kube-proxy
+    stays off the packet path: the frontend Pod''s traffic goes to the ghost cluster-IP
+    box, then through the rules layer. Keep everything else from the previous render:
+    the brass dashed ghost box ''10.96.0.42 (nothing is here)'' with its ''No process.
+    No socket.'' note, the rules layer listing the four modes with iptables marked
+    default, the ''readdressed'' arrows to 10.244.1.7 (same node) and 10.244.4.2 (on
+    worker-11), and the legend.'
+  review_notes: '2026-09-04 chapter audit: regenerate requested; see regenerate_hint.'
   last_applied_hash: null
   ai_review:
     verdict: looks_good

@@ -695,7 +695,7 @@ The vertical boundary is the point of the figure and takes the accent. It must r
      │         │        │         │          │      │      │
      ▼         ▼        ▼         ▼          ▼      │      ▼
    image     known    binds     append-    private  │   admission
-   +digest   CVEs     to the    only log   registry │   controller
+   +digest   vulns    to the    only log   registry │   controller
    +SBOM              DIGEST                        │
                         ▲                           │   ▲
      ┌──────────────────┴─────────────┐             │   │
@@ -704,8 +704,8 @@ The vertical boundary is the point of the figure and takes the accent. It must r
      │  the whole length of the chain │             │   │
      └────────────────────────────────┘             │   │
                                                     │   │
-   Trivy, Harbor    Cosign     Rekor    Harbor,     │  Kyverno,
-   scanners         Notation            imagePull-  │  Gatekeeper,
+   Harbor,          Cosign     Rekor    Harbor,     │  Kyverno,
+   image scanners   Notation            imagePull-  │  Gatekeeper,
                     Fulcio              Secrets     │  Policy
                                                     │  Controller
                                                     │
@@ -728,7 +728,7 @@ source_ascii: |2
        │         │        │         │          │      │      │
        ▼         ▼        ▼         ▼          ▼      │      ▼
      image     known    binds     append-    private  │   admission
-     +digest   CVEs     to the    only log   registry │   controller
+     +digest   vulns    to the    only log   registry │   controller
      +SBOM              DIGEST                        │
                           ▲                           │   ▲
        ┌──────────────────┴─────────────┐             │   │
@@ -737,8 +737,8 @@ source_ascii: |2
        │  the whole length of the chain │             │   │
        └────────────────────────────────┘             │   │
                                                       │   │
-     Trivy, Harbor    Cosign     Rekor    Harbor,     │  Kyverno,
-     scanners         Notation            imagePull-  │  Gatekeeper,
+     Harbor,          Cosign     Rekor    Harbor,     │  Kyverno,
+     image scanners   Notation            imagePull-  │  Gatekeeper,
                       Fulcio              Secrets     │  Policy
                                                       │  Controller
                                                       │

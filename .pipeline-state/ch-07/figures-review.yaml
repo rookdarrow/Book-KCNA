@@ -3,7 +3,7 @@ book: kcna
 generated: '2026-09-01T14:56:33+00:00'
 figures:
 - anchor_id: ch07-fig01-filter-score-bind
-  status: pending
+  status: regenerate
   render_paths:
     svg: figures/ch07-fig01-filter-score-bind.svg
     png: figures/ch07-fig01-filter-score-bind.png
@@ -16,9 +16,17 @@ figures:
     aspect_ratio: pass
     grayscale_legibility: pass
     alt_text_present: pass
-  regenerate_hint: Thicken the kube-scheduler→kube-apiserver arrow stroke (or add
-    a double line / bold outline) so the fixed point reads even without color.
-  review_notes: ''
+  regenerate_hint: 'Two fixes. (1) In the SCORE stage the winner highlight must enclose
+    only the ''node-c 91'' row: in the last render its box extended down through the
+    ''node-e 68'' row, which made node-e look struck out, and node-e is a valid, lower-scored
+    candidate. (2) The last render was 1520x2736 (aspect 0.56), far taller than 3:4.
+    Bring the aspect to between 3:4 and 1:1 by setting the three stages 1 FILTER,
+    2 SCORE, 3 BIND side by side in ONE ROW left to right, as the ASCII draws them,
+    with the UNBOUND POD box centered above them and the dashed ''separate actor,
+    separate moment, separate arrow'' divider plus the kubelet-on-node-c panel beneath.
+    Brass only on the thick kube-scheduler -> kube-apiserver ASSIGNS arrow inside
+    BIND and on its legend entry; every other arrow teal. No type below 14px.'
+  review_notes: '2026-09-04 chapter audit: regenerate requested; see regenerate_hint.'
   last_applied_hash: null
   ai_review:
     verdict: concerns
@@ -97,7 +105,7 @@ figures:
     fixed_point_visible_detail: ''
     suggested_fix: ''
 - anchor_id: ch07-fig04-pod-affinity-anti-affinity-topology
-  status: approved
+  status: approved  # 2026-09-05: cosmetic label nit recorded in the hint below; author chose not to regenerate approved renders
   render_paths:
     svg: figures/ch07-fig04-pod-affinity-anti-affinity-topology.svg
     png: figures/ch07-fig04-pod-affinity-anti-affinity-topology.png
@@ -110,8 +118,14 @@ figures:
     aspect_ratio: pass
     grayscale_legibility: pass
     alt_text_present: pass
-  regenerate_hint: ''
-  review_notes: ''
+  regenerate_hint: 'US spelling only: the title line must read ''no two Pods labeled
+    app=web in one domain'' (labeled, not labelled). Keep the current design exactly
+    as rendered before: two stacked panels (hostname above, zone below), identical
+    six-node two-zone clusters, brass [web] tags on all six nodes in the upper panel
+    and on n1 and n4 only in the lower one, the two result lines, and the footer ''One
+    label key changed. The rule''s meaning changed with it.'' Change nothing but the
+    spelling.'
+  review_notes: '2026-09-04 chapter audit: regenerate requested; see regenerate_hint.'
   last_applied_hash: null
   ai_review:
     verdict: looks_good

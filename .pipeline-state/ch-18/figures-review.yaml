@@ -3,7 +3,7 @@ book: kcna
 generated: '2026-09-01T15:39:48+00:00'
 figures:
 - anchor_id: ch18-fig01-monitoring-vs-observability
-  status: approved
+  status: approved  # 2026-09-05: cosmetic label nit recorded in the hint below; author chose not to regenerate approved renders
   render_paths:
     svg: figures/ch18-fig01-monitoring-vs-observability.svg
     png: figures/ch18-fig01-monitoring-vs-observability.png
@@ -16,9 +16,13 @@ figures:
     aspect_ratio: pass
     grayscale_legibility: pass
     alt_text_present: pass
-  regenerate_hint: Add a non-color signal to the 02:10-to-Open-Query stem and the
-    Open Query box — thicken that arrow's stroke and/or give Open Query a double border
-    — so the fixed point reads even without color.
+  regenerate_hint: 'Text fidelity: the DASHBOARD box must read ''answers the questions
+    you picked'' - no numeral (three indicator boxes sit above it, and the chapter
+    never says four). Keep the two-column layout: MONITORING / known unknowns passing
+    through the three fixed indicators CPU, mem and 5xx into a DASHBOARD; OBSERVABILITY
+    / unknown unknowns running straight from the 02:10 AM question into an OPEN QUERY
+    with no indicator layer; both above THE RUNNING SYSTEM. The right column''s unbroken
+    stem and the OPEN QUERY box are the brass focal element.'
   review_notes: ''
   last_applied_hash: null
   ai_review:
@@ -64,7 +68,7 @@ figures:
       diagram: three peer inputs converging into a collector that exports onward.'
     suggested_fix: ''
 - anchor_id: ch18-fig04-prometheus-pull-architecture
-  status: approved
+  status: approved  # 2026-09-05: cosmetic label nit recorded in the hint below; author chose not to regenerate approved renders
   render_paths:
     svg: figures/ch18-fig04-prometheus-pull-architecture.svg
     png: figures/ch18-fig04-prometheus-pull-architecture.png
@@ -77,8 +81,13 @@ figures:
     aspect_ratio: pass
     grayscale_legibility: pass
     alt_text_present: pass
-  regenerate_hint: Collapse Alertmanager and Grafana into a single 'downstream consumers'
-    box (or drop one scrape target) to bring the label count to <=7.
+  regenerate_hint: 'Text fidelity: the GRAFANA box reads ''GRAFANA / dashboards''
+    and nothing else - do NOT annotate it with foundation membership (''not CNCF''
+    or similar); the chapter deliberately avoids that. Keep the hub layout: four brass
+    scrape arrows radiating out from the PROMETHEUS SERVER to SERVICE DISCOVERY, the
+    instrumented app, the EXPORTER and the PUSHGATEWAY; the single narrow inbound
+    push from a short batch job into the PUSHGATEWAY; and the push-alerts and HTTP
+    API edges to ALERTMANAGER and GRAFANA.'
   review_notes: ''
   last_applied_hash: null
   ai_review:
@@ -129,7 +138,7 @@ figures:
       on the time axis (with a minimum visible width) instead of collapsing into vertical
       capsule glyphs when duration is small.
 - anchor_id: ch18-fig06-cluster-logging-architectures
-  status: approved
+  status: approved  # 2026-09-05: cosmetic label nit recorded in the hint below; author chose not to regenerate approved renders
   render_paths:
     svg: figures/ch18-fig06-cluster-logging-architectures.svg
     png: figures/ch18-fig06-cluster-logging-architectures.png
@@ -142,7 +151,14 @@ figures:
     aspect_ratio: pass
     grayscale_legibility: pass
     alt_text_present: pass
-  regenerate_hint: ''
+  regenerate_hint: 'Text fidelity in panel 1 (NODE-LEVEL AGENT): the node-filesystem
+    step must read ''each container''s stdout/stderr -> its own log file on the node''
+    - never ''one node log file'' or any wording implying the Pods share a single
+    file. The DaemonSet agent reads those files and forwards them. Keep the three
+    stacked panels (node-level agent, sidecar in the Pod, app pushes directly) all
+    feeding one LOGGING BACKEND, with panel 1''s agent box and its connector as the
+    brass focal element, and keep the trade-off notes (''the default answer'', ''one
+    collector PER POD'', ''app must know about the backend'').'
   review_notes: ''
   last_applied_hash: null
   ai_review:

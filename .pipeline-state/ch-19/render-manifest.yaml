@@ -21,20 +21,17 @@ figures:
   figure_spec:
     anchor_id: ch19-fig01-cross-domain-integration-map
     diagram_type: concept_map
-    source_ascii: "            Ch:  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17\
-      \ 18\n                 │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │\nSTRUCTURAL\
-      \ TIER  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │\n1 control loop  \
-      \ │  ●──┼──┼──●──┼──┼──┼──┼──●──┼──┼──┼──●──┼──●──┤\n2 scope boundary │  │ \
-      \ ●──┼──┼──┼──●──┼──┼──┼──●──┼──┼──┼──┼──┼──┤\n3 absent compnt  │  ●──┼──┼──●──┼──┼──┼──●──●──┼──●──┼──┼──●──●──┤\n\
-      \                 │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │\nINTERFACE\
-      \ TIER   │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │\n4 declarative  \
-      \  │  │  ●──┼──●──┼──┼──┼──┼──┼──┼──┼──●──●──┼──┼──┤\n5 label join     │  │\
-      \  ●──┼──●──●──┼──●──●──┼──●──┼──┼──●──┼──┤\n6 pluggability   ●──┼──┼──┼──●──┼──┼──●──┼──●──┼──┼──┼──┼──┼──●──┤\n\
-      \                 │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │\nPOLICY\
-      \ TIER      │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │\n7 identity  \
-      \     │  │  │  ●──┼──┼──┼──┼──┼──┼──●──┼──┼──●──┼──┼──┤\n8 requests/limits│\
-      \  │  │  ●──┼──●──┼──┼──┼──┼──┼──●──┼──┼──┼──●──●\n9 additive/allow │  │  │\
-      \  │  │  │  │  │  ●──┼──●──┼──┼──┼──┼──┼──┤\n"
+    source_ascii: "              Ch:   2  3  4  5  6  7  8  9 10 11 12 13 14 15 16\
+      \ 17 18\n\n  STRUCTURAL TIER\n1 control loop      ·  ●  ●  ·  ●  ·  ·  ·  ·\
+      \  ●  ·  ·  ·  ●  ·  ●  ·\n2 scope boundary    ·  ·  ●  ·  ·  ·  ●  ·  ·  ·\
+      \  ●  ·  ·  ·  ·  ·  ·\n3 absent component  ·  ●  ·  ·  ·  ·  ·  ·  ●  ●  ·\
+      \  ●  ·  ·  ·  ●  ●\n\n  INTERFACE TIER\n4 declarative       ·  ·  ●  ·  ● \
+      \ ·  ·  ·  ·  ·  ·  ·  ●  ●  ·  ·  ·\n5 label join        ·  ·  ●  ·  ●  ● \
+      \ ·  ●  ●  ·  ●  ·  ·  ·  ●  ·  ·\n6 pluggability      ●  ·  ·  ·  ●  ·  · \
+      \ ●  ·  ●  ·  ·  ·  ·  ·  ●  ·\n\n  POLICY TIER\n7 identity          ·  ·  ·\
+      \  ●  ·  ·  ·  ·  ·  ·  ●  ·  ·  ●  ·  ·  ·\n8 requests/limits   ·  ·  ·  ●\
+      \  ·  ●  ·  ·  ·  ·  ·  ●  ·  ·  ·  ●  ●\n9 additive/allow    ·  ·  ·  ·  ·\
+      \  ·  ·  ·  ●  ·  ●  ·  ·  ·  ·  ·  ·\n"
     vendor_terms: []
     complexity_hint:
       node_count: 26

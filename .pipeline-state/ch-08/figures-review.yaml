@@ -65,22 +65,31 @@ figures:
     suggested_fix: Merge each gate's badge and name into a single label (e.g. 'GATE
       1 · Authentication') to cut the distinct-label count from 10 to 7.
 - anchor_id: ch08-fig05-quota-vs-limitrange
-  status: pending
+  status: approved  # 2026-09-04 coordinator review: render matches the chapter; promoted to figures/ and applied
   render_paths:
     svg: figures/ch08-fig05-quota-vs-limitrange.svg
     png: figures/ch08-fig05-quota-vs-limitrange.png
   source_path: figures/sources/ch08-fig05-quota-vs-limitrange.html
   validation_results:
-    label_count: pass
+    label_count: fail
     palette_conformance: pass
     min_font_size: pass
     max_dimensions: pass
     aspect_ratio: pass
     grayscale_legibility: pass
     alt_text_present: pass
-  regenerate_hint: Lay out the two panels side by side (ResourceQuota left, LimitRange
-    right) instead of stacked top/bottom, per the spec's alt_text_seed.
-  review_notes: ''
+  regenerate_hint: 'Both panels must sit inside an IDENTICAL dashed namespace boundary
+    labeled ''namespace: team-atlas''. LimitRange is a namespaced object, so the words
+    ''(no namespace boundary)'' must not appear anywhere. The discrimination is what
+    is counted: left, one aggregate bar ''namespace total - AT CAP'' spanning the
+    four Pods; right, a ''min <= x <= max'' bound drawn inside each of the four Pods.
+    Keep the panels side by side (ResourceQuota left, LimitRange right) on a shared
+    baseline so the Pod rows align. Fill the two arriving-Pod boxes with real content
+    instead of empty dashed placeholders: left ''5th Pod'' with the outcome ''REJECTED
+    - the namespace total is reached''; right ''5th Pod, declares nothing'' with the
+    outcome ''ACCEPTED - defaults filled in''. REJECTED and ACCEPTED typographically
+    parallel. No oxblood (this is not a hazard). Aspect near 3:4 to 1:1.'
+  review_notes: '2026-09-04 chapter audit: regenerate requested; see regenerate_hint.'
   last_applied_hash: null
   ai_review:
     verdict: concerns

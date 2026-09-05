@@ -232,7 +232,7 @@ figures:
   figure_spec:
     anchor_id: ch07-fig04-pod-affinity-anti-affinity-topology
     diagram_type: k8s_architecture
-    source_ascii: 'SAME CLUSTER. SAME RULE: "no two Pods labelled app=web in one domain."
+    source_ascii: 'SAME CLUSTER. SAME RULE: "no two Pods labeled app=web in one domain."
 
       THE ONLY DIFFERENCE IS THE topologyKey.
 

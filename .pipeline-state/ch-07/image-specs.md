@@ -352,7 +352,7 @@ copyright_clearance:
 **Type:** side-by-side cluster topology comparison (identical cluster, two domain definitions)
 
 **Content specification:**
-A two-panel comparison under a shared two-line title: *"SAME CLUSTER. SAME RULE: 'no two Pods labelled app=web in one domain.'"* and *"THE ONLY DIFFERENCE IS THE topologyKey."* Each panel carries a two-line header: left = `topologyKey: kubernetes.io/hostname` over *"a domain = one node"*; right = `topologyKey: topology.kubernetes.io/zone` over *"a domain = one zone"*. Each panel contains two stacked bordered boxes labelled `zone-a` (top) and `zone-b` (bottom). Inside `zone-a` sit three node tokens `n1 n2 n3`; inside `zone-b`, `n4 n5 n6`. In the **left** panel, every one of the six nodes carries a `[web]` Pod tag. In the **right** panel, only `n1` and `n4` carry a `[web]` tag; `n2`, `n3`, `n5`, `n6` are bare. Below each panel, a result line: left *"6 domains → up to 6 Pods placed"*; right *"2 domains → at most 2 Pods placed"*. A single footer line spans both panels: *"One label key changed. The rule's meaning changed with it."* The reader must be able to see at a glance that the two panels contain the identical cluster and that only the density of `[web]` tags differs.
+A two-panel comparison under a shared two-line title: *"SAME CLUSTER. SAME RULE: 'no two Pods labeled app=web in one domain.'"* and *"THE ONLY DIFFERENCE IS THE topologyKey."* Each panel carries a two-line header: left = `topologyKey: kubernetes.io/hostname` over *"a domain = one node"*; right = `topologyKey: topology.kubernetes.io/zone` over *"a domain = one zone"*. Each panel contains two stacked bordered boxes labeled `zone-a` (top) and `zone-b` (bottom). Inside `zone-a` sit three node tokens `n1 n2 n3`; inside `zone-b`, `n4 n5 n6`. In the **left** panel, every one of the six nodes carries a `[web]` Pod tag. In the **right** panel, only `n1` and `n4` carry a `[web]` tag; `n2`, `n3`, `n5`, `n6` are bare. Below each panel, a result line: left *"6 domains → up to 6 Pods placed"*; right *"2 domains → at most 2 Pods placed"*. A single footer line spans both panels: *"One label key changed. The rule's meaning changed with it."* The reader must be able to see at a glance that the two panels contain the identical cluster and that only the density of `[web]` tags differs.
 
 **Visual style:**
 - Palette: inherit book default — Navy `#0B1E3B` for zone borders and node tokens, Teal `#1F4A4E` for the panel headers and the `topologyKey` strings, Cream `#F5EFE4` ground, Fog `#8A8D90` for the bare (untagged) nodes in the right panel
@@ -370,24 +370,24 @@ A two-panel comparison under a shared two-line title: *"SAME CLUSTER. SAME RULE:
 
 **Source ASCII (for designer reference):**
 ```
-   SAME CLUSTER. SAME RULE: "no two Pods labelled app=web in one domain."
-   THE ONLY DIFFERENCE IS THE topologyKey.
+SAME CLUSTER. SAME RULE: "no two Pods labeled app=web in one domain."
+THE ONLY DIFFERENCE IS THE topologyKey.
 
-   topologyKey: kubernetes.io/hostname       topologyKey: topology.kubernetes.io/zone
-   a domain = one node                       a domain = one zone
+topologyKey: kubernetes.io/hostname       topologyKey: topology.kubernetes.io/zone
+a domain = one node                       a domain = one zone
 
-   ┌── zone-a ──────────────────┐            ┌── zone-a ──────────────────┐
-   │  n1 [web]   n2 [web]       │            │  n1 [web]   n2      n3     │
-   │  n3 [web]                  │            │                            │
-   └────────────────────────────┘            └────────────────────────────┘
-   ┌── zone-b ──────────────────┐            ┌── zone-b ──────────────────┐
-   │  n4 [web]   n5 [web]       │            │  n4 [web]   n5      n6     │
-   │  n6 [web]                  │            │                            │
-   └────────────────────────────┘            └────────────────────────────┘
+┌── zone-a ──────────────────┐            ┌── zone-a ──────────────────┐
+│  n1 [web]   n2 [web]       │            │  n1 [web]   n2      n3     │
+│  n3 [web]                  │            │                            │
+└────────────────────────────┘            └────────────────────────────┘
+┌── zone-b ──────────────────┐            ┌── zone-b ──────────────────┐
+│  n4 [web]   n5 [web]       │            │  n4 [web]   n5      n6     │
+│  n6 [web]                  │            │                            │
+└────────────────────────────┘            └────────────────────────────┘
 
-   6 domains  →  up to 6 Pods placed         2 domains  →  at most 2 Pods placed
+6 domains  →  up to 6 Pods placed         2 domains  →  at most 2 Pods placed
 
-   One label key changed. The rule's meaning changed with it.
+One label key changed. The rule's meaning changed with it.
 ```
 
 **Proposed filename:** `ch07-fig04-pod-affinity-anti-affinity-topology.png`
@@ -395,25 +395,25 @@ A two-panel comparison under a shared two-line title: *"SAME CLUSTER. SAME RULE:
 ```yaml-figure-spec
 anchor_id: ch07-fig04-pod-affinity-anti-affinity-topology
 diagram_type: k8s_architecture
-source_ascii: |5
-     SAME CLUSTER. SAME RULE: "no two Pods labelled app=web in one domain."
-     THE ONLY DIFFERENCE IS THE topologyKey.
+source_ascii: |2
+  SAME CLUSTER. SAME RULE: "no two Pods labeled app=web in one domain."
+  THE ONLY DIFFERENCE IS THE topologyKey.
 
-     topologyKey: kubernetes.io/hostname       topologyKey: topology.kubernetes.io/zone
-     a domain = one node                       a domain = one zone
+  topologyKey: kubernetes.io/hostname       topologyKey: topology.kubernetes.io/zone
+  a domain = one node                       a domain = one zone
 
-     ┌── zone-a ──────────────────┐            ┌── zone-a ──────────────────┐
-     │  n1 [web]   n2 [web]       │            │  n1 [web]   n2      n3     │
-     │  n3 [web]                  │            │                            │
-     └────────────────────────────┘            └────────────────────────────┘
-     ┌── zone-b ──────────────────┐            ┌── zone-b ──────────────────┐
-     │  n4 [web]   n5 [web]       │            │  n4 [web]   n5      n6     │
-     │  n6 [web]                  │            │                            │
-     └────────────────────────────┘            └────────────────────────────┘
+  ┌── zone-a ──────────────────┐            ┌── zone-a ──────────────────┐
+  │  n1 [web]   n2 [web]       │            │  n1 [web]   n2      n3     │
+  │  n3 [web]                  │            │                            │
+  └────────────────────────────┘            └────────────────────────────┘
+  ┌── zone-b ──────────────────┐            ┌── zone-b ──────────────────┐
+  │  n4 [web]   n5 [web]       │            │  n4 [web]   n5      n6     │
+  │  n6 [web]                  │            │                            │
+  └────────────────────────────┘            └────────────────────────────┘
 
-     6 domains  →  up to 6 Pods placed         2 domains  →  at most 2 Pods placed
+  6 domains  →  up to 6 Pods placed         2 domains  →  at most 2 Pods placed
 
-     One label key changed. The rule's meaning changed with it.
+  One label key changed. The rule's meaning changed with it.
 vendor_terms: [kubernetes-node, kubernetes-pod]
 complexity_hint:
   node_count: 16

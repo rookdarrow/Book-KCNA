@@ -549,6 +549,9 @@ Definitions are easy to swap. Questions are harder. If you can answer these two 
 > ★ **Fixed Point:** **ResourceQuota counts the namespace. LimitRange constrains the object.** One is a ceiling on a team; the other is a rule about a manifest.
 
 <!-- FIGURE: ch08-fig05-quota-vs-limitrange -->
+![Two panels side by side, each enclosed in the same dashed namespace boundary labeled namespace team-atlas. On the left, ResourceQuota: four Pods above a single namespace total bar marked AT CAP, and a fifth arriving Pod REJECTED because the namespace total is reached. On the right, LimitRange: four Pods each carrying its own min and max bound, and a fifth arriving Pod that declares nothing ACCEPTED with defaults filled in.](figures/ch08-fig05-quota-vs-limitrange.svg)
+
+<!-- ASCII-FALLBACK
 ```
         ResourceQuota                            LimitRange
  ┌────────────────────────────┐      ┌────────────────────────────┐
@@ -564,6 +567,7 @@ Definitions are easy to swap. Questions are harder. If you can answer these two 
          REJECTED 403                   nothing:  ACCEPTED — with
    the namespace total is reached         defaults FILLED IN
 ```
+-->
 
 **Figure 8.3 —** Both mechanisms live inside one namespace; the boundary is the same on each side and is not the discrimination. What differs is what is being counted and how it fails. On the left, one aggregate total for the namespace, and a fifth Pod rejected at the cap. On the right, per-object bounds on each Pod, and a fifth Pod that declares nothing is not refused but modified.
 

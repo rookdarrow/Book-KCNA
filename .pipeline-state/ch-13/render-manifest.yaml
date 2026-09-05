@@ -77,25 +77,27 @@ figures:
   figure_spec:
     anchor_id: ch13-fig02-pod-failure-signature-map
     diagram_type: flowchart
-    source_ascii: "                Does the Pod object exist?\n                  \
-      \        │\n          ┌───────────────┴───────────────┐\n          NO      \
-      \                        YES\n          │                                │\n\
-      Admission refused it.                 What's the phase?\nRead the CREATE error,\
-      \                     │\nnot the Pod.                    ┌──────────┴──────────┐\n\
-      (Ch 12 §6)                   Pending                Running\n              \
-      \                  │                  (containers Waiting)\n               \
-      \       Not scheduled yet.                 │\n                      Read: describe\
-      \ → Events    Scheduled; can't start.\n                      from the scheduler.\
-      \        Read: container Reason\n                                          \
-      \              │\n                          ┌─────────────────────────────┼────────────────────┐\n\
-      \                 ErrImagePull /                CreateContainerConfigError \
-      \   ImageInspectError /\n                 ImagePullBackOff                 \
-      \       │                   ErrImageNeverPull\n                          │ \
-      \                   Named ConfigMap or Secret            │\n               \
-      \ Registry said no, or               doesn't exist.            Image is broken,\
-      \ or\n                was never asked properly.          (Ch 4 §4)         \
-      \        policy Never with no\n                (Ch 2 §3, §6)               \
-      \                                 local image. (Ch 2 §6)\n"
+    source_ascii: "                    Does the Pod object exist?\n              \
+      \                │\n              ┌───────────────┴───────────────┐\n      \
+      \        NO                              YES\n              │              \
+      \                  │\n    Admission refused it.             How far did start-up\
+      \ get?\n    Read the CREATE error,                     │\n    not the Pod. \
+      \                   ┌──────────┴──────────┐\n    (Ch 12 §6)               Not\
+      \ scheduled yet       Scheduled to a node\n                             (phase\
+      \ Pending)         (containers Waiting)\n                                  \
+      \  │                        │\n                          Read: describe → Events\
+      \    Can't start.\n                          from the scheduler.        Read:\
+      \ container Reason\n                                                       \
+      \     │\n                              ┌─────────────────────────────┼────────────────────┐\n\
+      \                     ErrImagePull /                CreateContainerConfigError\
+      \    ImageInspectError /\n                     ImagePullBackOff            \
+      \            │                   ErrImageNeverPull\n                       \
+      \       │                    Named ConfigMap or Secret            │\n      \
+      \              Registry said no, or               doesn't exist.           \
+      \ Image is broken, or\n                    was never asked properly.       \
+      \   (Ch 4 §4)                 policy Never with no\n                    (Ch\
+      \ 2 §3, §6)                                                local image. (Ch\
+      \ 2 §6)\n"
     vendor_terms:
     - kubectl
     - configmap
@@ -116,9 +118,9 @@ figures:
     accessibility:
       alt_text_seed: A decision tree beginning with the question of whether the Pod
         object exists; the No branch leads to admission refusal, and the Yes branch
-        splits by phase into Pending, meaning not scheduled, and Running with containers
-        waiting, which fans out into the image-pull, configuration, and image-policy
-        failure reasons
+        asks how far start-up got, splitting into not scheduled yet, phase Pending,
+        and scheduled to a node with containers Waiting, which fans out into the image-pull,
+        configuration, and image-policy failure reasons
     rendering_hints:
       preferred_orientation: landscape
       grayscale_critical: true
@@ -206,22 +208,23 @@ figures:
   figure_spec:
     anchor_id: ch13-fig05-oomkilled-vs-evicted
     diagram_type: flowchart
-    source_ascii: "      OOMKilled                              Evicted\n      ─────────\
-      \                              ───────\n\nContainer exceeds ITS OWN limit  \
-      \      NODE runs low on a resource\n            │                          \
-      \          │\n            ▼                                    ▼\nKernel cgroup\
-      \ enforcement kills        kubelet chooses victims by\nthat one process    \
-      \                   QoS class and terminates Pods\n            │           \
-      \                         │\n            ▼                                 \
-      \   ▼\nContainer state: Terminated            Pod phase: Failed\nReason: OOMKilled\
-      \                      Reason: Evicted\n            │                      \
-      \              │\n            ▼                                    ▼\nRestarted\
-      \ IN PLACE on the              Pod is GONE from this node.\nsame node, per restartPolicy.\
-      \          A controller creates a\nRestart count increments.              REPLACEMENT\
-      \ elsewhere.\n            │                                    │\n         \
-      \   ▼                                    ▼\nScope: ONE container           \
-      \        Scope: THE WHOLE POD\nTrigger: this Pod's own limit          Trigger:\
-      \ the node's pressure\n"
+    source_ascii: "        OOMKilled                              Evicted\n      \
+      \  ─────────                              ───────\n\n  Container exceeds ITS\
+      \ OWN limit        NODE runs low on a resource\n              │            \
+      \                        │\n              ▼                                \
+      \    ▼\n  kernel kills that ONE process;         kubelet chooses victims by\n\
+      \  kubelet restarts the container         QoS class and terminates PODS\n  \
+      \            │                                    │\n              ▼       \
+      \                             ▼\n  Reason: OOMKilled,                     Pod\
+      \ phase: Failed.\n  on the container                       The Pod is finished.\n\
+      \              │                                    │\n              ▼     \
+      \                               ▼\n  Restarted IN PLACE on the             \
+      \ Pod is GONE from this node.\n  same node, per restartPolicy.          A controller\
+      \ creates a\n  Restart count increments.              REPLACEMENT elsewhere.\n\
+      \              │                                    │\n              ▼     \
+      \                               ▼\n  Scope: ONE container                  \
+      \ Scope: THE WHOLE POD\n  Trigger: this Pod's own limit          Trigger: the\
+      \ node's pressure\n"
     vendor_terms:
     - kubelet
     complexity_hint:
@@ -419,26 +422,26 @@ figures:
   figure_spec:
     anchor_id: ch13-zenith-read-the-phase-first
     diagram_type: hierarchy_tree
-    source_ascii: "                     ONE KEY:  the phase\n                    \
-      \       │\n   ┌───────────────────────┼───────────────────────────────┐\n  \
-      \ │                       │                               │\nno Pod object \
-      \         Pending                    scheduled to a node\n   │             \
-      \          │                               │\n   ▼                       ▼ \
-      \                  ┌───────────┴───────────┐\nthe ADMISSION         the SCHEDULER\
-      \        containers            containers\ngate stopped it       never placed\
-      \ it      never ran             ran, then ended\n   │                      \
-      \ │                   │                       │\n   ▼                      \
-      \ ▼                   ▼                       ▼\nread the CREATE       read\
-      \ the             the KUBELET           the KUBELET or\nresponse           \
-      \   SCHEDULER's          couldn't start it     the KERNEL ended it\n(Ch 12 §6)\
+    source_ascii: "                      ONE KEY:  the phase\n                   \
+      \         │\n    ┌───────────────────────┼───────────────────────────────┐\n\
+      \    │                       │                               │\n no Pod object\
+      \          Pending                    scheduled to a node\n    │           \
+      \            │                               │\n    ▼                      \
+      \ ▼                   ┌───────────┴───────────┐\n the ADMISSION         the\
+      \ SCHEDULER        containers            containers\n gate stopped it      \
+      \ never placed it      never ran             ran, then ended\n    │        \
+      \               │                   │                       │\n    ▼       \
+      \                ▼                   ▼                       ▼\n read the CREATE\
+      \       read the             the KUBELET           the KUBELET\n response  \
+      \            SCHEDULER's          couldn't start it     ended it\n (Ch 12 §6)\
       \            events                  │                       │\n           \
-      \           (Ch 7 §2, §4)           ▼                       ▼\n            \
-      \                             ErrImagePull            CrashLoopBackOff\n   \
-      \                                      ImagePullBackOff        OOMKilled\n \
-      \                                        ImageInspectError       Evicted\n \
-      \                                        ErrImageNeverPull       probe failures\n\
-      \                                         CreateContainerConfigError\n\n   \
-      \          Nine signatures. One lookup. The key is always the phase.\n"
+      \            (Ch 7 §2, §4)           ▼                       ▼\n           \
+      \                               ErrImagePull            CrashLoopBackOff\n \
+      \                                         ImagePullBackOff        OOMKilled\n\
+      \                                          ImageInspectError       Evicted\n\
+      \                                          ErrImageNeverPull\n             \
+      \                             CreateContainerConfigError\n\n              Nine\
+      \ signatures. One lookup. The key is always the phase.\n"
     vendor_terms:
     - kubelet
     complexity_hint:

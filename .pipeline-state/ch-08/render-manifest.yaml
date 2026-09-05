@@ -139,16 +139,17 @@ figures:
   figure_spec:
     anchor_id: ch08-fig05-quota-vs-limitrange
     diagram_type: component_diagram
-    source_ascii: "     ResourceQuota                          LimitRange\n┌──────────────────────────┐\
-      \          (no namespace boundary)\n│ namespace: team-atlas    │\n│  ┌────┐┌────┐┌────┐┌────┐│\
-      \           ┌─────┐┌─────┐┌─────┐┌─────┐\n│  │Pod ││Pod ││Pod ││Pod ││     \
-      \      │ Pod ││ Pod ││ Pod ││ Pod │\n│  └────┘└────┘└────┘└────┘│          \
-      \ │min ≤││min ≤││min ≤││min ≤│\n│  ═══ namespace total ═══ │           │≤ max││≤\
-      \ max││≤ max││≤ max│\n│  ═══════ AT CAP ════════ │           └─────┘└─────┘└─────┘└─────┘\n\
-      └──────────────────────────┘\n          ▲                                  \
-      \     ▲\n   5th Pod arrives:                    5th Pod arrives declaring\n\
-      \     REJECTED                          nothing:  ACCEPTED — with\nthe namespace\
-      \ total is reached           defaults FILLED IN\n"
+    source_ascii: "        ResourceQuota                            LimitRange\n ┌────────────────────────────┐\
+      \      ┌────────────────────────────┐\n │ namespace: team-atlas      │     \
+      \ │ namespace: team-atlas      │\n │  ┌────┐┌────┐┌────┐┌────┐  │      │ ┌─────┐┌─────┐┌─────┐┌────┐│\n\
+      \ │  │Pod ││Pod ││Pod ││Pod │  │      │ │ Pod ││ Pod ││ Pod ││Pod ││\n │  └────┘└────┘└────┘└────┘\
+      \  │      │ │min ≤││min ≤││min ≤││min≤││\n │  ═══ namespace total ════  │  \
+      \    │ │≤ max││≤ max││≤ max││≤max││\n │  ═══════ AT CAP ═════════  │      │\
+      \ └─────┘└─────┘└─────┘└────┘│\n └────────────────────────────┘      └────────────────────────────┘\n\
+      \              ▲                                    ▲\n       5th Pod arrives:\
+      \                 5th Pod arrives declaring\n         REJECTED 403         \
+      \          nothing:  ACCEPTED — with\n   the namespace total is reached    \
+      \     defaults FILLED IN\n"
     vendor_terms:
     - ResourceQuota
     - LimitRange
@@ -166,14 +167,17 @@ figures:
       learning_outcome: Distinguish ResourceQuota from LimitRange by scope — namespace
         aggregate versus individual object — and by failure mode
       fixed_point_emphasis: true
-      fixed_point_emphasis_target: The namespace boundary present on the left panel
-        and conspicuously absent on the right
+      fixed_point_emphasis_target: 'what is counted: the single ''namespace total
+        / AT CAP'' bar spanning all four Pods on the left versus the ''min <= x <=
+        max'' bound drawn inside each Pod on the right. The namespace boundary is
+        identical on both sides and carries no accent'
     accessibility:
-      alt_text_seed: 'Two panels compared side by side: on the left, four Pods enclosed
-        in a bordered namespace box with a namespace total bar marked at cap, and
-        a fifth arriving Pod rejected; on the right, four unenclosed Pods each carrying
-        its own minimum and maximum bounds, and a fifth arriving Pod that declares
-        nothing being accepted with defaults filled in'
+      alt_text_seed: 'Two panels side by side, each enclosed in the same dashed namespace
+        boundary labeled namespace team-atlas. On the left, ResourceQuota: four Pods
+        above a single namespace total bar marked AT CAP, and a fifth arriving Pod
+        REJECTED because the namespace total is reached. On the right, LimitRange:
+        four Pods each carrying its own min and max bound, and a fifth arriving Pod
+        that declares nothing ACCEPTED with defaults filled in.'
     rendering_hints:
       preferred_orientation: landscape
       grayscale_critical: true

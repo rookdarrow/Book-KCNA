@@ -88,7 +88,7 @@ figures:
       stroke-weight distinction from the thin Navy/Teal connectors elsewhere.
     suggested_fix: ''
 - anchor_id: ch02-fig03-oci-three-specs
-  status: pending
+  status: approved  # 2026-09-04 coordinator review: render matches the chapter; promoted to figures/ and applied
   render_paths:
     svg: figures/ch02-fig03-oci-three-specs.svg
     png: figures/ch02-fig03-oci-three-specs.png
@@ -101,9 +101,16 @@ figures:
     aspect_ratio: pass
     grayscale_legibility: pass
     alt_text_present: pass
-  regenerate_hint: Add a terminal node (e.g. 'running container') below the RUN arrow
-    so the flow ends at a labeled box instead of a dangling arrowhead.
-  review_notes: ''
+  regenerate_hint: 'Preserve the ASCII''s topology: three columns, each specification
+    box sitting directly above the lifecycle stage it governs, with the lifecycle
+    flowing LEFT TO RIGHT beneath the specs (OCI Image -pull-> unpack -> filesystem
+    bundle -run-> running container), not stacked top to bottom. A landscape frame
+    of roughly 1200x800 is acceptable for this figure. Brass belongs only on the distribution-spec
+    box (the focal element) and its legend swatch; the PULL arrow and its label must
+    be teal like every other data-flow arrow. Keep the dashed GOVERNS arrows from
+    each spec to its stage, the solid DATA FLOW arrows, and the legend. US spelling
+    throughout.'
+  review_notes: '2026-09-04 chapter audit: regenerate requested; see regenerate_hint.'
   last_applied_hash: null
   ai_review:
     verdict: concerns

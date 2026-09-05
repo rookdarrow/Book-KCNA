@@ -21,25 +21,26 @@ figures:
   figure_spec:
     anchor_id: ch18-fig01-monitoring-vs-observability
     diagram_type: concept_map
-    source_ascii: "            THE SAME SYSTEM, TWO POSTURES\n\nMONITORING       \
-      \                 OBSERVABILITY\nknown unknowns                    unknown unknowns\n\
-      \n┌───────────────────┐             ┌───────────────────┐\n│  questions chosen\
-      \ │             │  question arrives │\n│   IN ADVANCE      │             │ \
-      \  AT 02:10 AM     │\n└─────────┬─────────┘             └─────────┬─────────┘\n\
-      \          │                                 │\n   ┌──────┴──────┐         \
-      \                 │  \"why were\n   ▼      ▼      ▼                        \
-      \  │   requests\n ┌───┐  ┌───┐  ┌───┐                        │   from one\n\
-      \ │CPU│  │mem│  │5xx│   <- fixed             │   client\n └─┬─┘  └─┬─┘  └─┬─┘\
-      \      indicators        │   slow in\n   └──────┼──────┘                   \
-      \       │   region 2?\"\n          ▼                                 ▼\n   ┌─────────────┐\
-      \                   ┌─────────────┐\n   │  DASHBOARD  │                   │\
-      \  OPEN QUERY │\n   │ answers the │                   │  over rich  │\n   │\
-      \  4 questions│                   │  telemetry  │\n   │  you picked │      \
-      \             │             │\n   └──────┬──────┘                   └──────┬──────┘\n\
-      \          ▼                                 ▼\n   ┌───────────────────────────────────────────────┐\n\
-      \   │        T H E   R U N N I N G   S Y S T E M    │\n   └───────────────────────────────────────────────┘\n\
-      \nBoth read the same system. The difference is upstream:\none has a fixed question\
-      \ set, one does not.\n"
+    source_ascii: "              THE SAME SYSTEM, TWO POSTURES\n\n  MONITORING   \
+      \                     OBSERVABILITY\n  known unknowns                    unknown\
+      \ unknowns\n\n  ┌───────────────────┐             ┌───────────────────┐\n  │\
+      \  questions chosen │             │  question arrives │\n  │   IN ADVANCE  \
+      \    │             │   AT 02:10 AM     │\n  └─────────┬─────────┘          \
+      \   └─────────┬─────────┘\n            │                                 │\n\
+      \     ┌──────┴──────┐                          │  \"why were\n     ▼      ▼\
+      \      ▼                          │   requests\n   ┌───┐  ┌───┐  ┌───┐     \
+      \                   │   from one\n   │CPU│  │mem│  │5xx│   <- fixed        \
+      \     │   client\n   └─┬─┘  └─┬─┘  └─┬─┘      indicators        │   slow in\n\
+      \     └──────┼──────┘                          │   region 2?\"\n           \
+      \ ▼                                 ▼\n     ┌─────────────┐                \
+      \   ┌─────────────┐\n     │  DASHBOARD  │                   │  OPEN QUERY │\n\
+      \     │ answers the │                   │  over rich  │\n     │  questions \
+      \ │                   │  telemetry  │\n     │  you picked │                \
+      \   │             │\n     └──────┬──────┘                   └──────┬──────┘\n\
+      \            ▼                                 ▼\n     ┌───────────────────────────────────────────────┐\n\
+      \     │        T H E   R U N N I N G   S Y S T E M    │\n     └───────────────────────────────────────────────┘\n\
+      \n  Both read the same system. The difference is upstream:\n  one has a fixed\
+      \ question set, one does not.\n"
     vendor_terms: []
     complexity_hint:
       node_count: 8
@@ -154,34 +155,36 @@ figures:
   figure_spec:
     anchor_id: ch18-fig04-prometheus-pull-architecture
     diagram_type: data_flow
-    source_ascii: "                 ARROWS OUT, NOT IN\n\n┌──────────────┐       \
-      \           ┌──────────────────┐\n│ SERVICE      │◄─── scrape ──────┤      \
-      \            │\n│ DISCOVERY    │                  │                  │\n│ (finds\
-      \       │  \"what exists?\"  │                  │\n│  targets)    │◄─────────────────┤\
-      \                  │\n└──────────────┘                  │                  │\n\
-      \                                  │   PROMETHEUS     │\n┌──────────────┐  \
-      \                │     SERVER       │\n│ instrumented │◄─── scrape ──────┤ \
-      \                 │\n│ app          │      HTTP        │   scrapes  +     │\n\
-      │ (client lib) │                  │   stores locally │\n└──────────────┘   \
-      \               │                  │\n                                  │  \
-      \ standalone,    │\n┌──────────────┐                  │   autonomous     │\n\
-      │ EXPORTER     │◄─── scrape ──────┤                  │\n│ (binary next │   \
-      \   HTTP        │                  │\n│  to a thing  │                  │  \
-      \                │\n│  you didn't  │                  │                  │\n\
-      │  write)      │                  │                  │\n└──────────────┘   \
-      \               │                  │\n                                  │  \
-      \                │\n┌──────────────┐                  │                  │\n\
-      │ PUSHGATEWAY  │◄─── scrape ──────┤                  │\n│              │   \
-      \               │                  │\n│  ▲ push      │                  │  \
-      \                │\n│  │ ONLY from │                  └────┬───────┬─────┘\n\
-      │  │ service-  │                       │       │\n│  │ level     │         \
-      \        push  │       │ HTTP API\n│  │ BATCH     │                alerts │\
-      \       │ (read)\n│  │ jobs      │                       ▼       ▼\n│ ┌┴────────┐\
-      \  │              ┌────────────┐ ┌──────────┐\n│ │short job│  │            \
-      \  │ALERTMANAGER│ │ GRAFANA  │\n│ └─────────┘  │              │ routes to  │\
-      \ │ dashboards│\n└──────────────┘              │ email/pager│ │(NOT CNCF)│\n\
-      \   one narrow                 └────────────┘ └──────────┘\n   inbound path\n\
-      \nEvery arrow into Prometheus is Prometheus reaching out.\n"
+    source_ascii: "                    ARROWS OUT, NOT IN\n\n   ┌──────────────┐ \
+      \                 ┌──────────────────┐\n   │ SERVICE      │◄─── scrape ──────┤\
+      \                  │\n   │ DISCOVERY    │                  │               \
+      \   │\n   │ (finds       │  \"what exists?\"  │                  │\n   │  targets)\
+      \    │◄─────────────────┤                  │\n   └──────────────┘          \
+      \        │                  │\n                                     │   PROMETHEUS\
+      \     │\n   ┌──────────────┐                  │     SERVER       │\n   │ instrumented\
+      \ │◄─── scrape ──────┤                  │\n   │ app          │      HTTP   \
+      \     │   scrapes  +     │\n   │ (client lib) │                  │   stores\
+      \ locally │\n   └──────────────┘                  │                  │\n   \
+      \                                  │   standalone,    │\n   ┌──────────────┐\
+      \                  │   autonomous     │\n   │ EXPORTER     │◄─── scrape ──────┤\
+      \                  │\n   │ (binary next │      HTTP        │               \
+      \   │\n   │  to a thing  │                  │                  │\n   │  you\
+      \ didn't  │                  │                  │\n   │  write)      │     \
+      \             │                  │\n   └──────────────┘                  │ \
+      \                 │\n                                     │                \
+      \  │\n   ┌──────────────┐                  │                  │\n   │ PUSHGATEWAY\
+      \  │◄─── scrape ──────┤                  │\n   │              │            \
+      \      │                  │\n   │  ▲ push      │                  │        \
+      \          │\n   │  │ ONLY from │                  └────┬───────┬─────┘\n  \
+      \ │  │ service-  │                       │       │\n   │  │ level     │    \
+      \             push  │       │ HTTP API\n   │  │ BATCH     │                alerts\
+      \ │       │ (read)\n   │  │ jobs      │                       ▼       ▼\n  \
+      \ │ ┌┴────────┐  │              ┌────────────┐ ┌──────────┐\n   │ │short job│\
+      \  │              │ALERTMANAGER│ │ GRAFANA  │\n   │ └─────────┘  │         \
+      \     │ routes to  │ │ dashboards│\n   └──────────────┘              │ email/pager│\
+      \ │          │\n      one narrow                 └────────────┘ └──────────┘\n\
+      \      inbound path\n\n   Every arrow into Prometheus is Prometheus reaching\
+      \ out.\n"
     vendor_terms:
     - prometheus
     - alertmanager

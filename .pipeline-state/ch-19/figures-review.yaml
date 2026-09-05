@@ -3,7 +3,7 @@ book: kcna
 generated: '2026-09-01T16:19:05+00:00'
 figures:
 - anchor_id: ch19-fig01-cross-domain-integration-map
-  status: approved
+  status: approved  # 2026-09-05: cosmetic label nit recorded in the hint below; author chose not to regenerate approved renders
   render_paths:
     svg: figures/ch19-fig01-cross-domain-integration-map.svg
     png: figures/ch19-fig01-cross-domain-integration-map.png
@@ -16,7 +16,17 @@ figures:
     aspect_ratio: pass
     grayscale_legibility: pass
     alt_text_present: pass
-  regenerate_hint: ''
+  regenerate_hint: 'The presence grid in the source ASCII has been re-synced and is
+    the authority; the previous render placed marks in the wrong chapters on threads
+    1, 3 and 5. Reproduce the marks EXACTLY, 41 in total: thread 1 control loop =
+    Ch 3, 4, 6, 11, 15, 17; thread 2 scope boundary = Ch 4, 8, 12; thread 3 absent
+    component = Ch 3, 10, 11, 13, 17, 18; thread 4 declarative = Ch 4, 6, 14, 15;
+    thread 5 label join = Ch 4, 6, 7, 9, 10, 12, 16; thread 6 pluggability = Ch 2,
+    6, 9, 11, 17; thread 7 identity = Ch 5, 12, 15; thread 8 requests/limits = Ch
+    5, 7, 13, 17, 18; thread 9 additive/allow = Ch 10, 12. Every other cell is empty.
+    Check each thread against this list before emitting. Chapters 2-18 are the columns
+    and the nine threads are the rows, grouped into the STRUCTURAL, INTERFACE and
+    POLICY tiers; thread 3 (absent component) is the brass focal row.'
   review_notes: ''
   last_applied_hash: null
   ai_review:
@@ -34,7 +44,7 @@ figures:
       map would render as unreadable clutter at this scale.
     suggested_fix: ''
 - anchor_id: ch19-fig02-confusion-pair-matrix
-  status: approved
+  status: approved  # 2026-09-05: cosmetic label nit recorded in the hint below; author chose not to regenerate approved renders
   render_paths:
     svg: figures/ch19-fig02-confusion-pair-matrix.svg
     png: figures/ch19-fig02-confusion-pair-matrix.png
@@ -47,7 +57,14 @@ figures:
     aspect_ratio: pass
     grayscale_legibility: pass
     alt_text_present: pass
-  regenerate_hint: ''
+  regenerate_hint: 'Text correction only: the exam is the KCNA (Kubernetes and Cloud
+    Native Associate). The header kicker must read ''KCNA - QUICK REFERENCE'', the
+    subtitle must read ''23 confusion pairs from the book, each resolved by one discriminating
+    question - banded into the four KCNA exam domains'', and the SVG <title> must
+    read ''KCNA confusion-pair discriminator reference''. The phrase ''Kubernetes
+    & Helm'' must not appear anywhere. Keep everything else as in the source ASCII:
+    all 23 pairs in the D1-D4 bands, pair on one line and its discriminating question
+    beneath, with brass on the arrow glyphs and the DISCRIMINATOR header.'
   review_notes: ''
   last_applied_hash: null
   ai_review:

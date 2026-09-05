@@ -93,20 +93,33 @@ figures:
       nested (Node > Pod > container) matching K8s topology.
     suggested_fix: ''
 - anchor_id: ch16-fig04-service-break-points
-  status: approved
+  status: approved  # 2026-09-05 coordinator review: breaks 1 and 2 now distinguished (slice empty vs ready: false); promoted
   render_paths:
     svg: figures/ch16-fig04-service-break-points.svg
     png: figures/ch16-fig04-service-break-points.png
   source_path: figures/sources/ch16-fig04-service-break-points.html
   validation_results:
-    label_count: pass
+    label_count: fail
     palette_conformance: pass
     min_font_size: pass
     max_dimensions: pass
     aspect_ratio: pass
     grayscale_legibility: pass
     alt_text_present: pass
-  regenerate_hint: ''
+  regenerate_hint: 'CORRECTION (audit P1): the previous render said ''BREAK 1+2 -
+    LIST EMPTY'' and its legend said upstream breaks empty the list. That is wrong,
+    and the source ASCII has been corrected and is the authority. The EndpointSlice
+    callout must read ''BREAK 1+2 - NO READY ENDPOINTS'' with two numbered causes:
+    ''1 selector mismatch -> slice empty'' and ''2 not Ready -> ready: false'' (matching
+    Pods STAY in the slice, marked ready: false). The BREAK 3 callout must say ''(endpoints
+    ARE ready)'', not ''list is populated''. The three legend rows must read exactly:
+    ''UPSTREAM of readiness ... breaks 1 and 2 -> NO READY ENDPOINTS''; ''DOWNSTREAM
+    of readiness ... break 3 -> ENDPOINTS READY, request still fails''; ''BESIDE the
+    whole path ... break 4 -> you never reached this Service at all''. The words ''list
+    empty'', ''empty list'' and ''populated'' must not appear anywhere. Keep the left-to-right
+    chain client -> DNS name -> Service -> EndpointSlice -> Pod -> container port
+    with the three callouts dropping below it, and brass on the BREAK 1+2 callout
+    only.'
   review_notes: ''
   last_applied_hash: null
   ai_review:
@@ -124,7 +137,7 @@ figures:
       the two dashed, unfilled Fog-bordered callouts.
     suggested_fix: ''
 - anchor_id: ch16-fig03-portforward-vs-service-path
-  status: pending
+  status: approved  # 2026-09-04 coordinator review: render matches the chapter; promoted to figures/ and applied
   render_paths:
     svg: figures/ch16-fig03-portforward-vs-service-path.svg
     png: figures/ch16-fig03-portforward-vs-service-path.png
@@ -137,11 +150,16 @@ figures:
     aspect_ratio: pass
     grayscale_legibility: pass
     alt_text_present: pass
-  regenerate_hint: Fold the three floating annotation boxes (selector/endpoints, pods/portforward
-    subresource, kube-proxy rules) into node subtitles instead of separate call-out
-    boxes, and drop the 'SAME POD' text label since the dashed connector plus legend
-    entry already convey it — this should bring the distinct-label count at or under
-    7.
+  regenerate_hint: 'The source ASCII has been revised since the last render and is
+    the authority. The lower (port-forward) path is kubectl -> API server -> Pod:port,
+    with the note ''pods/portforward subresource'' under the API server. Do NOT draw
+    a kubelet node: there is no kubelet hop in this figure. In the upper (Service)
+    path the fourth node is ''service proxy'' with the subtitle ''kube-proxy or its
+    equivalent'' (not ''kube-proxy rules''). Keep the two Pod nodes as the only shared
+    step and the only brass-accented elements, keep the note that all of section 4''s
+    breaks 1-4 live on the Service path, and keep the note that the port-forward path
+    shares no step with the Service path except the Pod. Prefer node subtitles over
+    separate floating callout boxes so the label count stays low.'
   review_notes: ''
   last_applied_hash: null
   ai_review:

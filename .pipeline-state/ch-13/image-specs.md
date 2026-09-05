@@ -153,13 +153,13 @@ A top-down tree. The root is a question, not a state: **"Does the Pod object exi
               ┌───────────────┴───────────────┐
               NO                              YES
               │                                │
-    Admission refused it.                 What's the phase?
+    Admission refused it.             How far did start-up get?
     Read the CREATE error,                     │
     not the Pod.                    ┌──────────┴──────────┐
-    (Ch 12 §6)                   Pending                Running
-                                    │                  (containers Waiting)
-                          Not scheduled yet.                 │
-                          Read: describe → Events    Scheduled; can't start.
+    (Ch 12 §6)               Not scheduled yet       Scheduled to a node
+                             (phase Pending)         (containers Waiting)
+                                    │                        │
+                          Read: describe → Events    Can't start.
                           from the scheduler.        Read: container Reason
                                                             │
                               ┌─────────────────────────────┼────────────────────┐
@@ -176,19 +176,19 @@ A top-down tree. The root is a question, not a state: **"Does the Pod object exi
 ```yaml-figure-spec
 anchor_id: ch13-fig02-pod-failure-signature-map
 diagram_type: flowchart
-source_ascii: |6
+source_ascii: |2
                       Does the Pod object exist?
                                 │
                 ┌───────────────┴───────────────┐
                 NO                              YES
                 │                                │
-      Admission refused it.                 What's the phase?
+      Admission refused it.             How far did start-up get?
       Read the CREATE error,                     │
       not the Pod.                    ┌──────────┴──────────┐
-      (Ch 12 §6)                   Pending                Running
-                                      │                  (containers Waiting)
-                            Not scheduled yet.                 │
-                            Read: describe → Events    Scheduled; can't start.
+      (Ch 12 §6)               Not scheduled yet       Scheduled to a node
+                               (phase Pending)         (containers Waiting)
+                                      │                        │
+                            Read: describe → Events    Can't start.
                             from the scheduler.        Read: container Reason
                                                               │
                                 ┌─────────────────────────────┼────────────────────┐
@@ -209,7 +209,7 @@ pedagogy:
   fixed_point_emphasis: true
   fixed_point_emphasis_target: "the root node 'Does the Pod object exist?' and its NO branch"
 accessibility:
-  alt_text_seed: "A decision tree beginning with the question of whether the Pod object exists; the No branch leads to admission refusal, and the Yes branch splits by phase into Pending, meaning not scheduled, and Running with containers waiting, which fans out into the image-pull, configuration, and image-policy failure reasons"
+  alt_text_seed: "A decision tree beginning with the question of whether the Pod object exists; the No branch leads to admission refusal, and the Yes branch asks how far start-up got, splitting into not scheduled yet, phase Pending, and scheduled to a node with containers Waiting, which fans out into the image-pull, configuration, and image-policy failure reasons"
 rendering_hints:
   preferred_orientation: landscape
   grayscale_critical: true
@@ -344,12 +344,12 @@ Two vertical chains side by side, each with its own heading and each descending 
   Container exceeds ITS OWN limit        NODE runs low on a resource
               │                                    │
               ▼                                    ▼
-  Kernel cgroup enforcement kills        kubelet chooses victims by
-  that one process                       QoS class and terminates Pods
+  kernel kills that ONE process;         kubelet chooses victims by
+  kubelet restarts the container         QoS class and terminates PODS
               │                                    │
               ▼                                    ▼
-  Container state: Terminated            Pod phase: Failed
-  Reason: OOMKilled                      Reason: Evicted
+  Reason: OOMKilled,                     Pod phase: Failed.
+  on the container                       The Pod is finished.
               │                                    │
               ▼                                    ▼
   Restarted IN PLACE on the              Pod is GONE from this node.
@@ -366,19 +366,19 @@ Two vertical chains side by side, each with its own heading and each descending 
 ```yaml-figure-spec
 anchor_id: ch13-fig05-oomkilled-vs-evicted
 diagram_type: flowchart
-source_ascii: |4
+source_ascii: |2
           OOMKilled                              Evicted
           ─────────                              ───────
 
     Container exceeds ITS OWN limit        NODE runs low on a resource
                 │                                    │
                 ▼                                    ▼
-    Kernel cgroup enforcement kills        kubelet chooses victims by
-    that one process                       QoS class and terminates Pods
+    kernel kills that ONE process;         kubelet chooses victims by
+    kubelet restarts the container         QoS class and terminates PODS
                 │                                    │
                 ▼                                    ▼
-    Container state: Terminated            Pod phase: Failed
-    Reason: OOMKilled                      Reason: Evicted
+    Reason: OOMKilled,                     Pod phase: Failed.
+    on the container                       The Pod is finished.
                 │                                    │
                 ▼                                    ▼
     Restarted IN PLACE on the              Pod is GONE from this node.
@@ -631,14 +631,14 @@ A single root at top center reading **ONE KEY: the phase**, from which the whole
  gate stopped it       never placed it      never ran             ran, then ended
     │                       │                   │                       │
     ▼                       ▼                   ▼                       ▼
- read the CREATE       read the             the KUBELET           the KUBELET or
- response              SCHEDULER's          couldn't start it     the KERNEL ended it
+ read the CREATE       read the             the KUBELET           the KUBELET
+ response              SCHEDULER's          couldn't start it     ended it
  (Ch 12 §6)            events                  │                       │
                        (Ch 7 §2, §4)           ▼                       ▼
                                           ErrImagePull            CrashLoopBackOff
                                           ImagePullBackOff        OOMKilled
                                           ImageInspectError       Evicted
-                                          ErrImageNeverPull       probe failures
+                                          ErrImageNeverPull
                                           CreateContainerConfigError
 
               Nine signatures. One lookup. The key is always the phase.
@@ -649,7 +649,7 @@ A single root at top center reading **ONE KEY: the phase**, from which the whole
 ```yaml-figure-spec
 anchor_id: ch13-zenith-read-the-phase-first
 diagram_type: hierarchy_tree
-source_ascii: |3
+source_ascii: |2
                         ONE KEY:  the phase
                               │
       ┌───────────────────────┼───────────────────────────────┐
@@ -661,14 +661,14 @@ source_ascii: |3
    gate stopped it       never placed it      never ran             ran, then ended
       │                       │                   │                       │
       ▼                       ▼                   ▼                       ▼
-   read the CREATE       read the             the KUBELET           the KUBELET or
-   response              SCHEDULER's          couldn't start it     the KERNEL ended it
+   read the CREATE       read the             the KUBELET           the KUBELET
+   response              SCHEDULER's          couldn't start it     ended it
    (Ch 12 §6)            events                  │                       │
                          (Ch 7 §2, §4)           ▼                       ▼
                                             ErrImagePull            CrashLoopBackOff
                                             ImagePullBackOff        OOMKilled
                                             ImageInspectError       Evicted
-                                            ErrImageNeverPull       probe failures
+                                            ErrImageNeverPull
                                             CreateContainerConfigError
 
                 Nine signatures. One lookup. The key is always the phase.

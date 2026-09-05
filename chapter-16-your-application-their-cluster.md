@@ -784,7 +784,7 @@ So: a selector that matches nothing leaves the slice with no endpoints at all. R
 Here is where the section has to be careful, because four things can break a request to a Service and only two of them are about whether anything is selected.
 
 <!-- FIGURE: ch16-fig04-service-break-points -->
-![A request path runs left to right from client, to DNS name, to Service, to EndpointSlice, to Pod, to container port. Three callouts drop from it. From the DNS name: break four, the name does not resolve to this Service. From the EndpointSlice: breaks one and two, the list is empty, caused either by a selector mismatch or by Pods not being Ready. From the container port: break three, port does not equal targetPort, and here the list is populated. A legend notes that upstream breaks empty the list, the downstream break leaves it populated while the request still fails, and break four means this Service was never reached.](figures/ch16-fig04-service-break-points.svg)
+![A request path runs left to right from client, to DNS name, to Service, to EndpointSlice, to Pod, to container port. Three callouts drop from it. From the DNS name: break four, the name does not resolve to this Service. From the EndpointSlice: breaks one and two, no ready endpoints — a selector mismatch leaves the slice empty, while Pods that are not Ready stay listed with ready false. From the container port: break three, port does not equal targetPort, and here the endpoints are ready. A legend notes that breaks one and two sit upstream of readiness and yield no ready endpoints, break three sits downstream with ready endpoints and a failing request, and break four means this Service was never reached.](figures/ch16-fig04-service-break-points.svg)
 
 <!-- ASCII-FALLBACK
 ```
@@ -863,6 +863,9 @@ What this section is about is what happens when you use it as an experiment.
 ### Two paths that share almost nothing
 
 <!-- FIGURE: ch16-fig03-portforward-vs-service-path -->
+![Two separate request paths. The Service path, traveled by users, runs from client to DNS to the Service's ClusterIP to the service proxy, kube-proxy or its equivalent, to the Pod's targetPort, annotated with selector and endpoints at the Service; all four of section four's break points live on this path. The port-forward path, traveled by the engineer, runs from kubectl to the API server via the pods/portforward subresource and on to the Pod's port. The two paths share no step except the Pod itself.](figures/ch16-fig03-portforward-vs-service-path.svg)
+
+<!-- ASCII-FALLBACK
 ```
   THE SERVICE PATH (what your users travel)
   client ──▶ DNS ──▶ Service (ClusterIP) ──▶ service proxy ──▶ Pod:targetPort
@@ -876,6 +879,7 @@ What this section is about is what happens when you use it as an experiment.
             pods/portforward subresource
             [ shares NO step with the path above except the Pod itself ]
 ```
+-->
 
 <!-- AUTHOR-REVIEW (revision stage — figure redrawn): draft-v1 drew the lower path as `kubectl → API server → kubelet → Pod`. No cached snapshot states the full port-forward request path; `k8s-docs-port-forward-authorization-2026-08-31`'s own significance note records that "the full path (API server -> kubelet -> Pod) is still NOT stated on any page found." The API-server hop IS established, by the `pods/portforward` subresource. The kubelet hop was inference. The figure now stops at the API server, which is what the evidence supports and is entirely sufficient for the section's argument. The upper path's proxy label is also now generic — `k8s-docs-cluster-architecture-2026-08-23` marks kube-proxy optional ("if you use a network plugin that implements packet forwarding for Services by itself... you do not need to run kube-proxy"). The image-specs entry documents both variants; re-sync it to this one. -->
 
